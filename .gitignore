@@ -1,41 +1,75 @@
-# ─── OS ───────────────────────────────────────────────────────────────────────
+# ─── OS & System Files ────────────────────────────────────────────────────────
 .DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+Icon?
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ─── Editor & IDE Configurations ──────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+*.sublime-project
+*.sublime-workspace
 *.swp
 *.swo
 *~
 
-# ─── Logs ─────────────────────────────────────────────────────────────────────
+# ─── Logs & Diagnostics ───────────────────────────────────────────────────────
 logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 
-# ─── Node ─────────────────────────────────────────────────────────────────────
+# ─── Node & Package Manager Dependencies ──────────────────────────────────────
 node_modules/
 .pnp
 .pnp.js
 .yarn/install-state.gz
+.yarn/cache
+.yarn/unplugged
 
-# ─── Build Outputs ────────────────────────────────────────────────────────────
+# ─── Build & Bundler Outputs ──────────────────────────────────────────────────
 dist/
 build/
-.next/
 out/
+.next/
 .expo/
 .turbo/
+.cache/
+*.tsbuildinfo
 
-# ─── Environment ──────────────────────────────────────────────────────────────
+# ─── Electron Desktop Build Outputs ───────────────────────────────────────────
+apps/desktop/out/
+apps/desktop/release/
+apps/desktop/dist-electron/
+
+# ─── Environment & Secrets ────────────────────────────────────────────────────
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 .env.staging
+*.pem
+*.key
+*.cert
+*.crt
 
-# ─── Python ───────────────────────────────────────────────────────────────────
+# ─── Python & Virtual Environments ────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -46,7 +80,6 @@ venv/
 env/
 ENV/
 *.egg-info/
-dist/
 *.egg
 .eggs/
 pip-wheel-metadata/
@@ -60,44 +93,28 @@ htmlcov/
 coverage.xml
 *.cover
 
-# ─── Django ───────────────────────────────────────────────────────────────────
+# ─── Django Media & Storage ───────────────────────────────────────────────────
 apps/backend/media/
 apps/backend/static/collected/
 apps/backend/staticfiles/
 apps/backend/logs/
 db.sqlite3
+db.sqlite3-journal
 
-# ─── Testing ──────────────────────────────────────────────────────────────────
+# ─── Test & Coverage Reports ──────────────────────────────────────────────────
 coverage/
 *.lcov
 .nyc_output/
 
-# ─── IDE ──────────────────────────────────────────────────────────────────────
-.idea/
-*.iml
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-!.vscode/launch.json
-
-# ─── TypeScript ───────────────────────────────────────────────────────────────
-*.tsbuildinfo
-
-# ─── Docker ───────────────────────────────────────────────────────────────────
+# ─── Docker Override ──────────────────────────────────────────────────────────
 docker-compose.override.yml
 
-# ─── Electron ─────────────────────────────────────────────────────────────────
-apps/desktop/out/
-apps/desktop/release/
-apps/desktop/dist-electron/
-
-# ─── Scripts (temp) ───────────────────────────────────────────────────────────
+# ─── Temporary Scripts & Backups ──────────────────────────────────────────────
 scripts/*.temp.ps1
 scripts/*.bak
-
-# ─── macOS Extended Attributes ────────────────────────────────────────────────
-._*
-.AppleDouble
+scripts/*.tmp
+*.bak
+*.tmp
 
 # ─── Git Keep ─────────────────────────────────────────────────────────────────
 # Do NOT ignore .gitkeep files (they track intentionally empty directories)

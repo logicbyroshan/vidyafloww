@@ -297,13 +297,13 @@ See [docs/10-git-workflow.md](docs/10-git-workflow.md) for full workflow details
 
 ---
 
-## 🤝 Contributing
+## 🔒 Internal Development Workflow
 
-1. Read the [Coding Standards](docs/04-coding-standards.md)
-2. Check the [Git Workflow](docs/10-git-workflow.md)
-3. Create a branch: `feature/VF-<ticket>-<description>`
-4. Write tests for your changes
-5. Open a Pull Request against `develop`
+1. Review internal [Coding Standards](docs/04-coding-standards.md)
+2. Follow [Git Workflow](docs/10-git-workflow.md)
+3. Create feature branches: `feature/VF-<ticket>-<description>`
+4. Ensure all unit and integration tests pass locally before pushing
+5. Submit internal Pull Requests against `develop`
 
 ---
 
