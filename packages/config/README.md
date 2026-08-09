@@ -1,4 +1,4 @@
-﻿# @vidyaflow/config
+﻿# @vidyamaxx/config
 
 Shared configuration utilities and environment variable helpers.
 
@@ -9,6 +9,6 @@ Shared configuration utilities and environment variable helpers.
 ## Usage
 
 ```ts
-import { ... } from '@vidyaflow/config';
+import { ... } from '@vidyamaxx/config';
 ```
 

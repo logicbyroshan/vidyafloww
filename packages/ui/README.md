@@ -1,4 +1,4 @@
-﻿# @vidyaflow/ui
+﻿# @vidyamaxx/ui
 
 Shared React component library built on shadcn/ui and Radix UI primitives.
 
@@ -9,6 +9,6 @@ Shared React component library built on shadcn/ui and Radix UI primitives.
 ## Usage
 
 ```ts
-import { ... } from '@vidyaflow/ui';
+import { ... } from '@vidyamaxx/ui';
 ```
 

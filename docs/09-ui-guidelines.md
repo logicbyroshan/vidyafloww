@@ -2,7 +2,7 @@
 
 ## Design System
 
-VidyaFlow uses **shadcn/ui** as its component foundation, built on top of **Tailwind CSS**
+VidyaMaxx uses **shadcn/ui** as its component foundation, built on top of **Tailwind CSS**
 and **Radix UI** primitives. All custom UI components should extend this system.
 
 ## Typography
@@ -60,7 +60,7 @@ Every data-fetching component must handle:
 ## Forms
 
 - Use **React Hook Form** + **Zod** for all forms
-- Import Zod schemas from `@vidyaflow/validation` for shared validation
+- Import Zod schemas from `@vidyamaxx/validation` for shared validation
 - Use shadcn/ui `<Form>` components for consistent styling
 - Show field-level errors inline, not as toasts
 
@@ -75,7 +75,7 @@ Every data-fetching component must handle:
 ## Icons
 
 - Use `lucide-react` for UI icons (included with shadcn/ui)
-- Use `@vidyaflow/icons` for custom VidyaFlow-specific icons
+- Use `@vidyamaxx/icons` for custom VidyaMaxx-specific icons
 
 ## Dark Mode
 

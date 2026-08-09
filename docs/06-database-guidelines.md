@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Standards and best practices for database design, migrations, and query optimization in VidyaFlow.
+Standards and best practices for database design, migrations, and query optimization in VidyaMaxx.
 
 ## Database: PostgreSQL 16
 
-VidyaFlow uses **PostgreSQL 16** as its primary database. Choose PostgreSQL-native features
+VidyaMaxx uses **PostgreSQL 16** as its primary database. Choose PostgreSQL-native features
 over Django-generic equivalents where performance matters (e.g., `JSONField`, `ArrayField`,
 `GinIndex`, `pg_trgm` for search).
 
@@ -24,7 +24,7 @@ import uuid
 class TimestampedModel(models.Model):
     """
     Base model providing UUID primary key and audit timestamps.
-    All VidyaFlow models should inherit from this.
+    All VidyaMaxx models should inherit from this.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -6,7 +6,7 @@ import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
 import { useGlobalStore, initTheme } from '../stores/globalStore';
-import { VFPage } from '@vidyaflow/ui';
+import { VFPage } from '@vidyamaxx/ui';
 
 export function AppShell() {
   const { setSidebarExpanded, addNotification } = useGlobalStore();
@@ -20,7 +20,7 @@ export function AppShell() {
     // Add a mock notification for testing on mount (only once)
     const timer = setTimeout(() => {
       addNotification({
-        title: 'Welcome to VidyaFlow',
+        title: 'Welcome to VidyaMaxx',
         description: 'Your enterprise school management platform is ready.',
         type: 'info',
       });

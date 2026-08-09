@@ -10,7 +10,7 @@
   "endOfLine": "lf",
   "importOrder": [
     "^(react|react-dom)(.*)$",
-    "^@vidyaflow/(.*)$",
+    "^@vidyamaxx/(.*)$",
     "<THIRD_PARTY_MODULES>",
     "^[./]"
   ],

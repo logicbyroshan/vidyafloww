@@ -8,7 +8,7 @@ const routes = [
 ];
 
 const template = (name) => `import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFEmptyState } from '@vidyaflow/ui';
+import { VFPageContainer, VFPageHeader, VFEmptyState } from '@vidyamaxx/ui';
 import * as React from 'react';
 
 export const Route = createFileRoute('/${name}')({

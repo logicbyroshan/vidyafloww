@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VFDialog } from '@vidyaflow/ui';
+import { VFDialog } from '@vidyamaxx/ui';
 import { Search, FileText, Settings, User } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 

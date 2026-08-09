@@ -1,5 +1,5 @@
 {
-  "name": "@vidyaflow/desktop",
+  "name": "@vidyamaxx/desktop",
   "version": "0.1.0",
   "private": true,
   "main": "electron/main/index.js",
@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
-    "@vidyaflow/api": "workspace:*",
-    "@vidyaflow/hooks": "workspace:*",
-    "@vidyaflow/types": "workspace:*",
-    "@vidyaflow/ui": "workspace:*",
-    "@vidyaflow/utils": "workspace:*",
+    "@vidyamaxx/api": "workspace:*",
+    "@vidyamaxx/hooks": "workspace:*",
+    "@vidyamaxx/types": "workspace:*",
+    "@vidyamaxx/ui": "workspace:*",
+    "@vidyamaxx/utils": "workspace:*",
     "electron-updater": "^6.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

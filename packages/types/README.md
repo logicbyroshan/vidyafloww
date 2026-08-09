@@ -1,4 +1,4 @@
-﻿# @vidyaflow/types
+﻿# @vidyamaxx/types
 
 Shared TypeScript type definitions — single source of truth for domain types.
 
@@ -9,6 +9,6 @@ Shared TypeScript type definitions — single source of truth for domain types.
 ## Usage
 
 ```ts
-import { ... } from '@vidyaflow/types';
+import { ... } from '@vidyamaxx/types';
 ```
 

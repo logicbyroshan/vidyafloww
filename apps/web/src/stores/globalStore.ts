@@ -80,7 +80,7 @@ export const useGlobalStore = create<GlobalState>()(
       clearNotifications: () => set({ notifications: [] }),
     }),
     {
-      name: 'vidyaflow-global-storage',
+      name: 'vidyamaxx-global-storage',
       partialize: (state) => ({ theme: state.theme, sidebarExpanded: state.sidebarExpanded }),
     }
   )

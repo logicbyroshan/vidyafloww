@@ -1,4 +1,4 @@
-# VidyaFlow
+# VidyaMaxx
 
 <div align="center">
 
@@ -6,7 +6,7 @@
 
 *Unifying every aspect of educational institution management into one cohesive digital ecosystem*
 
-[![CI](https://github.com/your-org/vidyaflow/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/vidyaflow/actions/workflows/ci.yml)
+[![CI](https://github.com/your-org/vidyamaxx/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/vidyamaxx/actions/workflows/ci.yml)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)](https://python.org)
 [![Django](https://img.shields.io/badge/Django-5.x-green?logo=django)](https://djangoproject.com)
@@ -19,7 +19,7 @@
 
 ## 🎯 Project Overview
 
-VidyaFlow is a production-grade, multi-tenant **school management platform** built for educational institutions
+VidyaMaxx is a production-grade, multi-tenant **school management platform** built for educational institutions
 of all sizes. It consolidates admissions, academics, attendance, examinations, finance, HR, LMS, communication,
 and AI-powered insights into a single platform accessible via web, mobile, and desktop.
 
@@ -27,7 +27,7 @@ and AI-powered insights into a single platform accessible via web, mobile, and d
 
 > *"Empower every school to operate with the efficiency of a world-class institution."*
 
-VidyaFlow eliminates the fragmented, paper-based, and siloed workflows that bog down educational
+VidyaMaxx eliminates the fragmented, paper-based, and siloed workflows that bog down educational
 administration — replacing them with a unified, intelligent, and beautifully designed platform.
 
 ---
@@ -85,7 +85,7 @@ administration — replacing them with a unified, intelligent, and beautifully d
 ## 📁 Repository Layout
 
 ```text
-vidyaflow/
+vidyamaxx/
 ├── apps/
 │   ├── backend/          Django + DRF API server
 │   ├── web/              React 19 web application
@@ -126,8 +126,8 @@ vidyaflow/
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/your-org/vidyaflow.git
-cd vidyaflow
+git clone https://github.com/your-org/vidyamaxx.git
+cd vidyamaxx
 
 # Install all JavaScript/TypeScript dependencies
 pnpm install
@@ -165,7 +165,7 @@ API Docs at: **http://localhost:8000/api/docs/swagger/**
 
 ```bash
 # From project root
-pnpm dev --filter=@vidyaflow/web
+pnpm dev --filter=@vidyamaxx/web
 
 # Or from the web directory
 cd apps/web && pnpm dev
@@ -200,10 +200,10 @@ poetry run celery -A config.celery worker --loglevel=info
 
 ```bash
 # Run only web app
-pnpm dev --filter=@vidyaflow/web
+pnpm dev --filter=@vidyamaxx/web
 
 # Build a specific package
-pnpm build --filter=@vidyaflow/types
+pnpm build --filter=@vidyamaxx/types
 
 # Run tests for changed packages only
 pnpm test --filter=[HEAD^1]
@@ -309,12 +309,12 @@ See [docs/10-git-workflow.md](docs/10-git-workflow.md) for full workflow details
 
 ## 📄 License
 
-Proprietary — All rights reserved. VidyaFlow Team, 2026.
+Proprietary — All rights reserved. VidyaMaxx Team, 2026.
 
 ---
 
 <div align="center">
 
-Built with ❤️ by the VidyaFlow Team
+Built with ❤️ by the VidyaMaxx Team
 
 </div>

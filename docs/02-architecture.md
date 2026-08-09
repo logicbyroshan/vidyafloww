@@ -2,7 +2,7 @@
 
 ## System Architecture Overview
 
-VidyaFlow follows a **modular monolith** backend architecture combined with a
+VidyaMaxx follows a **modular monolith** backend architecture combined with a
 **multi-package monorepo** frontend strategy. This provides the simplicity of a
 monolith while enabling independent development of features.
 
@@ -143,7 +143,7 @@ packages/
 
 ## Multi-Tenancy Design
 
-VidyaFlow uses a **shared schema with tenant isolation** approach:
+VidyaMaxx uses a **shared schema with tenant isolation** approach:
 
 - Every model has an `organization` foreign key
 - A custom `TenantMiddleware` injects the current organization from the JWT claims

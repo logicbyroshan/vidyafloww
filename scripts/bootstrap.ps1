@@ -1,4 +1,4 @@
-param([string]$Root = "c:\Users\iamro\Desktop\VidyaFlow")
+param([string]$Root = "c:\Users\iamro\Desktop\VidyaMaxx")
 
 function New-Dir { param([string]$path) New-Item -Path $path -ItemType Directory -Force | Out-Null }
 function New-File { param([string]$path, [string]$content = "") New-Item -Path $path -ItemType File -Force | Out-Null; if ($content) { Set-Content -Path $path -Value $content -Encoding UTF8 } }
@@ -194,4 +194,4 @@ New-File "$Root\nginx\default.conf"
 
 New-File "$Root\.env.example"
 
-Write-Host "`n[SUCCESS] VidyaFlow monorepo structure created!" -ForegroundColor Green
+Write-Host "`n[SUCCESS] VidyaMaxx monorepo structure created!" -ForegroundColor Green

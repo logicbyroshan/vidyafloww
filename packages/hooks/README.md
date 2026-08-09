@@ -1,4 +1,4 @@
-﻿# @vidyaflow/hooks
+﻿# @vidyamaxx/hooks
 
 Shared React hooks for data fetching, state management, and common UI patterns.
 
@@ -9,6 +9,6 @@ Shared React hooks for data fetching, state management, and common UI patterns.
 ## Usage
 
 ```ts
-import { ... } from '@vidyaflow/hooks';
+import { ... } from '@vidyamaxx/hooks';
 ```
 

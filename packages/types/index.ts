@@ -1,13 +1,13 @@
 /**
- * @vidyaflow/types
+ * @vidyamaxx/types
  *
- * Shared TypeScript type definitions used across all VidyaFlow apps.
+ * Shared TypeScript type definitions used across all VidyaMaxx apps.
  *
  * This package is the single source of truth for domain types.
  * All apps and packages import from here to ensure consistency.
  *
  * @example
- * import type { Student, Organization } from '@vidyaflow/types';
+ * import type { Student, Organization } from '@vidyamaxx/types';
  */
 
 // ─── Domain Types ─────────────────────────────────────────────────────────────

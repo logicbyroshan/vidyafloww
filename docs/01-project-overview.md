@@ -2,7 +2,7 @@
 
 ## Purpose
 
-VidyaFlow is an **enterprise-grade school management platform** designed to unify every operational
+VidyaMaxx is an **enterprise-grade school management platform** designed to unify every operational
 aspect of educational institutions — from admissions and academics to finance, HR, and AI-powered
 assistance — into a single, cohesive digital ecosystem.
 
@@ -10,7 +10,7 @@ assistance — into a single, cohesive digital ecosystem.
 
 > *"Empower every school to operate with the efficiency of a world-class institution."*
 
-VidyaFlow aims to eliminate fragmented tools, paper-based workflows, and data silos that
+VidyaMaxx aims to eliminate fragmented tools, paper-based workflows, and data silos that
 plague most educational institutions. By providing a fully integrated platform accessible
 across web, mobile, and desktop, we enable schools to focus on what matters most: education.
 
@@ -65,5 +65,5 @@ across web, mobile, and desktop, we enable schools to focus on what matters most
 
 ---
 
-*This document is maintained by the VidyaFlow Architecture Team.*
+*This document is maintained by the VidyaMaxx Architecture Team.*
 *Last updated: 2026-07-02*

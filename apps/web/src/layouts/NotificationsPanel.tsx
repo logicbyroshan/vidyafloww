@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VFDrawer, VFButton, VFBadge } from '@vidyaflow/ui';
+import { VFDrawer, VFButton, VFBadge } from '@vidyamaxx/ui';
 import { useGlobalStore } from '../stores/globalStore';
 import { Bell, CheckCircle2, AlertCircle, Info, Trash2 } from 'lucide-react';
 

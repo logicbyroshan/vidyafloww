@@ -2,7 +2,7 @@
 
 ## Permission Model
 
-VidyaFlow uses a **hierarchical Role-Based Access Control (RBAC)** system combined with
+VidyaMaxx uses a **hierarchical Role-Based Access Control (RBAC)** system combined with
 **object-level permissions** for multi-tenant isolation.
 
 ## Role Hierarchy

@@ -1,5 +1,5 @@
 """
-VidyaFlow WSGI Configuration
+VidyaMaxx WSGI Configuration
 
 Exposes the WSGI callable as a module-level variable named ``application``.
 Used for synchronous HTTP serving (Gunicorn/uWSGI).

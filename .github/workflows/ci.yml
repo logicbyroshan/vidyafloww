@@ -72,8 +72,8 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: vidyaflow_test
-          POSTGRES_USER: vidyaflow
+          POSTGRES_DB: vidyamaxx_test
+          POSTGRES_USER: vidyamaxx
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
@@ -138,4 +138,4 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run tests
-        run: pnpm turbo run test --filter=@vidyaflow/web
+        run: pnpm turbo run test --filter=@vidyamaxx/web

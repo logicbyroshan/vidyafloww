@@ -1,6 +1,6 @@
-# @vidyaflow/desktop
+# @vidyamaxx/desktop
 
-Electron desktop application for VidyaFlow — Enterprise School Management Platform.
+Electron desktop application for VidyaMaxx — Enterprise School Management Platform.
 
 ## Tech Stack
 
@@ -15,7 +15,7 @@ Electron desktop application for VidyaFlow — Enterprise School Management Plat
 
 ```bash
 # From the monorepo root
-pnpm dev --filter=@vidyaflow/desktop
+pnpm dev --filter=@vidyamaxx/desktop
 
 # Or from this directory
 pnpm dev

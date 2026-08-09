@@ -7,7 +7,7 @@ import {
   VFDataTable,
   VFButton,
   VFBadge,
-} from '@vidyaflow/ui';
+} from '@vidyamaxx/ui';
 import { Users, GraduationCap, CalendarCheck, FileText, Download } from 'lucide-react';
 import * as React from 'react';
 
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/')({
 function DashboardPage() {
   const breadcrumbs = (
     <div className="text-sm text-muted-foreground flex items-center gap-2">
-      <span className="text-primary font-medium">VidyaFlow</span>
+      <span className="text-primary font-medium">VidyaMaxx</span>
       <span>/</span>
       <span>Dashboard</span>
     </div>

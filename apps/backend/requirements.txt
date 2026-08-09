@@ -1,4 +1,4 @@
-# ─── VidyaFlow Backend — Python Requirements ──────────────────────────────────
+# ─── VidyaMaxx Backend — Python Requirements ──────────────────────────────────
 # This file is used by Docker and CI environments that don't use Poetry directly.
 # Generated from pyproject.toml — keep in sync manually or via `poetry export`.
 #

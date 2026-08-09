@@ -1,5 +1,5 @@
 /**
- * @vidyaflow/constants — Application Routes
+ * @vidyamaxx/constants — Application Routes
  *
  * Centralized route definitions for web and mobile navigation.
  *

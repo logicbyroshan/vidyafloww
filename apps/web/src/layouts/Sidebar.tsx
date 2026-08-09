@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
-import { cn } from '@vidyaflow/ui';
+import { cn } from '@vidyamaxx/ui';
 import { useGlobalStore } from '../stores/globalStore';
 import {
   LayoutDashboard, Users, UserSquare, GraduationCap, CalendarCheck,
@@ -45,7 +45,7 @@ export function Sidebar() {
             <div className="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center">
               <span className="text-lg">V</span>
             </div>
-            VidyaFlow
+            VidyaMaxx
           </div>
         ) : (
           <div className="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold animate-scale-in">

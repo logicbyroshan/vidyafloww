@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Search, Bell, Menu, Moon, Sun, Monitor } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
-import { VFAvatar, VFButton } from '@vidyaflow/ui';
+import { VFAvatar, VFButton } from '@vidyamaxx/ui';
 
 interface HeaderProps {
   onMenuClick: () => void;
