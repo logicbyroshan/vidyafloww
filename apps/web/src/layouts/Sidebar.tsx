@@ -13,6 +13,7 @@ import {
   BookOpen,
   Bus,
   Building,
+  Building2,
   MessageSquare,
   Files,
   BarChart3,
@@ -61,17 +62,21 @@ export function Sidebar() {
         sidebarExpanded ? 'w-60' : 'w-16'
       )}
     >
-      {/* Sidebar Header & Brand Logo */}
+      {/* Sidebar Header & School Brand */}
       <div className="flex h-14 items-center px-3.5 border-b border-border/60 relative shrink-0">
         {sidebarExpanded ? (
-          <div className="flex items-center gap-3 font-black text-base text-foreground tracking-tight w-full animate-fade-in">
-            <img src="/logo.png" alt="VidyaMaxx Logo" className="h-7 w-7 object-contain shrink-0" />
+          <div className="flex items-center gap-2.5 font-black text-sm text-foreground tracking-tight w-full animate-fade-in">
+            <div className="h-7 w-7 rounded-md bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0">
+              <Building2 className="h-4 w-4" />
+            </div>
             <span className="truncate">
-              Vidya<span className="text-primary">Maxx</span>
+              Springfield <span className="text-primary">Academy</span>
             </span>
           </div>
         ) : (
-          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-7 w-7 object-contain shrink-0 mx-auto animate-scale-in" />
+          <div className="h-7 w-7 rounded-md bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shrink-0 mx-auto animate-scale-in" title="Springfield Academy">
+            <Building2 className="h-4 w-4" />
+          </div>
         )}
         <button
           onClick={toggleSidebar}

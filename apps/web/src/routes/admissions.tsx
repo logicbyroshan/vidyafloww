@@ -148,8 +148,8 @@ function AdmissionsPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <VFStatCard title="Total Enquiries" value="342" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="+28 this week" />
-        <VFStatCard title="Walk-in Tours" value="124" icon={<Users className="h-5 w-5" />} description="36 Tours Scheduled" />
-        <VFStatCard title="Online Enquiries" value="188" icon={<Phone className="h-5 w-5" />} description="Website & Social CRM" />
+        <VFStatCard title="Walk-in Tours" value="124" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="36 Tours Scheduled" />
+        <VFStatCard title="Online Enquiries" value="188" icon={<Phone className="h-5 w-5" />} trend="neutral" trendLabel="Website & Social CRM" />
         <VFStatCard title="Pending Follow-ups" value="30" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="Today's Target" />
       </div>
 

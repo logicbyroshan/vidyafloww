@@ -22,6 +22,8 @@ export function VFStatCard({
   className,
   ...props
 }: VFStatCardProps) {
+  const displayLabel = trendLabel || description;
+
   return (
     <div
       className={cn(
@@ -41,36 +43,36 @@ export function VFStatCard({
       
       <div className="flex flex-col gap-1">
         {isLoading ? (
-          <div className="h-7 w-20 bg-muted-foreground/12 animate-pulse rounded" />
+          <div className="h-7 w-20 bg-muted-foreground/12 animate-pulse rounded-md" />
         ) : (
           <div className="text-2xl font-black tracking-tight text-foreground leading-none">{value}</div>
         )}
         
-        {!isLoading && (trend || description) && (
-          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-            {trend && (
-              <span
-                className={cn(
-                  "inline-flex items-center text-xs font-bold rounded px-1.5 py-0.5 border uppercase tracking-wide",
-                  trend === 'up' && "bg-success/10 text-success border-success/25",
-                  trend === 'down' && "bg-destructive/10 text-destructive border-destructive/25",
-                  trend === 'neutral' && "bg-muted text-muted-foreground border-border/60"
-                )}
-              >
-                {trend === 'up' && (
-                  <svg className="h-2.5 w-2.5 mr-0.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                  </svg>
-                )}
-                {trend === 'down' && (
-                  <svg className="h-2.5 w-2.5 mr-0.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                  </svg>
-                )}
-                {trendLabel}
-              </span>
+        {!isLoading && (trend || displayLabel) && (
+          <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+            <span
+              className={cn(
+                "inline-flex items-center text-xs font-bold rounded-md px-2 py-0.5 border uppercase tracking-wide",
+                trend === 'up' && "bg-success/10 text-success border-success/25",
+                trend === 'down' && "bg-destructive/10 text-destructive border-destructive/25",
+                (trend === 'neutral' || !trend) && "bg-primary/10 text-primary border-primary/25"
+              )}
+            >
+              {trend === 'up' && (
+                <svg className="h-2.5 w-2.5 mr-1 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              )}
+              {trend === 'down' && (
+                <svg className="h-2.5 w-2.5 mr-1 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              )}
+              {displayLabel}
+            </span>
+            {trend && description && trendLabel && (
+              <span className="text-xs text-muted-foreground font-medium">{description}</span>
             )}
-            {description && <span className="text-xs text-muted-foreground font-medium">{description}</span>}
           </div>
         )}
       </div>

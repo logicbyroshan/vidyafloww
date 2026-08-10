@@ -7,28 +7,23 @@ interface HeaderProps {
   onOpenAiChat: () => void;
 }
 
-// School identity — update this to match the school using the software
-const SCHOOL = {
-  name: 'Springfield Academy',
-  logo: '/logo.png',
-};
-
 export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: HeaderProps) {
   const { notifications } = useGlobalStore();
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <header className="h-11 border-b border-border/60 bg-card flex items-center justify-between px-4 sticky top-0 z-10 shrink-0">
-      {/* Left: School Welcome */}
+      {/* Left: VidyaMaxx Platform Brand */}
       <div className="flex items-center gap-2.5">
-        <span className="text-xs text-muted-foreground font-medium">Welcome,</span>
         <img
-          src={SCHOOL.logo}
-          alt={SCHOOL.name}
-          className="h-5 w-5 object-contain rounded shrink-0"
-          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          src="/logo.png"
+          alt="VidyaMaxx Logo"
+          className="h-6 w-6 object-contain shrink-0"
+          style={{ height: '24px', width: '24px' }}
         />
-        <span className="text-sm font-black text-foreground tracking-tight">{SCHOOL.name}</span>
+        <span className="text-sm font-black text-foreground tracking-tight">
+          Vidya<span className="text-primary">Maxx</span>
+        </span>
       </div>
 
       {/* Right: Actions */}

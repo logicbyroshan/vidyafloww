@@ -103,7 +103,7 @@ function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <VFStatCard title="Total Enrolled Students" value="2,451" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="+12 this month" />
-        <VFStatCard title="Teaching Staff Efficiency" value="98.2%" icon={<GraduationCap className="h-5 w-5" />} description="Optimal schedule allocation" />
+        <VFStatCard title="Teaching Staff Efficiency" value="98.2%" icon={<GraduationCap className="h-5 w-5" />} trend="up" trendLabel="Optimal schedule allocation" />
         <VFStatCard title="Today's Attendance" value="94.5%" icon={<CalendarCheck className="h-5 w-5" />} trend="up" trendLabel="+1.2% vs yesterday" />
         <VFStatCard title="Pending Applications" value="28" icon={<FileText className="h-5 w-5" />} trend="down" trendLabel="18 auto-verified" />
       </div>
