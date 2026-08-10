@@ -166,14 +166,27 @@ function AdmissionsPage() {
     name: '',
     dob: '2012-05-14',
     gender: 'Male',
+    bloodGroup: 'O+',
+    nationality: 'Indian',
+    primaryLang: 'English',
+    govtId: '',
     appliedGrade: 'Class 9',
+    academicSession: '2026-2027',
     previousSchool: '',
     prevMarks: '92%',
+    tcNumber: '',
+    secondLang: 'Hindi',
+    fatherName: '',
+    motherName: '',
     guardianName: '',
     relation: 'Father',
     phone: '',
     email: '',
     address: '123 Park Avenue, New Delhi',
+    transportRoute: 'No Transport',
+    hostelRequired: 'Day Scholar',
+    medicalNotes: 'None',
+    emergencyContact: '',
   });
 
   const handleCreateApplication = (e: React.FormEvent) => {
@@ -329,21 +342,29 @@ function AdmissionsPage() {
           </div>
         </header>
 
-        <div className="flex-1 max-w-4xl w-full mx-auto p-8 space-y-8">
-          <div className="border-b border-border pb-4">
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">Student Admission Registration</h1>
-            <p className="text-xs text-muted-foreground mt-1">
-              Complete the applicant details below. All transcripts and documents will be automatically processed by OCR engines.
-            </p>
+        <div className="flex-1 w-full max-w-full px-8 py-6 space-y-6 overflow-y-auto custom-scrollbar">
+          <div className="border-b border-border pb-4 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-foreground tracking-tight">Student Admission Registration</h1>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Complete the applicant details below. All transcripts and documents will be automatically processed by OCR engines.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                Academic Session: 2026-2027
+              </span>
+            </div>
           </div>
 
-          <form onSubmit={handleCreateApplication} className="space-y-8 text-xs">
-            <div className="bg-card border border-border p-6 rounded-xl space-y-4">
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+          <form onSubmit={handleCreateApplication} className="space-y-6 text-xs">
+            {/* Section 1: Personal Details */}
+            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
+              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
                 <UserSquare className="h-4 w-4 text-primary" /> 1. Student Personal Details
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <VFInput
                   label="Student Full Name"
                   required
@@ -367,15 +388,49 @@ function AdmissionsPage() {
                     { label: 'Other', value: 'Other' },
                   ]}
                 />
+                <VFSelect
+                  label="Blood Group"
+                  value={newForm.bloodGroup}
+                  onChange={(e) => setNewForm({ ...newForm, bloodGroup: String(e.target.value) })}
+                  options={[
+                    { label: 'O +ve', value: 'O+' },
+                    { label: 'O -ve', value: 'O-' },
+                    { label: 'A +ve', value: 'A+' },
+                    { label: 'A -ve', value: 'A-' },
+                    { label: 'B +ve', value: 'B+' },
+                    { label: 'B -ve', value: 'B-' },
+                    { label: 'AB +ve', value: 'AB+' },
+                    { label: 'AB -ve', value: 'AB-' },
+                  ]}
+                />
+                <VFInput
+                  label="Nationality"
+                  placeholder="e.g. Indian"
+                  value={newForm.nationality}
+                  onChange={(e) => setNewForm({ ...newForm, nationality: e.target.value })}
+                />
+                <VFInput
+                  label="Primary Language"
+                  placeholder="e.g. English"
+                  value={newForm.primaryLang}
+                  onChange={(e) => setNewForm({ ...newForm, primaryLang: e.target.value })}
+                />
+                <VFInput
+                  label="Aadhar / Govt ID Number"
+                  placeholder="12-digit Aadhar or Govt ID"
+                  value={newForm.govtId}
+                  onChange={(e) => setNewForm({ ...newForm, govtId: e.target.value })}
+                />
               </div>
             </div>
 
-            <div className="bg-card border border-border p-6 rounded-xl space-y-4">
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
-                <FileCheck className="h-4 w-4 text-primary" /> 2. Academic Intake Details
+            {/* Section 2: Academic Details */}
+            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
+              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
+                <FileCheck className="h-4 w-4 text-primary" /> 2. Academic Intake & Schooling Details
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <VFSelect
                   label="Grade Seeking Admission"
                   required
@@ -387,6 +442,15 @@ function AdmissionsPage() {
                     { label: 'Class 9', value: 'Class 9' },
                     { label: 'Class 11-Sci', value: 'Class 11-Sci' },
                     { label: 'Class 11-Com', value: 'Class 11-Com' },
+                  ]}
+                />
+                <VFSelect
+                  label="Academic Session"
+                  value={newForm.academicSession}
+                  onChange={(e) => setNewForm({ ...newForm, academicSession: String(e.target.value) })}
+                  options={[
+                    { label: '2026 - 2027', value: '2026-2027' },
+                    { label: '2027 - 2028', value: '2027-2028' },
                   ]}
                 />
                 <VFInput
@@ -401,24 +465,55 @@ function AdmissionsPage() {
                   value={newForm.prevMarks}
                   onChange={(e) => setNewForm({ ...newForm, prevMarks: e.target.value })}
                 />
+                <VFInput
+                  label="Transfer Certificate (TC) No."
+                  placeholder="e.g. TC-88219"
+                  value={newForm.tcNumber}
+                  onChange={(e) => setNewForm({ ...newForm, tcNumber: e.target.value })}
+                />
+                <VFSelect
+                  label="Second Language Preference"
+                  value={newForm.secondLang}
+                  onChange={(e) => setNewForm({ ...newForm, secondLang: String(e.target.value) })}
+                  options={[
+                    { label: 'Hindi', value: 'Hindi' },
+                    { label: 'Sanskrit', value: 'Sanskrit' },
+                    { label: 'French', value: 'French' },
+                    { label: 'German', value: 'German' },
+                    { label: 'Spanish', value: 'Spanish' },
+                  ]}
+                />
               </div>
             </div>
 
-            <div className="bg-card border border-border p-6 rounded-xl space-y-4">
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
-                <BrainCircuit className="h-4 w-4 text-primary" /> 3. Guardian & Emergency Contacts
+            {/* Section 3: Parent & Guardian Contacts */}
+            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
+              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
+                <BrainCircuit className="h-4 w-4 text-primary" /> 3. Parent, Guardian & Contact Information
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <VFInput
-                  label="Guardian Name"
+                  label="Father's Full Name"
+                  placeholder="e.g. Rajesh Verma"
+                  value={newForm.fatherName}
+                  onChange={(e) => setNewForm({ ...newForm, fatherName: e.target.value })}
+                />
+                <VFInput
+                  label="Mother's Full Name"
+                  placeholder="e.g. Sunita Verma"
+                  value={newForm.motherName}
+                  onChange={(e) => setNewForm({ ...newForm, motherName: e.target.value })}
+                />
+                <VFInput
+                  label="Primary Guardian Name"
                   required
                   placeholder="e.g. Ramesh Verma"
                   value={newForm.guardianName}
                   onChange={(e) => setNewForm({ ...newForm, guardianName: e.target.value })}
                 />
                 <VFInput
-                  label="Contact Phone"
+                  label="Contact Phone Number"
                   placeholder="+91 98000 00000"
                   value={newForm.phone}
                   onChange={(e) => setNewForm({ ...newForm, phone: e.target.value })}
@@ -430,21 +525,74 @@ function AdmissionsPage() {
                   value={newForm.email}
                   onChange={(e) => setNewForm({ ...newForm, email: e.target.value })}
                 />
+                <div className="sm:col-span-2 lg:col-span-3">
+                  <VFInput
+                    label="Residential Address"
+                    placeholder="123 Park Avenue, Block B, New Delhi"
+                    value={newForm.address}
+                    onChange={(e) => setNewForm({ ...newForm, address: e.target.value })}
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="bg-card border border-border p-6 rounded-xl space-y-3">
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
-                <Upload className="h-4 w-4 text-primary" /> 4. Attach Documents for OCR Verification
+            {/* Section 4: Facilities & Transportation */}
+            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
+              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
+                <Upload className="h-4 w-4 text-primary" /> 4. Facilities, Transport & Medical Notes
               </h2>
-              <div className="border-2 border-dashed border-border p-6 rounded-xl text-center space-y-2 hover:border-primary/40 transition-colors cursor-pointer bg-muted/20">
-                <Upload className="h-8 w-8 text-primary/40 mx-auto" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <VFSelect
+                  label="School Bus / Transport Route"
+                  value={newForm.transportRoute}
+                  onChange={(e) => setNewForm({ ...newForm, transportRoute: String(e.target.value) })}
+                  options={[
+                    { label: 'No Transport (Self / Private)', value: 'No Transport' },
+                    { label: 'Route 1 - City Center / Metro', value: 'Route 1' },
+                    { label: 'Route 2 - North Suburbs', value: 'Route 2' },
+                    { label: 'Route 3 - South Campus Express', value: 'Route 3' },
+                    { label: 'Route 4 - East District Line', value: 'Route 4' },
+                  ]}
+                />
+                <VFSelect
+                  label="Hostel Accommodation"
+                  value={newForm.hostelRequired}
+                  onChange={(e) => setNewForm({ ...newForm, hostelRequired: String(e.target.value) })}
+                  options={[
+                    { label: 'Day Scholar', value: 'Day Scholar' },
+                    { label: 'Full Boarder (Hostel)', value: 'Full Boarder' },
+                    { label: 'Weekly Boarder', value: 'Weekly Boarder' },
+                  ]}
+                />
+                <VFInput
+                  label="Medical Conditions / Allergies"
+                  placeholder="e.g. None or Asthma"
+                  value={newForm.medicalNotes}
+                  onChange={(e) => setNewForm({ ...newForm, medicalNotes: e.target.value })}
+                />
+                <VFInput
+                  label="Emergency Contact Person"
+                  placeholder="e.g. Uncle / +91 91100 22334"
+                  value={newForm.emergencyContact}
+                  onChange={(e) => setNewForm({ ...newForm, emergencyContact: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Section 5: Documents Upload */}
+            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-3">
+              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+                <Upload className="h-4 w-4 text-primary" /> 5. Attach Documents for Automated OCR Verification
+              </h2>
+              <div className="border-2 border-dashed border-border/80 p-6 rounded-xl text-center space-y-2 hover:border-primary/50 transition-colors cursor-pointer bg-muted/20">
+                <Upload className="h-8 w-8 text-primary/60 mx-auto" />
                 <p className="text-xs font-semibold text-foreground">Drop Transfer Certificates, Marksheets or ID proof here</p>
                 <p className="text-[11px] text-muted-foreground">Automated OCR engines will extract and verify grade percentages instantly.</p>
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4">
+            <div className="flex justify-end gap-3 pt-2">
               <VFButton variant="outline" type="button" onClick={() => setIsFullScreenFormOpen(false)}>
                 Cancel
               </VFButton>
