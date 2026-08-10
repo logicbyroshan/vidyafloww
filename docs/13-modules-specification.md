@@ -1,4 +1,4 @@
-# 🏫 VidyaMaxx — Enterprise School ERP Specification & Architecture
+# 13 — 🏫 VidyaMaxx Modules Specification & Architecture
 
 VidyaMaxx is an AI-first, multi-tenant enterprise school management platform designed to manage the end-to-end lifecycle of educational institutions.
 
@@ -8,7 +8,7 @@ VidyaMaxx is an AI-first, multi-tenant enterprise school management platform des
 
 All modules in VidyaMaxx are scoped according to the primary institutional hierarchy:
 
-```
+```text
 Organization (Multi-School / Group)
    └── Campus / Branch
          └── Academic Session (Year)

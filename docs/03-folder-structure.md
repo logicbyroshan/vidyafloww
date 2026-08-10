@@ -21,7 +21,7 @@ vidyamaxx/
 │   ├── themes/           Design tokens and Tailwind config
 │   ├── icons/            Custom icon components
 │   └── assets/           Shared static assets
-├── docs/                 Project documentation
+├── docs/                 13 documentation files (modules, UI, arch, API)
 ├── scripts/              Build and utility scripts
 ├── docker/               Dockerfiles and Compose files
 ├── nginx/                Nginx configuration
