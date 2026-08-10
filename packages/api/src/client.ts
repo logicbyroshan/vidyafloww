@@ -31,6 +31,9 @@ export function createApiClient(config: ApiClientConfig): AxiosInstance {
   return instance;
 }
 
+/// <reference types="vite/client" />
+
 export const apiClient = createApiClient({
-  baseURL: import.meta.env?.VITE_API_URL ?? 'http://localhost:8000/api/v1',
+  baseURL: (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_API_URL ?? 'http://localhost:8000/api/v1',
 });
+

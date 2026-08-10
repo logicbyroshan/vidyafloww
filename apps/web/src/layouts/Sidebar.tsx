@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
 import { cn, VFAvatar } from '@vidyamaxx/ui';
 import { useGlobalStore } from '../stores/globalStore';

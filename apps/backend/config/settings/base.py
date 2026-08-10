@@ -45,18 +45,18 @@ LOCAL_APPS = [
     "core.permissions",
     "core.sessions",
     # Platform
-    "platform.notifications",
-    "platform.storage",
-    "platform.audit",
-    "platform.activity",
-    "platform.imports",
-    "platform.exports",
-    "platform.reports",
-    "platform.search",
-    "platform.settings",
-    "platform.workflows",
-    "platform.forms",
-    "platform.dashboard",
+    "platform_services.notifications",
+    "platform_services.storage",
+    "platform_services.audit",
+    "platform_services.activity",
+    "platform_services.imports",
+    "platform_services.exports",
+    "platform_services.reports",
+    "platform_services.search",
+    "platform_services.settings",
+    "platform_services.workflows",
+    "platform_services.forms",
+    "platform_services.dashboard",
     # Modules
     "modules.admissions",
     "modules.students",
@@ -248,6 +248,8 @@ SPECTACULAR_SETTINGS = {
 }
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
+
+os.makedirs(BASE_DIR / "logs", exist_ok=True)
 
 LOGGING = {
     "version": 1,

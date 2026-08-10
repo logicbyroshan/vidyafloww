@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { VFPageContainer, VFPageHeader, VFEmptyState } from '@vidyamaxx/ui';
-import * as React from 'react';
 
 export const Route = createFileRoute('/students')({
   component: StudentsPage,

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
@@ -16,7 +17,6 @@ import {
   ShieldCheck,
   CheckCircle2,
 } from 'lucide-react';
-import * as React from 'react';
 
 export const Route = createFileRoute('/')({
   component: DashboardPage,

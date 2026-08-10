@@ -11,7 +11,7 @@ import { VFPage } from '@vidyamaxx/ui';
 import { Smartphone, Monitor } from 'lucide-react';
 
 export function AppShell() {
-  const { setSidebarExpanded, addNotification } = useGlobalStore();
+  const { addNotification } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const [isAiChatOpen, setIsAiChatOpen] = React.useState(false);

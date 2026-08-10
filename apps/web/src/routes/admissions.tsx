@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
@@ -5,6 +6,9 @@ import {
   VFStatCard,
   VFDataTable,
   VFButton,
+  VFInput,
+  VFSelect,
+  VFDatePicker,
 } from '@vidyamaxx/ui';
 import {
   UserSquare,
@@ -24,7 +28,6 @@ import {
   Maximize2,
   Minimize2,
 } from 'lucide-react';
-import * as React from 'react';
 
 export const Route = createFileRoute('/admissions')({
   component: AdmissionsPage,
@@ -341,38 +344,29 @@ function AdmissionsPage() {
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Student Full Name *</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="e.g. Aditya Verma"
-                    value={newForm.name}
-                    onChange={(e) => setNewForm({ ...newForm, name: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Date of Birth</label>
-                  <input
-                    type="date"
-                    value={newForm.dob}
-                    onChange={(e) => setNewForm({ ...newForm, dob: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Gender</label>
-                  <select
-                    value={newForm.gender}
-                    onChange={(e) => setNewForm({ ...newForm, gender: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+                <VFInput
+                  label="Student Full Name"
+                  required
+                  placeholder="e.g. Aditya Verma"
+                  value={newForm.name}
+                  onChange={(e) => setNewForm({ ...newForm, name: e.target.value })}
+                />
+                <VFDatePicker
+                  label="Date of Birth"
+                  placeholder="Select birth date"
+                  value={newForm.dob}
+                  onChange={(e) => setNewForm({ ...newForm, dob: e.target.value })}
+                />
+                <VFSelect
+                  label="Gender"
+                  value={newForm.gender}
+                  onChange={(e) => setNewForm({ ...newForm, gender: String(e.target.value) })}
+                  options={[
+                    { label: 'Male', value: 'Male' },
+                    { label: 'Female', value: 'Female' },
+                    { label: 'Other', value: 'Other' },
+                  ]}
+                />
               </div>
             </div>
 
@@ -382,40 +376,31 @@ function AdmissionsPage() {
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Grade Seeking Admission *</label>
-                  <select
-                    value={newForm.appliedGrade}
-                    onChange={(e) => setNewForm({ ...newForm, appliedGrade: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  >
-                    <option value="Class 1">Class 1</option>
-                    <option value="Class 6">Class 6</option>
-                    <option value="Class 9">Class 9</option>
-                    <option value="Class 11-Sci">Class 11-Sci</option>
-                    <option value="Class 11-Com">Class 11-Com</option>
-                  </select>
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Previous School Attended</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. St. Marks High School"
-                    value={newForm.previousSchool}
-                    onChange={(e) => setNewForm({ ...newForm, previousSchool: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Previous Score / Grade %</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 94%"
-                    value={newForm.prevMarks}
-                    onChange={(e) => setNewForm({ ...newForm, prevMarks: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
+                <VFSelect
+                  label="Grade Seeking Admission"
+                  required
+                  value={newForm.appliedGrade}
+                  onChange={(e) => setNewForm({ ...newForm, appliedGrade: String(e.target.value) })}
+                  options={[
+                    { label: 'Class 1', value: 'Class 1' },
+                    { label: 'Class 6', value: 'Class 6' },
+                    { label: 'Class 9', value: 'Class 9' },
+                    { label: 'Class 11-Sci', value: 'Class 11-Sci' },
+                    { label: 'Class 11-Com', value: 'Class 11-Com' },
+                  ]}
+                />
+                <VFInput
+                  label="Previous School Attended"
+                  placeholder="e.g. St. Marks High School"
+                  value={newForm.previousSchool}
+                  onChange={(e) => setNewForm({ ...newForm, previousSchool: e.target.value })}
+                />
+                <VFInput
+                  label="Previous Score / Grade %"
+                  placeholder="e.g. 94%"
+                  value={newForm.prevMarks}
+                  onChange={(e) => setNewForm({ ...newForm, prevMarks: e.target.value })}
+                />
               </div>
             </div>
 
@@ -425,37 +410,26 @@ function AdmissionsPage() {
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Guardian Name *</label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="e.g. Ramesh Verma"
-                    value={newForm.guardianName}
-                    onChange={(e) => setNewForm({ ...newForm, guardianName: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Contact Phone</label>
-                  <input
-                    type="text"
-                    placeholder="+91 98000 00000"
-                    value={newForm.phone}
-                    onChange={(e) => setNewForm({ ...newForm, phone: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold text-foreground">Email Address</label>
-                  <input
-                    type="email"
-                    placeholder="guardian@email.com"
-                    value={newForm.email}
-                    onChange={(e) => setNewForm({ ...newForm, email: e.target.value })}
-                    className="w-full bg-muted border border-border rounded-lg p-2.5 text-foreground text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none"
-                  />
-                </div>
+                <VFInput
+                  label="Guardian Name"
+                  required
+                  placeholder="e.g. Ramesh Verma"
+                  value={newForm.guardianName}
+                  onChange={(e) => setNewForm({ ...newForm, guardianName: e.target.value })}
+                />
+                <VFInput
+                  label="Contact Phone"
+                  placeholder="+91 98000 00000"
+                  value={newForm.phone}
+                  onChange={(e) => setNewForm({ ...newForm, phone: e.target.value })}
+                />
+                <VFInput
+                  label="Email Address"
+                  type="email"
+                  placeholder="guardian@email.com"
+                  value={newForm.email}
+                  onChange={(e) => setNewForm({ ...newForm, email: e.target.value })}
+                />
               </div>
             </div>
 

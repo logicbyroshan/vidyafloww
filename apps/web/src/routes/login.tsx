@@ -1,6 +1,7 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import * as React from 'react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { Eye, EyeOff, Sparkles, Zap, GraduationCap, Users, BarChart3, Shield } from 'lucide-react';
+import { VFSelect } from '@vidyamaxx/ui';
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
@@ -176,21 +177,18 @@ function LoginPage() {
             </div>
 
             {/* Role selector */}
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground" htmlFor="role">
-                Login as
-              </label>
-              <select
-                id="role"
-                className="w-full bg-muted border border-border text-foreground rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
-              >
-                <option value="admin">Super Admin</option>
-                <option value="principal">Principal</option>
-                <option value="teacher">Teacher</option>
-                <option value="staff">Office Staff</option>
-                <option value="parent">Parent</option>
-              </select>
-            </div>
+            <VFSelect
+              label="Login as"
+              id="role"
+              defaultValue="admin"
+              options={[
+                { label: 'Super Admin', value: 'admin' },
+                { label: 'Principal', value: 'principal' },
+                { label: 'Teacher', value: 'teacher' },
+                { label: 'Office Staff', value: 'staff' },
+                { label: 'Parent', value: 'parent' },
+              ]}
+            />
 
             {/* Error */}
             {error && (

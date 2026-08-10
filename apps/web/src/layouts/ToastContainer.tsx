@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useGlobalStore } from '../stores/globalStore';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 

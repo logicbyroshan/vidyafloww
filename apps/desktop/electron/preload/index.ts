@@ -7,7 +7,7 @@
  * TODO: Expose contextBridge APIs as features are implemented.
  */
 
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge } from 'electron';
 
 // Expose safe Electron APIs to the renderer process
 contextBridge.exposeInMainWorld('electronAPI', {

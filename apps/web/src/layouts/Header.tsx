@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Search, Bell, Sparkles, Download } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useLocation } from '@tanstack/react-router';
