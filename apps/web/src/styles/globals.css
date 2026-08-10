@@ -90,8 +90,8 @@
 
 @layer base {
   html {
-    /* Fluid typography: 13px at 1000px viewport, 17px at 2000px */
-    font-size: clamp(13px, 0.4vw + 9px, 17px);
+    /* Sofia Sans has a small x-height — bump base scale up by ~2px across the range */
+    font-size: clamp(15px, 0.5vw + 10px, 19px);
   }
 
   * {

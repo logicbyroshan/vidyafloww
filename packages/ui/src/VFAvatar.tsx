@@ -30,8 +30,8 @@ export function VFAvatar({
     .slice(0, 2);
 
   const sizeClasses = {
-    sm: "h-6 w-6 text-[9px]",
-    md: "h-8 w-8 text-[10px]",
+    sm: "h-6 w-6 text-xs",
+    md: "h-8 w-8 text-xs",
     lg: "h-10 w-10 text-xs",
     xl: "h-14 w-14 text-base",
   }[size];

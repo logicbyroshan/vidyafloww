@@ -4,7 +4,7 @@ import { ChevronDown, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Check
 
 // Helper component for form labels
 export const VFFormLabel = ({ children, htmlFor, className, required }: { children: React.ReactNode; htmlFor?: string; className?: string; required?: boolean }) => (
-  <label htmlFor={htmlFor} className={cn("block text-[11px] font-semibold text-foreground uppercase tracking-wider mb-1 select-none", className)}>
+  <label htmlFor={htmlFor} className={cn("block text-sm font-semibold text-foreground uppercase tracking-wider mb-1 select-none", className)}>
     {children}
     {required && <span className="text-destructive ml-1">*</span>}
   </label>
@@ -51,7 +51,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "flex h-8 w-full rounded-md border border-border/60 bg-muted/40 px-3 py-1 text-[11px] text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
+              "flex h-8 w-full rounded-md border border-border/60 bg-muted/40 px-3 py-1 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
               leftIcon && "pl-9",
               rightIcon && "pr-9",
               error && "border-destructive focus-visible:ring-destructive",
@@ -93,7 +93,7 @@ export const VFTextarea = React.forwardRef<HTMLTextAreaElement, VFTextareaProps>
           id={inputId}
           ref={ref}
           className={cn(
-            "flex min-h-[56px] w-full rounded-md border border-border/60 bg-muted/40 px-3 py-2 text-[11px] text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
+            "flex min-h-[56px] w-full rounded-md border border-border/60 bg-muted/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
             error && "border-destructive focus-visible:ring-destructive",
             className
           )}
@@ -176,7 +176,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           disabled={disabled}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           className={cn(
-          "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-[11px] text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70",
+          "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-sm text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70",
             isOpen && "border-border bg-muted/60",
             error && "border-destructive",
             disabled && "opacity-50 cursor-not-allowed",
@@ -198,7 +198,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
                   key={opt.value}
                   onClick={() => handleSelect(opt)}
                   className={cn(
-                    "px-2.5 py-1.5 text-[11px] font-medium rounded-md cursor-pointer flex items-center justify-between transition-colors duration-100 select-none",
+                    "px-2.5 py-1.5 text-sm font-medium rounded-md cursor-pointer flex items-center justify-between transition-colors duration-100 select-none",
                     isSelected
                       ? "bg-primary/15 text-primary font-bold"
                       : "text-foreground/85 hover:bg-muted/80 hover:text-foreground",
@@ -373,7 +373,7 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
             {/* Days of Week Header */}
             <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
               {dayNames.map((d) => (
-                <div key={d} className="text-[10px] font-semibold text-muted-foreground uppercase py-0.5">
+                <div key={d} className="text-xs font-semibold text-muted-foreground uppercase py-0.5">
                   {d}
                 </div>
               ))}
@@ -416,7 +416,7 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
             </div>
 
             {/* Action Footer Buttons */}
-            <div className="flex items-center justify-between pt-2.5 mt-2.5 border-t border-border/50 text-[11px]">
+            <div className="flex items-center justify-between pt-2.5 mt-2.5 border-t border-border/50 text-sm">
               <button
                 type="button"
                 onClick={handleClear}
@@ -475,7 +475,7 @@ export const VFCheckbox = React.forwardRef<HTMLInputElement, VFCheckboxProps>(
             <label htmlFor={checkboxId} className="font-medium text-foreground cursor-pointer select-none">
               {label}
             </label>
-            {description && <p className="text-[11px] text-muted-foreground mt-0.5">{description}</p>}
+            {description && <p className="text-sm text-muted-foreground mt-0.5">{description}</p>}
           </div>
         </div>
         <VFFormError>{error}</VFFormError>
@@ -516,7 +516,7 @@ export const VFSwitch = React.forwardRef<HTMLInputElement, VFSwitchProps>(
             <label htmlFor={switchId} className="font-medium text-foreground cursor-pointer select-none">
               {label}
             </label>
-            {description && <p className="text-[11px] text-muted-foreground mt-0.5">{description}</p>}
+            {description && <p className="text-sm text-muted-foreground mt-0.5">{description}</p>}
           </div>
           <div className="relative inline-flex items-center">
             <input

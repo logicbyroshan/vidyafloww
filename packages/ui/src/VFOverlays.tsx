@@ -97,7 +97,7 @@ export function VFDialog({
           <div className="flex items-start justify-between p-4 border-b border-border/50">
             <div className="space-y-0.5">
               {title && <h2 className="text-sm font-black text-foreground leading-tight tracking-tight">{title}</h2>}
-              {description && <p className="text-[11px] text-muted-foreground">{description}</p>}
+              {description && <p className="text-sm text-muted-foreground">{description}</p>}
             </div>
             <button
               onClick={onClose}

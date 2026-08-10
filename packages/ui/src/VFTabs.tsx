@@ -68,7 +68,7 @@ export function VFTabs({
                   disabled={item.disabled}
                   onClick={() => handleTabClick(item.id, item.disabled)}
                   className={cn(
-                    "relative inline-flex items-center gap-1.5 text-[11px] font-bold py-2.5 px-0.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0 tracking-wide",
+                    "relative inline-flex items-center gap-1.5 text-sm font-bold py-2.5 px-0.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0 tracking-wide",
                     isActive
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
@@ -114,7 +114,7 @@ export function VFTabs({
               disabled={item.disabled}
               onClick={() => handleTabClick(item.id, item.disabled)}
               className={cn(
-                "relative inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wide py-2 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer",
+                "relative inline-flex items-center gap-1.5 text-sm font-bold tracking-wide py-2 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer",
                 variant === 'underline' && [
                   "text-muted-foreground hover:text-foreground",
                   isActive && "text-primary"

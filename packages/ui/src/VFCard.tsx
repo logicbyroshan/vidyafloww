@@ -31,7 +31,7 @@ export function VFCard({ className, title, description, action, hoverable = fals
               title
             )}
             {description && typeof description === 'string' ? (
-              <p className="text-[10px] text-muted-foreground leading-snug">{description}</p>
+              <p className="text-xs text-muted-foreground leading-snug">{description}</p>
             ) : (
               description
             )}
@@ -61,7 +61,7 @@ export function VFCardTitle({ className, children, ...props }: React.HTMLAttribu
 }
 
 export function VFCardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn("text-[10px] text-muted-foreground leading-snug", className)} {...props} />;
+  return <p className={cn("text-xs text-muted-foreground leading-snug", className)} {...props} />;
 }
 
 export function VFCardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

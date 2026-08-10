@@ -66,12 +66,12 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
               <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
                 Notifications
                 {unreadCount > 0 && (
-                  <span className="text-[10px] bg-primary text-primary-foreground font-bold px-1.5 py-0.2 rounded-full">
+                  <span className="text-xs bg-primary text-primary-foreground font-bold px-1.5 py-0.2 rounded-full">
                     {unreadCount}
                   </span>
                 )}
               </h3>
-              <p className="text-[11px] text-muted-foreground">Activity & system alerts</p>
+              <p className="text-sm text-muted-foreground">Activity & system alerts</p>
             </div>
           </div>
           <button
@@ -109,7 +109,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
               </div>
               <div>
                 <p className="text-xs font-semibold text-foreground">All caught up!</p>
-                <p className="text-[11px] text-muted-foreground mt-1">No pending notifications at this moment.</p>
+                <p className="text-sm text-muted-foreground mt-1">No pending notifications at this moment.</p>
               </div>
             </div>
           ) : (
@@ -144,7 +144,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
                         {notif.description}
                       </p>
                     )}
-                    <span className="text-[10px] text-muted-foreground/70 block pt-0.5">
+                    <span className="text-xs text-muted-foreground/70 block pt-0.5">
                       {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>

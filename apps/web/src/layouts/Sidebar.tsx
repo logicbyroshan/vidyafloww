@@ -95,7 +95,7 @@ export function Sidebar() {
               key={item.id}
               to={item.route}
               className={cn(
-                'flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-all text-[11px] font-medium outline-none',
+                'flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-all text-sm font-medium outline-none',
                 isActive
                   ? 'bg-primary/10 text-primary font-bold'
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -116,8 +116,8 @@ export function Sidebar() {
           <VFAvatar fallback="Roshan Singh" size="sm" />
           {sidebarExpanded && (
             <div className="flex-1 min-w-0 animate-fade-in">
-              <p className="text-[11px] font-bold text-foreground truncate leading-tight">Roshan Singh</p>
-              <p className="text-[9px] text-muted-foreground truncate mt-0.5 uppercase tracking-wider">Super Admin</p>
+              <p className="text-sm font-bold text-foreground truncate leading-tight">Roshan Singh</p>
+              <p className="text-xs text-muted-foreground truncate mt-0.5 uppercase tracking-wider">Super Admin</p>
             </div>
           )}
           {sidebarExpanded && (

@@ -38,9 +38,9 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
     <header className="h-11 border-b border-border/60 bg-card flex items-center justify-between px-4 sticky top-0 z-10">
       {/* Left: Breadcrumb */}
       <div className="flex items-center gap-1.5">
-        <span className="text-[11px] text-muted-foreground font-medium">VidyaMaxx</span>
-        <span className="text-[11px] text-muted-foreground/40">/</span>
-        <span className="text-[11px] font-bold text-foreground">{getPageTitle()}</span>
+        <span className="text-sm text-muted-foreground font-medium">VidyaMaxx</span>
+        <span className="text-sm text-muted-foreground/40">/</span>
+        <span className="text-sm font-bold text-foreground">{getPageTitle()}</span>
       </div>
 
       {/* Right: Actions */}
@@ -48,7 +48,7 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
         {/* Export */}
         <button
           onClick={() => {}}
-          className="hidden md:flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-1.5 rounded-md transition-colors"
+          className="hidden md:flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-1.5 rounded-md transition-colors"
           title="Export"
         >
           <Download className="h-3 w-3" />
@@ -58,11 +58,11 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
         {/* Search */}
         <button
           onClick={onSearchClick}
-          className="flex items-center gap-1.5 text-[11px] text-muted-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-1.5 rounded-md w-44 sm:w-52 transition-colors outline-none"
+          className="flex items-center gap-1.5 text-sm text-muted-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-1.5 rounded-md w-44 sm:w-52 transition-colors outline-none"
         >
           <Search className="h-3 w-3 shrink-0" />
-          <span className="flex-1 text-left truncate text-[10px]">Search anything...</span>
-          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-[9px] font-bold opacity-70 tracking-tight">
+          <span className="flex-1 text-left truncate text-xs">Search anything...</span>
+          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-xs font-bold opacity-70 tracking-tight">
             ⌘K
           </kbd>
         </button>
@@ -70,7 +70,7 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
         {/* Ask AI */}
         <button
           onClick={onOpenAiChat}
-          className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 border border-primary/25 px-2.5 py-1.5 rounded-md transition-all"
+          className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 border border-primary/25 px-2.5 py-1.5 rounded-md transition-all"
         >
           <Sparkles className="h-3 w-3" />
           <span>Ask AI</span>

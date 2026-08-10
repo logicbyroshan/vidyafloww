@@ -196,7 +196,7 @@ function AdmissionsPage() {
             <div key={i} className={`p-4 rounded-xl border ${s.color} space-y-2`}>
               <span className="font-bold text-foreground block">{s.stage}</span>
               <p className="text-2xl font-black text-foreground">{s.count} Leads</p>
-              <p className="text-[11px] text-muted-foreground">Auto-synced from CRM</p>
+              <p className="text-sm text-muted-foreground">Auto-synced from CRM</p>
             </div>
           ))}
         </div>
@@ -379,7 +379,7 @@ function AdmissionsPage() {
             <div className="space-y-5 overflow-y-auto custom-scrollbar">
               <div className="flex items-start justify-between border-b border-border pb-3">
                 <div>
-                  <span className="text-[10px] font-mono text-primary font-bold uppercase">{selectedApplicant.applicantId}</span>
+                  <span className="text-xs font-mono text-primary font-bold uppercase">{selectedApplicant.applicantId}</span>
                   <h3 className="font-bold text-foreground text-base">{selectedApplicant.name}</h3>
                   <p className="text-xs text-muted-foreground">{selectedApplicant.appliedGrade} • {selectedApplicant.previousSchool}</p>
                 </div>

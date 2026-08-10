@@ -69,7 +69,7 @@ export function VFSearchBar({
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full h-8 pl-8 pr-10 text-[11px] bg-transparent border-0 outline-none placeholder:text-muted-foreground/60 text-foreground"
+        className="w-full h-8 pl-8 pr-10 text-sm bg-transparent border-0 outline-none placeholder:text-muted-foreground/60 text-foreground"
         {...props}
       />
       <div className="absolute right-2.5 flex items-center gap-1">
@@ -85,7 +85,7 @@ export function VFSearchBar({
           </button>
         )}
         {showShortcut && !value && (
-          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-[9px] font-bold text-muted-foreground">
+          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-xs font-bold text-muted-foreground">
             /
           </kbd>
         )}

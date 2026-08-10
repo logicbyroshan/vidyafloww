@@ -41,7 +41,7 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "px-3 py-2.5 font-bold text-[10px] text-muted-foreground uppercase tracking-widest select-none whitespace-nowrap",
+        "px-3 py-2.5 font-bold text-xs text-muted-foreground uppercase tracking-widest select-none whitespace-nowrap",
         sticky && "sticky top-0 bg-card z-10",
         className
       )}
@@ -164,7 +164,7 @@ export function VFDataTable<T>({
           </VFButton>
           {showColumnDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-md shadow-lg z-20 p-2 space-y-1 animate-scale-in">
-              <span className="block text-[10px] font-bold text-muted-foreground uppercase px-2 py-1 select-none">
+              <span className="block text-xs font-bold text-muted-foreground uppercase px-2 py-1 select-none">
                 Toggle Columns
               </span>
               {columns.map((c) => (

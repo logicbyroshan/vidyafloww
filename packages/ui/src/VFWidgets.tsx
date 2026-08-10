@@ -62,7 +62,7 @@ export function VFFilterBar({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-1.5 py-1.5 text-[11px]",
+        "flex flex-wrap items-center gap-1.5 py-1.5 text-sm",
         className
       )}
       {...props}
@@ -72,13 +72,13 @@ export function VFFilterBar({
       {activeFilters.length > 0 && (
         <>
           <div className="h-3.5 w-px bg-border mx-0.5" />
-          <span className="text-muted-foreground font-bold uppercase tracking-wider text-[10px] select-none">Filters:</span>
+          <span className="text-muted-foreground font-bold uppercase tracking-wider text-xs select-none">Filters:</span>
           {activeFilters.map((filter) => (
             <span
               key={filter.key}
-              className="inline-flex items-center gap-1 bg-muted border border-border/60 text-foreground px-1.5 py-0.5 rounded font-medium text-[10px]"
+              className="inline-flex items-center gap-1 bg-muted border border-border/60 text-foreground px-1.5 py-0.5 rounded font-medium text-xs"
             >
-              <span className="text-muted-foreground font-bold uppercase text-[9px] tracking-widest">
+              <span className="text-muted-foreground font-bold uppercase text-xs tracking-widest">
                 {filter.label}:
               </span>
               <span>{filter.value}</span>
@@ -97,7 +97,7 @@ export function VFFilterBar({
             variant="ghost"
             size="sm"
             onClick={onClearAll}
-            className="text-[10px] h-6 px-1.5 font-bold text-muted-foreground hover:text-primary"
+            className="text-xs h-6 px-1.5 font-bold text-muted-foreground hover:text-primary"
           >
             Clear All
           </VFButton>

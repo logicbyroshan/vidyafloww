@@ -25,7 +25,7 @@ function ToastItem({ toast }: { toast: any }) {
       <div className="flex-1 space-y-0.5">
         <p className="text-xs font-bold text-foreground">{toast.title}</p>
         {toast.description && (
-          <p className="text-[11px] text-muted-foreground leading-relaxed">{toast.description}</p>
+          <p className="text-sm text-muted-foreground leading-relaxed">{toast.description}</p>
         )}
       </div>
       <button

@@ -146,10 +146,10 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                   </div>
                   <span className="flex-1 truncate font-medium">{cmd.label}</span>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[10px] font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded border border-border/60">
+                    <span className="text-xs font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded border border-border/60">
                       {cmd.shortcut}
                     </span>
-                    <VFBadge variant={isSelected ? 'primary' : 'outline'} className="text-[10px] px-2 py-0.5">
+                    <VFBadge variant={isSelected ? 'primary' : 'outline'} className="text-xs px-2 py-0.5">
                       {cmd.category}
                     </VFBadge>
                     <ArrowRight className={`h-3.5 w-3.5 transition-transform ${isSelected ? 'translate-x-0.5 text-primary' : 'opacity-0'}`} />
@@ -164,10 +164,10 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
         <div className="px-4 py-2.5 bg-muted/30 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold text-foreground">↑↓</kbd> Navigate
+              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-xs font-bold text-foreground">↑↓</kbd> Navigate
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold text-foreground">↵</kbd> Select
+              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-xs font-bold text-foreground">↵</kbd> Select
             </span>
           </div>
 

@@ -69,7 +69,7 @@ function TimetablePage() {
               { time: '11:30 - 12:15', mon: 'Social Studies', tue: 'Biology Lab', wed: 'Chemistry Lab', thu: 'Physics Lab', fri: 'Library Period' },
             ].map((slot, i) => (
               <React.Fragment key={i}>
-                <div className="p-2.5 rounded-lg bg-card border border-border/60 font-semibold text-muted-foreground flex items-center justify-center text-[11px]">
+                <div className="p-2.5 rounded-lg bg-card border border-border/60 font-semibold text-muted-foreground flex items-center justify-center text-sm">
                   <Clock className="h-3 w-3 mr-1 text-primary" /> {slot.time}
                 </div>
                 {[slot.mon, slot.tue, slot.wed, slot.thu, slot.fri].map((sub, idx) => (

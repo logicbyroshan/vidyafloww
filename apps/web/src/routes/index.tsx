@@ -119,7 +119,7 @@ function DashboardPage() {
               <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" /> Recommended Actions
               </h2>
-              <span className="text-[10px] bg-primary/15 text-primary px-2 py-0.5 rounded-md font-bold">3 Ready</span>
+              <span className="text-xs bg-primary/15 text-primary px-2 py-0.5 rounded-md font-bold">3 Ready</span>
             </div>
 
             <div className="space-y-2.5">
@@ -130,7 +130,7 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Review Fee Defaulters (14)</p>
-                    <span className="text-[9px] bg-primary/15 text-primary px-1.5 py-0.2 rounded font-semibold">AI Badge</span>
+                    <span className="text-xs bg-primary/15 text-primary px-1.5 py-0.2 rounded font-semibold">AI Badge</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Auto WhatsApp reminders prepared</p>
                 </div>
@@ -144,7 +144,7 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Absence Alert (Priya Patel)</p>
-                    <span className="text-[9px] bg-warning/15 text-warning px-1.5 py-0.2 rounded font-semibold">AI Flag</span>
+                    <span className="text-xs bg-warning/15 text-warning px-1.5 py-0.2 rounded font-semibold">AI Flag</span>
                   </div>
                   <p className="text-xs text-muted-foreground">3 consecutive absences flagged</p>
                 </div>
@@ -158,7 +158,7 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Staff Absence Substitute</p>
-                    <span className="text-[9px] bg-success/15 text-success px-1.5 py-0.2 rounded font-semibold">AI Match</span>
+                    <span className="text-xs bg-success/15 text-success px-1.5 py-0.2 rounded font-semibold">AI Match</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Mr. Verma matched (Free Period 3)</p>
                 </div>
@@ -298,7 +298,7 @@ function DashboardPage() {
               <div key={i} className="flex items-center justify-between p-3 bg-muted/40 rounded-lg border border-border/60">
                 <div>
                   <p className="font-bold text-foreground">{p.class}</p>
-                  <p className="text-[11px] text-muted-foreground">{p.period} · {p.topic}</p>
+                  <p className="text-sm text-muted-foreground">{p.period} · {p.topic}</p>
                 </div>
                 <VFBadge variant={p.status === 'Completed' ? 'success' : p.status === 'In Progress' ? 'warning' : 'outline'}>{p.status}</VFBadge>
               </div>
@@ -311,14 +311,14 @@ function DashboardPage() {
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
               <div>
                 <p className="font-bold text-foreground">Class 10-A Physics Term Assignment</p>
-                <p className="text-muted-foreground text-[11px]">38 of 40 Submissions Received</p>
+                <p className="text-muted-foreground text-sm">38 of 40 Submissions Received</p>
               </div>
               <VFButton size="sm" variant="outline">Grade Papers</VFButton>
             </div>
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
               <div>
                 <p className="font-bold text-foreground">Class 12-Sci Optics Numerical Quiz</p>
-                <p className="text-muted-foreground text-[11px]">Auto-graded by AI Engine (Avg: 84%)</p>
+                <p className="text-muted-foreground text-sm">Auto-graded by AI Engine (Avg: 84%)</p>
               </div>
               <VFButton size="sm" variant="outline">View Results</VFButton>
             </div>
@@ -337,22 +337,22 @@ function DashboardPage() {
           <div className="p-4 bg-muted/40 rounded-xl border border-border/60 text-center">
             <span className="text-muted-foreground">Attendance Gauge</span>
             <p className="text-2xl font-black text-success mt-1">98.2%</p>
-            <p className="text-[11px] text-muted-foreground mt-1">1 Present Days Missed</p>
+            <p className="text-sm text-muted-foreground mt-1">1 Present Days Missed</p>
           </div>
           <div className="p-4 bg-muted/40 rounded-xl border border-border/60 text-center">
             <span className="text-muted-foreground">Current Academic Rank</span>
             <p className="text-2xl font-black text-primary mt-1">Rank #3</p>
-            <p className="text-[11px] text-muted-foreground mt-1">GPA 3.92 / 4.0</p>
+            <p className="text-sm text-muted-foreground mt-1">GPA 3.92 / 4.0</p>
           </div>
           <div className="p-4 bg-muted/40 rounded-xl border border-border/60 text-center">
             <span className="text-muted-foreground">Fee Clearance</span>
             <p className="text-2xl font-black text-foreground mt-1">₹0 Due</p>
-            <p className="text-[11px] text-success font-semibold mt-1">Term 1 Receipt Paid</p>
+            <p className="text-sm text-success font-semibold mt-1">Term 1 Receipt Paid</p>
           </div>
           <div className="p-4 bg-muted/40 rounded-xl border border-border/60 text-center">
             <span className="text-muted-foreground">Library Books Issued</span>
             <p className="text-2xl font-black text-foreground mt-1">2 Books</p>
-            <p className="text-[11px] text-muted-foreground mt-1">Due in 5 Days</p>
+            <p className="text-sm text-muted-foreground mt-1">Due in 5 Days</p>
           </div>
         </div>
       </VFCard>
