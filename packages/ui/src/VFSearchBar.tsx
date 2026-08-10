@@ -55,7 +55,7 @@ export function VFSearchBar({
   };
 
   return (
-    <div className={cn("relative flex items-center w-full max-w-sm rounded-md border border-input bg-background shadow-sm hover:border-border/80 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 transition-all duration-200", className)}>
+    <div className={cn("relative flex items-center w-full max-w-sm rounded-lg border border-border bg-card shadow-xs hover:border-border/80 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all duration-200", className)}>
       <div className="absolute left-3 text-muted-foreground pointer-events-none">
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -67,7 +67,7 @@ export function VFSearchBar({
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full h-10 pl-9 pr-12 text-sm bg-transparent border-0 outline-none placeholder:text-muted-foreground"
+        className="w-full h-9 pl-9 pr-12 text-xs bg-transparent border-0 outline-none placeholder:text-muted-foreground"
         {...props}
       />
       <div className="absolute right-3 flex items-center gap-1.5">
@@ -83,7 +83,7 @@ export function VFSearchBar({
           </button>
         )}
         {showShortcut && !value && (
-          <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-border/80 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+          <kbd className="hidden sm:inline-flex h-4.5 select-none items-center gap-0.5 rounded border border-border/80 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             /
           </kbd>
         )}

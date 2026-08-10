@@ -36,21 +36,19 @@ export function VFAvatar({
     xl: "h-20 w-20 text-xl",
   }[size];
 
-  // Derive a pleasant background color based on name/initials so that avatars don't all look identical
   const getBackgroundColor = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     const h = Math.abs(hash % 360);
-    // Use low saturation/high lightness for soft, modern colors
     return `hsl(${h}, 70%, 40%)`;
   };
 
   return (
     <div
       className={cn(
-        "relative flex shrink-0 overflow-hidden rounded-full border border-border/80 select-none bg-muted items-center justify-center font-semibold text-white",
+        "relative flex shrink-0 overflow-hidden rounded-lg border border-border/80 select-none bg-muted items-center justify-center font-semibold text-white",
         sizeClasses,
         className
       )}

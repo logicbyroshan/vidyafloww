@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from './utils';
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 select-none",
+  "inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none select-none",
   {
     variants: {
       variant: {
@@ -67,7 +67,7 @@ export function VFStatusChip({ status, label, className, ...props }: VFStatusChi
       )}
       {...props}
     >
-      <span className={cn("h-1.5 w-1.5 rounded-full", dotStyles)} />
+      <span className={cn("h-1.5 w-1.5 rounded-sm", dotStyles)} />
       {label}
     </span>
   );

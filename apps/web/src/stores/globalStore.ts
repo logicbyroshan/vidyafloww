@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type Theme = 'light' | 'dark' | 'system';
+// Theme is permanently dark — no light/system mode
+export type Theme = 'dark';
 
 export interface Notification {
   id: string;
@@ -13,15 +14,18 @@ export interface Notification {
 }
 
 interface GlobalState {
-  // Theme
+  // Theme (always dark)
   theme: Theme;
-  setTheme: (theme: Theme) => void;
-  
+
   // Sidebar
   sidebarExpanded: boolean;
   toggleSidebar: () => void;
   setSidebarExpanded: (expanded: boolean) => void;
-  
+
+  // First-visit preloader flag
+  hasSeenPreloader: boolean;
+  setHasSeenPreloader: () => void;
+
   // Notifications
   notifications: Notification[];
   addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
@@ -34,65 +38,60 @@ interface GlobalState {
 export const useGlobalStore = create<GlobalState>()(
   persist(
     (set) => ({
-      // Theme state
-      theme: 'system',
-      setTheme: (theme) => {
-        set({ theme });
-        if (theme === 'system') {
-          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          document.documentElement.classList.remove('light', 'dark');
-          document.documentElement.classList.add(systemTheme);
-        } else {
-          document.documentElement.classList.remove('light', 'dark');
-          document.documentElement.classList.add(theme);
-        }
-      },
-      
+      // Always dark
+      theme: 'dark',
+
       // Sidebar state
       sidebarExpanded: true,
       toggleSidebar: () => set((state) => ({ sidebarExpanded: !state.sidebarExpanded })),
       setSidebarExpanded: (sidebarExpanded) => set({ sidebarExpanded }),
-      
+
+      // Preloader: false = not yet seen (show it); true = already seen
+      hasSeenPreloader: false,
+      setHasSeenPreloader: () => set({ hasSeenPreloader: true }),
+
       // Notifications state
       notifications: [],
-      addNotification: (notif) => set((state) => ({
-        notifications: [
-          {
-            ...notif,
-            id: Math.random().toString(36).substring(2, 9),
-            read: false,
-            createdAt: Date.now(),
-          },
-          ...state.notifications,
-        ].slice(0, 50), // Keep max 50 notifications
-      })),
-      markNotificationRead: (id) => set((state) => ({
-        notifications: state.notifications.map((n) => 
-          n.id === id ? { ...n, read: true } : n
-        )
-      })),
-      markAllNotificationsRead: () => set((state) => ({
-        notifications: state.notifications.map((n) => ({ ...n, read: true }))
-      })),
-      removeNotification: (id) => set((state) => ({
-        notifications: state.notifications.filter((n) => n.id !== id)
-      })),
+      addNotification: (notif) =>
+        set((state) => ({
+          notifications: [
+            {
+              ...notif,
+              id: Math.random().toString(36).substring(2, 9),
+              read: false,
+              createdAt: Date.now(),
+            },
+            ...state.notifications,
+          ].slice(0, 50),
+        })),
+      markNotificationRead: (id) =>
+        set((state) => ({
+          notifications: state.notifications.map((n) =>
+            n.id === id ? { ...n, read: true } : n
+          ),
+        })),
+      markAllNotificationsRead: () =>
+        set((state) => ({
+          notifications: state.notifications.map((n) => ({ ...n, read: true })),
+        })),
+      removeNotification: (id) =>
+        set((state) => ({
+          notifications: state.notifications.filter((n) => n.id !== id),
+        })),
       clearNotifications: () => set({ notifications: [] }),
     }),
     {
       name: 'vidyamaxx-global-storage',
-      partialize: (state) => ({ theme: state.theme, sidebarExpanded: state.sidebarExpanded }),
+      partialize: (state) => ({
+        sidebarExpanded: state.sidebarExpanded,
+        hasSeenPreloader: state.hasSeenPreloader,
+      }),
     }
   )
 );
 
-// Initialize theme on load
+// Force dark mode on every load — no toggle needed
 export const initTheme = () => {
-  const state = useGlobalStore.getState();
-  if (state.theme === 'system') {
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.classList.add(systemTheme);
-  } else {
-    document.documentElement.classList.add(state.theme);
-  }
+  document.documentElement.classList.remove('light', 'system');
+  document.documentElement.classList.add('dark');
 };

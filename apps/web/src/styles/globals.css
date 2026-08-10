@@ -89,6 +89,11 @@
 }
 
 @layer base {
+  html {
+    /* Fluid typography scaling clamped from 1000px (14px) to 1920px (18.5px) */
+    font-size: clamp(14px, 0.5vw + 9px, 18.5px);
+  }
+
   * {
     @apply border-border outline-none;
   }

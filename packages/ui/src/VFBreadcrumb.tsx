@@ -7,7 +7,7 @@ export interface BreadcrumbItem {
   onClick?: () => void;
 }
 
-export interface VFBreadcrumbProps extends React.HTMLAttributes<HTMLNavElement> {
+export interface VFBreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
   items: BreadcrumbItem[];
   separator?: React.ReactNode;
 }

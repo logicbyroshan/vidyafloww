@@ -143,7 +143,7 @@ export function VFDataTable<T>({
               value={filterText}
               onChange={handleFilter}
               placeholder={filterPlaceholder || "Filter records..."}
-              className="w-full pl-9 pr-4 h-10 border border-input rounded-md bg-background text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-all"
+              className="w-full pl-9 pr-4 h-9 border border-border rounded-lg bg-card text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all shadow-xs"
             />
           </div>
         )}

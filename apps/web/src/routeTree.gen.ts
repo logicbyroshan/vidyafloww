@@ -13,6 +13,7 @@ import { Route as TransportRouteImport } from './routes/transport'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as HrRouteImport } from './routes/hr'
 import { Route as HostelRouteImport } from './routes/hostel'
@@ -44,6 +45,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -120,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/library': typeof LibraryRoute
+  '/login': typeof LoginRoute
   '/reports': typeof ReportsRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
@@ -177,6 +186,7 @@ export interface FileRouteTypes {
     | '/hostel'
     | '/hr'
     | '/library'
+    | '/login'
     | '/reports'
     | '/settings'
     | '/students'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/hostel'
     | '/hr'
     | '/library'
+    | '/login'
     | '/reports'
     | '/settings'
     | '/students'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
     | '/hostel'
     | '/hr'
     | '/library'
+    | '/login'
     | '/reports'
     | '/settings'
     | '/students'
@@ -232,6 +244,7 @@ export interface RootRouteChildren {
   HostelRoute: typeof HostelRoute
   HrRoute: typeof HrRoute
   LibraryRoute: typeof LibraryRoute
+  LoginRoute: typeof LoginRoute
   ReportsRoute: typeof ReportsRoute
   SettingsRoute: typeof SettingsRoute
   StudentsRoute: typeof StudentsRoute
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -368,6 +388,7 @@ const rootRouteChildren: RootRouteChildren = {
   HostelRoute: HostelRoute,
   HrRoute: HrRoute,
   LibraryRoute: LibraryRoute,
+  LoginRoute: LoginRoute,
   ReportsRoute: ReportsRoute,
   SettingsRoute: SettingsRoute,
   StudentsRoute: StudentsRoute,
