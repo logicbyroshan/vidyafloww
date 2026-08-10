@@ -104,10 +104,10 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
-  /* Custom subtle scrollbar */
+  /* Custom subtle scrollbar with less border radius */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
   
   ::-webkit-scrollbar-track {
@@ -115,7 +115,7 @@
   }
   
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/35 transition-colors;
+    @apply bg-muted-foreground/25 rounded-[2px] hover:bg-primary/50 transition-colors;
   }
 }
 

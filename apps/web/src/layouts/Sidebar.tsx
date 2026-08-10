@@ -58,34 +58,34 @@ export function Sidebar() {
     <aside
       className={cn(
         'flex flex-col h-full bg-card border-r border-border transition-all duration-300 relative z-20 shrink-0',
-        sidebarExpanded ? 'w-60' : 'w-16'
+        sidebarExpanded ? 'w-52' : 'w-14'
       )}
     >
       {/* Sidebar Header & Brand Logo */}
-      <div className="flex h-16 items-center px-4 border-b border-border relative">
+      <div className="flex h-14 items-center px-3.5 border-b border-border relative">
         {sidebarExpanded ? (
-          <div className="flex items-center gap-2.5 font-black text-lg text-foreground tracking-tight w-full animate-fade-in">
-            <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain shrink-0 drop-shadow-xs" />
+          <div className="flex items-center gap-2 font-black text-base text-foreground tracking-tight w-full animate-fade-in">
+            <img src="/logo.png" alt="VidyaMaxx Logo" className="h-7 w-7 object-contain shrink-0 drop-shadow-xs" />
             <span>
               Vidya<span className="text-primary">Maxx</span>
             </span>
           </div>
         ) : (
-          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain shrink-0 mx-auto animate-scale-in drop-shadow-xs" />
+          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-7 w-7 object-contain shrink-0 mx-auto animate-scale-in drop-shadow-xs" />
         )}
 
         {/* Sidebar Toggle Button: 50% on sidebar, 50% on header/navbar edge */}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted shadow-sm flex items-center justify-center z-30 transition-all cursor-pointer"
+          className="absolute -right-2.5 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted shadow-xs flex items-center justify-center z-30 transition-all cursor-pointer"
           title={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         >
-          {sidebarExpanded ? <ChevronLeft className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
+          {sidebarExpanded ? <ChevronLeft className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
         </button>
       </div>
 
       {/* Nav List */}
-      <div className="flex-1 overflow-y-auto py-3 px-2.5 flex flex-col gap-1 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto py-2.5 px-2 flex flex-col gap-0.5 custom-scrollbar">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive =
@@ -97,7 +97,7 @@ export function Sidebar() {
               key={item.id}
               to={item.route}
               className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-xs font-medium outline-none',
+                'flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition-all text-[11.5px] font-medium outline-none',
                 isActive
                   ? 'bg-primary/10 text-primary font-semibold'
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground',
@@ -105,7 +105,7 @@ export function Sidebar() {
               )}
               title={!sidebarExpanded ? item.label : undefined}
             >
-              <Icon className={cn('h-4 w-4 shrink-0', isActive && 'text-primary')} />
+              <Icon className={cn('h-3.5 w-3.5 shrink-0', isActive && 'text-primary')} />
               {sidebarExpanded && <span className="animate-fade-in truncate">{item.label}</span>}
             </Link>
           );

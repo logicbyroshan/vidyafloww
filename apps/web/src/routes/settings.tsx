@@ -27,7 +27,7 @@ function SettingsPage() {
   const submoduleTabs = [
     {
       id: 'school-org',
-      label: 'School & Organization',
+      label: 'Organization',
       icon: <Building className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
@@ -44,7 +44,7 @@ function SettingsPage() {
     },
     {
       id: 'academic-sessions',
-      label: 'Academic Sessions',
+      label: 'Sessions',
       icon: <Calendar className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Academic Years, Session Rollover & Locking">
@@ -58,7 +58,7 @@ function SettingsPage() {
     },
     {
       id: 'classes-sections',
-      label: 'Classes & Sections',
+      label: 'Classes',
       icon: <Settings className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Class Definition & Section Allocation">
@@ -68,7 +68,7 @@ function SettingsPage() {
     },
     {
       id: 'dept-structure',
-      label: 'Departments & Wings',
+      label: 'Departments',
       icon: <Layers className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Organizational Departments, Wings & Houses">
@@ -78,7 +78,7 @@ function SettingsPage() {
     },
     {
       id: 'academic-calendar',
-      label: 'Academic Calendar',
+      label: 'Calendar',
       icon: <CalendarCheck className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="School Calendar, Holidays & Working Days">
@@ -88,7 +88,7 @@ function SettingsPage() {
     },
     {
       id: 'roles-permissions',
-      label: 'Roles & Permissions',
+      label: 'Roles & RBAC',
       icon: <ShieldCheck className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Role-Based Access Control (RBAC)">
@@ -98,7 +98,7 @@ function SettingsPage() {
     },
     {
       id: 'approval-workflows',
-      label: 'Approval Workflows',
+      label: 'Approvals',
       icon: <CheckCircle2 className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Multi-Level Approval Rules & Escalation">
@@ -108,7 +108,7 @@ function SettingsPage() {
     },
     {
       id: 'school-config',
-      label: 'School Config & Audit Logs',
+      label: 'System & Logs',
       icon: <History className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="System Configuration, Custom Fields & Audit Trails">
