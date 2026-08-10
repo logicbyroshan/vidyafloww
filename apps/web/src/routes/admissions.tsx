@@ -9,6 +9,7 @@ import {
   VFInput,
   VFSelect,
   VFDatePicker,
+  VFTabs,
 } from '@vidyamaxx/ui';
 import {
   UserSquare,
@@ -621,13 +622,26 @@ function AdmissionsPage() {
       {/* Top Header Actions */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-foreground tracking-tight">Admissions Management</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">Streamlined applicant screening and document OCR verification.</p>
+          <h1 className="text-xl font-bold text-foreground tracking-tight">02 — Admissions & Enrollment</h1>
+          <p className="text-xs text-muted-foreground mt-0.5">Streamlined applicant screening, parent enquiries, entrance tests, and OCR document verification.</p>
         </div>
         <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
           New Admission Application
         </VFButton>
       </div>
+
+      {/* Admissions Submodule Tab Bar */}
+      <VFTabs 
+        items={[
+          { id: 'applications', label: 'Applications Queue', icon: <UserSquare className="h-3.5 w-3.5" />, content: null },
+          { id: 'enquiries', label: 'Parent Enquiries & Leads', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: null },
+          { id: 'ocr-verify', label: 'OCR Document Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: null },
+          { id: 'merit-list', label: 'Entrance Tests & Merit List', icon: <Sparkles className="h-3.5 w-3.5" />, content: null },
+          { id: 'scholar-no', label: 'Scholar No. & Allocator', icon: <Plus className="h-3.5 w-3.5" />, content: null },
+        ]}
+        defaultTabId="applications"
+        variant="underline"
+      />
 
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

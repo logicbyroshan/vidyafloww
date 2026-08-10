@@ -6,6 +6,7 @@ import {
   VFStatCard,
   VFDataTable,
   VFBadge,
+  VFTabs,
 } from '@vidyamaxx/ui';
 import {
   Users,
@@ -125,6 +126,28 @@ function DashboardPage() {
 
   return (
     <VFPageContainer className="p-6 max-w-full space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-foreground tracking-tight">19 — Institutional Command Center & Dashboard</h1>
+          <p className="text-xs text-muted-foreground mt-0.5">Real-time school health analytics, attendance radar, and AI operational insights.</p>
+        </div>
+        <VFBadge variant="success">All Systems Operational</VFBadge>
+      </div>
+
+      {/* Submodule Tab Bar */}
+      <VFTabs
+        items={[
+          { id: 'overview', label: 'System Overview', icon: <Users className="h-3.5 w-3.5" />, content: null },
+          { id: 'principal-health', label: 'Principal Health Tree', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: null },
+          { id: 'teacher-dash', label: 'Teacher Class View', icon: <GraduationCap className="h-3.5 w-3.5" />, content: null },
+          { id: 'finance-analytics', label: 'Revenue Analytics', icon: <ArrowUpRight className="h-3.5 w-3.5" />, content: null },
+          { id: 'ai-executive', label: 'AI Executive Command', icon: <Sparkles className="h-3.5 w-3.5 text-primary" />, content: null },
+        ]}
+        defaultTabId="overview"
+        variant="underline"
+      />
+
       {/* Toast Notice */}
       {selectedNotice && (
         <div className="p-4 bg-primary/10 border border-primary/25 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in shadow-xs">
