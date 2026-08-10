@@ -30,10 +30,10 @@ export function VFStatCard({
       )}
       {...props}
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
+      <div className="flex items-start justify-between gap-2 mb-2.5">
         <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-snug">{title}</span>
         {icon && (
-          <div className="h-8 w-8 rounded-md bg-primary/8 text-primary/80 flex items-center justify-center border border-primary/15 shrink-0 group-hover:bg-primary/12 transition-colors">
+          <div className="h-9 w-9 rounded-md bg-primary/8 text-primary/80 flex items-center justify-center border border-primary/15 shrink-0 group-hover:bg-primary/12 transition-colors">
             {icon}
           </div>
         )}
@@ -43,7 +43,7 @@ export function VFStatCard({
         {isLoading ? (
           <div className="h-7 w-20 bg-muted-foreground/12 animate-pulse rounded" />
         ) : (
-          <div className="text-xl font-black tracking-tight text-foreground leading-none">{value}</div>
+          <div className="text-2xl font-black tracking-tight text-foreground leading-none">{value}</div>
         )}
         
         {!isLoading && (trend || description) && (

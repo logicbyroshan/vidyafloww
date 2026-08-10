@@ -90,8 +90,8 @@
 
 @layer base {
   html {
-    /* Sofia Sans has a small x-height — bump base scale up by ~2px across the range */
-    font-size: clamp(15px, 0.5vw + 10px, 19px);
+    /* Sofia Sans base scale - fluid from 1000px (15px) to 2000px (18px) */
+    font-size: clamp(15px, 0.3vw + 12px, 18px);
   }
 
   * {
@@ -100,10 +100,13 @@
   
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300;
-    font-feature-settings: "rlig" 1, "calt" 1;
     font-family: 'Sofia Sans', system-ui, -apple-system, sans-serif;
-    letter-spacing: 0.02em;
-    font-feature-settings: "kern" 1, "liga" 1;
+    font-feature-settings: "kern" 1, "liga" 1, "rlig" 1;
+    letter-spacing: 0.015em;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   /* Custom subtle scrollbar with less border radius */
