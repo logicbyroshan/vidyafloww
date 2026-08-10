@@ -41,7 +41,7 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "p-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider select-none",
+        "p-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
         sticky && "sticky top-0 bg-card z-10 shadow-[0_1px_0_0_rgba(0,0,0,0.1)]",
         className
       )}
@@ -51,7 +51,7 @@ export function VFTableHeaderCell({
 }
 
 export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("p-4 align-middle text-foreground/90", className)} {...props} />;
+  return <td className={cn("p-4 align-middle text-foreground/90 whitespace-nowrap text-xs", className)} {...props} />;
 }
 
 // VFDataTable: high-level data table component

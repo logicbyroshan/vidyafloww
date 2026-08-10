@@ -90,8 +90,8 @@
 
 @layer base {
   html {
-    /* Fluid typography scaling clamped from 1000px (14px) to 1920px (18.5px) */
-    font-size: clamp(14px, 0.5vw + 9px, 18.5px);
+    /* Fluid typography scaling clamped from 1000px (14px) to 2000px (19px) */
+    font-size: clamp(14px, 0.5vw + 9px, 19px);
   }
 
   * {
@@ -116,6 +116,17 @@
   
   ::-webkit-scrollbar-thumb {
     @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/35 transition-colors;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for clean tab bars */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

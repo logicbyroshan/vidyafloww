@@ -11,11 +11,11 @@ export function VFPage({ className, ...props }: React.HTMLAttributes<HTMLDivElem
   );
 }
 
-// VFPageContainer: full width container shell for top tab bar pages
+// VFPageContainer: full width container shell for top tab bar pages (clamped 1000px to 2000px)
 export function VFPageContainer({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex-1 flex flex-col w-full max-w-full min-h-0 bg-background animate-fade-in", className)}
+      className={cn("flex-1 flex flex-col w-full max-w-[2000px] min-w-[1000px] mx-auto min-h-0 bg-background animate-fade-in", className)}
       {...props}
     />
   );

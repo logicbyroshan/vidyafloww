@@ -241,7 +241,7 @@ function AdmissionsPage() {
       header: 'Grade',
       accessorKey: 'appliedGrade',
       cell: (row: Applicant) => (
-        <span className="text-xs px-2.5 py-0.5 bg-muted rounded border border-border font-medium">
+        <span className="text-xs px-2.5 py-1 bg-muted/60 rounded-md border border-border/80 font-medium whitespace-nowrap inline-flex items-center">
           {row.appliedGrade}
         </span>
       ),
@@ -250,7 +250,7 @@ function AdmissionsPage() {
       header: 'AI Fit Score',
       accessorKey: 'aiFitScore',
       cell: (row: Applicant) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 whitespace-nowrap">
           <div className="w-16 h-1.5 bg-muted rounded-md overflow-hidden border border-border">
             <div
               className={`h-full rounded-md ${
@@ -272,7 +272,7 @@ function AdmissionsPage() {
       accessorKey: 'ocrDocStatus',
       cell: (row: Applicant) => (
         <span
-          className={`text-[11px] px-2.5 py-0.5 rounded font-medium inline-flex items-center gap-1 ${
+          className={`text-[11px] px-2.5 py-1 rounded-md font-semibold inline-flex items-center gap-1.5 whitespace-nowrap ${
             row.ocrDocStatus === 'Verified'
               ? 'bg-success/15 text-success border border-success/30'
               : row.ocrDocStatus === 'Pending'
@@ -280,7 +280,7 @@ function AdmissionsPage() {
               : 'bg-destructive/15 text-destructive border border-destructive/30'
           }`}
         >
-          {row.ocrDocStatus === 'Verified' ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+          {row.ocrDocStatus === 'Verified' ? <CheckCircle2 className="h-3 w-3 shrink-0" /> : <Clock className="h-3 w-3 shrink-0" />}
           {row.ocrDocStatus}
         </span>
       ),
@@ -290,7 +290,7 @@ function AdmissionsPage() {
       accessorKey: 'aiRecommendation',
       cell: (row: Applicant) => (
         <span
-          className={`text-[11px] px-2.5 py-0.5 rounded font-semibold inline-flex items-center gap-1 ${
+          className={`text-[11px] px-2.5 py-1 rounded-md font-bold inline-flex items-center gap-1.5 whitespace-nowrap ${
             row.aiRecommendation === 'Instant Admit'
               ? 'bg-primary/15 text-primary border border-primary/30'
               : row.aiRecommendation === 'Schedule Interview'
@@ -298,21 +298,24 @@ function AdmissionsPage() {
               : 'bg-muted text-muted-foreground border border-border'
           }`}
         >
-          <Sparkles className="h-3 w-3" />
+          <Sparkles className="h-3 w-3 shrink-0" />
           {row.aiRecommendation}
         </span>
       ),
     },
     {
       header: 'Action',
-      accessorKey: 'id',
+      accessorKey: 'action',
       cell: (row: Applicant) => (
-        <button
+        <VFButton
+          size="sm"
+          variant="outline"
           onClick={() => setSelectedApplicant(row)}
-          className="text-[11px] bg-muted hover:bg-primary/20 text-foreground hover:text-primary px-3 py-1 rounded-lg border border-border hover:border-primary/40 transition-all flex items-center gap-1 font-medium"
+          leftIcon={<Eye className="h-3.5 w-3.5" />}
+          className="whitespace-nowrap font-medium"
         >
-          <Eye className="h-3.5 w-3.5" /> Inspect Report
-        </button>
+          Inspect Report
+        </VFButton>
       ),
     },
   ];
