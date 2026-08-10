@@ -30,10 +30,10 @@ export function VFAvatar({
     .slice(0, 2);
 
   const sizeClasses = {
-    sm: "h-8 w-8 text-xs",
-    md: "h-10 w-10 text-sm",
-    lg: "h-14 w-14 text-base",
-    xl: "h-20 w-20 text-xl",
+    sm: "h-6 w-6 text-[9px]",
+    md: "h-8 w-8 text-[10px]",
+    lg: "h-10 w-10 text-xs",
+    xl: "h-14 w-14 text-base",
   }[size];
 
   const getBackgroundColor = (str: string) => {
@@ -48,7 +48,7 @@ export function VFAvatar({
   return (
     <div
       className={cn(
-        "relative flex shrink-0 overflow-hidden rounded-lg border border-border/80 select-none bg-muted items-center justify-center font-semibold text-white",
+        "relative flex shrink-0 overflow-hidden rounded-md border border-border/60 select-none bg-muted items-center justify-center font-bold text-white",
         sizeClasses,
         className
       )}

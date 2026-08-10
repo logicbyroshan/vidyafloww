@@ -18,17 +18,17 @@ export function VFToolbar({
   return (
     <div
       className={cn(
-        "flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border border-border/80 rounded-lg bg-card/50",
+        "flex flex-col md:flex-row md:items-center justify-between gap-2.5 px-3 py-2.5 border border-border/60 rounded-md bg-card/60",
         className
       )}
       {...props}
     >
-      <div className="flex flex-1 flex-wrap items-center gap-3">
+      <div className="flex flex-1 flex-wrap items-center gap-2">
         {searchField}
         {children}
       </div>
       {actions && (
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-wrap">
           {actions}
         </div>
       )}
@@ -62,43 +62,42 @@ export function VFFilterBar({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-2 py-2 text-xs",
+        "flex flex-wrap items-center gap-1.5 py-1.5 text-[11px]",
         className
       )}
       {...props}
     >
-      {/* Custom filter dropdown selectors pass-through */}
-      {children && <div className="flex items-center gap-2 flex-wrap">{children}</div>}
+      {children && <div className="flex items-center gap-1.5 flex-wrap">{children}</div>}
 
       {activeFilters.length > 0 && (
         <>
-          <div className="h-4 w-[1px] bg-border mx-1" />
-          <span className="text-muted-foreground font-medium select-none">Active Filters:</span>
+          <div className="h-3.5 w-px bg-border mx-0.5" />
+          <span className="text-muted-foreground font-bold uppercase tracking-wider text-[10px] select-none">Filters:</span>
           {activeFilters.map((filter) => (
             <span
               key={filter.key}
-              className="inline-flex items-center gap-1 bg-muted border border-border text-foreground px-2 py-0.5 rounded-md font-medium"
+              className="inline-flex items-center gap-1 bg-muted border border-border/60 text-foreground px-1.5 py-0.5 rounded font-medium text-[10px]"
             >
-              <span className="text-muted-foreground font-semibold uppercase text-[10px] tracking-wider">
+              <span className="text-muted-foreground font-bold uppercase text-[9px] tracking-widest">
                 {filter.label}:
               </span>
               <span>{filter.value}</span>
               <button
                 type="button"
                 onClick={() => onRemoveFilter(filter.key)}
-                className="text-muted-foreground hover:text-foreground hover:bg-muted-foreground/10 rounded p-0.5 transition-colors"
+                className="text-muted-foreground hover:text-foreground p-0.5 rounded transition-colors"
               >
-                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-2.5 w-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </span>
           ))}
           <VFButton
-            variant="link"
+            variant="ghost"
             size="sm"
             onClick={onClearAll}
-            className="text-xs h-auto py-1 font-medium hover:text-primary"
+            className="text-[10px] h-6 px-1.5 font-bold text-muted-foreground hover:text-primary"
           >
             Clear All
           </VFButton>

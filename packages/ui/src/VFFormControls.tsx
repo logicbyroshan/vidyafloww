@@ -51,7 +51,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "flex h-9 w-full rounded-lg border border-border/70 bg-muted/40 px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150 shadow-xs",
+              "flex h-8 w-full rounded-md border border-border/60 bg-muted/40 px-3 py-1 text-[11px] text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
               leftIcon && "pl-9",
               rightIcon && "pr-9",
               error && "border-destructive focus-visible:ring-destructive",
@@ -93,7 +93,7 @@ export const VFTextarea = React.forwardRef<HTMLTextAreaElement, VFTextareaProps>
           id={inputId}
           ref={ref}
           className={cn(
-            "flex min-h-[75px] w-full rounded-lg border border-border/70 bg-muted/40 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150 shadow-xs",
+            "flex min-h-[56px] w-full rounded-md border border-border/60 bg-muted/40 px-3 py-2 text-[11px] text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
             error && "border-destructive focus-visible:ring-destructive",
             className
           )}
@@ -176,8 +176,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           disabled={disabled}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           className={cn(
-            "flex h-9 w-full items-center justify-between rounded-lg border border-border/70 bg-muted/40 px-3 py-1.5 text-xs text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer shadow-xs hover:border-border hover:bg-muted/70",
-            isOpen && "border-border/90 bg-muted/60",
+          "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-[11px] text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70",
+            isOpen && "border-border bg-muted/60",
             error && "border-destructive",
             disabled && "opacity-50 cursor-not-allowed",
             className
@@ -186,12 +186,11 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <span className={cn("truncate", !selectedOption && "text-muted-foreground/60 font-normal")}>
             {selectedOption ? selectedOption.label : placeholder}
           </span>
-          <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5", isOpen && "rotate-180 text-foreground")} />
+          <ChevronDown className={cn("h-3 w-3 text-muted-foreground shrink-0 transition-transform duration-150 ml-1", isOpen && "rotate-180 text-foreground")} />
         </button>
 
-        {/* Custom Dropdown Popover Menu with GAP (top-[calc(100%+6px)]) */}
         {isOpen && (
-          <div className="absolute top-[calc(100%+6px)] left-0 w-full z-50 rounded-xl border border-border/80 bg-[#0e1017] p-1 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in max-h-56 overflow-y-auto custom-scrollbar">
+          <div className="absolute top-[calc(100%+4px)] left-0 w-full z-50 rounded-md border border-border/60 bg-[#0e1017] p-1 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in max-h-52 overflow-y-auto custom-scrollbar">
             {options.map((opt) => {
               const isSelected = String(opt.value) === String(internalValue);
               return (
@@ -199,15 +198,15 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
                   key={opt.value}
                   onClick={() => handleSelect(opt)}
                   className={cn(
-                    "px-3 py-2 text-xs font-medium rounded-lg cursor-pointer flex items-center justify-between transition-colors duration-100 my-0.5 select-none",
+                    "px-2.5 py-1.5 text-[11px] font-medium rounded-md cursor-pointer flex items-center justify-between transition-colors duration-100 select-none",
                     isSelected
-                      ? "bg-primary/15 text-primary font-semibold"
-                      : "text-foreground/90 hover:bg-muted hover:text-foreground",
+                      ? "bg-primary/15 text-primary font-bold"
+                      : "text-foreground/85 hover:bg-muted/80 hover:text-foreground",
                     opt.disabled && "opacity-40 cursor-not-allowed hover:bg-transparent"
                   )}
                 >
                   <span className="truncate">{opt.label}</span>
-                  {isSelected && <Check className="h-3.5 w-3.5 text-primary shrink-0 ml-2" />}
+                  {isSelected && <Check className="h-3 w-3 text-primary shrink-0 ml-1.5" />}
                 </div>
               );
             })}

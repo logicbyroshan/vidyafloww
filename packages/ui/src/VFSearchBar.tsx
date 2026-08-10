@@ -11,7 +11,7 @@ export interface VFSearchBarProps extends Omit<React.InputHTMLAttributes<HTMLInp
 export function VFSearchBar({
   onSearch,
   onChange,
-  placeholder = "Search anything...",
+  placeholder = "Search...",
   showShortcut = true,
   className,
   value: propValue,
@@ -26,11 +26,10 @@ export function VFSearchBar({
     }
   }, [propValue]);
 
-  // Focus shortcut
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/' && document.activeElement !== inputRef.current && 
-          document.activeElement?.tagName !== 'INPUT' && 
+      if (e.key === '/' && document.activeElement !== inputRef.current &&
+          document.activeElement?.tagName !== 'INPUT' &&
           document.activeElement?.tagName !== 'TEXTAREA') {
         e.preventDefault();
         inputRef.current?.focus();
@@ -55,9 +54,12 @@ export function VFSearchBar({
   };
 
   return (
-    <div className={cn("relative flex items-center w-full max-w-sm rounded-lg border border-border bg-card shadow-xs hover:border-border/80 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all duration-200", className)}>
-      <div className="absolute left-3 text-muted-foreground pointer-events-none">
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className={cn(
+      "relative flex items-center w-full max-w-sm rounded-md border border-border/60 bg-muted/40 hover:border-border focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all duration-150",
+      className
+    )}>
+      <div className="absolute left-2.5 text-muted-foreground pointer-events-none">
+        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </div>
@@ -67,23 +69,23 @@ export function VFSearchBar({
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full h-9 pl-9 pr-12 text-xs bg-transparent border-0 outline-none placeholder:text-muted-foreground"
+        className="w-full h-8 pl-8 pr-10 text-[11px] bg-transparent border-0 outline-none placeholder:text-muted-foreground/60 text-foreground"
         {...props}
       />
-      <div className="absolute right-3 flex items-center gap-1.5">
+      <div className="absolute right-2.5 flex items-center gap-1">
         {value && (
           <button
             type="button"
             onClick={handleClear}
-            className="text-muted-foreground hover:text-foreground hover:bg-muted p-0.5 rounded-full transition-colors"
+            className="text-muted-foreground hover:text-foreground p-0.5 rounded transition-colors"
           >
-            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         )}
         {showShortcut && !value && (
-          <kbd className="hidden sm:inline-flex h-4.5 select-none items-center gap-0.5 rounded border border-border/80 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-[9px] font-bold text-muted-foreground">
             /
           </kbd>
         )}

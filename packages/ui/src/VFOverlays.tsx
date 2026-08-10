@@ -88,23 +88,23 @@ export function VFDialog({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "w-full max-w-lg bg-card border border-border rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[85vh] animate-scale-in",
+          "w-full max-w-lg bg-card border border-border/70 rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[88vh] animate-scale-in",
           className
         )}
       >
         {/* Header */}
         {!hideHeader && (title || description) && (
-          <div className="flex items-start justify-between p-6 border-b border-border/40">
-            <div className="space-y-1">
-              {title && <h2 className="text-lg font-semibold text-foreground leading-none">{title}</h2>}
-              {description && <p className="text-xs text-muted-foreground">{description}</p>}
+          <div className="flex items-start justify-between p-4 border-b border-border/50">
+            <div className="space-y-0.5">
+              {title && <h2 className="text-sm font-black text-foreground leading-tight tracking-tight">{title}</h2>}
+              {description && <p className="text-[11px] text-muted-foreground">{description}</p>}
             </div>
             <button
               onClick={onClose}
-              className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors outline-none"
               aria-label="Close dialog"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -112,13 +112,13 @@ export function VFDialog({
         )}
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 text-sm text-foreground/90 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 text-xs text-foreground/90 space-y-3">
           {children}
         </div>
 
         {/* Footer */}
         {footerActions && (
-          <div className="flex items-center justify-end gap-2 p-6 border-t border-border/40 bg-muted/20">
+          <div className="flex items-center justify-end gap-2 p-4 border-t border-border/50 bg-muted/15">
             {footerActions}
           </div>
         )}
