@@ -296,7 +296,6 @@ function DashboardPage() {
         ]}
         defaultTabId="overview"
         variant="top-bar"
-        rightActions={<VFBadge variant="success">All Systems Operational</VFBadge>}
       />
     </VFPageContainer>
   );

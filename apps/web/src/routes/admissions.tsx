@@ -619,6 +619,17 @@ function AdmissionsPage() {
         </div>
       )}
 
+      {/* Submodule Section Header Bar */}
+      <div className="flex items-center justify-between bg-card border border-border/80 p-4 rounded-xl shadow-xs">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Applications Queue & Intake Pipeline</h3>
+          <p className="text-xs text-muted-foreground">Manage incoming student intake, auto-screen candidates, and process admissions.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
+          New Admission Application
+        </VFButton>
+      </div>
+
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <VFStatCard
@@ -690,11 +701,6 @@ function AdmissionsPage() {
         ]}
         defaultTabId="applications"
         variant="top-bar"
-        rightActions={
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
-            New Admission Application
-          </VFButton>
-        }
       />
 
       {/* Resizable Candidate Inspection Report Slide-Over */}
