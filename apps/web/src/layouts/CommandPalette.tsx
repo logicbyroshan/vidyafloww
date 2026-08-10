@@ -94,47 +94,32 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
       isOpen={isOpen}
       onClose={onClose}
       hideHeader={true}
-      className="p-0 max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl mt-20 animate-scale-in"
+      className="p-0 max-w-3xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl mt-16 animate-scale-in"
     >
       <div className="flex flex-col h-full -m-6 divide-y divide-border/60" onKeyDown={handleKeyDown}>
-        {/* Integrated Clean Header Bar */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-muted/40">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-3.5 w-3.5 text-primary" />
-            <span className="text-xs font-bold text-foreground">VidyaFlow Command Palette</span>
-          </div>
-          <button
-            onClick={onClose}
-            className="h-6 w-6 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors cursor-pointer outline-none"
-            title="Close modal (ESC)"
-          >
-            <X className="h-3.5 w-3.5" />
-          </button>
-        </div>
-
-        {/* Top Search Input Bar */}
-        <div className="flex items-center px-4 py-3 bg-card">
-          <Search className="h-4 w-4 text-primary mr-3 shrink-0" />
+        {/* Top Search Input Bar - Modal starts directly here */}
+        <div className="flex items-center px-5 py-4 bg-card">
+          <Search className="h-5 w-5 text-primary mr-3.5 shrink-0" />
           <input
             type="text"
             autoFocus
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 h-9 bg-transparent outline-none text-xs md:text-sm text-foreground placeholder:text-muted-foreground font-medium"
+            className="flex-1 h-11 bg-transparent outline-none text-sm md:text-base text-foreground placeholder:text-muted-foreground font-medium"
             placeholder="Type a command or search across all 20 ERP modules..."
           />
-          <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border/80 bg-muted px-2 font-mono text-[10px] font-semibold text-muted-foreground">
+          <kbd className="hidden sm:inline-flex h-6 select-none items-center gap-1 rounded border border-border/80 bg-muted px-2 font-mono text-xs font-semibold text-muted-foreground">
             ESC
           </kbd>
         </div>
 
         {/* Command List Scroll View */}
-        <div className="max-h-[340px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
+        <div className="max-h-[420px] overflow-y-auto p-3 space-y-1.5 custom-scrollbar">
           {filtered.length === 0 ? (
-            <div className="py-12 text-center text-xs text-muted-foreground space-y-1">
-              <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
-              <p className="font-semibold text-foreground">No matching commands found</p>
-              <p>Try searching for "Admissions", "Fees", "Timetable", or "AI"</p>
+            <div className="py-16 text-center text-sm text-muted-foreground space-y-1.5">
+              <Search className="h-10 w-10 text-muted-foreground/40 mx-auto mb-2" />
+              <p className="font-semibold text-foreground text-base">No matching commands found</p>
+              <p className="text-xs">Try searching for "Admissions", "Fees", "Timetable", or "AI"</p>
             </div>
           ) : (
             filtered.map((cmd, idx) => {
@@ -149,28 +134,28 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                     onClose();
                   }}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all outline-none text-xs text-left cursor-pointer ${
+                  className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all outline-none text-xs md:text-sm text-left cursor-pointer ${
                     isSelected
                       ? 'bg-primary/10 text-primary font-bold border border-primary/30 shadow-xs'
                       : 'text-foreground hover:bg-muted/50 border border-transparent'
                   }`}
                 >
                   <div
-                    className={`h-7 w-7 rounded-lg flex items-center justify-center shrink-0 ${
+                    className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${
                       isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                     }`}
                   >
-                    <Icon className="h-3.5 w-3.5" />
+                    <Icon className="h-4 w-4" />
                   </div>
-                  <span className="flex-1 truncate">{cmd.label}</span>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[10px] font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded border border-border/60">
+                  <span className="flex-1 truncate font-medium">{cmd.label}</span>
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <span className="text-xs font-mono text-muted-foreground bg-muted/60 px-2 py-0.5 rounded border border-border/60">
                       {cmd.shortcut}
                     </span>
-                    <VFBadge variant={isSelected ? 'primary' : 'outline'} className="text-[10px] px-2 py-0.5">
+                    <VFBadge variant={isSelected ? 'primary' : 'outline'} className="text-xs px-2.5 py-0.5">
                       {cmd.category}
                     </VFBadge>
-                    <ArrowRight className={`h-3 w-3 transition-transform ${isSelected ? 'translate-x-0.5 text-primary' : 'opacity-0'}`} />
+                    <ArrowRight className={`h-4 w-4 transition-transform ${isSelected ? 'translate-x-0.5 text-primary' : 'opacity-0'}`} />
                   </div>
                 </button>
               );
@@ -178,22 +163,32 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           )}
         </div>
 
-        {/* Footer Navigation Hints */}
-        <div className="px-4 py-2.5 bg-muted/30 flex items-center justify-between text-[11px] text-muted-foreground">
+        {/* Bottom Footer Bar with Shortcuts & Close Button */}
+        <div className="px-5 py-3 bg-muted/30 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold">↑↓</kbd> Navigate
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-2 py-0.5 rounded bg-muted border border-border font-mono text-xs font-bold text-foreground">↑↓</kbd> Navigate
             </span>
-            <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold">↵</kbd> Select
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold">ESC</kbd> Close
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-2 py-0.5 rounded bg-muted border border-border font-mono text-xs font-bold text-foreground">↵</kbd> Select
             </span>
           </div>
-          <div className="flex items-center gap-1 text-primary font-bold">
-            <Sparkles className="h-3 w-3" />
-            <span>VidyaFlow AI Palette</span>
+
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 text-primary font-bold text-xs mr-2">
+              <Sparkles className="h-4 w-4" />
+              <span>VidyaFlow AI Palette</span>
+            </div>
+
+            {/* Close Button in Bottom Footer */}
+            <button
+              onClick={onClose}
+              className="px-3 py-1 rounded-lg bg-muted hover:bg-destructive/15 text-muted-foreground hover:text-destructive border border-border hover:border-destructive/30 transition-all flex items-center gap-1 text-xs font-semibold cursor-pointer"
+              title="Close palette"
+            >
+              <X className="h-3.5 w-3.5" />
+              <span>Close (ESC)</span>
+            </button>
           </div>
         </div>
       </div>
