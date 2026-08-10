@@ -56,9 +56,7 @@ function LoginPage() {
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-            <span className="text-xl font-black text-white">V</span>
-          </div>
+          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-10 w-10 object-contain drop-shadow-md shrink-0" />
           <span className="text-2xl font-black tracking-tight text-foreground">
             Vidya<span className="text-primary">Maxx</span>
           </span>
@@ -102,9 +100,7 @@ function LoginPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         {/* Mobile logo */}
         <div className="lg:hidden flex items-center gap-3 mb-10">
-          <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
-            <span className="text-xl font-black text-white">V</span>
-          </div>
+          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-10 w-10 object-contain drop-shadow-md shrink-0" />
           <span className="text-2xl font-black tracking-tight text-foreground">
             Vidya<span className="text-primary">Maxx</span>
           </span>

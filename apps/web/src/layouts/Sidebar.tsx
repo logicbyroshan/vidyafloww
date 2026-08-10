@@ -57,17 +57,13 @@ export function Sidebar() {
       <div className="flex h-16 items-center px-4 border-b border-border relative">
         {sidebarExpanded ? (
           <div className="flex items-center gap-2.5 font-black text-lg text-foreground tracking-tight w-full animate-fade-in">
-            <div className="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-black shadow-md shadow-primary/20 shrink-0">
-              V
-            </div>
+            <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain shrink-0 drop-shadow-xs" />
             <span>
               Vidya<span className="text-primary">Maxx</span>
             </span>
           </div>
         ) : (
-          <div className="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-black animate-scale-in shadow-md shadow-primary/20 mx-auto">
-            V
-          </div>
+          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain shrink-0 mx-auto animate-scale-in drop-shadow-xs" />
         )}
 
         {/* Sidebar Toggle Button: 50% on sidebar, 50% on header/navbar edge */}
