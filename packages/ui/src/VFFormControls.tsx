@@ -4,7 +4,7 @@ import { ChevronDown, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Check
 
 // Helper component for form labels
 export const VFFormLabel = ({ children, htmlFor, className, required }: { children: React.ReactNode; htmlFor?: string; className?: string; required?: boolean }) => (
-  <label htmlFor={htmlFor} className={cn("block text-[11px] font-semibold text-foreground uppercase tracking-wider mb-1.5 select-none", className)}>
+  <label htmlFor={htmlFor} className={cn("block text-[11px] font-semibold text-foreground uppercase tracking-wider mb-1 select-none", className)}>
     {children}
     {required && <span className="text-destructive ml-1">*</span>}
   </label>
@@ -40,7 +40,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
     return (
       <div className="w-full">
         {label && <VFFormLabel htmlFor={inputId} required={required}>{label}</VFFormLabel>}
-        <div className="relative flex items-center shadow-xs">
+        <div className="relative flex items-center">
           {leftIcon && (
             <div className="absolute left-3 flex items-center pointer-events-none text-muted-foreground">
               {leftIcon}
@@ -51,9 +51,9 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "flex h-10.5 w-full rounded-xl border border-border/80 bg-background/60 px-3.5 py-2 text-xs text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-none focus-visible:border-primary/60 focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-xs",
-              leftIcon && "pl-10",
-              rightIcon && "pr-10",
+              "flex h-9 w-full rounded-lg border border-border/70 bg-muted/40 px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150 shadow-xs",
+              leftIcon && "pl-9",
+              rightIcon && "pr-9",
               error && "border-destructive focus-visible:ring-destructive",
               className
             )}
@@ -93,7 +93,7 @@ export const VFTextarea = React.forwardRef<HTMLTextAreaElement, VFTextareaProps>
           id={inputId}
           ref={ref}
           className={cn(
-            "flex min-h-[85px] w-full rounded-xl border border-border/80 bg-background/60 px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground/70 focus-visible:outline-none focus-visible:border-primary/60 focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200 shadow-xs",
+            "flex min-h-[75px] w-full rounded-lg border border-border/70 bg-muted/40 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150 shadow-xs",
             error && "border-destructive focus-visible:ring-destructive",
             className
           )}
@@ -130,7 +130,7 @@ export interface VFSelectProps {
 }
 
 export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
-  ({ className, label, description, error, required, options, value, defaultValue, placeholder = "Select option...", onChange, disabled, id }, _ref) => {
+  ({ className, label, description, error, required, options, value, defaultValue, placeholder = "Select...", onChange, disabled, id }, _ref) => {
     const generatedId = React.useId();
     const selectId = id || generatedId;
     const [isOpen, setIsOpen] = React.useState(false);
@@ -169,37 +169,29 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
       <div className="w-full relative" ref={containerRef}>
         {label && <VFFormLabel htmlFor={selectId} required={required}>{label}</VFFormLabel>}
         
-        {/* Dropdown Button Trigger */}
+        {/* Dropdown Button Trigger - Compact & Clean */}
         <button
           id={selectId}
           type="button"
           disabled={disabled}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           className={cn(
-            "flex h-10.5 w-full items-center justify-between rounded-xl border border-border/80 bg-background/60 px-3.5 py-2 text-xs text-foreground font-medium outline-none transition-all duration-200 cursor-pointer shadow-xs hover:border-primary/50 hover:bg-background/90 focus:border-primary/60 focus:ring-2 focus:ring-primary/20",
-            isOpen && "border-primary/60 ring-2 ring-primary/20 bg-background/90",
-            error && "border-destructive focus:ring-destructive",
+            "flex h-9 w-full items-center justify-between rounded-lg border border-border/70 bg-muted/40 px-3 py-1.5 text-xs text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer shadow-xs hover:border-border hover:bg-muted/70",
+            isOpen && "border-border/90 bg-muted/60",
+            error && "border-destructive",
             disabled && "opacity-50 cursor-not-allowed",
             className
           )}
         >
-          <span className={cn("truncate", !selectedOption && "text-muted-foreground/70 font-normal")}>
+          <span className={cn("truncate", !selectedOption && "text-muted-foreground/60 font-normal")}>
             {selectedOption ? selectedOption.label : placeholder}
           </span>
-          <ChevronDown className={cn("h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-200 ml-2", isOpen && "rotate-180 text-primary")} />
+          <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5", isOpen && "rotate-180 text-foreground")} />
         </button>
 
-        {/* Custom Dropdown Popover Menu with GAP (mt-2 / top-[calc(100%+8px)]) */}
+        {/* Custom Dropdown Popover Menu with GAP (top-[calc(100%+6px)]) */}
         {isOpen && (
-          <div className="absolute top-[calc(100%+8px)] left-0 w-full z-50 rounded-xl border border-border/90 bg-[#12141c] p-1.5 shadow-2xl shadow-black/90 backdrop-blur-xl animate-scale-in max-h-60 overflow-y-auto custom-scrollbar">
-            {placeholder && (
-              <div
-                onClick={() => handleSelect({ label: placeholder, value: "" })}
-                className="px-3 py-2 text-xs text-muted-foreground/70 rounded-lg cursor-pointer hover:bg-primary/10 hover:text-foreground transition-colors mb-0.5"
-              >
-                {placeholder}
-              </div>
-            )}
+          <div className="absolute top-[calc(100%+6px)] left-0 w-full z-50 rounded-xl border border-border/80 bg-[#0e1017] p-1 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in max-h-56 overflow-y-auto custom-scrollbar">
             {options.map((opt) => {
               const isSelected = String(opt.value) === String(internalValue);
               return (
@@ -207,11 +199,11 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
                   key={opt.value}
                   onClick={() => handleSelect(opt)}
                   className={cn(
-                    "px-3.5 py-2.5 text-xs font-medium rounded-lg cursor-pointer flex items-center justify-between transition-all duration-150 my-0.5 select-none",
+                    "px-3 py-2 text-xs font-medium rounded-lg cursor-pointer flex items-center justify-between transition-colors duration-100 my-0.5 select-none",
                     isSelected
-                      ? "bg-primary/20 text-primary font-semibold border-l-2 border-primary pl-3"
-                      : "text-foreground hover:bg-primary/15 hover:text-primary-foreground hover:translate-x-0.5",
-                    opt.disabled && "opacity-40 cursor-not-allowed hover:bg-transparent hover:translate-x-0"
+                      ? "bg-primary/15 text-primary font-semibold"
+                      : "text-foreground/90 hover:bg-muted hover:text-foreground",
+                    opt.disabled && "opacity-40 cursor-not-allowed hover:bg-transparent"
                   )}
                 >
                   <span className="truncate">{opt.label}</span>
@@ -332,67 +324,67 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
       <div className="w-full relative" ref={containerRef}>
         {label && <VFFormLabel htmlFor={inputId} required={required}>{label}</VFFormLabel>}
 
-        {/* Input Trigger Button */}
+        {/* Input Trigger Button - Compact & Clean */}
         <button
           id={inputId}
           type="button"
           disabled={disabled}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           className={cn(
-            "flex h-10.5 w-full items-center justify-between rounded-xl border border-border/80 bg-background/60 px-3.5 py-2 text-xs text-foreground font-medium outline-none transition-all duration-200 cursor-pointer shadow-xs hover:border-primary/50 hover:bg-background/90 focus:border-primary/60 focus:ring-2 focus:ring-primary/20",
-            isOpen && "border-primary/60 ring-2 ring-primary/20 bg-background/90",
-            error && "border-destructive focus:ring-destructive",
+            "flex h-9 w-full items-center justify-between rounded-lg border border-border/70 bg-muted/40 px-3 py-1.5 text-xs text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer shadow-xs hover:border-border hover:bg-muted/70",
+            isOpen && "border-border/90 bg-muted/60",
+            error && "border-destructive",
             disabled && "opacity-50 cursor-not-allowed",
             className
           )}
         >
-          <div className="flex items-center gap-2.5 truncate">
-            <CalendarIcon className="h-4 w-4 text-primary/80 shrink-0" />
-            <span className={cn("truncate", !selectedDate && "text-muted-foreground/70 font-normal")}>
+          <div className="flex items-center gap-2 truncate">
+            <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+            <span className={cn("truncate", !selectedDate && "text-muted-foreground/60 font-normal")}>
               {selectedDate || placeholder}
             </span>
           </div>
-          <ChevronDown className={cn("h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-200 ml-2", isOpen && "rotate-180 text-primary")} />
+          <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5", isOpen && "rotate-180 text-foreground")} />
         </button>
 
-        {/* Custom Dark Calendar Popover Container with GAP (top-[calc(100%+8px)]) */}
+        {/* Custom Dark Calendar Popover Container with GAP (top-[calc(100%+6px)]) */}
         {isOpen && (
-          <div className="absolute top-[calc(100%+8px)] left-0 z-50 w-72 rounded-2xl border border-border/90 bg-[#12141c] p-4 shadow-2xl shadow-black/90 backdrop-blur-xl animate-scale-in">
+          <div className="absolute top-[calc(100%+6px)] left-0 z-50 w-64 rounded-xl border border-border/80 bg-[#0e1017] p-3 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in">
             {/* Month / Year Header Navigator */}
-            <div className="flex items-center justify-between mb-3.5">
+            <div className="flex items-center justify-between mb-2.5">
               <button
                 type="button"
                 onClick={handlePrevMonth}
-                className="h-7 w-7 rounded-lg border border-border/70 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/20 transition-colors"
+                className="h-6 w-6 rounded-md border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="h-3.5 w-3.5" />
               </button>
-              <span className="text-xs font-bold text-foreground tracking-wide">
+              <span className="text-xs font-semibold text-foreground tracking-wide">
                 {monthNames[month]} {year}
               </span>
               <button
                 type="button"
                 onClick={handleNextMonth}
-                className="h-7 w-7 rounded-lg border border-border/70 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/20 transition-colors"
+                className="h-6 w-6 rounded-md border border-border/60 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
 
             {/* Days of Week Header */}
-            <div className="grid grid-cols-7 gap-1 text-center mb-1">
+            <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
               {dayNames.map((d) => (
-                <div key={d} className="text-[10px] font-semibold text-muted-foreground uppercase py-1">
+                <div key={d} className="text-[10px] font-semibold text-muted-foreground uppercase py-0.5">
                   {d}
                 </div>
               ))}
             </div>
 
             {/* Calendar Days Grid */}
-            <div className="grid grid-cols-7 gap-1 text-center">
+            <div className="grid grid-cols-7 gap-0.5 text-center">
               {/* Empty leading slots for month start padding */}
               {Array.from({ length: firstDayIndex }).map((_, i) => (
-                <div key={`empty-${i}`} className="h-7" />
+                <div key={`empty-${i}`} className="h-6" />
               ))}
 
               {/* Month Days */}
@@ -410,12 +402,12 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
                     type="button"
                     onClick={() => handleSelectDay(day)}
                     className={cn(
-                      "h-7.5 w-7.5 rounded-lg text-xs font-medium flex items-center justify-center transition-all duration-150 mx-auto select-none",
+                      "h-6.5 w-6.5 rounded-md text-xs font-medium flex items-center justify-center transition-colors duration-100 mx-auto select-none",
                       isSelected
-                        ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/30"
+                        ? "bg-primary text-primary-foreground font-semibold shadow-xs"
                         : isToday
-                        ? "border border-primary/60 text-primary font-semibold hover:bg-primary/20"
-                        : "text-foreground/90 hover:bg-primary/20 hover:text-primary"
+                        ? "border border-primary/50 text-primary font-semibold hover:bg-primary/10"
+                        : "text-foreground/90 hover:bg-muted hover:text-foreground"
                     )}
                   >
                     {day}
@@ -425,7 +417,7 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
             </div>
 
             {/* Action Footer Buttons */}
-            <div className="flex items-center justify-between pt-3 mt-3 border-t border-border/60 text-[11px]">
+            <div className="flex items-center justify-between pt-2.5 mt-2.5 border-t border-border/50 text-[11px]">
               <button
                 type="button"
                 onClick={handleClear}
@@ -466,14 +458,14 @@ export const VFCheckbox = React.forwardRef<HTMLInputElement, VFCheckboxProps>(
 
     return (
       <div className="flex flex-col">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-2.5">
           <div className="flex items-center h-5">
             <input
               id={checkboxId}
               type="checkbox"
               ref={ref}
               className={cn(
-                "h-4 w-4 rounded-md border-border/80 text-primary focus:ring-primary focus:ring-offset-2 cursor-pointer transition-all duration-200 bg-background/60",
+                "h-3.5 w-3.5 rounded border-border/70 text-primary focus:ring-primary/20 cursor-pointer transition-colors bg-muted/40",
                 error && "border-destructive focus:ring-destructive",
                 className
               )}
@@ -551,15 +543,15 @@ export const VFSwitch = React.forwardRef<HTMLInputElement, VFSwitchProps>(
               role="switch"
               aria-checked={checked}
               className={cn(
-                "w-9 h-5 bg-muted rounded-full transition-colors cursor-pointer relative border border-border outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                "w-8 h-4.5 bg-muted rounded-full transition-colors cursor-pointer relative border border-border/70 outline-none focus-visible:ring-1 focus-visible:ring-primary/40",
                 checked && "bg-primary border-primary",
                 error && "border-destructive"
               )}
             >
               <div
                 className={cn(
-                  "w-3.5 h-3.5 bg-background rounded-full absolute top-[2px] left-[2px] shadow-sm transition-transform duration-200",
-                  checked && "translate-x-4 bg-primary-foreground"
+                  "w-3 h-3 bg-background rounded-full absolute top-[2px] left-[2px] shadow-xs transition-transform duration-150",
+                  checked && "translate-x-3.5 bg-primary-foreground"
                 )}
               />
             </div>
