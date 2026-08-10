@@ -26,6 +26,7 @@ import {
   Plus,
   Sparkles,
   ArrowRight,
+  X,
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -92,19 +93,34 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     <VFDialog
       isOpen={isOpen}
       onClose={onClose}
-      title=""
-      className="p-0 max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl mt-24 animate-scale-in"
+      hideHeader={true}
+      className="p-0 max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl mt-20 animate-scale-in"
     >
       <div className="flex flex-col h-full -m-6 divide-y divide-border/60" onKeyDown={handleKeyDown}>
-        {/* Top Search Bar */}
-        <div className="flex items-center px-4 py-3 bg-muted/20">
+        {/* Integrated Clean Header Bar */}
+        <div className="flex items-center justify-between px-4 py-2.5 bg-muted/40">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <span className="text-xs font-bold text-foreground">VidyaFlow Command Palette</span>
+          </div>
+          <button
+            onClick={onClose}
+            className="h-6 w-6 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors cursor-pointer outline-none"
+            title="Close modal (ESC)"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+
+        {/* Top Search Input Bar */}
+        <div className="flex items-center px-4 py-3 bg-card">
           <Search className="h-4 w-4 text-primary mr-3 shrink-0" />
           <input
             type="text"
             autoFocus
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 h-10 bg-transparent outline-none text-xs md:text-sm text-foreground placeholder:text-muted-foreground font-medium"
+            className="flex-1 h-9 bg-transparent outline-none text-xs md:text-sm text-foreground placeholder:text-muted-foreground font-medium"
             placeholder="Type a command or search across all 20 ERP modules..."
           />
           <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border/80 bg-muted px-2 font-mono text-[10px] font-semibold text-muted-foreground">
@@ -113,7 +129,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
         </div>
 
         {/* Command List Scroll View */}
-        <div className="max-h-[360px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
+        <div className="max-h-[340px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
           {filtered.length === 0 ? (
             <div className="py-12 text-center text-xs text-muted-foreground space-y-1">
               <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />

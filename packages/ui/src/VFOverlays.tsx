@@ -64,11 +64,12 @@ function Backdrop({ isOpen, onClose, children, className, ...props }: BackdropPr
 export interface VFDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   description?: string;
   children: React.ReactNode;
   footerActions?: React.ReactNode;
   className?: string;
+  hideHeader?: boolean;
 }
 
 export function VFDialog({
@@ -79,6 +80,7 @@ export function VFDialog({
   children,
   footerActions,
   className,
+  hideHeader = false,
 }: VFDialogProps) {
   return (
     <Backdrop isOpen={isOpen} onClose={onClose}>
@@ -91,21 +93,23 @@ export function VFDialog({
         )}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-6 border-b border-border/40">
-          <div className="space-y-1">
-            <h2 className="text-lg font-semibold text-foreground leading-none">{title}</h2>
-            {description && <p className="text-xs text-muted-foreground">{description}</p>}
+        {!hideHeader && (title || description) && (
+          <div className="flex items-start justify-between p-6 border-b border-border/40">
+            <div className="space-y-1">
+              {title && <h2 className="text-lg font-semibold text-foreground leading-none">{title}</h2>}
+              {description && <p className="text-xs text-muted-foreground">{description}</p>}
+            </div>
+            <button
+              onClick={onClose}
+              className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Close dialog"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Close dialog"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+        )}
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 text-sm text-foreground/90 space-y-4">
