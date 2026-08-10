@@ -4,38 +4,24 @@
 
 @layer base {
   :root {
-    /* Base Colors - Clean Light Theme */
     --background: 0 0% 100%;
-    --foreground: 0 0% 12%; /* Dark Gray */
-    
+    --foreground: 0 0% 12%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 12%;
-    
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 12%;
-    
-    /* Brand Colors (95% neutral, orange/cyan highlights) */
-    --primary: 24 95% 53%; /* Orange (#f97316) */
+    --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 187 92% 43%; /* Cyan (#0891b2) */
+    --secondary: 187 92% 43%;
     --secondary-foreground: 0 0% 100%;
-    
-    /* Neutral Grays */
-    --muted: 0 0% 96%; /* Very Light Gray */
-    --muted-foreground: 0 0% 45%; /* Medium Gray */
-    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
     --accent: 0 0% 96%;
     --accent-foreground: 0 0% 12%;
-    
-    --border: 0 0% 90%; /* Light Gray */
+    --border: 0 0% 90%;
     --input: 0 0% 90%;
-    
-    /* Focus & Shadows */
     --ring: 24 95% 53%;
     --radius: 0.5rem;
-    
-    /* Semantic Colors */
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
@@ -47,36 +33,23 @@
   }
 
   .dark {
-    /* Base Colors - Calm Dark Theme */
-    --background: 0 0% 7%; /* Near Black */
-    --foreground: 0 0% 90%; /* Light Gray */
-    
-    --card: 0 0% 11%; /* Dark Gray */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 90%;
+    --card: 0 0% 11%;
     --card-foreground: 0 0% 90%;
-    
     --popover: 0 0% 11%;
     --popover-foreground: 0 0% 90%;
-    
-    /* Brand Colors */
     --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
-    
     --secondary: 187 92% 43%;
     --secondary-foreground: 0 0% 100%;
-    
-    /* Neutral Grays */
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 65%;
-    
     --accent: 0 0% 15%;
     --accent-foreground: 0 0% 90%;
-    
-    --border: 0 0% 20%; /* Gray */
+    --border: 0 0% 20%;
     --input: 0 0% 20%;
-    
     --ring: 24 95% 53%;
-    
-    /* Semantic Colors */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 45%;
@@ -86,18 +59,17 @@
     --info: 217 91% 50%;
     --info-foreground: 0 0% 100%;
   }
-}
 
-@layer base {
   html {
-    /* Sofia Sans base scale - fluid from 1000px (15px) to 2000px (18px) */
+    /* Sofia Sans: fluid scale 15px at 1000px → 18px at 2000px */
     font-size: clamp(15px, 0.3vw + 12px, 18px);
   }
 
   * {
     @apply border-border outline-none;
+    box-sizing: border-box;
   }
-  
+
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300;
     font-family: 'Sofia Sans', system-ui, -apple-system, sans-serif;
@@ -109,23 +81,29 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Custom subtle scrollbar with less border radius */
+  /* Sofia Sans vertical centering fix for buttons, badges, tabs */
+  button,
+  [role="button"],
+  [role="tab"] {
+    line-height: 1;
+  }
+
+  /* Custom subtle scrollbar */
   ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
   }
-  
+
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     @apply bg-muted-foreground/25 rounded-[2px] hover:bg-primary/50 transition-colors;
   }
 }
 
 @layer utilities {
-  /* Hide scrollbar for clean tab bars */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -135,36 +113,20 @@
   }
 }
 
-/* Animations for command palette and notifications */
+/* Animations */
 @keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
 }
 
 .animate-slide-in-right {

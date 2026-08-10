@@ -1,6 +1,5 @@
 import { Search, Bell, Sparkles, Download } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
-import { useLocation } from '@tanstack/react-router';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -8,39 +7,28 @@ interface HeaderProps {
   onOpenAiChat: () => void;
 }
 
+// School identity — update this to match the school using the software
+const SCHOOL = {
+  name: 'Springfield Academy',
+  logo: '/logo.png',
+};
+
 export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: HeaderProps) {
   const { notifications } = useGlobalStore();
-  const location = useLocation();
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const getPageTitle = () => {
-    const path = location.pathname;
-    if (path === '/') return 'Dashboard';
-    if (path.startsWith('/admissions')) return 'Admissions';
-    if (path.startsWith('/students')) return 'Students';
-    if (path.startsWith('/academics')) return 'Academics';
-    if (path.startsWith('/attendance')) return 'Attendance';
-    if (path.startsWith('/examinations')) return 'Examinations';
-    if (path.startsWith('/finance')) return 'Finance';
-    if (path.startsWith('/hr')) return 'HR';
-    if (path.startsWith('/library')) return 'Library';
-    if (path.startsWith('/transport')) return 'Transport';
-    if (path.startsWith('/hostel')) return 'Hostel';
-    if (path.startsWith('/communication')) return 'Communication';
-    if (path.startsWith('/documents')) return 'Documents';
-    if (path.startsWith('/reports')) return 'Reports';
-    if (path.startsWith('/ai')) return 'AI Insights';
-    if (path.startsWith('/settings')) return 'Settings';
-    return 'Portal';
-  };
-
   return (
-    <header className="h-11 border-b border-border/60 bg-card flex items-center justify-between px-4 sticky top-0 z-10">
-      {/* Left: Breadcrumb */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-sm text-muted-foreground font-medium">VidyaMaxx</span>
-        <span className="text-sm text-muted-foreground/40">/</span>
-        <span className="text-sm font-bold text-foreground">{getPageTitle()}</span>
+    <header className="h-11 border-b border-border/60 bg-card flex items-center justify-between px-4 sticky top-0 z-10 shrink-0">
+      {/* Left: School Welcome */}
+      <div className="flex items-center gap-2.5">
+        <span className="text-xs text-muted-foreground font-medium">Welcome,</span>
+        <img
+          src={SCHOOL.logo}
+          alt={SCHOOL.name}
+          className="h-5 w-5 object-contain rounded shrink-0"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+        />
+        <span className="text-sm font-black text-foreground tracking-tight">{SCHOOL.name}</span>
       </div>
 
       {/* Right: Actions */}
@@ -48,21 +36,21 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
         {/* Export */}
         <button
           onClick={() => {}}
-          className="hidden md:flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-1.5 rounded-md transition-colors"
+          className="hidden md:flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-[5px] rounded-md transition-colors"
           title="Export"
         >
-          <Download className="h-3 w-3" />
+          <Download className="h-3 w-3 shrink-0" />
           <span>Export</span>
         </button>
 
         {/* Search */}
         <button
           onClick={onSearchClick}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-1.5 rounded-md w-44 sm:w-52 transition-colors outline-none"
+          className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted hover:bg-muted/80 border border-border/60 px-2.5 py-[5px] rounded-md w-44 sm:w-52 transition-colors outline-none"
         >
           <Search className="h-3 w-3 shrink-0" />
           <span className="flex-1 text-left truncate text-xs">Search anything...</span>
-          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-xs font-bold opacity-70 tracking-tight">
+          <kbd className="hidden sm:inline-flex h-4 select-none items-center rounded border border-border/60 bg-background px-1 font-mono text-[9px] font-bold opacity-70">
             ⌘K
           </kbd>
         </button>
@@ -70,9 +58,9 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
         {/* Ask AI */}
         <button
           onClick={onOpenAiChat}
-          className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 border border-primary/25 px-2.5 py-1.5 rounded-md transition-all"
+          className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 border border-primary/25 px-2.5 py-[5px] rounded-md transition-all"
         >
-          <Sparkles className="h-3 w-3" />
+          <Sparkles className="h-3 w-3 shrink-0" />
           <span>Ask AI</span>
         </button>
 
