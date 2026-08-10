@@ -1,74 +1,184 @@
 import * as React from 'react';
-import { VFDialog } from '@vidyamaxx/ui';
-import { Search, FileText, Settings, User } from 'lucide-react';
+import { VFDialog, VFBadge } from '@vidyamaxx/ui';
+import {
+  Search,
+  LayoutDashboard,
+  UserSquare,
+  Users,
+  GraduationCap,
+  Calendar,
+  CalendarCheck,
+  ClipboardList,
+  CircleDollarSign,
+  Landmark,
+  Briefcase,
+  MessageSquare,
+  Bus,
+  BookOpen,
+  Building,
+  Package,
+  Files,
+  MonitorPlay,
+  HeartHandshake,
+  BarChart3,
+  Bot,
+  Settings,
+  Plus,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const mockCommands = [
-    { icon: FileText, label: 'Go to Admissions', route: '/admissions', category: 'Navigation' },
-    { icon: User, label: 'Search Students', route: '/students', category: 'Actions' },
-    { icon: Settings, label: 'System Settings', route: '/settings', category: 'Preferences' },
+  const commands = [
+    // Module Navigation
+    { id: 'dash', icon: LayoutDashboard, label: 'Go to Dashboard & BI Radar', route: '/', category: 'Navigation', shortcut: '⌘1' },
+    { id: 'admit', icon: UserSquare, label: 'Go to Admissions & Intake Queue', route: '/admissions', category: 'Navigation', shortcut: '⌘2' },
+    { id: 'stud', icon: Users, label: 'Go to Student 360° Directory', route: '/students', category: 'Navigation', shortcut: '⌘3' },
+    { id: 'acad', icon: GraduationCap, label: 'Go to Academics & Curriculum', route: '/academics', category: 'Navigation', shortcut: '⌘4' },
+    { id: 'time', icon: Calendar, label: 'Go to Timetable & Scheduling', route: '/timetable', category: 'Navigation', shortcut: '⌘5' },
+    { id: 'attend', icon: CalendarCheck, label: 'Go to Attendance & Biometrics', route: '/attendance', category: 'Navigation', shortcut: '⌘6' },
+    { id: 'exam', icon: ClipboardList, label: 'Go to Examination & Report Cards', route: '/examinations', category: 'Navigation', shortcut: '⌘7' },
+    { id: 'fin', icon: CircleDollarSign, label: 'Go to Fees & Student Finance', route: '/finance', category: 'Navigation', shortcut: '⌘8' },
+    { id: 'acct', icon: Landmark, label: 'Go to Finance & Accounting Ledger', route: '/accounting', category: 'Navigation', shortcut: '⌘9' },
+    { id: 'hr', icon: Briefcase, label: 'Go to HR & Staff Payroll', route: '/hr', category: 'Navigation', shortcut: '⌘H' },
+    { id: 'comm', icon: MessageSquare, label: 'Go to Communication & DLT SMS', route: '/communication', category: 'Navigation', shortcut: '⌘C' },
+    { id: 'trans', icon: Bus, label: 'Go to Transport & Live GPS Tracking', route: '/transport', category: 'Navigation', shortcut: '⌘T' },
+    { id: 'lib', icon: BookOpen, label: 'Go to Library & Book Catalog', route: '/library', category: 'Navigation', shortcut: '⌘L' },
+    { id: 'hostel', icon: Building, label: 'Go to Hostel & Campus Life', route: '/hostel', category: 'Navigation', shortcut: '⌘B' },
+    { id: 'inv', icon: Package, label: 'Go to Inventory & Store Procurement', route: '/inventory', category: 'Navigation', shortcut: '⌘I' },
+    { id: 'docs', icon: Files, label: 'Go to ID Studio & Document Vault', route: '/documents', category: 'Navigation', shortcut: '⌘D' },
+    { id: 'lms', icon: MonitorPlay, label: 'Go to Digital Classroom (LMS)', route: '/lms', category: 'Navigation', shortcut: '⌘V' },
+    { id: 'welf', icon: HeartHandshake, label: 'Go to Student Welfare & Discipline', route: '/welfare', category: 'Navigation', shortcut: '⌘W' },
+    { id: 'rep', icon: BarChart3, label: 'Go to Reports & Compliance BI', route: '/reports', category: 'Navigation', shortcut: '⌘R' },
+    { id: 'ai', icon: Bot, label: 'Go to VidyaFlow AI Command Center', route: '/ai', category: 'Navigation', shortcut: '⌘A' },
+    { id: 'sett', icon: Settings, label: 'Go to School Admin & Configuration', route: '/settings', category: 'Navigation', shortcut: '⌘S' },
+
+    // Quick Actions
+    { id: 'act-new-admit', icon: Plus, label: 'New Admission Application', route: '/admissions', category: 'Actions', shortcut: 'Shift+A' },
+    { id: 'act-ask-ai', icon: Sparkles, label: 'Ask VidyaFlow AI Assistant', route: '/ai', category: 'Actions', shortcut: 'Shift+K' },
   ];
 
-  const filtered = mockCommands.filter(c => c.label.toLowerCase().includes(search.toLowerCase()));
+  const filtered = commands.filter(
+    (c) =>
+      c.label.toLowerCase().includes(search.toLowerCase()) ||
+      c.category.toLowerCase().includes(search.toLowerCase())
+  );
+
+  React.useEffect(() => {
+    setSelectedIndex(0);
+  }, [search]);
+
+  // Keyboard navigation inside command palette
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev + 1) % Math.max(1, filtered.length));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev - 1 + filtered.length) % Math.max(1, filtered.length));
+    } else if (e.key === 'Enter' && filtered[selectedIndex]) {
+      e.preventDefault();
+      navigate({ to: filtered[selectedIndex].route });
+      onClose();
+    }
+  };
 
   return (
     <VFDialog
       isOpen={isOpen}
       onClose={onClose}
       title=""
-      className="p-0 max-w-2xl bg-card border-none mt-32 overflow-hidden shadow-2xl"
+      className="p-0 max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl mt-24 animate-scale-in"
     >
-      <div className="flex flex-col h-full -m-6">
-        <div className="flex items-center px-4 border-b border-border/40">
-          <Search className="h-5 w-5 text-muted-foreground mr-2 shrink-0" />
+      <div className="flex flex-col h-full -m-6 divide-y divide-border/60" onKeyDown={handleKeyDown}>
+        {/* Top Search Bar */}
+        <div className="flex items-center px-4 py-3 bg-muted/20">
+          <Search className="h-4 w-4 text-primary mr-3 shrink-0" />
           <input
             type="text"
             autoFocus
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 h-14 bg-transparent outline-none text-base placeholder:text-muted-foreground"
-            placeholder="Type a command or search..."
+            className="flex-1 h-10 bg-transparent outline-none text-xs md:text-sm text-foreground placeholder:text-muted-foreground font-medium"
+            placeholder="Type a command or search across all 20 ERP modules..."
           />
-          <kbd className="hidden sm:inline-flex h-6 select-none items-center gap-1 rounded border border-border bg-muted px-2 font-mono text-[10px] font-medium text-muted-foreground">
+          <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border/80 bg-muted px-2 font-mono text-[10px] font-semibold text-muted-foreground">
             ESC
           </kbd>
         </div>
-        
-        <div className="max-h-[300px] overflow-y-auto p-2">
+
+        {/* Command List Scroll View */}
+        <div className="max-h-[360px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
           {filtered.length === 0 ? (
-            <div className="py-14 text-center text-sm text-muted-foreground">
-              No results found for "{search}".
+            <div className="py-12 text-center text-xs text-muted-foreground space-y-1">
+              <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+              <p className="font-semibold text-foreground">No matching commands found</p>
+              <p>Try searching for "Admissions", "Fees", "Timetable", or "AI"</p>
             </div>
           ) : (
-            <div className="space-y-1">
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Suggestions
-              </div>
-              {filtered.map((cmd, idx) => {
-                const Icon = cmd.icon;
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      navigate({ to: cmd.route });
-                      onClose();
-                    }}
-                    className="w-full flex items-center gap-3 px-3 py-3 rounded-md hover:bg-primary hover:text-primary-foreground transition-colors group outline-none focus-visible:bg-primary focus-visible:text-primary-foreground text-sm"
+            filtered.map((cmd, idx) => {
+              const Icon = cmd.icon;
+              const isSelected = idx === selectedIndex;
+
+              return (
+                <button
+                  key={cmd.id}
+                  onClick={() => {
+                    navigate({ to: cmd.route });
+                    onClose();
+                  }}
+                  onMouseEnter={() => setSelectedIndex(idx)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all outline-none text-xs text-left cursor-pointer ${
+                    isSelected
+                      ? 'bg-primary/10 text-primary font-bold border border-primary/30 shadow-xs'
+                      : 'text-foreground hover:bg-muted/50 border border-transparent'
+                  }`}
+                >
+                  <div
+                    className={`h-7 w-7 rounded-lg flex items-center justify-center shrink-0 ${
+                      isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                    }`}
                   >
-                    <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary-foreground group-focus-visible:text-primary-foreground transition-colors" />
-                    <span>{cmd.label}</span>
-                    <span className="ml-auto text-xs text-muted-foreground group-hover:text-primary-foreground/70 group-focus-visible:text-primary-foreground/70">
-                      {cmd.category}
+                    <Icon className="h-3.5 w-3.5" />
+                  </div>
+                  <span className="flex-1 truncate">{cmd.label}</span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-[10px] font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded border border-border/60">
+                      {cmd.shortcut}
                     </span>
-                  </button>
-                );
-              })}
-            </div>
+                    <VFBadge variant={isSelected ? 'primary' : 'outline'} className="text-[10px] px-2 py-0.5">
+                      {cmd.category}
+                    </VFBadge>
+                    <ArrowRight className={`h-3 w-3 transition-transform ${isSelected ? 'translate-x-0.5 text-primary' : 'opacity-0'}`} />
+                  </div>
+                </button>
+              );
+            })
           )}
+        </div>
+
+        {/* Footer Navigation Hints */}
+        <div className="px-4 py-2.5 bg-muted/30 flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold">↑↓</kbd> Navigate
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold">↵</kbd> Select
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-[10px] font-bold">ESC</kbd> Close
+            </span>
+          </div>
+          <div className="flex items-center gap-1 text-primary font-bold">
+            <Sparkles className="h-3 w-3" />
+            <span>VidyaFlow AI Palette</span>
+          </div>
         </div>
       </div>
     </VFDialog>
