@@ -1,82 +1,94 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFTabs, VFCard, VFBadge } from '@vidyamaxx/ui';
-import { BarChart3, ShieldCheck, Users, CircleDollarSign } from 'lucide-react';
+import { VFPageContainer, VFTabs, VFCard } from '@vidyamaxx/ui';
+import { BarChart3, Users, GraduationCap, CalendarCheck, CircleDollarSign, Briefcase, Sliders, FileText } from 'lucide-react';
 
 export const Route = createFileRoute('/reports')({
   component: ReportsPage,
 });
 
 function ReportsPage() {
-  const [activeSubmodule, setActiveSubmodule] = React.useState('principal-command');
+  const [activeSubmodule, setActiveSubmodule] = React.useState('executive-dashboard');
 
   const submoduleTabs = [
     {
-      id: 'principal-command',
-      label: 'Principal Command Center',
+      id: 'executive-dashboard',
+      label: 'Executive Command Center',
       icon: <BarChart3 className="h-3.5 w-3.5" />,
       content: (
-        <div className="space-y-4">
-          <div className="bg-card border border-border p-5 rounded-xl space-y-3">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-primary" /> Institutional School Health Tree
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-              <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
-                <span className="text-muted-foreground">Total Students</span>
-                <p className="text-lg font-bold text-foreground mt-1">2,480</p>
-              </div>
-              <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
-                <span className="text-muted-foreground">Campus Attendance</span>
-                <p className="text-lg font-bold text-success mt-1">96.4%</p>
-              </div>
-              <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
-                <span className="text-muted-foreground">Fee Collection</span>
-                <p className="text-lg font-bold text-primary mt-1">₹ 1.84 Cr</p>
-              </div>
-              <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
-                <span className="text-muted-foreground">Active Staff</span>
-                <p className="text-lg font-bold text-foreground mt-1">164</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <VFCard title="Institutional Executive Command Center">
+          <p className="text-xs text-muted-foreground">Real-time KPI overview of total student count (3,600), today's attendance rate (98.2%), fee collection total (₹ 1.84 Cr), and active staff (242).</p>
+        </VFCard>
       ),
     },
     {
-      id: 'teacher-analytics',
-      label: 'Teacher & Class Analytics',
+      id: 'student-analytics',
+      label: 'Student Demographics BI',
       icon: <Users className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="My Classes & Academic Performance Dashboard">
-          <p className="text-xs text-muted-foreground">Class-wise performance distribution, homework completion metrics, and students at academic risk.</p>
+        <VFCard title="Student Demographics & Intake Funnel BI">
+          <p className="text-xs text-muted-foreground">Class-wise gender ratios, RTE category distribution, transport usage percentages, and campus migration analytics.</p>
         </VFCard>
       ),
     },
     {
-      id: 'finance-hr-bi',
-      label: 'Finance & HR BI Dashboards',
+      id: 'academic-analytics',
+      label: 'Academic Performance BI',
+      icon: <GraduationCap className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Academic Results & Grade Percentile Analytics">
+          <p className="text-xs text-muted-foreground">Multi-year term comparison, class average GPA trends, subject difficulty heatmaps, and board exam pass rates.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'attendance-analytics',
+      label: 'Attendance Analytics',
+      icon: <CalendarCheck className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Attendance Heatmaps & Absenteeism Radar">
+          <p className="text-xs text-muted-foreground">Day-of-week attendance drop patterns, weather-correlated absenteeism, and chronic absentee student rosters.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'financial-analytics',
+      label: 'Financial Revenue BI',
       icon: <CircleDollarSign className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Revenue Collections & Staff Workload BI">
-          <p className="text-xs text-muted-foreground">Monthly revenue vs budget, outstanding dues forecast, payroll expenses, and teacher period workload distribution.</p>
+        <VFCard title="Fee Collection, Outstanding Dues & Revenue Analytics">
+          <p className="text-xs text-muted-foreground">Monthly collection velocity curves, head-wise fee breakdown, outstanding defaulter aging, and operating expense ratios.</p>
         </VFCard>
       ),
     },
     {
-      id: 'board-compliance',
-      label: 'Board & Govt Compliance Reports',
-      icon: <ShieldCheck className="h-3.5 w-3.5" />,
+      id: 'hr-analytics',
+      label: 'HR & Workload BI',
+      icon: <Briefcase className="h-3.5 w-3.5" />,
       content: (
-        <div className="space-y-3">
-          <VFCard title="Regulatory & State Board Compliance Export">
-            <p className="text-xs text-muted-foreground mb-3">TRAI DLT SMS compliance logs, State Education Board regulatory data formats, and annual audit reports.</p>
-            <div className="flex gap-2">
-              <VFBadge variant="success">TRAI DLT Registered</VFBadge>
-              <VFBadge variant="outline">CBSE Board Formats Ready</VFBadge>
-            </div>
-          </VFCard>
-        </div>
+        <VFCard title="Teacher Period Workload & HR Retention BI">
+          <p className="text-xs text-muted-foreground">Teacher period allocations, staff leave utilization percentages, teacher-student ratios, and employee turnover trends.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'report-builder',
+      label: 'Custom Report Builder',
+      icon: <Sliders className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Drag-and-Drop Dynamic Custom Report Engine">
+          <p className="text-xs text-muted-foreground">Select custom data fields, filter conditions, group-by aggregations, and export to Excel, CSV, or PDF.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'compliance-reporting',
+      label: 'Government & Board Exports',
+      icon: <FileText className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="UDISE+ Regulatory & Board Compliance Exports">
+          <p className="text-xs text-muted-foreground">Generate automated UDISE+ government portal data files, CBSE affiliation reports, and State Education Department compliance spreadsheets.</p>
+        </VFCard>
       ),
     },
   ];

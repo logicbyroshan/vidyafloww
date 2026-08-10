@@ -161,8 +161,28 @@ function TimetablePage() {
       ),
     },
     {
-      id: 'ai-generator',
-      label: 'AI Timetable Generator',
+      id: 'exam-scheduling',
+      label: 'Exam Scheduling',
+      icon: <Calendar className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Term Exam & Test Timetable Matrix">
+          <p className="text-xs text-muted-foreground">Schedule Mid-Term and Annual board exams, invigilator teacher duties, and hall seating allocations.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'event-scheduling',
+      label: 'Event Scheduling',
+      icon: <Clock className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="School Events, Sports Meets & Auditorium Booking">
+          <p className="text-xs text-muted-foreground">Schedule annual sports day events, cultural functions, parent-teacher meetings (PTM), and inter-house debates.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'ai-optimizer',
+      label: 'AI Schedule Optimizer',
       icon: <Sparkles className="h-3.5 w-3.5 text-primary" />,
       content: (
         <div className="bg-card border border-border p-6 rounded-xl space-y-4">

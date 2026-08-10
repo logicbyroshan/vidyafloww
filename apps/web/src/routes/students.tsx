@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFTabs, VFCard, VFBadge, VFButton } from '@vidyamaxx/ui';
-import { Users, User, ArrowRight, ShieldCheck, Award, Eye } from 'lucide-react';
+import { VFPageContainer, VFTabs, VFCard, VFBadge, VFButton, VFDataTable } from '@vidyamaxx/ui';
+import { Users, User, ArrowRight, ShieldCheck, Award, Eye, FileText, Upload, Search, History, AlertOctagon } from 'lucide-react';
 
 export const Route = createFileRoute('/students')({
   component: StudentsPage,
@@ -10,6 +10,22 @@ export const Route = createFileRoute('/students')({
 function StudentsPage() {
   const [activeSubmodule, setActiveSubmodule] = React.useState('directory');
 
+  const studentData = [
+    { admNo: 'ADM-2026-001', name: 'Aditya Verma', class: 'Class 9 - Sec A', roll: '101', house: 'Red House', status: 'Active Student' },
+    { admNo: 'ADM-2026-002', name: 'Priya Sharma', class: 'Class 9 - Sec A', roll: '102', house: 'Blue House', status: 'Active Student' },
+    { admNo: 'ADM-2026-003', name: 'Rahul Gupta', class: 'Class 9 - Sec B', roll: '103', house: 'Green House', status: 'Active Student' },
+  ];
+
+  const studentColumns = [
+    { header: 'Admission No', accessorKey: 'admNo', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.admNo}</span> },
+    { header: 'Student Name', accessorKey: 'name', cell: (r: any) => <span className="font-bold text-foreground">{r.name}</span> },
+    { header: 'Class & Section', accessorKey: 'class' },
+    { header: 'Roll No', accessorKey: 'roll' },
+    { header: 'House', accessorKey: 'house', cell: (r: any) => <VFBadge variant="outline">{r.house}</VFBadge> },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
+    { header: 'Action', accessorKey: 'action', cell: () => <VFButton size="sm" variant="outline" leftIcon={<Eye className="h-3.5 w-3.5" />}>View 360° Profile</VFButton> },
+  ];
+
   const submoduleTabs = [
     {
       id: 'directory',
@@ -17,32 +33,14 @@ function StudentsPage() {
       icon: <Users className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
-          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl">
+          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Active Student Directory</h3>
+              <h3 className="text-sm font-bold text-foreground">Active Enrolled Student Master Directory</h3>
               <p className="text-xs text-muted-foreground mt-0.5">Filter by Class, Section, House, Category, or Gender.</p>
             </div>
             <VFButton size="sm">Export Directory</VFButton>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { name: 'Aditya Verma', roll: 'Roll No: 101', class: 'Class 9 - Sec A', house: 'Red House' },
-              { name: 'Priya Sharma', roll: 'Roll No: 102', class: 'Class 9 - Sec A', house: 'Blue House' },
-              { name: 'Rahul Gupta', roll: 'Roll No: 103', class: 'Class 9 - Sec B', house: 'Green House' },
-            ].map((s, i) => (
-              <VFCard key={i}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-foreground">{s.name}</span>
-                  <VFBadge variant="outline">{s.house}</VFBadge>
-                </div>
-                <p className="text-[11px] text-muted-foreground">{s.class} · {s.roll}</p>
-                <VFButton size="sm" variant="ghost" className="mt-3 w-full" leftIcon={<Eye className="h-3.5 w-3.5" />}>
-                  View Student 360° Profile
-                </VFButton>
-              </VFCard>
-            ))}
-          </div>
+          <VFDataTable columns={studentColumns} data={studentData} filterPlaceholder="Search student name, roll no, or admission no..." />
         </div>
       ),
     },
@@ -79,7 +77,7 @@ function StudentsPage() {
               <p className="text-base font-bold text-foreground mt-1">Cleared (Term 1)</p>
             </div>
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
-              <span className="text-muted-foreground">Guardian Phone</span>
+              <span className="text-muted-foreground">Guardian Contact</span>
               <p className="text-base font-bold text-foreground mt-1">+91 98000 00000</p>
             </div>
           </div>
@@ -106,8 +104,48 @@ function StudentsPage() {
       ),
     },
     {
-      id: 'groups-houses',
-      label: 'Groups & Houses',
+      id: 'allocation',
+      label: 'Enrollment & Allocation',
+      icon: <Users className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Section, House & Roll Number Allocation">
+          <p className="text-xs text-muted-foreground">Assign students to sections (Sec A, B, C), roll numbers, houses, and student categories (RTE / Staff Ward / General).</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'documents',
+      label: 'Student Documents',
+      icon: <FileText className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Student Identity & Academic Document Vault">
+          <p className="text-xs text-muted-foreground">Birth certificates, Aadhaar / Passport copies, previous school TCs, marksheets, and medical fitness certificates.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'bulk-data',
+      label: 'Excel / CSV Bulk Import',
+      icon: <Upload className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Bulk Student Data Import & Updates">
+          <p className="text-xs text-muted-foreground">Upload Excel / CSV student spreadsheets, auto-validate data fields, and perform bulk section roll number updates.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'search-filter',
+      label: 'Smart Search & Filters',
+      icon: <Search className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Advanced Multi-Parametric Search Engine">
+          <p className="text-xs text-muted-foreground">Filter students by blood group, bus route stop, category, guardian phone number, or academic grade percentile.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'groups-categories',
+      label: 'Houses, Clubs & Groups',
       icon: <ShieldCheck className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="House Allocations & Student Clubs">
@@ -116,12 +154,32 @@ function StudentsPage() {
       ),
     },
     {
-      id: 'concessions',
+      id: 'scholarships',
       label: 'Scholarships & Concessions',
       icon: <Award className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Scholarship Awards & Fee Concession Records">
           <p className="text-xs text-muted-foreground">Manage merit-based scholarships, financial aid concessions, and staff child fee exemptions.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'timeline',
+      label: 'Student Timeline & History',
+      icon: <History className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Multi-Year Student Timeline & Activity Logs">
+          <p className="text-xs text-muted-foreground">Chronological timeline of academic term results, attendance records, disciplinary notices, and fee receipts.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'status-mgmt',
+      label: 'Status Management',
+      icon: <AlertOctagon className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Student Status Control (Active / Blocked / Archived)">
+          <p className="text-xs text-muted-foreground">Manage active student enrollment, block access for TC withdrawal candidates, and archive graduated alumni profiles.</p>
         </VFCard>
       ),
     },

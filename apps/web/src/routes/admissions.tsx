@@ -6,6 +6,7 @@ import {
   VFStatCard,
   VFDataTable,
   VFButton,
+  VFCard,
   VFInput,
   VFSelect,
   VFDatePicker,
@@ -696,11 +697,14 @@ function AdmissionsPage() {
       {/* Admissions Submodule Tab Bar */}
       <VFTabs 
         items={[
-          { id: 'applications', label: 'Applications Queue', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
-          { id: 'enquiries', label: 'Parent Enquiries & Leads', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Parent Leads & Enquiry Qualification CRM</div> },
-          { id: 'ocr-verify', label: 'OCR Document Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Batch Scanned Document OCR & Transcript Verification</div> },
-          { id: 'merit-list', label: 'Entrance Tests & Merit List', icon: <Sparkles className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Entrance Examination Results & Merit Rank Allocations</div> },
-          { id: 'scholar-no', label: 'Scholar No. & Allocator', icon: <Plus className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Automated Scholar Numbering & Section Allocation Engine</div> },
+          { id: 'enquiries', label: 'Admission Enquiries', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <VFCard title="Walk-in, Phone & Online Enquiry Registration"><p className="text-xs text-muted-foreground">Register parent enquiries, record candidate details, and schedule campus tours.</p></VFCard> },
+          { id: 'admission-crm', label: 'Admission CRM & Leads', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <VFCard title="Lead Pipeline & Parent Follow-ups"><p className="text-xs text-muted-foreground">Track lead stages (New ➔ Contacted ➔ Tour Completed ➔ Application Submitted), lead sources, and automated WhatsApp reminders.</p></VFCard> },
+          { id: 'admission-forms', label: 'Admission Form Builder', icon: <FileText className="h-3.5 w-3.5" />, content: <VFCard title="Online & Offline Form Configuration"><p className="text-xs text-muted-foreground">Configure online registration forms, custom input fields, and fee payment steps.</p></VFCard> },
+          { id: 'applications', label: 'Application Queue', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
+          { id: 'assessment', label: 'Entrance Tests & Interviews', icon: <Sparkles className="h-3.5 w-3.5" />, content: <VFCard title="Admission Assessment & Merit Scoring"><p className="text-xs text-muted-foreground">Schedule written entrance tests, record principal interview scores, and generate merit lists.</p></VFCard> },
+          { id: 'admission-docs', label: 'Document Verification & OCR', icon: <FileCheck className="h-3.5 w-3.5" />, content: <VFCard title="Document Verification & Missing Document Tracker"><p className="text-xs text-muted-foreground">Automated OCR verification of birth certificates, transfer certificates (TC), and marksheets.</p></VFCard> },
+          { id: 'enrollment', label: 'Enrollment & Scholar Allocation', icon: <Plus className="h-3.5 w-3.5" />, content: <VFCard title="Final Admission Approval & Scholar ID Generation"><p className="text-xs text-muted-foreground">Approve admissions, auto-assign scholar numbers, allocate class sections, and issue student profiles.</p></VFCard> },
+          { id: 'admission-analytics', label: 'Admission Funnel Analytics', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <VFCard title="Enquiry Conversion & Source Performance"><p className="text-xs text-muted-foreground">Analyze enquiry-to-admission conversion rates, campaign ROI, and grade-wise seat intake forecasting.</p></VFCard> },
         ]}
         defaultTabId="applications"
         variant="top-bar"

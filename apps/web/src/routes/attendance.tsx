@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { VFPageContainer, VFTabs, VFCard, VFBadge } from '@vidyamaxx/ui';
-import { CalendarCheck, Users, QrCode, FileCheck, Sparkles, Bot } from 'lucide-react';
+import { CalendarCheck, Users, QrCode, FileCheck, Sparkles, Bot, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export const Route = createFileRoute('/attendance')({
   component: AttendancePage,
@@ -13,51 +13,81 @@ function AttendancePage() {
   const submoduleTabs = [
     {
       id: 'student-attendance',
-      label: 'Daily Student Attendance',
+      label: 'Student Attendance',
       icon: <CalendarCheck className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Class-Wise Daily Attendance Matrix">
-          <p className="text-xs text-muted-foreground">Mark daily or period-wise student attendance, record late arrivals, and trigger instant parent alerts.</p>
+        <VFCard title="Class Daily Attendance Matrix">
+          <p className="text-xs text-muted-foreground">Mark daily morning student attendance, record late arrivals, and send instant parent SMS/WhatsApp alerts.</p>
         </VFCard>
       ),
     },
     {
-      id: 'staff-attendance',
-      label: 'Staff Check-in / Out',
+      id: 'period-attendance',
+      label: 'Period-wise Attendance',
+      icon: <Clock className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Subject / Period-wise Attendance Tracker">
+          <p className="text-xs text-muted-foreground">Subject teachers mark attendance for each 45-minute period to catch bunking or class skips.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'employee-attendance',
+      label: 'Employee Attendance',
       icon: <Users className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Employee Attendance & Shift Hours">
-          <p className="text-xs text-muted-foreground">Track teacher check-in times, overtime, early departures, and monthly working hours.</p>
+        <VFCard title="Staff & Teacher Check-in / Out Log">
+          <p className="text-xs text-muted-foreground">Track employee shift hours, biometric arrival timestamps, early departures, and monthly working days.</p>
         </VFCard>
       ),
     },
     {
-      id: 'biometric-qr',
-      label: 'Biometric & QR Scan Logs',
+      id: 'biometric-device',
+      label: 'Biometric & QR Scanners',
       icon: <QrCode className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Biometric Device & Face Scanner Live Sync">
-          <p className="text-xs text-muted-foreground">Real-time attendance logs synced directly from campus hardware scanners and RFID gates.</p>
+        <VFCard title="Biometric, RFID Gate & QR Device Sync">
+          <p className="text-xs text-muted-foreground">Real-time attendance logs synced directly from campus hardware scanners and RFID entrance turnstiles.</p>
         </VFCard>
       ),
     },
     {
-      id: 'leave-approvals',
-      label: 'Leave Requests & Approvals',
+      id: 'leave-mgmt',
+      label: 'Leave Management',
       icon: <FileCheck className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Student & Employee Leave Management">
-          <p className="text-xs text-muted-foreground">Process leave applications, medical certificates, and principal approval workflows.</p>
+        <VFCard title="Student & Employee Leave Applications">
+          <p className="text-xs text-muted-foreground">Process leave requests, medical certificate attachments, and multi-level principal/HOD approval workflows.</p>
         </VFCard>
       ),
     },
     {
-      id: 'ai-anomaly',
-      label: 'AI Anomaly Risk',
+      id: 'attendance-corrections',
+      label: 'Attendance Corrections',
+      icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Attendance Correction & Manual Adjustments">
+          <p className="text-xs text-muted-foreground">Correct accidental marking errors, approve medical duty leaves (OD), and update official records.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'rules-policies',
+      label: 'Rules & Policies',
+      icon: <ShieldCheck className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Attendance Rules & Late Mark Policies">
+          <p className="text-xs text-muted-foreground">Set mandatory 75% board exam attendance criteria, late arrival penalty rules, and half-day thresholds.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'analytics-alerts',
+      label: 'AI Chronic Absenteeism Alerts',
       icon: <Sparkles className="h-3.5 w-3.5 text-primary" />,
       content: (
-        <div className="bg-primary/5 border border-primary/20 p-6 rounded-xl space-y-3">
-          <div className="flex items-center gap-2 text-primary font-bold">
+        <div className="bg-card border border-border p-6 rounded-xl space-y-4">
+          <div className="flex items-center gap-2 text-primary font-bold text-sm">
             <Bot className="h-5 w-5" />
             <span>VidyaFlow AI Chronic Absenteeism Risk Detector</span>
           </div>

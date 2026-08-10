@@ -1,89 +1,110 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
-import { QrCode, FileText, Award, Upload, Sparkles, Bot, Printer } from 'lucide-react';
+import { VFPageContainer, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
+import { CreditCard, FileText, Award, FileCheck, ShieldCheck, Palette, CheckCircle2, Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/documents')({
   component: DocumentsPage,
 });
 
 function DocumentsPage() {
-  const [activeSubmodule, setActiveSubmodule] = React.useState('cardflow-id-studio');
+  const [activeSubmodule, setActiveSubmodule] = React.useState('id-card-mgmt');
 
   const submoduleTabs = [
     {
-      id: 'cardflow-id-studio',
-      label: 'CardFlow / GenXID Studio',
-      icon: <QrCode className="h-3.5 w-3.5" />,
+      id: 'id-card-mgmt',
+      label: 'CardFlow ID Studio',
+      icon: <CreditCard className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
-          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl">
+          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">CardFlow / GenXID ID Card Designer</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Generate Student IDs, Staff IDs, Visitor Passes, and Bus Passes with QR codes.</p>
+              <h3 className="text-sm font-bold text-foreground">GenXID Studio · Batch Smart ID Card Printing</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">High-resolution PVC card rendering, QR code embedding, and RFID chip encoding.</p>
             </div>
-            <VFButton size="sm" leftIcon={<Printer className="h-3.5 w-3.5" />}>Bulk Print ID Cards</VFButton>
+            <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Batch Print ID Cards</VFButton>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { type: 'Student ID Card', name: 'Aditya Verma', role: 'Class 9 - Sec A', idNo: 'STU-2026-091' },
-              { type: 'Employee ID Card', name: 'Dr. Sarah Connor', role: 'Senior Physics HOD', idNo: 'EMP-2026-012' },
-              { type: 'Bus Travel Pass', name: 'Rohan Sharma', role: 'Route 3 - South Campus', idNo: 'BUS-2026-441' },
-            ].map((card, i) => (
-              <div key={i} className="p-4 bg-gradient-to-br from-card to-muted/40 border border-border/80 rounded-xl space-y-3 relative overflow-hidden shadow-xs">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{card.type}</span>
-                  <QrCode className="h-5 w-5 text-foreground/80" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-black text-foreground">{card.name}</h4>
-                  <p className="text-xs text-muted-foreground">{card.role}</p>
-                  <p className="text-[11px] font-mono text-primary mt-1">{card.idNo}</p>
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 bg-card border border-border rounded-xl space-y-2">
+              <span className="text-xs font-bold text-primary">Student Smart ID Layout</span>
+              <p className="text-xs text-muted-foreground">Class 9 - Sec A Template · Front Photo + Emergency Contact QR Code + Barcode.</p>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-xl space-y-2">
+              <span className="text-xs font-bold text-primary">Staff & Visitor Badge Layout</span>
+              <p className="text-xs text-muted-foreground">Faculty Badge Template · RFID Smart Access Chip + Blood Group Badge.</p>
+            </div>
           </div>
         </div>
+      ),
+    },
+    {
+      id: 'document-mgmt',
+      label: 'Document Vault',
+      icon: <FileText className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Institutional Document Vault & Archival System">
+          <p className="text-xs text-muted-foreground">Store scanned birth certificates, marksheets, board affiliation letters, and land lease agreements with encryption.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'certificate-mgmt',
+      label: 'Certificate Engine',
+      icon: <Award className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Automated Certificate Generator Engine">
+          <p className="text-xs text-muted-foreground">Generate sports merit certificates, academic excellence awards, and extra-curricular participation certificates.</p>
+        </VFCard>
       ),
     },
     {
       id: 'transfer-certificate',
       label: 'Transfer Certificate (TC)',
-      icon: <FileText className="h-3.5 w-3.5" />,
+      icon: <FileCheck className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Transfer Certificate (TC) Serial Workflow">
-          <p className="text-xs text-muted-foreground">Automated TC serial numbering, library/fee clearance checks, board verification, and auto-archival.</p>
+        <VFCard title="Transfer Certificate (TC) Issuance & No Dues Approval">
+          <p className="text-xs text-muted-foreground">Process TC requests, verify No Dues clearance from Fee/Library/Sports, and issue counter-signed TC with serial tracking.</p>
         </VFCard>
       ),
     },
     {
-      id: 'certificates',
-      label: 'Bonafide & Character Certs',
+      id: 'bonafide-character',
+      label: 'Bonafide & Character',
       icon: <Award className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Bonafide, Conduct & Experience Certificates">
-          <p className="text-xs text-muted-foreground">Print official school bonafide certificates, conduct certificates, and staff experience letters.</p>
+        <VFCard title="Bonafide Student & Conduct Certificates">
+          <p className="text-xs text-muted-foreground">Instant 1-click issuance of Bonafide Study Certificates for passport/bank accounts and Character Conduct Certificates.</p>
         </VFCard>
       ),
     },
     {
-      id: 'ocr-document-hub',
-      label: 'AI OCR Scanned Document Hub',
-      icon: <Sparkles className="h-3.5 w-3.5 text-primary" />,
+      id: 'employee-certificates',
+      label: 'Employee Certificates',
+      icon: <ShieldCheck className="h-3.5 w-3.5" />,
       content: (
-        <div className="bg-card border border-border/80 p-6 rounded-xl space-y-4">
-          <div className="flex items-center gap-2 text-primary font-bold text-sm">
-            <Bot className="h-5 w-5" />
-            <span>VidyaFlow Batch OCR Scanned Document Extractor</span>
-          </div>
-          <p className="text-xs text-muted-foreground">Upload 500 scanned admission forms. AI detects student photos, extracts fields, matches documents, and flags errors.</p>
-          <div className="border-2 border-dashed border-border/80 p-6 rounded-xl text-center space-y-2 cursor-pointer bg-muted/20 hover:border-primary/50 transition-colors">
-            <Upload className="h-8 w-8 text-primary/60 mx-auto" />
-            <p className="text-xs font-semibold text-foreground">Drop scanned batch files or PDF bundles here</p>
-            <VFBadge variant="outline">Supported: PDF, PNG, JPEG, TIFF</VFBadge>
-          </div>
-        </div>
+        <VFCard title="Staff Experience & Relieving Certificates">
+          <p className="text-xs text-muted-foreground">Generate teaching experience certificates, service tenure letters, and NOC certificates for staff members.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'template-designer',
+      label: 'Template Designer Studio',
+      icon: <Palette className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Visual Drag-and-Drop Certificate & ID Template Studio">
+          <p className="text-xs text-muted-foreground">Design custom certificate layouts, add school crest logos, signature blocks, and background watermarks.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'digital-signature',
+      label: 'Verification & Digital Signature',
+      icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Digital Signature & Public QR Document Verification">
+          <p className="text-xs text-muted-foreground">Embed tamper-proof cryptographic QR codes on issued TCs and certificates for instant public online verification.</p>
+        </VFCard>
       ),
     },
   ];

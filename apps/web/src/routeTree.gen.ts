@@ -28,6 +28,7 @@ import { Route as CommunicationRouteImport } from './routes/communication'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
+import { Route as AccountingRouteImport } from './routes/accounting'
 import { Route as AcademicsRouteImport } from './routes/academics'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -126,6 +127,11 @@ const AdmissionsRoute = AdmissionsRouteImport.update({
   path: '/admissions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountingRoute = AccountingRouteImport.update({
+  id: '/accounting',
+  path: '/accounting',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcademicsRoute = AcademicsRouteImport.update({
   id: '/academics',
   path: '/academics',
@@ -140,6 +146,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
+  '/accounting': typeof AccountingRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
+  '/accounting': typeof AccountingRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
+  '/accounting': typeof AccountingRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/academics'
+    | '/accounting'
     | '/admissions'
     | '/ai'
     | '/attendance'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/academics'
+    | '/accounting'
     | '/admissions'
     | '/ai'
     | '/attendance'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/academics'
+    | '/accounting'
     | '/admissions'
     | '/ai'
     | '/attendance'
@@ -282,6 +294,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AcademicsRoute: typeof AcademicsRoute
+  AccountingRoute: typeof AccountingRoute
   AdmissionsRoute: typeof AdmissionsRoute
   AiRoute: typeof AiRoute
   AttendanceRoute: typeof AttendanceRoute
@@ -438,6 +451,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/accounting': {
+      id: '/accounting'
+      path: '/accounting'
+      fullPath: '/accounting'
+      preLoaderRoute: typeof AccountingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/academics': {
       id: '/academics'
       path: '/academics'
@@ -458,6 +478,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AcademicsRoute: AcademicsRoute,
+  AccountingRoute: AccountingRoute,
   AdmissionsRoute: AdmissionsRoute,
   AiRoute: AiRoute,
   AttendanceRoute: AttendanceRoute,

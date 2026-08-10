@@ -1,67 +1,106 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFTabs, VFCard, VFBadge, VFButton } from '@vidyamaxx/ui';
-import { Bus, MapPin, CreditCard, Sparkles, Bot } from 'lucide-react';
+import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge, VFDataTable } from '@vidyamaxx/ui';
+import { Bus, MapPin, Users, Navigation, Wrench, Plus, Eye } from 'lucide-react';
 
 export const Route = createFileRoute('/transport')({
   component: TransportPage,
 });
 
 function TransportPage() {
-  const [activeSubmodule, setActiveSubmodule] = React.useState('fleet-drivers');
+  const [activeSubmodule, setActiveSubmodule] = React.useState('vehicle-mgmt');
+
+  const busData = [
+    { busNo: 'BUS-01 (DL-01-AB-1234)', route: 'Route 101 - North Suburbs', driver: 'Ramesh Kumar (+91 98111 22233)', capacity: '52 Seats', status: 'On Route (Live)' },
+    { busNo: 'BUS-02 (DL-01-CD-5678)', route: 'Route 102 - West Avenue', driver: 'Suresh Pal (+91 98222 33344)', capacity: '52 Seats', status: 'On Route (Live)' },
+    { busNo: 'BUS-03 (DL-01-EF-9012)', route: 'Route 103 - South Ring', driver: 'Mahesh Singh (+91 98333 44455)', capacity: '40 Seats', status: 'In Depot' },
+  ];
+
+  const busColumns = [
+    { header: 'Bus Vehicle No', accessorKey: 'busNo', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.busNo}</span> },
+    { header: 'Assigned Route', accessorKey: 'route' },
+    { header: 'Driver & Contact', accessorKey: 'driver' },
+    { header: 'Capacity', accessorKey: 'capacity' },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status.includes('Live') ? 'success' : 'outline'}>{r.status}</VFBadge> },
+    { header: 'Action', accessorKey: 'action', cell: () => <VFButton size="sm" variant="outline" leftIcon={<Eye className="h-3.5 w-3.5" />}>Live GPS Map</VFButton> },
+  ];
 
   const submoduleTabs = [
     {
-      id: 'fleet-drivers',
-      label: 'Vehicles & Drivers',
+      id: 'vehicle-mgmt',
+      label: 'Vehicle Fleet',
       icon: <Bus className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="School Bus Fleet & Driver Registry">
-          <p className="text-xs text-muted-foreground">Manage bus license numbers, conductor details, insurance certificates, pollution checks, and fuel logs.</p>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
+            <div>
+              <h3 className="text-sm font-bold text-foreground">School Bus Fleet & Transport Vehicles</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Manage school buses, vans, seat capacities, and fitness certificates.</p>
+            </div>
+            <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Bus Vehicle</VFButton>
+          </div>
+          <VFDataTable columns={busColumns} data={busData} filterPlaceholder="Search bus vehicle, route, or driver..." />
+        </div>
+      ),
+    },
+    {
+      id: 'route-mgmt',
+      label: 'Route Mapping',
+      icon: <Navigation className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Transport Routes & Morning/Evening Shifts">
+          <p className="text-xs text-muted-foreground">Configure morning pickup routes, afternoon drop routes, total distance kilometers, and monthly fare slabs.</p>
         </VFCard>
       ),
     },
     {
-      id: 'routes-stops',
-      label: 'Routes & Stops',
+      id: 'bus-stops',
+      label: 'Bus Stop Management',
       icon: <MapPin className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Bus Routes & Designated Pickup Stops">
-          <p className="text-xs text-muted-foreground">Define morning and evening route maps, pickup stop timings, and stop-wise fee structures.</p>
+        <VFCard title="Bus Stop Registry & Pickup Timings">
+          <p className="text-xs text-muted-foreground">Add bus stops, set GPS coordinates, expected morning arrival times, and assigned monthly transport fee.</p>
         </VFCard>
       ),
     },
     {
-      id: 'bus-passes',
-      label: 'Bus Passes & Allocations',
-      icon: <CreditCard className="h-3.5 w-3.5" />,
+      id: 'transport-allocation',
+      label: 'Student Transport Allocation',
+      icon: <Users className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Student Bus Pass Issuance">
-          <p className="text-xs text-muted-foreground">Allocate bus seats to students and staff, issue digital QR bus passes, and track transport fee payments.</p>
+        <VFCard title="Student & Staff Transport Allocation">
+          <p className="text-xs text-muted-foreground">Assign students and teachers to specific bus routes, stops, and issue electronic bus travel cards.</p>
         </VFCard>
       ),
     },
     {
-      id: 'ai-gps-optimizer',
-      label: 'Live GPS & AI Route Optimizer',
-      icon: <Sparkles className="h-3.5 w-3.5 text-primary" />,
+      id: 'crew-mgmt',
+      label: 'Driver & Conductor Registry',
+      icon: <Users className="h-3.5 w-3.5" />,
       content: (
-        <div className="bg-card border border-border/80 p-6 rounded-xl space-y-4">
-          <div className="flex items-center gap-2 text-primary font-bold text-sm">
-            <Bot className="h-5 w-5" />
-            <span>VidyaFlow AI Fleet Route & Pickup Time Optimizer</span>
-          </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            AI optimizes bus routes considering student home addresses, bus seating capacity, morning traffic congestion, and shortest travel distance.
-          </p>
-          <div className="flex gap-2">
-            <VFBadge variant="success">Real-Time GPS Sync Active</VFBadge>
-            <VFBadge variant="outline">12 Active Buses En Route</VFBadge>
-          </div>
-          <VFButton size="sm" leftIcon={<Sparkles className="h-3.5 w-3.5" />}>
-            Optimize Fleet Routes
-          </VFButton>
-        </div>
+        <VFCard title="Bus Driver & Conductor Profiles">
+          <p className="text-xs text-muted-foreground">Store heavy vehicle driving licenses, police verification certificates, and contact emergency numbers.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'gps-tracking',
+      label: 'Live GPS Tracking',
+      icon: <Navigation className="h-3.5 w-3.5 text-primary" />,
+      content: (
+        <VFCard title="Real-Time Bus Location & Geo-Fencing Map">
+          <p className="text-xs text-muted-foreground">Live GPS map tracking for parents, speed limit breach alerts, and automatic bus approaching SMS alerts.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'compliance',
+      label: 'Maintenance & Compliance',
+      icon: <Wrench className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Vehicle Maintenance, Service & Insurance Compliance">
+          <p className="text-xs text-muted-foreground">Track oil change schedules, tire replacements, pollution (PUC) certificates, and RTO vehicle insurance renewals.</p>
+        </VFCard>
       ),
     },
   ];

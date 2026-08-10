@@ -1,80 +1,118 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
-import { Settings, Building, ShieldCheck, Sliders, History, Plus } from 'lucide-react';
+import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge, VFDataTable } from '@vidyamaxx/ui';
+import { Building, Calendar, Settings, Layers, CalendarCheck, ShieldCheck, CheckCircle2, History, Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
 });
 
 function SettingsPage() {
-  const [activeSubmodule, setActiveSubmodule] = React.useState('school-campuses');
+  const [activeSubmodule, setActiveSubmodule] = React.useState('school-org');
+
+  const campusData = [
+    { code: 'CAMPUS-01', name: 'VidyaMaxx Main Campus - New Delhi', type: 'Primary Branch', students: '2,480 Students', staff: '164 Staff', status: 'Active' },
+    { code: 'CAMPUS-02', name: 'VidyaMaxx North Suburbs Branch', type: 'Regional Campus', students: '1,120 Students', staff: '78 Staff', status: 'Active' },
+  ];
+
+  const campusColumns = [
+    { header: 'Branch Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: 'Campus Name', accessorKey: 'name' },
+    { header: 'Type', accessorKey: 'type' },
+    { header: 'Student Enrolled', accessorKey: 'students' },
+    { header: 'Active Staff', accessorKey: 'staff' },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
+  ];
 
   const submoduleTabs = [
     {
-      id: 'school-campuses',
-      label: 'School Profile & Campuses',
+      id: 'school-org',
+      label: 'School & Organization',
       icon: <Building className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
-          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl">
+          <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Multi-Campus / Branch Configuration</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Manage school organization settings, branch details, and main campus parameters.</p>
+              <h3 className="text-sm font-bold text-foreground">Multi-Campus & Branch Profile Management</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">School identity, logo branding, affiliation codes, and regional branch profiles.</p>
             </div>
             <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Campus Branch</VFButton>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <VFCard title="VidyaMaxx Main Campus - New Delhi">
-              <p className="text-xs text-muted-foreground">Code: CAMPUS-01 · 2,480 Active Students · 164 Staff Members</p>
-              <VFBadge variant="success" className="mt-2">Primary Branch</VFBadge>
-            </VFCard>
-            <VFCard title="VidyaMaxx North Suburbs Branch">
-              <p className="text-xs text-muted-foreground">Code: CAMPUS-02 · 1,120 Active Students · 78 Staff Members</p>
-              <VFBadge variant="outline" className="mt-2">Regional Campus</VFBadge>
-            </VFCard>
-          </div>
+          <VFDataTable columns={campusColumns} data={campusData} filterPlaceholder="Search branch code or campus..." />
         </div>
       ),
     },
     {
-      id: 'sessions-classes',
-      label: 'Academic Sessions & Classes',
+      id: 'academic-sessions',
+      label: 'Academic Sessions',
+      icon: <Calendar className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Academic Years, Session Rollover & Locking">
+          <p className="text-xs text-muted-foreground mb-3">Active Session: 2026-2027 (Starts April 01 ➔ Ends March 31). Historical sessions: 2025-2026 [Locked], 2024-2025 [Archived].</p>
+          <div className="flex gap-2">
+            <VFBadge variant="success">Active Session: 2026-2027</VFBadge>
+            <VFBadge variant="outline">Rollover Wizard Ready</VFBadge>
+          </div>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'classes-sections',
+      label: 'Classes & Sections',
       icon: <Settings className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Academic Years, Session Periods, Classes & Sections">
-          <p className="text-xs text-muted-foreground">Configure active academic session (2026-2027), class definitions (Nursery to Class 12), and section allocations.</p>
+        <VFCard title="Class Definition & Section Allocation">
+          <p className="text-xs text-muted-foreground">Manage grade structures (Nursery through Grade 12), section limits (Sec A, B, C), and max class capacities.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'dept-structure',
+      label: 'Departments & Wings',
+      icon: <Layers className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Organizational Departments, Wings & Houses">
+          <p className="text-xs text-muted-foreground">Primary Wing, Senior Secondary Wing, Science Department, Humanities Department, and Red/Blue/Green Houses.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'academic-calendar',
+      label: 'Academic Calendar',
+      icon: <CalendarCheck className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="School Calendar, Holidays & Working Days">
+          <p className="text-xs text-muted-foreground">Set official 220 working days, national gazetted holidays, term exam windows, and annual sports days.</p>
         </VFCard>
       ),
     },
     {
       id: 'roles-permissions',
-      label: 'Roles & RBAC Permissions',
+      label: 'Roles & Permissions',
       icon: <ShieldCheck className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Role-Based Access Control (RBAC) & User Management">
-          <p className="text-xs text-muted-foreground">Define custom user roles (Super Admin, Principal, Vice Principal, Accountant, Teacher, Librarian, Parent) and permission matrices.</p>
+        <VFCard title="Role-Based Access Control (RBAC)">
+          <p className="text-xs text-muted-foreground">Configure permission matrices for Super Admin, Principal, Vice Principal, Accountant, Teacher, Librarian, and Parent roles.</p>
         </VFCard>
       ),
     },
     {
-      id: 'custom-fields',
-      label: 'Custom Fields Engine',
-      icon: <Sliders className="h-3.5 w-3.5" />,
+      id: 'approval-workflows',
+      label: 'Approval Workflows',
+      icon: <CheckCircle2 className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Dynamic Custom Attributes & Dynamic Forms">
-          <p className="text-xs text-muted-foreground">Add custom input fields (EAV) to Student profiles, Employee records, and Admission forms without code changes.</p>
+        <VFCard title="Multi-Level Approval Rules & Escalation">
+          <p className="text-xs text-muted-foreground">Fee waiver approval chain, purchase request escalation rules, and employee leave multi-level signoffs.</p>
         </VFCard>
       ),
     },
     {
-      id: 'audit-logs',
-      label: 'Audit Logs & Security',
+      id: 'school-config',
+      label: 'School Config & Audit Logs',
       icon: <History className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="System Activity Audit Trails & Data Security">
-          <p className="text-xs text-muted-foreground">Immutable audit logs tracking user logins, data edits, fee receipts issued, and data export activity.</p>
+        <VFCard title="System Configuration, Custom Fields & Audit Trails">
+          <p className="text-xs text-muted-foreground">System numbering formats, custom profile attributes (EAV), and immutable security audit log streams.</p>
         </VFCard>
       ),
     },

@@ -1,14 +1,14 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge, VFDataTable } from '@vidyamaxx/ui';
-import { Package, Boxes, ShoppingCart, Truck, Plus, ArrowRight } from 'lucide-react';
+import { Package, Boxes, ShoppingCart, Truck, Plus, ArrowRight, Wrench, Trash2 } from 'lucide-react';
 
 export const Route = createFileRoute('/inventory')({
   component: InventoryPage,
 });
 
 function InventoryPage() {
-  const [activeSubmodule, setActiveSubmodule] = React.useState('consumables');
+  const [activeSubmodule, setActiveSubmodule] = React.useState('inventory-stores');
 
   const assetData = [
     { assetTag: 'AST-2026-001', name: 'Dell OptiPlex 7090 Desktop', location: 'Comp Lab 01', amcStatus: 'Active AMC', expiry: '15 Dec 2027' },
@@ -17,86 +17,63 @@ function InventoryPage() {
   ];
 
   const assetColumns = [
-    { header: 'Asset Tag', accessorKey: 'assetTag' },
+    { header: 'Asset Tag', accessorKey: 'assetTag', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.assetTag}</span> },
     { header: 'Asset Description', accessorKey: 'name' },
     { header: 'Location', accessorKey: 'location' },
-    {
-      header: 'AMC Status',
-      accessorKey: 'amcStatus',
-      cell: (row: any) => (
-        <VFBadge variant={row.amcStatus.includes('Active') ? 'success' : 'warning'}>
-          {row.amcStatus}
-        </VFBadge>
-      ),
-    },
+    { header: 'AMC Status', accessorKey: 'amcStatus', cell: (r: any) => <VFBadge variant={r.amcStatus.includes('Active') ? 'success' : 'warning'}>{r.amcStatus}</VFBadge> },
     { header: 'AMC Expiry', accessorKey: 'expiry' },
-  ];
-
-  const vendorData = [
-    { name: 'Apex Stationery & Press', category: 'Paper & Printing', rating: '4.9 ★', poCount: '42 POs', status: 'Approved' },
-    { name: 'Micro Tech Solutions', category: 'IT Hardware & AMC', rating: '4.8 ★', poCount: '18 POs', status: 'Approved' },
-    { name: 'Neelkamal Science Supplies', category: 'Lab Reagents', rating: '4.7 ★', poCount: '25 POs', status: 'Approved' },
-  ];
-
-  const vendorColumns = [
-    { header: 'Vendor Name', accessorKey: 'name' },
-    { header: 'Supply Category', accessorKey: 'category' },
-    { header: 'Rating Score', accessorKey: 'rating' },
-    { header: 'Historical POs', accessorKey: 'poCount' },
-    {
-      header: 'Status',
-      accessorKey: 'status',
-      cell: () => <VFBadge variant="success">Empanelled Vendor</VFBadge>,
-    },
   ];
 
   const submoduleTabs = [
     {
-      id: 'consumables',
-      label: 'Consumables & Store',
+      id: 'inventory-stores',
+      label: 'Stores & Central Stock',
       icon: <Package className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
           <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
             <div>
-              <h3 className="text-sm font-bold text-foreground">Store Consumables & Stock Inventory</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Stationery, lab reagents, uniforms, sports goods, and cleaning supplies.</p>
+              <h3 className="text-sm font-bold text-foreground">Central School Store & Consumables</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Stationery, printing paper, lab chemicals, sports gear, and uniform stocks.</p>
             </div>
             <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Stock Item</VFButton>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { item: 'A4 Printing Paper (Rim)', cat: 'Stationery', stock: '142 Rims', status: 'In Stock', minReq: '50 Rims' },
-              { item: 'Chemistry Titration Reagent', cat: 'Lab Supplies', stock: '12 Bottles', status: 'Low Stock', minReq: '25 Bottles' },
-              { item: 'Football & Sports Kit', cat: 'Sports', stock: '45 Sets', status: 'In Stock', minReq: '15 Sets' },
-            ].map((st, i) => (
-              <VFCard key={i}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-foreground">{st.item}</span>
-                  <VFBadge variant={st.status === 'Low Stock' ? 'warning' : 'success'}>{st.status}</VFBadge>
-                </div>
-                <p className="text-[11px] text-muted-foreground">Category: {st.cat} · Minimum Threshold: {st.minReq}</p>
-                <div className="mt-3 flex justify-between items-center border-t border-border/60 pt-2">
-                  <span className="text-xs font-bold text-primary">Qty: {st.stock}</span>
-                  <VFButton size="sm" variant="outline">Reorder Item</VFButton>
-                </div>
-              </VFCard>
-            ))}
-          </div>
+          <VFCard title="Stock Items Summary">
+            <p className="text-xs text-muted-foreground">142 Rims A4 Paper (In Stock) · 12 Bottles Titration Reagents (Low Stock) · 45 Sets Football Kits (In Stock).</p>
+          </VFCard>
         </div>
       ),
     },
     {
-      id: 'fixed-assets',
-      label: 'Fixed Assets & AMC',
+      id: 'item-catalogue',
+      label: 'Item Master Catalogue',
+      icon: <Package className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Inventory Item Master Catalog & Unit Categories">
+          <p className="text-xs text-muted-foreground">Categorize items into Stationery, IT Hardware, Lab Consumables, Furniture, and Cleaning Supplies.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'stock-mgmt',
+      label: 'Stock Inward / Outward',
+      icon: <Boxes className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Stock Adjustments, Issuance Vouchers & Return Logs">
+          <p className="text-xs text-muted-foreground">Issue stationery to staff departments, log lab chemical consumption, and record stock returns.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'asset-mgmt',
+      label: 'Fixed Assets Registry',
       icon: <Boxes className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
           <div className="bg-card border border-border p-4 rounded-xl flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-foreground">School Fixed Assets & Maintenance Contracts</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Track IT Desktops, Smart Boards, AC Units, Furniture, and AMC warranty renewals.</p>
+              <h3 className="text-sm font-bold text-foreground">Fixed Assets & Equipment Tagging</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Computers, Smart Interactive Boards, AC Units, Laboratory Instruments, and Auditorium Projectors.</p>
             </div>
             <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Register Asset</VFButton>
           </div>
@@ -106,10 +83,10 @@ function InventoryPage() {
     },
     {
       id: 'procurement',
-      label: 'Procurement Workflow',
+      label: 'Purchase Requests (PR)',
       icon: <ShoppingCart className="h-3.5 w-3.5" />,
       content: (
-        <VFCard title="Purchase Request (PR) ➔ PO ➔ GRN Lifecycle Pipeline">
+        <VFCard title="Purchase Requisition Workflow (PR ➔ PO ➔ GRN)">
           <div className="flex items-center justify-between text-xs font-semibold py-4 overflow-x-auto gap-2">
             {['1. Requisition (PR)', '2. Approval Workflow', '3. Vendor Bidding', '4. Purchase Order (PO)', '5. Goods Received (GRN)', '6. Invoice Settled'].map((st, i) => (
               <React.Fragment key={st}>
@@ -124,20 +101,33 @@ function InventoryPage() {
       ),
     },
     {
-      id: 'vendors',
-      label: 'Vendor Registry',
+      id: 'vendor-quotations',
+      label: 'Vendor Quotations',
       icon: <Truck className="h-3.5 w-3.5" />,
       content: (
-        <div className="space-y-4">
-          <div className="bg-card border border-border p-4 rounded-xl flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-bold text-foreground">Empanelled School Vendors & Supplier Matrix</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Manage authorized suppliers, payment terms, and vendor performance ratings.</p>
-            </div>
-            <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Supplier</VFButton>
-          </div>
-          <VFDataTable columns={vendorColumns} data={vendorData} filterPlaceholder="Search vendor name or supply category..." />
-        </div>
+        <VFCard title="Vendor Bidding & Price Quotation Analysis">
+          <p className="text-xs text-muted-foreground">Compare vendor price quotes, delivery lead times, and payment credit terms.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'asset-maintenance',
+      label: 'Asset AMC & Maintenance',
+      icon: <Wrench className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Annual Maintenance Contracts (AMC) & Repair Logs">
+          <p className="text-xs text-muted-foreground">Schedule preventive IT hardware servicing, AC maintenance filter replacement, and track warranty claims.</p>
+        </VFCard>
+      ),
+    },
+    {
+      id: 'asset-disposal',
+      label: 'Depreciation & Disposal',
+      icon: <Trash2 className="h-3.5 w-3.5" />,
+      content: (
+        <VFCard title="Asset Depreciation & E-Waste Scrap Disposal">
+          <p className="text-xs text-muted-foreground">Calculate straight-line asset depreciation value, write off damaged furniture, and auction obsolete IT e-waste.</p>
+        </VFCard>
       ),
     },
   ];
