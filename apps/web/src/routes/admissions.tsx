@@ -9,8 +9,8 @@ import {
   VFCard,
   VFInput,
   VFSelect,
-  VFDatePicker,
   VFTabs,
+  VFBadge,
 } from '@vidyamaxx/ui';
 import {
   UserSquare,
@@ -24,11 +24,13 @@ import {
   Eye,
   FileText,
   X,
-  ArrowLeft,
-  Upload,
-  Check,
   Maximize2,
   Minimize2,
+  Phone,
+  Filter,
+  Check,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/admissions')({
@@ -51,661 +53,310 @@ interface Applicant {
 }
 
 const INITIAL_APPLICANTS: Applicant[] = [
-  {
-    id: '1',
-    applicantId: 'ADM-2026-001',
-    name: 'Aarav Sharma',
-    appliedGrade: 'Class 9',
-    previousSchool: 'Delhi Public School',
-    guardianName: 'Rajesh Sharma',
-    phone: '+91 98765 43210',
-    aiFitScore: 96,
-    ocrDocStatus: 'Verified',
-    aiRecommendation: 'Instant Admit',
-    stage: 'AI Screened',
-    appliedDate: '2026-08-08',
-  },
-  {
-    id: '2',
-    applicantId: 'ADM-2026-002',
-    name: 'Ananya Verma',
-    appliedGrade: 'Class 11-Sci',
-    previousSchool: 'St. Xavier High School',
-    guardianName: 'Sunita Verma',
-    phone: '+91 98123 45678',
-    aiFitScore: 89,
-    ocrDocStatus: 'Verified',
-    aiRecommendation: 'Schedule Interview',
-    stage: 'Interview',
-    appliedDate: '2026-08-09',
-  },
-  {
-    id: '3',
-    applicantId: 'ADM-2026-003',
-    name: 'Rohan Gupta',
-    appliedGrade: 'Class 6',
-    previousSchool: 'Modern School',
-    guardianName: 'Vikram Gupta',
-    phone: '+91 97654 32109',
-    aiFitScore: 64,
-    ocrDocStatus: 'Flagged',
-    aiRecommendation: 'Needs Review',
-    stage: 'Submitted',
-    appliedDate: '2026-08-09',
-  },
-  {
-    id: '4',
-    applicantId: 'ADM-2026-004',
-    name: 'Kavya Nair',
-    appliedGrade: 'Class 11-Com',
-    previousSchool: 'Kendriya Vidyalaya',
-    guardianName: 'Suresh Nair',
-    phone: '+91 99887 76655',
-    aiFitScore: 94,
-    ocrDocStatus: 'Verified',
-    aiRecommendation: 'Instant Admit',
-    stage: 'Approved',
-    appliedDate: '2026-08-07',
-  },
-  {
-    id: '5',
-    applicantId: 'ADM-2026-005',
-    name: 'Ishaan Deshmukh',
-    appliedGrade: 'Class 1',
-    previousSchool: 'Little Angels Nursery',
-    guardianName: 'Meera Deshmukh',
-    phone: '+91 91234 56789',
-    aiFitScore: 82,
-    ocrDocStatus: 'Pending',
-    aiRecommendation: 'Schedule Interview',
-    stage: 'Submitted',
-    appliedDate: '2026-08-10',
-  },
+  { id: '1', applicantId: 'ADM-2026-001', name: 'Aarav Sharma', appliedGrade: 'Class 9', previousSchool: 'Delhi Public School', guardianName: 'Rajesh Sharma', phone: '+91 98765 43210', aiFitScore: 96, ocrDocStatus: 'Verified', aiRecommendation: 'Instant Admit', stage: 'AI Screened', appliedDate: '2026-08-08' },
+  { id: '2', applicantId: 'ADM-2026-002', name: 'Ananya Verma', appliedGrade: 'Class 11-Sci', previousSchool: 'St. Xavier High School', guardianName: 'Sunita Verma', phone: '+91 98123 45678', aiFitScore: 89, ocrDocStatus: 'Verified', aiRecommendation: 'Schedule Interview', stage: 'Interview', appliedDate: '2026-08-09' },
+  { id: '3', applicantId: 'ADM-2026-003', name: 'Rohan Gupta', appliedGrade: 'Class 6', previousSchool: 'Modern School', guardianName: 'Vikram Gupta', phone: '+91 97654 32109', aiFitScore: 64, ocrDocStatus: 'Flagged', aiRecommendation: 'Needs Review', stage: 'Submitted', appliedDate: '2026-08-09' },
+  { id: '4', applicantId: 'ADM-2026-004', name: 'Kavya Nair', appliedGrade: 'Class 11-Com', previousSchool: 'Kendriya Vidyalaya', guardianName: 'Suresh Nair', phone: '+91 99887 76655', aiFitScore: 92, ocrDocStatus: 'Verified', aiRecommendation: 'Instant Admit', stage: 'Approved', appliedDate: '2026-08-07' },
+  { id: '5', applicantId: 'ADM-2026-005', name: 'Ishaan Malhotra', appliedGrade: 'Class 9', previousSchool: 'Ryan International', guardianName: 'Anil Malhotra', phone: '+91 98234 56789', aiFitScore: 48, ocrDocStatus: 'Pending', aiRecommendation: 'Needs Review', stage: 'Submitted', appliedDate: '2026-08-10' },
 ];
 
 function AdmissionsPage() {
-  const [applicants, setApplicants] = React.useState<Applicant[]>(INITIAL_APPLICANTS);
   const [selectedApplicant, setSelectedApplicant] = React.useState<Applicant | null>(null);
-  const [isFullScreenFormOpen, setIsFullScreenFormOpen] = React.useState(false);
-  const [filterStage, setFilterStage] = React.useState<string>('All');
-  const [notice, setNotice] = React.useState<string | null>(null);
-
-  // Resizable drawer state for Inspection
   const [inspectionWidth, setInspectionWidth] = React.useState(520);
   const [isDragging, setIsDragging] = React.useState(false);
+  const [activeStageFilter, setActiveStageFilter] = React.useState<string>('ALL');
 
-  // Resizer move effect
+  // Drag resizer handler
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
-      const maxAllowed = window.innerWidth * 0.5; // Max 50vw
-      const minAllowed = 400;
       const newWidth = window.innerWidth - e.clientX;
-      if (newWidth >= minAllowed && newWidth <= maxAllowed) {
+      if (newWidth > 380 && newWidth < 850) {
         setInspectionWidth(newWidth);
       }
     };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-      document.body.style.userSelect = 'auto';
-    };
-
+    const handleMouseUp = () => setIsDragging(false);
     if (isDragging) {
-      document.body.style.userSelect = 'none';
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
     }
     return () => {
-      document.body.style.userSelect = 'auto';
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging]);
 
-  // New Full Screen Form State
-  const [newForm, setNewForm] = React.useState({
-    name: '',
-    dob: '2012-05-14',
-    gender: 'Male',
-    bloodGroup: 'O+',
-    nationality: 'Indian',
-    primaryLang: 'English',
-    govtId: '',
-    appliedGrade: 'Class 9',
-    academicSession: '2026-2027',
-    previousSchool: '',
-    prevMarks: '92%',
-    tcNumber: '',
-    secondLang: 'Hindi',
-    fatherName: '',
-    motherName: '',
-    guardianName: '',
-    relation: 'Father',
-    phone: '',
-    email: '',
-    address: '123 Park Avenue, New Delhi',
-    transportRoute: 'No Transport',
-    hostelRequired: 'Day Scholar',
-    medicalNotes: 'None',
-    emergencyContact: '',
-  });
+  const filteredApplicants = activeStageFilter === 'ALL'
+    ? INITIAL_APPLICANTS
+    : INITIAL_APPLICANTS.filter(a => a.stage === activeStageFilter);
 
-  const handleCreateApplication = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newForm.name || !newForm.guardianName) return;
-
-    const calculatedScore = Math.floor(Math.random() * 25) + 75;
-    const newApplicant: Applicant = {
-      id: String(Date.now()),
-      applicantId: `ADM-2026-0${applicants.length + 1}`,
-      name: newForm.name,
-      appliedGrade: newForm.appliedGrade,
-      previousSchool: newForm.previousSchool || 'Greenwood International',
-      guardianName: newForm.guardianName,
-      phone: newForm.phone || '+91 99001 12233',
-      aiFitScore: calculatedScore,
-      ocrDocStatus: 'Verified',
-      aiRecommendation: calculatedScore > 90 ? 'Instant Admit' : 'Schedule Interview',
-      stage: 'AI Screened',
-      appliedDate: new Date().toISOString().split('T')[0],
-    };
-
-    setApplicants([newApplicant, ...applicants]);
-    setIsFullScreenFormOpen(false);
-    setNotice(`Application submitted for "${newApplicant.name}". AI Fit Score evaluated at ${newApplicant.aiFitScore}%.`);
-  };
-
-  const filteredApplicants = filterStage === 'All'
-    ? applicants
-    : applicants.filter((a) => a.stage === filterStage || a.aiRecommendation === filterStage);
-
+  // Table Columns Definition
   const columns = [
-    {
-      header: 'Applicant ID',
-      accessorKey: 'applicantId',
-      cell: (row: Applicant) => (
-        <span className="font-mono text-xs text-primary font-bold">{row.applicantId}</span>
-      ),
-    },
-    {
-      header: 'Student Name & Details',
-      accessorKey: 'name',
-      cell: (row: Applicant) => (
-        <div>
-          <p className="font-bold text-foreground text-xs">{row.name}</p>
-          <p className="text-[11px] text-muted-foreground">{row.previousSchool} • Guard: {row.guardianName}</p>
-        </div>
-      ),
-    },
-    {
-      header: 'Grade',
-      accessorKey: 'appliedGrade',
-      cell: (row: Applicant) => (
-        <span className="text-xs px-2.5 py-1 bg-muted/60 rounded-md border border-border/80 font-medium whitespace-nowrap inline-flex items-center">
-          {row.appliedGrade}
-        </span>
-      ),
-    },
+    { header: 'Applicant ID', accessorKey: 'applicantId', cell: (row: Applicant) => <span className="font-mono text-xs font-bold text-primary">{row.applicantId}</span> },
+    { header: 'Candidate Name', accessorKey: 'name', cell: (row: Applicant) => <span className="font-bold text-foreground">{row.name}</span> },
+    { header: 'Grade Applied', accessorKey: 'appliedGrade' },
+    { header: 'Guardian Phone', accessorKey: 'phone' },
     {
       header: 'AI Fit Score',
       accessorKey: 'aiFitScore',
       cell: (row: Applicant) => (
-        <div className="flex items-center gap-2 whitespace-nowrap">
-          <div className="w-16 h-1.5 bg-muted rounded-md overflow-hidden border border-border">
-            <div
-              className={`h-full rounded-md ${
-                row.aiFitScore >= 90
-                  ? 'bg-success'
-                  : row.aiFitScore >= 75
-                  ? 'bg-primary'
-                  : 'bg-warning'
-              }`}
-              style={{ width: `${row.aiFitScore}%` }}
-            />
+        <div className="flex items-center gap-2">
+          <div className="w-16 h-2 bg-muted rounded-full overflow-hidden border border-border">
+            <div className={`h-full ${row.aiFitScore >= 80 ? 'bg-primary' : row.aiFitScore >= 60 ? 'bg-warning' : 'bg-destructive'}`} style={{ width: `${row.aiFitScore}%` }} />
           </div>
           <span className="text-xs font-bold text-foreground">{row.aiFitScore}%</span>
         </div>
       ),
     },
     {
-      header: 'OCR Docs Audit',
+      header: 'OCR Doc Status',
       accessorKey: 'ocrDocStatus',
       cell: (row: Applicant) => (
-        <span
-          className={`text-[11px] px-2.5 py-1 rounded-md font-semibold inline-flex items-center gap-1.5 whitespace-nowrap ${
-            row.ocrDocStatus === 'Verified'
-              ? 'bg-success/15 text-success border border-success/30'
-              : row.ocrDocStatus === 'Pending'
-              ? 'bg-warning/15 text-warning border border-warning/30'
-              : 'bg-destructive/15 text-destructive border border-destructive/30'
-          }`}
-        >
-          {row.ocrDocStatus === 'Verified' ? <CheckCircle2 className="h-3 w-3 shrink-0" /> : <Clock className="h-3 w-3 shrink-0" />}
+        <VFBadge variant={row.ocrDocStatus === 'Verified' ? 'success' : row.ocrDocStatus === 'Pending' ? 'warning' : 'danger'}>
           {row.ocrDocStatus}
-        </span>
+        </VFBadge>
       ),
     },
     {
       header: 'AI Verdict',
       accessorKey: 'aiRecommendation',
       cell: (row: Applicant) => (
-        <span
-          className={`text-[11px] px-2.5 py-1 rounded-md font-bold inline-flex items-center gap-1.5 whitespace-nowrap ${
-            row.aiRecommendation === 'Instant Admit'
-              ? 'bg-primary/15 text-primary border border-primary/30'
-              : row.aiRecommendation === 'Schedule Interview'
-              ? 'bg-info/15 text-info border border-info/30'
-              : 'bg-muted text-muted-foreground border border-border'
-          }`}
-        >
-          <Sparkles className="h-3 w-3 shrink-0" />
+        <VFBadge variant={row.aiRecommendation === 'Instant Admit' ? 'primary' : row.aiRecommendation === 'Schedule Interview' ? 'warning' : 'outline'}>
           {row.aiRecommendation}
-        </span>
+        </VFBadge>
       ),
     },
     {
       header: 'Action',
       accessorKey: 'action',
       cell: (row: Applicant) => (
-        <VFButton
-          size="sm"
-          variant="outline"
-          onClick={() => setSelectedApplicant(row)}
-          leftIcon={<Eye className="h-3.5 w-3.5" />}
-          className="whitespace-nowrap font-medium"
-        >
+        <VFButton size="sm" variant="outline" leftIcon={<Eye className="h-3.5 w-3.5" />} onClick={() => setSelectedApplicant(row)}>
           Inspect Report
         </VFButton>
       ),
     },
   ];
 
-  // Full Screen Admission View
-  if (isFullScreenFormOpen) {
-    return (
-      <div className="fixed inset-0 z-50 bg-background overflow-y-auto flex flex-col animate-fade-in custom-scrollbar">
-        <header className="h-16 border-b border-border bg-card flex items-center justify-between px-8 sticky top-0 z-10">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsFullScreenFormOpen(false)}
-              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center gap-1.5 text-xs font-semibold"
-            >
-              <ArrowLeft className="h-4 w-4" /> Back to Admissions Queue
-            </button>
-            <span className="text-border">|</span>
-            <span className="text-sm font-bold text-foreground">New Student Admission Application</span>
-          </div>
+  // 1. Enquiries Submodule Content
+  const enquiriesData = [
+    { code: 'ENQ-2026-092', candidate: 'Siddharth Varma', grade: 'Class 9', guardian: 'Meena Varma', phone: '+91 98111 22233', source: 'Walk-in', status: 'Follow-up Due' },
+    { code: 'ENQ-2026-093', candidate: 'Tanya Roy', grade: 'Class 11-Sci', guardian: 'Alok Roy', phone: '+91 98222 33344', source: 'Online Website', status: 'Form Issued' },
+    { code: 'ENQ-2026-094', candidate: 'Devansh Joshi', grade: 'Class 6', guardian: 'Rakesh Joshi', phone: '+91 98333 44455', source: 'Parent Referral', status: 'Campus Tour Done' },
+  ];
 
-          <div className="flex items-center gap-2">
-            <VFButton variant="outline" size="sm" onClick={() => setIsFullScreenFormOpen(false)}>
-              Cancel
-            </VFButton>
-            <VFButton size="sm" onClick={handleCreateApplication} leftIcon={<Check className="h-3.5 w-3.5" />}>
-              Submit & Screen Application
-            </VFButton>
-          </div>
-        </header>
-
-        <div className="flex-1 w-full max-w-full px-8 py-6 space-y-6 overflow-y-auto custom-scrollbar">
-          <div className="border-b border-border pb-4 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-foreground tracking-tight">Student Admission Registration</h1>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Complete the applicant details below. All transcripts and documents will be automatically processed by OCR engines.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
-                Academic Session: 2026-2027
-              </span>
-            </div>
-          </div>
-
-          <form onSubmit={handleCreateApplication} className="space-y-6 text-xs">
-            {/* Section 1: Personal Details */}
-            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
-              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
-                <UserSquare className="h-4 w-4 text-primary" /> 1. Student Personal Details
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <VFInput
-                  label="Student Full Name"
-                  required
-                  placeholder="e.g. Aditya Verma"
-                  value={newForm.name}
-                  onChange={(e) => setNewForm({ ...newForm, name: e.target.value })}
-                />
-                <VFDatePicker
-                  label="Date of Birth"
-                  placeholder="Select birth date"
-                  value={newForm.dob}
-                  onChange={(e) => setNewForm({ ...newForm, dob: e.target.value })}
-                />
-                <VFSelect
-                  label="Gender"
-                  value={newForm.gender}
-                  onChange={(e) => setNewForm({ ...newForm, gender: String(e.target.value) })}
-                  options={[
-                    { label: 'Male', value: 'Male' },
-                    { label: 'Female', value: 'Female' },
-                    { label: 'Other', value: 'Other' },
-                  ]}
-                />
-                <VFSelect
-                  label="Blood Group"
-                  value={newForm.bloodGroup}
-                  onChange={(e) => setNewForm({ ...newForm, bloodGroup: String(e.target.value) })}
-                  options={[
-                    { label: 'O +ve', value: 'O+' },
-                    { label: 'O -ve', value: 'O-' },
-                    { label: 'A +ve', value: 'A+' },
-                    { label: 'A -ve', value: 'A-' },
-                    { label: 'B +ve', value: 'B+' },
-                    { label: 'B -ve', value: 'B-' },
-                    { label: 'AB +ve', value: 'AB+' },
-                    { label: 'AB -ve', value: 'AB-' },
-                  ]}
-                />
-                <VFInput
-                  label="Nationality"
-                  placeholder="e.g. Indian"
-                  value={newForm.nationality}
-                  onChange={(e) => setNewForm({ ...newForm, nationality: e.target.value })}
-                />
-                <VFInput
-                  label="Primary Language"
-                  placeholder="e.g. English"
-                  value={newForm.primaryLang}
-                  onChange={(e) => setNewForm({ ...newForm, primaryLang: e.target.value })}
-                />
-                <VFInput
-                  label="Aadhar / Govt ID Number"
-                  placeholder="12-digit Aadhar or Govt ID"
-                  value={newForm.govtId}
-                  onChange={(e) => setNewForm({ ...newForm, govtId: e.target.value })}
-                />
-              </div>
-            </div>
-
-            {/* Section 2: Academic Details */}
-            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
-              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
-                <FileCheck className="h-4 w-4 text-primary" /> 2. Academic Intake & Schooling Details
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <VFSelect
-                  label="Grade Seeking Admission"
-                  required
-                  value={newForm.appliedGrade}
-                  onChange={(e) => setNewForm({ ...newForm, appliedGrade: String(e.target.value) })}
-                  options={[
-                    { label: 'Class 1', value: 'Class 1' },
-                    { label: 'Class 6', value: 'Class 6' },
-                    { label: 'Class 9', value: 'Class 9' },
-                    { label: 'Class 11-Sci', value: 'Class 11-Sci' },
-                    { label: 'Class 11-Com', value: 'Class 11-Com' },
-                  ]}
-                />
-                <VFSelect
-                  label="Academic Session"
-                  value={newForm.academicSession}
-                  onChange={(e) => setNewForm({ ...newForm, academicSession: String(e.target.value) })}
-                  options={[
-                    { label: '2026 - 2027', value: '2026-2027' },
-                    { label: '2027 - 2028', value: '2027-2028' },
-                  ]}
-                />
-                <VFInput
-                  label="Previous School Attended"
-                  placeholder="e.g. St. Marks High School"
-                  value={newForm.previousSchool}
-                  onChange={(e) => setNewForm({ ...newForm, previousSchool: e.target.value })}
-                />
-                <VFInput
-                  label="Previous Score / Grade %"
-                  placeholder="e.g. 94%"
-                  value={newForm.prevMarks}
-                  onChange={(e) => setNewForm({ ...newForm, prevMarks: e.target.value })}
-                />
-                <VFInput
-                  label="Transfer Certificate (TC) No."
-                  placeholder="e.g. TC-88219"
-                  value={newForm.tcNumber}
-                  onChange={(e) => setNewForm({ ...newForm, tcNumber: e.target.value })}
-                />
-                <VFSelect
-                  label="Second Language Preference"
-                  value={newForm.secondLang}
-                  onChange={(e) => setNewForm({ ...newForm, secondLang: String(e.target.value) })}
-                  options={[
-                    { label: 'Hindi', value: 'Hindi' },
-                    { label: 'Sanskrit', value: 'Sanskrit' },
-                    { label: 'French', value: 'French' },
-                    { label: 'German', value: 'German' },
-                    { label: 'Spanish', value: 'Spanish' },
-                  ]}
-                />
-              </div>
-            </div>
-
-            {/* Section 3: Parent & Guardian Contacts */}
-            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
-              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
-                <BrainCircuit className="h-4 w-4 text-primary" /> 3. Parent, Guardian & Contact Information
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <VFInput
-                  label="Father's Full Name"
-                  placeholder="e.g. Rajesh Verma"
-                  value={newForm.fatherName}
-                  onChange={(e) => setNewForm({ ...newForm, fatherName: e.target.value })}
-                />
-                <VFInput
-                  label="Mother's Full Name"
-                  placeholder="e.g. Sunita Verma"
-                  value={newForm.motherName}
-                  onChange={(e) => setNewForm({ ...newForm, motherName: e.target.value })}
-                />
-                <VFInput
-                  label="Primary Guardian Name"
-                  required
-                  placeholder="e.g. Ramesh Verma"
-                  value={newForm.guardianName}
-                  onChange={(e) => setNewForm({ ...newForm, guardianName: e.target.value })}
-                />
-                <VFInput
-                  label="Contact Phone Number"
-                  placeholder="+91 98000 00000"
-                  value={newForm.phone}
-                  onChange={(e) => setNewForm({ ...newForm, phone: e.target.value })}
-                />
-                <VFInput
-                  label="Email Address"
-                  type="email"
-                  placeholder="guardian@email.com"
-                  value={newForm.email}
-                  onChange={(e) => setNewForm({ ...newForm, email: e.target.value })}
-                />
-                <div className="sm:col-span-2 lg:col-span-3">
-                  <VFInput
-                    label="Residential Address"
-                    placeholder="123 Park Avenue, Block B, New Delhi"
-                    value={newForm.address}
-                    onChange={(e) => setNewForm({ ...newForm, address: e.target.value })}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Section 4: Facilities & Transportation */}
-            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-4">
-              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/60 pb-2.5">
-                <Upload className="h-4 w-4 text-primary" /> 4. Facilities, Transport & Medical Notes
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <VFSelect
-                  label="School Bus / Transport Route"
-                  value={newForm.transportRoute}
-                  onChange={(e) => setNewForm({ ...newForm, transportRoute: String(e.target.value) })}
-                  options={[
-                    { label: 'No Transport (Self / Private)', value: 'No Transport' },
-                    { label: 'Route 1 - City Center / Metro', value: 'Route 1' },
-                    { label: 'Route 2 - North Suburbs', value: 'Route 2' },
-                    { label: 'Route 3 - South Campus Express', value: 'Route 3' },
-                    { label: 'Route 4 - East District Line', value: 'Route 4' },
-                  ]}
-                />
-                <VFSelect
-                  label="Hostel Accommodation"
-                  value={newForm.hostelRequired}
-                  onChange={(e) => setNewForm({ ...newForm, hostelRequired: String(e.target.value) })}
-                  options={[
-                    { label: 'Day Scholar', value: 'Day Scholar' },
-                    { label: 'Full Boarder (Hostel)', value: 'Full Boarder' },
-                    { label: 'Weekly Boarder', value: 'Weekly Boarder' },
-                  ]}
-                />
-                <VFInput
-                  label="Medical Conditions / Allergies"
-                  placeholder="e.g. None or Asthma"
-                  value={newForm.medicalNotes}
-                  onChange={(e) => setNewForm({ ...newForm, medicalNotes: e.target.value })}
-                />
-                <VFInput
-                  label="Emergency Contact Person"
-                  placeholder="e.g. Uncle / +91 91100 22334"
-                  value={newForm.emergencyContact}
-                  onChange={(e) => setNewForm({ ...newForm, emergencyContact: e.target.value })}
-                />
-              </div>
-            </div>
-
-            {/* Section 5: Documents Upload */}
-            <div className="bg-card border border-border/80 p-5 rounded-xl space-y-3">
-              <h2 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
-                <Upload className="h-4 w-4 text-primary" /> 5. Attach Documents for Automated OCR Verification
-              </h2>
-              <div className="border-2 border-dashed border-border/80 p-6 rounded-xl text-center space-y-2 hover:border-primary/50 transition-colors cursor-pointer bg-muted/20">
-                <Upload className="h-8 w-8 text-primary/60 mx-auto" />
-                <p className="text-xs font-semibold text-foreground">Drop Transfer Certificates, Marksheets or ID proof here</p>
-                <p className="text-[11px] text-muted-foreground">Automated OCR engines will extract and verify grade percentages instantly.</p>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-3 pt-2">
-              <VFButton variant="outline" type="button" onClick={() => setIsFullScreenFormOpen(false)}>
-                Cancel
-              </VFButton>
-              <VFButton type="submit">Submit Application</VFButton>
-            </div>
-          </form>
-        </div>
+  const enquiriesContent = (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <VFStatCard title="Total Enquiries" value="342" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="+28 this week" />
+        <VFStatCard title="Walk-in Tours" value="124" icon={<Users className="h-5 w-5" />} description="36 Tours Scheduled" />
+        <VFStatCard title="Online Enquiries" value="188" icon={<Phone className="h-5 w-5" />} description="Website & Social CRM" />
+        <VFStatCard title="Pending Follow-ups" value="30" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="Today's Target" />
       </div>
-    );
-  }
 
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <VFCard title="Quick Register Parent Enquiry" className="lg:col-span-1">
+          <div className="space-y-3 mt-2 text-xs">
+            <VFInput label="Candidate Name" placeholder="e.g. Priyanshu Sharma" />
+            <VFSelect label="Applying for Grade" options={[{ label: 'Class 9', value: '9' }, { label: 'Class 11 Science', value: '11-sci' }]} />
+            <VFInput label="Guardian Phone" placeholder="+91 98000 00000" />
+            <VFSelect label="Enquiry Source" options={[{ label: 'Walk-in Campus', value: 'walkin' }, { label: 'Online Website', value: 'online' }]} />
+            <VFButton size="sm" className="w-full mt-2" leftIcon={<Plus className="h-3.5 w-3.5" />}>Register Enquiry</VFButton>
+          </div>
+        </VFCard>
+
+        <VFSection title="Active Parent Enquiries Register" className="lg:col-span-2">
+          <VFDataTable
+            columns={[
+              { header: 'Enquiry Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono text-xs font-bold text-primary">{r.code}</span> },
+              { header: 'Candidate', accessorKey: 'candidate' },
+              { header: 'Grade', accessorKey: 'grade' },
+              { header: 'Source', accessorKey: 'source' },
+              { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="warning">{r.status}</VFBadge> },
+            ]}
+            data={enquiriesData}
+            filterPlaceholder="Search enquiry candidate or phone..."
+          />
+        </VFSection>
+      </div>
+    </div>
+  );
+
+  // 2. Leads CRM Submodule Content
+  const leadsCRMContent = (
+    <div className="space-y-6">
+      <VFCard title="Admission Lead Pipeline Stage Matrix">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mt-3 text-xs">
+          {[
+            { stage: 'New Lead', count: 48, color: 'border-blue-500/40 bg-blue-500/5' },
+            { stage: 'Contacted', count: 32, color: 'border-yellow-500/40 bg-yellow-500/5' },
+            { stage: 'Campus Tour', count: 24, color: 'border-purple-500/40 bg-purple-500/5' },
+            { stage: 'Form Submitted', count: 18, color: 'border-primary/40 bg-primary/5' },
+            { stage: 'Enrolled', count: 12, color: 'border-emerald-500/40 bg-emerald-500/5' },
+          ].map((s, i) => (
+            <div key={i} className={`p-4 rounded-xl border ${s.color} space-y-2`}>
+              <span className="font-bold text-foreground block">{s.stage}</span>
+              <p className="text-2xl font-black text-foreground">{s.count} Leads</p>
+              <p className="text-[11px] text-muted-foreground">Auto-synced from CRM</p>
+            </div>
+          ))}
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // 3. Forms Submodule Content
+  const formsContent = (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <VFCard title="Online Admission Form Status">
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-lg font-bold text-foreground">Active for Session 2026-27</span>
+            <VFBadge variant="success">Live Online</VFBadge>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">Public portal accepting submissions with Razorpay fee integration (₹1,000 application fee).</p>
+        </VFCard>
+        <VFCard title="Custom Field Attributes">
+          <span className="text-lg font-bold text-foreground block mt-2">14 Custom Attributes</span>
+          <p className="text-xs text-muted-foreground mt-1">RTE Category, Hostel Required, Bus Transport Stop, Second Language Preference.</p>
+        </VFCard>
+        <VFCard title="Form Submissions Today">
+          <span className="text-lg font-bold text-foreground block mt-2">18 Submissions</span>
+          <p className="text-xs text-success font-bold mt-1">12 Auto Verified by OCR Engine</p>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  // 4. Applications Queue Submodule Content (Main Queue View)
   const applicationsQueueContent = (
     <div className="space-y-6">
-      {notice && (
-        <div className="p-3 bg-primary/10 border border-primary/25 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in shadow-xs">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-3.5 w-3.5 text-primary shrink-0" />
-            <span>{notice}</span>
-          </div>
-          <button onClick={() => setNotice(null)} className="text-muted-foreground hover:text-foreground text-xs font-semibold">
-            Dismiss
-          </button>
-        </div>
-      )}
-
-      {/* Submodule Section Header Bar */}
-      <div className="flex items-center justify-between bg-card border border-border/80 p-4 rounded-xl shadow-xs">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Applications Queue & Intake Pipeline</h3>
-          <p className="text-xs text-muted-foreground">Manage incoming student intake, auto-screen candidates, and process admissions.</p>
-        </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
-          New Admission Application
-        </VFButton>
-      </div>
-
-      {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <VFStatCard
-          title="Total Intake Applications"
-          value={String(applicants.length + 42)}
-          icon={<UserSquare />}
-          trend="up"
-          trendLabel="+18 this week"
-        />
-        <VFStatCard
-          title="Auto-Screened Rate"
-          value="88.4%"
-          icon={<BrainCircuit />}
-          description="0.4s avg processing time"
-        />
-        <VFStatCard
-          title="Document Verification Rate"
-          value="96.2%"
-          icon={<FileCheck />}
-          trend="up"
-          trendLabel="Marksheets & IDs verified"
-        />
-        <VFStatCard
-          title="Average Match Index"
-          value="86 / 100"
-          icon={<Sparkles />}
-          description="High academic fit pool"
-        />
+        <VFStatCard title="Total Applications Received" value="148" icon={<UserSquare className="h-5 w-5" />} trend="up" trendLabel="+18 today" />
+        <VFStatCard title="AI Instant Approved" value="42" icon={<Sparkles className="h-5 w-5" />} trend="up" trendLabel="Auto-screened" />
+        <VFStatCard title="Interviews Pending" value="16" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="Scheduled for tomorrow" />
+        <VFStatCard title="Doc Verified (OCR)" value="94.2%" icon={<FileCheck className="h-5 w-5" />} description="124 documents processed" />
       </div>
 
-      {/* Pipeline Stage Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-border/80 pb-3 overflow-x-auto custom-scrollbar">
-        {['All', 'Instant Admit', 'AI Screened', 'Interview', 'Approved'].map((stage) => (
-          <button
-            key={stage}
-            onClick={() => setFilterStage(stage)}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
-              filterStage === stage
-                ? 'bg-primary text-primary-foreground shadow-xs'
-                : 'bg-card text-muted-foreground hover:bg-muted hover:text-foreground border border-border'
-            }`}
-          >
-            {stage}
-          </button>
-        ))}
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl shadow-xs">
+        <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+          <Filter className="h-4 w-4 text-primary" /> Filter by Pipeline Stage:
+        </div>
+        <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar">
+          {['ALL', 'Submitted', 'AI Screened', 'Interview', 'Approved'].map((st) => (
+            <button
+              key={st}
+              onClick={() => setActiveStageFilter(st)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeStageFilter === st
+                  ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+                  : 'bg-muted/50 text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {st}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* 100% Full-Width Applications Queue Table */}
       <VFSection title="Applications Queue">
-        <VFDataTable
-          columns={columns}
-          data={filteredApplicants}
-          filterPlaceholder="Filter candidate name, grade, or recommendation..."
-        />
+        <VFDataTable columns={columns} data={filteredApplicants} filterPlaceholder="Filter candidate name, grade, or recommendation..." />
       </VFSection>
     </div>
   );
+
+  // 5. Assessments Submodule Content
+  const assessmentContent = (
+    <div className="space-y-6">
+      <VFCard title="Entrance Test & Principal Interview Merit Ranking">
+        <div className="space-y-3 mt-2 text-xs">
+          {[
+            { candidate: 'Aarav Sharma', grade: 'Class 9', testScore: '92/100', interviewScore: '98/100', rank: 'Rank #1', status: 'Merit List Approved' },
+            { candidate: 'Ananya Verma', grade: 'Class 11-Sci', testScore: '88/100', interviewScore: '90/100', rank: 'Rank #2', status: 'Interview Cleared' },
+            { candidate: 'Kavya Nair', grade: 'Class 11-Com', testScore: '94/100', interviewScore: '92/100', rank: 'Rank #3', status: 'Merit List Approved' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between p-3.5 bg-muted/40 rounded-xl border border-border/60">
+              <div>
+                <span className="font-bold text-foreground text-sm">{item.candidate} ({item.grade})</span>
+                <p className="text-muted-foreground mt-0.5">Written Score: {item.testScore} · Principal Interview: {item.interviewScore}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <VFBadge variant="primary">{item.rank}</VFBadge>
+                <VFBadge variant="success">{item.status}</VFBadge>
+              </div>
+            </div>
+          ))}
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // 6. Doc Verification Submodule Content
+  const docsContent = (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <VFCard title="OCR Verification Engine">
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-2xl font-black text-success">98.4% Match</span>
+            <VFBadge variant="success">Active AI Engine</VFBadge>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">Automated scan of Birth Certificates, Previous School TCs, and Aadhaar copies.</p>
+        </VFCard>
+        <VFCard title="Flagged Document Anomalies">
+          <span className="text-2xl font-black text-warning mt-2 block">2 Cases</span>
+          <p className="text-xs text-muted-foreground mt-1">Name spelling mismatch between birth certificate and previous marksheet.</p>
+        </VFCard>
+        <VFCard title="Missing Documents Tracker">
+          <span className="text-2xl font-black text-foreground mt-2 block">14 Candidates</span>
+          <p className="text-xs text-muted-foreground mt-1">Pending Transfer Certificate (TC) original submission.</p>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  // 7. Enrollment Submodule Content
+  const enrollmentContent = (
+    <div className="space-y-6">
+      <VFCard title="Final Admission Approval & Scholar ID Auto-Generator">
+        <p className="text-xs text-muted-foreground mb-4">Assign scholar numbers, allocate sections, and issue student identity records.</p>
+        <div className="p-4 bg-muted/40 border border-border rounded-xl space-y-3 text-xs">
+          <div className="flex justify-between items-center">
+            <span className="font-bold text-foreground">Scholar ID Auto Numbering Pattern:</span>
+            <span className="font-mono font-bold text-primary">ADM-2026-XXX</span>
+          </div>
+          <p className="text-muted-foreground">Next Available Scholar ID: <span className="font-mono font-bold text-foreground">ADM-2026-006</span></p>
+          <VFButton size="sm" leftIcon={<Check className="h-3.5 w-3.5" />}>Run Final Enrollment Wizard</VFButton>
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // 8. Analytics Submodule Content
+  const analyticsContent = (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <VFStatCard title="Enquiry ➔ Admission Conversion" value="43.2%" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="+5.8% vs last year" />
+        <VFStatCard title="Grade 9 Intake Capacity" value="45 / 50 Seats" icon={<Users className="h-5 w-5" />} description="90% Seats Filled" />
+        <VFStatCard title="Grade 11 Intake Capacity" value="66 / 80 Seats" icon={<Users className="h-5 w-5" />} description="82.5% Seats Filled" />
+      </div>
+    </div>
+  );
+
+  const submoduleTabs = [
+    { id: 'enquiries', label: 'Enquiries', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: enquiriesContent },
+    { id: 'admission-crm', label: 'Leads CRM', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: leadsCRMContent },
+    { id: 'admission-forms', label: 'Forms', icon: <FileText className="h-3.5 w-3.5" />, content: formsContent },
+    { id: 'applications', label: 'Applications', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
+    { id: 'assessment', label: 'Assessments', icon: <Sparkles className="h-3.5 w-3.5" />, content: assessmentContent },
+    { id: 'admission-docs', label: 'Doc Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: docsContent },
+    { id: 'enrollment', label: 'Enrollment', icon: <Plus className="h-3.5 w-3.5" />, content: enrollmentContent },
+    { id: 'admission-analytics', label: 'Analytics', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: analyticsContent },
+  ];
 
   return (
     <VFPageContainer>
       {/* Admissions Submodule Tab Bar */}
       <VFTabs 
-        items={[
-          { id: 'enquiries', label: 'Enquiries', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <VFCard title="Walk-in, Phone & Online Enquiry Registration"><p className="text-xs text-muted-foreground">Register parent enquiries, record candidate details, and schedule campus tours.</p></VFCard> },
-          { id: 'admission-crm', label: 'Leads CRM', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <VFCard title="Lead Pipeline & Parent Follow-ups"><p className="text-xs text-muted-foreground">Track lead stages (New ➔ Contacted ➔ Tour Completed ➔ Application Submitted), lead sources, and automated WhatsApp reminders.</p></VFCard> },
-          { id: 'admission-forms', label: 'Forms', icon: <FileText className="h-3.5 w-3.5" />, content: <VFCard title="Online & Offline Form Configuration"><p className="text-xs text-muted-foreground">Configure online registration forms, custom input fields, and fee payment steps.</p></VFCard> },
-          { id: 'applications', label: 'Applications', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
-          { id: 'assessment', label: 'Assessments', icon: <Sparkles className="h-3.5 w-3.5" />, content: <VFCard title="Admission Assessment & Merit Scoring"><p className="text-xs text-muted-foreground">Schedule written entrance tests, record principal interview scores, and generate merit lists.</p></VFCard> },
-          { id: 'admission-docs', label: 'Doc Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: <VFCard title="Document Verification & Missing Document Tracker"><p className="text-xs text-muted-foreground">Automated OCR verification of birth certificates, transfer certificates (TC), and marksheets.</p></VFCard> },
-          { id: 'enrollment', label: 'Enrollment', icon: <Plus className="h-3.5 w-3.5" />, content: <VFCard title="Final Admission Approval & Scholar ID Generation"><p className="text-xs text-muted-foreground">Approve admissions, auto-assign scholar numbers, allocate class sections, and issue student profiles.</p></VFCard> },
-          { id: 'admission-analytics', label: 'Analytics', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <VFCard title="Enquiry Conversion & Source Performance"><p className="text-xs text-muted-foreground">Analyze enquiry-to-admission conversion rates, campaign ROI, and grade-wise seat intake forecasting.</p></VFCard> },
-        ]}
+        items={submoduleTabs}
         defaultTabId="applications"
         variant="top-bar"
       />
