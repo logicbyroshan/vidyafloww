@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
 import { QrCode, FileText, Award, Upload, Sparkles, Bot, Printer } from 'lucide-react';
 
 export const Route = createFileRoute('/documents')({
@@ -90,15 +90,11 @@ function DocumentsPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="16 — ID, Documents & Certificates" 
-        description="CardFlow / GenXID studio, Student & Employee IDs, TCs, Bonafide certificates, and AI OCR batch processing."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
 import { Package, Boxes, ShoppingCart, Truck, Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/inventory')({
@@ -78,15 +78,11 @@ function InventoryPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="15 — Inventory, Assets & Procurement" 
-        description="Store management, asset lifecycle, purchase requests, and maintenance schedules."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

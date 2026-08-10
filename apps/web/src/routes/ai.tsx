@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
 import { Bot, Sparkles, AlertTriangle, ShieldCheck, Send } from 'lucide-react';
 
 export const Route = createFileRoute('/ai')({
@@ -93,15 +93,11 @@ function AiPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="20 — VidyaFlow AI" 
-        description="Unified AI intelligence layer sitting above all ERP modules (Students, Fees, Exams, HR, Attendance)."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

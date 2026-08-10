@@ -14,7 +14,8 @@ export interface VFTabsProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultTabId?: string;
   activeTabId?: string;
   onTabChange?: (tabId: string) => void;
-  variant?: 'underline' | 'pills';
+  variant?: 'underline' | 'pills' | 'top-bar';
+  rightActions?: React.ReactNode;
 }
 
 export function VFTabs({
@@ -22,7 +23,8 @@ export function VFTabs({
   defaultTabId,
   activeTabId,
   onTabChange,
-  variant = 'underline',
+  variant = 'top-bar',
+  rightActions,
   className,
   ...props
 }: VFTabsProps) {
@@ -50,6 +52,53 @@ export function VFTabs({
 
   const activeItem = items.find((item) => item.id === activeId);
 
+  if (variant === 'top-bar') {
+    return (
+      <div className={cn("flex flex-col w-full flex-1 min-h-0", className)} {...props}>
+        {/* Full-width sticky top sub-module tab bar */}
+        <div className="w-full border-b border-border bg-card/60 px-6 py-1 flex items-center justify-between backdrop-blur-md shrink-0 sticky top-0 z-30 shadow-xs">
+          <div className="flex items-center gap-6 overflow-x-auto custom-scrollbar flex-1 py-1" role="tablist">
+            {items.map((item) => {
+              const isActive = item.id === activeId;
+              return (
+                <button
+                  key={item.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  disabled={item.disabled}
+                  onClick={() => handleTabClick(item.id, item.disabled)}
+                  className={cn(
+                    "relative inline-flex items-center gap-2 text-xs font-semibold py-2 px-1 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0",
+                    isActive
+                      ? "text-primary font-bold"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {item.icon && <span className={cn("inline-flex shrink-0", isActive && "text-primary")}>{item.icon}</span>}
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary rounded-full animate-fade-in shadow-xs" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {rightActions && (
+            <div className="flex items-center gap-2 ml-4 shrink-0">
+              {rightActions}
+            </div>
+          )}
+        </div>
+
+        {/* Tab Panel View Container */}
+        <div className="p-6 w-full space-y-6 flex-1 overflow-y-auto custom-scrollbar" role="tabpanel">
+          {activeItem ? activeItem.content : null}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={cn("w-full space-y-4", className)} {...props}>
       <div
@@ -71,7 +120,7 @@ export function VFTabs({
               disabled={item.disabled}
               onClick={() => handleTabClick(item.id, item.disabled)}
               className={cn(
-                "relative inline-flex items-center gap-2 text-sm font-medium py-2.5 transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed select-none",
+                "relative inline-flex items-center gap-2 text-xs font-medium py-2.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer",
                 variant === 'underline' && [
                   "text-muted-foreground hover:text-foreground",
                   isActive && "text-primary font-semibold"

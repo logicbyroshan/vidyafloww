@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
 import { Settings, Building, ShieldCheck, Sliders, History, Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/settings')({
@@ -82,15 +82,11 @@ function SettingsPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="01 — School Administration & System Config" 
-        description="Organization, campus/branch management, academic sessions, RBAC permissions, custom fields, and audit logs."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

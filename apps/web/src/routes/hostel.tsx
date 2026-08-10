@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard } from '@vidyamaxx/ui';
 import { Building, Bed, Utensils, FileText } from 'lucide-react';
 
 export const Route = createFileRoute('/hostel')({
@@ -55,15 +55,11 @@ function HostelPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="14 — Hostel & Campus Life" 
-        description="Hostels, room/bed allocations, hostel attendance, mess meal plans, wardens, and outpass workflow."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

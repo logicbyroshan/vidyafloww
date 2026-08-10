@@ -619,17 +619,6 @@ function AdmissionsPage() {
         </div>
       )}
 
-      {/* Top Header Actions */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground tracking-tight">02 — Admissions & Enrollment</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">Streamlined applicant screening, parent enquiries, entrance tests, and OCR document verification.</p>
-        </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
-          New Admission Application
-        </VFButton>
-      </div>
-
       {/* Admissions Submodule Tab Bar */}
       <VFTabs 
         items={[
@@ -640,7 +629,12 @@ function AdmissionsPage() {
           { id: 'scholar-no', label: 'Scholar No. & Allocator', icon: <Plus className="h-3.5 w-3.5" />, content: null },
         ]}
         defaultTabId="applications"
-        variant="underline"
+        variant="top-bar"
+        rightActions={
+          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
+            New Admission Application
+          </VFButton>
+        }
       />
 
       {/* KPI Stats */}

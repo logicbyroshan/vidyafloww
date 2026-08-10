@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFBadge, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFBadge, VFButton } from '@vidyamaxx/ui';
 import { Bus, MapPin, CreditCard, Sparkles, Bot } from 'lucide-react';
 
 export const Route = createFileRoute('/transport')({
@@ -68,15 +68,11 @@ function TransportPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="12 — Transport Management" 
-        description="Vehicles, drivers, routes, stops, bus passes, GPS tracking, and AI route optimization."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

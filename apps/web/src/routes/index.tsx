@@ -126,15 +126,6 @@ function DashboardPage() {
 
   return (
     <VFPageContainer className="p-6 max-w-full space-y-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-foreground tracking-tight">19 — Institutional Command Center & Dashboard</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">Real-time school health analytics, attendance radar, and AI operational insights.</p>
-        </div>
-        <VFBadge variant="success">All Systems Operational</VFBadge>
-      </div>
-
       {/* Submodule Tab Bar */}
       <VFTabs
         items={[
@@ -145,7 +136,8 @@ function DashboardPage() {
           { id: 'ai-executive', label: 'AI Executive Command', icon: <Sparkles className="h-3.5 w-3.5 text-primary" />, content: null },
         ]}
         defaultTabId="overview"
-        variant="underline"
+        variant="top-bar"
+        rightActions={<VFBadge variant="success">All Systems Operational</VFBadge>}
       />
 
       {/* Toast Notice */}

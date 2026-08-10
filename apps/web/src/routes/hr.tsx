@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard } from '@vidyamaxx/ui';
 import { Briefcase, UserCheck, CreditCard, FileText, Award } from 'lucide-react';
 
 export const Route = createFileRoute('/hr')({
@@ -65,15 +65,11 @@ function HrPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="10 — HR & Payroll" 
-        description="Employee lifecycle: recruitment, onboarding, attendance, payroll, tax, and experience certificates."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

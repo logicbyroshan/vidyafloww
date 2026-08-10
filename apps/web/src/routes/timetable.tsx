@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton, VFBadge } from '@vidyamaxx/ui';
 import { Calendar, Users, Building, RefreshCw, Bot, Sparkles, Clock } from 'lucide-react';
 
 export const Route = createFileRoute('/timetable')({
@@ -119,15 +119,11 @@ function TimetablePage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="05 — Timetable & Scheduling" 
-        description="Class, teacher, lab, and AI-optimized timetable generation."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

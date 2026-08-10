@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
 import { MessageSquare, Send, Users, AlertTriangle, Plus } from 'lucide-react';
 
 export const Route = createFileRoute('/communication')({
@@ -70,15 +70,11 @@ function CommunicationPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="11 — Communication & Engagement" 
-        description="Omnichannel communication center: In-app notices, SMS, Email, WhatsApp, and emergency alerts."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

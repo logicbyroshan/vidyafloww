@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
 import { MonitorPlay, BookOpen, HelpCircle, Bot, Sparkles, Send } from 'lucide-react';
 
 export const Route = createFileRoute('/lms')({
@@ -108,15 +108,11 @@ function LmsPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="17 — Learning & Digital Classroom" 
-        description="LMS, recorded lectures, online classes, digital notes, and AI Tutor (VidyaFlow)."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

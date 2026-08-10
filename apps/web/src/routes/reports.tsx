@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFBadge } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFBadge } from '@vidyamaxx/ui';
 import { BarChart3, ShieldCheck, Users, CircleDollarSign } from 'lucide-react';
 
 export const Route = createFileRoute('/reports')({
@@ -83,15 +83,11 @@ function ReportsPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="19 — Analytics, BI & Compliance" 
-        description="Principal command center, teacher class analytics, finance BI, and regulatory board compliance."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

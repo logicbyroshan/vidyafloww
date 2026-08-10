@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
 import { BookOpen, RefreshCw, AlertCircle, Bot, Sparkles, Send } from 'lucide-react';
 
 export const Route = createFileRoute('/library')({
@@ -88,15 +88,11 @@ function LibraryPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="13 — Library Management" 
-        description="Books catalog, ISBN lookup, issue/return scanning, overdue fines, and AI Librarian."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

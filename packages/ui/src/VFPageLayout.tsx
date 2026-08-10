@@ -11,11 +11,11 @@ export function VFPage({ className, ...props }: React.HTMLAttributes<HTMLDivElem
   );
 }
 
-// VFPageContainer: standard margins and constraints for page content
+// VFPageContainer: full width container shell for top tab bar pages
 export function VFPageContainer({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6 md:space-y-8", className)}
+      className={cn("flex-1 flex flex-col w-full max-w-full min-h-0 bg-background animate-fade-in", className)}
       {...props}
     />
   );

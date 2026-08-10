@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFButton } from '@vidyamaxx/ui';
 import { ClipboardList, BookOpen, Edit3, Award, Sparkles, Bot, Send } from 'lucide-react';
 
 export const Route = createFileRoute('/examinations')({
@@ -98,15 +98,11 @@ function ExaminationsPage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="07 — Examination & Assessment" 
-        description="Exam schedules, question bank, seating plans, marks entry, report cards, and AI paper generation."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

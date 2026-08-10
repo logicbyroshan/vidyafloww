@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard } from '@vidyamaxx/ui';
 import { ShieldAlert, HeartHandshake, Award, Users, Trophy } from 'lucide-react';
 
 export const Route = createFileRoute('/welfare')({
@@ -65,15 +65,11 @@ function WelfarePage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="18 — Student Life & Welfare" 
-        description="Discipline records, counselling, extra-curricular activities, achievements, and alumni network."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

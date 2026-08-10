@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFBadge } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFBadge } from '@vidyamaxx/ui';
 import { CalendarCheck, Users, QrCode, FileCheck, Sparkles, Bot } from 'lucide-react';
 
 export const Route = createFileRoute('/attendance')({
@@ -75,15 +75,11 @@ function AttendancePage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="06 — Attendance & Leave" 
-        description="Student and employee attendance, biometric sync, leave requests, and AI anomaly detection."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );

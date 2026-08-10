@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { VFPageContainer, VFPageHeader, VFTabs, VFCard, VFBadge, VFButton } from '@vidyamaxx/ui';
+import { VFPageContainer, VFTabs, VFCard, VFBadge, VFButton } from '@vidyamaxx/ui';
 import { CircleDollarSign, Users, Receipt, Landmark, Sparkles, Bot } from 'lucide-react';
 
 export const Route = createFileRoute('/finance')({
@@ -78,15 +78,11 @@ function FinancePage() {
 
   return (
     <VFPageContainer>
-      <VFPageHeader 
-        title="08 & 09 — Fees, Student Finance & General Accounting" 
-        description="Fee structures, installments, discounts, receipts, cashbook ledger, and AI defaulter prediction."
-      />
       <VFTabs 
         items={submoduleTabs} 
         activeTabId={activeSubmodule}
         onTabChange={setActiveSubmodule}
-        variant="underline"
+        variant="top-bar"
       />
     </VFPageContainer>
   );
