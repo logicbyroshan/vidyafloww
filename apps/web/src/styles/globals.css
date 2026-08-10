@@ -101,8 +101,8 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Barlow Condensed', 'Barlow', system-ui, -apple-system, sans-serif;
-    letter-spacing: 0.01em;
+    font-family: 'Sofia Sans', system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.02em;
     font-feature-settings: "kern" 1, "liga" 1;
   }
 
