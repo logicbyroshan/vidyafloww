@@ -77,6 +77,10 @@ LOCAL_APPS = [
     "modules.events",
     "modules.discipline",
     "modules.analytics",
+    "modules.timetable",
+    "modules.accounting",
+    "modules.certificates",
+    "modules.welfare",
     # AI
     "ai.providers",
     "ai.assistants",
