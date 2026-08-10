@@ -75,8 +75,8 @@ function DashboardPage() {
   ];
 
   const columns = [
-    { header: 'Student Name', accessorKey: 'name', sortable: true },
-    { header: 'Class', accessorKey: 'class', sortable: true },
+    { header: 'Student Name', accessorKey: 'name' },
+    { header: 'Class', accessorKey: 'class' },
     {
       header: 'Status',
       accessorKey: 'status',
@@ -124,22 +124,8 @@ function DashboardPage() {
     { header: 'Updated', accessorKey: 'lastUpdate' },
   ];
 
-  return (
-    <VFPageContainer className="p-6 max-w-full space-y-6">
-      {/* Submodule Tab Bar */}
-      <VFTabs
-        items={[
-          { id: 'overview', label: 'System Overview', icon: <Users className="h-3.5 w-3.5" />, content: null },
-          { id: 'principal-health', label: 'Principal Health Tree', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: null },
-          { id: 'teacher-dash', label: 'Teacher Class View', icon: <GraduationCap className="h-3.5 w-3.5" />, content: null },
-          { id: 'finance-analytics', label: 'Revenue Analytics', icon: <ArrowUpRight className="h-3.5 w-3.5" />, content: null },
-          { id: 'ai-executive', label: 'AI Executive Command', icon: <Sparkles className="h-3.5 w-3.5 text-primary" />, content: null },
-        ]}
-        defaultTabId="overview"
-        variant="top-bar"
-        rightActions={<VFBadge variant="success">All Systems Operational</VFBadge>}
-      />
-
+  const overviewContent = (
+    <div className="space-y-6">
       {/* Toast Notice */}
       {selectedNotice && (
         <div className="p-4 bg-primary/10 border border-primary/25 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in shadow-xs">
@@ -295,6 +281,23 @@ function DashboardPage() {
           </div>
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <VFPageContainer>
+      <VFTabs
+        items={[
+          { id: 'overview', label: 'System Overview', icon: <Users className="h-3.5 w-3.5" />, content: overviewContent },
+          { id: 'principal-health', label: 'Principal Health Tree', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Institutional Principal Health Tree Dashboard</div> },
+          { id: 'teacher-dash', label: 'Teacher Class View', icon: <GraduationCap className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">My Classes & Teacher Dashboard</div> },
+          { id: 'finance-analytics', label: 'Revenue Analytics', icon: <ArrowUpRight className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Fee Collection & Revenue Analytics</div> },
+          { id: 'ai-executive', label: 'AI Executive Command', icon: <Sparkles className="h-3.5 w-3.5 text-primary" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">VidyaFlow AI Executive Intelligence Command</div> },
+        ]}
+        defaultTabId="overview"
+        variant="top-bar"
+        rightActions={<VFBadge variant="success">All Systems Operational</VFBadge>}
+      />
     </VFPageContainer>
   );
 }

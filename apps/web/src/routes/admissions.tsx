@@ -605,8 +605,8 @@ function AdmissionsPage() {
     );
   }
 
-  return (
-    <VFPageContainer className="p-6 max-w-full space-y-6">
+  const applicationsQueueContent = (
+    <div className="space-y-6">
       {notice && (
         <div className="p-3 bg-primary/10 border border-primary/25 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in shadow-xs">
           <div className="flex items-center gap-2">
@@ -618,24 +618,6 @@ function AdmissionsPage() {
           </button>
         </div>
       )}
-
-      {/* Admissions Submodule Tab Bar */}
-      <VFTabs 
-        items={[
-          { id: 'applications', label: 'Applications Queue', icon: <UserSquare className="h-3.5 w-3.5" />, content: null },
-          { id: 'enquiries', label: 'Parent Enquiries & Leads', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: null },
-          { id: 'ocr-verify', label: 'OCR Document Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: null },
-          { id: 'merit-list', label: 'Entrance Tests & Merit List', icon: <Sparkles className="h-3.5 w-3.5" />, content: null },
-          { id: 'scholar-no', label: 'Scholar No. & Allocator', icon: <Plus className="h-3.5 w-3.5" />, content: null },
-        ]}
-        defaultTabId="applications"
-        variant="top-bar"
-        rightActions={
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
-            New Admission Application
-          </VFButton>
-        }
-      />
 
       {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -692,6 +674,28 @@ function AdmissionsPage() {
           filterPlaceholder="Filter candidate name, grade, or recommendation..."
         />
       </VFSection>
+    </div>
+  );
+
+  return (
+    <VFPageContainer>
+      {/* Admissions Submodule Tab Bar */}
+      <VFTabs 
+        items={[
+          { id: 'applications', label: 'Applications Queue', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
+          { id: 'enquiries', label: 'Parent Enquiries & Leads', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Parent Leads & Enquiry Qualification CRM</div> },
+          { id: 'ocr-verify', label: 'OCR Document Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Batch Scanned Document OCR & Transcript Verification</div> },
+          { id: 'merit-list', label: 'Entrance Tests & Merit List', icon: <Sparkles className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Entrance Examination Results & Merit Rank Allocations</div> },
+          { id: 'scholar-no', label: 'Scholar No. & Allocator', icon: <Plus className="h-3.5 w-3.5" />, content: <div className="p-4 bg-card rounded-xl border border-border text-xs text-muted-foreground">Automated Scholar Numbering & Section Allocation Engine</div> },
+        ]}
+        defaultTabId="applications"
+        variant="top-bar"
+        rightActions={
+          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />} onClick={() => setIsFullScreenFormOpen(true)}>
+            New Admission Application
+          </VFButton>
+        }
+      />
 
       {/* Resizable Candidate Inspection Report Slide-Over */}
       {selectedApplicant && (
