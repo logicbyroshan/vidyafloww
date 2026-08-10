@@ -29,7 +29,7 @@ function StudentsPage() {
   const submoduleTabs = [
     {
       id: 'directory',
-      label: 'Student Directory',
+      label: 'Directory',
       icon: <Users className="h-3.5 w-3.5" />,
       content: (
         <div className="space-y-4">
@@ -46,7 +46,7 @@ function StudentsPage() {
     },
     {
       id: 'profile-360',
-      label: 'Student 360° Profile',
+      label: '360° Profile',
       icon: <User className="h-3.5 w-3.5" />,
       content: (
         <div className="bg-card border border-border/80 p-6 rounded-xl space-y-4">
@@ -86,7 +86,7 @@ function StudentsPage() {
     },
     {
       id: 'lifecycle',
-      label: 'Lifecycle Pipeline',
+      label: 'Lifecycle',
       icon: <ArrowRight className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Student Lifecycle Pipeline State Machine">
@@ -105,7 +105,7 @@ function StudentsPage() {
     },
     {
       id: 'allocation',
-      label: 'Enrollment & Allocation',
+      label: 'Allocation',
       icon: <Users className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Section, House & Roll Number Allocation">
@@ -115,7 +115,7 @@ function StudentsPage() {
     },
     {
       id: 'documents',
-      label: 'Student Documents',
+      label: 'Documents',
       icon: <FileText className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Student Identity & Academic Document Vault">
@@ -125,7 +125,7 @@ function StudentsPage() {
     },
     {
       id: 'bulk-data',
-      label: 'Excel / CSV Bulk Import',
+      label: 'Bulk Import',
       icon: <Upload className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Bulk Student Data Import & Updates">
@@ -135,7 +135,7 @@ function StudentsPage() {
     },
     {
       id: 'search-filter',
-      label: 'Smart Search & Filters',
+      label: 'Smart Search',
       icon: <Search className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Advanced Multi-Parametric Search Engine">
@@ -145,7 +145,7 @@ function StudentsPage() {
     },
     {
       id: 'groups-categories',
-      label: 'Houses, Clubs & Groups',
+      label: 'Houses & Clubs',
       icon: <ShieldCheck className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="House Allocations & Student Clubs">
@@ -155,7 +155,7 @@ function StudentsPage() {
     },
     {
       id: 'scholarships',
-      label: 'Scholarships & Concessions',
+      label: 'Scholarships',
       icon: <Award className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Scholarship Awards & Fee Concession Records">
@@ -165,7 +165,7 @@ function StudentsPage() {
     },
     {
       id: 'timeline',
-      label: 'Student Timeline & History',
+      label: 'Timeline',
       icon: <History className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Multi-Year Student Timeline & Activity Logs">
@@ -175,7 +175,7 @@ function StudentsPage() {
     },
     {
       id: 'status-mgmt',
-      label: 'Status Management',
+      label: 'Status',
       icon: <AlertOctagon className="h-3.5 w-3.5" />,
       content: (
         <VFCard title="Student Status Control (Active / Blocked / Archived)">
