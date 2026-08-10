@@ -90,8 +90,8 @@
 
 @layer base {
   html {
-    /* Fluid typography scaling clamped from 1000px (14px) to 2000px (19px) */
-    font-size: clamp(14px, 0.5vw + 9px, 19px);
+    /* Fluid typography: 13px at 1000px viewport, 17px at 2000px */
+    font-size: clamp(13px, 0.4vw + 9px, 17px);
   }
 
   * {
@@ -101,7 +101,9 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.015em;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   /* Custom subtle scrollbar with less border radius */

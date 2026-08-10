@@ -25,52 +25,52 @@ export function VFStatCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-border/80 bg-card p-5 text-card-foreground shadow-xs flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-primary/40 hover:shadow-md group",
+        "rounded-lg border border-border/70 bg-card px-4 py-3.5 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 hover:border-primary/35 hover:shadow-sm group",
         className
       )}
       {...props}
     >
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider leading-snug">{title}</span>
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-snug">{title}</span>
         {icon && (
-          <div className="h-9 w-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 shrink-0 group-hover:scale-105 transition-transform">
+          <div className="h-8 w-8 rounded-md bg-primary/8 text-primary/80 flex items-center justify-center border border-primary/15 shrink-0 group-hover:bg-primary/12 transition-colors">
             {icon}
           </div>
         )}
       </div>
       
-      <div className="flex flex-col gap-1 mt-2">
+      <div className="flex flex-col gap-1">
         {isLoading ? (
-          <div className="h-8 w-24 bg-muted-foreground/15 animate-pulse rounded-md mt-1" />
+          <div className="h-7 w-20 bg-muted-foreground/12 animate-pulse rounded" />
         ) : (
-          <div className="text-2xl font-black tracking-tight text-foreground">{value}</div>
+          <div className="text-xl font-black tracking-tight text-foreground leading-none">{value}</div>
         )}
         
         {!isLoading && (trend || description) && (
-          <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             {trend && (
               <span
                 className={cn(
-                  "inline-flex items-center text-[11px] font-bold rounded-md px-2 py-0.5 border",
-                  trend === 'up' && "bg-success/15 text-success border-success/30",
-                  trend === 'down' && "bg-destructive/15 text-destructive border-destructive/30",
-                  trend === 'neutral' && "bg-muted text-muted-foreground border-border"
+                  "inline-flex items-center text-[10px] font-bold rounded px-1.5 py-0.5 border uppercase tracking-wide",
+                  trend === 'up' && "bg-success/10 text-success border-success/25",
+                  trend === 'down' && "bg-destructive/10 text-destructive border-destructive/25",
+                  trend === 'neutral' && "bg-muted text-muted-foreground border-border/60"
                 )}
               >
                 {trend === 'up' && (
-                  <svg className="h-3 w-3 mr-0.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-2.5 w-2.5 mr-0.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
                   </svg>
                 )}
                 {trend === 'down' && (
-                  <svg className="h-3 w-3 mr-0.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-2.5 w-2.5 mr-0.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                   </svg>
                 )}
                 {trendLabel}
               </span>
             )}
-            {description && <span className="text-xs text-muted-foreground font-medium">{description}</span>}
+            {description && <span className="text-[10px] text-muted-foreground font-medium">{description}</span>}
           </div>
         )}
       </div>

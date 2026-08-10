@@ -7,8 +7,8 @@ import { VFButton } from './VFButton';
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card shadow-sm">
-      <table className={cn("w-full border-collapse text-left text-sm", className)} {...props} />
+    <div className="w-full overflow-x-auto border border-border/70 rounded-md bg-card">
+      <table className={cn("w-full border-collapse text-left text-xs", className)} {...props} />
     </div>
   );
 }
@@ -41,8 +41,8 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "p-4 font-semibold text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
-        sticky && "sticky top-0 bg-card z-10 shadow-[0_1px_0_0_rgba(0,0,0,0.1)]",
+        "px-3 py-2.5 font-bold text-[10px] text-muted-foreground uppercase tracking-widest select-none whitespace-nowrap",
+        sticky && "sticky top-0 bg-card z-10",
         className
       )}
       {...props}
@@ -51,7 +51,7 @@ export function VFTableHeaderCell({
 }
 
 export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("p-4 align-middle text-foreground/90 whitespace-nowrap text-xs", className)} {...props} />;
+  return <td className={cn("px-3 py-2.5 align-middle text-foreground/85 whitespace-nowrap text-xs", className)} {...props} />;
 }
 
 // VFDataTable: high-level data table component

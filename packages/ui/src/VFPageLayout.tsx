@@ -25,7 +25,7 @@ export function VFPageContainer({ className, ...props }: React.HTMLAttributes<HT
 export function VFPageActions({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex items-center gap-2 mt-4 sm:mt-0 sm:ml-auto flex-wrap", className)}
+      className={cn("flex items-center gap-2 sm:ml-auto flex-wrap", className)}
       {...props}
     />
   );
@@ -50,15 +50,15 @@ export function VFPageHeader({
   return (
     <div
       className={cn(
-        "flex flex-col sm:flex-row sm:items-start justify-between border-b border-border/60 pb-5 mb-2",
+        "flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 pb-3.5 mb-1 gap-3",
         className
       )}
       {...props}
     >
-      <div className="space-y-1">
-        {breadcrumbs && <div className="mb-2">{breadcrumbs}</div>}
-        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">{title}</h1>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+      <div className="space-y-0.5 min-w-0">
+        {breadcrumbs && <div className="mb-1.5">{breadcrumbs}</div>}
+        <h1 className="text-base font-black tracking-tight text-foreground leading-tight">{title}</h1>
+        {description && <p className="text-[11px] text-muted-foreground font-medium">{description}</p>}
       </div>
       {actions && <VFPageActions>{actions}</VFPageActions>}
     </div>
@@ -81,17 +81,17 @@ export function VFSection({
   ...props
 }: VFSectionProps) {
   return (
-    <section className={cn("space-y-4", className)} {...props}>
+    <section className={cn("space-y-3", className)} {...props}>
       {(title || description || actions) && (
-        <div className="flex items-center justify-between border-b border-border/30 pb-2">
-          <div>
-            {title && <h2 className="text-lg font-semibold text-foreground">{title}</h2>}
-            {description && <p className="text-xs text-muted-foreground">{description}</p>}
+        <div className="flex items-center justify-between gap-3">
+          <div className="space-y-0.5 min-w-0">
+            {title && <h2 className="text-xs font-bold uppercase tracking-widest text-foreground/80">{title}</h2>}
+            {description && <p className="text-[10px] text-muted-foreground">{description}</p>}
           </div>
-          {actions && <div className="flex items-center gap-2">{actions}</div>}
+          {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
         </div>
       )}
-      <div className="mt-2">{children}</div>
+      <div>{children}</div>
     </section>
   );
 }

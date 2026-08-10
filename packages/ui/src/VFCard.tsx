@@ -6,28 +6,32 @@ export interface VFCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   description?: React.ReactNode;
   action?: React.ReactNode;
   hoverable?: boolean;
+  compact?: boolean;
 }
 
-export function VFCard({ className, title, description, action, hoverable = false, children, ...props }: VFCardProps) {
+export function VFCard({ className, title, description, action, hoverable = false, compact = false, children, ...props }: VFCardProps) {
+  const pad = compact ? "p-3" : "p-4";
+  const childPad = compact ? "p-3 pt-2.5" : "p-4 pt-3";
+
   return (
     <div
       className={cn(
-        "rounded-xl border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-300 overflow-hidden",
-        hoverable && "hover:shadow-md hover:border-primary/30 cursor-pointer hover:-translate-y-0.5",
+        "rounded-lg border border-border/70 bg-card text-card-foreground transition-all duration-200 overflow-hidden",
+        hoverable && "hover:shadow-sm hover:border-primary/30 cursor-pointer hover:-translate-y-px",
         className
       )}
       {...props}
     >
       {(title || description || action) && (
-        <div className="flex items-start justify-between p-5 border-b border-border/60 gap-4">
-          <div className="space-y-1">
+        <div className={cn("flex items-start justify-between border-b border-border/50 gap-3", pad)}>
+          <div className="space-y-0.5 min-w-0">
             {title && typeof title === 'string' ? (
-              <h3 className="text-sm font-bold text-foreground tracking-tight">{title}</h3>
+              <h3 className="text-xs font-bold text-foreground tracking-tight leading-snug">{title}</h3>
             ) : (
               title
             )}
             {description && typeof description === 'string' ? (
-              <p className="text-xs text-muted-foreground">{description}</p>
+              <p className="text-[10px] text-muted-foreground leading-snug">{description}</p>
             ) : (
               description
             )}
@@ -36,7 +40,7 @@ export function VFCard({ className, title, description, action, hoverable = fals
         </div>
       )}
       {children && (
-        <div className={cn("p-5", (title || description || action) && "pt-4")}>
+        <div className={(title || description || action) ? childPad : pad}>
           {children}
         </div>
       )}
@@ -45,25 +49,25 @@ export function VFCard({ className, title, description, action, hoverable = fals
 }
 
 export function VFCardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("flex flex-col space-y-1.5 p-5 border-b border-border/60", className)} {...props} />;
+  return <div className={cn("flex items-start justify-between p-4 border-b border-border/50", className)} {...props} />;
 }
 
 export function VFCardTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn("text-sm font-bold leading-none tracking-tight text-foreground", className)} {...props}>
+    <h3 className={cn("text-xs font-bold leading-snug tracking-tight text-foreground", className)} {...props}>
       {children}
     </h3>
   );
 }
 
 export function VFCardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn("text-xs text-muted-foreground", className)} {...props} />;
+  return <p className={cn("text-[10px] text-muted-foreground leading-snug", className)} {...props} />;
 }
 
 export function VFCardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-5 text-xs text-foreground/90 space-y-3", className)} {...props} />;
+  return <div className={cn("p-4 text-xs text-foreground/85 space-y-2.5", className)} {...props} />;
 }
 
 export function VFCardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("flex items-center p-5 pt-4 border-t border-border/60 bg-muted/20", className)} {...props} />;
+  return <div className={cn("flex items-center gap-2 p-4 pt-3 border-t border-border/50 bg-muted/15", className)} {...props} />;
 }

@@ -56,8 +56,8 @@ export function VFTabs({
     return (
       <div className={cn("flex flex-col w-full flex-1 min-h-0 bg-background", className)} {...props}>
         {/* Full-width sticky top sub-module tab bar header */}
-        <div className="w-full border-b border-border/80 bg-card/80 px-6 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30 shadow-xs">
-          <div className="flex items-center gap-8 overflow-x-auto no-scrollbar flex-1" role="tablist">
+        <div className="w-full border-b border-border/60 bg-card/90 px-5 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
+          <div className="flex items-center gap-6 overflow-x-auto no-scrollbar flex-1" role="tablist">
             {items.map((item) => {
               const isActive = item.id === activeId;
               return (
@@ -68,16 +68,16 @@ export function VFTabs({
                   disabled={item.disabled}
                   onClick={() => handleTabClick(item.id, item.disabled)}
                   className={cn(
-                    "relative inline-flex items-center gap-2 text-xs font-semibold py-3 px-1 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0",
+                    "relative inline-flex items-center gap-1.5 text-[11px] font-bold py-2.5 px-0.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0 tracking-wide",
                     isActive
-                      ? "text-primary font-bold"
+                      ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {item.icon && <span className={cn("inline-flex shrink-0 transition-colors", isActive ? "text-primary" : "text-muted-foreground/70")}>{item.icon}</span>}
+                  {item.icon && <span className={cn("inline-flex shrink-0 transition-colors", isActive ? "text-primary" : "text-muted-foreground/60")}>{item.icon}</span>}
                   <span>{item.label}</span>
                   {isActive && (
-                    <div className="absolute -bottom-[1px] left-0 right-0 h-[2.5px] bg-primary rounded-t-full shadow-[0_-2px_12px_rgba(249,115,22,0.7)] animate-fade-in" />
+                    <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary rounded-t-sm shadow-[0_-1px_8px_rgba(249,115,22,0.5)] animate-fade-in" />
                   )}
                 </button>
               );
@@ -86,7 +86,7 @@ export function VFTabs({
         </div>
 
         {/* Tab Panel Content Container */}
-        <div className="p-6 w-full space-y-6 flex-1 overflow-y-auto custom-scrollbar" role="tabpanel">
+        <div className="px-5 py-4 w-full space-y-4 flex-1 overflow-y-auto custom-scrollbar" role="tabpanel">
           {activeItem ? activeItem.content : null}
         </div>
       </div>
@@ -94,12 +94,12 @@ export function VFTabs({
   }
 
   return (
-    <div className={cn("w-full space-y-4", className)} {...props}>
+    <div className={cn("w-full space-y-3", className)} {...props}>
       <div
         className={cn(
           "flex items-center",
-          variant === 'underline' && "border-b border-border/80 gap-6",
-          variant === 'pills' && "bg-muted p-1 rounded-lg gap-1 inline-flex"
+          variant === 'underline' && "border-b border-border/60 gap-4",
+          variant === 'pills' && "bg-muted/60 p-0.5 rounded-md gap-0.5 inline-flex"
         )}
         role="tablist"
       >
@@ -114,27 +114,27 @@ export function VFTabs({
               disabled={item.disabled}
               onClick={() => handleTabClick(item.id, item.disabled)}
               className={cn(
-                "relative inline-flex items-center gap-2 text-xs font-medium py-2.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer",
+                "relative inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wide py-2 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer",
                 variant === 'underline' && [
                   "text-muted-foreground hover:text-foreground",
-                  isActive && "text-primary font-semibold"
+                  isActive && "text-primary"
                 ],
                 variant === 'pills' && [
-                  "px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-background/40",
-                  isActive && "bg-background text-foreground shadow-sm font-semibold"
+                  "px-2.5 py-1 rounded text-muted-foreground hover:text-foreground hover:bg-background/60",
+                  isActive && "bg-background text-foreground shadow-xs font-bold"
                 ]
               )}
             >
-              {item.icon && <span className="inline-flex">{item.icon}</span>}
+              {item.icon && <span className="inline-flex shrink-0">{item.icon}</span>}
               {item.label}
               {variant === 'underline' && isActive && (
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-full animate-fade-in" />
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-t-sm animate-fade-in" />
               )}
             </button>
           );
         })}
       </div>
-      <div className="mt-2 outline-none focus-visible:ring-2 focus-visible:ring-ring" role="tabpanel">
+      <div className="outline-none" role="tabpanel">
         {activeItem ? activeItem.content : null}
       </div>
     </div>
