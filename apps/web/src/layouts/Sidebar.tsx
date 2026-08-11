@@ -57,7 +57,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'flex flex-col h-full bg-card border-r border-border/60 transition-all duration-300 relative z-20 shrink-0 select-none',
+        'flex flex-col h-full bg-card border-r border-border/60 transition-all duration-300 relative z-40 shrink-0 select-none',
         sidebarExpanded ? 'w-60' : 'w-16'
       )}
     >
@@ -88,7 +88,7 @@ export function Sidebar() {
         )}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-30 transition-all cursor-pointer shadow-sm"
+          className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-50 transition-all cursor-pointer shadow-md"
           title={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         >
           {sidebarExpanded ? <ChevronLeft className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
