@@ -48,15 +48,21 @@ administration — replacing them with a unified, intelligent, and beautifully d
 ### Web App
 | Technology | Version | Purpose |
 |-----------|---------|---------|
-| React | 19 | UI framework |
-| Vite | 5 | Build tool |
-| TypeScript | 5.6 | Type safety |
-| Tailwind CSS | 3.4 | Styling |
-| shadcn/ui | latest | Component library |
-| TanStack Router | 1.x | Client-side routing |
-| TanStack Query | 5.x | Server state management |
+| React | 19 | Core UI framework |
+| Vite | 5.4 | Lightning fast build tool |
+| TypeScript | 5.6 | Strict type safety |
+| Tailwind CSS | 3.4 | Utility-first CSS styling |
+| `@vidyamaxx/ui` | Workspace | Custom enterprise CVA component system |
+| Radix UI | Latest | Accessible UI primitives (`dialog`, `select`, `tabs`, `popover`, `tooltip`) |
+| Framer Motion | 13.x | Fluid scale-in modal & drawer animations |
+| TanStack Table | 9.x | High-performance enterprise data grid |
+| Recharts | 3.x | Custom dark theme BI data visualizations |
+| Lenis | 1.1 | Physics-based smooth scrolling |
+| cmdk | 1.1 | Keyboard-driven command palette (`⌘K`) |
+| Sonner | 2.x | Real-time store-synced toast notifications |
+| TanStack Router | 1.x | Type-safe client routing |
+| TanStack Query | 5.x | Server state management & caching |
 | Zustand | 5.x | Global client state |
-| React Hook Form | 7.x | Form management |
 | Zod | 3.x | Schema validation |
 
 ### Mobile App
