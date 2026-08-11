@@ -93,7 +93,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
       {
         id: 'act-ask-ai',
         icon: Sparkles,
-        label: 'Ask VidyaFlow AI Assistant',
+        label: 'Ask VidyaMaxx AI Assistant',
         route: '',
         category: 'Actions',
         shortcut: 'Shift+K',
@@ -186,7 +186,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
               className="flex items-center gap-1 text-primary font-bold text-xs hover:underline cursor-pointer"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>VidyaFlow AI</span>
+              <span>VidyaMaxx AI</span>
             </button>
 
             {/* Close Button in Bottom Footer */}

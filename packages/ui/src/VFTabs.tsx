@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from './utils';
 
 export interface TabItem {
@@ -123,7 +124,11 @@ export function VFTabs({
                   {item.icon && <span className={cn("inline-flex shrink-0 transition-colors", isActive ? "text-primary" : "text-muted-foreground/60")}>{item.icon}</span>}
                   <span>{item.label}</span>
                   {isActive && (
-                    <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary rounded-t-sm shadow-[0_-1px_8px_rgba(249,115,22,0.5)] animate-fade-in" />
+                    <motion.div
+                      layoutId="activeTabIndicator"
+                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary rounded-t-sm shadow-[0_-1px_8px_rgba(249,115,22,0.5)]"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
                   )}
                 </button>
               );
@@ -132,9 +137,20 @@ export function VFTabs({
           {rightActions && <div className="ml-4 shrink-0 flex items-center gap-2">{rightActions}</div>}
         </div>
 
-        {/* Tab Panel Content Container (uses single main viewport scroll) */}
-        <div className="p-4 w-full space-y-4 flex-1" role="tabpanel">
-          {activeItem ? activeItem.content : null}
+        {/* Tab Panel Content Container with Smooth Framer Motion Entrance Animation */}
+        <div className="p-4 w-full flex-1" role="tabpanel">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeId}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-4 w-full"
+            >
+              {activeItem ? activeItem.content : null}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     );
@@ -177,14 +193,28 @@ export function VFTabs({
               {item.icon && <span className="inline-flex shrink-0">{item.icon}</span>}
               {item.label}
               {variant === 'underline' && isActive && (
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-t-sm animate-fade-in" />
+                <motion.div
+                  layoutId="underlineTabIndicator"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-t-sm"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
               )}
             </button>
           );
         })}
       </div>
       <div className="outline-none" role="tabpanel">
-        {activeItem ? activeItem.content : null}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeId}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {activeItem ? activeItem.content : null}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

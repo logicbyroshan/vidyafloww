@@ -173,7 +173,7 @@ export function Sidebar() {
           title="Open VidyaMaxx AI Assistant"
         >
           <Sparkles className="h-4 w-4 text-primary shrink-0 transition-transform group-hover:scale-110" />
-          {sidebarExpanded && <span className="truncate tracking-wide">✨ VidyaMaxx AI</span>}
+          {sidebarExpanded && <span className="truncate tracking-wide">VidyaMaxx AI</span>}
         </button>
       </div>
 

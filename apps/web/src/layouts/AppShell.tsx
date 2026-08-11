@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Outlet } from '@tanstack/react-router';
+import { Outlet, useLocation } from '@tanstack/react-router';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { CommandPalette } from './CommandPalette';
@@ -105,6 +106,7 @@ function SmallScreenBlocker() {
 import Lenis from 'lenis';
 
 export function AppShell() {
+  const location = useLocation();
   const { addNotification, isAiChatOpen, setIsAiChatOpen } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
@@ -184,7 +186,18 @@ export function AppShell() {
               onOpenAiChat={() => setIsAiChatOpen(true)}
             />
             <main ref={mainRef} className="flex-1 overflow-y-auto bg-background relative custom-scrollbar">
-              <Outlet />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={location.pathname}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full min-h-full"
+                >
+                  <Outlet />
+                </motion.div>
+              </AnimatePresence>
             </main>
           </div>
           <CommandPalette
