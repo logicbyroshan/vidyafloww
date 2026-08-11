@@ -19,6 +19,7 @@ import {
   Plus,
   QrCode,
   AlertTriangle,
+  FileCheck,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/documents')({
@@ -196,7 +197,7 @@ function DocumentsPage() {
     </div>
   );
 
-  // 16.4 Certificate Templates Submodule Content
+  // 16.4 Specialized Certificate Template Live Preview Submodule Content
   const templatesContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -207,28 +208,59 @@ function DocumentsPage() {
         <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Template</VFButton>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <VFCard title="Bonafide Study Certificate">
-          <div className="space-y-2 text-xs mt-1">
-            <p className="text-muted-foreground">Placeholders: &#123;&#123;student.name&#125;&#125;, &#123;&#123;class.name&#125;&#125;, &#123;&#123;issue.date&#125;&#125;</p>
-            <p className="font-bold text-success">Status: Published (v2)</p>
-            <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="space-y-3">
+          <VFCard title="Bonafide Study Certificate">
+            <div className="space-y-2 text-xs mt-1">
+              <p className="text-muted-foreground">Placeholders: &#123;&#123;student.name&#125;&#125;, &#123;&#123;class.name&#125;&#125;</p>
+              <p className="font-bold text-success">Status: Published (v2)</p>
+              <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
+            </div>
+          </VFCard>
+          <VFCard title="Transfer Certificate (TC)">
+            <div className="space-y-2 text-xs mt-1">
+              <p className="text-muted-foreground">Placeholders: &#123;&#123;tc.number&#125;&#125;, &#123;&#123;conduct&#125;&#125;</p>
+              <p className="font-bold text-success">Status: Published (v3)</p>
+              <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
+            </div>
+          </VFCard>
+        </div>
+
+        {/* Dynamic Certificate Live Preview Card */}
+        <div className="lg:col-span-2 bg-card border border-border rounded-xl p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <div className="flex items-center gap-2">
+              <FileCheck className="h-5 w-5 text-primary" />
+              <h3 className="text-sm font-bold text-foreground">Live Certificate Preview (Bonafide)</h3>
+            </div>
+            <VFBadge variant="success">🔒 Authorized Signature Enforced</VFBadge>
           </div>
-        </VFCard>
-        <VFCard title="Transfer Certificate (TC)">
-          <div className="space-y-2 text-xs mt-1">
-            <p className="text-muted-foreground">Placeholders: &#123;&#123;tc.number&#125;&#125;, &#123;&#123;conduct&#125;&#125;, &#123;&#123;no_dues&#125;&#125;</p>
-            <p className="font-bold text-success">Status: Published (v3)</p>
-            <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
+
+          {/* Certificate Border & Parchment Styling */}
+          <div className="p-6 border-4 border-double border-primary/40 rounded-xl bg-muted/20 text-center space-y-4">
+            <h2 className="text-base font-serif font-black tracking-widest text-primary uppercase">VidyaMaxx Academy of Excellence</h2>
+            <p className="text-xs text-muted-foreground font-serif">Affiliated to Central Board of Secondary Education (CBSE)</p>
+            <h3 className="text-sm font-bold text-foreground underline decoration-primary decoration-2 underline-offset-4 uppercase tracking-wider py-1">Bonafide Student Certificate</h3>
+            
+            <p className="text-xs text-foreground/90 font-serif leading-relaxed max-w-lg mx-auto">
+              This is to certify that <span className="font-bold text-primary">Rahul Sharma</span>, Son of <span className="font-bold">Mr. Rajesh Sharma</span>, is a bonafide student of Class <span className="font-bold">10-A</span> (Admission No: <span className="font-mono font-bold">ADM-2026-00421</span>) for the academic session 2026-2027.
+            </p>
+
+            <div className="flex items-center justify-between pt-6 border-t border-border/60 text-xs">
+              <div className="text-left font-mono">
+                <p className="text-muted-foreground">Date: 11 August 2026</p>
+                <p className="text-muted-foreground">Place: New Delhi</p>
+              </div>
+              <div className="p-1 bg-white rounded border border-border">
+                <QrCode className="h-10 w-10 text-black" />
+              </div>
+              <div className="text-right">
+                <p className="font-bold text-foreground font-serif">Dr. Suresh Verma</p>
+                <p className="text-[11px] text-primary font-bold">Principal Signature ✓</p>
+              </div>
+            </div>
           </div>
-        </VFCard>
-        <VFCard title="Character & Conduct Certificate">
-          <div className="space-y-2 text-xs mt-1">
-            <p className="text-muted-foreground">Placeholders: &#123;&#123;student.name&#125;&#125;, &#123;&#123;conduct_grade&#125;&#125;</p>
-            <p className="font-bold text-primary">Status: Draft (v1)</p>
-            <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
-          </div>
-        </VFCard>
+        </div>
       </div>
     </div>
   );

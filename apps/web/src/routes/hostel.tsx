@@ -177,30 +177,46 @@ function HostelPage() {
     </div>
   );
 
-  // 13.3 Rooms & Beds Submodule Content
+  // 13.3 Specialized Visual Bed Matrix Grid Submodule Content
   const roomsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Hostel Room & Bed Inventory Matrix</h3>
-          <p className="text-xs text-muted-foreground">Manage single, double, 4-bed dorm rooms, bed IDs (A101-B01), and room transfer logs.</p>
+          <h3 className="text-sm font-bold text-foreground">Hostel Room & Bed Inventory Allocation Matrix</h3>
+          <p className="text-xs text-muted-foreground">Visual floor plan bed allocation matrix (Green = Available Bed 🟢, Red = Occupied 🔴).</p>
         </div>
         <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Room</VFButton>
       </div>
 
-      <VFDataTable
-        columns={[
-          { header: 'Room No', accessorKey: 'roomNo', cell: (r: RoomRecord) => <span className="font-mono font-bold text-primary">{r.roomNo}</span> },
-          { header: 'Building Floor', accessorKey: 'floor' },
-          { header: 'Room Type', accessorKey: 'type', cell: (r: RoomRecord) => <span className="font-bold text-foreground">{r.type}</span> },
-          { header: 'Total Beds', accessorKey: 'capacity', cell: (r: RoomRecord) => `${r.capacity} Beds` },
-          { header: 'Occupied', accessorKey: 'occupied', cell: (r: RoomRecord) => `${r.occupied} Occupied` },
-          { header: 'Available', accessorKey: 'available', cell: (r: RoomRecord) => <VFBadge variant="success">{r.available} Free</VFBadge> },
-          { header: 'Status', accessorKey: 'status', cell: (r: RoomRecord) => <VFBadge variant={r.status === 'Full' ? 'warning' : 'success'}>{r.status}</VFBadge> },
-        ]}
-        data={roomsData}
-        filterPlaceholder="Search room number or type..."
-      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {roomsData.map((rm) => (
+          <VFCard key={rm.id} title={`Room ${rm.roomNo} (${rm.type})`}>
+            <div className="space-y-3 text-xs mt-1">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">{rm.floor}</span>
+                <VFBadge variant={rm.status === 'Full' ? 'warning' : 'success'}>{rm.status}</VFBadge>
+              </div>
+              <p className="text-muted-foreground">Capacity: <span className="font-bold text-foreground">{rm.capacity} Beds ({rm.occupied} Occupied / {rm.available} Free)</span></p>
+
+              {/* Visual Bed Grid */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {Array.from({ length: rm.capacity }).map((_, bIdx) => {
+                  const isOccupied = bIdx < rm.occupied;
+                  return (
+                    <div
+                      key={bIdx}
+                      className={`p-2 rounded-lg border text-center font-bold text-xs ${isOccupied ? 'bg-primary/10 border-primary/40 text-primary' : 'bg-success/10 border-success/40 text-success'}`}
+                    >
+                      Bed B-0{bIdx + 1}
+                      <span className="block text-[10px] font-normal">{isOccupied ? '🔴 Occupied' : '🟢 Free'}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </VFCard>
+        ))}
+      </div>
     </div>
   );
 
