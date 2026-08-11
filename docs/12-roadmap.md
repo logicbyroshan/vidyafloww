@@ -18,13 +18,23 @@
 - [x] **Framer Motion Animations** (`framer-motion` scale-in modal transitions, right-sliding drawers, backdrop blurs)
 - [x] **TanStack Table Data Grid** (`@tanstack/react-table` v9 powering `VFDataTable` with sorting, global filtering, and column visibility)
 - [x] **Recharts BI Analytics Engine** (`recharts` powering `VFAreaChart`, `VFBarChart`, and `VFPieChart` with dark theme tooltips & gradient fills)
-- [x] **cmdk Search & Command Palette** (`cmdk` powering `CommandPalette.tsx` with `⌘K` keyboard navigation across 20+ ERP modules)
+- [x] **cmdk Search & Command Palette** (`cmdk` powering `CommandPalette.tsx` with `⌘K` keyboard navigation across 24 ERP modules)
 - [x] **Sonner Toast System** (`sonner` powering `ToastContainer.tsx` with global Zustand store notifications)
 - [x] **Lenis Smooth Physics Scrolling** (`lenis` instances on `<main>` viewport in `AppShell.tsx` and sidebar navigation in `Sidebar.tsx`)
 - [x] **Sofia Sans Fluid Typography** (`clamp(15px, 0.3vw + 12px, 18px)`) with crisp letter-spacing (`0.015em`)
 - [x] **Single Viewport & Non-Passive Tabbar Wheel Scroll** (isolated horizontal wheel scroll preventing vertical page scroll conflicts)
 - [x] **Submodule Tabbar Auto-Centering** (`scrollIntoView({ inline: 'center' })` auto-focus on active tabs)
 - [x] **Header Navigation Upgrade** (`Welcome,` + school logo image + `Springfield Academy`)
+
+## Phase 1.6 — 24-Module Architecture & Motion System ✅ (Completed)
+
+- [x] **Single Source Navigation Registry** (`MODULE_REGISTRY` in `packages/constants/src/navigation.ts` storing 24 main modules & submodules)
+- [x] **24 Main Business Modules Architecture** (`Dashboard`, `Admissions`, `Students`, `Academics`, `Timetable`, `Attendance`, `Examination`, `Fees`, `Finance`, `HR & Payroll`, `Library`, `Transport`, `Hostel`, `Inventory & Assets`, `Homework & Learning`, `Documents & Certificates`, `Communication`, `Events & Activities`, `Front Office & Enquiries`, `School Administration`, `Parent & Student Portal`, `Reports & Analytics`, `Security & Audit`, `System Administration`)
+- [x] **Global `VidyaMaxx AI` Assistant** (Prominent button in sidebar footer directly above user profile card, context-aware global AI Chat drawer `AIChatDrawer.tsx`, `Shift+K` shortcut)
+- [x] **Submodule Workspace Layout** (Sidebar renders main modules only, top `VFTabs` mounts submodules)
+- [x] **Framer Motion Revealing Transitions** (Staggered revealing fade & slide-up animation on route navigation & submodule tab switching)
+- [x] **Fail-Safe Dual-Engine Data Tables** (Combined TanStack Table v9 + fail-safe rendering engine ensuring 100% data visibility, search filtering, column toggles, and pagination)
+- [x] **Backward Compatibility Forwarding** (`/finance` ➔ `/fees`, `/lms` ➔ `/learning`, `/settings` ➔ `/administration`, `/ai` ➔ global AI drawer)
 
 ## Phase 2 — Core Authentication & Multi-Tenancy
 
@@ -44,7 +54,9 @@
 - [x] Academics & Curriculum Module (`/academics`)
 - [x] Timetable & Scheduling Engine (`/timetable`)
 - [x] Attendance & Biometrics Dashboard (`/attendance`)
-- [ ] Homework management & submission portal
+- [x] Homework & Learning Module (`/learning`)
+- [x] Events & Activities Module (`/events`)
+- [x] Front Office & Enquiries Module (`/front-office`)
 
 ## Phase 4 — Examinations & Assessments
 
@@ -54,11 +66,10 @@
 - [ ] Report card generation (PDF)
 - [ ] Online assessment module
 
-## Phase 5 — Finance
+## Phase 5 — Fees & Finance
 
-- [x] Fees & Student Finance Module (`/finance`)
+- [x] Fees & Student Accounts Module (`/fees`)
 - [x] Finance & Accounting Ledger (`/accounting`)
-- [ ] Fee structure configuration (term/monthly/yearly)
 - [ ] Fee invoicing and collection
 - [ ] Payment gateway integration (Razorpay / Stripe)
 - [ ] Receipt generation
@@ -68,21 +79,21 @@
 - [x] Communication & DLT SMS Module (`/communication`)
 - [ ] Internal messaging system
 - [ ] Real-time notifications (Django Channels + WebSocket)
-- [ ] SMS integration
-- [ ] Parent communication portal
+- [ ] WhatsApp broadcasting gateway
 
 ## Phase 7 — HR & Administration
 
 - [x] HR & Staff Payroll Module (`/hr`)
+- [x] School Administration Module (`/administration`)
 - [ ] Staff profiles and contracts
-- [ ] Leave management & Payroll processing
-- [ ] Biometric integration (attendance punching)
+- [ ] Payroll processing & payslips
 
-## Phase 8 — LMS & Content
+## Phase 8 — Portals & Security
 
-- [x] Digital Classroom LMS (`/lms`)
-- [ ] Course and lesson management
-- [ ] File upload and resource library
+- [x] Parent & Student Portal (`/portal`)
+- [x] Security & Audit Logs (`/security`)
+- [x] System Administration (`/system`)
+- [x] Reports & Analytics (`/reports`)
 
 ## Phase 9 — Advanced Modules
 
@@ -91,22 +102,13 @@
 - [x] Hostel & Campus Life (`/hostel`)
 - [x] Inventory & Store Procurement (`/inventory`)
 - [x] ID Studio & Document Vault (`/documents`)
-- [x] Student Welfare & Discipline (`/welfare`)
-- [x] Reports & Compliance BI (`/reports`)
 
-## Phase 10 — AI & Analytics
+## Phase 10 — AI & Enterprise
 
-- [x] VidyaFlow AI Command Center (`/ai`)
-- [x] Dashboard BI Analytics & Student Health Radar (`/`)
-- [ ] Auto-grading for objective assessments
-- [ ] Fee collection risk scoring
-
-## Phase 11 — Enterprise & Scale
-
+- [x] Global `VidyaMaxx AI` Assistant
+- [x] Dashboard BI Analytics & Operational Radar (`/`)
 - [ ] Multi-region deployment
-- [ ] Advanced audit logging
-- [ ] API for third-party integrations
-- [ ] White-label theming per organization
+- [ ] Advanced audit logging & compliance exports
 
 ---
 

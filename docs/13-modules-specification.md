@@ -1,12 +1,12 @@
-# 13 — 🏫 VidyaMaxx Modules Specification & Architecture
+# 13 — 🏫 VidyaMaxx 24-Module Architecture & AI Specification
 
-VidyaMaxx is an AI-first, multi-tenant enterprise school management platform designed to manage the end-to-end lifecycle of educational institutions.
+VidyaMaxx is an AI-first, multi-tenant enterprise school management platform designed to manage the end-to-end operational, academic, financial, and administrative lifecycle of educational institutions.
 
 ---
 
-## 🏛️ Core System Hierarchy
+## 🏛️ Core Institutional Hierarchy
 
-All modules in VidyaMaxx are scoped according to the primary institutional hierarchy:
+All data and permissions in VidyaMaxx are scoped according to the primary multi-tenant hierarchy:
 
 ```text
 Organization (Multi-School / Group)
@@ -15,124 +15,160 @@ Organization (Multi-School / Group)
                └── Class / Grade
                      └── Section
                            ├── Students (Student 360° Profile)
-                           └── Teachers / Staff
+                           └── Teachers / Staff (HR 360° Profile)
 ```
 
 ---
 
-## 📑 20 Major VidyaMaxx Modules
+## 🧭 Navigation & Submodule Workspace Architecture
 
-### 01 — 🏫 School Administration
-**Foundation & Infrastructure**
-* **Submodules**: School profile, Branch/campus management, Academic sessions, Classes, Sections, Houses, Departments, Subjects, Grades, School calendar, Holidays, Working days, Academic years, Roles & permissions, User management, Approval workflows, Custom fields engine, Custom forms, Custom workflows, System configuration, Audit logs, Data import/export, Multi-school management.
-* **Architecture Scope**: Scopes all data across multi-campus environments with granular RBAC (Role-Based Access Control) and dynamic custom attributes.
+- **24 Main Business Modules**: The main sidebar displays exactly the 24 main business modules.
+- **Top Sub-module Tab Bar (`VFTabs`)**: Selecting any main module mounts its submodules in the sticky top sub-module tab bar.
+- **Global `VidyaMaxx AI` Assistant**: Accessible from anywhere in the application via the prominent `✨ VidyaMaxx AI` button located in the sidebar footer directly above the profile card, or via the `Shift+K` keyboard shortcut.
+- **Fail-Safe Dual Engine Data Tables (`VFTable`)**: All data tables feature client-side text searching, column visibility toggles, multi-column sorting, and pagination controls.
 
-### 02 — 🎓 Admissions & Enrollment
-**Complete Admission Lifecycle**
-* **Submodules**: Enquiry / leads, Parent enquiries, Admission forms, Online applications, Application verification, Document submission, Document verification, Entrance tests, Interviews, Merit lists, Selection, Waiting list, Fee collection, Admission approval, Student enrollment, Roll number allocation, Scholar number, Section allocation, Admission cancellation, Re-admission, Transfer admission, Admission analytics.
-* **VidyaFlow AI Capabilities**:
-  - OCR automated document extraction & field parsing from transcripts and ID proofs.
-  - Missing document detection & duplicate applicant identification.
-  - Parent enquiry automated chatbot response & admission conversion probability scoring.
+---
 
-### 03 — 👨‍🎓 Student Management
-**Central Student 360° System**
-* **Lifecycle**: `Enquiry ➔ Applicant ➔ Admitted ➔ Active Student ➔ Promoted ➔ Transferred ➔ Graduated / Alumni`
-* **Submodules**: Personal details, Parents/guardians, Emergency contacts, Address, Documents, Medical information, Previous school, Sibling relationships, Student groups, Houses, Categories, Scholarships, Concessions, Discipline, Achievements, Activities, Student history, Parent relationships, Student timeline.
-* **Key Concept**: **Student 360° Profile** — Every record, grade, payment, attendance mark, and disciplinary note visible from a single unified view.
+## 📑 Complete 24 VidyaMaxx Main Business Modules
 
-### 04 — 📚 Academics & Curriculum
-**Academic Engine**
-* **Submodules**: Curriculum, Subjects, Subject groups, Classes, Sections, Teachers, Lesson planning, Syllabus, Chapters, Learning outcomes, Teaching plans, Assignments, Homework, Classwork, Study material, Notes, Question banks, Educational resources, Academic progress, Remedial education, Competency tracking.
-* **VidyaFlow AI Capabilities**:
-  - Automated lesson plan generation with custom learning objectives, classroom activities, assessment questions, and homework prompts.
+### 01 — 📊 Dashboard
+**Executive Command Center & Health Overview**
+* **Submodules**: Overview, Today's Operations, Alerts & Attention, Upcoming, My Tasks, Quick Actions, Role Dashboard.
+* **Capabilities**: Real-time operational widgets, executive financial KPIs, attendance radars, and task management.
 
-### 05 — 🗓️ Timetable & Scheduling
-**Scheduling Engine**
-* **Submodules**: Class timetable, Teacher timetable, Room timetable, Lab timetable, Exam timetable, Event scheduling, Substitute teachers, Free periods, Room allocation, Resource booking, School calendar, Period configuration.
-* **VidyaFlow AI Capabilities**:
-  - Multi-constraint timetable optimization balancing teacher workload, lab availability, room capacity, and consecutive period constraints.
+### 02 — 🎓 Admissions
+**Intake & Applicant Lifecycle**
+* **Submodules**: Admission Dashboard, Enquiries, Applications, Applicant Review, Documents, Interviews & Assessments, Selection & Offers, Enrollment, Admission Settings.
+* **VidyaMaxx AI Capabilities**:
+  - OCR automated document extraction & transcript field parsing.
+  - Missing document flags & duplicate applicant detection.
+  - Parent enquiry conversion probability scoring.
 
-### 06 — ✅ Attendance & Leave
-**Student & Staff Attendance Center**
-* **Student Attendance**: Daily attendance, Period attendance, Biometric sync, Face recognition, QR code scan, Manual attendance, Late arrival, Early departure, Absence, Leave requests, Attendance correction.
-* **Employee Attendance**: Staff attendance, Check-in/out, Biometric, Leave, Late coming, Early leaving, Overtime.
-* **VidyaFlow AI Capabilities**:
-  - Anomaly detection, chronic absenteeism risk prediction, and automated parent instant alert triggers.
+### 03 — 👨‍🎓 Students
+**Central Student 360° Directory**
+* **Submodules**: Student Dashboard, Student Directory, Student Profiles, Guardians & Family, Class & Section, Student Groups, Student Status, Student Documents, Student History, Student Import & Export.
+* **Key Concept**: **Student 360° Profile** — Single pane of glass for all grades, attendance, payments, and disciplinary logs.
 
-### 07 — 📝 Examination & Assessment
+### 04 — 📚 Academics
+**Curriculum & Class Structure Engine**
+* **Submodules**: Academic Dashboard, Academic Structure, Classes & Sections, Subjects, Curriculum, Academic Sessions, Teachers & Subject Assignment, Academic Planning, Academic Calendar, Academic Settings.
+* **VidyaMaxx AI Capabilities**:
+  - Automated lesson plan generation with custom objectives, classroom activities, and assessment prompts.
+
+### 05 — 🗓️ Timetable
+**Constraint-Based Scheduling Engine**
+* **Submodules**: Timetable Dashboard, Schedule Configuration, Class Timetable, Teacher Timetable, Rooms & Resources, Substitutions, Exam & Event Scheduling, Timetable Versions.
+* **VidyaMaxx AI Capabilities**:
+  - Auto-substitution engine and workload balancing.
+
+### 06 — ✅ Attendance
+**Biometric & Attendance Management**
+* **Submodules**: Attendance Dashboard, Student Attendance, Period Attendance, Employee Attendance, Leave, Corrections & Regularization, Devices & Biometrics, Attendance Reports.
+* **VidyaMaxx AI Capabilities**:
+  - Chronic absenteeism risk prediction & automated instant parent notifications.
+
+### 07 — 📝 Examination
 **Assessment & Grading Engine**
-* **Submodules**: Exam management, Exam schedules, Exam types, Subjects, Question bank, Question paper generation, Seating plans, Invigilation, Marks entry matrix, Grade calculation, Result processing, Report cards, Rank calculation, GPA/CGPA, Competency assessment, Formative & Summative assessment, Practical exams, Revaluation, Result publishing.
-* **VidyaFlow AI Capabilities**:
-  - Automated question paper generation with difficulty-balanced MCQs and subjective questions with answer keys.
+* **Submodules**: Examination Dashboard, Exams, Tests & Assessments, Question Bank, Question Papers, Exam Schedule, Hall Tickets, Seating & Invigilation, Evaluation, Results & Report Cards, Examination Reports.
+* **VidyaMaxx AI Capabilities**:
+  - Automated question paper generator balancing difficulty levels, bloom's taxonomy, and answer keys.
 
-### 08 — 💰 Fees & Student Finance
-**Student Financial Management**
-* **Submodules**: Fee structures, Fee heads, Fee groups, Student fee assignment, Installments, Discounts, Scholarships, Concessions, Fines, Late fees, Receipts, Refunds, Dues, Defaulters list, Online payments, Payment gateways, Payment reconciliation, Parent payment portal, Fee reminders, Fee certificates.
-* **VidyaFlow AI Capabilities**:
-  - Predictive fee defaulter scoring identifying students at risk of default prior to due dates.
+### 08 — 💰 Fees
+**Student Accounts & Counter Collections**
+* **Submodules**: Fee Dashboard, Fee Structures, Student Accounts, Collections, Discounts & Scholarships, Payments & Refunds, Dues & Defaulters, Fee Reports, Fee Settings.
+* **VidyaMaxx AI Capabilities**:
+  - Predictive fee defaulter risk scoring & automated WhatsApp payment reminders.
 
-### 09 — 🏦 Finance & Accounting
-**School-Wide Accounting & Cashbook System**
-* **Submodules**: Chart of accounts, Income, Expenses, Cashbook, Bank accounts, Transactions, Journal, Ledger, Payment vouchers, Receipt vouchers, Expense approvals workflow, Budgeting, Budget vs actual analysis, Financial reports, Vendor payments, Bank reconciliation, Financial year closing, Audit support.
+### 09 — 🏦 Finance
+**Institutional Accounting Ledger & Purchasing**
+* **Submodules**: Finance Dashboard, Expenses, Vendors & Purchases, Accounting, Budget, Bank & Reconciliation, Financial Controls, Finance Reports.
+* **Capabilities**: Double-entry ledger accounting, expense approval workflows, vendor POs, and bank reconciliation.
 
 ### 10 — 👨‍🏫 HR & Payroll
-**Complete Employee Lifecycle**
-* **Lifecycle**: `Applicant ➔ Employee ➔ Onboarding ➔ Active ➔ Leave / Transfer / Promotion ➔ Exit`
-* **Submodules**: Employee profiles, Departments, Designations, Recruitment, Onboarding, Documents, Qualifications, Experience, Contracts, Attendance, Leave, Payroll engine, Salary structures, Allowances, Deductions, Loans, Advances, Payslips, Tax calculation, Appraisals, Promotions, Resignation, Exit clearances, Experience certificates.
+**Staff Lifecycle & Payroll Engine**
+* **Submodules**: HR Dashboard, Employee Directory, Employee Profiles, Recruitment, Attendance & Leave, Payroll, Salary Structure, Performance, Employee Documents, HR Reports.
+* **Capabilities**: Salary structures, payslip generation, leave management, and staff performance appraisals.
 
-### 11 — 📢 Communication & Engagement
-**Omnichannel Communication Hub**
-* **Channels**: In-app notifications, Push notifications, SMS, Email, WhatsApp Integration, Voice notifications.
-* **Submodules**: Announcements, Circulars, Notices, Parent-teacher messaging, Staff communication, Emergency alerts, Scheduled & recurring messages, Multilingual message templates, Read/Delivery tracking.
+### 11 — 📖 Library
+**Book Catalog & Circulation**
+* **Submodules**: Library Dashboard, Catalog, Books, Members, Issue & Return, Reservations, Fines, Inventory, Library Reports, Library Settings.
+* **Capabilities**: ISBN barcode scanning, auto-calculated overdue fines, and book reservations.
 
-### 12 — 🚌 Transport Management
-**Fleet & Student Route Allocation**
-* **Submodules**: Vehicles, Drivers, Conductors, Routes, Stops, Student allocation, Employee allocation, Bus travel passes, Transport fees, Real-time GPS tracking, Vehicle maintenance, Fuel logs, Driver attendance, Route optimization, Emergency alerts.
-* **VidyaFlow AI Capabilities**:
-  - Intelligent route optimization balancing student addresses, bus capacity, pickup times, and live traffic data.
+### 12 — 🚌 Transport
+**Fleet Management & Route Tracking**
+* **Submodules**: Transport Dashboard, Routes, Stops, Vehicles, Drivers & Staff, Student Allocation, Transport Fees, GPS & Tracking, Maintenance, Transport Reports.
+* **Capabilities**: Live GPS vehicle tracking, route optimization, and driver license tracking.
 
-### 13 — 📖 Library Management
-**Library & Resource Center**
-* **Submodules**: Books catalog, Categories, Authors, Publishers, ISBN lookup, Copies, Barcode/QR scanning, Member registration, Issue, Return, Renewal, Book reservations, Fines, Lost/damaged book handling, Inventory audit, Digital library, Reading history logs.
-* **VidyaFlow AI Capabilities**:
-  - Conversational AI Librarian recommending books matched to student reading levels and academic difficulties.
+### 13 — 🏢 Hostel
+**Dormitory Allocation & Mess Management**
+* **Submodules**: Hostel Dashboard, Buildings & Blocks, Rooms & Beds, Student Allocation, Hostel Attendance, Mess & Meals, Hostel Fees, Complaints & Incidents, Hostel Staff, Hostel Reports.
+* **Capabilities**: Bed allocation matrix, mess meal menus, and night attendance logs.
 
-### 14 — 🛏️ Hostel & Campus Life
-**Residential Campus Management**
-* **Submodules**: Hostels, Buildings, Floors, Rooms, Beds, Student allocation, Hostel attendance, Mess & meal plans, Hostel fees, Wardens, Visitor logs, Leave/outpass workflow, Complaints & maintenance, Incident management.
+### 14 — 📦 Inventory & Assets
+**Store Stock & Fixed Assets**
+* **Submodules**: Inventory Dashboard, Items & Catalog, Stock, Purchases, Issue & Return, Assets, Asset Assignment, Maintenance, Vendors, Inventory Reports.
+* **Capabilities**: Stock reorder alerts, store issue slips, asset barcodes, and depreciation schedules.
 
-### 15 — 📦 Inventory, Assets & Procurement
-**Supply Chain & Asset Management**
-* **Procurement Lifecycle**: `Purchase Request ➔ Manager Approval ➔ Quotation ➔ Vendor Selection ➔ Purchase Order (PO) ➔ Goods Received (GRN) ➔ Inventory ➔ Payment`
-* **Submodules**: Consumables, Stationery, Lab materials, Uniforms, Sports equipment, Store management, Fixed assets (Computers, Furniture, Projectors, Vehicles, ACs), AMC maintenance schedules, Repair history, Asset depreciation.
+### 15 — 💻 Homework & Learning
+**Digital LMS & Homework**
+* **Submodules**: Learning Dashboard, Homework, Assignments, Study Material, Tutorials, Online Classes, Student Submissions, Evaluation, Learning Progress, Learning Reports.
+* **Capabilities**: Homework submission portal, online video lessons, and digital study material.
 
-### 16 — 🪪 ID, Documents & Certificates
-**CardFlow / GenXID Experience**
-* **ID Management**: Student ID, Employee ID, Visitor ID, Parent ID, Bus ID, Library ID, QR/Barcode generation, Photo management, Bulk print integration.
-* **Certificates**: Transfer Certificate (TC), Bonafide Certificate, Character Certificate, Experience Certificate, Custom documents.
-* **VidyaFlow AI Capabilities**:
-  - Batch OCR processing scanning scanned admission forms, auto-detecting photos, extracting fields, and flagging duplicates.
+### 16 — 📄 Documents & Certificates
+**ID Card Studio & Certificate Generation**
+* **Submodules**: Document Dashboard, Student Documents, Employee Documents, Certificate Templates, Certificate Generation, TC & Transfer, Document Verification, Document Requests, Digital Vault, Document Reports.
+* **Capabilities**: Bulk ID card generation, Transfer Certificate (TC) verification, and digital vault.
 
-### 17 — 💻 Learning & Digital Classroom
-**Digital Learning Experience**
-* **Submodules**: LMS, Online classes, Recorded lectures, Video lessons, Course content, Homework & assignment submissions, Quizzes, Discussion forums, Digital notes, E-books, Adaptive learning paths, Teacher grading feedback.
-* **VidyaFlow AI Capabilities**:
-  - **VidyaFlow AI Tutor**: Step-by-step concept explanations, mistake diagnosis, adaptive difficulty adjustments.
+### 17 — 💬 Communication
+**DLT SMS, Email & WhatsApp Gateways**
+* **Submodules**: Communication Dashboard, Announcements, Messages, SMS, Email, Push Notifications, WhatsApp, Templates, Campaigns, Communication Reports.
+* **Capabilities**: Multi-channel broadcasting, DLT SMS gateway integration, and WhatsApp notification templates.
 
-### 18 — 🤝 Student Life & Welfare
-**Student Wellbeing & Alumni Center**
-* **Submodules**: Disciplinary records & warning letters, Counselling sessions & appointment scheduling, Extra-curricular clubs & sports, Student achievements & awards, Alumni network & batch directories, Student complaints & welfare grievances.
+### 18 — 🎪 Events & Activities
+**School Events & Extra-Curricular Clubs**
+* **Submodules**: Events Dashboard, School Events, Academic Events, Sports, Clubs & Activities, Competitions, Registrations, Gallery, Certificates, Event Reports.
+* **Capabilities**: Event registration management, sports meet scheduling, and media galleries.
 
-### 19 — 📊 Analytics, BI & Compliance
-**Institutional Command Center**
-* **Dashboards**: Principal Health Dashboard (Students, Attendance, Academics, Fees, Staff, Transport, Issues), Teacher Class Dashboard, Finance Revenue & Collections Dashboard.
-* **Compliance**: State Board regulatory formats, Government DLT/RTE compliance reporting, Automated audit exports.
+### 19 — 🚪 Front Office & Enquiries
+**Reception & Visitor Gate Pass System**
+* **Submodules**: Front Office Dashboard, Enquiries, Visitors, Appointments, Calls & Follow-ups, Reception, Complaints, Lost & Found, Front Office Reports.
+* **Capabilities**: Instant visitor gate pass printing, phone log tracking, and parent appointment schedules.
 
-### 20 — 🤖 VidyaFlow AI
-**Unified ERP Intelligence Layer**
-* **Architecture**: Sits above all ERP modules (Students, Fees, Exams, HR, Attendance, Transport).
-* **Capabilities**:
-  - Natural language query answering for principals and administrators.
-  - Automated anomaly detection across attendance, fees, and academic performance.
-  - Proactive risk identification flagging at-risk students before exam defaults or academic failures occur.
+### 20 — 🏫 School Administration
+**Institutional Configuration & Policies**
+* **Submodules**: School Dashboard, School Profile, Campuses, Academic Sessions, Departments, Designations, Working Days & Holidays, School Policies, Workflow Configuration, School Settings.
+* **Capabilities**: Multi-campus branch settings, session rollover management, and school policy enforcement.
+
+### 21 — 🎓 Parent & Student Portal
+**Dedicated Guardian & Student Workspace**
+* **Submodules**: Portal Dashboard, Student Profile, Academics, Attendance, Timetable, Homework & Learning, Examination & Results, Fees & Payments, Communication, Requests & Services.
+* **Capabilities**: 360° view for parents to pay fees online, track attendance, and download report cards.
+
+### 22 — 📈 Reports & Analytics
+**Cross-Module BI & PDF Export Engine**
+* **Submodules**: Reports Dashboard, Student Reports, Academic Reports, Attendance Reports, Examination Reports, Fee Reports, Finance Reports, HR Reports, Operations Reports, Custom Reports, Scheduled Reports, Data Export.
+* **Capabilities**: Custom BI report builder, automated PDF exports, and scheduled email reports.
+
+### 23 — 🛡️ Security & Audit
+**Immutable Audit Trails & Access Monitoring**
+* **Submodules**: Security Dashboard, Activity Logs, Audit Logs, Login & Sessions, Devices, Access Monitoring, Data Changes, Security Alerts, Compliance, Security Reports.
+* **Capabilities**: Real-time user login tracking, 2FA security enforcement, and immutable database audit logs.
+
+### 24 — ⚙️ System Administration
+**Global Platform Configuration & RBAC**
+* **Submodules**: System Dashboard, Users, Roles & Permissions, Organizations, Integrations, API & Webhooks, Storage, Backup & Recovery, Notifications Configuration, System Settings, Feature Flags, System Health.
+* **Capabilities**: Granular role-based access control (RBAC), API webhook configurations, and real-time microservice health monitoring.
+
+---
+
+## 🤖 Global `VidyaMaxx AI` Assistant Engine
+
+The global `VidyaMaxx AI` Assistant is integrated across all 24 modules:
+
+* **Entry Point**: Available from the sidebar footer (`VidyaMaxx AI` button) or via keyboard shortcut `Shift+K`.
+* **Context Awareness**: Captures current page context to answer queries like *"Show me overdue fees for Class 10"* or *"Generate a physics lesson plan for Chapter 4"*.
+* **Autonomous AI Agents**:
+  1. **OCR Document Extractor Agent** — Extracts text & numbers from scanned marksheets and birth certificates.
+  2. **Fee Defaulter Predictor Agent** — Forecasts collection risks and triggers automated WhatsApp reminder drafts.
+  3. **Timetable & Substitution Agent** — Re-routes free teachers to absent class periods in real time.
+  4. **Question Paper Generator Agent** — Creates difficulty-balanced exam papers according to CBSE/ICSE curriculum specifications.

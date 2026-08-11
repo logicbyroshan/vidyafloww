@@ -282,7 +282,7 @@ See [docs/10-git-workflow.md](docs/10-git-workflow.md) for full workflow details
 | [10 - Git Workflow](docs/10-git-workflow.md) | Branching and PRs |
 | [11 - Deployment](docs/11-deployment.md) | Local and production setup |
 | [12 - Roadmap](docs/12-roadmap.md) | Feature development plan |
-| [13 - Modules Specification](docs/13-modules-specification.md) | Detailed 20-module ERP architecture & AI capabilities |
+| [13 - Modules Specification](docs/13-modules-specification.md) | Detailed 24-module ERP architecture & VidyaMaxx AI capabilities |
 
 ---
 

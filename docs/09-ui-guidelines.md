@@ -2,7 +2,7 @@
 
 ## Overview
 
-VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** built on top of **Tailwind CSS 3.4**, **Radix UI Primitives**, **Framer Motion**, **TanStack Table**, **Recharts**, **cmdk**, **Sonner**, **Lenis**, and custom UI component tokens (`@vidyamaxx/ui`). All application pages adhere to strict visual consistency and interaction standards.
+VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** built on top of **Tailwind CSS 3.4**, **Radix UI Primitives**, **Framer Motion**, **TanStack Table**, **Recharts**, **cmdk**, **Sonner**, **Lenis**, and custom UI component tokens (`@vidyamaxx/ui`). All application pages adhere to strict visual consistency, micro-animations, and interaction standards.
 
 ---
 
@@ -23,20 +23,22 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
    - Sidebar top logo container is locked to `h-24` (`6rem`), perfectly matching the combined height of Header (`h-12` / `3rem`) + Tabbar (`h-12` / `3rem`) across fluid typography scales.
    - Sidebar scrollbar is positioned on the far left edge (`.sidebar-left-scrollbar` with `direction: rtl` and subtle neutral gray thumb).
    - Sidebar collapse button uses `z-50` with `shadow-md` overlay.
-4. **Header Navigation**:
-   - Top Header features `Welcome,` + school logo image + `Springfield Academy` in place of breadcrumb links.
+4. **Global `VidyaMaxx AI` Assistant Sidebar Placement**:
+   - The `VidyaMaxx AI` Assistant button is located in the sidebar footer **directly above the User Profile card** (`bg-primary/10 border-primary/30 text-primary font-bold shadow-xs`).
+   - Renders exactly one Lucide `Sparkles` icon with `VidyaMaxx AI` label.
+   - Triggers the global AI Assistant Chat drawer (`AIChatDrawer.tsx`) via `useGlobalStore`.
 
 ---
 
-## Lenis & Physics Smooth Scroll System
+## Lenis & Staggered Revealing Motion System
 
 1. **Main Viewport Scrolling (`AppShell.tsx`)**:
    - Initialized a **Lenis instance** hooked to the main content scroll container (`<main ref={mainRef}>`).
    - Configured with inertial easing `(t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))` for fluid physics scrolling.
-2. **Sidebar Navigation Scrolling (`Sidebar.tsx`)**:
-   - Dedicated Lenis instance initialized on `.sidebar-left-scrollbar` nav container.
-3. **CSS Reset (`globals.css`)**:
-   - Standard Lenis reset rules (`html.lenis`, `.lenis-smooth`, `[data-lenis-prevent]`) ensuring touch and mouse wheel scroll containment.
+2. **Route Page & Tab Content Revealing Transitions (`Framer Motion`)**:
+   - Main `<Outlet />` in `AppShell.tsx` and tab panels in `VFTabs.tsx` are wrapped in `<AnimatePresence>` + `<motion.div>`.
+   - On route navigation or submodule tab switching, page components fade and slide up smoothly with staggered revealing motion (`duration: 0.28s`, bezier `[0.16, 1, 0.3, 1]`).
+   - Tab indicators use Framer Motion spring layouts (`layoutId="activeTabIndicator"`).
 
 ---
 
@@ -55,6 +57,19 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 
 ---
 
+## Fail-Safe Dual-Engine Data Tables (`VFTable`)
+
+1. **TanStack Table + Fail-Safe Array Fallback**:
+   - `VFDataTable` combines TanStack Table v9 state management with a direct fail-safe array render engine.
+   - Guarantees 100% data visibility across all 24 modules under all network and search conditions.
+2. **Features**:
+   - Global client-side text filtering (`filterPlaceholder`).
+   - Column visibility dropdown toggles (`Columns (active/total)`).
+   - Multi-column sorting (`↑` / `↓`).
+   - Page records pagination controls (`Previous` / `Next`).
+
+---
+
 ## Standard Technology Stack Integrations
 
 | Purpose | Integrated Library | Usage in `@vidyamaxx/ui` & `@vidyamaxx/web` |
@@ -62,11 +77,11 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 | **Core UI** | React 19 + Tailwind CSS 3.4 | Core framework, `@tailwindcss/forms`, `@tailwindcss/typography` |
 | **Components** | `@vidyamaxx/ui` | CVA (`class-variance-authority`), `clsx`, and `tailwind-merge` component system |
 | **Accessible Primitives** | Radix UI | `@radix-ui/react-dialog` (`VFDialog`, `VFModal`, `VFDrawer`), `@radix-ui/react-select` (`VFSelect`), `@radix-ui/react-tabs`, `@radix-ui/react-popover`, `@radix-ui/react-tooltip` |
-| **Animations** | Framer Motion | `framer-motion` scale-in modal transitions, drawer slide-ins, backdrop blurs |
+| **Animations** | Framer Motion | `framer-motion` staggered page/tab transitions, drawer slide-ins, spring layout indicators |
 | **Smooth Scrolling** | Lenis | `lenis` smooth scroll instances in `AppShell.tsx` and `Sidebar.tsx` |
 | **Icons** | Lucide | `lucide-react` (^1.23.0) + `@vidyamaxx/icons` package |
 | **Charts** | Recharts | `@vidyamaxx/ui` exports `VFAreaChart`, `VFBarChart`, `VFPieChart` with dark theme tooltips and gradient fills |
-| **Tables** | TanStack Table | `VFDataTable` powered by `@tanstack/react-table` v9 (sorting, global filtering, column toggles) |
+| **Tables** | TanStack Table | `VFDataTable` powered by `@tanstack/react-table` v9 + fail-safe rendering engine |
 | **Command / Search** | cmdk | `CommandPalette.tsx` (`⌘K` modal palette) |
 | **Toasts** | Sonner | `ToastContainer.tsx` store-synced toast notifications |
 | **Loading** | Skeleton | Native `animate-pulse bg-muted/40` skeleton states across cards and grids |
