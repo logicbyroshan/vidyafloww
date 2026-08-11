@@ -144,13 +144,13 @@ export function Sidebar() {
                 className={cn(
                   'flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-sm font-medium outline-none',
                   isActive
-                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                    : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground',
+                    ? 'bg-primary/12 text-primary font-bold border-l-2 border-primary rounded-r-lg rounded-l-xs'
+                    : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
                   !sidebarExpanded && 'justify-center px-0 py-2.5'
                 )}
                 title={!sidebarExpanded ? `${item.code}. ${item.label}` : undefined}
               >
-                <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive && 'text-primary')} />
+                <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive ? 'text-primary' : 'text-muted-foreground/70')} />
                 {sidebarExpanded && (
                   <span className="animate-fade-in truncate leading-tight flex-1">
                     {item.label}
@@ -167,7 +167,7 @@ export function Sidebar() {
         <button
           onClick={toggleAiChat}
           className={cn(
-            "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all outline-none font-bold text-xs cursor-pointer bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 shadow-xs group",
+            "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all outline-none font-bold text-xs cursor-pointer bg-primary/10 border border-primary/25 text-primary hover:bg-primary/20 shadow-xs group",
             !sidebarExpanded && "justify-center px-0 py-2.5"
           )}
           title="Open VidyaMaxx AI Assistant"

@@ -14,16 +14,18 @@ import {
 } from 'recharts';
 import { cn } from './utils';
 
-// Custom Dark Tooltip Component
+// Custom Enterprise Glassmorphic Tooltip Component
 function CustomTooltip({ active, payload, label }: any) {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#0e1017] border border-border/80 p-2.5 rounded-lg shadow-xl text-xs space-y-1">
-        {label && <p className="font-bold text-foreground mb-1">{label}</p>}
+      <div className="bg-card/95 border border-border/80 p-3 rounded-xl shadow-2xl backdrop-blur-md text-xs space-y-1.5 min-w-[140px]">
+        {label && <p className="font-bold text-foreground pb-1 border-b border-border/60 mb-1">{label}</p>}
         {payload.map((entry: any, index: number) => (
-          <div key={`item-${index}`} className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color || entry.fill }} />
-            <span className="text-muted-foreground">{entry.name}:</span>
+          <div key={`item-${index}`} className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: entry.color || entry.fill }} />
+              <span className="text-muted-foreground font-medium">{entry.name}:</span>
+            </div>
             <span className="font-mono font-bold text-foreground">{entry.value}</span>
           </div>
         ))}
@@ -49,7 +51,7 @@ export function VFAreaChart({
   height = 240,
   className,
 }: VFAreaChartProps) {
-  const defaultColors = ['#f97316', '#0891b2', '#16a34a', '#a855f7'];
+  const defaultColors = ['#06b6d4', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
 
   return (
     <div className={cn("w-full relative", className)} style={{ height }}>
@@ -60,7 +62,7 @@ export function VFAreaChart({
               const color = item.color || defaultColors[idx % defaultColors.length];
               return (
                 <linearGradient key={item.key} id={`gradient-${item.key}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={color} stopOpacity={0.4} />
+                  <stop offset="5%" stopColor={color} stopOpacity={0.35} />
                   <stop offset="95%" stopColor={color} stopOpacity={0.0} />
                 </linearGradient>
               );
@@ -90,7 +92,7 @@ export function VFAreaChart({
                 dataKey={item.key}
                 name={item.name}
                 stroke={color}
-                strokeWidth={2}
+                strokeWidth={2.5}
                 fillOpacity={1}
                 fill={`url(#gradient-${item.key})`}
               />
@@ -118,7 +120,7 @@ export function VFBarChart({
   height = 240,
   className,
 }: VFBarChartProps) {
-  const defaultColors = ['#f97316', '#0891b2', '#16a34a', '#eab308'];
+  const defaultColors = ['#06b6d4', '#10b981', '#f59e0b', '#3b82f6', '#8b5cf6'];
 
   return (
     <div className={cn("w-full relative", className)} style={{ height }}>
@@ -147,7 +149,7 @@ export function VFBarChart({
                 dataKey={item.key}
                 name={item.name}
                 fill={color}
-                radius={[4, 4, 0, 0]}
+                radius={[6, 6, 0, 0]}
               />
             );
           })}
@@ -169,7 +171,7 @@ export function VFPieChart({
   height = 220,
   className,
 }: VFPieChartProps) {
-  const defaultColors = ['#f97316', '#0891b2', '#16a34a', '#eab308', '#ef4444', '#8b5cf6'];
+  const defaultColors = ['#06b6d4', '#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
 
   return (
     <div className={cn("w-full relative flex items-center justify-center", className)} style={{ height }}>

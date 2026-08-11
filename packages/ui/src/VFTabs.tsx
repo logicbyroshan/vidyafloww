@@ -126,7 +126,7 @@ export function VFTabs({
                   {isActive && (
                     <motion.div
                       layoutId="activeTabIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary rounded-t-sm shadow-[0_-1px_8px_rgba(249,115,22,0.5)]"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary rounded-t-xs"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}

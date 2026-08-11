@@ -127,8 +127,8 @@ function DashboardPage() {
               { month: 'Sep', attendance: 97, intake: 340 },
             ]}
             dataKeys={[
-              { key: 'attendance', name: 'Attendance Rate (%)', color: '#f97316' },
-              { key: 'intake', name: 'Admissions Intake', color: '#0891b2' },
+              { key: 'attendance', name: 'Attendance Rate (%)', color: '#06b6d4' },
+              { key: 'intake', name: 'Admissions Intake', color: '#6366f1' },
             ]}
           />
         </VFCard>
@@ -144,8 +144,8 @@ function DashboardPage() {
               { quarter: 'Q4 (Jan-Mar)', collected: 88, target: 92 },
             ]}
             dataKeys={[
-              { key: 'collected', name: 'Collected Fees', color: '#16a34a' },
-              { key: 'target', name: 'Target Revenue', color: '#eab308' },
+              { key: 'collected', name: 'Collected Fees', color: '#10b981' },
+              { key: 'target', name: 'Target Revenue', color: '#f59e0b' },
             ]}
           />
         </VFCard>
