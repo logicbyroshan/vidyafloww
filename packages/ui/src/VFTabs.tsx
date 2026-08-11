@@ -32,6 +32,9 @@ export function VFTabs({
     activeTabId || defaultTabId || (items[0] && items[0].id) || ""
   );
 
+  const tabRefs = React.useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null);
+
   React.useEffect(() => {
     if (activeTabId !== undefined) {
       setLocalActiveTab(activeTabId);
@@ -40,8 +43,26 @@ export function VFTabs({
 
   const activeId = activeTabId !== undefined ? activeTabId : localActiveTab;
 
+  const scrollToTab = React.useCallback((id: string) => {
+    const tabEl = tabRefs.current[id];
+    if (tabEl) {
+      tabEl.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (activeId) {
+      scrollToTab(activeId);
+    }
+  }, [activeId, scrollToTab]);
+
   const handleTabClick = (id: string, disabled?: boolean) => {
     if (disabled) return;
+    scrollToTab(id);
     if (activeTabId === undefined) {
       setLocalActiveTab(id);
     }
@@ -50,19 +71,31 @@ export function VFTabs({
     }
   };
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (e.deltaY !== 0 && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft += e.deltaY;
+    }
+  };
+
   const activeItem = items.find((item) => item.id === activeId);
 
   if (variant === 'top-bar') {
     return (
       <div className={cn("flex flex-col w-full flex-1 min-h-0 bg-background", className)} {...props}>
-        {/* Full-width sticky top sub-module tab bar header */}
+        {/* Full-width sticky top sub-module tab bar header with auto-centering tab scroll */}
         <div className="w-full h-12 border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
-          <div className="flex items-center gap-6 overflow-x-auto no-scrollbar flex-1" role="tablist">
+          <div
+            ref={scrollContainerRef}
+            onWheel={handleWheel}
+            className="flex items-center gap-6 overflow-x-auto no-scrollbar flex-1 scroll-smooth"
+            role="tablist"
+          >
             {items.map((item) => {
               const isActive = item.id === activeId;
               return (
                 <button
                   key={item.id}
+                  ref={(el) => { tabRefs.current[item.id] = el; }}
                   role="tab"
                   aria-selected={isActive}
                   disabled={item.disabled}
@@ -70,7 +103,7 @@ export function VFTabs({
                   className={cn(
                     "relative inline-flex items-center gap-1.5 text-sm font-bold py-2.5 px-0.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0 tracking-wide",
                     isActive
-                      ? "text-primary"
+                      ? "text-primary font-bold"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -83,6 +116,7 @@ export function VFTabs({
               );
             })}
           </div>
+          {rightActions && <div className="ml-4 shrink-0 flex items-center gap-2">{rightActions}</div>}
         </div>
 
         {/* Tab Panel Content Container */}
@@ -96,8 +130,10 @@ export function VFTabs({
   return (
     <div className={cn("w-full space-y-3", className)} {...props}>
       <div
+        ref={scrollContainerRef}
+        onWheel={handleWheel}
         className={cn(
-          "flex items-center",
+          "flex items-center overflow-x-auto no-scrollbar scroll-smooth",
           variant === 'underline' && "border-b border-border/60 gap-4",
           variant === 'pills' && "bg-muted/60 p-0.5 rounded-md gap-0.5 inline-flex"
         )}
@@ -109,15 +145,16 @@ export function VFTabs({
           return (
             <button
               key={item.id}
+              ref={(el) => { tabRefs.current[item.id] = el; }}
               role="tab"
               aria-selected={isActive}
               disabled={item.disabled}
               onClick={() => handleTabClick(item.id, item.disabled)}
               className={cn(
-                "relative inline-flex items-center gap-1.5 text-sm font-bold tracking-wide py-2 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer",
+                "relative inline-flex items-center gap-1.5 text-sm font-bold tracking-wide py-2 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0",
                 variant === 'underline' && [
                   "text-muted-foreground hover:text-foreground",
-                  isActive && "text-primary"
+                  isActive && "text-primary font-bold"
                 ],
                 variant === 'pills' && [
                   "px-2.5 py-1 rounded text-muted-foreground hover:text-foreground hover:bg-background/60",
