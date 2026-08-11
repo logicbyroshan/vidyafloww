@@ -60,6 +60,26 @@ export function VFTabs({
     }
   }, [activeId, scrollToTab]);
 
+  // Attach non-passive native wheel listener to isolate horizontal tabbar scrolling
+  // and completely prevent vertical main window scroll propagation
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleNativeWheel = (e: WheelEvent) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        container.scrollLeft += e.deltaY;
+      }
+    };
+
+    container.addEventListener('wheel', handleNativeWheel, { passive: false });
+    return () => {
+      container.removeEventListener('wheel', handleNativeWheel);
+    };
+  }, []);
+
   const handleTabClick = (id: string, disabled?: boolean) => {
     if (disabled) return;
     scrollToTab(id);
@@ -71,23 +91,16 @@ export function VFTabs({
     }
   };
 
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (e.deltaY !== 0 && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft += e.deltaY;
-    }
-  };
-
   const activeItem = items.find((item) => item.id === activeId);
 
   if (variant === 'top-bar') {
     return (
-      <div className={cn("flex flex-col w-full flex-1 min-h-0 bg-background", className)} {...props}>
-        {/* Full-width sticky top sub-module tab bar header with auto-centering tab scroll */}
-        <div className="w-full h-12 border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
+      <div className={cn("flex flex-col w-full bg-background", className)} {...props}>
+        {/* Full-width sticky top sub-module tab bar header with zero vertical overflow & non-passive horizontal wheel scroll */}
+        <div className="w-full h-12 border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30 overflow-hidden">
           <div
             ref={scrollContainerRef}
-            onWheel={handleWheel}
-            className="flex items-center gap-6 overflow-x-auto no-scrollbar flex-1 scroll-smooth"
+            className="flex items-center gap-6 overflow-x-auto overflow-y-hidden no-scrollbar flex-1 h-full scroll-smooth"
             role="tablist"
           >
             {items.map((item) => {
@@ -101,7 +114,7 @@ export function VFTabs({
                   disabled={item.disabled}
                   onClick={() => handleTabClick(item.id, item.disabled)}
                   className={cn(
-                    "relative inline-flex items-center gap-1.5 text-sm font-bold py-2.5 px-0.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0 tracking-wide",
+                    "relative inline-flex items-center gap-1.5 text-sm font-bold h-full px-0.5 transition-all outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap shrink-0 tracking-wide",
                     isActive
                       ? "text-primary font-bold"
                       : "text-muted-foreground hover:text-foreground"
@@ -110,7 +123,7 @@ export function VFTabs({
                   {item.icon && <span className={cn("inline-flex shrink-0 transition-colors", isActive ? "text-primary" : "text-muted-foreground/60")}>{item.icon}</span>}
                   <span>{item.label}</span>
                   {isActive && (
-                    <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-primary rounded-t-sm shadow-[0_-1px_8px_rgba(249,115,22,0.5)] animate-fade-in" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary rounded-t-sm shadow-[0_-1px_8px_rgba(249,115,22,0.5)] animate-fade-in" />
                   )}
                 </button>
               );
@@ -119,8 +132,8 @@ export function VFTabs({
           {rightActions && <div className="ml-4 shrink-0 flex items-center gap-2">{rightActions}</div>}
         </div>
 
-        {/* Tab Panel Content Container */}
-        <div className="p-4 w-full space-y-4 flex-1 overflow-y-auto custom-scrollbar" role="tabpanel">
+        {/* Tab Panel Content Container (uses single main viewport scroll) */}
+        <div className="p-4 w-full space-y-4 flex-1" role="tabpanel">
           {activeItem ? activeItem.content : null}
         </div>
       </div>
@@ -131,9 +144,8 @@ export function VFTabs({
     <div className={cn("w-full space-y-3", className)} {...props}>
       <div
         ref={scrollContainerRef}
-        onWheel={handleWheel}
         className={cn(
-          "flex items-center overflow-x-auto no-scrollbar scroll-smooth",
+          "flex items-center overflow-x-auto overflow-y-hidden no-scrollbar scroll-smooth",
           variant === 'underline' && "border-b border-border/60 gap-4",
           variant === 'pills' && "bg-muted/60 p-0.5 rounded-md gap-0.5 inline-flex"
         )}

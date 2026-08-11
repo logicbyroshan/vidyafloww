@@ -1,3 +1,5 @@
+import * as React from 'react';
+import Lenis from 'lenis';
 import { Link, useLocation } from '@tanstack/react-router';
 import { cn, VFAvatar } from '@vidyamaxx/ui';
 import { useGlobalStore } from '../stores/globalStore';
@@ -53,6 +55,32 @@ const navItems = [
 export function Sidebar() {
   const { sidebarExpanded, toggleSidebar } = useGlobalStore();
   const location = useLocation();
+  const sidebarNavRef = React.useRef<HTMLDivElement | null>(null);
+
+  // Initialize Lenis smooth scroll on Sidebar navigation viewport
+  React.useEffect(() => {
+    if (!sidebarNavRef.current) return;
+    const lenis = new Lenis({
+      wrapper: sidebarNavRef.current,
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    });
+
+    let animationFrameId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
+    animationFrameId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      lenis.destroy();
+    };
+  }, []);
 
   return (
     <aside
@@ -95,8 +123,8 @@ export function Sidebar() {
         </button>
       </div>
 
-      {/* Nav List with Dedicated Left-Side Scrollbar (.sidebar-left-scrollbar) */}
-      <div className="flex-1 overflow-y-auto p-2.5 sidebar-left-scrollbar">
+      {/* Nav List with Dedicated Left-Side Scrollbar (.sidebar-left-scrollbar) & Lenis Smooth Scroll */}
+      <div ref={sidebarNavRef} className="flex-1 overflow-y-auto p-2.5 sidebar-left-scrollbar">
         <div dir="ltr" className="flex flex-col gap-1 w-full">
           {navItems.map((item) => {
             const Icon = item.icon;
