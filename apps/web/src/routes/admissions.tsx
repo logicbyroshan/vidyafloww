@@ -143,7 +143,7 @@ function AdmissionsPage() {
   ];
 
   // ----------------------------------------------------
-  // SUBMODULE 2.1 — Admission Enquiries
+  // SUBMODULE — Admission Enquiries
   // ----------------------------------------------------
   const enquiriesData = [
     { code: 'ENQ-2026-092', candidate: 'Siddharth Varma', grade: 'Class 9', guardian: 'Meena Varma', phone: '+91 98111 22233', source: 'Walk-in', status: 'Follow-up Due', nextAction: 'Campus Tour Tomorrow' },
@@ -162,7 +162,7 @@ function AdmissionsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        <VFCard title="Feature 2 — Quick Register Parent Enquiry" className="lg:col-span-1">
+        <VFCard title="Quick Register Parent Enquiry" className="lg:col-span-1">
           <div className="space-y-3 mt-2 text-xs">
             <VFInput label="Candidate Name" placeholder="e.g. Priyanshu Sharma" />
             <div className="grid grid-cols-2 gap-2">
@@ -178,7 +178,7 @@ function AdmissionsPage() {
           </div>
         </VFCard>
 
-        <VFSection title="Feature 1 & 3 — Active Parent Enquiries Register" className="lg:col-span-2">
+        <VFSection title="Active Parent Enquiries Register" className="lg:col-span-2">
           <VFDataTable
             columns={[
               { header: 'Enquiry Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono text-xs font-bold text-primary">{r.code}</span> },
@@ -197,14 +197,14 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.2 — Admission CRM (Kanban & Lead Scoring)
+  // SUBMODULE — Admission CRM (Kanban & Lead Scoring)
   // ----------------------------------------------------
   const crmContent = (
     <div className="space-y-6">
       <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
         <div>
           <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-            <BrainCircuit className="h-4 w-4 text-primary" /> Feature 8 & 9 — Lead Kanban Pipeline & AI Propensity Scoring
+            <BrainCircuit className="h-4 w-4 text-primary" /> Lead Kanban Pipeline & AI Propensity Scoring
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">Drag-and-drop lead stage progression with automated AI conversion scores.</p>
         </div>
@@ -237,7 +237,7 @@ function AdmissionsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <VFCard title="Feature 10 & 11 — Scheduled Follow-up Roster">
+        <VFCard title="Scheduled Follow-up Roster">
           <div className="space-y-2.5 text-xs mt-2">
             {[
               { parent: 'Mr. Sunil Sengupta', candidate: 'Rhea Sengupta', date: 'Aug 12, 10:30 AM', action: 'Phone Call: Discuss Bus Route 4 Availability', assignee: 'Counsellor Priya' },
@@ -257,7 +257,7 @@ function AdmissionsPage() {
           </div>
         </VFCard>
 
-        <VFCard title="Feature 14 — Admission Campaign ROI Matrix">
+        <VFCard title="Admission Campaign ROI Matrix">
           <div className="space-y-2.5 text-xs mt-2">
             {[
               { campaign: 'Google Search Ads 2026', leads: '180 Leads', converted: '42 Enrolled', budget: '₹45,000', roi: '8.4x ROI' },
@@ -282,7 +282,7 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.3 — Admission Forms (Builder & Online Portal)
+  // SUBMODULE — Admission Forms (Builder & Online Portal)
   // ----------------------------------------------------
   const formsContent = (
     <div className="space-y-6">
@@ -294,7 +294,7 @@ function AdmissionsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <VFCard title="Feature 15 — Drag & Drop Form Builder Palette">
+        <VFCard title="Drag & Drop Form Builder Palette">
           <p className="text-xs text-muted-foreground mb-3">Configure fields and conditional display rules for the 2026-27 online admission application form.</p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             {['Student Personal Details', 'Parent / Guardian Info', 'Previous Academic Records', 'Medical History & Allergies', 'Transport & Route Stop', 'RTE Reservation Category'].map((f, i) => (
@@ -306,7 +306,7 @@ function AdmissionsPage() {
           </div>
         </VFCard>
 
-        <VFCard title="Feature 16 & 17 — Form Templates & Conditional Rules">
+        <VFCard title="Form Templates & Conditional Rules">
           <div className="space-y-3 text-xs mt-1">
             <div className="p-3 bg-primary/10 border border-primary/25 rounded-lg">
               <span className="font-bold text-foreground flex items-center gap-1.5">
@@ -327,7 +327,7 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.4 — Application Management (Main Queue)
+  // SUBMODULE — Application Management (Main Queue)
   // ----------------------------------------------------
   const applicationsQueueContent = (
     <div className="space-y-6">
@@ -350,7 +350,7 @@ function AdmissionsPage() {
 
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl shadow-xs">
         <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
-          <Filter className="h-4 w-4 text-primary" /> Feature 27 — Filter by Application Workflow Stage:
+          <Filter className="h-4 w-4 text-primary" /> Filter by Application Workflow Stage:
         </div>
         <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar">
           {['ALL', 'Submitted', 'AI Screened', 'Interview', 'Approved'].map((st) => (
@@ -369,33 +369,33 @@ function AdmissionsPage() {
         </div>
       </div>
 
-      <VFSection title="Feature 22 & 23 — Applications Master Queue">
+      <VFSection title="Applications Master Queue">
         <VFDataTable columns={columns} data={filteredApplicants} filterPlaceholder="Filter candidate name, grade, or recommendation..." />
       </VFSection>
     </div>
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.5 — Admission Assessment (Entrance Tests & Interviews)
+  // SUBMODULE — Admission Assessment (Entrance Tests & Interviews)
   // ----------------------------------------------------
   const assessmentContent = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <VFCard title="Feature 29 & 30 — Entrance Test Builder Status">
+        <VFCard title="Entrance Test Builder Status">
           <p className="text-lg font-bold text-foreground mt-1">Class 9 & 11 Entrance Exam</p>
           <p className="text-xs text-primary font-bold mt-1">Subjects: Math, Science, English (100 Marks)</p>
         </VFCard>
-        <VFCard title="Feature 31 — Interview Roster Today">
+        <VFCard title="Interview Roster Today">
           <p className="text-lg font-bold text-foreground mt-1">12 Panel Interviews Scheduled</p>
           <p className="text-xs text-success font-bold mt-1">Panel: Principal & Senior HODs</p>
         </VFCard>
-        <VFCard title="Feature 34 — Automated Merit List Generation">
+        <VFCard title="Automated Merit List Generation">
           <p className="text-lg font-bold text-foreground mt-1">Batch 1 Ranking Calculated</p>
           <p className="text-xs text-muted-foreground mt-1">Composite Score = 60% Written + 40% Interview</p>
         </VFCard>
       </div>
 
-      <VFCard title="Feature 33 & 34 — Automated Merit Ranking & Evaluation Roster">
+      <VFCard title="Automated Merit Ranking & Evaluation Roster">
         <div className="space-y-3 mt-2 text-xs">
           {[
             { candidate: 'Aarav Sharma', grade: 'Class 9', testScore: '92/100', interviewScore: '98/100', composite: '94.4%', rank: 'Rank #1', status: 'Merit Approved' },
@@ -420,29 +420,29 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.6 — Admission Documents (AI OCR Verification)
+  // SUBMODULE — Admission Documents (AI OCR Verification)
   // ----------------------------------------------------
   const docsContent = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <VFCard title="Feature 39 — AI OCR Extraction Engine">
+        <VFCard title="AI OCR Extraction Engine">
           <div className="flex justify-between items-center mt-2">
             <span className="text-2xl font-black text-success">98.4% Match</span>
             <VFBadge variant="success">Active Engine</VFBadge>
           </div>
           <p className="text-xs text-muted-foreground mt-2">Automated data extraction from Birth Certificates, Previous TCs, and Aadhaar copies.</p>
         </VFCard>
-        <VFCard title="Feature 40 — Document Mismatch Alerts">
+        <VFCard title="Document Mismatch Alerts">
           <span className="text-2xl font-black text-warning mt-2 block">2 Cases Flagged</span>
           <p className="text-xs text-muted-foreground mt-1">Spelling mismatch between Birth Certificate and Marksheet.</p>
         </VFCard>
-        <VFCard title="Feature 41 — Photo Verification & Face Quality">
+        <VFCard title="Photo Verification & Face Quality">
           <span className="text-2xl font-black text-foreground mt-2 block">96% Quality Avg</span>
           <p className="text-xs text-success font-semibold mt-1">Background & lighting verified</p>
         </VFCard>
       </div>
 
-      <VFCard title="Feature 39 — Split-Screen AI Document OCR Inspection">
+      <VFCard title="Split-Screen AI Document OCR Inspection">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mt-2">
           <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
             <span className="font-bold text-foreground flex items-center gap-2">
@@ -471,26 +471,26 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.7 — Enrollment (Auto Student Creation)
+  // SUBMODULE — Enrollment (Auto Student Creation)
   // ----------------------------------------------------
   const enrollmentContent = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <VFCard title="Feature 44 — Offer Letter Generator">
+        <VFCard title="Offer Letter Generator">
           <span className="text-lg font-bold text-foreground block mt-2">12 Offer Letters Issued</span>
           <p className="text-xs text-muted-foreground mt-1">Auto PDF generation with fee schedules & joining dates.</p>
         </VFCard>
-        <VFCard title="Feature 45 — Confirmation Fee Receipt">
+        <VFCard title="Confirmation Fee Receipt">
           <span className="text-lg font-bold text-foreground block mt-2">₹12.0 Lakhs Collected</span>
           <p className="text-xs text-success font-semibold mt-1">12 / 12 Admission Fees Paid</p>
         </VFCard>
-        <VFCard title="Feature 48 — Parent Portal Credentials">
+        <VFCard title="Parent Portal Credentials">
           <span className="text-lg font-bold text-foreground block mt-2">12 Invites Sent</span>
           <p className="text-xs text-muted-foreground mt-1">SMS & Email login links generated.</p>
         </VFCard>
       </div>
 
-      <VFCard title="Feature 46 & 47 — Final Admission Approval & Automated Student Creation Wizard">
+      <VFCard title="Final Admission Approval & Automated Student Creation Wizard">
         <p className="text-xs text-muted-foreground mb-4">Automatically transfers confirmed applicants into Student 360 with scholar ID, section, and parent account.</p>
         <div className="p-4 bg-muted/40 border border-border rounded-xl space-y-3 text-xs">
           <div className="flex justify-between items-center">
@@ -508,7 +508,7 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.8 — Admission Analytics & Funnel
+  // SUBMODULE — Admission Analytics & Funnel
   // ----------------------------------------------------
   const analyticsContent = (
     <div className="space-y-6">
@@ -519,7 +519,7 @@ function AdmissionsPage() {
         <VFStatCard title="AI Admission Forecast" value="184 Enrolled" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="Predicted Final Intake" />
       </div>
 
-      <VFCard title="Feature 52 — 7-Stage Admission Funnel Conversion Matrix">
+      <VFCard title="7-Stage Admission Funnel Conversion Matrix">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-2 text-xs text-center mt-2">
           {[
             { stage: 'Enquiries', count: 342, conv: '100%' },
@@ -541,7 +541,7 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 2.9 — Admission Communication (Templates & Logs)
+  // SUBMODULE — Admission Communication (Templates & Logs)
   // ----------------------------------------------------
   const communicationContent = (
     <div className="space-y-6">
@@ -553,7 +553,7 @@ function AdmissionsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <VFCard title="Feature 58 & 59 — Admission Message Templates & Auto Triggers">
+        <VFCard title="Admission Message Templates & Auto Triggers">
           <div className="space-y-2.5 text-xs mt-2">
             {[
               { template: 'Application Received Confirmation', trigger: 'On Application Submit', channel: 'WhatsApp & SMS', status: 'Active' },
@@ -572,7 +572,7 @@ function AdmissionsPage() {
           </div>
         </VFCard>
 
-        <VFCard title="Feature 61 & 63 — Applicant Communication Roster & Parent Portal Status">
+        <VFCard title="Applicant Communication Roster & Parent Portal Status">
           <div className="space-y-2.5 text-xs mt-2">
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
               <div>
@@ -598,15 +598,15 @@ function AdmissionsPage() {
   // ALL 9 SUBMODULE TABS MAPPED
   // ----------------------------------------------------
   const submoduleTabs = [
-    { id: 'enquiries', label: '2.1 Enquiries', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: enquiriesContent },
-    { id: 'admission-crm', label: '2.2 CRM & Leads', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: crmContent },
-    { id: 'admission-forms', label: '2.3 Forms', icon: <FileText className="h-3.5 w-3.5" />, content: formsContent },
-    { id: 'applications', label: '2.4 Applications', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
-    { id: 'assessment', label: '2.5 Assessments', icon: <Sparkles className="h-3.5 w-3.5" />, content: assessmentContent },
-    { id: 'admission-docs', label: '2.6 Doc Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: docsContent },
-    { id: 'enrollment', label: '2.7 Enrollment', icon: <Plus className="h-3.5 w-3.5" />, content: enrollmentContent },
-    { id: 'admission-analytics', label: '2.8 Analytics', icon: <TrendingUp className="h-3.5 w-3.5" />, content: analyticsContent },
-    { id: 'admission-communication', label: '2.9 Communication', icon: <MessageSquare className="h-3.5 w-3.5" />, content: communicationContent },
+    { id: 'enquiries', label: 'Enquiries', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: enquiriesContent },
+    { id: 'admission-crm', label: 'Leads CRM', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: crmContent },
+    { id: 'admission-forms', label: 'Forms', icon: <FileText className="h-3.5 w-3.5" />, content: formsContent },
+    { id: 'applications', label: 'Applications', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
+    { id: 'assessment', label: 'Assessments', icon: <Sparkles className="h-3.5 w-3.5" />, content: assessmentContent },
+    { id: 'admission-docs', label: 'Doc Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: docsContent },
+    { id: 'enrollment', label: 'Enrollment', icon: <Plus className="h-3.5 w-3.5" />, content: enrollmentContent },
+    { id: 'admission-analytics', label: 'Analytics', icon: <TrendingUp className="h-3.5 w-3.5" />, content: analyticsContent },
+    { id: 'admission-communication', label: 'Communication', icon: <MessageSquare className="h-3.5 w-3.5" />, content: communicationContent },
   ];
 
   return (
