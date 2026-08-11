@@ -82,7 +82,10 @@ export function VFAreaChart({
             tickLine={false}
             axisLine={false}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ stroke: 'hsl(var(--muted-foreground) / 0.3)', strokeWidth: 1, strokeDasharray: '3 3' }}
+          />
           {dataKeys.map((item, idx) => {
             const color = item.color || defaultColors[idx % defaultColors.length];
             return (
@@ -140,7 +143,10 @@ export function VFBarChart({
             tickLine={false}
             axisLine={false}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ fill: 'hsl(var(--muted) / 0.25)', radius: 6 }}
+          />
           {dataKeys.map((item, idx) => {
             const color = item.color || defaultColors[idx % defaultColors.length];
             return (
@@ -177,7 +183,7 @@ export function VFPieChart({
     <div className={cn("w-full relative flex items-center justify-center", className)} style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
         <RechartsPieChart>
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} cursor={false} />
           <Pie
             data={data}
             cx="50%"

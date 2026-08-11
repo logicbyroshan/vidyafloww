@@ -58,7 +58,7 @@ const ICON_MAP: Record<string, any> = {
 };
 
 export function Sidebar() {
-  const { sidebarExpanded, toggleSidebar, toggleAiChat } = useGlobalStore();
+  const { sidebarExpanded, toggleSidebar } = useGlobalStore();
   const location = useLocation();
   const sidebarNavRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -160,21 +160,6 @@ export function Sidebar() {
             );
           })}
         </div>
-      </div>
-
-      {/* Global ✨ VidyaMaxx AI Button (Placed in footer right ABOVE User Profile) */}
-      <div className="p-2.5 border-t border-border/60 bg-muted/20 shrink-0">
-        <button
-          onClick={toggleAiChat}
-          className={cn(
-            "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all outline-none font-bold text-xs cursor-pointer bg-primary/10 border border-primary/25 text-primary hover:bg-primary/20 shadow-xs group",
-            !sidebarExpanded && "justify-center px-0 py-2.5"
-          )}
-          title="Open VidyaMaxx AI Assistant"
-        >
-          <Sparkles className="h-4 w-4 text-primary shrink-0 transition-transform group-hover:scale-110" />
-          {sidebarExpanded && <span className="truncate tracking-wide">VidyaMaxx AI</span>}
-        </button>
       </div>
 
       {/* User Profile in Sidebar Bottom */}
