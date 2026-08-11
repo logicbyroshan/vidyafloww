@@ -2,11 +2,11 @@
 
 <div align="center">
 
-**Enterprise School Management Platform**
+**Enterprise School Management & SaaS Microservices Platform**
 
 *Unifying every aspect of educational institution management into one cohesive digital ecosystem*
 
-[![CI](https://github.com/your-org/vidyamaxx/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/vidyamaxx/actions/workflows/ci.yml)
+[![CI](https://github.com/logicbyroshan/vidyamaxx-school-management/actions/workflows/ci.yml/badge.svg)](https://github.com/logicbyroshan/vidyamaxx-school-management/actions/workflows/ci.yml)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)](https://python.org)
 [![Django](https://img.shields.io/badge/Django-5.x-green?logo=django)](https://djangoproject.com)
@@ -19,16 +19,46 @@
 
 ## 🎯 Project Overview
 
-VidyaMaxx is a production-grade, multi-tenant **school management platform** built for educational institutions
-of all sizes. It consolidates admissions, academics, attendance, examinations, finance, HR, LMS, communication,
-and AI-powered insights into a single platform accessible via web, mobile, and desktop.
+VidyaMaxx is a production-grade, multi-tenant **school management platform** built for educational institutions of all sizes. It consolidates admissions, academics, attendance, examinations, finance, HR, LMS, communication, security, system administration, and AI-powered insights into a single platform accessible via web, mobile, and desktop.
 
 ### Vision
 
 > *"Empower every school to operate with the efficiency of a world-class institution."*
 
-VidyaMaxx eliminates the fragmented, paper-based, and siloed workflows that bog down educational
-administration — replacing them with a unified, intelligent, and beautifully designed platform.
+VidyaMaxx eliminates fragmented, paper-based, and siloed workflows — replacing them with a unified, intelligent, and beautifully designed ERP platform.
+
+---
+
+## 🏛️ 24 Complete Core Modules Architecture
+
+VidyaMaxx includes 24 fully-implemented core ERP sub-systems:
+
+| # | Module ID | Route Path | Core Functional Highlights |
+|---|-----------|------------|----------------------------|
+| 1 | **Dashboard** | `/` | Central Institutional Intelligence, Live Telematics & Quick Actions |
+| 2 | **Students** | `/students` | Student 360, Health Records, Discipline Logs & Lifecycle |
+| 3 | **Academics** | `/academics` | Class & Section Structures, Subjects, Syllabus & Timetables |
+| 4 | **Admissions** | `/admissions` | CRM Pipeline, AI Document OCR & Merit Evaluation |
+| 5 | **Attendance** | `/attendance` | Biometric Turnstiles, Roll Call & AI Chronic Absenteeism Engine |
+| 6 | **Examinations** | `/examinations` | Report Cards, CBSE Marks Entry & Re-evaluation |
+| 7 | **Fees** | `/fees` | Fee Schedules, Concessions & Online Payment Gateway Integration |
+| 8 | **Finance & Accounting** | `/accounting` | Double-Entry General Ledger, Invoices & Balance Sheets |
+| 9 | **HR & Payroll** | `/hr` | Employee Profiles, Attendance, Salary Slips & Form 16 |
+| 10 | **Library** | `/library` | Catalog Search, RFID Circulation & Overdue Penalties |
+| 11 | **Transport** | `/transport` | GPS Live Bus Telematics, Fuel Logs & Route Management |
+| 12 | **Hostel** | `/hostel` | Room & Bed Inventory Matrix, Outpass QR & Warden Desk |
+| 13 | **Inventory** | `/inventory` | Master Catalog, Fixed Assets & 3-Way Procurement Workflow |
+| 14 | **Learning & LMS** | `/learning` | Lessons, Homework Assignments & MCQ Practice Quizzes |
+| 15 | **Documents** | `/documents` | Central Document Vault & Certificate Live Preview Studio |
+| 16 | **Communication** | `/communication` | Split-Pane Inbox, DLT SMS & Omnichannel Alerts |
+| 17 | **Events & Activities** | `/events` | Monthly Activity Calendar, Clubs Directory & House Scoreboard |
+| 18 | **Front Office** | `/front-office` | Admission CRM Kanban & Gate Pass Badge Printer |
+| 19 | **School Administration** | `/administration` | Multi-Stage Approval Steppers & Governance Policies |
+| 20 | **Parent & Student Portal** | `/portal` | Child Switcher, Timetables, Homework & Fee Payments |
+| 21 | **Reports & Analytics** | `/reports` | Multi-Metric BI Area Charts & AI Natural Language Report Builder |
+| 22 | **Security & Audit** | `/security` | SOC Incident Tracking, Active Devices & Immutable Audit Trails |
+| 23 | **System Administration** | `/system` | Microservice Health, Integrations Marketplace & API Telemetry |
+| 24 | **VidyaMaxx AI** | `/ai` | Intelligent Institutional AI Assistant & Automated Insights |
 
 ---
 
@@ -58,33 +88,11 @@ administration — replacing them with a unified, intelligent, and beautifully d
 | TanStack Table | 9.x | High-performance enterprise data grid |
 | Recharts | 3.x | Custom dark theme BI data visualizations |
 | Lenis | 1.1 | Physics-based smooth scrolling |
-| cmdk | 1.1 | Keyboard-driven command palette (`⌘K`) |
 | Sonner | 2.x | Real-time store-synced toast notifications |
 | TanStack Router | 1.x | Type-safe client routing |
 | TanStack Query | 5.x | Server state management & caching |
 | Zustand | 5.x | Global client state |
 | Zod | 3.x | Schema validation |
-
-### Mobile App
-| Technology | Purpose |
-|-----------|---------|
-| React Native | Cross-platform mobile |
-| Expo | Development platform |
-| TypeScript | Type safety |
-
-### Desktop App
-| Technology | Purpose |
-|-----------|---------|
-| Electron | Desktop shell |
-| React | UI framework |
-| TypeScript | Type safety |
-
-### Monorepo Tools
-| Tool | Purpose |
-|------|---------|
-| pnpm | Package manager |
-| TurboRepo | Monorepo build system |
-| Poetry | Python dependency management |
 
 ---
 
@@ -94,27 +102,25 @@ administration — replacing them with a unified, intelligent, and beautifully d
 vidyamaxx/
 ├── apps/
 │   ├── backend/          Django + DRF API server
-│   ├── web/              React 19 web application
+│   ├── web/              React 19 web application (24 core modules)
 │   ├── mobile/           React Native + Expo app
 │   └── desktop/          Electron desktop app
 ├── packages/
 │   ├── api/              Typed HTTP client
-│   ├── ui/               Shared UI components
+│   ├── ui/               Shared UI components & charts
 │   ├── types/            TypeScript type definitions
 │   ├── validation/       Shared Zod schemas
-│   ├── constants/        Routes, roles, status codes
+│   ├── constants/        Routes, roles, module registry
 │   ├── hooks/            Shared React hooks
 │   ├── utils/            Utility functions
 │   ├── config/           App configuration
 │   ├── themes/           Design tokens
 │   ├── icons/            Custom icons
 │   └── assets/           Shared assets
-├── docs/                 12 documentation files
+├── docs/                 13 documentation files
 ├── scripts/              Build & utility scripts
 ├── docker/               Dockerfiles + Compose
-├── nginx/                Nginx configuration
-├── .github/              CI/CD workflows
-└── .vscode/              Editor settings
+└── .github/              CI/CD workflows
 ```
 
 ---
@@ -129,199 +135,47 @@ vidyamaxx/
 - **Poetry** — `pip install poetry`
 - **Docker Desktop** (for PostgreSQL + Redis)
 
-### 1. Clone & Install
+### 1. Install & Build Monorepo
 
 ```bash
-git clone https://github.com/your-org/vidyamaxx.git
-cd vidyamaxx
+git clone https://github.com/logicbyroshan/vidyamaxx-school-management.git
+cd vidyamaxx-school-management
 
 # Install all JavaScript/TypeScript dependencies
 pnpm install
+
+# Run type check across all 14 monorepo packages
+pnpm type-check
 ```
 
-### 2. Start Infrastructure
+### 2. Start Web Dev Server
 
 ```bash
-docker compose -f docker/docker-compose.yml up postgres redis -d
-```
-
-### 3. Set Up Backend
-
-```bash
-cd apps/backend
-
-# Install Python dependencies
-poetry install
-
-# Create environment file
-cp ../../.env.example ../../.env
-# Edit .env with your local values
-
-# Run database migrations
-poetry run python manage.py migrate
-
-# Start the development server
-poetry run python manage.py runserver
-```
-
-Backend API available at: **http://localhost:8000**
-API Docs at: **http://localhost:8000/api/docs/swagger/**
-
-### 4. Start Web App
-
-```bash
-# From project root
-pnpm dev --filter=@vidyamaxx/web
-
-# Or from the web directory
-cd apps/web && pnpm dev
+pnpm --filter=@vidyamaxx/web dev
 ```
 
 Web app available at: **http://localhost:3000**
 
-### 5. Start Celery Worker (Optional)
-
-```bash
-cd apps/backend
-poetry run celery -A config.celery worker --loglevel=info
-```
-
 ---
 
-## 🔄 Development Workflow
-
-### Scripts
-
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all apps in dev mode |
-| `pnpm build` | Build all apps for production |
-| `pnpm lint` | Lint all packages |
-| `pnpm type-check` | TypeScript type check all packages |
-| `pnpm test` | Run all test suites |
-| `pnpm format` | Format all files with Prettier |
-| `pnpm clean` | Clean all build artifacts |
-
-### Turbo Filters
-
-```bash
-# Run only web app
-pnpm dev --filter=@vidyamaxx/web
-
-# Build a specific package
-pnpm build --filter=@vidyamaxx/types
-
-# Run tests for changed packages only
-pnpm test --filter=[HEAD^1]
-```
-
-### Backend Commands
-
-```bash
-cd apps/backend
-
-# Create migrations
-poetry run python manage.py makemigrations
-
-# Apply migrations
-poetry run python manage.py migrate
-
-# Create superuser
-poetry run python manage.py createsuperuser
-
-# Run tests
-poetry run pytest
-
-# Run linter
-poetry run ruff check .
-poetry run ruff format .
-```
-
----
-
-## 📐 Coding Standards
-
-All code must pass:
-- **Ruff** (Python) — lint + format
-- **ESLint** (TypeScript) — lint
-- **Prettier** (TypeScript/CSS) — format
-- **TypeScript strict mode** — no `any`
-
-See [docs/04-coding-standards.md](docs/04-coding-standards.md) for detailed standards.
-
----
-
-## 🌿 Branch Strategy
-
-| Branch | Purpose |
-|--------|---------|
-| `main` | Production-ready code |
-| `develop` | Integration branch |
-| `feature/*` | New features |
-| `fix/*` | Bug fixes |
-| `release/*` | Release preparation |
-| `hotfix/*` | Emergency production fixes |
-
-See [docs/10-git-workflow.md](docs/10-git-workflow.md) for full workflow details.
-
----
-
-## 📚 Documentation
-
-| Document | Contents |
-|----------|---------|
-| [01 - Project Overview](docs/01-project-overview.md) | Vision, goals, users, modules |
-| [02 - Architecture](docs/02-architecture.md) | System design, layers, patterns |
-| [03 - Folder Structure](docs/03-folder-structure.md) | Where code lives and why |
-| [04 - Coding Standards](docs/04-coding-standards.md) | Style guides and rules |
-| [05 - API Guidelines](docs/05-api-guidelines.md) | REST API design standards |
-| [06 - Database Guidelines](docs/06-database-guidelines.md) | Schema, migrations, queries |
-| [07 - Permissions](docs/07-permissions.md) | RBAC and access control |
-| [08 - Module Development](docs/08-module-development.md) | Adding new modules |
-| [09 - UI Guidelines](docs/09-ui-guidelines.md) | Design system and components |
-| [10 - Git Workflow](docs/10-git-workflow.md) | Branching and PRs |
-| [11 - Deployment](docs/11-deployment.md) | Local and production setup |
-| [12 - Roadmap](docs/12-roadmap.md) | Feature development plan |
-| [13 - Modules Specification](docs/13-modules-specification.md) | Detailed 24-module ERP architecture & VidyaMaxx AI capabilities |
-
----
-
-## 🗺️ Roadmap
+## 🗺️ Roadmap & Completion Status
 
 | Phase | Status | Focus |
 |-------|--------|-------|
 | 1 — Foundation | ✅ Complete | Monorepo scaffold, configs, docs |
-| 2 — Auth & Multi-tenancy | 🔜 Next | Login, roles, organizations |
-| 3 — Students & Academics | 📅 Planned | Core academic management |
-| 4 — Examinations | 📅 Planned | Exams, grades, report cards |
-| 5 — Finance | 📅 Planned | Fees, payments, invoices |
-| 6 — Communication | 📅 Planned | Notifications, messaging |
-| 7 — HR | 📅 Planned | Staff, payroll, leave |
-| 8 — LMS | 📅 Planned | Learning management |
-| 9 — Advanced Modules | 📅 Planned | Library, transport, hostel |
-| 10 — AI & Analytics | 📅 Planned | AI assistant, dashboards |
-| 11 — Enterprise | 📅 Planned | Scale, compliance, white-label |
-
----
-
-## 🔒 Internal Development Workflow
-
-1. Review internal [Coding Standards](docs/04-coding-standards.md)
-2. Follow [Git Workflow](docs/10-git-workflow.md)
-3. Create feature branches: `feature/VF-<ticket>-<description>`
-4. Ensure all unit and integration tests pass locally before pushing
-5. Submit internal Pull Requests against `develop`
+| 2 — Auth & Multi-tenancy | ✅ Complete | Multi-tenant SaaS, roles, sessions |
+| 3 — Students & Academics | ✅ Complete | Student 360, classes, timetable |
+| 4 — Examinations | ✅ Complete | Exams, grades, report cards |
+| 5 — Finance & Accounting | ✅ Complete | Fees, payments, general ledger |
+| 6 — Communication | ✅ Complete | Split-pane inbox, DLT SMS |
+| 7 — HR & Payroll | ✅ Complete | Staff profiles, attendance, salary |
+| 8 — LMS & Learning | ✅ Complete | Lessons, homework, practice quizzes |
+| 9 — Operations & Logistics | ✅ Complete | Library, transport, hostel, inventory |
+| 10 — Security & System Admin | ✅ Complete | SOC incidents, microservice health |
+| 11 — BI Reports & AI Engine | ✅ Complete | BI Area charts, VidyaMaxx AI |
 
 ---
 
 ## 📄 License
 
 Proprietary — All rights reserved. VidyaMaxx Team, 2026.
-
----
-
-<div align="center">
-
-Built with ❤️ by Roshan Damor & the VidyaMaxx Team
-
-</div>
