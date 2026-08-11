@@ -9,6 +9,7 @@ import {
   VFCard,
   VFInput,
   VFSelect,
+  VFDatePicker,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
@@ -302,7 +303,7 @@ function AttendancePage() {
               { label: 'Class 10 - Section B', value: 'Class 10-B' },
             ]}
           />
-          <VFInput label="" type="date" value={selectedDate} onChange={(e: any) => setSelectedDate(e.target.value)} />
+          <VFDatePicker value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
           <VFBadge variant="primary" className="h-8 px-3 font-mono">Total Students: {studentRoster.length}</VFBadge>
         </div>
 

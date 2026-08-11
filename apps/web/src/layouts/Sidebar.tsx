@@ -61,26 +61,29 @@ export function Sidebar() {
         sidebarExpanded ? 'w-60' : 'w-16'
       )}
     >
-      {/* Sidebar Header & Brand Logo */}
-      <div className="flex h-14 items-center px-3.5 border-b border-border/60 relative shrink-0">
+      {/* Sidebar Header & Brand Logo (h-[88px] matching combined Navbar + Tabbar height) */}
+      <div className="flex h-[88px] items-center px-4 border-b border-border/60 relative shrink-0">
         {sidebarExpanded ? (
-          <div className="flex items-center gap-3 font-black text-base text-foreground tracking-tight w-full animate-fade-in">
+          <div className="flex items-center gap-3 w-full animate-fade-in">
             <img
               src="/logo.png"
               alt="VidyaMaxx Logo"
-              className="h-7 w-7 object-contain shrink-0"
-              style={{ height: '28px', width: '28px' }}
+              className="h-10 w-10 object-contain shrink-0 drop-shadow-xs"
             />
-            <span className="truncate">
-              Vidya<span className="text-primary">Maxx</span>
-            </span>
+            <div className="flex flex-col min-w-0">
+              <span className="text-lg font-black tracking-tight leading-none text-foreground">
+                Vidya<span className="text-primary">Maxx</span>
+              </span>
+              <span className="text-[9px] font-bold text-muted-foreground/80 uppercase tracking-widest mt-1">
+                Enterprise Portal
+              </span>
+            </div>
           </div>
         ) : (
           <img
             src="/logo.png"
             alt="VidyaMaxx Logo"
-            className="h-7 w-7 object-contain shrink-0 mx-auto animate-scale-in"
-            style={{ height: '28px', width: '28px' }}
+            className="h-9 w-9 object-contain shrink-0 mx-auto animate-scale-in drop-shadow-xs"
           />
         )}
         <button

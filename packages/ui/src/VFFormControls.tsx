@@ -330,7 +330,7 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
           disabled={disabled}
           onClick={() => !disabled && setIsOpen(!isOpen)}
           className={cn(
-            "flex h-9 w-full items-center justify-between rounded-lg border border-border/70 bg-muted/40 px-3 py-1.5 text-xs text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer shadow-xs hover:border-border hover:bg-muted/70",
+            "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-xs text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70",
             isOpen && "border-border/90 bg-muted/60",
             error && "border-destructive",
             disabled && "opacity-50 cursor-not-allowed",

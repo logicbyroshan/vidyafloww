@@ -98,8 +98,17 @@
     @apply bg-transparent;
   }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground/25 rounded-[2px] hover:bg-primary/50 transition-colors;
+  /* Dark Calendar & Time Picker Indicator Icons */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8) sepia(0.5) saturate(2) hue-rotate(180deg);
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.15s ease;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator:hover,
+  input[type="time"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
   }
 }
 

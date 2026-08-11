@@ -56,7 +56,7 @@ export function VFTabs({
     return (
       <div className={cn("flex flex-col w-full flex-1 min-h-0 bg-background", className)} {...props}>
         {/* Full-width sticky top sub-module tab bar header */}
-        <div className="w-full border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
+        <div className="w-full h-11 border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
           <div className="flex items-center gap-6 overflow-x-auto no-scrollbar flex-1" role="tablist">
             {items.map((item) => {
               const isActive = item.id === activeId;

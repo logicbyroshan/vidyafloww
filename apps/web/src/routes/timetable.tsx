@@ -9,6 +9,7 @@ import {
   VFCard,
   VFInput,
   VFSelect,
+  VFDatePicker,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
@@ -630,7 +631,7 @@ function TimetablePage() {
             <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Quick One-Time Room & Equipment Reservation</h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
               <VFSelect value={selectedRoom} onChange={(e) => setSelectedRoom(String(e.target.value))} options={[{ label: 'Physics Lab 2', value: 'Physics Lab 2' }, { label: 'Main Auditorium', value: 'Main Auditorium' }]} />
-              <VFInput label="Booking Date" defaultValue="2026-08-18" />
+              <VFDatePicker label="Booking Date" defaultValue="2026-08-18" />
               <VFSelect label="Target Period" options={[{ label: 'Period 4 (10:30 AM)', value: 'P4' }, { label: 'Period 6 (12:45 PM)', value: 'P6' }]} />
             </div>
             <div className="flex items-center justify-between border-t border-border/60 pt-3">
