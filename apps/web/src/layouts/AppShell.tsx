@@ -102,14 +102,42 @@ function SmallScreenBlocker() {
   );
 }
 
+import Lenis from 'lenis';
+
 export function AppShell() {
   const { addNotification } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const [isAiChatOpen, setIsAiChatOpen] = React.useState(false);
+  const mainRef = React.useRef<HTMLElement | null>(null);
   const [viewportWidth, setViewportWidth] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
+
+  // Initialize Lenis Smooth Scrolling on Main Viewport
+  React.useEffect(() => {
+    if (!mainRef.current) return;
+    const lenis = new Lenis({
+      wrapper: mainRef.current,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    });
+
+    let animationFrameId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
+    animationFrameId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      lenis.destroy();
+    };
+  }, []);
 
   React.useEffect(() => {
     const checkWidth = () => setViewportWidth(window.innerWidth);
@@ -156,7 +184,7 @@ export function AppShell() {
               onNotificationsClick={() => setIsNotificationsOpen(true)}
               onOpenAiChat={() => setIsAiChatOpen(true)}
             />
-            <main className="flex-1 overflow-y-auto bg-background relative custom-scrollbar">
+            <main ref={mainRef} className="flex-1 overflow-y-auto bg-background relative custom-scrollbar">
               <Outlet />
             </main>
           </div>
