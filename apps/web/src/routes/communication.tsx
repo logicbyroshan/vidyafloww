@@ -9,6 +9,8 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
+  VFPieChart,
+  VFAreaChart,
 } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
@@ -18,6 +20,7 @@ import {
   Sparkles,
   Plus,
   AlertTriangle,
+  Send,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/communication')({
@@ -130,9 +133,18 @@ function CommunicationPage() {
           />
         </VFSection>
 
-        {/* Needs Attention & Channel Health */}
-        <VFCard title="Needs Attention & Omnichannel Status">
+        {/* Delivery Share Chart & Channel Status */}
+        <VFCard title="Delivery Breakdown & Omnichannel Status">
           <div className="space-y-3 text-xs mt-1">
+            <VFPieChart
+              data={[
+                { name: 'Delivered', value: 7980, color: '#16a34a' },
+                { name: 'Pending', value: 240, color: '#eab308' },
+                { name: 'Failed', value: 42, color: '#ef4444' },
+              ]}
+              height={160}
+            />
+
             <div className="p-2.5 bg-destructive/10 border border-destructive/30 rounded-xl space-y-1">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-foreground">⚠ 42 Failed Messages</span>
@@ -140,13 +152,7 @@ function CommunicationPage() {
               </div>
               <p className="text-muted-foreground text-xs">18 invalid phone numbers · 12 DLT provider timeouts</p>
             </div>
-            <div className="p-2.5 bg-warning/10 border border-warning/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">💬 18 Unanswered Parent Messages</span>
-                <VFBadge variant="warning">Action Needed</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">Parent queries pending response over 24 hours</p>
-            </div>
+
             <div className="p-2.5 bg-card border border-border rounded-xl space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-foreground">📱 Delivery Channel Status</span>
@@ -160,37 +166,128 @@ function CommunicationPage() {
     </div>
   );
 
-  // 17.2 Inbox Submodule Content
+  // 17.2 Specialized Split-Pane Unified Inbox View Submodule Content
   const inboxContent = (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {/* Left List of Conversations */}
+      <div className="bg-card border border-border rounded-xl p-3 space-y-3">
+        <div className="flex items-center justify-between pb-2 border-b border-border">
+          <h3 className="text-xs font-bold text-foreground">Recent Conversations</h3>
+          <VFButton size="sm" variant="ghost" className="text-xs h-7">Filter</VFButton>
+        </div>
+        <div className="space-y-2">
+          {conversationsData.map((c) => (
+            <div
+              key={c.id}
+              className={`p-3 rounded-lg border cursor-pointer transition-all ${c.unread ? 'bg-primary/10 border-primary/40' : 'bg-muted/30 border-border hover:bg-muted/60'}`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-foreground">{c.partner}</span>
+                <span className="text-[10px] text-muted-foreground">{c.time}</span>
+              </div>
+              <p className="text-[11px] text-primary font-mono mt-0.5">{c.studentName}</p>
+              <p className="text-xs text-muted-foreground truncate mt-1">{c.lastMessage}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Chat Thread View */}
+      <div className="lg:col-span-2 bg-card border border-border rounded-xl p-4 flex flex-col justify-between space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
+          <div>
+            <h3 className="text-sm font-bold text-foreground">Priya Sharma <span className="text-xs font-normal text-muted-foreground">(Parent of Rahul Sharma 10-A)</span></h3>
+            <p className="text-xs text-muted-foreground">Channel: In-App Parent Portal · Designated Query Hours (4 PM - 7 PM)</p>
+          </div>
+          <VFBadge variant="success">✓✓ Delivered</VFBadge>
+        </div>
+
+        {/* Chat Bubbles Feed */}
+        <div className="space-y-3 text-xs py-4 flex-1">
+          <div className="flex flex-col items-start max-w-[80%]">
+            <div className="bg-muted p-3 rounded-2xl rounded-tl-none border border-border">
+              <p className="text-foreground">Respected Teacher, Rahul will be absent tomorrow (Wednesday) due to a scheduled medical checkup. Kindly consider his leave application.</p>
+              <span className="text-[10px] text-muted-foreground mt-1 block">Yesterday 04:15 PM</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end max-w-[80%] ml-auto">
+            <div className="bg-primary text-primary-foreground p-3 rounded-2xl rounded-tr-none">
+              <p>Dear Mrs. Sharma, noted. I have logged Rahul's leave in the attendance system. Please share the doctor note when he resumes on Thursday.</p>
+              <span className="text-[10px] text-primary-foreground/80 mt-1 block text-right">Yesterday 04:30 PM ✓✓</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Send Input Toolbar */}
+        <div className="flex items-center gap-2 pt-3 border-t border-border">
+          <input
+            type="text"
+            placeholder="Type your message to parent..."
+            className="flex-1 bg-muted border border-border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          <VFButton size="sm" leftIcon={<Send className="h-3.5 w-3.5" />}>Send</VFButton>
+        </div>
+      </div>
+    </div>
+  );
+
+  // 17.5 Specialized Delivery Channel Telematics Submodule Content
+  const channelsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Unified Institutional Inbox & Conversations</h3>
-          <p className="text-xs text-muted-foreground">Moderated parent-teacher messaging, linked academic context, voice notes, and read receipts.</p>
+          <h3 className="text-sm font-bold text-foreground">Delivery Channel Telematics & Provider Status</h3>
+          <p className="text-xs text-muted-foreground">Monitor real-time push notification latencies, SMS DLT credit balances, and email SMTP server throughput.</p>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Start Conversation</VFButton>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Configure Channel</VFButton>
       </div>
 
-      <VFDataTable
-        columns={[
-          { header: 'Contact Person', accessorKey: 'partner', cell: (r: ConversationRecord) => <span className="font-bold text-foreground">{r.partner}</span> },
-          { header: 'Role', accessorKey: 'role', cell: (r: ConversationRecord) => <VFBadge variant="outline">{r.role}</VFBadge> },
-          { header: 'Linked Student', accessorKey: 'studentName', cell: (r: ConversationRecord) => <span className="font-mono text-primary font-semibold">{r.studentName}</span> },
-          { header: 'Last Message', accessorKey: 'lastMessage' },
-          { header: 'Time', accessorKey: 'time' },
-          {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: (r: ConversationRecord) => (
-              <VFBadge variant={r.unread ? 'warning' : 'success'}>
-                {r.unread ? 'Unread' : r.status}
-              </VFBadge>
-            ),
-          },
-        ]}
-        data={conversationsData}
-        filterPlaceholder="Search conversation or student..."
-      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <VFCard title="Mobile Push Alerts (FCM)">
+          <div className="text-xs space-y-1">
+            <p className="text-base font-bold text-success">🟢 Operational</p>
+            <p className="text-muted-foreground">94.7% Delivery Rate · 120ms Avg Latency</p>
+          </div>
+        </VFCard>
+        <VFCard title="SMS DLT Gateway">
+          <div className="text-xs space-y-1">
+            <p className="text-base font-bold text-primary">24,820 Credits</p>
+            <p className="text-muted-foreground">Sender ID: VDMXSCH · DLT Compliant</p>
+          </div>
+        </VFCard>
+        <VFCard title="Email SMTP Circulars">
+          <div className="text-xs space-y-1">
+            <p className="text-base font-bold text-success">🟢 89.2% Open Rate</p>
+            <p className="text-muted-foreground">AWS SES · Daily Quota 50,000</p>
+          </div>
+        </VFCard>
+        <VFCard title="WhatsApp Business API">
+          <div className="text-xs space-y-1">
+            <p className="text-base font-bold text-secondary">🟢 Meta API Active</p>
+            <p className="text-muted-foreground">1,240 Template Messages Sent</p>
+          </div>
+        </VFCard>
+      </div>
+
+      <VFCard title="Hourly Message Throughput & Latency Trend">
+        <VFAreaChart
+          data={[
+            { hour: '08:00 AM', Push: 1200, SMS: 450, Email: 300 },
+            { hour: '10:00 AM', Push: 2400, SMS: 820, Email: 640 },
+            { hour: '12:00 PM', Push: 1800, SMS: 610, Email: 420 },
+            { hour: '02:00 PM', Push: 2900, SMS: 940, Email: 880 },
+            { hour: '04:00 PM', Push: 1500, SMS: 390, Email: 250 },
+          ]}
+          xKey="hour"
+          dataKeys={[
+            { key: 'Push', name: 'Push Alerts', color: '#16a34a' },
+            { key: 'SMS', name: 'SMS DLT', color: '#f97316' },
+            { key: 'Email', name: 'Email SES', color: '#0891b2' },
+          ]}
+          height={200}
+        />
+      </VFCard>
     </div>
   );
 
@@ -200,11 +297,11 @@ function CommunicationPage() {
     inbox: inboxContent,
     announcements: dashboardContent,
     chat: inboxContent,
-    channels: dashboardContent,
+    channels: channelsContent,
     broadcasts: dashboardContent,
     templates: dashboardContent,
     automations: dashboardContent,
-    analytics: dashboardContent,
+    analytics: channelsContent,
     settings: dashboardContent,
   };
 

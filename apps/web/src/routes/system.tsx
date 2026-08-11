@@ -9,6 +9,7 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
+  VFAreaChart,
 } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
@@ -87,6 +88,25 @@ function SystemPage() {
         <VFStatCard title="API Integrations" value="12 / 12 Active" icon={<Plug className="h-5 w-5 text-warning" />} description="1 Requires Attention ⚠" />
       </div>
 
+      {/* Feature 2 — System API Latency Telemetry Chart */}
+      <VFCard title="Real-time System API Response Time & Throughput Telemetry">
+        <VFAreaChart
+          data={[
+            { time: '10:00 AM', Latency: 22, Requests: 1200 },
+            { time: '10:15 AM', Latency: 24, Requests: 1420 },
+            { time: '10:30 AM', Latency: 28, Requests: 1840 },
+            { time: '10:45 AM', Latency: 21, Requests: 1310 },
+            { time: '11:00 AM', Latency: 24, Requests: 1450 },
+          ]}
+          xKey="time"
+          dataKeys={[
+            { key: 'Latency', name: 'Avg Latency (ms)', color: '#16a34a' },
+            { key: 'Requests', name: 'Requests/min', color: '#0891b2' },
+          ]}
+          height={180}
+        />
+      </VFCard>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Microservices & Tenant Directory */}
         <VFSection title="Active SaaS Microservices & Institutional Tenants" className="lg:col-span-2 space-y-4">
@@ -150,7 +170,7 @@ function SystemPage() {
     </div>
   );
 
-  // 24.5 Integrations & API Management Submodule Content
+  // 24.5 Specialized Integration Marketplace Submodule Content
   const integrationsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -161,25 +181,24 @@ function SystemPage() {
         <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Connect New Provider</VFButton>
       </div>
 
-      <VFDataTable
-        columns={[
-          { header: 'Integration Name', accessorKey: 'name', cell: (r: IntegrationRecord) => <span className="font-bold text-foreground">{r.name}</span> },
-          { header: 'Category', accessorKey: 'category', cell: (r: IntegrationRecord) => <VFBadge variant="outline">{r.category}</VFBadge> },
-          { header: 'Provider / Service', accessorKey: 'provider', cell: (r: IntegrationRecord) => <span className="font-mono text-primary font-semibold">{r.provider}</span> },
-          { header: 'Last Health Check', accessorKey: 'lastHealthCheck' },
-          {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: (r: IntegrationRecord) => (
-              <VFBadge variant={r.status === 'Connected' ? 'success' : 'warning'}>
-                {r.status}
-              </VFBadge>
-            ),
-          },
-        ]}
-        data={integrationsData}
-        filterPlaceholder="Search integration name or provider..."
-      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {integrationsData.map((ing) => (
+          <VFCard key={ing.id} title={ing.name}>
+            <div className="space-y-2 text-xs mt-1">
+              <div className="flex items-center justify-between">
+                <VFBadge variant="outline">{ing.category}</VFBadge>
+                <VFBadge variant={ing.status === 'Connected' ? 'success' : 'warning'}>{ing.status}</VFBadge>
+              </div>
+              <p className="text-muted-foreground">Provider: <span className="font-mono text-primary font-bold">{ing.provider}</span></p>
+              <p className="text-muted-foreground text-xs">Last Health Check: <span className="text-foreground font-semibold">{ing.lastHealthCheck}</span></p>
+              <div className="pt-2 flex items-center justify-between border-t border-border">
+                <span className="text-[11px] text-muted-foreground">Scope: Read & Write</span>
+                <VFButton size="sm" variant="outline" className="text-xs h-7">Test Connection</VFButton>
+              </div>
+            </div>
+          </VFCard>
+        ))}
+      </div>
     </div>
   );
 

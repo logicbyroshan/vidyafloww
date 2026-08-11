@@ -9,11 +9,12 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
+  VFAreaChart,
+  VFBarChart,
 } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
   BarChart3,
-  TrendingUp,
   Users,
   Calendar,
   CreditCard,
@@ -22,7 +23,6 @@ import {
   Plus,
   Filter,
   FileSpreadsheet,
-  AlertTriangle,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/reports')({
@@ -92,28 +92,29 @@ function ReportsPage() {
         <VFStatCard title="Total Fee Collection" value="₹82.4 Lakhs" icon={<CreditCard className="h-5 w-5 text-warning" />} trend="up" trendLabel="96.2% Target (Pending ₹3.2L)" />
       </div>
 
+      {/* Feature 2 — Multi-Metric BI Area Chart */}
+      <VFCard title="Monthly Academic Performance vs Attendance Velocity BI Trend">
+        <VFAreaChart
+          data={[
+            { month: 'Apr', ExamAvg: 72, Attendance: 96, FeeCollection: 65 },
+            { month: 'May', ExamAvg: 74, Attendance: 95, FeeCollection: 72 },
+            { month: 'Jun', ExamAvg: 75, Attendance: 93, FeeCollection: 78 },
+            { month: 'Jul', ExamAvg: 77, Attendance: 94, FeeCollection: 80 },
+            { month: 'Aug', ExamAvg: 78.4, Attendance: 94.2, FeeCollection: 82.4 },
+          ]}
+          xKey="month"
+          dataKeys={[
+            { key: 'ExamAvg', name: 'Exam Average (%)', color: '#0891b2' },
+            { key: 'Attendance', name: 'Attendance Rate (%)', color: '#16a34a' },
+            { key: 'FeeCollection', name: 'Fee Collection (₹ L)', color: '#f97316' },
+          ]}
+          height={220}
+        />
+      </VFCard>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Performance Trends & Metrics Table */}
         <VFSection title="Institutional BI Performance & Cross-Module Metrics" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Class 10 Pass Rate</p>
-              <p className="text-base font-bold text-primary mt-0.5">82.0% Average</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Student-Teacher Ratio</p>
-              <p className="text-base font-bold text-success mt-0.5">19.6 : 1 Ratio</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Transport Fill Rate</p>
-              <p className="text-base font-bold text-secondary mt-0.5">84.0% Seats</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Hostel Occupancy</p>
-              <p className="text-base font-bold text-warning mt-0.5">86.4% (432/500)</p>
-            </div>
-          </div>
-
           <VFDataTable
             columns={[
               { header: 'Category', accessorKey: 'category', cell: (r: AnalyticsMetricRecord) => <VFBadge variant="outline">{r.category}</VFBadge> },
@@ -135,26 +136,27 @@ function ReportsPage() {
           />
         </VFSection>
 
-        {/* Executive AI Insights & Alerts */}
-        <VFCard title="⚡ Executive AI Insights & Alerts">
+        {/* Executive AI Insights & Class Exam Performance Chart */}
+        <VFCard title="Class-Wise Average Result BI Bar Chart">
           <div className="space-y-3 text-xs mt-1">
+            <VFBarChart
+              data={[
+                { grade: 'Class 8', avg: 74 },
+                { grade: 'Class 9', avg: 78 },
+                { grade: 'Class 10', avg: 82 },
+                { grade: 'Class 11', avg: 76 },
+                { grade: 'Class 12', avg: 84 },
+              ]}
+              xKey="grade"
+              dataKeys={[{ key: 'avg', name: 'Average Mark (%)', color: '#0891b2' }]}
+              height={150}
+            />
+
             <div className="p-3 bg-primary/10 border border-primary/30 rounded-xl space-y-1">
               <span className="font-bold text-foreground flex items-center gap-1">
-                <Sparkles className="h-3.5 w-3.5 text-primary" /> Attendance Drop Signal
+                <Sparkles className="h-3.5 w-3.5 text-primary" /> Executive AI Insight
               </span>
-              <p className="text-muted-foreground text-xs">Grade 8 attendance decreased 3.2% this month. Recommended support intervention for 14 students.</p>
-            </div>
-            <div className="p-3 bg-success/10 border border-success/30 rounded-xl space-y-1">
-              <span className="font-bold text-foreground flex items-center gap-1">
-                <TrendingUp className="h-3.5 w-3.5 text-success" /> Fee Velocity Spike
-              </span>
-              <p className="text-muted-foreground text-xs">Fee collection is 4.8% ahead of last month due to online UPI portal adoption (₹82.4L collected).</p>
-            </div>
-            <div className="p-3 bg-warning/10 border border-warning/30 rounded-xl space-y-1">
-              <span className="font-bold text-foreground flex items-center gap-1">
-                <AlertTriangle className="h-3.5 w-3.5 text-warning" /> Academic Support Warning
-              </span>
-              <p className="text-muted-foreground text-xs">42 students flagged with combined low attendance (&lt; 75%) and declining exam marks.</p>
+              <p className="text-muted-foreground text-xs">Class 12 Board preparation is performing 4.2% higher than state benchmark.</p>
             </div>
           </div>
         </VFCard>

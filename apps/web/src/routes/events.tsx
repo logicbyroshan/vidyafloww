@@ -9,6 +9,7 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
+  VFBarChart,
 } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
@@ -17,6 +18,9 @@ import {
   Users,
   Trophy,
   Plus,
+  Bus,
+  MapPin,
+  CheckCircle2,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/events')({
@@ -135,9 +139,21 @@ function EventsPage() {
           />
         </VFSection>
 
-        {/* House Points Leaderboard & Alerts */}
-        <VFCard title="Inter-House Leaderboard & Alerts">
+        {/* House Points Leaderboard Bar Chart */}
+        <VFCard title="Inter-House Championship Scoreboard">
           <div className="space-y-3 text-xs mt-1">
+            <VFBarChart
+              data={[
+                { house: 'Blue', points: 120 },
+                { house: 'Red', points: 110 },
+                { house: 'Green', points: 96 },
+                { house: 'Yellow', points: 88 },
+              ]}
+              xKey="house"
+              dataKeys={[{ key: 'points', name: 'House Points', color: '#0891b2' }]}
+              height={160}
+            />
+
             <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-xl space-y-1">
               <div className="flex items-center justify-between font-bold text-foreground">
                 <span>🥇 1. Blue House</span>
@@ -145,13 +161,7 @@ function EventsPage() {
               </div>
               <p className="text-muted-foreground text-xs">Cricket + Debating Champions</p>
             </div>
-            <div className="p-2.5 bg-secondary/10 border border-secondary/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between font-bold text-foreground">
-                <span>🥈 2. Red House</span>
-                <span className="font-mono text-secondary">110 Pts</span>
-              </div>
-              <p className="text-muted-foreground text-xs">Athletics + Drama Winners</p>
-            </div>
+
             <div className="p-2.5 bg-warning/10 border border-warning/30 rounded-xl space-y-1">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-foreground">⚠ Auditorium Venue Conflict</span>
@@ -165,41 +175,128 @@ function EventsPage() {
     </div>
   );
 
-  // 18.5 Clubs Submodule Content
+  // 18.2 Specialized Event Calendar View Submodule Content
+  const calendarContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Central Institutional Event Calendar — August 2026</h3>
+          <p className="text-xs text-muted-foreground">Color-coded event schedule by category (Sports 🏏, Academic 📚, Cultural 🎭, Trip 🚌).</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <VFButton size="sm" variant="outline">Today</VFButton>
+          <VFButton size="sm">Month View</VFButton>
+        </div>
+      </div>
+
+      {/* Interactive Month Grid */}
+      <div className="bg-card border border-border rounded-xl p-4">
+        <div className="grid grid-cols-7 gap-2 text-center text-xs font-bold text-muted-foreground mb-2 pb-2 border-b border-border">
+          <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+        </div>
+        <div className="grid grid-cols-7 gap-2">
+          {Array.from({ length: 31 }).map((_, i) => {
+            const day = i + 1;
+            const hasEvent = day === 11 || day === 15 || day === 20 || day === 24;
+            return (
+              <div
+                key={day}
+                className={`min-h-[70px] p-1.5 rounded-lg border text-left flex flex-col justify-between ${day === 11 ? 'bg-primary/10 border-primary font-bold' : 'bg-muted/30 border-border'}`}
+              >
+                <span className="text-xs font-semibold text-foreground">{day}</span>
+                {hasEvent && (
+                  <VFBadge variant={day === 11 ? 'success' : day === 15 ? 'warning' : 'primary'} className="text-[9px] px-1 py-0 justify-start truncate">
+                    {day === 11 ? '🏏 Cricket' : day === 15 ? '🇮🇳 Indep. Day' : day === 20 ? '🏃 Sports Day' : '🔬 Science Expo'}
+                  </VFBadge>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
+  // 18.5 Specialized Clubs Directory Grid Submodule Content
   const clubsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Extracurricular Clubs & Societies Directory</h3>
+          <h3 className="text-sm font-bold text-foreground">Extracurricular Clubs & STEM Societies Cards Directory</h3>
           <p className="text-xs text-muted-foreground">Manage STEM, Robotics, Literary, Drama, and Eco clubs, student leadership roles, and recurring meeting sessions.</p>
         </div>
         <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Club</VFButton>
       </div>
 
-      <VFDataTable
-        columns={[
-          { header: 'Club Name', accessorKey: 'clubName', cell: (r: ClubRecord) => <span className="font-bold text-foreground">{r.clubName}</span> },
-          { header: 'Category', accessorKey: 'category', cell: (r: ClubRecord) => <VFBadge variant="outline">{r.category}</VFBadge> },
-          { header: 'Faculty Coordinator', accessorKey: 'coordinator' },
-          { header: 'Active Members', accessorKey: 'membersCount', cell: (r: ClubRecord) => `${r.membersCount} Students` },
-          { header: 'Meeting Schedule', accessorKey: 'meetingSchedule' },
-          { header: 'Status', accessorKey: 'status', cell: (r: ClubRecord) => <VFBadge variant="success">{r.status}</VFBadge> },
-        ]}
-        data={clubsData}
-        filterPlaceholder="Search club name or category..."
-      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {clubsData.map((c) => (
+          <VFCard key={c.id} title={c.clubName}>
+            <div className="space-y-2 text-xs mt-1">
+              <div className="flex items-center justify-between">
+                <VFBadge variant="outline">{c.category}</VFBadge>
+                <VFBadge variant="success">{c.status}</VFBadge>
+              </div>
+              <p className="text-muted-foreground text-xs">Faculty Coordinator: <span className="font-bold text-foreground">{c.coordinator}</span></p>
+              <p className="text-muted-foreground text-xs">Meeting Schedule: <span className="font-mono text-primary">{c.meetingSchedule}</span></p>
+              <div className="pt-2 flex items-center justify-between border-t border-border">
+                <span className="font-bold text-foreground">{c.membersCount} Active Members</span>
+                <VFButton size="sm" variant="ghost" className="text-xs h-7">View Roster</VFButton>
+              </div>
+            </div>
+          </VFCard>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 18.7 Specialized Educational Trips Logistics Submodule Content
+  const tripsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Educational Excursions, Bus Logistics & Parent Consent</h3>
+          <p className="text-xs text-muted-foreground">Logistics management, bus vehicle assignment, supervisor contacts, and digital parent consent forms.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Trip</VFButton>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <VFCard title="Science Center & Planetarium Educational Tour">
+          <div className="space-y-2 text-xs mt-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-foreground flex items-center gap-1">
+                <MapPin className="h-3.5 w-3.5 text-primary" /> City Science Center
+              </span>
+              <VFBadge variant="primary">Departure 06:00 AM</VFBadge>
+            </div>
+            <p className="text-muted-foreground text-xs">Target Audience: Class 11 Science · 30 Students Capacity</p>
+            <div className="p-2.5 bg-muted/40 rounded-xl border border-border space-y-1">
+              <p className="font-bold text-foreground flex items-center gap-1 text-xs">
+                <Bus className="h-3.5 w-3.5 text-secondary" /> Vehicle Assignment: Bus 01 (Driver: Mr. Singh)
+              </p>
+              <p className="text-muted-foreground text-xs">Supervisors: Dr. Suresh Verma & Anita Desai</p>
+            </div>
+            <div className="flex items-center justify-between pt-1">
+              <span className="font-bold text-success flex items-center gap-1">
+                <CheckCircle2 className="h-3.5 w-3.5" /> 28 / 30 Parent Consents Approved
+              </span>
+              <VFButton size="sm" variant="outline">View Manifest</VFButton>
+            </div>
+          </div>
+        </VFCard>
+      </div>
     </div>
   );
 
   // Submodule map
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    calendar: dashboardContent,
+    calendar: calendarContent,
     events: dashboardContent,
     registrations: dashboardContent,
     clubs: clubsContent,
     competitions: dashboardContent,
-    trips: dashboardContent,
+    trips: tripsContent,
     operations: dashboardContent,
     recognition: dashboardContent,
     'reports-settings': dashboardContent,

@@ -9,6 +9,7 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
+  VFPieChart,
 } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
@@ -19,6 +20,9 @@ import {
   Plus,
   Lock,
   AlertTriangle,
+  Laptop,
+  Smartphone,
+  LogOut,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/security')({
@@ -122,9 +126,18 @@ function SecurityPage() {
           />
         </VFSection>
 
-        {/* Security Alerts & Incident Tracking */}
-        <VFCard title="Security Alerts & Active Incidents">
+        {/* Device Breakdown & Alerts */}
+        <VFCard title="Active Device Distribution & Risk Events">
           <div className="space-y-3 text-xs mt-1">
+            <VFPieChart
+              data={[
+                { name: 'Desktop Windows', value: 82, color: '#0891b2' },
+                { name: 'Mobile Android/iOS', value: 34, color: '#16a34a' },
+                { name: 'macOS Safari', value: 10, color: '#f97316' },
+              ]}
+              height={150}
+            />
+
             <div className="p-3 bg-destructive/10 border border-destructive/30 rounded-xl space-y-1">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-foreground">🔴 Multiple Failed Logins</span>
@@ -132,15 +145,72 @@ function SecurityPage() {
               </div>
               <p className="text-muted-foreground text-xs">18 attempts on Admin account from IP 198.51.100.42 (Rate-limited).</p>
             </div>
-            <div className="p-3 bg-warning/10 border border-warning/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">🟠 Unusual Data Export</span>
-                <VFBadge variant="warning">Investigating</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">Bulk student data CSV export triggered by Finance user.</p>
-            </div>
+
             <div className="p-2.5 bg-card border border-border rounded-xl space-y-1">
               <span className="font-mono text-[10px] text-muted-foreground">ℹ Immutable Audit Storage Enforced · Audit records cannot be edited or deleted.</span>
+            </div>
+          </div>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  // 23.3 Specialized Active Sessions Submodule Content
+  const sessionsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Active Concurrent User Sessions & Device Security</h3>
+          <p className="text-xs text-muted-foreground">Monitor real-time logged-in devices, IP locations, browser user-agents, and trigger remote session terminations.</p>
+        </div>
+        <VFButton size="sm" variant="danger" leftIcon={<LogOut className="h-3.5 w-3.5" />}>Sign Out All Other Sessions</VFButton>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <VFCard title="Roshan Singh (Super Admin)">
+          <div className="space-y-2 text-xs mt-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-foreground flex items-center gap-1">
+                <Laptop className="h-3.5 w-3.5 text-primary" /> Chrome / Windows 11
+              </span>
+              <VFBadge variant="success">Active Now</VFBadge>
+            </div>
+            <p className="text-muted-foreground text-xs font-mono">IP: 192.168.1.45 (New Delhi, India)</p>
+            <p className="text-muted-foreground text-xs">Login Time: Today 08:30 AM · MFA Verified ✓</p>
+            <div className="pt-2 flex justify-end border-t border-border">
+              <VFButton size="sm" variant="outline" className="text-xs h-7">Sign Out Device</VFButton>
+            </div>
+          </div>
+        </VFCard>
+
+        <VFCard title="Anita Sharma (Accountant)">
+          <div className="space-y-2 text-xs mt-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-foreground flex items-center gap-1">
+                <Laptop className="h-3.5 w-3.5 text-primary" /> Edge / Windows 10
+              </span>
+              <VFBadge variant="primary">Active 12m ago</VFBadge>
+            </div>
+            <p className="text-muted-foreground text-xs font-mono">IP: 192.168.1.88 (New Delhi, India)</p>
+            <p className="text-muted-foreground text-xs">Login Time: Today 09:15 AM · MFA Verified ✓</p>
+            <div className="pt-2 flex justify-end border-t border-border">
+              <VFButton size="sm" variant="outline" className="text-xs h-7">Sign Out Device</VFButton>
+            </div>
+          </div>
+        </VFCard>
+
+        <VFCard title="Dr. Suresh Verma (Principal)">
+          <div className="space-y-2 text-xs mt-1">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-foreground flex items-center gap-1">
+                <Smartphone className="h-3.5 w-3.5 text-secondary" /> Safari / iOS App
+              </span>
+              <VFBadge variant="outline">Active 45m ago</VFBadge>
+            </div>
+            <p className="text-muted-foreground text-xs font-mono">IP: 192.168.1.12 (New Delhi, India)</p>
+            <p className="text-muted-foreground text-xs">Login Time: Today 07:45 AM · MFA Verified ✓</p>
+            <div className="pt-2 flex justify-end border-t border-border">
+              <VFButton size="sm" variant="outline" className="text-xs h-7">Sign Out Device</VFButton>
             </div>
           </div>
         </VFCard>
@@ -186,7 +256,7 @@ function SecurityPage() {
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
     'audit-logs': dashboardContent,
-    'sessions-devices': dashboardContent,
+    'sessions-devices': sessionsContent,
     'access-monitoring': dashboardContent,
     'alerts-risk': dashboardContent,
     'data-privacy': dashboardContent,

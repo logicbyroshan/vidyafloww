@@ -18,7 +18,6 @@ import {
   MessageSquare,
   Sparkles,
   Plus,
-  ArrowRight,
   QrCode,
 } from 'lucide-react';
 
@@ -167,7 +166,71 @@ function FrontOfficePage() {
     </div>
   );
 
-  // 19.4 Visitor Management Submodule Content
+  // 19.3 Specialized Visual CRM Kanban Board Submodule Content
+  const pipelineContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Admission Lead Kanban Pipeline & Follow-up Stages</h3>
+          <p className="text-xs text-muted-foreground">Visual progression of prospective students from initial web enquiry to campus visit and final admission.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Schedule Follow-up</VFButton>
+      </div>
+
+      {/* Visual Kanban Columns Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 overflow-x-auto">
+        <div className="p-3 bg-muted/30 border border-border rounded-xl space-y-3">
+          <div className="flex items-center justify-between font-bold text-xs pb-1 border-b border-border">
+            <span>NEW ENQUIRIES</span>
+            <VFBadge variant="outline">28</VFBadge>
+          </div>
+          <div className="p-3 bg-card border border-border rounded-lg shadow-xs space-y-1 text-xs">
+            <span className="font-bold text-foreground">Rahul Sharma</span>
+            <p className="text-muted-foreground text-[11px]">Grade 8 · Source: Website</p>
+            <VFBadge variant="warning" className="text-[10px] py-0 mt-1">🟡 Call Due Today</VFBadge>
+          </div>
+        </div>
+
+        <div className="p-3 bg-muted/30 border border-border rounded-xl space-y-3">
+          <div className="flex items-center justify-between font-bold text-xs pb-1 border-b border-border">
+            <span>CONTACTED</span>
+            <VFBadge variant="outline">18</VFBadge>
+          </div>
+          <div className="p-3 bg-card border border-border rounded-lg shadow-xs space-y-1 text-xs">
+            <span className="font-bold text-foreground">Priya Patel</span>
+            <p className="text-muted-foreground text-[11px]">Grade 6 · Source: Walk-in</p>
+            <VFBadge variant="primary" className="text-[10px] py-0 mt-1">🔵 School Visit Scheduled</VFBadge>
+          </div>
+        </div>
+
+        <div className="p-3 bg-muted/30 border border-border rounded-xl space-y-3">
+          <div className="flex items-center justify-between font-bold text-xs pb-1 border-b border-border">
+            <span>VISIT COMPLETED</span>
+            <VFBadge variant="outline">12</VFBadge>
+          </div>
+          <div className="p-3 bg-card border border-border rounded-lg shadow-xs space-y-1 text-xs">
+            <span className="font-bold text-foreground">Amit Verma</span>
+            <p className="text-muted-foreground text-[11px]">Grade 10 · Campus Tour Completed</p>
+            <VFBadge variant="secondary" className="text-[10px] py-0 mt-1">Application Pending</VFBadge>
+          </div>
+        </div>
+
+        <div className="p-3 bg-muted/30 border border-border rounded-xl space-y-3">
+          <div className="flex items-center justify-between font-bold text-xs pb-1 border-b border-border">
+            <span>ADMITTED</span>
+            <VFBadge variant="outline">42</VFBadge>
+          </div>
+          <div className="p-3 bg-card border border-border rounded-lg shadow-xs space-y-1 text-xs">
+            <span className="font-bold text-foreground">Aman Singh</span>
+            <p className="text-muted-foreground text-[11px]">Grade 11 Sci · Fee Receipt #8824</p>
+            <VFBadge variant="success" className="text-[10px] py-0 mt-1">🟢 Enrolled</VFBadge>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // 19.4 Specialized Visitor Pass Printer Preview Submodule Content
   const visitorsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -181,53 +244,51 @@ function FrontOfficePage() {
         </div>
       </div>
 
-      <VFDataTable
-        columns={[
-          { header: 'Pass No', accessorKey: 'passNo', cell: (r: VisitorRecord) => <span className="font-mono font-bold text-primary">{r.passNo}</span> },
-          { header: 'Visitor Name', accessorKey: 'visitorName', cell: (r: VisitorRecord) => <span className="font-bold text-foreground">{r.visitorName}</span> },
-          { header: 'Visitor Type', accessorKey: 'type', cell: (r: VisitorRecord) => <VFBadge variant="outline">{r.type}</VFBadge> },
-          { header: 'Person to Meet', accessorKey: 'personToMeet', cell: (r: VisitorRecord) => <span className="font-bold text-primary">{r.personToMeet}</span> },
-          { header: 'Purpose of Visit', accessorKey: 'purpose' },
-          { header: 'Check-In Time', accessorKey: 'checkInTime' },
-          {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: (r: VisitorRecord) => (
-              <VFBadge variant={r.status === 'Checked In' ? 'success' : r.status === 'Expected' ? 'primary' : 'outline'}>
-                {r.status}
-              </VFBadge>
-            ),
-          },
-        ]}
-        data={visitorsData}
-        filterPlaceholder="Search pass number or visitor name..."
-      />
-    </div>
-  );
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Visitor Gate Pass Badge Printer Preview */}
+        <VFCard title="Digital Gate Pass Badge Preview">
+          <div className="p-4 bg-muted/30 border border-border rounded-xl text-center space-y-3 mt-1">
+            <div className="w-14 h-14 mx-auto bg-primary/20 rounded-full flex items-center justify-center font-bold text-primary text-lg">
+              RS
+            </div>
+            <div>
+              <p className="font-bold text-sm text-foreground">Rajesh Sharma (Parent)</p>
+              <p className="text-xs text-primary font-mono font-bold">Pass # V-2026-0042</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Person to Meet: <span className="font-bold text-foreground">Principal</span></p>
+              <p className="text-[11px] text-muted-foreground">Valid: 11:30 AM - 01:00 PM</p>
+            </div>
+            <div className="p-2 bg-white rounded-lg inline-block shadow-xs border border-border">
+              <QrCode className="h-14 w-14 text-black mx-auto" />
+            </div>
+            <VFButton size="sm" variant="outline" className="w-full">Print Badge</VFButton>
+          </div>
+        </VFCard>
 
-  // 19.3 Pipeline & Follow-up Submodule Content
-  const pipelineContent = (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Admission Lead Pipeline & CRM Follow-up Stages</h3>
-          <p className="text-xs text-muted-foreground">Track prospect progression from initial web enquiry to campus visit and admission conversion.</p>
+        {/* Master Visitors Data Table */}
+        <div className="lg:col-span-2">
+          <VFDataTable
+            columns={[
+              { header: 'Pass No', accessorKey: 'passNo', cell: (r: VisitorRecord) => <span className="font-mono font-bold text-primary">{r.passNo}</span> },
+              { header: 'Visitor Name', accessorKey: 'visitorName', cell: (r: VisitorRecord) => <span className="font-bold text-foreground">{r.visitorName}</span> },
+              { header: 'Visitor Type', accessorKey: 'type', cell: (r: VisitorRecord) => <VFBadge variant="outline">{r.type}</VFBadge> },
+              { header: 'Person to Meet', accessorKey: 'personToMeet', cell: (r: VisitorRecord) => <span className="font-bold text-primary">{r.personToMeet}</span> },
+              { header: 'Purpose of Visit', accessorKey: 'purpose' },
+              { header: 'Check-In Time', accessorKey: 'checkInTime' },
+              {
+                header: 'Status',
+                accessorKey: 'status',
+                cell: (r: VisitorRecord) => (
+                  <VFBadge variant={r.status === 'Checked In' ? 'success' : r.status === 'Expected' ? 'primary' : 'outline'}>
+                    {r.status}
+                  </VFBadge>
+                ),
+              },
+            ]}
+            data={visitorsData}
+            filterPlaceholder="Search pass number or visitor name..."
+          />
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Schedule Follow-up</VFButton>
       </div>
-
-      <VFCard title="Admission Prospect Funnel Stages (Enquiry ➔ Admission)">
-        <div className="flex items-center justify-between text-xs font-semibold py-4 overflow-x-auto gap-2">
-          {['1. New (1,000)', '2. Contacted (720)', '3. Interested (480)', '4. Visit Scheduled (320)', '5. Application (240)', '6. Admitted (180)'].map((st, i) => (
-            <React.Fragment key={st}>
-              <div className={`px-3 py-2 rounded-lg border text-center whitespace-nowrap ${i === 5 ? 'bg-primary text-primary-foreground border-primary shadow-xs' : 'bg-muted/40 border-border text-muted-foreground'}`}>
-                {st}
-              </div>
-              {i < 5 && <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />}
-            </React.Fragment>
-          ))}
-        </div>
-      </VFCard>
     </div>
   );
 
