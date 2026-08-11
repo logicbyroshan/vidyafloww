@@ -120,6 +120,29 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Dedicated Left-Side Scrollbar for Sidebar */
+  .sidebar-left-scrollbar {
+    direction: rtl;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.5) transparent;
+  }
+  .sidebar-left-scrollbar > * {
+    direction: ltr;
+  }
+  .sidebar-left-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .sidebar-left-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .sidebar-left-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.4);
+    border-radius: 3px;
+  }
+  .sidebar-left-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.8);
+  }
 }
 
 /* Animations */

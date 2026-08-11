@@ -61,8 +61,8 @@ export function Sidebar() {
         sidebarExpanded ? 'w-60' : 'w-16'
       )}
     >
-      {/* Sidebar Header & Brand Logo (h-[96px] matching combined 48px Navbar + 48px Tabbar height) */}
-      <div className="flex h-[96px] items-center px-4 border-b border-border/60 relative shrink-0">
+      {/* Sidebar Header & Brand Logo (h-24 = 6rem matching combined h-12 Navbar + h-12 Tabbar height under fluid typography) */}
+      <div className="flex h-24 items-center px-4 border-b border-border/60 relative shrink-0">
         {sidebarExpanded ? (
           <div className="flex items-center gap-3.5 w-full animate-fade-in">
             <img
@@ -95,8 +95,8 @@ export function Sidebar() {
         </button>
       </div>
 
-      {/* Nav List with Scrollbar on the FAR LEFT edge (dir="rtl") */}
-      <div dir="rtl" className="flex-1 overflow-y-auto p-2.5 custom-scrollbar">
+      {/* Nav List with Dedicated Left-Side Scrollbar (.sidebar-left-scrollbar) */}
+      <div className="flex-1 overflow-y-auto p-2.5 sidebar-left-scrollbar">
         <div dir="ltr" className="flex flex-col gap-1 w-full">
           {navItems.map((item) => {
             const Icon = item.icon;
