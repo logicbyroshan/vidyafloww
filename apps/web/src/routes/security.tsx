@@ -65,7 +65,7 @@ function SecurityPage() {
     { id: '2', incidentNo: 'INC-2026-0043', type: 'Unusual Data Export', severity: 'Medium', description: 'Unusual bulk student data CSV export triggered by Finance user.', status: 'Contained', reportedAt: '10 Aug 2026' },
   ];
 
-  // 23.1 Security Dashboard Submodule Content
+  // 23.1 Security Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -82,7 +82,7 @@ function SecurityPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Security KPI Cards */}
+      {/* Feature 1 — Security KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Security Health Score" value="94 / 100" icon={<ShieldCheck className="h-5 w-5 text-success" />} trend="up" trendLabel="Grade A+ Healthy Controls 🟢" />
         <VFStatCard title="Active Concurrent Sessions" value="126 Active" icon={<Monitor className="h-5 w-5 text-primary" />} description="84% MFA Enforced" />
@@ -93,7 +93,7 @@ function SecurityPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* System Health & Audit Feed */}
         <VFSection title="Security Control Health & Immutable Audit Feed" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
               <span className="text-xs text-muted-foreground">Authentication</span>
               <p className="text-xs text-success font-semibold mt-0.5">🟢 Healthy (MFA 84%)</p>
@@ -152,6 +152,32 @@ function SecurityPage() {
           </div>
         </VFCard>
       </div>
+    </div>
+  );
+
+  // 23.2 Dedicated Audit Logs Submodule Content (NO REPEATING STAT CARDS!)
+  const auditLogsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Immutable System Audit Trails & Activity History</h3>
+          <p className="text-xs text-muted-foreground">Cryptographically indexed server-side audit logs. All administrative changes are tracked with before/after state diffs.</p>
+        </div>
+        <VFButton size="sm" variant="outline">Export Audit Logs</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Audit Event ID', accessorKey: 'auditId', cell: (r: AuditLogRecord) => <span className="font-mono font-bold text-primary">{r.auditId}</span> },
+          { header: 'Actor / User', accessorKey: 'actor', cell: (r: AuditLogRecord) => <span className="font-bold text-foreground">{r.actor} ({r.role})</span> },
+          { header: 'Action', accessorKey: 'action' },
+          { header: 'Target Resource', accessorKey: 'resource', cell: (r: AuditLogRecord) => <VFBadge variant="outline">{r.resource}</VFBadge> },
+          { header: 'IP & Device', accessorKey: 'ipAddress', cell: (r: AuditLogRecord) => <span className="font-mono text-muted-foreground text-xs">{r.ipAddress}</span> },
+          { header: 'Time', accessorKey: 'timestamp' },
+        ]}
+        data={auditLogsData}
+        filterPlaceholder="Search audit event ID or user..."
+      />
     </div>
   );
 
@@ -252,19 +278,19 @@ function SecurityPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    'audit-logs': dashboardContent,
+    'audit-logs': auditLogsContent,
     'sessions-devices': sessionsContent,
-    'access-monitoring': dashboardContent,
-    'alerts-risk': dashboardContent,
-    'data-privacy': dashboardContent,
-    authentication: dashboardContent,
-    'security-policies': dashboardContent,
+    'access-monitoring': auditLogsContent,
+    'alerts-risk': incidentsContent,
+    'data-privacy': auditLogsContent,
+    authentication: sessionsContent,
+    'security-policies': auditLogsContent,
     incidents: incidentsContent,
-    'compliance-reports': dashboardContent,
-    'security-settings': dashboardContent,
+    'compliance-reports': auditLogsContent,
+    'security-settings': auditLogsContent,
   };
 
   const submoduleTabs = (securityModule?.submodules || [
@@ -283,7 +309,7 @@ function SecurityPage() {
     id: sub.id,
     label: sub.label,
     icon: <ShieldCheck className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || auditLogsContent,
   }));
 
   return (

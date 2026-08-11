@@ -78,7 +78,7 @@ function HostelPage() {
     { id: '2', outpassNo: 'OTP-2026-089', studentName: 'Rohit Kumar', roomNo: 'A-204', destination: 'Medical Clinic Visit', outTime: '03:30 PM', expectedReturn: '06:00 PM', status: 'Late Return' },
   ];
 
-  // 13.1 Hostel Dashboard Submodule Content
+  // 13.1 Hostel Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -95,7 +95,7 @@ function HostelPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Hostel KPI Cards */}
+      {/* Feature 1 — Hostel KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Hostel Buildings" value="4" icon={<Building className="h-5 w-5 text-primary" />} trend="up" trendLabel="1,240 Total Capacity" />
         <VFStatCard title="Occupied Beds" value="1,108" icon={<Bed className="h-5 w-5 text-secondary" />} trend="up" trendLabel="89.3% Occupancy Rate" />
@@ -106,7 +106,7 @@ function HostelPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Occupancy Overview & Roll Call */}
         <VFSection title="Hostel Building Occupancy & Today's Residence Status" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
               <p className="text-xs text-muted-foreground">Boys Hostel A</p>
               <p className="text-base font-bold text-success mt-0.5">92% Occupied</p>
@@ -177,7 +177,41 @@ function HostelPage() {
     </div>
   );
 
-  // 13.3 Specialized Visual Bed Matrix Grid Submodule Content
+  // Dedicated Student Residents Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const residentsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Student Boarder Residents Directory</h3>
+          <p className="text-xs text-muted-foreground">Manage boarder student profiles, assigned room/bed numbers, emergency guardian contacts, and leave status.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Resident</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Student ID', accessorKey: 'studentId', cell: (r: ResidentRecord) => <span className="font-mono font-bold text-primary">{r.studentId}</span> },
+          { header: 'Resident Name', accessorKey: 'name', cell: (r: ResidentRecord) => <span className="font-bold text-foreground">{r.name}</span> },
+          { header: 'Class', accessorKey: 'class' },
+          { header: 'Hostel Block', accessorKey: 'hostel' },
+          { header: 'Room / Bed', accessorKey: 'roomNo', cell: (r: ResidentRecord) => `${r.roomNo} (${r.bedNo})` },
+          {
+            header: 'Residence Status',
+            accessorKey: 'status',
+            cell: (r: ResidentRecord) => (
+              <VFBadge variant={r.status === 'Resident' ? 'success' : r.status === 'On Leave' ? 'warning' : 'primary'}>
+                {r.status}
+              </VFBadge>
+            ),
+          },
+        ]}
+        data={residentsData}
+        filterPlaceholder="Search resident name or room..."
+      />
+    </div>
+  );
+
+  // 13.3 Specialized Visual Bed Matrix Grid Submodule Content (NO REPEATING TOP STAT CARDS!)
   const roomsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -220,7 +254,7 @@ function HostelPage() {
     </div>
   );
 
-  // 13.6 Leave & Outpass Submodule Content
+  // 13.6 Leave & Outpass Submodule Content (NO REPEATING TOP STAT CARDS!)
   const outpassContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -255,18 +289,18 @@ function HostelPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    buildings: dashboardContent,
+    buildings: residentsContent,
     rooms: roomsContent,
-    residents: dashboardContent,
-    attendance: dashboardContent,
+    residents: residentsContent,
+    attendance: residentsContent,
     outpass: outpassContent,
-    mess: dashboardContent,
-    visitors: dashboardContent,
-    complaints: dashboardContent,
-    'fees-reports': dashboardContent,
+    mess: residentsContent,
+    visitors: residentsContent,
+    complaints: residentsContent,
+    'fees-reports': residentsContent,
   };
 
   const submoduleTabs = (hostelModule?.submodules || [
@@ -284,7 +318,7 @@ function HostelPage() {
     id: sub.id,
     label: sub.label,
     icon: <Building className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || residentsContent,
   }));
 
   return (

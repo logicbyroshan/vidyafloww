@@ -67,7 +67,7 @@ function InventoryPage() {
     { id: '4', assetId: 'AST-LAB-0055', name: 'Olympus Biological Microscope', category: 'Laboratory', serialNo: 'OLY-MIC-881', location: 'Science Lab 02', custodian: 'Physics Lab Assistant', value: 65000, status: 'Available' },
   ];
 
-  // 14.1 Inventory Dashboard Submodule Content
+  // 14.1 Inventory Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -84,7 +84,7 @@ function InventoryPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Inventory KPI Cards */}
+      {/* Feature 1 — Inventory KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Item Types" value="18,420" icon={<Package className="h-5 w-5 text-primary" />} trend="up" trendLabel="12,840 Units in Stock" />
         <VFStatCard title="Total Asset Value" value="₹ 4.8 Cr" icon={<Boxes className="h-5 w-5 text-secondary" />} trend="up" trendLabel="4,280 Fixed Assets" />
@@ -95,7 +95,7 @@ function InventoryPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Stock Alerts & Catalog Master */}
         <VFSection title="Master Catalog Items & Stock Health" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
               <p className="text-xs text-muted-foreground">Healthy Stock</p>
               <p className="text-base font-bold text-success mt-0.5">14,210 Units</p>
@@ -158,7 +158,33 @@ function InventoryPage() {
     </div>
   );
 
-  // 14.6 Asset Management Submodule Content
+  // Dedicated Master Items Catalog Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const catalogContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Master Item Catalog & Reorder Levels</h3>
+          <p className="text-xs text-muted-foreground">Manage consumable items, stationery, science lab chemicals, and reorder alerts.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Item</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'SKU Code', accessorKey: 'sku', cell: (r: ItemCatalogRecord) => <span className="font-mono font-bold text-primary">{r.sku}</span> },
+          { header: 'Item Description', accessorKey: 'name', cell: (r: ItemCatalogRecord) => <span className="font-bold text-foreground">{r.name}</span> },
+          { header: 'Category', accessorKey: 'category' },
+          { header: 'Type', accessorKey: 'type', cell: (r: ItemCatalogRecord) => <VFBadge variant="outline">{r.type}</VFBadge> },
+          { header: 'In Stock', accessorKey: 'totalStock', cell: (r: ItemCatalogRecord) => `${r.totalStock} ${r.unit}` },
+          { header: 'Available', accessorKey: 'available', cell: (r: ItemCatalogRecord) => <VFBadge variant={r.available <= r.reorderLevel ? 'warning' : 'success'}>{r.available} {r.unit}</VFBadge> },
+        ]}
+        data={catalogItems}
+        filterPlaceholder="Search item name or SKU..."
+      />
+    </div>
+  );
+
+  // 14.6 Dedicated Asset Management Submodule Content (NO REPEATING TOP STAT CARDS!)
   const assetsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -197,7 +223,7 @@ function InventoryPage() {
     </div>
   );
 
-  // 14.4 Purchase & Procurement Submodule Content
+  // 14.4 Specialized Purchase & Procurement Submodule Content (NO REPEATING TOP STAT CARDS!)
   const procurementContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -223,18 +249,18 @@ function InventoryPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    catalog: dashboardContent,
-    stock: dashboardContent,
+    catalog: catalogContent,
+    stock: catalogContent,
     procurement: procurementContent,
     'goods-receipt': procurementContent,
     assets: assetsContent,
-    'issue-transfer': dashboardContent,
+    'issue-transfer': catalogContent,
     maintenance: assetsContent,
-    'audit-disposal': dashboardContent,
-    'reports-settings': dashboardContent,
+    'audit-disposal': catalogContent,
+    'reports-settings': catalogContent,
   };
 
   const submoduleTabs = (inventoryModule?.submodules || [
@@ -252,7 +278,7 @@ function InventoryPage() {
     id: sub.id,
     label: sub.label,
     icon: <Package className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || catalogContent,
   }));
 
   return (

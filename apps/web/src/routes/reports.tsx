@@ -64,7 +64,7 @@ function ReportsPage() {
     { id: '3', code: 'RPT-EXM-003', reportTitle: 'Term 2 Board Exam Subject Difficulty & Fail Analysis', dataSource: 'Examinations', scheduleFrequency: 'Per Term Exam', lastGenerated: '10 Aug 2026' },
   ];
 
-  // 22.1 Analytics Dashboard Submodule Content
+  // 22.1 Analytics Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header with Filters */}
@@ -84,7 +84,7 @@ function ReportsPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Cross-Module KPI Cards */}
+      {/* Feature 1 — Cross-Module KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Student Population" value="2,840" icon={<Users className="h-5 w-5 text-primary" />} trend="up" trendLabel="↑ 4.2% Growth (Retention 97.9%)" />
         <VFStatCard title="Overall Attendance Rate" value="94.2%" icon={<Calendar className="h-5 w-5 text-success" />} trend="down" trendLabel="↓ 0.8% (Grade 8 drop)" />
@@ -164,7 +164,40 @@ function ReportsPage() {
     </div>
   );
 
-  // 22.9 Custom Report Builder Submodule Content
+  // Dedicated Academic & Subject BI Analytics Submodule (NO REPEATING TOP STAT CARDS!)
+  const academicAnalyticsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Student Academic & Demographics Business Intelligence</h3>
+          <p className="text-xs text-muted-foreground">Class-wise performance heatmaps, gender ratios, student retention curves, and board exam percentile trends.</p>
+        </div>
+        <VFButton size="sm" variant="outline">Export Academic BI</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Category', accessorKey: 'category', cell: (r: AnalyticsMetricRecord) => <VFBadge variant="outline">{r.category}</VFBadge> },
+          { header: 'Metric Name', accessorKey: 'metricName', cell: (r: AnalyticsMetricRecord) => <span className="font-bold text-foreground">{r.metricName}</span> },
+          { header: 'Current Value', accessorKey: 'currentVal', cell: (r: AnalyticsMetricRecord) => <span className="font-bold text-primary">{r.currentVal}</span> },
+          { header: 'Previous Period', accessorKey: 'prevVal' },
+          {
+            header: 'Variance',
+            accessorKey: 'variance',
+            cell: (r: AnalyticsMetricRecord) => (
+              <VFBadge variant={r.status === 'Improved' ? 'success' : r.status === 'Declined' ? 'danger' : 'outline'}>
+                {r.variance}
+              </VFBadge>
+            ),
+          },
+        ]}
+        data={metricsData}
+        filterPlaceholder="Search academic BI metrics..."
+      />
+    </div>
+  );
+
+  // 22.9 Custom Report Builder Submodule Content (NO REPEATING TOP STAT CARDS!)
   const reportBuilderContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -205,19 +238,19 @@ function ReportsPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    'academic-analytics': dashboardContent,
-    'attendance-analytics': dashboardContent,
-    'exam-analytics': dashboardContent,
-    'finance-analytics': dashboardContent,
-    'hr-analytics': dashboardContent,
-    'operations-analytics': dashboardContent,
-    'communication-analytics': dashboardContent,
+    'academic-analytics': academicAnalyticsContent,
+    'attendance-analytics': academicAnalyticsContent,
+    'exam-analytics': academicAnalyticsContent,
+    'finance-analytics': academicAnalyticsContent,
+    'hr-analytics': academicAnalyticsContent,
+    'operations-analytics': academicAnalyticsContent,
+    'communication-analytics': academicAnalyticsContent,
     'report-builder': reportBuilderContent,
     'scheduled-reports': reportBuilderContent,
-    'data-explorer': dashboardContent,
+    'data-explorer': academicAnalyticsContent,
   };
 
   const submoduleTabs = (reportsModule?.submodules || [
@@ -236,7 +269,7 @@ function ReportsPage() {
     id: sub.id,
     label: sub.label,
     icon: <BarChart3 className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || academicAnalyticsContent,
   }));
 
   return (

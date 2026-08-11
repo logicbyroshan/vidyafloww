@@ -62,7 +62,7 @@ function DocumentsPage() {
     { id: '3', reqNo: 'REQ-CHAR-2026-012', studentName: 'Rohit Kumar', certType: 'Character Conduct Certificate', requestDate: '09 Aug 2026', reason: 'Sports Event Entry', status: 'Issued' },
   ];
 
-  // 16.1 Document Dashboard Submodule Content
+  // 16.1 Document Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -79,7 +79,7 @@ function DocumentsPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Document KPI Cards */}
+      {/* Feature 1 — Document KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Stored Documents" value="12,840" icon={<Files className="h-5 w-5 text-primary" />} trend="up" trendLabel="11,840 Verified" />
         <VFStatCard title="Total Issued Certificates" value="2,420" icon={<Award className="h-5 w-5 text-secondary" />} trend="up" trendLabel="420 Issued This Month" />
@@ -90,7 +90,7 @@ function DocumentsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Pending Actions & Certificate Requests */}
         <VFSection title="Pending Certificate Requests & Approvals Queue" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
               <p className="text-xs text-muted-foreground">Pending Verification</p>
               <p className="text-base font-bold text-warning mt-0.5">12 Documents</p>
@@ -163,7 +163,7 @@ function DocumentsPage() {
     </div>
   );
 
-  // 16.2 Document Vault Submodule Content
+  // 16.2 Dedicated Document Vault Submodule Content (NO REPEATING TOP STAT CARDS!)
   const vaultContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -197,7 +197,7 @@ function DocumentsPage() {
     </div>
   );
 
-  // 16.4 Specialized Certificate Template Live Preview Submodule Content
+  // 16.4 Specialized Certificate Template Live Preview Submodule Content (NO REPEATING TOP STAT CARDS!)
   const templatesContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -265,18 +265,18 @@ function DocumentsPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
     vault: vaultContent,
     verification: vaultContent,
     templates: templatesContent,
     generation: templatesContent,
-    approvals: dashboardContent,
-    issuance: dashboardContent,
-    requests: dashboardContent,
+    approvals: vaultContent,
+    issuance: vaultContent,
+    requests: vaultContent,
     history: vaultContent,
-    'reports-settings': dashboardContent,
+    'reports-settings': vaultContent,
   };
 
   const submoduleTabs = (documentsModule?.submodules || [
@@ -294,7 +294,7 @@ function DocumentsPage() {
     id: sub.id,
     label: sub.label,
     icon: <Files className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || vaultContent,
   }));
 
   return (

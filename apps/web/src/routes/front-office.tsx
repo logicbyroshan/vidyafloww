@@ -62,7 +62,7 @@ function FrontOfficePage() {
     { id: '3', passNo: 'V-2026-0044', visitorName: 'Dr. Anita Desai', type: 'Guest Speaker', personToMeet: 'Vice Principal', purpose: 'Science Workshop Briefing', checkInTime: '11:45 AM', status: 'Checked Out' },
   ];
 
-  // 19.1 Front Office Dashboard Submodule Content
+  // 19.1 Front Office Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -79,7 +79,7 @@ function FrontOfficePage() {
         </div>
       </div>
 
-      {/* Feature 1 — Front Office KPI Cards */}
+      {/* Feature 1 — Front Office KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="New Enquiries Today" value="28 Enquiries" icon={<MessageSquare className="h-5 w-5 text-primary" />} trend="up" trendLabel="18 Open Leads" />
         <VFStatCard title="Today's Visitors" value="7 Checked In" icon={<UserCheck className="h-5 w-5 text-secondary" />} trend="up" trendLabel="48 Gate Passes Issued" />
@@ -90,7 +90,7 @@ function FrontOfficePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Today's Follow-ups & Master Enquiries */}
         <VFSection title="Today's Follow-ups Queue & Active Enquiries" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-foreground">Rahul's Parent (Rajesh)</span>
@@ -166,7 +166,41 @@ function FrontOfficePage() {
     </div>
   );
 
-  // 19.3 Specialized Visual CRM Kanban Board Submodule Content
+  // Dedicated Enquiry Management Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const enquiriesContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Master Admission Enquiry Directory</h3>
+          <p className="text-xs text-muted-foreground">Track incoming admission leads across Website, Phone calls, Referrals, and Reception walk-ins.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>New Admission Enquiry</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Enquiry No', accessorKey: 'enquiryNo', cell: (r: EnquiryRecord) => <span className="font-mono font-bold text-primary">{r.enquiryNo}</span> },
+          { header: 'Applicant / Parent', accessorKey: 'personName', cell: (r: EnquiryRecord) => <span className="font-bold text-foreground">{r.personName}</span> },
+          { header: 'Contact Phone', accessorKey: 'phone', cell: (r: EnquiryRecord) => <span className="font-mono text-muted-foreground">{r.phone}</span> },
+          { header: 'Source', accessorKey: 'source', cell: (r: EnquiryRecord) => <VFBadge variant="outline">{r.source}</VFBadge> },
+          { header: 'Grade / Session', accessorKey: 'grade', cell: (r: EnquiryRecord) => `${r.grade} (${r.session})` },
+          {
+            header: 'Status',
+            accessorKey: 'status',
+            cell: (r: EnquiryRecord) => (
+              <VFBadge variant={r.status === 'Converted' ? 'success' : r.status === 'Follow-up' ? 'warning' : 'primary'}>
+                {r.status}
+              </VFBadge>
+            ),
+          },
+        ]}
+        data={enquiriesData}
+        filterPlaceholder="Search enquiry number or name..."
+      />
+    </div>
+  );
+
+  // 19.3 Specialized Visual CRM Kanban Board Submodule Content (NO REPEATING TOP STAT CARDS!)
   const pipelineContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -230,7 +264,7 @@ function FrontOfficePage() {
     </div>
   );
 
-  // 19.4 Specialized Visitor Pass Printer Preview Submodule Content
+  // 19.4 Specialized Visitor Pass Printer Preview Submodule Content (NO REPEATING TOP STAT CARDS!)
   const visitorsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -292,18 +326,18 @@ function FrontOfficePage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    enquiries: dashboardContent,
+    enquiries: enquiriesContent,
     pipeline: pipelineContent,
     visitors: visitorsContent,
-    appointments: dashboardContent,
+    appointments: enquiriesContent,
     prospects: pipelineContent,
-    communication: dashboardContent,
-    forms: dashboardContent,
-    operations: dashboardContent,
-    'reports-settings': dashboardContent,
+    communication: enquiriesContent,
+    forms: enquiriesContent,
+    operations: enquiriesContent,
+    'reports-settings': enquiriesContent,
   };
 
   const submoduleTabs = (frontOfficeModule?.submodules || [
@@ -321,7 +355,7 @@ function FrontOfficePage() {
     id: sub.id,
     label: sub.label,
     icon: <UserCheck className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || enquiriesContent,
   }));
 
   return (

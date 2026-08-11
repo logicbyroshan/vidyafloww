@@ -91,7 +91,7 @@ export function VFSection({
           {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
         </div>
       )}
-      <div>{children}</div>
+      <div className="space-y-3.5">{children}</div>
     </section>
   );
 }

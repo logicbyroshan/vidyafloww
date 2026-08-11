@@ -63,7 +63,7 @@ function LearningPage() {
     { id: '2', quizCode: 'QZ-PHYS-02', title: 'Newton Laws of Motion Mock Quiz', subject: 'Physics', questionsCount: 15, duration: '30 min', avgScore: '9.1 / 10', status: 'Active' },
   ];
 
-  // 15.1 Learning Dashboard Submodule Content
+  // 15.1 Learning Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Welcome Header */}
@@ -83,7 +83,7 @@ function LearningPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Learning KPI Cards */}
+      {/* Feature 1 — Learning KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Today's Work" value="4 Tasks" icon={<FileText className="h-5 w-5 text-primary" />} trend="up" trendLabel="2 Completed" />
         <VFStatCard title="Due Soon" value="2 Items" icon={<Clock className="h-5 w-5 text-warning" />} description="1 Math · 1 Physics" />
@@ -94,7 +94,7 @@ function LearningPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Today's Learning & Course Progress */}
         <VFSection title="Today's Scheduled Learning & Homework" className="lg:col-span-2 space-y-4">
-          <div className="space-y-3">
+          <div className="space-y-3 mb-4">
             <div className="p-4 bg-card border border-border rounded-xl space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-foreground">📐 Mathematics · Quadratic Equations</span>
@@ -164,7 +164,33 @@ function LearningPage() {
     </div>
   );
 
-  // 15.2 Lessons Submodule Content
+  // Dedicated Homework & Assignments Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const homeworkContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Homework & Classroom Assignments Directory</h3>
+          <p className="text-xs text-muted-foreground">Create assignments, track submission counts, grade student solutions, and issue digital feedback.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Homework</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Assignment Code', accessorKey: 'code', cell: (r: HomeworkRecord) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+          { header: 'Title & Topic', accessorKey: 'title', cell: (r: HomeworkRecord) => <span className="font-bold text-foreground">{r.title}</span> },
+          { header: 'Subject', accessorKey: 'subject' },
+          { header: 'Class', accessorKey: 'class' },
+          { header: 'Due Date', accessorKey: 'dueDate' },
+          { header: 'Submissions', accessorKey: 'submitted', cell: (r: HomeworkRecord) => `${r.submitted} / ${r.totalStudents}` },
+        ]}
+        data={homeworkData}
+        filterPlaceholder="Search homework title or subject..."
+      />
+    </div>
+  );
+
+  // 15.2 Dedicated Lessons Submodule Content (NO REPEATING TOP STAT CARDS!)
   const lessonsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -201,7 +227,7 @@ function LearningPage() {
     </div>
   );
 
-  // 15.5 Quizzes & Practice Submodule Content
+  // 15.5 Dedicated Quizzes & Practice Submodule Content (NO REPEATING TOP STAT CARDS!)
   const quizzesContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -228,18 +254,18 @@ function LearningPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
     lessons: lessonsContent,
-    homework: dashboardContent,
+    homework: homeworkContent,
     resources: lessonsContent,
     quizzes: quizzesContent,
-    evaluation: dashboardContent,
+    evaluation: homeworkContent,
     'study-plans': lessonsContent,
-    progress: dashboardContent,
-    'teacher-workspace': dashboardContent,
-    'analytics-settings': dashboardContent,
+    progress: homeworkContent,
+    'teacher-workspace': homeworkContent,
+    'analytics-settings': homeworkContent,
   };
 
   const submoduleTabs = (learningModule?.submodules || [
@@ -257,7 +283,7 @@ function LearningPage() {
     id: sub.id,
     label: sub.label,
     icon: <MonitorPlay className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || homeworkContent,
   }));
 
   return (

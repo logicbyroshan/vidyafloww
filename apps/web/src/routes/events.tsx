@@ -64,7 +64,7 @@ function EventsPage() {
     { id: '3', clubName: 'Literary & Public Speaking Club', category: 'Cultural', coordinator: 'Rajesh Kumar', membersCount: 24, meetingSchedule: 'Thursdays 3:30 PM', status: 'Active' },
   ];
 
-  // 18.1 Events Dashboard Submodule Content
+  // 18.1 Events Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -81,7 +81,7 @@ function EventsPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Event KPI Cards */}
+      {/* Feature 1 — Event KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Upcoming Events" value="8 Scheduled" icon={<Calendar className="h-5 w-5 text-primary" />} trend="up" trendLabel="Next 30 Days" />
         <VFStatCard title="Total Participants" value="1,240" icon={<Users className="h-5 w-5 text-secondary" />} trend="up" trendLabel="78% Participation Rate" />
@@ -92,7 +92,7 @@ function EventsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Today's Schedule & Upcoming Events */}
         <VFSection title="Today's Events & Inter-House Sports Schedule" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-foreground">🏏 Inter-House Cricket</span>
@@ -175,7 +175,42 @@ function EventsPage() {
     </div>
   );
 
-  // 18.2 Specialized Event Calendar View Submodule Content
+  // Dedicated Event Management Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const eventsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Master Institutional Event Directory</h3>
+          <p className="text-xs text-muted-foreground">Manage inter-school competitions, annual functions, sports meets, and science exhibitions.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Event</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Event Code', accessorKey: 'code', cell: (r: EventRecord) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+          { header: 'Event Title', accessorKey: 'title', cell: (r: EventRecord) => <span className="font-bold text-foreground">{r.title}</span> },
+          { header: 'Category', accessorKey: 'category', cell: (r: EventRecord) => <VFBadge variant="outline">{r.category}</VFBadge> },
+          { header: 'Date', accessorKey: 'date' },
+          { header: 'Venue', accessorKey: 'venue' },
+          { header: 'Capacity', accessorKey: 'capacity' },
+          {
+            header: 'Status',
+            accessorKey: 'status',
+            cell: (r: EventRecord) => (
+              <VFBadge variant={r.status === 'Ongoing' ? 'success' : r.status === 'Registration Open' ? 'primary' : 'warning'}>
+                {r.status}
+              </VFBadge>
+            ),
+          },
+        ]}
+        data={eventsData}
+        filterPlaceholder="Search event title or venue..."
+      />
+    </div>
+  );
+
+  // 18.2 Specialized Event Calendar View Submodule Content (NO REPEATING TOP STAT CARDS!)
   const calendarContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -217,7 +252,7 @@ function EventsPage() {
     </div>
   );
 
-  // 18.5 Specialized Clubs Directory Grid Submodule Content
+  // 18.5 Specialized Clubs Directory Grid Submodule Content (NO REPEATING TOP STAT CARDS!)
   const clubsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -249,7 +284,7 @@ function EventsPage() {
     </div>
   );
 
-  // 18.7 Specialized Educational Trips Logistics Submodule Content
+  // 18.7 Specialized Educational Trips Logistics Submodule Content (NO REPEATING TOP STAT CARDS!)
   const tripsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -288,18 +323,18 @@ function EventsPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
     calendar: calendarContent,
-    events: dashboardContent,
-    registrations: dashboardContent,
+    events: eventsContent,
+    registrations: eventsContent,
     clubs: clubsContent,
-    competitions: dashboardContent,
+    competitions: eventsContent,
     trips: tripsContent,
-    operations: dashboardContent,
-    recognition: dashboardContent,
-    'reports-settings': dashboardContent,
+    operations: eventsContent,
+    recognition: eventsContent,
+    'reports-settings': eventsContent,
   };
 
   const submoduleTabs = (eventsModule?.submodules || [
@@ -317,7 +352,7 @@ function EventsPage() {
     id: sub.id,
     label: sub.label,
     icon: <Sparkles className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || eventsContent,
   }));
 
   return (

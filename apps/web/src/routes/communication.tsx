@@ -64,7 +64,7 @@ function CommunicationPage() {
     { id: '3', code: 'ANC-2026-090', title: 'Route 4 School Bus Arrival 15-Min Delay Alert', audience: 'Bus Route 4 Parents', sentCount: 184, acknowledgedCount: 162, priority: 'Urgent', publishDate: 'Today 07:15 AM' },
   ];
 
-  // 17.1 Communication Dashboard Submodule Content
+  // 17.1 Communication Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -81,7 +81,7 @@ function CommunicationPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Communication KPI Cards */}
+      {/* Feature 1 — Communication KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Conversations" value="1,284" icon={<MessageSquare className="h-5 w-5 text-primary" />} trend="up" trendLabel="18 Pending Replies" />
         <VFStatCard title="Messages Delivered" value="7,980" icon={<CheckCheck className="h-5 w-5 text-success" />} trend="up" trendLabel="94.7% Delivery Rate" />
@@ -92,7 +92,7 @@ function CommunicationPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Active Conversations & Announcements */}
         <VFSection title="Recent Announcements & Active Conversations" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
               <p className="text-xs text-muted-foreground">Delivered Rate</p>
               <p className="text-base font-bold text-success mt-0.5">94% (7,980)</p>
@@ -166,7 +166,41 @@ function CommunicationPage() {
     </div>
   );
 
-  // 17.2 Specialized Split-Pane Unified Inbox View Submodule Content
+  // Dedicated Announcements Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const announcementsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Official School Announcements & Parent Circulars</h3>
+          <p className="text-xs text-muted-foreground">Publish circulars to specific classes, grades, or all parents with mandatory digital read acknowledgements.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Publish Circular</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Notice Code', accessorKey: 'code', cell: (r: AnnouncementRecord) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+          { header: 'Announcement Title', accessorKey: 'title', cell: (r: AnnouncementRecord) => <span className="font-bold text-foreground">{r.title}</span> },
+          { header: 'Target Audience', accessorKey: 'audience' },
+          { header: 'Sent', accessorKey: 'sentCount', cell: (r: AnnouncementRecord) => `${r.sentCount} Recipients` },
+          { header: 'Acknowledged', accessorKey: 'acknowledgedCount', cell: (r: AnnouncementRecord) => <VFBadge variant="success">{r.acknowledgedCount} Reads</VFBadge> },
+          {
+            header: 'Priority',
+            accessorKey: 'priority',
+            cell: (r: AnnouncementRecord) => (
+              <VFBadge variant={r.priority === 'Urgent' ? 'danger' : r.priority === 'Important' ? 'warning' : 'outline'}>
+                {r.priority}
+              </VFBadge>
+            ),
+          },
+        ]}
+        data={announcementsData}
+        filterPlaceholder="Search announcement title or audience..."
+      />
+    </div>
+  );
+
+  // 17.2 Specialized Split-Pane Unified Inbox View Submodule Content (NO REPEATING TOP STAT CARDS!)
   const inboxContent = (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
       {/* Left List of Conversations */}
@@ -232,7 +266,7 @@ function CommunicationPage() {
     </div>
   );
 
-  // 17.5 Specialized Delivery Channel Telematics Submodule Content
+  // 17.5 Specialized Delivery Channel Telematics Submodule Content (NO REPEATING TOP STAT CARDS!)
   const channelsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -291,18 +325,18 @@ function CommunicationPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
     inbox: inboxContent,
-    announcements: dashboardContent,
+    announcements: announcementsContent,
     chat: inboxContent,
     channels: channelsContent,
-    broadcasts: dashboardContent,
-    templates: dashboardContent,
-    automations: dashboardContent,
+    broadcasts: announcementsContent,
+    templates: announcementsContent,
+    automations: announcementsContent,
     analytics: channelsContent,
-    settings: dashboardContent,
+    settings: announcementsContent,
   };
 
   const submoduleTabs = (communicationModule?.submodules || [
@@ -320,7 +354,7 @@ function CommunicationPage() {
     id: sub.id,
     label: sub.label,
     icon: <MessageSquare className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || announcementsContent,
   }));
 
   return (

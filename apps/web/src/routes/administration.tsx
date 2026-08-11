@@ -61,7 +61,7 @@ function AdministrationPage() {
     { id: '3', workflowId: 'WF-EXM-003', workflowName: 'Term Marksheet Modification Audit Workflow', moduleScope: 'Examinations', stagesCount: 3, approvalChain: 'Teacher → Exam Controller → Principal', status: 'Active' },
   ];
 
-  // 20.1 Administration Dashboard Submodule Content
+  // 20.1 Administration Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
   const dashboardContent = (
     <div className="space-y-4">
       {/* Top Banner Header */}
@@ -81,7 +81,7 @@ function AdministrationPage() {
         </div>
       </div>
 
-      {/* Feature 1 — Administration KPI Cards */}
+      {/* Feature 1 — Administration KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Active Academic Session" value="2026 - 2027" icon={<Building className="h-5 w-5 text-primary" />} trend="up" trendLabel="Session Lock Active 🔒" />
         <VFStatCard title="Institutional Departments" value="8 Active" icon={<Layers className="h-5 w-5 text-secondary" />} description="242 Total Employees" />
@@ -92,7 +92,7 @@ function AdministrationPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Departments Directory & Master List */}
         <VFSection title="Institutional Departments & Budget Allocations" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
               <p className="text-xs text-muted-foreground">Total Staff</p>
               <p className="text-base font-bold text-primary mt-0.5">242 Members</p>
@@ -152,7 +152,33 @@ function AdministrationPage() {
     </div>
   );
 
-  // 20.7 Specialized Multi-Stage Workflow Visual Stepper Submodule Content
+  // Dedicated Departments Submodule Content (NO REPEATING TOP STAT CARDS!)
+  const departmentsContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Institutional Departments & Office Master Directory</h3>
+          <p className="text-xs text-muted-foreground">Manage academic faculties, administrative offices, department heads, staff allocations, and operating budgets.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Department</VFButton>
+      </div>
+
+      <VFDataTable
+        columns={[
+          { header: 'Dept Code', accessorKey: 'deptCode', cell: (r: DepartmentRecord) => <span className="font-mono font-bold text-primary">{r.deptCode}</span> },
+          { header: 'Department Name', accessorKey: 'deptName', cell: (r: DepartmentRecord) => <span className="font-bold text-foreground">{r.deptName}</span> },
+          { header: 'Head of Department', accessorKey: 'headOfDept' },
+          { header: 'Staff Count', accessorKey: 'staffCount', cell: (r: DepartmentRecord) => `${r.staffCount} Staff` },
+          { header: 'Active Budget', accessorKey: 'activeBudget', cell: (r: DepartmentRecord) => <span className="font-mono text-success font-bold">{r.activeBudget}</span> },
+          { header: 'Status', accessorKey: 'status', cell: (r: DepartmentRecord) => <VFBadge variant="success">{r.status}</VFBadge> },
+        ]}
+        data={departmentsData}
+        filterPlaceholder="Search department code or name..."
+      />
+    </div>
+  );
+
+  // 20.7 Specialized Multi-Stage Workflow Visual Stepper Submodule Content (NO REPEATING TOP STAT CARDS!)
   const workflowsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
@@ -194,18 +220,18 @@ function AdministrationPage() {
     </div>
   );
 
-  // Submodule map
+  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
   const contentMap: Record<string, React.ReactNode> = {
     dashboard: dashboardContent,
-    governance: dashboardContent,
-    sessions: dashboardContent,
-    structures: dashboardContent,
-    departments: dashboardContent,
-    policies: dashboardContent,
+    governance: departmentsContent,
+    sessions: departmentsContent,
+    structures: departmentsContent,
+    departments: departmentsContent,
+    policies: departmentsContent,
     workflows: workflowsContent,
-    permissions: dashboardContent,
-    audit: dashboardContent,
-    'reports-settings': dashboardContent,
+    permissions: departmentsContent,
+    audit: departmentsContent,
+    'reports-settings': departmentsContent,
   };
 
   const submoduleTabs = (adminModule?.submodules || [
@@ -223,7 +249,7 @@ function AdministrationPage() {
     id: sub.id,
     label: sub.label,
     icon: <Building className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
+    content: contentMap[sub.id] || departmentsContent,
   }));
 
   return (
