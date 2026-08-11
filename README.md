@@ -322,6 +322,6 @@ Proprietary — All rights reserved. VidyaMaxx Team, 2026.
 
 <div align="center">
 
-Built with ❤️ by the VidyaMaxx Team
+Built with ❤️ by Roshan Damor & the VidyaMaxx Team
 
 </div>
