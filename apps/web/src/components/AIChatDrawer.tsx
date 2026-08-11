@@ -22,7 +22,7 @@ export function AIChatDrawer({ isOpen, onClose, initialPrompt }: AIChatDrawerPro
     {
       id: '1',
       sender: 'ai',
-      text: 'Hello Roshan! I am VidyaCopilot. How can I assist you with school management today?',
+      text: 'Hello Roshan! I am VidyaMaxx AI. How can I assist you with school management today?',
       timestamp: 'Just now',
     },
   ]);
@@ -128,7 +128,7 @@ export function AIChatDrawer({ isOpen, onClose, initialPrompt }: AIChatDrawerPro
             </div>
             <div>
               <h3 className="font-bold text-sm text-foreground flex items-center gap-1.5">
-                VidyaCopilot
+                VidyaMaxx AI
                 <span className="text-[10px] bg-primary/20 text-primary px-1.5 py-0.2 rounded font-semibold">AI</span>
               </h3>
               <p className="text-[11px] text-muted-foreground">Always-on School Assistant</p>
@@ -193,7 +193,7 @@ export function AIChatDrawer({ isOpen, onClose, initialPrompt }: AIChatDrawerPro
                 <Sparkles className="h-4 w-4 text-primary animate-spin" />
               </div>
               <div className="p-3.5 bg-muted border border-border rounded-2xl text-muted-foreground text-xs animate-pulse">
-                VidyaCopilot is processing...
+                VidyaMaxx AI is processing...
               </div>
             </div>
           )}
@@ -224,7 +224,7 @@ export function AIChatDrawer({ isOpen, onClose, initialPrompt }: AIChatDrawerPro
           >
             <input
               type="text"
-              placeholder="Ask VidyaCopilot or request action..."
+              placeholder="Ask VidyaMaxx AI or request action..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="flex-1 bg-muted border border-border rounded-xl px-4 py-2.5 text-xs text-foreground placeholder-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/20 outline-none transition-all"

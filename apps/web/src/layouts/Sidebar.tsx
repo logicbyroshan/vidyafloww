@@ -162,7 +162,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Global AI Assistant Entry Button (Distinct & Accessible from Anywhere) */}
+      {/* Global ✨ VidyaMaxx AI Button (Placed in footer right ABOVE User Profile) */}
       <div className="p-2.5 border-t border-border/60 bg-muted/20 shrink-0">
         <button
           onClick={toggleAiChat}
@@ -170,10 +170,10 @@ export function Sidebar() {
             "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all outline-none font-bold text-xs cursor-pointer bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 shadow-xs group",
             !sidebarExpanded && "justify-center px-0 py-2.5"
           )}
-          title="Open VidyaFlow AI Assistant"
+          title="Open VidyaMaxx AI Assistant"
         >
           <Sparkles className="h-4 w-4 text-primary shrink-0 transition-transform group-hover:scale-110" />
-          {sidebarExpanded && <span className="truncate tracking-wide">✨ AI Assistant</span>}
+          {sidebarExpanded && <span className="truncate tracking-wide">✨ VidyaMaxx AI</span>}
         </button>
       </div>
 

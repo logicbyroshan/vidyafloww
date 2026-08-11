@@ -14,7 +14,7 @@ const flexRender = (TanStackTableModule as any).flexRender;
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border/70 rounded-md bg-card">
+    <div className="w-full overflow-x-auto border border-border/70 rounded-xl bg-card shadow-xs">
       <table className={cn("w-full border-collapse text-left text-xs", className)} {...props} />
     </div>
   );
@@ -48,7 +48,7 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "px-3 py-2.5 font-bold text-xs text-muted-foreground uppercase tracking-widest select-none whitespace-nowrap",
+        "px-3.5 py-3 font-bold text-xs text-muted-foreground uppercase tracking-widest select-none whitespace-nowrap",
         sticky && "sticky top-0 bg-card z-10",
         className
       )}
@@ -58,10 +58,10 @@ export function VFTableHeaderCell({
 }
 
 export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("px-3 py-2.5 align-middle text-foreground/85 whitespace-nowrap text-xs", className)} {...props} />;
+  return <td className={cn("px-3.5 py-3 align-middle text-foreground/90 whitespace-nowrap text-xs", className)} {...props} />;
 }
 
-// VFDataTable: high-level data table component powered under the hood by TanStack Table v8/v9
+// VFDataTable: High-level, fail-safe data table component
 export interface ColumnDef<T> {
   header: string;
   accessorKey: keyof T | string;
@@ -89,9 +89,9 @@ export interface VFDataTableProps<T> {
 
 export function VFDataTable<T>({
   columns,
-  data,
+  data = [],
   isLoading = false,
-  emptyTitle = "No results found",
+  emptyTitle = "No records found",
   emptyDescription = "There are no records matching your query.",
   pagination,
   onSort,
@@ -101,16 +101,45 @@ export function VFDataTable<T>({
   const [sorting, setSorting] = React.useState<any[]>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState<string[]>(
-    columns.map((c) => c.accessorKey as string)
+    columns.map((c) => String(c.accessorKey))
   );
   const [showColumnDropdown, setShowColumnDropdown] = React.useState(false);
 
-  // Map custom column defs to TanStack Table definitions
+  // Client-side Filtered & Sorted Data Fallback Array
+  const processedData = React.useMemo(() => {
+    let result = [...(data || [])];
+    
+    // Global filter search
+    if (globalFilter.trim()) {
+      const q = globalFilter.toLowerCase();
+      result = result.filter((row: any) =>
+        Object.values(row).some(
+          (val) => val !== null && val !== undefined && String(val).toLowerCase().includes(q)
+        )
+      );
+    }
+
+    // Client-side sorting fallback
+    if (sorting.length > 0) {
+      const { id, desc } = sorting[0];
+      result.sort((a: any, b: any) => {
+        const valA = a[id];
+        const valB = b[id];
+        if (valA < valB) return desc ? 1 : -1;
+        if (valA > valB) return desc ? -1 : 1;
+        return 0;
+      });
+    }
+
+    return result;
+  }, [data, globalFilter, sorting]);
+
+  // TanStack Table columns definition
   const tanstackColumns = React.useMemo(() => {
     return columns.map((col) => ({
-      id: col.accessorKey as string,
+      id: String(col.accessorKey),
       header: col.header,
-      accessorKey: col.accessorKey as string,
+      accessorKey: String(col.accessorKey),
       enableSorting: col.sortable ?? true,
       cell: (info: any) => {
         const row = info.row.original;
@@ -119,30 +148,33 @@ export function VFDataTable<T>({
     }));
   }, [columns]);
 
-  const filteredData = React.useMemo(() => data || [], [data]);
-
-  const table = useReactTable ? useReactTable({
-    data: filteredData,
-    columns: tanstackColumns,
-    state: {
-      sorting,
-      globalFilter,
-    },
-    onSortingChange: (updater: any) => {
-      const nextSorting = typeof updater === 'function' ? updater(sorting) : updater;
-      setSorting(nextSorting);
-      if (nextSorting && nextSorting.length > 0 && onSort) {
-        onSort(nextSorting[0].id, nextSorting[0].desc ? 'desc' : 'asc');
-      }
-    },
-    onGlobalFilterChange: (val: any) => {
-      setGlobalFilter(val);
-      if (onFilterChange) onFilterChange(val);
-    },
-    getCoreRowModel: getCoreRowModel ? getCoreRowModel() : undefined,
-    getSortedRowModel: getSortedRowModel ? getSortedRowModel() : undefined,
-    getFilteredRowModel: getFilteredRowModel ? getFilteredRowModel() : undefined,
-  }) : null;
+  // TanStack Table Instance
+  const table = React.useMemo(() => {
+    if (!useReactTable) return null;
+    try {
+      return useReactTable({
+        data: processedData,
+        columns: tanstackColumns,
+        state: { sorting, globalFilter },
+        onSortingChange: (updater: any) => {
+          const nextSorting = typeof updater === 'function' ? updater(sorting) : updater;
+          setSorting(nextSorting);
+          if (nextSorting && nextSorting.length > 0 && onSort) {
+            onSort(nextSorting[0].id, nextSorting[0].desc ? 'desc' : 'asc');
+          }
+        },
+        onGlobalFilterChange: (val: any) => {
+          setGlobalFilter(val);
+          if (onFilterChange) onFilterChange(val);
+        },
+        getCoreRowModel: getCoreRowModel ? getCoreRowModel() : undefined,
+        getSortedRowModel: getSortedRowModel ? getSortedRowModel() : undefined,
+        getFilteredRowModel: getFilteredRowModel ? getFilteredRowModel() : undefined,
+      });
+    } catch {
+      return null;
+    }
+  }, [processedData, tanstackColumns, sorting, globalFilter, onSort, onFilterChange]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -160,72 +192,74 @@ export function VFDataTable<T>({
     }
   };
 
-  const displayedHeaderGroups = table ? table.getHeaderGroups() : [];
-  const displayedRows = table ? table.getRowModel().rows : [];
+  const activeColumns = columns.filter((col) => visibleColumns.includes(String(col.accessorKey)));
+  const displayedRows = table && table.getRowModel ? table.getRowModel().rows : null;
 
   return (
-    <div className="space-y-4">
-      {/* Toolbar / Filters Header */}
+    <div className="space-y-3.5 w-full">
+      {/* Toolbar / Search & Column Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        {(filterPlaceholder || onFilterChange) && (
-          <div className="relative max-w-sm flex-1">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </span>
-            <input
-              type="text"
-              value={globalFilter}
-              onChange={handleFilterChange}
-              placeholder={filterPlaceholder || "Filter records..."}
-              className="w-full pl-9 pr-4 h-9 border border-border rounded-lg bg-card text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all shadow-xs"
-            />
-          </div>
-        )}
-        
-        {/* Column Visibility Dropdown */}
+        <div className="relative max-w-sm flex-1">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input
+            type="text"
+            value={globalFilter}
+            onChange={handleFilterChange}
+            placeholder={filterPlaceholder || "Search table records..."}
+            className="w-full pl-9 pr-4 h-9 border border-border/80 rounded-lg bg-card text-xs focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all shadow-xs text-foreground placeholder:text-muted-foreground"
+          />
+        </div>
+
+        {/* Column Visibility Selector Dropdown */}
         <div className="relative self-end sm:self-auto">
           <VFButton
             variant="outline"
             size="sm"
             onClick={() => setShowColumnDropdown(!showColumnDropdown)}
             leftIcon={
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
               </svg>
             }
           >
-            Columns
+            Columns ({activeColumns.length}/{columns.length})
           </VFButton>
           {showColumnDropdown && (
-            <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-md shadow-lg z-20 p-2 space-y-1 animate-scale-in">
-              <span className="block text-xs font-bold text-muted-foreground uppercase px-2 py-1 select-none">
-                Toggle Columns
+            <div className="absolute right-0 mt-2 w-52 bg-card border border-border/80 rounded-xl shadow-xl z-30 p-2 space-y-1 animate-scale-in">
+              <span className="block text-[10px] font-bold text-muted-foreground uppercase px-2 py-1 select-none">
+                Visible Columns
               </span>
-              {columns.map((c) => (
-                <label
-                  key={c.accessorKey as string}
-                  className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded text-xs text-foreground cursor-pointer select-none"
-                >
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.includes(c.accessorKey as string)}
-                    onChange={() => toggleColumn(c.accessorKey as string)}
-                    className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
-                  />
-                  {c.header}
-                </label>
-              ))}
+              {columns.map((c) => {
+                const key = String(c.accessorKey);
+                const isChecked = visibleColumns.includes(key);
+                return (
+                  <label
+                    key={key}
+                    className="flex items-center gap-2.5 px-2 py-1.5 hover:bg-muted/60 rounded-lg text-xs text-foreground cursor-pointer select-none"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleColumn(key)}
+                      className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                    />
+                    <span className="font-medium truncate">{c.header}</span>
+                  </label>
+                );
+              })}
             </div>
           )}
         </div>
       </div>
 
-      {/* Main Table Content Powered by TanStack Table */}
+      {/* Main Table Content Render View */}
       {isLoading ? (
-        <VFLoadingTable rows={5} cols={visibleColumns.length} />
-      ) : filteredData.length === 0 || (table && displayedRows.length === 0) ? (
+        <VFLoadingTable rows={5} cols={activeColumns.length} />
+      ) : processedData.length === 0 ? (
         <VFEmptyState
           title={emptyTitle}
           description={emptyDescription}
@@ -233,58 +267,77 @@ export function VFDataTable<T>({
       ) : (
         <VFTable>
           <VFTableHead>
-            {displayedHeaderGroups.map((headerGroup: any) => (
-              <VFTableRow key={headerGroup.id}>
-                {headerGroup.headers
-                  .filter((header: any) => visibleColumns.includes(header.id))
-                  .map((header: any) => {
-                    const isSortable = header.column.getCanSort();
-                    const sortStatus = header.column.getIsSorted();
-                    return (
-                      <VFTableHeaderCell
-                        key={header.id}
-                        className={cn(isSortable && "cursor-pointer hover:bg-muted/50 transition-colors")}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        <div className="flex items-center gap-1">
-                          {flexRender ? flexRender(header.column.columnDef.header, header.getContext()) : header.column.columnDef.header}
-                          {isSortable && (
-                            <span className="text-muted-foreground/80">
-                              {sortStatus === 'asc' ? ' ↑' : sortStatus === 'desc' ? ' ↓' : ' ↕'}
-                            </span>
-                          )}
-                        </div>
-                      </VFTableHeaderCell>
-                    );
-                  })}
-              </VFTableRow>
-            ))}
+            <VFTableRow>
+              {activeColumns.map((col) => {
+                const key = String(col.accessorKey);
+                const sortStatus = sorting.find((s) => s.id === key);
+                const isSortable = col.sortable ?? true;
+                return (
+                  <VFTableHeaderCell
+                    key={key}
+                    className={cn(isSortable && "cursor-pointer hover:bg-muted/60 transition-colors")}
+                    onClick={() => {
+                      if (!isSortable) return;
+                      const isAsc = sortStatus?.id === key && !sortStatus.desc;
+                      setSorting([{ id: key, desc: isAsc }]);
+                    }}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span>{col.header}</span>
+                      {isSortable && (
+                        <span className="text-muted-foreground/80 font-mono text-[10px]">
+                          {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
+                        </span>
+                      )}
+                    </div>
+                  </VFTableHeaderCell>
+                );
+              })}
+            </VFTableRow>
           </VFTableHead>
           <VFTableBody>
-            {displayedRows.map((row: any) => (
-              <VFTableRow key={row.id}>
-                {row.getVisibleCells()
-                  .filter((cell: any) => visibleColumns.includes(cell.column.id))
-                  .map((cell: any) => (
-                    <VFTableCell key={cell.id}>
-                      {flexRender ? flexRender(cell.column.columnDef.cell, cell.getContext()) : cell.value}
-                    </VFTableCell>
-                  ))}
-              </VFTableRow>
-            ))}
+            {displayedRows && displayedRows.length > 0 ? (
+              // TanStack Table Managed Rows
+              displayedRows.map((row: any) => (
+                <VFTableRow key={row.id}>
+                  {row.getVisibleCells()
+                    .filter((cell: any) => visibleColumns.includes(cell.column.id))
+                    .map((cell: any) => (
+                      <VFTableCell key={cell.id}>
+                        {flexRender ? flexRender(cell.column.columnDef.cell, cell.getContext()) : cell.value}
+                      </VFTableCell>
+                    ))}
+                </VFTableRow>
+              ))
+            ) : (
+              // Direct Fail-Safe Data Array Map (Guarantees Data Always Renders!)
+              processedData.map((row: any, rowIndex: number) => (
+                <VFTableRow key={row.id || rowIndex}>
+                  {activeColumns.map((col) => {
+                    const key = String(col.accessorKey);
+                    const rawVal = row[key];
+                    return (
+                      <VFTableCell key={key}>
+                        {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
+                      </VFTableCell>
+                    );
+                  })}
+                </VFTableRow>
+              ))
+            )}
           </VFTableBody>
         </VFTable>
       )}
 
-      {/* Pagination Footer */}
-      {pagination && !isLoading && data.length > 0 && (
-        <div className="flex items-center justify-between border-t border-border/40 pt-4 mt-2">
+      {/* Pagination Footer Controls */}
+      {pagination && !isLoading && processedData.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between border-t border-border/60 pt-3 mt-2 gap-2">
           <p className="text-xs text-muted-foreground">
-            Showing page <span className="font-semibold text-foreground">{pagination.currentPage}</span> of{' '}
-            <span className="font-semibold text-foreground">{pagination.totalPages}</span> (
-            <span className="font-semibold text-foreground">{pagination.totalItems}</span> items)
+            Showing page <span className="font-bold text-foreground">{pagination.currentPage}</span> of{' '}
+            <span className="font-bold text-foreground">{pagination.totalPages}</span> (
+            <span className="font-bold text-foreground">{pagination.totalItems || processedData.length}</span> total records)
           </p>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <VFButton
               variant="outline"
               size="sm"
