@@ -27,7 +27,7 @@ export function VFStatCard({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border/70 bg-card px-4 py-3.5 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 hover:border-primary/35 hover:shadow-sm group",
+        "rounded-lg border border-border/70 bg-card p-4 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 hover:border-primary/35 hover:shadow-sm group",
         className
       )}
       {...props}

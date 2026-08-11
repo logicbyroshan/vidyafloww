@@ -153,7 +153,7 @@ function AdmissionsPage() {
   ];
 
   const enquiriesContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <VFStatCard title="Total Enquiries Received" value="342" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="+28 this week" />
         <VFStatCard title="Walk-in Campus Tours" value="124" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="36 Tours Scheduled" />
@@ -161,7 +161,7 @@ function AdmissionsPage() {
         <VFStatCard title="Pending Counsellor Follow-ups" value="30" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="Today's Target" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
         <VFCard title="Quick Register Parent Enquiry" className="lg:col-span-1">
           <div className="space-y-3 mt-2 text-xs">
             <VFInput label="Candidate Name" placeholder="e.g. Priyanshu Sharma" />
@@ -200,7 +200,7 @@ function AdmissionsPage() {
   // SUBMODULE — Admission CRM (Kanban & Lead Scoring)
   // ----------------------------------------------------
   const crmContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
         <div>
           <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
@@ -211,7 +211,7 @@ function AdmissionsPage() {
         <VFBadge variant="primary">7 Pipeline Stages</VFBadge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-xs">
         {[
           { stage: 'NEW LEAD', count: 48, score: 'Avg Score: 45', color: 'border-blue-500/40 bg-blue-500/5', leads: ['Priyanshu (Class 9)', 'Anvi (Class 1)'] },
           { stage: 'CONTACTED', count: 32, score: 'Avg Score: 62', color: 'border-yellow-500/40 bg-yellow-500/5', leads: ['Siddharth (Class 9)', 'Tanya (Class 11)'] },
@@ -236,7 +236,7 @@ function AdmissionsPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <VFCard title="Scheduled Follow-up Roster">
           <div className="space-y-2.5 text-xs mt-2">
             {[
@@ -285,7 +285,7 @@ function AdmissionsPage() {
   // SUBMODULE — Admission Forms (Builder & Online Portal)
   // ----------------------------------------------------
   const formsContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <VFStatCard title="Active Form Version" value="v2.4 (2026-27)" icon={<FileText className="h-5 w-5" />} trend="up" trendLabel="Published Live" />
         <VFStatCard title="Public Form Link" value="school.com/adm" icon={<BrainCircuit className="h-5 w-5" />} trend="neutral" trendLabel="SSL Encrypted" />
@@ -293,7 +293,7 @@ function AdmissionsPage() {
         <VFStatCard title="Custom Fields Configured" value="14 Attributes" icon={<SlidersHorizontal className="h-5 w-5" />} description="RTE & Transport Rules" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <VFCard title="Drag & Drop Form Builder Palette">
           <p className="text-xs text-muted-foreground mb-3">Configure fields and conditional display rules for the 2026-27 online admission application form.</p>
           <div className="grid grid-cols-2 gap-2 text-xs">
@@ -330,7 +330,7 @@ function AdmissionsPage() {
   // SUBMODULE — Application Management (Main Queue)
   // ----------------------------------------------------
   const applicationsQueueContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {correctionNotice && (
         <div className="p-4 bg-warning/10 border border-warning/30 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-2">
@@ -341,7 +341,7 @@ function AdmissionsPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Applications Received" value="148" icon={<UserSquare className="h-5 w-5" />} trend="up" trendLabel="+18 today" />
         <VFStatCard title="AI Instant Approved" value="42" icon={<Sparkles className="h-5 w-5" />} trend="up" trendLabel="Auto-screened" />
         <VFStatCard title="Interviews Pending" value="16" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="Scheduled for tomorrow" />
@@ -379,8 +379,8 @@ function AdmissionsPage() {
   // SUBMODULE — Admission Assessment (Entrance Tests & Interviews)
   // ----------------------------------------------------
   const assessmentContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <VFCard title="Entrance Test Builder Status">
           <p className="text-lg font-bold text-foreground mt-1">Class 9 & 11 Entrance Exam</p>
           <p className="text-xs text-primary font-bold mt-1">Subjects: Math, Science, English (100 Marks)</p>
@@ -423,8 +423,8 @@ function AdmissionsPage() {
   // SUBMODULE — Admission Documents (AI OCR Verification)
   // ----------------------------------------------------
   const docsContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <VFCard title="AI OCR Extraction Engine">
           <div className="flex justify-between items-center mt-2">
             <span className="text-2xl font-black text-success">98.4% Match</span>
@@ -474,8 +474,8 @@ function AdmissionsPage() {
   // SUBMODULE — Enrollment (Auto Student Creation)
   // ----------------------------------------------------
   const enrollmentContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <VFCard title="Offer Letter Generator">
           <span className="text-lg font-bold text-foreground block mt-2">12 Offer Letters Issued</span>
           <p className="text-xs text-muted-foreground mt-1">Auto PDF generation with fee schedules & joining dates.</p>
@@ -511,8 +511,8 @@ function AdmissionsPage() {
   // SUBMODULE — Admission Analytics & Funnel
   // ----------------------------------------------------
   const analyticsContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Enquiry ➔ Admission Rate" value="43.2%" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="+5.8% vs last year" />
         <VFStatCard title="Grade 9 Intake Capacity" value="45 / 50" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="90% Seats Filled" />
         <VFStatCard title="Grade 11 Intake Capacity" value="66 / 80" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="82.5% Seats Filled" />
@@ -544,7 +544,7 @@ function AdmissionsPage() {
   // SUBMODULE — Admission Communication (Templates & Logs)
   // ----------------------------------------------------
   const communicationContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Messages Sent Today" value="284" icon={<Send className="h-5 w-5" />} trend="up" trendLabel="WhatsApp & SMS" />
         <VFStatCard title="Automated Triggers Active" value="8 Triggers" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="Workflow Engine" />
@@ -552,7 +552,7 @@ function AdmissionsPage() {
         <VFStatCard title="Parent Portal Active Users" value="124 Parents" icon={<Users className="h-5 w-5" />} description="Tracking Application Status" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <VFCard title="Admission Message Templates & Auto Triggers">
           <div className="space-y-2.5 text-xs mt-2">
             {[

@@ -90,7 +90,7 @@ function DashboardPage() {
 
   // 1. System Overview Submodule Content
   const overviewContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {selectedNotice && (
         <div className="p-4 bg-primary/10 border border-primary/25 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in shadow-xs">
           <div className="flex items-center gap-2">
@@ -103,20 +103,20 @@ function DashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Enrolled Students" value="2,451" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="+12 this month" />
         <VFStatCard title="Teaching Staff Efficiency" value="98.2%" icon={<GraduationCap className="h-5 w-5" />} trend="up" trendLabel="Optimal schedule allocation" />
         <VFStatCard title="Today's Attendance" value="94.5%" icon={<CalendarCheck className="h-5 w-5" />} trend="up" trendLabel="+1.2% vs yesterday" />
         <VFStatCard title="Pending Applications" value="28" icon={<FileText className="h-5 w-5" />} trend="down" trendLabel="18 auto-verified" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
         <VFSection title="Student Attendance & Health Radar" className="lg:col-span-2">
           <VFDataTable columns={studentColumns} data={studentData} filterPlaceholder="Search student name or class..." />
         </VFSection>
 
-        <div className="space-y-6">
-          <div className="bg-card border border-border rounded-xl p-5 shadow-xs space-y-4">
+        <div className="space-y-4">
+          <div className="bg-card border border-border rounded-xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" /> Recommended Actions
@@ -169,7 +169,7 @@ function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-xl p-5 shadow-xs space-y-3">
+          <div className="bg-card border border-border rounded-xl p-4 shadow-xs space-y-3">
             <h2 className="text-sm font-bold text-foreground border-b border-border pb-3 flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-success" /> System Operational Status
             </h2>
@@ -199,8 +199,8 @@ function DashboardPage() {
 
   // 2. Principal Radar Submodule Content
   const principalRadarContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <VFStatCard title="Institutional Health Score" value="96.4 / 100" icon={<Award className="h-5 w-5" />} trend="up" trendLabel="Grade A+ Status" />
         <VFStatCard title="Term Exam Pass Rate" value="94.8%" icon={<GraduationCap className="h-5 w-5" />} trend="up" trendLabel="+2.4% vs Term 1" />
         <VFStatCard title="Fee Collection Liquidity" value="89.2%" icon={<DollarSign className="h-5 w-5" />} trend="neutral" trendLabel="₹1.84 Cr Collected" />
@@ -274,7 +274,7 @@ function DashboardPage() {
         </div>
       </VFSection>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <VFCard title="Institutional Regulatory & Board Compliance">
           <div className="space-y-3 text-xs mt-2">
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
@@ -318,7 +318,7 @@ function DashboardPage() {
 
   // 3. Teacher Portal Submodule Content
   const teacherPortalContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-primary/20 text-primary font-bold flex items-center justify-center">
@@ -332,7 +332,7 @@ function DashboardPage() {
         <VFBadge variant="success">4 Periods Today</VFBadge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <VFCard title="Today's Teaching Schedule">
           <div className="space-y-2.5 text-xs mt-2">
             {[
@@ -383,7 +383,7 @@ function DashboardPage() {
 
   // 4. Student View Submodule Content
   const studentViewContent = (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
         <div className="p-4 bg-card border border-border rounded-xl text-center shadow-xs">
           <span className="text-muted-foreground uppercase font-bold text-[10px] tracking-wider">Attendance Gauge</span>
@@ -407,7 +407,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <VFCard title="Upcoming Exams & Assessment Schedule">
           <div className="space-y-2.5 text-xs mt-2">
             {[
@@ -472,8 +472,8 @@ function DashboardPage() {
   ];
 
   const revenueRadarContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Annual Fee Revenue" value="₹4.85 Cr" icon={<DollarSign className="h-5 w-5" />} trend="up" trendLabel="+8.4% YoY" />
         <VFStatCard title="Online Payment Gateway" value="₹3.12 Cr" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="64% via UPI/Netbanking" />
         <VFStatCard title="Total Dues Outstanding" value="₹24.8 Lakhs" icon={<AlertTriangle className="h-5 w-5" />} trend="down" trendLabel="14 Critical Defaulters" />
@@ -488,8 +488,8 @@ function DashboardPage() {
 
   // 6. Academic Quality Submodule Content
   const academicQualityContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <VFCard title="Top Performing Subject">
           <p className="text-lg font-bold text-foreground mt-1">Physics & Mathematics</p>
           <p className="text-xs text-success font-bold mt-1">94.2% Class Average</p>
@@ -528,8 +528,8 @@ function DashboardPage() {
 
   // 7. Staff Workload Submodule Content
   const staffWorkloadContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Active Staff" value="242 Staff" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="164 Teaching · 78 Support" />
         <VFStatCard title="Average Weekly Load" value="26.4 Periods" icon={<Clock className="h-5 w-5" />} trend="up" trendLabel="Balanced Workload" />
         <VFStatCard title="Staff Attendance Today" value="97.5%" icon={<UserCheck className="h-5 w-5" />} trend="neutral" trendLabel="6 Staff Members on Leave" />
@@ -561,16 +561,16 @@ function DashboardPage() {
 
   // 8. AI Executive Submodule Content
   const aiExecutiveContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="AI Insights Triggered" value="142" icon={<Sparkles className="h-5 w-5" />} trend="up" trendLabel="+34 This Week" />
         <VFStatCard title="Auto Reminders Sent" value="1,280" icon={<Activity className="h-5 w-5" />} trend="up" trendLabel="WhatsApp & SMS" />
         <VFStatCard title="Anomaly Detection Rate" value="98.4%" icon={<ShieldCheck className="h-5 w-5" />} trend="up" trendLabel="High Precision" />
         <VFStatCard title="Staff Time Saved" value="145 Hours" icon={<Clock className="h-5 w-5" />} trend="up" trendLabel="This Month" />
       </div>
 
-      <div className="bg-card border border-border p-6 rounded-xl space-y-4">
-        <div className="flex items-center gap-3 border-b border-border pb-4">
+      <div className="bg-card border border-border p-4 rounded-xl space-y-4">
+        <div className="flex items-center gap-3 border-b border-border pb-3">
           <div className="h-10 w-10 rounded-xl bg-primary/20 text-primary font-bold flex items-center justify-center">
             <Sparkles className="h-5 w-5" />
           </div>

@@ -56,7 +56,7 @@ export function VFTabs({
     return (
       <div className={cn("flex flex-col w-full flex-1 min-h-0 bg-background", className)} {...props}>
         {/* Full-width sticky top sub-module tab bar header */}
-        <div className="w-full border-b border-border/60 bg-card/90 px-5 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
+        <div className="w-full border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30">
           <div className="flex items-center gap-6 overflow-x-auto no-scrollbar flex-1" role="tablist">
             {items.map((item) => {
               const isActive = item.id === activeId;
@@ -86,7 +86,7 @@ export function VFTabs({
         </div>
 
         {/* Tab Panel Content Container */}
-        <div className="px-5 py-4 w-full space-y-4 flex-1 overflow-y-auto custom-scrollbar" role="tabpanel">
+        <div className="p-4 w-full space-y-4 flex-1 overflow-y-auto custom-scrollbar" role="tabpanel">
           {activeItem ? activeItem.content : null}
         </div>
       </div>
