@@ -57,24 +57,24 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'flex flex-col h-full bg-card border-r border-border transition-all duration-300 relative z-20 shrink-0 select-none',
+        'flex flex-col h-full bg-card border-r border-border/60 transition-all duration-300 relative z-20 shrink-0 select-none',
         sidebarExpanded ? 'w-60' : 'w-16'
       )}
     >
-      {/* Sidebar Header & Brand Logo (h-[88px] matching combined Navbar + Tabbar height) */}
-      <div className="flex h-[88px] items-center px-4 border-b border-border/60 relative shrink-0">
+      {/* Sidebar Header & Brand Logo (h-[96px] matching combined 48px Navbar + 48px Tabbar height) */}
+      <div className="flex h-[96px] items-center px-4 border-b border-border/60 relative shrink-0">
         {sidebarExpanded ? (
-          <div className="flex items-center gap-3 w-full animate-fade-in">
+          <div className="flex items-center gap-3.5 w-full animate-fade-in">
             <img
               src="/logo.png"
               alt="VidyaMaxx Logo"
-              className="h-10 w-10 object-contain shrink-0 drop-shadow-xs"
+              className="h-14 w-14 object-contain shrink-0 drop-shadow-sm"
             />
             <div className="flex flex-col min-w-0">
-              <span className="text-lg font-black tracking-tight leading-none text-foreground">
+              <span className="text-2xl font-black tracking-tight leading-none text-foreground">
                 Vidya<span className="text-primary">Maxx</span>
               </span>
-              <span className="text-[9px] font-bold text-muted-foreground/80 uppercase tracking-widest mt-1">
+              <span className="text-[10px] font-bold text-muted-foreground/80 uppercase tracking-widest mt-1">
                 Enterprise Portal
               </span>
             </div>
@@ -83,44 +83,46 @@ export function Sidebar() {
           <img
             src="/logo.png"
             alt="VidyaMaxx Logo"
-            className="h-9 w-9 object-contain shrink-0 mx-auto animate-scale-in drop-shadow-xs"
+            className="h-11 w-11 object-contain shrink-0 mx-auto animate-scale-in drop-shadow-sm"
           />
         )}
         <button
           onClick={toggleSidebar}
-          className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-30 transition-all cursor-pointer shadow-sm"
+          className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-card border border-border/80 text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-30 transition-all cursor-pointer shadow-sm"
           title={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         >
           {sidebarExpanded ? <ChevronLeft className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
         </button>
       </div>
 
-      {/* Nav List */}
-      <div className="flex-1 overflow-y-auto p-2.5 flex flex-col gap-1 custom-scrollbar">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive =
-            location.pathname === item.route ||
-            (item.route !== '/' && location.pathname.startsWith(item.route));
+      {/* Nav List with Scrollbar on the FAR LEFT edge (dir="rtl") */}
+      <div dir="rtl" className="flex-1 overflow-y-auto p-2.5 custom-scrollbar">
+        <div dir="ltr" className="flex flex-col gap-1 w-full">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive =
+              location.pathname === item.route ||
+              (item.route !== '/' && location.pathname.startsWith(item.route));
 
-          return (
-            <Link
-              key={item.id}
-              to={item.route}
-              className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-sm font-medium outline-none',
-                isActive
-                  ? 'bg-primary/10 text-primary font-bold shadow-xs'
-                  : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground',
-                !sidebarExpanded && 'justify-center px-0 py-2.5'
-              )}
-              title={!sidebarExpanded ? item.label : undefined}
-            >
-              <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive && 'text-primary')} />
-              {sidebarExpanded && <span className="animate-fade-in truncate leading-tight">{item.label}</span>}
-            </Link>
-          );
-        })}
+            return (
+              <Link
+                key={item.id}
+                to={item.route}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-sm font-medium outline-none',
+                  isActive
+                    ? 'bg-primary/10 text-primary font-bold shadow-xs'
+                    : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground',
+                  !sidebarExpanded && 'justify-center px-0 py-2.5'
+                )}
+                title={!sidebarExpanded ? item.label : undefined}
+              >
+                <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive && 'text-primary')} />
+                {sidebarExpanded && <span className="animate-fade-in truncate leading-tight">{item.label}</span>}
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       {/* User Profile in Sidebar Bottom */}

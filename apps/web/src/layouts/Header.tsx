@@ -17,7 +17,7 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <header className="h-11 border-b border-border/60 bg-card flex items-center justify-between px-4 sticky top-0 z-10 shrink-0 select-none">
+    <header className="h-12 border-b border-border/60 bg-card flex items-center justify-between px-4 sticky top-0 z-10 shrink-0 select-none">
       {/* Left: Searchbar */}
       <div className="flex items-center gap-3">
         <button
