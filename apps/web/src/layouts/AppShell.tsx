@@ -176,7 +176,7 @@ export function AppShell() {
 
   return (
     <div className="w-full bg-background min-h-screen">
-      <div className="max-w-[1920px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row">
+      <div className="max-w-[2000px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row">
         <VFPage className="flex-row h-screen overflow-hidden w-full">
           <Sidebar />
           <div className="flex-1 flex flex-col h-full overflow-hidden relative">
