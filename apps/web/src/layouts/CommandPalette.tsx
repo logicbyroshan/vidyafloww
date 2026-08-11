@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { VFDialog, VFBadge } from '@vidyamaxx/ui';
+import { Command } from 'cmdk';
+import { VFBadge } from '@vidyamaxx/ui';
 import {
   Search,
   LayoutDashboard,
@@ -33,7 +34,6 @@ import { useNavigate } from '@tanstack/react-router';
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const commands = [
     // Module Navigation
@@ -64,84 +64,50 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     { id: 'act-ask-ai', icon: Sparkles, label: 'Ask VidyaFlow AI Assistant', route: '/ai', category: 'Actions', shortcut: 'Shift+K' },
   ];
 
-  const filtered = commands.filter(
-    (c) =>
-      c.label.toLowerCase().includes(search.toLowerCase()) ||
-      c.category.toLowerCase().includes(search.toLowerCase())
-  );
-
-  React.useEffect(() => {
-    setSelectedIndex(0);
-  }, [search]);
-
-  // Keyboard navigation inside command palette
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setSelectedIndex((prev) => (prev + 1) % Math.max(1, filtered.length));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setSelectedIndex((prev) => (prev - 1 + filtered.length) % Math.max(1, filtered.length));
-    } else if (e.key === 'Enter' && filtered[selectedIndex]) {
-      e.preventDefault();
-      navigate({ to: filtered[selectedIndex].route });
-      onClose();
-    }
-  };
+  if (!isOpen) return null;
 
   return (
-    <VFDialog
-      isOpen={isOpen}
-      onClose={onClose}
-      hideHeader={true}
-      className="p-0 max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl mt-16 animate-scale-in"
+    <Command.Dialog
+      open={isOpen}
+      onOpenChange={(open: boolean) => { if (!open) onClose(); }}
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] flex items-start justify-center p-4 md:p-6 pt-20 animate-fade-in"
+      label="Command Palette"
     >
-      <div className="flex flex-col h-full -m-6 divide-y divide-border/60" onKeyDown={handleKeyDown}>
+      <div className="w-full max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl animate-scale-in flex flex-col divide-y divide-border/60">
         {/* Top Search Input Bar */}
         <div className="flex items-center px-4 py-3 bg-card">
           <Search className="h-4 w-4 text-primary mr-3 shrink-0" />
-          <input
-            type="text"
-            autoFocus
+          <Command.Input
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 h-9 bg-transparent outline-none text-xs text-foreground placeholder:text-muted-foreground font-medium"
+            onValueChange={setSearch}
+            className="flex-1 h-9 bg-transparent outline-none text-xs text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
             placeholder="Type a command or search across all 20 ERP modules..."
+            autoFocus
           />
         </div>
 
-        {/* Command List Scroll View */}
-        <div className="max-h-[380px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
-          {filtered.length === 0 ? (
-            <div className="py-12 text-center text-xs text-muted-foreground space-y-1">
-              <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
-              <p className="font-semibold text-foreground">No matching commands found</p>
-              <p>Try searching for "Admissions", "Fees", "Timetable", or "AI"</p>
-            </div>
-          ) : (
-            filtered.map((cmd, idx) => {
-              const Icon = cmd.icon;
-              const isSelected = idx === selectedIndex;
+        {/* Command List Scroll View Powered by cmdk */}
+        <Command.List className="max-h-[380px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
+          <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1">
+            <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+            <p className="font-semibold text-foreground">No matching commands found</p>
+            <p>Try searching for "Admissions", "Fees", "Timetable", or "AI"</p>
+          </Command.Empty>
 
+          <Command.Group heading="Navigation & Module Shortcuts" className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest">
+            {commands.map((cmd) => {
+              const Icon = cmd.icon;
               return (
-                <button
+                <Command.Item
                   key={cmd.id}
-                  onClick={() => {
+                  value={`${cmd.label} ${cmd.category}`}
+                  onSelect={() => {
                     navigate({ to: cmd.route });
                     onClose();
                   }}
-                  onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all outline-none text-xs text-left cursor-pointer ${
-                    isSelected
-                      ? 'bg-primary/10 text-primary font-bold border border-primary/30 shadow-xs'
-                      : 'text-foreground hover:bg-muted/50 border border-transparent'
-                  }`}
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary data-[selected=true]:font-bold data-[selected=true]:border-primary/30 data-[selected=true]:shadow-xs text-foreground hover:bg-muted/50"
                 >
-                  <div
-                    className={`h-7 w-7 rounded-lg flex items-center justify-center shrink-0 ${
-                      isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                    }`}
-                  >
+                  <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 bg-muted text-muted-foreground group-data-[selected=true]:bg-primary group-data-[selected=true]:text-primary-foreground">
                     <Icon className="h-3.5 w-3.5" />
                   </div>
                   <span className="flex-1 truncate font-medium">{cmd.label}</span>
@@ -149,16 +115,16 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                     <span className="text-xs font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded border border-border/60">
                       {cmd.shortcut}
                     </span>
-                    <VFBadge variant={isSelected ? 'primary' : 'outline'} className="text-xs px-2 py-0.5">
+                    <VFBadge variant="outline" className="text-xs px-2 py-0.5">
                       {cmd.category}
                     </VFBadge>
-                    <ArrowRight className={`h-3.5 w-3.5 transition-transform ${isSelected ? 'translate-x-0.5 text-primary' : 'opacity-0'}`} />
+                    <ArrowRight className="h-3.5 w-3.5 opacity-40 group-data-[selected=true]:opacity-100 group-data-[selected=true]:text-primary transition-all" />
                   </div>
-                </button>
+                </Command.Item>
               );
-            })
-          )}
-        </div>
+            })}
+          </Command.Group>
+        </Command.List>
 
         {/* Bottom Footer Bar with Shortcuts & Close Button */}
         <div className="px-4 py-2.5 bg-muted/30 flex items-center justify-between text-xs text-muted-foreground">
@@ -189,6 +155,6 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           </div>
         </div>
       </div>
-    </VFDialog>
+    </Command.Dialog>
   );
 }

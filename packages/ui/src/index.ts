@@ -15,6 +15,7 @@ export * from './VFTabs';
 export * from './VFTable';
 export * from './VFOverlays';
 export * from './VFWidgets';
+export * from './VFCharts';
 export type { TabItem } from './VFTabs';
 export type { BreadcrumbItem } from './VFBreadcrumb';
 export type { ColumnDef } from './VFTable';

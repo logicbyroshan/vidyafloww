@@ -2,6 +2,8 @@ import * as React from 'react';
 import { cn } from './utils';
 import { ChevronDown, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
+import * as SelectPrimitive from '@radix-ui/react-select';
+
 // Helper component for form labels
 export const VFFormLabel = ({ children, htmlFor, className, required }: { children: React.ReactNode; htmlFor?: string; className?: string; required?: boolean }) => (
   <label htmlFor={htmlFor} className={cn("block text-sm font-semibold text-foreground uppercase tracking-wider mb-1 select-none", className)}>
@@ -40,7 +42,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
     return (
       <div className="w-full">
         {label && <VFFormLabel htmlFor={inputId} required={required}>{label}</VFFormLabel>}
-        <div className="relative flex items-center">
+        <div className="relative flex items-center w-full">
           {leftIcon && (
             <div className="absolute left-3 flex items-center pointer-events-none text-muted-foreground">
               {leftIcon}
@@ -133,85 +135,72 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
   ({ className, label, description, error, required, options, value, defaultValue, placeholder = "Select...", onChange, disabled, id }, _ref) => {
     const generatedId = React.useId();
     const selectId = id || generatedId;
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [internalValue, setInternalValue] = React.useState<string | number>(value !== undefined ? value : (defaultValue ?? ""));
-    const containerRef = React.useRef<HTMLDivElement>(null);
+    const [internalValue, setInternalValue] = React.useState<string>(
+      value !== undefined ? String(value) : (defaultValue !== undefined ? String(defaultValue) : "")
+    );
 
     React.useEffect(() => {
       if (value !== undefined) {
-        setInternalValue(value);
+        setInternalValue(String(value));
       }
     }, [value]);
 
-    // Handle click outside to close dropdown
-    React.useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const selectedOption = options.find((opt) => String(opt.value) === String(internalValue));
-
-    const handleSelect = (option: VFSelectOption) => {
-      if (option.disabled) return;
-      setInternalValue(option.value);
-      setIsOpen(false);
+    const handleValueChange = (val: string) => {
+      setInternalValue(val);
       if (onChange) {
-        onChange({ target: { value: option.value } });
+        onChange({ target: { value: val } });
       }
     };
 
     return (
-      <div className="w-full relative" ref={containerRef}>
+      <div className="w-full relative">
         {label && <VFFormLabel htmlFor={selectId} required={required}>{label}</VFFormLabel>}
         
-        {/* Dropdown Button Trigger - Compact & Clean */}
-        <button
-          id={selectId}
-          type="button"
+        <SelectPrimitive.Root
+          value={internalValue}
+          defaultValue={defaultValue !== undefined ? String(defaultValue) : undefined}
+          onValueChange={handleValueChange}
           disabled={disabled}
-          onClick={() => !disabled && setIsOpen(!isOpen)}
-          className={cn(
-          "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-sm text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70",
-            isOpen && "border-border bg-muted/60",
-            error && "border-destructive",
-            disabled && "opacity-50 cursor-not-allowed",
-            className
-          )}
         >
-          <span className={cn("truncate", !selectedOption && "text-muted-foreground/60 font-normal")}>
-            {selectedOption ? selectedOption.label : placeholder}
-          </span>
-          <ChevronDown className={cn("h-3 w-3 text-muted-foreground shrink-0 transition-transform duration-150 ml-1", isOpen && "rotate-180 text-foreground")} />
-        </button>
+          <SelectPrimitive.Trigger
+            id={selectId}
+            className={cn(
+              "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-sm text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70 data-[state=open]:border-border data-[state=open]:bg-muted/60",
+              error && "border-destructive",
+              disabled && "opacity-50 cursor-not-allowed",
+              className
+            )}
+          >
+            <SelectPrimitive.Value placeholder={placeholder} />
+            <SelectPrimitive.Icon asChild>
+              <ChevronDown className="h-3 w-3 text-muted-foreground shrink-0 transition-transform duration-150 ml-1" />
+            </SelectPrimitive.Icon>
+          </SelectPrimitive.Trigger>
 
-        {isOpen && (
-          <div className="absolute top-[calc(100%+4px)] left-0 w-full z-50 rounded-md border border-border/60 bg-[#0e1017] p-1 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in max-h-52 overflow-y-auto custom-scrollbar">
-            {options.map((opt) => {
-              const isSelected = String(opt.value) === String(internalValue);
-              return (
-                <div
-                  key={opt.value}
-                  onClick={() => handleSelect(opt)}
-                  className={cn(
-                    "px-2.5 py-1.5 text-sm font-medium rounded-md cursor-pointer flex items-center justify-between transition-colors duration-100 select-none",
-                    isSelected
-                      ? "bg-primary/15 text-primary font-bold"
-                      : "text-foreground/85 hover:bg-muted/80 hover:text-foreground",
-                    opt.disabled && "opacity-40 cursor-not-allowed hover:bg-transparent"
-                  )}
-                >
-                  <span className="truncate">{opt.label}</span>
-                  {isSelected && <Check className="h-3 w-3 text-primary shrink-0 ml-1.5" />}
-                </div>
-              );
-            })}
-          </div>
-        )}
+          <SelectPrimitive.Portal>
+            <SelectPrimitive.Content
+              className="z-50 min-w-[8rem] overflow-hidden rounded-md border border-border/60 bg-[#0e1017] p-1 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in text-xs text-foreground"
+              position="popper"
+              sideOffset={4}
+            >
+              <SelectPrimitive.Viewport className="p-0.5 max-h-52 overflow-y-auto custom-scrollbar">
+                {options.map((opt) => (
+                  <SelectPrimitive.Item
+                    key={String(opt.value)}
+                    value={String(opt.value)}
+                    disabled={opt.disabled}
+                    className="relative flex w-full select-none items-center justify-between rounded-md px-2.5 py-1.5 text-sm font-medium outline-none cursor-pointer data-[highlighted]:bg-muted/80 data-[highlighted]:text-foreground data-[state=checked]:bg-primary/15 data-[state=checked]:text-primary data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
+                  >
+                    <SelectPrimitive.ItemText>{opt.label}</SelectPrimitive.ItemText>
+                    <SelectPrimitive.ItemIndicator>
+                      <Check className="h-3 w-3 text-primary shrink-0 ml-1.5" />
+                    </SelectPrimitive.ItemIndicator>
+                  </SelectPrimitive.Item>
+                ))}
+              </SelectPrimitive.Viewport>
+            </SelectPrimitive.Content>
+          </SelectPrimitive.Portal>
+        </SelectPrimitive.Root>
 
         <VFFormDescription>{description}</VFFormDescription>
         <VFFormError>{error}</VFFormError>

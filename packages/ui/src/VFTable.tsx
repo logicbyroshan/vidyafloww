@@ -1,8 +1,15 @@
 import * as React from 'react';
+import * as TanStackTableModule from '@tanstack/react-table';
 import { cn } from './utils';
 import { VFLoadingTable } from './VFLoading';
 import { VFEmptyState } from './VFEmptyState';
 import { VFButton } from './VFButton';
+
+const useReactTable = (TanStackTableModule as any).useReactTable || (TanStackTableModule as any).ReactTable;
+const getCoreRowModel = (TanStackTableModule as any).getCoreRowModel || (TanStackTableModule as any).createCoreRowModel;
+const getSortedRowModel = (TanStackTableModule as any).getSortedRowModel || (TanStackTableModule as any).createSortedRowModel;
+const getFilteredRowModel = (TanStackTableModule as any).getFilteredRowModel || (TanStackTableModule as any).createFilteredRowModel;
+const flexRender = (TanStackTableModule as any).flexRender;
 
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
@@ -54,7 +61,7 @@ export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTML
   return <td className={cn("px-3 py-2.5 align-middle text-foreground/85 whitespace-nowrap text-xs", className)} {...props} />;
 }
 
-// VFDataTable: high-level data table component
+// VFDataTable: high-level data table component powered under the hood by TanStack Table v8/v9
 export interface ColumnDef<T> {
   header: string;
   accessorKey: keyof T | string;
@@ -91,41 +98,70 @@ export function VFDataTable<T>({
   filterPlaceholder,
   onFilterChange,
 }: VFDataTableProps<T>) {
-  const [sortKey, setSortKey] = React.useState<string | null>(null);
-  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc');
-  const [filterText, setFilterText] = React.useState("");
+  const [sorting, setSorting] = React.useState<any[]>([]);
+  const [globalFilter, setGlobalFilter] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState<string[]>(
-    columns.map(c => c.accessorKey as string)
+    columns.map((c) => c.accessorKey as string)
   );
   const [showColumnDropdown, setShowColumnDropdown] = React.useState(false);
 
-  const handleSort = (key: string) => {
-    let dir: 'asc' | 'desc' = 'asc';
-    if (sortKey === key && sortDirection === 'asc') {
-      dir = 'desc';
-    }
-    setSortKey(key);
-    setSortDirection(dir);
-    if (onSort) onSort(key, dir);
-  };
+  // Map custom column defs to TanStack Table definitions
+  const tanstackColumns = React.useMemo(() => {
+    return columns.map((col) => ({
+      id: col.accessorKey as string,
+      header: col.header,
+      accessorKey: col.accessorKey as string,
+      enableSorting: col.sortable ?? true,
+      cell: (info: any) => {
+        const row = info.row.original;
+        return col.cell ? col.cell(row) : (info.getValue() as React.ReactNode);
+      },
+    }));
+  }, [columns]);
 
-  const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const filteredData = React.useMemo(() => data || [], [data]);
+
+  const table = useReactTable ? useReactTable({
+    data: filteredData,
+    columns: tanstackColumns,
+    state: {
+      sorting,
+      globalFilter,
+    },
+    onSortingChange: (updater: any) => {
+      const nextSorting = typeof updater === 'function' ? updater(sorting) : updater;
+      setSorting(nextSorting);
+      if (nextSorting && nextSorting.length > 0 && onSort) {
+        onSort(nextSorting[0].id, nextSorting[0].desc ? 'desc' : 'asc');
+      }
+    },
+    onGlobalFilterChange: (val: any) => {
+      setGlobalFilter(val);
+      if (onFilterChange) onFilterChange(val);
+    },
+    getCoreRowModel: getCoreRowModel ? getCoreRowModel() : undefined,
+    getSortedRowModel: getSortedRowModel ? getSortedRowModel() : undefined,
+    getFilteredRowModel: getFilteredRowModel ? getFilteredRowModel() : undefined,
+  }) : null;
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    setFilterText(val);
+    setGlobalFilter(val);
     if (onFilterChange) onFilterChange(val);
   };
 
   const toggleColumn = (key: string) => {
     if (visibleColumns.includes(key)) {
       if (visibleColumns.length > 1) {
-        setVisibleColumns(visibleColumns.filter(c => c !== key));
+        setVisibleColumns(visibleColumns.filter((c) => c !== key));
       }
     } else {
       setVisibleColumns([...visibleColumns, key]);
     }
   };
 
-  const filteredColumns = columns.filter(c => visibleColumns.includes(c.accessorKey as string));
+  const displayedHeaderGroups = table ? table.getHeaderGroups() : [];
+  const displayedRows = table ? table.getRowModel().rows : [];
 
   return (
     <div className="space-y-4">
@@ -140,8 +176,8 @@ export function VFDataTable<T>({
             </span>
             <input
               type="text"
-              value={filterText}
-              onChange={handleFilter}
+              value={globalFilter}
+              onChange={handleFilterChange}
               placeholder={filterPlaceholder || "Filter records..."}
               className="w-full pl-9 pr-4 h-9 border border-border rounded-lg bg-card text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all shadow-xs"
             />
@@ -186,10 +222,10 @@ export function VFDataTable<T>({
         </div>
       </div>
 
-      {/* Main Table Content */}
+      {/* Main Table Content Powered by TanStack Table */}
       {isLoading ? (
-        <VFLoadingTable rows={5} cols={filteredColumns.length} />
-      ) : data.length === 0 ? (
+        <VFLoadingTable rows={5} cols={visibleColumns.length} />
+      ) : filteredData.length === 0 || (table && displayedRows.length === 0) ? (
         <VFEmptyState
           title={emptyTitle}
           description={emptyDescription}
@@ -197,38 +233,43 @@ export function VFDataTable<T>({
       ) : (
         <VFTable>
           <VFTableHead>
-            <VFTableRow>
-              {filteredColumns.map((col) => (
-                <VFTableHeaderCell
-                  key={col.accessorKey as string}
-                  className={cn(col.sortable && "cursor-pointer hover:bg-muted/50 transition-colors")}
-                  onClick={() => col.sortable && handleSort(col.accessorKey as string)}
-                >
-                  <div className="flex items-center gap-1">
-                    {col.header}
-                    {col.sortable && (
-                      <span className="text-muted-foreground/80">
-                        {sortKey === col.accessorKey ? (
-                          sortDirection === 'asc' ? ' ↑' : ' ↓'
-                        ) : ' ↕'}
-                      </span>
-                    )}
-                  </div>
-                </VFTableHeaderCell>
-              ))}
-            </VFTableRow>
+            {displayedHeaderGroups.map((headerGroup: any) => (
+              <VFTableRow key={headerGroup.id}>
+                {headerGroup.headers
+                  .filter((header: any) => visibleColumns.includes(header.id))
+                  .map((header: any) => {
+                    const isSortable = header.column.getCanSort();
+                    const sortStatus = header.column.getIsSorted();
+                    return (
+                      <VFTableHeaderCell
+                        key={header.id}
+                        className={cn(isSortable && "cursor-pointer hover:bg-muted/50 transition-colors")}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <div className="flex items-center gap-1">
+                          {flexRender ? flexRender(header.column.columnDef.header, header.getContext()) : header.column.columnDef.header}
+                          {isSortable && (
+                            <span className="text-muted-foreground/80">
+                              {sortStatus === 'asc' ? ' ↑' : sortStatus === 'desc' ? ' ↓' : ' ↕'}
+                            </span>
+                          )}
+                        </div>
+                      </VFTableHeaderCell>
+                    );
+                  })}
+              </VFTableRow>
+            ))}
           </VFTableHead>
           <VFTableBody>
-            {data.map((row, rowIndex) => (
-              <VFTableRow key={rowIndex}>
-                {filteredColumns.map((col) => {
-                  const val = row[col.accessorKey as keyof T];
-                  return (
-                    <VFTableCell key={col.accessorKey as string}>
-                      {col.cell ? col.cell(row) : (val as React.ReactNode)}
+            {displayedRows.map((row: any) => (
+              <VFTableRow key={row.id}>
+                {row.getVisibleCells()
+                  .filter((cell: any) => visibleColumns.includes(cell.column.id))
+                  .map((cell: any) => (
+                    <VFTableCell key={cell.id}>
+                      {flexRender ? flexRender(cell.column.columnDef.cell, cell.getContext()) : cell.value}
                     </VFTableCell>
-                  );
-                })}
+                  ))}
               </VFTableRow>
             ))}
           </VFTableBody>

@@ -9,6 +9,8 @@ import {
   VFTabs,
   VFCard,
   VFButton,
+  VFAreaChart,
+  VFBarChart,
 } from '@vidyamaxx/ui';
 import {
   Users,
@@ -108,6 +110,45 @@ function DashboardPage() {
         <VFStatCard title="Teaching Staff Efficiency" value="98.2%" icon={<GraduationCap className="h-5 w-5" />} trend="up" trendLabel="Optimal schedule allocation" />
         <VFStatCard title="Today's Attendance" value="94.5%" icon={<CalendarCheck className="h-5 w-5" />} trend="up" trendLabel="+1.2% vs yesterday" />
         <VFStatCard title="Pending Applications" value="28" icon={<FileText className="h-5 w-5" />} trend="down" trendLabel="18 auto-verified" />
+      </div>
+
+      {/* Real-time BI Executive Analytics Powered by Recharts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <VFCard title="Monthly Attendance & Student Intake Trends (2026-2027)">
+          <VFAreaChart
+            height={220}
+            xKey="month"
+            data={[
+              { month: 'Apr', attendance: 92, intake: 210 },
+              { month: 'May', attendance: 94, intake: 240 },
+              { month: 'Jun', attendance: 91, intake: 190 },
+              { month: 'Jul', attendance: 96, intake: 310 },
+              { month: 'Aug', attendance: 95, intake: 280 },
+              { month: 'Sep', attendance: 97, intake: 340 },
+            ]}
+            dataKeys={[
+              { key: 'attendance', name: 'Attendance Rate (%)', color: '#f97316' },
+              { key: 'intake', name: 'Admissions Intake', color: '#0891b2' },
+            ]}
+          />
+        </VFCard>
+
+        <VFCard title="Fee Collection & Operating Budget Breakdown (₹ Lakhs)">
+          <VFBarChart
+            height={220}
+            xKey="quarter"
+            data={[
+              { quarter: 'Q1 (Apr-Jun)', collected: 84, target: 90 },
+              { quarter: 'Q2 (Jul-Sep)', collected: 96, target: 95 },
+              { quarter: 'Q3 (Oct-Dec)', collected: 78, target: 85 },
+              { quarter: 'Q4 (Jan-Mar)', collected: 88, target: 92 },
+            ]}
+            dataKeys={[
+              { key: 'collected', name: 'Collected Fees', color: '#16a34a' },
+              { key: 'target', name: 'Target Revenue', color: '#eab308' },
+            ]}
+          />
+        </VFCard>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
