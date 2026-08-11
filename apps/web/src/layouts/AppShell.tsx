@@ -105,10 +105,9 @@ function SmallScreenBlocker() {
 import Lenis from 'lenis';
 
 export function AppShell() {
-  const { addNotification } = useGlobalStore();
+  const { addNotification, isAiChatOpen, setIsAiChatOpen } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
-  const [isAiChatOpen, setIsAiChatOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
   const [viewportWidth, setViewportWidth] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth : 1200

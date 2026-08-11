@@ -2,58 +2,63 @@ import * as React from 'react';
 import Lenis from 'lenis';
 import { Link, useLocation } from '@tanstack/react-router';
 import { cn, VFAvatar } from '@vidyamaxx/ui';
+import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import { useGlobalStore } from '../stores/globalStore';
 import {
   LayoutDashboard,
-  Users,
   UserSquare,
+  Users,
   GraduationCap,
+  Calendar,
   CalendarCheck,
   ClipboardList,
   CircleDollarSign,
+  Landmark,
   Briefcase,
   BookOpen,
   Bus,
   Building,
-  MessageSquare,
-  Files,
-  BarChart3,
-  Bot,
-  Settings,
-  Calendar,
   Package,
   MonitorPlay,
-  HeartHandshake,
+  Files,
+  MessageSquare,
+  Sparkles,
+  UserCheck,
+  BarChart3,
+  ShieldCheck,
+  Settings,
   ChevronLeft,
   ChevronRight,
   LogOut,
 } from 'lucide-react';
 
-const navItems = [
-  { id: 'dashboard', label: 'Dashboard & BI', icon: LayoutDashboard, route: '/' },
-  { id: 'admissions', label: 'Admissions', icon: UserSquare, route: '/admissions' },
-  { id: 'students', label: 'Student 360°', icon: Users, route: '/students' },
-  { id: 'academics', label: 'Academics', icon: GraduationCap, route: '/academics' },
-  { id: 'timetable', label: 'Timetable', icon: Calendar, route: '/timetable' },
-  { id: 'attendance', label: 'Attendance', icon: CalendarCheck, route: '/attendance' },
-  { id: 'examinations', label: 'Examinations', icon: ClipboardList, route: '/examinations' },
-  { id: 'finance', label: 'Fees & Finance', icon: CircleDollarSign, route: '/finance' },
-  { id: 'hr', label: 'HR & Payroll', icon: Briefcase, route: '/hr' },
-  { id: 'communication', label: 'Communication', icon: MessageSquare, route: '/communication' },
-  { id: 'transport', label: 'Transport', icon: Bus, route: '/transport' },
-  { id: 'library', label: 'Library', icon: BookOpen, route: '/library' },
-  { id: 'hostel', label: 'Hostel & Life', icon: Building, route: '/hostel' },
-  { id: 'inventory', label: 'Inventory & Procurement', icon: Package, route: '/inventory' },
-  { id: 'documents', label: 'ID & Documents', icon: Files, route: '/documents' },
-  { id: 'lms', label: 'Digital Classroom', icon: MonitorPlay, route: '/lms' },
-  { id: 'welfare', label: 'Student Welfare', icon: HeartHandshake, route: '/welfare' },
-  { id: 'reports', label: 'Reports & Compliance', icon: BarChart3, route: '/reports' },
-  { id: 'ai', label: 'VidyaFlow AI', icon: Bot, route: '/ai' },
-  { id: 'settings', label: 'School Admin', icon: Settings, route: '/settings' },
-];
+const ICON_MAP: Record<string, any> = {
+  LayoutDashboard,
+  UserSquare,
+  Users,
+  GraduationCap,
+  Calendar,
+  CalendarCheck,
+  ClipboardList,
+  CircleDollarSign,
+  Landmark,
+  Briefcase,
+  BookOpen,
+  Bus,
+  Building,
+  Package,
+  MonitorPlay,
+  Files,
+  MessageSquare,
+  Sparkles,
+  UserCheck,
+  BarChart3,
+  ShieldCheck,
+  Settings,
+};
 
 export function Sidebar() {
-  const { sidebarExpanded, toggleSidebar } = useGlobalStore();
+  const { sidebarExpanded, toggleSidebar, toggleAiChat } = useGlobalStore();
   const location = useLocation();
   const sidebarNavRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -123,11 +128,11 @@ export function Sidebar() {
         </button>
       </div>
 
-      {/* Nav List with Dedicated Left-Side Scrollbar (.sidebar-left-scrollbar) & Lenis Smooth Scroll */}
+      {/* 24 Main Modules Navigation List with Dedicated Left-Side Scrollbar (.sidebar-left-scrollbar) & Lenis */}
       <div ref={sidebarNavRef} className="flex-1 overflow-y-auto p-2.5 sidebar-left-scrollbar">
         <div dir="ltr" className="flex flex-col gap-1 w-full">
-          {navItems.map((item) => {
-            const Icon = item.icon;
+          {MODULE_REGISTRY.map((item) => {
+            const Icon = ICON_MAP[item.iconName] || LayoutDashboard;
             const isActive =
               location.pathname === item.route ||
               (item.route !== '/' && location.pathname.startsWith(item.route));
@@ -143,14 +148,33 @@ export function Sidebar() {
                     : 'text-muted-foreground hover:bg-muted/80 hover:text-foreground',
                   !sidebarExpanded && 'justify-center px-0 py-2.5'
                 )}
-                title={!sidebarExpanded ? item.label : undefined}
+                title={!sidebarExpanded ? `${item.code}. ${item.label}` : undefined}
               >
                 <Icon className={cn('h-4.5 w-4.5 shrink-0', isActive && 'text-primary')} />
-                {sidebarExpanded && <span className="animate-fade-in truncate leading-tight">{item.label}</span>}
+                {sidebarExpanded && (
+                  <span className="animate-fade-in truncate leading-tight flex-1">
+                    {item.label}
+                  </span>
+                )}
               </Link>
             );
           })}
         </div>
+      </div>
+
+      {/* Global AI Assistant Entry Button (Distinct & Accessible from Anywhere) */}
+      <div className="p-2.5 border-t border-border/60 bg-muted/20 shrink-0">
+        <button
+          onClick={toggleAiChat}
+          className={cn(
+            "w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all outline-none font-bold text-xs cursor-pointer bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 shadow-xs group",
+            !sidebarExpanded && "justify-center px-0 py-2.5"
+          )}
+          title="Open VidyaFlow AI Assistant"
+        >
+          <Sparkles className="h-4 w-4 text-primary shrink-0 transition-transform group-hover:scale-110" />
+          {sidebarExpanded && <span className="truncate tracking-wide">✨ AI Assistant</span>}
+        </button>
       </div>
 
       {/* User Profile in Sidebar Bottom */}

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Command } from 'cmdk';
 import { VFBadge } from '@vidyamaxx/ui';
+import { MODULE_REGISTRY } from '@vidyamaxx/constants';
+import { useGlobalStore } from '../stores/globalStore';
 import {
   Search,
   LayoutDashboard,
@@ -13,56 +15,97 @@ import {
   CircleDollarSign,
   Landmark,
   Briefcase,
-  MessageSquare,
-  Bus,
   BookOpen,
+  Bus,
   Building,
   Package,
-  Files,
   MonitorPlay,
-  HeartHandshake,
+  Files,
+  MessageSquare,
+  Sparkles,
+  UserCheck,
   BarChart3,
-  Bot,
+  ShieldCheck,
   Settings,
   Plus,
-  Sparkles,
   ArrowRight,
   X,
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 
+const ICON_MAP: Record<string, any> = {
+  LayoutDashboard,
+  UserSquare,
+  Users,
+  GraduationCap,
+  Calendar,
+  CalendarCheck,
+  ClipboardList,
+  CircleDollarSign,
+  Landmark,
+  Briefcase,
+  BookOpen,
+  Bus,
+  Building,
+  Package,
+  MonitorPlay,
+  Files,
+  MessageSquare,
+  Sparkles,
+  UserCheck,
+  BarChart3,
+  ShieldCheck,
+  Settings,
+};
+
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const navigate = useNavigate();
+  const { toggleAiChat } = useGlobalStore();
   const [search, setSearch] = React.useState('');
 
-  const commands = [
-    // Module Navigation
-    { id: 'dash', icon: LayoutDashboard, label: 'Go to Dashboard & BI Radar', route: '/', category: 'Navigation', shortcut: '⌘1' },
-    { id: 'admit', icon: UserSquare, label: 'Go to Admissions & Intake Queue', route: '/admissions', category: 'Navigation', shortcut: '⌘2' },
-    { id: 'stud', icon: Users, label: 'Go to Student 360° Directory', route: '/students', category: 'Navigation', shortcut: '⌘3' },
-    { id: 'acad', icon: GraduationCap, label: 'Go to Academics & Curriculum', route: '/academics', category: 'Navigation', shortcut: '⌘4' },
-    { id: 'time', icon: Calendar, label: 'Go to Timetable & Scheduling', route: '/timetable', category: 'Navigation', shortcut: '⌘5' },
-    { id: 'attend', icon: CalendarCheck, label: 'Go to Attendance & Biometrics', route: '/attendance', category: 'Navigation', shortcut: '⌘6' },
-    { id: 'exam', icon: ClipboardList, label: 'Go to Examination & Report Cards', route: '/examinations', category: 'Navigation', shortcut: '⌘7' },
-    { id: 'fin', icon: CircleDollarSign, label: 'Go to Fees & Student Finance', route: '/finance', category: 'Navigation', shortcut: '⌘8' },
-    { id: 'acct', icon: Landmark, label: 'Go to Finance & Accounting Ledger', route: '/accounting', category: 'Navigation', shortcut: '⌘9' },
-    { id: 'hr', icon: Briefcase, label: 'Go to HR & Staff Payroll', route: '/hr', category: 'Navigation', shortcut: '⌘H' },
-    { id: 'comm', icon: MessageSquare, label: 'Go to Communication & DLT SMS', route: '/communication', category: 'Navigation', shortcut: '⌘C' },
-    { id: 'trans', icon: Bus, label: 'Go to Transport & Live GPS Tracking', route: '/transport', category: 'Navigation', shortcut: '⌘T' },
-    { id: 'lib', icon: BookOpen, label: 'Go to Library & Book Catalog', route: '/library', category: 'Navigation', shortcut: '⌘L' },
-    { id: 'hostel', icon: Building, label: 'Go to Hostel & Campus Life', route: '/hostel', category: 'Navigation', shortcut: '⌘B' },
-    { id: 'inv', icon: Package, label: 'Go to Inventory & Store Procurement', route: '/inventory', category: 'Navigation', shortcut: '⌘I' },
-    { id: 'docs', icon: Files, label: 'Go to ID Studio & Document Vault', route: '/documents', category: 'Navigation', shortcut: '⌘D' },
-    { id: 'lms', icon: MonitorPlay, label: 'Go to Digital Classroom (LMS)', route: '/lms', category: 'Navigation', shortcut: '⌘V' },
-    { id: 'welf', icon: HeartHandshake, label: 'Go to Student Welfare & Discipline', route: '/welfare', category: 'Navigation', shortcut: '⌘W' },
-    { id: 'rep', icon: BarChart3, label: 'Go to Reports & Compliance BI', route: '/reports', category: 'Navigation', shortcut: '⌘R' },
-    { id: 'ai', icon: Bot, label: 'Go to VidyaFlow AI Command Center', route: '/ai', category: 'Navigation', shortcut: '⌘A' },
-    { id: 'sett', icon: Settings, label: 'Go to School Admin & Configuration', route: '/settings', category: 'Navigation', shortcut: '⌘S' },
+  const commands = React.useMemo(() => {
+    const moduleCommands = MODULE_REGISTRY.map((mod) => ({
+      id: mod.id,
+      icon: ICON_MAP[mod.iconName] || LayoutDashboard,
+      label: `Go to ${mod.code}. ${mod.label}`,
+      route: mod.route,
+      category: 'Navigation',
+      shortcut: `⌘${mod.code}`,
+      onSelect: () => {
+        navigate({ to: mod.route });
+        onClose();
+      },
+    }));
 
-    // Quick Actions
-    { id: 'act-new-admit', icon: Plus, label: 'New Admission Application', route: '/admissions', category: 'Actions', shortcut: 'Shift+A' },
-    { id: 'act-ask-ai', icon: Sparkles, label: 'Ask VidyaFlow AI Assistant', route: '/ai', category: 'Actions', shortcut: 'Shift+K' },
-  ];
+    const actionCommands = [
+      {
+        id: 'act-new-admit',
+        icon: Plus,
+        label: 'New Admission Application',
+        route: '/admissions',
+        category: 'Actions',
+        shortcut: 'Shift+A',
+        onSelect: () => {
+          navigate({ to: '/admissions' });
+          onClose();
+        },
+      },
+      {
+        id: 'act-ask-ai',
+        icon: Sparkles,
+        label: 'Ask VidyaFlow AI Assistant',
+        route: '',
+        category: 'Actions',
+        shortcut: 'Shift+K',
+        onSelect: () => {
+          onClose();
+          toggleAiChat();
+        },
+      },
+    ];
+
+    return [...moduleCommands, ...actionCommands];
+  }, [navigate, onClose, toggleAiChat]);
 
   if (!isOpen) return null;
 
@@ -81,7 +124,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             value={search}
             onValueChange={setSearch}
             className="flex-1 h-9 bg-transparent outline-none text-xs text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
-            placeholder="Type a command or search across all 20 ERP modules..."
+            placeholder="Type a command or search across all 24 ERP modules..."
             autoFocus
           />
         </div>
@@ -91,20 +134,17 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1">
             <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
             <p className="font-semibold text-foreground">No matching commands found</p>
-            <p>Try searching for "Admissions", "Fees", "Timetable", or "AI"</p>
+            <p>Try searching for "Admissions", "Fees", "Timetable", "Security", or "AI"</p>
           </Command.Empty>
 
-          <Command.Group heading="Navigation & Module Shortcuts" className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest">
+          <Command.Group heading="24 Main ERP Modules & Actions" className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest">
             {commands.map((cmd) => {
               const Icon = cmd.icon;
               return (
                 <Command.Item
                   key={cmd.id}
                   value={`${cmd.label} ${cmd.category}`}
-                  onSelect={() => {
-                    navigate({ to: cmd.route });
-                    onClose();
-                  }}
+                  onSelect={cmd.onSelect}
                   className="w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary data-[selected=true]:font-bold data-[selected=true]:border-primary/30 data-[selected=true]:shadow-xs text-foreground hover:bg-muted/50"
                 >
                   <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 bg-muted text-muted-foreground group-data-[selected=true]:bg-primary group-data-[selected=true]:text-primary-foreground">
@@ -138,10 +178,16 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           </div>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1 text-primary font-bold text-xs mr-1">
+            <button
+              onClick={() => {
+                onClose();
+                toggleAiChat();
+              }}
+              className="flex items-center gap-1 text-primary font-bold text-xs hover:underline cursor-pointer"
+            >
               <Sparkles className="h-3.5 w-3.5" />
               <span>VidyaFlow AI</span>
-            </div>
+            </button>
 
             {/* Close Button in Bottom Footer */}
             <button

@@ -12,22 +12,30 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelfareRouteImport } from './routes/welfare'
 import { Route as TransportRouteImport } from './routes/transport'
 import { Route as TimetableRouteImport } from './routes/timetable'
+import { Route as SystemRouteImport } from './routes/system'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as LearningRouteImport } from './routes/learning'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as HrRouteImport } from './routes/hr'
 import { Route as HostelRouteImport } from './routes/hostel'
+import { Route as FrontOfficeRouteImport } from './routes/front-office'
 import { Route as FinanceRouteImport } from './routes/finance'
+import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
+import { Route as EventsRouteImport } from './routes/events'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as CommunicationRouteImport } from './routes/communication'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
+import { Route as AdministrationRouteImport } from './routes/administration'
 import { Route as AccountingRouteImport } from './routes/accounting'
 import { Route as AcademicsRouteImport } from './routes/academics'
 import { Route as IndexRouteImport } from './routes/index'
@@ -47,6 +55,11 @@ const TimetableRoute = TimetableRouteImport.update({
   path: '/timetable',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SystemRoute = SystemRouteImport.update({
+  id: '/system',
+  path: '/system',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudentsRoute = StudentsRouteImport.update({
   id: '/students',
   path: '/students',
@@ -57,9 +70,19 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -77,6 +100,11 @@ const LibraryRoute = LibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearningRoute = LearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
@@ -92,14 +120,29 @@ const HostelRoute = HostelRouteImport.update({
   path: '/hostel',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FrontOfficeRoute = FrontOfficeRouteImport.update({
+  id: '/front-office',
+  path: '/front-office',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FinanceRoute = FinanceRouteImport.update({
   id: '/finance',
   path: '/finance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeesRoute = FeesRouteImport.update({
+  id: '/fees',
+  path: '/fees',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExaminationsRoute = ExaminationsRouteImport.update({
   id: '/examinations',
   path: '/examinations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocumentsRoute = DocumentsRouteImport.update({
@@ -127,6 +170,11 @@ const AdmissionsRoute = AdmissionsRouteImport.update({
   path: '/admissions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdministrationRoute = AdministrationRouteImport.update({
+  id: '/administration',
+  path: '/administration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountingRoute = AccountingRouteImport.update({
   id: '/accounting',
   path: '/accounting',
@@ -147,22 +195,30 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
   '/accounting': typeof AccountingRoute
+  '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
   '/communication': typeof CommunicationRoute
   '/documents': typeof DocumentsRoute
+  '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
+  '/fees': typeof FeesRoute
   '/finance': typeof FinanceRoute
+  '/front-office': typeof FrontOfficeRoute
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/inventory': typeof InventoryRoute
+  '/learning': typeof LearningRoute
   '/library': typeof LibraryRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
+  '/system': typeof SystemRoute
   '/timetable': typeof TimetableRoute
   '/transport': typeof TransportRoute
   '/welfare': typeof WelfareRoute
@@ -171,22 +227,30 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
   '/accounting': typeof AccountingRoute
+  '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
   '/communication': typeof CommunicationRoute
   '/documents': typeof DocumentsRoute
+  '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
+  '/fees': typeof FeesRoute
   '/finance': typeof FinanceRoute
+  '/front-office': typeof FrontOfficeRoute
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/inventory': typeof InventoryRoute
+  '/learning': typeof LearningRoute
   '/library': typeof LibraryRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
+  '/system': typeof SystemRoute
   '/timetable': typeof TimetableRoute
   '/transport': typeof TransportRoute
   '/welfare': typeof WelfareRoute
@@ -196,22 +260,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
   '/accounting': typeof AccountingRoute
+  '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
   '/communication': typeof CommunicationRoute
   '/documents': typeof DocumentsRoute
+  '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
+  '/fees': typeof FeesRoute
   '/finance': typeof FinanceRoute
+  '/front-office': typeof FrontOfficeRoute
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/inventory': typeof InventoryRoute
+  '/learning': typeof LearningRoute
   '/library': typeof LibraryRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
+  '/system': typeof SystemRoute
   '/timetable': typeof TimetableRoute
   '/transport': typeof TransportRoute
   '/welfare': typeof WelfareRoute
@@ -222,22 +294,30 @@ export interface FileRouteTypes {
     | '/'
     | '/academics'
     | '/accounting'
+    | '/administration'
     | '/admissions'
     | '/ai'
     | '/attendance'
     | '/communication'
     | '/documents'
+    | '/events'
     | '/examinations'
+    | '/fees'
     | '/finance'
+    | '/front-office'
     | '/hostel'
     | '/hr'
     | '/inventory'
+    | '/learning'
     | '/library'
     | '/lms'
     | '/login'
+    | '/portal'
     | '/reports'
+    | '/security'
     | '/settings'
     | '/students'
+    | '/system'
     | '/timetable'
     | '/transport'
     | '/welfare'
@@ -246,22 +326,30 @@ export interface FileRouteTypes {
     | '/'
     | '/academics'
     | '/accounting'
+    | '/administration'
     | '/admissions'
     | '/ai'
     | '/attendance'
     | '/communication'
     | '/documents'
+    | '/events'
     | '/examinations'
+    | '/fees'
     | '/finance'
+    | '/front-office'
     | '/hostel'
     | '/hr'
     | '/inventory'
+    | '/learning'
     | '/library'
     | '/lms'
     | '/login'
+    | '/portal'
     | '/reports'
+    | '/security'
     | '/settings'
     | '/students'
+    | '/system'
     | '/timetable'
     | '/transport'
     | '/welfare'
@@ -270,22 +358,30 @@ export interface FileRouteTypes {
     | '/'
     | '/academics'
     | '/accounting'
+    | '/administration'
     | '/admissions'
     | '/ai'
     | '/attendance'
     | '/communication'
     | '/documents'
+    | '/events'
     | '/examinations'
+    | '/fees'
     | '/finance'
+    | '/front-office'
     | '/hostel'
     | '/hr'
     | '/inventory'
+    | '/learning'
     | '/library'
     | '/lms'
     | '/login'
+    | '/portal'
     | '/reports'
+    | '/security'
     | '/settings'
     | '/students'
+    | '/system'
     | '/timetable'
     | '/transport'
     | '/welfare'
@@ -295,22 +391,30 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AcademicsRoute: typeof AcademicsRoute
   AccountingRoute: typeof AccountingRoute
+  AdministrationRoute: typeof AdministrationRoute
   AdmissionsRoute: typeof AdmissionsRoute
   AiRoute: typeof AiRoute
   AttendanceRoute: typeof AttendanceRoute
   CommunicationRoute: typeof CommunicationRoute
   DocumentsRoute: typeof DocumentsRoute
+  EventsRoute: typeof EventsRoute
   ExaminationsRoute: typeof ExaminationsRoute
+  FeesRoute: typeof FeesRoute
   FinanceRoute: typeof FinanceRoute
+  FrontOfficeRoute: typeof FrontOfficeRoute
   HostelRoute: typeof HostelRoute
   HrRoute: typeof HrRoute
   InventoryRoute: typeof InventoryRoute
+  LearningRoute: typeof LearningRoute
   LibraryRoute: typeof LibraryRoute
   LmsRoute: typeof LmsRoute
   LoginRoute: typeof LoginRoute
+  PortalRoute: typeof PortalRoute
   ReportsRoute: typeof ReportsRoute
+  SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
   StudentsRoute: typeof StudentsRoute
+  SystemRoute: typeof SystemRoute
   TimetableRoute: typeof TimetableRoute
   TransportRoute: typeof TransportRoute
   WelfareRoute: typeof WelfareRoute
@@ -339,6 +443,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TimetableRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/system': {
+      id: '/system'
+      path: '/system'
+      fullPath: '/system'
+      preLoaderRoute: typeof SystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/students': {
       id: '/students'
       path: '/students'
@@ -353,11 +464,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reports': {
       id: '/reports'
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -381,6 +506,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learning': {
+      id: '/learning'
+      path: '/learning'
+      fullPath: '/learning'
+      preLoaderRoute: typeof LearningRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inventory': {
       id: '/inventory'
       path: '/inventory'
@@ -402,6 +534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HostelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/front-office': {
+      id: '/front-office'
+      path: '/front-office'
+      fullPath: '/front-office'
+      preLoaderRoute: typeof FrontOfficeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/finance': {
       id: '/finance'
       path: '/finance'
@@ -409,11 +548,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FinanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fees': {
+      id: '/fees'
+      path: '/fees'
+      fullPath: '/fees'
+      preLoaderRoute: typeof FeesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/examinations': {
       id: '/examinations'
       path: '/examinations'
       fullPath: '/examinations'
       preLoaderRoute: typeof ExaminationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents': {
@@ -451,6 +604,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/administration': {
+      id: '/administration'
+      path: '/administration'
+      fullPath: '/administration'
+      preLoaderRoute: typeof AdministrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/accounting': {
       id: '/accounting'
       path: '/accounting'
@@ -479,22 +639,30 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AcademicsRoute: AcademicsRoute,
   AccountingRoute: AccountingRoute,
+  AdministrationRoute: AdministrationRoute,
   AdmissionsRoute: AdmissionsRoute,
   AiRoute: AiRoute,
   AttendanceRoute: AttendanceRoute,
   CommunicationRoute: CommunicationRoute,
   DocumentsRoute: DocumentsRoute,
+  EventsRoute: EventsRoute,
   ExaminationsRoute: ExaminationsRoute,
+  FeesRoute: FeesRoute,
   FinanceRoute: FinanceRoute,
+  FrontOfficeRoute: FrontOfficeRoute,
   HostelRoute: HostelRoute,
   HrRoute: HrRoute,
   InventoryRoute: InventoryRoute,
+  LearningRoute: LearningRoute,
   LibraryRoute: LibraryRoute,
   LmsRoute: LmsRoute,
   LoginRoute: LoginRoute,
+  PortalRoute: PortalRoute,
   ReportsRoute: ReportsRoute,
+  SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
   StudentsRoute: StudentsRoute,
+  SystemRoute: SystemRoute,
   TimetableRoute: TimetableRoute,
   TransportRoute: TransportRoute,
   WelfareRoute: WelfareRoute,

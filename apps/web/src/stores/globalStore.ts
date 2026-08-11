@@ -22,6 +22,11 @@ interface GlobalState {
   toggleSidebar: () => void;
   setSidebarExpanded: (expanded: boolean) => void;
 
+  // Global AI Assistant Drawer State
+  isAiChatOpen: boolean;
+  toggleAiChat: () => void;
+  setIsAiChatOpen: (isOpen: boolean) => void;
+
   // First-visit preloader flag
   hasSeenPreloader: boolean;
   setHasSeenPreloader: () => void;
@@ -45,6 +50,11 @@ export const useGlobalStore = create<GlobalState>()(
       sidebarExpanded: true,
       toggleSidebar: () => set((state) => ({ sidebarExpanded: !state.sidebarExpanded })),
       setSidebarExpanded: (sidebarExpanded) => set({ sidebarExpanded }),
+
+      // Global AI Assistant Drawer state
+      isAiChatOpen: false,
+      toggleAiChat: () => set((state) => ({ isAiChatOpen: !state.isAiChatOpen })),
+      setIsAiChatOpen: (isAiChatOpen) => set({ isAiChatOpen }),
 
       // Preloader: false = not yet seen (show it); true = already seen
       hasSeenPreloader: false,
