@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
@@ -16,6 +17,9 @@ import {
   Sparkles,
   CheckCircle2,
   Send,
+  Plus,
+  CreditCard,
+  Receipt,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/fees')({
@@ -34,6 +38,16 @@ interface StudentDueRecord {
   status: 'Paid' | 'Partial' | 'Overdue';
 }
 
+interface FeeStructureItem {
+  id: string;
+  class: string;
+  tuition: number;
+  transport: number;
+  computer: number;
+  activity: number;
+  total: number;
+}
+
 function FeesPage() {
   const feeModule = MODULE_REGISTRY.find((m) => m.id === 'fees');
 
@@ -43,6 +57,13 @@ function FeesPage() {
     { id: '3', rollNo: '1003', name: 'Amit Kumar', class: '10-A', totalFee: 66000, paid: 0, discount: 0, due: 66000, status: 'Overdue' },
     { id: '4', rollNo: '1004', name: 'Sneha Singh', class: '10-A', totalFee: 66000, paid: 66000, discount: 0, due: 0, status: 'Paid' },
     { id: '5', rollNo: '1005', name: 'Vikram Mehta', class: '10-A', totalFee: 66000, paid: 20000, discount: 10000, due: 36000, status: 'Overdue' },
+  ];
+
+  const feeStructures: FeeStructureItem[] = [
+    { id: '1', class: 'Class 9 (General)', tuition: 45000, transport: 12000, computer: 3000, activity: 2500, total: 62500 },
+    { id: '2', class: 'Class 10 (General)', tuition: 48000, transport: 12000, computer: 3500, activity: 2500, total: 66000 },
+    { id: '3', class: 'Class 11 (Science)', tuition: 55000, transport: 14000, computer: 5000, activity: 3000, total: 77000 },
+    { id: '4', class: 'Class 12 (Science)', tuition: 58000, transport: 14000, computer: 5000, activity: 3000, total: 80000 },
   ];
 
   // 1. Fee Dashboard Submodule Content
@@ -95,7 +116,110 @@ function FeesPage() {
     </div>
   );
 
-  // Submodule tabs mapping
+  // 2. Fee Structures Submodule Content
+  const structuresContent = (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Class-Wise Fee Structure Matrix</h3>
+          <p className="text-xs text-muted-foreground">Tuition, transport, computer, and activity breakdown for 2026-2027.</p>
+        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Fee Head</VFButton>
+      </div>
+      <VFDataTable
+        columns={[
+          { header: 'Class Grade', accessorKey: 'class', cell: (r: FeeStructureItem) => <span className="font-bold text-primary">{r.class}</span> },
+          { header: 'Tuition Fee', accessorKey: 'tuition', cell: (r: FeeStructureItem) => `₹ ${r.tuition.toLocaleString('en-IN')}` },
+          { header: 'Transport Fee', accessorKey: 'transport', cell: (r: FeeStructureItem) => `₹ ${r.transport.toLocaleString('en-IN')}` },
+          { header: 'Computer Lab', accessorKey: 'computer', cell: (r: FeeStructureItem) => `₹ ${r.computer.toLocaleString('en-IN')}` },
+          { header: 'Activities & Sports', accessorKey: 'activity', cell: (r: FeeStructureItem) => `₹ ${r.activity.toLocaleString('en-IN')}` },
+          { header: 'Total Annual Fee', accessorKey: 'total', cell: (r: FeeStructureItem) => <span className="font-bold text-foreground">₹ ${r.total.toLocaleString('en-IN')}</span> },
+        ]}
+        data={feeStructures}
+        filterPlaceholder="Filter fee structures..."
+      />
+    </div>
+  );
+
+  // 3. Student Accounts Submodule Content
+  const studentAccountsContent = (
+    <div className="space-y-4">
+      <VFCard title="Student Ledger & Payment History">
+        <p className="text-xs text-muted-foreground mb-3">Individual student ledger statements, installments, and payment receipt downloads.</p>
+        <VFDataTable
+          columns={[
+            { header: 'Roll No', accessorKey: 'rollNo' },
+            { header: 'Student Name', accessorKey: 'name', cell: (r: StudentDueRecord) => <span className="font-bold text-foreground">{r.name}</span> },
+            { header: 'Class', accessorKey: 'class' },
+            { header: 'Paid YTD', accessorKey: 'paid', cell: (r: StudentDueRecord) => <span className="text-success font-semibold">₹ {r.paid.toLocaleString('en-IN')}</span> },
+            { header: 'Current Dues', accessorKey: 'due', cell: (r: StudentDueRecord) => <span className="text-destructive font-semibold">₹ {r.due.toLocaleString('en-IN')}</span> },
+            {
+              header: 'Actions',
+              accessorKey: 'id',
+              cell: () => (
+                <VFButton size="sm" variant="outline" leftIcon={<Receipt className="h-3.5 w-3.5" />}>
+                  Download Receipt
+                </VFButton>
+              ),
+            },
+          ]}
+          data={dueRecords}
+          filterPlaceholder="Search student accounts..."
+        />
+      </VFCard>
+    </div>
+  );
+
+  // 4. Collections Submodule Content
+  const collectionsContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <VFStatCard title="Counter Cash Today" value="₹ 1,42,000" icon={<Receipt className="h-5 w-5" />} description="34 Receipts Issued" />
+        <VFStatCard title="Online Gateway Collections" value="₹ 4,85,000" icon={<CreditCard className="h-5 w-5" />} trend="up" trendLabel="Razorpay & UPI" />
+        <VFStatCard title="Cheques Pending Clearance" value="₹ 85,000" icon={<CircleDollarSign className="h-5 w-5" />} description="3 Cheques Deposited" />
+      </div>
+      <VFCard title="Today's Counter Fee Collection Register">
+        <p className="text-xs text-muted-foreground mb-3">Real-time daily collection counter logs with instant thermal receipt printing.</p>
+      </VFCard>
+    </div>
+  );
+
+  // 5. Discounts & Scholarships Submodule Content
+  const discountsContent = (
+    <div className="space-y-4">
+      <VFCard title="Scholarship, Merit & Staff Sibling Concession Schemes">
+        <div className="space-y-2.5 text-xs mt-2">
+          {[
+            { scheme: 'Merit Excellence Waiver (100% Tuition)', beneficiaries: '14 Students', discountVal: '₹ 6,30,000 Total' },
+            { scheme: 'Sibling Concession (25% Tuition)', beneficiaries: '28 Students', discountVal: '₹ 4,20,000 Total' },
+            { scheme: 'Staff Dependent Scholarship', beneficiaries: '6 Students', discountVal: '₹ 2,00,000 Total' },
+          ].map((d, i) => (
+            <div key={i} className="p-3 bg-muted/40 rounded-xl border border-border/60 flex items-center justify-between">
+              <div>
+                <p className="font-bold text-foreground">{d.scheme}</p>
+                <p className="text-muted-foreground text-xs mt-0.5">{d.beneficiaries}</p>
+              </div>
+              <VFBadge variant="primary">{d.discountVal}</VFBadge>
+            </div>
+          ))}
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // Submodule map
+  const contentMap: Record<string, React.ReactNode> = {
+    dashboard: dashboardContent,
+    structures: structuresContent,
+    'student-accounts': studentAccountsContent,
+    collections: collectionsContent,
+    discounts: discountsContent,
+    payments: collectionsContent,
+    dues: dashboardContent,
+    reports: dashboardContent,
+    settings: structuresContent,
+  };
+
   const submoduleTabs = (feeModule?.submodules || [
     { id: 'dashboard', label: 'Fee Dashboard' },
     { id: 'structures', label: 'Fee Structures' },
@@ -110,7 +234,7 @@ function FeesPage() {
     id: sub.id,
     label: sub.label,
     icon: <CircleDollarSign className="h-3.5 w-3.5" />,
-    content: dashboardContent,
+    content: contentMap[sub.id] || dashboardContent,
   }));
 
   return (
