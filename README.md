@@ -1,4 +1,4 @@
-# VidyaMaxx
+# VidyaMaxx - AI First School Management System
 
 <div align="center">
 
