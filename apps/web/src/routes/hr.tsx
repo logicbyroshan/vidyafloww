@@ -2,388 +2,364 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
+  VFInput,
+  VFSelect,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
-  Users,
-  UserCheck,
-  UserX,
-  Clock,
-  CircleDollarSign,
-  AlertTriangle,
-  Sparkles,
-  Plus,
-  Search,
-  Filter,
-  Download,
-  Upload,
-  CheckCircle2,
-  Award,
-  ShieldCheck,
   Briefcase,
+  Users,
+  Building,
+  CheckCircle2,
+  SlidersHorizontal,
+  Plus,
   Send,
-  Eye,
+  Download,
+  FileText,
+  BarChart3,
+  Award,
+  CreditCard,
+  History,
+  ShieldCheck,
+  UserCheck,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/hr')({
   component: HRPage,
 });
 
-interface EmployeeRecord {
-  id: string;
-  empId: string;
-  name: string;
-  dept: string;
-  desig: string;
-  status: 'Active' | 'Probation' | 'On Leave' | 'Resigned';
-  joiningDate: string;
-  salary: number;
-}
-
-interface CandidateRecord {
-  id: string;
-  name: string;
-  position: string;
-  stage: 'Applied' | 'Shortlisted' | 'Interview' | 'Selected' | 'Offer';
-  experience: string;
-  rating: number;
-}
-
 function HRPage() {
-  const hrModule = MODULE_REGISTRY.find((m) => m.id === 'hr');
+  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const employees: EmployeeRecord[] = [
-    { id: '1', empId: 'EMP-00421', name: 'Rahul Sharma', dept: 'Science Department', desig: 'Senior Mathematics Teacher', status: 'Active', joiningDate: '12 Jun 2023', salary: 43000 },
-    { id: '2', empId: 'EMP-00422', name: 'Priya Patel', dept: 'Administration', desig: 'Senior Accountant', status: 'Active', joiningDate: '03 Apr 2024', salary: 52000 },
-    { id: '3', empId: 'EMP-00423', name: 'Amit Kumar', dept: 'Physics', desig: 'Physics Lab Assistant', status: 'Probation', joiningDate: '15 Jan 2026', salary: 28000 },
-    { id: '4', empId: 'EMP-00424', name: 'Dr. Sarah Connor', dept: 'Science Department', desig: 'Head of Science', status: 'Active', joiningDate: '10 Aug 2021', salary: 85000 },
-    { id: '5', empId: 'EMP-00425', name: 'Vikram Singh', dept: 'Physical Education', desig: 'Sports Director', status: 'On Leave', joiningDate: '01 Nov 2022', salary: 48000 },
+  const staffData = [
+    { empNo: 'EMP-2026-014', name: 'Dr. Sarah Connor', type: 'Teacher (PGT Physics)', dept: 'Science Department', designation: 'Senior PGT Teacher', joiningDate: '15 Jul 2021', salary: '₹68,000/mo', status: 'Active' },
+    { empNo: 'EMP-2026-022', name: 'Mr. Rajesh Sharma', type: 'Teacher (TGT Math)', dept: 'Mathematics Dept', designation: 'TGT Teacher', joiningDate: '10 Aug 2022', salary: '₹54,000/mo', status: 'Active' },
+    { empNo: 'EMP-2026-035', name: 'Mrs. Sunita Rao', type: 'Assistant / Admin Staff', dept: 'Front Office', designation: 'Reception Executive', joiningDate: '01 Jun 2023', salary: '₹32,000/mo', status: 'Active' },
   ];
 
-  const candidates: CandidateRecord[] = [
-    { id: '1', name: 'Ananya Roy', position: 'English Teacher', stage: 'Interview', experience: '5 Yrs', rating: 8.5 },
-    { id: '2', name: 'Rohan Gupta', position: 'Chemistry Lecturer', stage: 'Shortlisted', experience: '3 Yrs', rating: 8.0 },
-    { id: '3', name: 'Sneha Verma', position: 'Primary Teacher', stage: 'Selected', experience: '4 Yrs', rating: 9.0 },
-    { id: '4', name: 'Karan Malhotra', position: 'IT Administrator', stage: 'Offer', experience: '6 Yrs', rating: 8.8 },
+  const staffColumns = [
+    { header: 'Emp Code', accessorKey: 'empNo', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.empNo}</span> },
+    { header: 'Employee Name', accessorKey: 'name', cell: (r: any) => <span className="font-bold text-foreground">{r.name}</span> },
+    { header: 'Staff Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
+    { header: 'Department', accessorKey: 'dept' },
+    { header: 'Designation', accessorKey: 'designation' },
+    { header: 'Monthly Salary', accessorKey: 'salary', cell: (r: any) => <span className="font-mono font-bold text-foreground">{r.salary}</span> },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
-  // 10.1 HR Dashboard Submodule Content
+  // ----------------------------------------------------
+  // SUBMODULE 1 — HR Dashboard
+  // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
-      {/* Top Banner Header */}
-      <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
-        <div>
-          <h2 className="text-base font-bold text-foreground">HR & Workforce Command Center</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Manage 486 school employees, payroll, recruitment pipelines, and staff appraisals.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Sparkles className="h-3.5 w-3.5 text-primary" />}>
-            ✨ Ask HR AI
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Employee</VFButton>
-        </div>
-      </div>
-
-      {/* Feature 1 — HR KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Total Employees" value="486" icon={<Users className="h-5 w-5 text-primary" />} trend="up" trendLabel="462 Active Staff" />
-        <VFStatCard title="Present Today" value="462" icon={<UserCheck className="h-5 w-5 text-success" />} trend="up" trendLabel="95.0% Attendance" />
-        <VFStatCard title="On Leave / Absent" value="24" icon={<UserX className="h-5 w-5 text-warning" />} description="18 Absent · 6 Leave" />
-        <VFStatCard title="Monthly Payroll" value="₹ 42.8 Lakhs" icon={<CircleDollarSign className="h-5 w-5 text-secondary" />} trend="up" trendLabel="August 2026 Draft" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Attendance Breakdown & Workforce Overview */}
-        <VFSection title="Today's Employee Attendance & Workforce Breakdown" className="lg:col-span-2 space-y-4">
-          <div className="p-4 bg-muted/30 border border-border/60 rounded-xl space-y-3">
-            <div className="flex items-center justify-between text-xs font-bold">
-              <span>Employee Attendance Rate (August 11, 2026)</span>
-              <span className="text-success font-mono">95% Present</span>
-            </div>
-            <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex">
-              <div className="bg-success h-full" style={{ width: '95%' }} />
-              <div className="bg-destructive h-full" style={{ width: '3%' }} />
-              <div className="bg-warning h-full" style={{ width: '2%' }} />
-            </div>
-            <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
-              <div className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-success inline-block" /> Present (462)</div>
-              <div className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-destructive inline-block" /> Absent (18)</div>
-              <div className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-warning inline-block" /> On Leave (6)</div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Science Dept</p>
-              <p className="text-base font-bold text-foreground mt-0.5">84 Staff</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Mathematics</p>
-              <p className="text-base font-bold text-foreground mt-0.5">62 Staff</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Administration</p>
-              <p className="text-base font-bold text-foreground mt-0.5">31 Staff</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Support Fleet</p>
-              <p className="text-base font-bold text-foreground mt-0.5">45 Staff</p>
-            </div>
-          </div>
-        </VFSection>
-
-        {/* HR Alerts & Attention Required */}
-        <VFCard title="Attention Required & HR Alerts">
-          <div className="space-y-2.5 text-xs mt-1">
-            <div className="p-2.5 bg-warning/10 border border-warning/30 rounded-lg flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-warning" />
-                <span>7 Staff Documents Expiring Soon</span>
-              </div>
-              <VFBadge variant="warning">Review</VFBadge>
-            </div>
-            <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-lg flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" />
-                <span>4 Unapproved Leave Requests</span>
-              </div>
-              <VFBadge variant="primary">Approve</VFBadge>
-            </div>
-            <div className="p-2.5 bg-secondary/10 border border-secondary/30 rounded-lg flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Award className="h-4 w-4 text-secondary" />
-                <span>3 Annual Appraisals Due</span>
-              </div>
-              <VFBadge variant="outline">Action</VFBadge>
-            </div>
-          </div>
-        </VFCard>
+        <VFStatCard title="Total School Staff" value="142 Employees" icon={<Users className="h-5 w-5 text-primary" />} trend="up" trendLabel="98% Active" />
+        <VFStatCard title="Monthly Payroll Bill" value="₹78,40,000" icon={<CreditCard className="h-5 w-5 text-emerald-500" />} trend="neutral" trendLabel="Processed On 1st" />
+        <VFStatCard title="Today's Staff Attendance" value="96.4%" icon={<UserCheck className="h-5 w-5 text-amber-500" />} description="137 Present Today" />
+        <VFStatCard title="Open Leave Requests" value="3 Requests" icon={<Briefcase className="h-5 w-5 text-purple-500" />} description="Pending Principal Sign-off" />
       </div>
     </div>
   );
 
-  // 10.2 Employee Directory Submodule Content
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Staff Directory
+  // ----------------------------------------------------
   const directoryContent = (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-card border border-border p-3 rounded-xl">
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <div className="relative flex-1 sm:w-64">
-            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search by name, ID, phone..."
-              className="w-full bg-muted/40 border border-border/80 rounded-lg pl-8 pr-3 py-1.5 text-xs text-foreground focus:outline-hidden focus:border-primary"
-            />
-          </div>
-          <VFButton size="sm" variant="outline" leftIcon={<Filter className="h-3.5 w-3.5" />}>Filter</VFButton>
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Employee Master Staff Directory</h3>
+          <p className="text-xs text-muted-foreground font-mono">Teachers, Lab Assistants, Administrative Staff, Drivers, and Housekeeping.</p>
         </div>
-        <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-          <VFButton size="sm" variant="outline" leftIcon={<Upload className="h-3.5 w-3.5" />}>Bulk Import</VFButton>
-          <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export CSV</VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Employee</VFButton>
-        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Staff Member</VFButton>
       </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Employee ID', accessorKey: 'empId', cell: (r: EmployeeRecord) => <span className="font-mono font-bold text-primary">{r.empId}</span> },
-          { header: 'Full Name', accessorKey: 'name', cell: (r: EmployeeRecord) => <span className="font-bold text-foreground">{r.name}</span> },
-          { header: 'Department', accessorKey: 'dept' },
-          { header: 'Designation', accessorKey: 'desig' },
-          { header: 'Joining Date', accessorKey: 'joiningDate' },
-          { header: 'Monthly Salary', accessorKey: 'salary', cell: (r: EmployeeRecord) => `₹ ${r.salary.toLocaleString('en-IN')}` },
-          {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: (r: EmployeeRecord) => (
-              <VFBadge variant={r.status === 'Active' ? 'success' : r.status === 'Probation' ? 'warning' : 'danger'}>
-                {r.status}
-              </VFBadge>
-            ),
-          },
-          {
-            header: 'Actions',
-            accessorKey: 'id',
-            cell: () => (
-              <VFButton size="sm" variant="outline" leftIcon={<Eye className="h-3.5 w-3.5" />}>
-                360° Profile
-              </VFButton>
-            ),
-          },
-        ]}
-        data={employees}
-        filterPlaceholder="Search employee directory..."
-      />
+      <VFDataTable columns={staffColumns} data={staffData} filterPlaceholder="Search staff member, designation, or department..." />
     </div>
   );
 
-  // 10.3 Employee Profile (Employee 360) Submodule Content
-  const profileContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 3 — Staff Profiles
+  // ----------------------------------------------------
+  const profilesContent = (
     <div className="space-y-4">
-      {/* Top Employee 360 Header Card */}
-      <div className="bg-card border border-border p-4 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center text-primary font-bold text-xl">
-            RS
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-foreground">Rahul Sharma</h2>
-              <VFBadge variant="success">Active</VFBadge>
-            </div>
-            <p className="text-xs font-semibold text-primary">Senior Mathematics Teacher · Science Department</p>
-            <p className="text-xs text-muted-foreground mt-0.5">ID: EMP-00421 · Joined: 12 Jun 2023 · Campus: Main Wing</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Briefcase className="h-3.5 w-3.5" />}>Promote / Revision</VFButton>
-          <VFButton size="sm" leftIcon={<Sparkles className="h-3.5 w-3.5" />}>Ask HR AI</VFButton>
-        </div>
-      </div>
-
-      {/* Visual Career Timeline & Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <VFCard title="Career & Promotion History" className="lg:col-span-2">
-          <div className="relative border-l-2 border-primary/30 pl-4 space-y-4 my-2 text-xs">
-            <div className="relative">
-              <span className="absolute -left-[21px] top-0 h-3.5 w-3.5 rounded-full bg-primary border-2 border-background" />
-              <p className="font-bold text-foreground">2026 — Promoted to Senior Mathematics Teacher</p>
-              <p className="text-muted-foreground text-xs">Assigned Head of Grade 10 Curriculum & CBSE Board Coordinator.</p>
-            </div>
-            <div className="relative">
-              <span className="absolute -left-[21px] top-0 h-3.5 w-3.5 rounded-full bg-muted-foreground border-2 border-background" />
-              <p className="font-bold text-foreground">2025 — Transferred to Main Campus Science Department</p>
-              <p className="text-muted-foreground text-xs">Relocated from Junior Wing Campus.</p>
-            </div>
-            <div className="relative">
-              <span className="absolute -left-[21px] top-0 h-3.5 w-3.5 rounded-full bg-muted-foreground border-2 border-background" />
-              <p className="font-bold text-foreground">2023 — Joined Springfield Academy</p>
-              <p className="text-muted-foreground text-xs">Appointed as Assistant Mathematics Teacher.</p>
-            </div>
-          </div>
-        </VFCard>
-
-        <VFCard title="Personal & Emergency Details">
-          <div className="space-y-2 text-xs">
-            <p><span className="text-muted-foreground">Contact Phone:</span> <span className="font-semibold text-foreground">+91 98765 43210</span></p>
-            <p><span className="text-muted-foreground">Email Address:</span> <span className="font-semibold text-foreground">rahul.sharma@vidyamaxx.edu</span></p>
-            <p><span className="text-muted-foreground">Emergency Contact:</span> <span className="font-semibold text-foreground">Sunita Sharma (Spouse) - +91 98765 11223</span></p>
-            <p><span className="text-muted-foreground">PF Account No:</span> <span className="font-mono font-bold text-primary">MH/BAN/00421/PF</span></p>
-          </div>
-        </VFCard>
-      </div>
+      <VFCard title="Comprehensive Employee Profile & Qualifications Vault">
+        <p className="text-xs text-muted-foreground mb-3">Academic degrees, B.Ed. credentials, PAN card, Aadhaar, and emergency contacts.</p>
+      </VFCard>
     </div>
   );
 
-  // 10.4 Recruitment (Lightweight ATS) Submodule Content
-  const recruitmentContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 4 — Staff Types
+  // ----------------------------------------------------
+  const staffTypesContent = (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Open Positions" value="8" icon={<Briefcase className="h-5 w-5 text-primary" />} trend="up" trendLabel="3 Critical Posts" />
-        <VFStatCard title="Active Applicants" value="142" icon={<Users className="h-5 w-5 text-secondary" />} trend="up" trendLabel="This Month" />
-        <VFStatCard title="Interviews Scheduled" value="24" icon={<Clock className="h-5 w-5 text-warning" />} description="This Week" />
-        <VFStatCard title="Offers Issued" value="7" icon={<CheckCircle2 className="h-5 w-5 text-success" />} trend="up" trendLabel="4 Accepted" />
-      </div>
-
-      <VFSection title="Candidate Pipeline (Applicant Tracking System)">
-        <VFDataTable
-          columns={[
-            { header: 'Candidate Name', accessorKey: 'name', cell: (r: CandidateRecord) => <span className="font-bold text-foreground">{r.name}</span> },
-            { header: 'Applied Position', accessorKey: 'position', cell: (r: CandidateRecord) => <span className="text-primary font-semibold">{r.position}</span> },
-            { header: 'Experience', accessorKey: 'experience' },
-            { header: 'AI Rating', accessorKey: 'rating', cell: (r: CandidateRecord) => <span className="font-bold text-success">★ {r.rating} / 10</span> },
-            {
-              header: 'Stage',
-              accessorKey: 'stage',
-              cell: (r: CandidateRecord) => (
-                <VFBadge variant={r.stage === 'Selected' || r.stage === 'Offer' ? 'success' : 'warning'}>
-                  {r.stage}
-                </VFBadge>
-              ),
-            },
-            {
-              header: 'Action',
-              accessorKey: 'id',
-              cell: () => (
-                <VFButton size="sm" variant="outline" leftIcon={<UserCheck className="h-3.5 w-3.5" />}>
-                  Convert to Staff
-                </VFButton>
-              ),
-            },
-          ]}
-          data={candidates}
-          filterPlaceholder="Search candidates or applied positions..."
-        />
-      </VFSection>
-    </div>
-  );
-
-  // 10.6 Payroll Submodule Content
-  const payrollContent = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Gross Payroll (Aug 2026)" value="₹ 52.4 Lakhs" icon={<CircleDollarSign className="h-5 w-5 text-primary" />} trend="up" trendLabel="486 Staff" />
-        <VFStatCard title="Total Statutory Deductions" value="₹ 7.8 Lakhs" icon={<ShieldCheck className="h-5 w-5 text-warning" />} description="PF, ESI & TDS Tax" />
-        <VFStatCard title="Net Payout Amount" value="₹ 44.6 Lakhs" icon={<CheckCircle2 className="h-5 w-5 text-success" />} trend="up" trendLabel="Ready for Payout" />
-        <VFStatCard title="Payroll Status" value="Approved" icon={<Sparkles className="h-5 w-5 text-secondary" />} trend="up" trendLabel="Finance Signed Off" />
-      </div>
-
-      <VFCard title="August 2026 Guided Payroll Run & Payslips">
-        <div className="flex items-center justify-between mb-4 bg-muted/40 p-3 rounded-xl border border-border/60">
-          <div>
-            <p className="font-bold text-xs text-foreground">Guided Payroll Status: Ready for Bank File Generation</p>
-            <p className="text-xs text-muted-foreground">486 Payslips generated and verified with 0 unresolved exceptions.</p>
+      <VFCard title="Staff Type Concept (Teacher / Assistant / Admin / Support)">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs mt-2">
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Teaching Faculty (PGT/TGT/PRT)</span>
+            <p className="text-muted-foreground text-xs mt-1">68 Members · Classroom Teaching</p>
           </div>
-          <VFButton size="sm" leftIcon={<Send className="h-3.5 w-3.5" />}>
-            Publish Payslips & Process Payout
-          </VFButton>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Lab & Classroom Assistant</span>
+            <p className="text-muted-foreground text-xs mt-1">18 Members · Practical Lab Support</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Administrative & Accounts</span>
+            <p className="text-muted-foreground text-xs mt-1">24 Members · Front Desk & Office</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Transport & Support Staff</span>
+            <p className="text-muted-foreground text-xs mt-1">32 Members · Drivers, Maintenance</p>
+          </div>
         </div>
       </VFCard>
     </div>
   );
 
-  // Submodule map
-  const contentMap: Record<string, React.ReactNode> = {
-    dashboard: dashboardContent,
-    directory: directoryContent,
-    profiles: profileContent,
-    recruitment: recruitmentContent,
-    'attendance-leave': dashboardContent,
-    payroll: payrollContent,
-    'salary-structure': payrollContent,
-    performance: profileContent,
-    documents: directoryContent,
-    reports: dashboardContent,
-  };
+  // ----------------------------------------------------
+  // SUBMODULE 5 — Departments
+  // ----------------------------------------------------
+  const departmentsContent = (
+    <div className="space-y-4">
+      <VFCard title="Academic & Administrative Department Hierarchy">
+        <p className="text-xs text-muted-foreground mb-3">Science, Mathematics, Humanities, Physical Education, Accounts, and Transport.</p>
+      </VFCard>
+    </div>
+  );
 
-  const submoduleTabs = (hrModule?.submodules || [
-    { id: 'dashboard', label: 'HR Dashboard' },
-    { id: 'directory', label: 'Employee Directory' },
-    { id: 'profiles', label: 'Employee Profiles' },
-    { id: 'recruitment', label: 'Recruitment' },
-    { id: 'attendance-leave', label: 'Attendance & Leave' },
-    { id: 'payroll', label: 'Payroll' },
-    { id: 'salary-structure', label: 'Salary Structure' },
-    { id: 'performance', label: 'Performance' },
-    { id: 'documents', label: 'Employee Documents' },
-    { id: 'reports', label: 'HR Reports' },
-  ]).map((sub) => ({
-    id: sub.id,
-    label: sub.label,
-    icon: <Briefcase className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
-  }));
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Designations
+  // ----------------------------------------------------
+  const designationsContent = (
+    <div className="space-y-4">
+      <VFCard title="Job Designations & Grade Bands Master">
+        <p className="text-xs text-muted-foreground mb-3">Principal, Vice Principal, HOD, PGT, TGT, PRT, Senior Accountant, Executive.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Joining & Onboarding
+  // ----------------------------------------------------
+  const onboardingContent = (
+    <div className="space-y-4">
+      <VFCard title="New Employee Joining & Onboarding Checklist">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Offer letter generation, document verification, biometric enrollment, and email creation.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Staff Documents
+  // ----------------------------------------------------
+  const documentsContent = (
+    <div className="space-y-4">
+      <VFCard title="Staff Service Book & Document Vault">
+        <p className="text-xs text-muted-foreground mb-3">Police verification, appointment letters, qualification certificates, and background checks.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 9 — Staff Attendance
+  // ----------------------------------------------------
+  const attendanceContent = (
+    <div className="space-y-4">
+      <VFCard title="Biometric & Facial Recognition Staff Attendance Terminal">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Capture daily punch-in/punch-out timestamps with late arrival calculations.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 10 — Leave Management
+  // ----------------------------------------------------
+  const leaveContent = (
+    <div className="space-y-4">
+      <VFCard title="Staff Leave Quota & Application Approval Workflow">
+        <p className="text-xs text-muted-foreground mb-3">Casual Leave (CL), Earned Leave (EL), Medical Leave (ML), and Duty Leave (DL).</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Work Assignments
+  // ----------------------------------------------------
+  const assignmentsContent = (
+    <div className="space-y-4">
+      <VFCard title="Teacher Class Load & Administrative Task Duties">
+        <p className="text-xs text-muted-foreground mb-3">Assign house master duties, exam invigilation duties, and bus route responsibilities.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 12 — Staff Transfers
+  // ----------------------------------------------------
+  const transfersContent = (
+    <div className="space-y-4">
+      <VFCard title="Inter-Branch & Departmental Staff Transfers">
+        <p className="text-xs text-muted-foreground mb-3">Record inter-campus transfers and department re-assignments.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 13 — Resignation & Exit
+  // ----------------------------------------------------
+  const exitContent = (
+    <div className="space-y-4">
+      <VFCard title="Employee Resignation, Exit Interview & No-Dues Clearance">
+        <p className="text-xs text-muted-foreground mb-3">Clearance from Library, Accounts, IT, and issue Experience Certificate.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 14 — Employee History
+  // ----------------------------------------------------
+  const historyContent = (
+    <div className="space-y-4">
+      <VFCard title="Complete Service Record & Promotion History">
+        <p className="text-xs text-muted-foreground mb-3">Historical timeline of salary increments, promotions, and annual performance appraisals.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 15 — Salary Structures
+  // ----------------------------------------------------
+  const salaryStructuresContent = (
+    <div className="space-y-4">
+      <VFCard title="7th Pay Commission & Custom Salary Scale Slabs">
+        <p className="text-xs text-muted-foreground mb-3">Configure Basic Pay, HRA, Dearness Allowance (DA), Transport Allowance (TA), and PF.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 16 — Payroll Processing
+  // ----------------------------------------------------
+  const payrollContent = (
+    <div className="space-y-4">
+      <VFCard title="Monthly Payroll Calculation & Bank Direct Deposit Dispatch">
+        <p className="text-xs text-muted-foreground mb-3 font-mono font-bold">Auto-calculate net pay based on biometric attendance and unpaid leave days.</p>
+        <VFButton size="sm" leftIcon={<Send className="h-3.5 w-3.5" />}>Run Monthly Payroll Batch</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 17 — Advances & Loans
+  // ----------------------------------------------------
+  const loansContent = (
+    <div className="space-y-4">
+      <VFCard title="Staff Salary Advance & Emergency Loan Management">
+        <p className="text-xs text-muted-foreground mb-3">Track salary advance disburser ledgers and monthly installment payroll deductions.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 18 — Deductions
+  // ----------------------------------------------------
+  const deductionsContent = (
+    <div className="space-y-4">
+      <VFCard title="PF, ESI, Professional Tax (PT) & TDS Tax Deductions">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Provident Fund (EPFO 12%), ESI, Professional Tax, and Income Tax TDS deductions.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 19 — Payslips
+  // ----------------------------------------------------
+  const payslipsContent = (
+    <div className="space-y-4">
+      <VFCard title="Digital Monthly Payslip Generator & Portal Download">
+        <p className="text-xs text-muted-foreground mb-3">Generate password-protected PDF payslips sent automatically to staff emails.</p>
+        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Bulk Export Payslips (PDF)</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 20 — Payroll Reports
+  // ----------------------------------------------------
+  const payrollReportsContent = (
+    <div className="space-y-4">
+      <VFCard title="Monthly Salary Sheet & Bank Direct Advice Reports">
+        <p className="text-xs text-muted-foreground mb-3">Generate HDFC bank advice format text file for direct bulk salary transfer.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 21 — HR Reports
+  // ----------------------------------------------------
+  const reportsContent = (
+    <div className="space-y-4">
+      <VFCard title="Staff Attrition, Attendance & HR Analytics Reports">
+        <p className="text-xs text-muted-foreground mb-3">Staff turnover rate, department headcount distribution, and PF/ESI challans.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 22 — HR Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global HR Engine & Statutory Compliance Settings">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Employee ID Code Prefix" defaultValue="EMP-2026-" />
+          <VFSelect label="PF Employer Contribution Rate" options={[{ label: '12% of Basic Pay', value: '12' }, { label: 'Statutory Capped Cap', value: 'cap' }]} />
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 22 SUBMODULE TABS MAPPED
+  // ----------------------------------------------------
+  const submoduleTabs = [
+    { id: 'dashboard', label: 'HR Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'directory', label: 'Staff Directory', icon: <Users className="h-3.5 w-3.5" />, content: directoryContent },
+    { id: 'profiles', label: 'Staff Profiles', icon: <Users className="h-3.5 w-3.5" />, content: profilesContent },
+    { id: 'staff-types', label: 'Staff Types', icon: <Briefcase className="h-3.5 w-3.5" />, content: staffTypesContent },
+    { id: 'departments', label: 'Departments', icon: <Building className="h-3.5 w-3.5" />, content: departmentsContent },
+    { id: 'designations', label: 'Designations', icon: <Award className="h-3.5 w-3.5" />, content: designationsContent },
+    { id: 'onboarding', label: 'Joining & Onboarding', icon: <UserCheck className="h-3.5 w-3.5" />, content: onboardingContent },
+    { id: 'documents', label: 'Staff Documents', icon: <FileText className="h-3.5 w-3.5" />, content: documentsContent },
+    { id: 'attendance', label: 'Staff Attendance', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: attendanceContent },
+    { id: 'leave', label: 'Leave Management', icon: <Briefcase className="h-3.5 w-3.5" />, content: leaveContent },
+    { id: 'assignments', label: 'Work Assignments', icon: <Briefcase className="h-3.5 w-3.5" />, content: assignmentsContent },
+    { id: 'transfers', label: 'Staff Transfers', icon: <Building className="h-3.5 w-3.5" />, content: transfersContent },
+    { id: 'exit', label: 'Resignation & Exit', icon: <History className="h-3.5 w-3.5" />, content: exitContent },
+    { id: 'history', label: 'Employee History', icon: <History className="h-3.5 w-3.5" />, content: historyContent },
+    { id: 'salary-structures', label: 'Salary Structures', icon: <CreditCard className="h-3.5 w-3.5" />, content: salaryStructuresContent },
+    { id: 'payroll', label: 'Payroll Processing', icon: <CreditCard className="h-3.5 w-3.5" />, content: payrollContent },
+    { id: 'loans', label: 'Advances & Loans', icon: <CreditCard className="h-3.5 w-3.5" />, content: loansContent },
+    { id: 'deductions', label: 'Deductions', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: deductionsContent },
+    { id: 'payslips', label: 'Payslips', icon: <Download className="h-3.5 w-3.5" />, content: payslipsContent },
+    { id: 'payroll-reports', label: 'Payroll Reports', icon: <Download className="h-3.5 w-3.5" />, content: payrollReportsContent },
+    { id: 'reports', label: 'HR Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: 'HR Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={submoduleTabs} defaultTabId="dashboard" variant="top-bar" />
+      <VFTabs
+        items={submoduleTabs}
+        activeTabId={activeSubmodule}
+        onTabChange={setActiveSubmodule}
+        variant="top-bar"
+      />
     </VFPageContainer>
   );
 }

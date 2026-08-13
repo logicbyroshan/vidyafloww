@@ -35,6 +35,14 @@ import {
   Send,
   AlertCircle,
   SlidersHorizontal,
+  Settings,
+  BarChart3,
+  CreditCard,
+  UserPlus,
+  Layers,
+  Award,
+  CheckSquare,
+  Megaphone,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/admissions')({
@@ -143,7 +151,40 @@ function AdmissionsPage() {
   ];
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission Enquiries
+  // SUBMODULE 1 — Admission Dashboard
+  // ----------------------------------------------------
+  const dashboardContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <VFStatCard title="Total Enquiries Received" value="342" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="+28 this week" />
+        <VFStatCard title="Applications Submitted" value="148" icon={<UserSquare className="h-5 w-5" />} trend="up" trendLabel="+18 today" />
+        <VFStatCard title="Merit Approved" value="88" icon={<Award className="h-5 w-5" />} trend="up" trendLabel="Ready for Enrollment" />
+        <VFStatCard title="Final Enrolled Students" value="76" icon={<CheckSquare className="h-5 w-5" />} trend="up" trendLabel="86.3% Conversion Rate" />
+      </div>
+
+      <VFCard title="7-Stage Admission Funnel Conversion Matrix">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-2 text-xs text-center mt-2">
+          {[
+            { stage: 'Enquiries', count: 342, conv: '100%' },
+            { stage: 'Contacted', count: 280, conv: '81.8%' },
+            { stage: 'Interested', count: 195, conv: '69.6%' },
+            { stage: 'Applications', count: 148, conv: '75.8%' },
+            { stage: 'Selected', count: 88, conv: '59.4%' },
+            { stage: 'Enrolled', count: 76, conv: '86.3%' },
+          ].map((fn, i) => (
+            <div key={i} className="p-3 bg-muted/40 border border-border/60 rounded-xl space-y-1">
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">{fn.stage}</span>
+              <p className="text-xl font-black text-foreground">{fn.count}</p>
+              <VFBadge variant="success" className="mx-auto text-[10px]">{fn.conv}</VFBadge>
+            </div>
+          ))}
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Enquiries
   // ----------------------------------------------------
   const enquiriesData = [
     { code: 'ENQ-2026-092', candidate: 'Siddharth Varma', grade: 'Class 9', guardian: 'Meena Varma', phone: '+91 98111 22233', source: 'Walk-in', status: 'Follow-up Due', nextAction: 'Campus Tour Tomorrow' },
@@ -197,9 +238,9 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission CRM (Kanban & Lead Scoring)
+  // SUBMODULE 3 — Leads & Follow-ups
   // ----------------------------------------------------
-  const crmContent = (
+  const leadsContent = (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
         <div>
@@ -236,100 +277,32 @@ function AdmissionsPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <VFCard title="Scheduled Follow-up Roster">
-          <div className="space-y-2.5 text-xs mt-2">
-            {[
-              { parent: 'Mr. Sunil Sengupta', candidate: 'Rhea Sengupta', date: 'Aug 12, 10:30 AM', action: 'Phone Call: Discuss Bus Route 4 Availability', assignee: 'Counsellor Priya' },
-              { parent: 'Mrs. Meena Varma', candidate: 'Siddharth Varma', date: 'Aug 12, 02:00 PM', action: 'WhatsApp: Send Fee Structure PDF', assignee: 'Counsellor Amit' },
-            ].map((f, i) => (
-              <div key={i} className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
-                <div>
-                  <p className="font-bold text-foreground">{f.parent} ({f.candidate})</p>
-                  <p className="text-muted-foreground text-xs mt-0.5">{f.action}</p>
-                </div>
-                <div className="text-right">
-                  <VFBadge variant="warning">{f.date}</VFBadge>
-                  <p className="text-[10px] text-muted-foreground mt-1">{f.assignee}</p>
-                </div>
+      <VFCard title="Scheduled Follow-up Roster">
+        <div className="space-y-2.5 text-xs mt-2">
+          {[
+            { parent: 'Mr. Sunil Sengupta', candidate: 'Rhea Sengupta', date: 'Aug 12, 10:30 AM', action: 'Phone Call: Discuss Bus Route 4 Availability', assignee: 'Counsellor Priya' },
+            { parent: 'Mrs. Meena Varma', candidate: 'Siddharth Varma', date: 'Aug 12, 02:00 PM', action: 'WhatsApp: Send Fee Structure PDF', assignee: 'Counsellor Amit' },
+          ].map((f, i) => (
+            <div key={i} className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
+              <div>
+                <p className="font-bold text-foreground">{f.parent} ({f.candidate})</p>
+                <p className="text-muted-foreground text-xs mt-0.5">{f.action}</p>
               </div>
-            ))}
-          </div>
-        </VFCard>
-
-        <VFCard title="Admission Campaign ROI Matrix">
-          <div className="space-y-2.5 text-xs mt-2">
-            {[
-              { campaign: 'Google Search Ads 2026', leads: '180 Leads', converted: '42 Enrolled', budget: '₹45,000', roi: '8.4x ROI' },
-              { campaign: 'School Open House Event', leads: '95 Leads', converted: '38 Enrolled', budget: '₹20,000', roi: '12.2x ROI' },
-              { campaign: 'Existing Parent Referral Scheme', leads: '68 Leads', converted: '32 Enrolled', budget: '₹10,000', roi: '15.6x ROI' },
-            ].map((c, i) => (
-              <div key={i} className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
-                <div>
-                  <p className="font-bold text-foreground">{c.campaign}</p>
-                  <p className="text-muted-foreground text-xs mt-0.5">{c.leads} · {c.converted}</p>
-                </div>
-                <div className="text-right">
-                  <VFBadge variant="success">{c.roi}</VFBadge>
-                  <p className="text-[10px] text-muted-foreground mt-1">Budget: {c.budget}</p>
-                </div>
+              <div className="text-right">
+                <VFBadge variant="warning">{f.date}</VFBadge>
+                <p className="text-[10px] text-muted-foreground mt-1">{f.assignee}</p>
               </div>
-            ))}
-          </div>
-        </VFCard>
-      </div>
+            </div>
+          ))}
+        </div>
+      </VFCard>
     </div>
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission Forms (Builder & Online Portal)
+  // SUBMODULE 4 — Applications
   // ----------------------------------------------------
-  const formsContent = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <VFStatCard title="Active Form Version" value="v2.4 (2026-27)" icon={<FileText className="h-5 w-5" />} trend="up" trendLabel="Published Live" />
-        <VFStatCard title="Public Form Link" value="school.com/adm" icon={<BrainCircuit className="h-5 w-5" />} trend="neutral" trendLabel="SSL Encrypted" />
-        <VFStatCard title="Application Fee Gateway" value="₹1,000 / Form" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="Razorpay Live" />
-        <VFStatCard title="Custom Fields Configured" value="14 Attributes" icon={<SlidersHorizontal className="h-5 w-5" />} description="RTE & Transport Rules" />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <VFCard title="Drag & Drop Form Builder Palette">
-          <p className="text-xs text-muted-foreground mb-3">Configure fields and conditional display rules for the 2026-27 online admission application form.</p>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            {['Student Personal Details', 'Parent / Guardian Info', 'Previous Academic Records', 'Medical History & Allergies', 'Transport & Route Stop', 'RTE Reservation Category'].map((f, i) => (
-              <div key={i} className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
-                <span className="font-bold text-foreground">{f}</span>
-                <VFBadge variant="success">Active</VFBadge>
-              </div>
-            ))}
-          </div>
-        </VFCard>
-
-        <VFCard title="Form Templates & Conditional Rules">
-          <div className="space-y-3 text-xs mt-1">
-            <div className="p-3 bg-primary/10 border border-primary/25 rounded-lg">
-              <span className="font-bold text-foreground flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-primary" /> Conditional Rule #1: Transport Selection
-              </span>
-              <p className="text-muted-foreground mt-1 font-mono text-[11px]">WHEN [Transport Required] == 'YES' ➔ SHOW [Route Stop Dropdown & Fee]</p>
-            </div>
-            <div className="p-3 bg-muted/40 border border-border/60 rounded-lg">
-              <span className="font-bold text-foreground flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-success" /> Conditional Rule #2: Sibling Discount Rule
-              </span>
-              <p className="text-muted-foreground mt-1 font-mono text-[11px]">WHEN [Has Enrolled Sibling] == 'YES' ➔ SHOW [Sibling Roll No Field]</p>
-            </div>
-          </div>
-        </VFCard>
-      </div>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE — Application Management (Main Queue)
-  // ----------------------------------------------------
-  const applicationsQueueContent = (
+  const applicationsContent = (
     <div className="space-y-4">
       {correctionNotice && (
         <div className="p-4 bg-warning/10 border border-warning/30 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in">
@@ -376,9 +349,148 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission Assessment (Entrance Tests & Interviews)
+  // SUBMODULE 5 — Admission Forms
   // ----------------------------------------------------
-  const assessmentContent = (
+  const formsContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <VFStatCard title="Active Form Version" value="v2.4 (2026-27)" icon={<FileText className="h-5 w-5" />} trend="up" trendLabel="Published Live" />
+        <VFStatCard title="Public Form Link" value="school.com/adm" icon={<BrainCircuit className="h-5 w-5" />} trend="neutral" trendLabel="SSL Encrypted" />
+        <VFStatCard title="Application Fee Gateway" value="₹1,000 / Form" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="Razorpay Live" />
+        <VFStatCard title="Custom Fields Configured" value="14 Attributes" icon={<SlidersHorizontal className="h-5 w-5" />} description="RTE & Transport Rules" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <VFCard title="Drag & Drop Form Builder Palette">
+          <p className="text-xs text-muted-foreground mb-3">Configure fields and conditional display rules for the 2026-27 online admission application form.</p>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            {['Student Personal Details', 'Parent / Guardian Info', 'Previous Academic Records', 'Medical History & Allergies', 'Transport & Route Stop', 'RTE Reservation Category'].map((f, i) => (
+              <div key={i} className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
+                <span className="font-bold text-foreground">{f}</span>
+                <VFBadge variant="success">Active</VFBadge>
+              </div>
+            ))}
+          </div>
+        </VFCard>
+
+        <VFCard title="Form Templates & Conditional Rules">
+          <div className="space-y-3 text-xs mt-1">
+            <div className="p-3 bg-primary/10 border border-primary/25 rounded-lg">
+              <span className="font-bold text-foreground flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-primary" /> Conditional Rule #1: Transport Selection
+              </span>
+              <p className="text-muted-foreground mt-1 font-mono text-[11px]">WHEN [Transport Required] == 'YES' ➔ SHOW [Route Stop Dropdown & Fee]</p>
+            </div>
+            <div className="p-3 bg-muted/40 border border-border/60 rounded-lg">
+              <span className="font-bold text-foreground flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-success" /> Conditional Rule #2: Sibling Discount Rule
+              </span>
+              <p className="text-muted-foreground mt-1 font-mono text-[11px]">WHEN [Has Enrolled Sibling] == 'YES' ➔ SHOW [Sibling Roll No Field]</p>
+            </div>
+          </div>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Applicant Documents
+  // ----------------------------------------------------
+  const applicantDocsContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <VFCard title="Required Document Matrix">
+          <span className="text-lg font-bold text-foreground block mt-1">6 Mandated Uploads</span>
+          <p className="text-xs text-muted-foreground mt-1">Birth Cert, TC, Marksheets, Aadhaar, Photo, Medical Cert.</p>
+        </VFCard>
+        <VFCard title="Pending Document Vault">
+          <span className="text-lg font-bold text-warning block mt-1">14 Uploads Pending</span>
+          <p className="text-xs text-muted-foreground mt-1">Automated WhatsApp reminder scheduled.</p>
+        </VFCard>
+        <VFCard title="Document Verification Rate">
+          <span className="text-lg font-bold text-success block mt-1">94.2% Passed</span>
+          <p className="text-xs text-muted-foreground mt-1">124 document packages verified.</p>
+        </VFCard>
+      </div>
+
+      <VFCard title="Applicant Document Upload Status Register">
+        <div className="space-y-2.5 text-xs mt-2">
+          {[
+            { applicant: 'Aarav Sharma (ADM-001)', grade: 'Class 9', docs: '6 / 6 Uploaded', status: 'Complete', ocr: 'Verified' },
+            { applicant: 'Ananya Verma (ADM-002)', grade: 'Class 11-Sci', docs: '6 / 6 Uploaded', status: 'Complete', ocr: 'Verified' },
+            { applicant: 'Rohan Gupta (ADM-003)', grade: 'Class 6', docs: '4 / 6 Uploaded', status: 'TC Pending', ocr: 'Flagged' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between p-3.5 bg-muted/40 rounded-xl border border-border/60">
+              <div>
+                <span className="font-bold text-foreground text-sm">{item.applicant}</span>
+                <p className="text-muted-foreground mt-0.5">Grade: {item.grade} · Progress: {item.docs}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <VFBadge variant={item.status === 'Complete' ? 'success' : 'warning'}>{item.status}</VFBadge>
+                <VFBadge variant={item.ocr === 'Verified' ? 'primary' : 'danger'}>{item.ocr}</VFBadge>
+              </div>
+            </div>
+          ))}
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Verification
+  // ----------------------------------------------------
+  const verificationContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <VFCard title="AI OCR Extraction Engine">
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-2xl font-black text-success">98.4% Match</span>
+            <VFBadge variant="success">Active Engine</VFBadge>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">Automated data extraction from Birth Certificates, TCs, and Aadhaar copies.</p>
+        </VFCard>
+        <VFCard title="Document Mismatch Alerts">
+          <span className="text-2xl font-black text-warning mt-2 block">2 Cases Flagged</span>
+          <p className="text-xs text-muted-foreground mt-1">Spelling mismatch between Birth Certificate and Marksheet.</p>
+        </VFCard>
+        <VFCard title="Photo Verification & Face Quality">
+          <span className="text-2xl font-black text-foreground mt-2 block">96% Quality Avg</span>
+          <p className="text-xs text-success font-semibold mt-1">Background & lighting verified</p>
+        </VFCard>
+      </div>
+
+      <VFCard title="Split-Screen AI Document OCR Inspection">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mt-2">
+          <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
+            <span className="font-bold text-foreground flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" /> Uploaded Document Scan (Birth Certificate)
+            </span>
+            <div className="h-36 bg-background rounded-lg border border-border flex items-center justify-center text-muted-foreground text-xs font-mono">
+              [ Birth_Certificate_Aarav_Sharma.pdf Preview ]
+            </div>
+          </div>
+
+          <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
+            <span className="font-bold text-foreground flex items-center gap-2 text-success">
+              <CheckCircle2 className="h-4 w-4 text-success" /> AI Extracted Verification Metadata
+            </span>
+            <div className="space-y-1.5 font-mono text-[11px] text-foreground">
+              <p><span className="text-muted-foreground">Extracted Candidate Name:</span> Aarav Sharma (100% Match)</p>
+              <p><span className="text-muted-foreground">Extracted Date of Birth:</span> 14-OCT-2011 (Verified)</p>
+              <p><span className="text-muted-foreground">Extracted Father Name:</span> Rajesh Sharma (Verified)</p>
+              <p><span className="text-muted-foreground">Issuing Municipal Authority:</span> MCD New Delhi</p>
+            </div>
+            <VFBadge variant="success" className="mt-2">OCR Verification Passed</VFBadge>
+          </div>
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Interviews & Assessments
+  // ----------------------------------------------------
+  const interviewsContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <VFCard title="Entrance Test Builder Status">
@@ -420,58 +532,69 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission Documents (AI OCR Verification)
+  // SUBMODULE 9 — Selection & Approval
   // ----------------------------------------------------
-  const docsContent = (
+  const selectionContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <VFCard title="AI OCR Extraction Engine">
-          <div className="flex justify-between items-center mt-2">
-            <span className="text-2xl font-black text-success">98.4% Match</span>
-            <VFBadge variant="success">Active Engine</VFBadge>
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">Automated data extraction from Birth Certificates, Previous TCs, and Aadhaar copies.</p>
+        <VFCard title="Selection Committee Status">
+          <span className="text-lg font-bold text-foreground block mt-1">Batch 1 Approved</span>
+          <p className="text-xs text-muted-foreground mt-1">88 Candidates Selected for Enrollment.</p>
         </VFCard>
-        <VFCard title="Document Mismatch Alerts">
-          <span className="text-2xl font-black text-warning mt-2 block">2 Cases Flagged</span>
-          <p className="text-xs text-muted-foreground mt-1">Spelling mismatch between Birth Certificate and Marksheet.</p>
+        <VFCard title="Offer Letter Generation">
+          <span className="text-lg font-bold text-success block mt-1">88 PDF Offers Ready</span>
+          <p className="text-xs text-muted-foreground mt-1">Digital Signature Applied.</p>
         </VFCard>
-        <VFCard title="Photo Verification & Face Quality">
-          <span className="text-2xl font-black text-foreground mt-2 block">96% Quality Avg</span>
-          <p className="text-xs text-success font-semibold mt-1">Background & lighting verified</p>
+        <VFCard title="Waitlisted Applicants">
+          <span className="text-lg font-bold text-warning block mt-1">24 Waitlisted</span>
+          <p className="text-xs text-muted-foreground mt-1">Subject to seat availability.</p>
         </VFCard>
       </div>
 
-      <VFCard title="Split-Screen AI Document OCR Inspection">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mt-2">
-          <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
-            <span className="font-bold text-foreground flex items-center gap-2">
-              <FileText className="h-4 w-4 text-primary" /> Uploaded Document Scan (Birth Certificate)
-            </span>
-            <div className="h-36 bg-background rounded-lg border border-border flex items-center justify-center text-muted-foreground text-xs font-mono">
-              [ Birth_Certificate_Aarav_Sharma.pdf Preview ]
+      <VFCard title="Selection & Approval Decision Roster">
+        <div className="space-y-2.5 text-xs mt-2">
+          {[
+            { candidate: 'Aarav Sharma', grade: 'Class 9', status: 'Approved for Admission', decisionBy: 'Principal' },
+            { candidate: 'Kavya Nair', grade: 'Class 11-Com', status: 'Approved for Admission', decisionBy: 'Principal' },
+            { candidate: 'Rohan Gupta', grade: 'Class 6', status: 'Waitlisted', decisionBy: 'Committee' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between p-3.5 bg-muted/40 rounded-xl border border-border/60">
+              <div>
+                <span className="font-bold text-foreground text-sm">{item.candidate} ({item.grade})</span>
+                <p className="text-muted-foreground mt-0.5">Decision: {item.status} · Approved By: {item.decisionBy}</p>
+              </div>
+              <VFBadge variant={item.status.includes('Approved') ? 'success' : 'warning'}>{item.status}</VFBadge>
             </div>
-          </div>
-
-          <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
-            <span className="font-bold text-foreground flex items-center gap-2 text-success">
-              <CheckCircle2 className="h-4 w-4 text-success" /> AI Extracted Verification Metadata
-            </span>
-            <div className="space-y-1.5 font-mono text-[11px] text-foreground">
-              <p><span className="text-muted-foreground">Extracted Candidate Name:</span> Aarav Sharma (100% Match)</p>
-              <p><span className="text-muted-foreground">Extracted Date of Birth:</span> 14-OCT-2011 (Verified)</p>
-              <p><span className="text-muted-foreground">Extracted Father Name:</span> Rajesh Sharma (Verified)</p>
-              <p><span className="text-muted-foreground">Issuing Municipal Authority:</span> MCD New Delhi</p>
-            </div>
-            <VFBadge variant="success" className="mt-2">OCR Verification Passed</VFBadge>
-          </div>
+          ))}
         </div>
       </VFCard>
     </div>
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Enrollment (Auto Student Creation)
+  // SUBMODULE 10 — Admission Processing
+  // ----------------------------------------------------
+  const processingContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <VFCard title="Batch Background Verification">
+          <span className="text-lg font-bold text-foreground block mt-1">Batch 14 Processing</span>
+          <p className="text-xs text-muted-foreground mt-1">Checking previous school NOC & conduct certificate.</p>
+        </VFCard>
+        <VFCard title="Eligibility Check Status">
+          <span className="text-lg font-bold text-success block mt-1">100% Eligible</span>
+          <p className="text-xs text-muted-foreground mt-1">Age criteria & subject prerequisites satisfied.</p>
+        </VFCard>
+        <VFCard title="Quota & Caste Allocation">
+          <span className="text-lg font-bold text-foreground block mt-1">RTE & General Allocated</span>
+          <p className="text-xs text-muted-foreground mt-1">25% RTE seats filled.</p>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Enrollment
   // ----------------------------------------------------
   const enrollmentContent = (
     <div className="space-y-4">
@@ -508,40 +631,21 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission Analytics & Funnel
+  // SUBMODULE 12 — Admission Fees
   // ----------------------------------------------------
-  const analyticsContent = (
+  const feesContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Enquiry ➔ Admission Rate" value="43.2%" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="+5.8% vs last year" />
-        <VFStatCard title="Grade 9 Intake Capacity" value="45 / 50" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="90% Seats Filled" />
-        <VFStatCard title="Grade 11 Intake Capacity" value="66 / 80" icon={<Users className="h-5 w-5" />} trend="up" trendLabel="82.5% Seats Filled" />
-        <VFStatCard title="AI Admission Forecast" value="184 Enrolled" icon={<BrainCircuit className="h-5 w-5" />} trend="up" trendLabel="Predicted Final Intake" />
+        <VFStatCard title="Application Fee Revenue" value="₹1.48 Lakhs" icon={<CreditCard className="h-5 w-5" />} trend="up" trendLabel="148 Forms Paid" />
+        <VFStatCard title="Admission Fee Collected" value="₹38.0 Lakhs" icon={<CreditCard className="h-5 w-5" />} trend="up" trendLabel="76 Enrolled Fees" />
+        <VFStatCard title="Pending Payments" value="12 Candidates" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="DueDate: Aug 15" />
+        <VFStatCard title="Scholarships Awarded" value="₹4.5 Lakhs" icon={<Award className="h-5 w-5" />} description="Merit-cum-means" />
       </div>
-
-      <VFCard title="7-Stage Admission Funnel Conversion Matrix">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-2 text-xs text-center mt-2">
-          {[
-            { stage: 'Enquiries', count: 342, conv: '100%' },
-            { stage: 'Contacted', count: 280, conv: '81.8%' },
-            { stage: 'Interested', count: 195, conv: '69.6%' },
-            { stage: 'Applications', count: 148, conv: '75.8%' },
-            { stage: 'Selected', count: 88, conv: '59.4%' },
-            { stage: 'Enrolled', count: 76, conv: '86.3%' },
-          ].map((fn, i) => (
-            <div key={i} className="p-3 bg-muted/40 border border-border/60 rounded-xl space-y-1">
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">{fn.stage}</span>
-              <p className="text-xl font-black text-foreground">{fn.count}</p>
-              <VFBadge variant="success" className="mx-auto text-[10px]">{fn.conv}</VFBadge>
-            </div>
-          ))}
-        </div>
-      </VFCard>
     </div>
   );
 
   // ----------------------------------------------------
-  // SUBMODULE — Admission Communication (Templates & Logs)
+  // SUBMODULE 13 — Admission Communication
   // ----------------------------------------------------
   const communicationContent = (
     <div className="space-y-4">
@@ -572,7 +676,7 @@ function AdmissionsPage() {
           </div>
         </VFCard>
 
-        <VFCard title="Applicant Communication Roster & Parent Portal Status">
+        <VFCard title="Applicant Communication Roster">
           <div className="space-y-2.5 text-xs mt-2">
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
               <div>
@@ -595,26 +699,88 @@ function AdmissionsPage() {
   );
 
   // ----------------------------------------------------
-  // ALL 9 SUBMODULE TABS MAPPED
+  // SUBMODULE 14 — Admission Campaigns
+  // ----------------------------------------------------
+  const campaignsContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <VFCard title="Google Search Ads 2026">
+          <span className="text-lg font-bold text-foreground block mt-1">180 Leads · 42 Enrolled</span>
+          <VFBadge variant="success" className="mt-2">8.4x ROI</VFBadge>
+        </VFCard>
+        <VFCard title="School Open House Event">
+          <span className="text-lg font-bold text-foreground block mt-1">95 Leads · 38 Enrolled</span>
+          <VFBadge variant="success" className="mt-2">12.2x ROI</VFBadge>
+        </VFCard>
+        <VFCard title="Parent Referral Scheme">
+          <span className="text-lg font-bold text-foreground block mt-1">68 Leads · 32 Enrolled</span>
+          <VFBadge variant="success" className="mt-2">15.6x ROI</VFBadge>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 15 — Admission Reports
+  // ----------------------------------------------------
+  const reportsContent = (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <VFStatCard title="Conversion Rate" value="43.2%" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="+5.8% YoY" />
+        <VFStatCard title="Average Intake Score" value="91.4/100" icon={<Award className="h-5 w-5" />} trend="up" trendLabel="High Quality Batch" />
+        <VFStatCard title="Gender Balance" value="52% M / 48% F" icon={<Users className="h-5 w-5" />} description="Balanced Diversity" />
+        <VFStatCard title="Exportable Reports" value="12 Formats" icon={<FileText className="h-5 w-5" />} description="PDF, Excel, CSV" />
+      </div>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 16 — Admission Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global Admission Session Parameters (2026-27)">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Session Academic Year" defaultValue="2026-2027" />
+          <VFInput label="Application Fee Amount (₹)" defaultValue="1000" />
+          <VFSelect label="Default AI Fit Model" options={[{ label: 'Strict Academic Match', value: 'strict' }, { label: 'Holistic Profile Score', value: 'holistic' }]} />
+          <VFSelect label="Auto Offer Letter Generation" options={[{ label: 'Enabled (Upon Approval)', value: 'enabled' }, { label: 'Disabled (Manual)', value: 'disabled' }]} />
+        </div>
+        <div className="pt-4 flex justify-end">
+          <VFButton size="sm" leftIcon={<Check className="h-3.5 w-3.5" />}>Save Session Settings</VFButton>
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 16 SUBMODULE TABS MAPPED
   // ----------------------------------------------------
   const submoduleTabs = [
+    { id: 'dashboard', label: 'Admission Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
     { id: 'enquiries', label: 'Enquiries', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: enquiriesContent },
-    { id: 'admission-crm', label: 'Leads CRM', icon: <BrainCircuit className="h-3.5 w-3.5" />, content: crmContent },
-    { id: 'admission-forms', label: 'Forms', icon: <FileText className="h-3.5 w-3.5" />, content: formsContent },
-    { id: 'applications', label: 'Applications', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsQueueContent },
-    { id: 'assessment', label: 'Assessments', icon: <Sparkles className="h-3.5 w-3.5" />, content: assessmentContent },
-    { id: 'admission-docs', label: 'Doc Verification', icon: <FileCheck className="h-3.5 w-3.5" />, content: docsContent },
-    { id: 'enrollment', label: 'Enrollment', icon: <Plus className="h-3.5 w-3.5" />, content: enrollmentContent },
-    { id: 'admission-analytics', label: 'Analytics', icon: <TrendingUp className="h-3.5 w-3.5" />, content: analyticsContent },
-    { id: 'admission-communication', label: 'Communication', icon: <MessageSquare className="h-3.5 w-3.5" />, content: communicationContent },
+    { id: 'leads', label: 'Leads & Follow-ups', icon: <UserPlus className="h-3.5 w-3.5" />, content: leadsContent },
+    { id: 'applications', label: 'Applications', icon: <UserSquare className="h-3.5 w-3.5" />, content: applicationsContent },
+    { id: 'forms', label: 'Admission Forms', icon: <FileText className="h-3.5 w-3.5" />, content: formsContent },
+    { id: 'documents', label: 'Applicant Documents', icon: <FileCheck className="h-3.5 w-3.5" />, content: applicantDocsContent },
+    { id: 'verification', label: 'Verification', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: verificationContent },
+    { id: 'interviews', label: 'Interviews & Assessments', icon: <Sparkles className="h-3.5 w-3.5" />, content: interviewsContent },
+    { id: 'selection', label: 'Selection & Approval', icon: <Award className="h-3.5 w-3.5" />, content: selectionContent },
+    { id: 'processing', label: 'Admission Processing', icon: <Layers className="h-3.5 w-3.5" />, content: processingContent },
+    { id: 'enrollment', label: 'Enrollment', icon: <CheckSquare className="h-3.5 w-3.5" />, content: enrollmentContent },
+    { id: 'fees', label: 'Admission Fees', icon: <CreditCard className="h-3.5 w-3.5" />, content: feesContent },
+    { id: 'communication', label: 'Admission Communication', icon: <MessageSquare className="h-3.5 w-3.5" />, content: communicationContent },
+    { id: 'campaigns', label: 'Admission Campaigns', icon: <Megaphone className="h-3.5 w-3.5" />, content: campaignsContent },
+    { id: 'reports', label: 'Admission Reports', icon: <TrendingUp className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: 'Admission Settings', icon: <Settings className="h-3.5 w-3.5" />, content: settingsContent },
   ];
 
   return (
     <VFPageContainer>
-      {/* Admissions 9 Submodule Tab Bar */}
+      {/* Admissions 16 Submodule Sticky Top Tab Bar */}
       <VFTabs 
         items={submoduleTabs}
-        defaultTabId="applications"
+        defaultTabId="dashboard"
         variant="top-bar"
       />
 

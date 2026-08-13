@@ -2,328 +2,301 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
+  VFInput,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
-  Building,
-  Bed,
+  Building2,
+  Users,
+  Award,
   CheckCircle2,
-  Ticket,
-  Sparkles,
+  SlidersHorizontal,
   Plus,
+  Download,
+  Utensils,
+  DoorOpen,
+  Bed,
+  ShieldAlert,
+  BarChart3,
+  Calendar,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/hostel')({
   component: HostelPage,
 });
 
-interface RoomRecord {
-  id: string;
-  roomNo: string;
-  floor: string;
-  type: string;
-  capacity: number;
-  occupied: number;
-  available: number;
-  status: 'Active' | 'Full' | 'Maintenance';
-}
-
-interface ResidentRecord {
-  id: string;
-  studentId: string;
-  name: string;
-  class: string;
-  hostel: string;
-  roomNo: string;
-  bedNo: string;
-  status: 'Resident' | 'On Leave' | 'Outpass';
-}
-
-interface OutpassRecord {
-  id: string;
-  outpassNo: string;
-  studentName: string;
-  roomNo: string;
-  destination: string;
-  outTime: string;
-  expectedReturn: string;
-  status: 'Approved' | 'Pending' | 'Late Return';
-}
-
 function HostelPage() {
-  const hostelModule = MODULE_REGISTRY.find((m) => m.id === 'hostel');
+  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const roomsData: RoomRecord[] = [
-    { id: '1', roomNo: 'A-101', floor: 'Floor 1', type: 'Double Bed', capacity: 2, occupied: 2, available: 0, status: 'Full' },
-    { id: '2', roomNo: 'A-102', floor: 'Floor 1', type: '4-Bed Dorm', capacity: 4, occupied: 3, available: 1, status: 'Active' },
-    { id: '3', roomNo: 'A-204', floor: 'Floor 2', type: '4-Bed Dorm', capacity: 4, occupied: 4, available: 0, status: 'Full' },
-    { id: '4', roomNo: 'B-105', floor: 'Floor 1', type: 'Single Bed', capacity: 1, occupied: 0, available: 1, status: 'Active' },
+  const hostelData = [
+    { code: 'BLK-A', name: 'Boys Hostel Block A', totalRooms: 40, totalBeds: 120, occupied: 112, warden: 'Mr. S.P. Sharma', status: 'Active' },
+    { code: 'BLK-B', name: 'Girls Hostel Block B', totalRooms: 40, totalBeds: 120, occupied: 118, warden: 'Mrs. Sunita Rao', status: 'Active' },
+    { code: 'BLK-C', name: 'Senior Wing Block C', totalRooms: 20, totalBeds: 40, occupied: 36, warden: 'Dr. Ramanujan K', status: 'Active' },
   ];
 
-  const residentsData: ResidentRecord[] = [
-    { id: '1', studentId: 'ST-00421', name: 'Rahul Sharma', class: '10-A', hostel: 'Boys Hostel A', roomNo: 'A-204', bedNo: 'B-03', status: 'Resident' },
-    { id: '2', studentId: 'ST-00422', name: 'Priya Patel', class: '10-A', hostel: 'Girls Hostel A', roomNo: 'C-102', bedNo: 'B-01', status: 'On Leave' },
-    { id: '3', studentId: 'ST-00423', name: 'Aman Singh', class: '11-B', hostel: 'Boys Hostel A', roomNo: 'A-102', bedNo: 'B-02', status: 'Outpass' },
+  const hostelColumns = [
+    { header: 'Block Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: 'Hostel Name', accessorKey: 'name', cell: (r: any) => <span className="font-bold text-foreground">{r.name}</span> },
+    { header: 'Rooms', accessorKey: 'totalRooms' },
+    { header: 'Bed Capacity', accessorKey: 'totalBeds' },
+    { header: 'Occupied', accessorKey: 'occupied', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.occupied}</span> },
+    { header: 'Warden In-Charge', accessorKey: 'warden' },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
-  const outpassData: OutpassRecord[] = [
-    { id: '1', outpassNo: 'OTP-2026-088', studentName: 'Aman Singh', roomNo: 'A-102', destination: 'Main Market & Stationery', outTime: '04:00 PM', expectedReturn: '07:00 PM', status: 'Approved' },
-    { id: '2', outpassNo: 'OTP-2026-089', studentName: 'Rohit Kumar', roomNo: 'A-204', destination: 'Medical Clinic Visit', outTime: '03:30 PM', expectedReturn: '06:00 PM', status: 'Late Return' },
-  ];
-
-  // 13.1 Hostel Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
+  // ----------------------------------------------------
+  // SUBMODULE 1 — Hostel Dashboard
+  // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
-      {/* Top Banner Header */}
-      <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
-        <div>
-          <h2 className="text-base font-bold text-foreground">Hostel Management & Warden Command Center</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Manage 4 residential hostels, 1,240 boarder students, night roll call attendance, outpasses, and mess operations.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Sparkles className="h-3.5 w-3.5 text-primary" />}>
-            ✨ Ask Hostel AI
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Resident</VFButton>
-        </div>
-      </div>
-
-      {/* Feature 1 — Hostel KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Total Hostel Buildings" value="4" icon={<Building className="h-5 w-5 text-primary" />} trend="up" trendLabel="1,240 Total Capacity" />
-        <VFStatCard title="Occupied Beds" value="1,108" icon={<Bed className="h-5 w-5 text-secondary" />} trend="up" trendLabel="89.3% Occupancy Rate" />
-        <VFStatCard title="Students Present" value="1,050" icon={<CheckCircle2 className="h-5 w-5 text-success" />} trend="up" trendLabel="Morning Roll Call Verified" />
-        <VFStatCard title="Students On Leave / Outpass" value="50" icon={<Ticket className="h-5 w-5 text-warning" />} description="32 Leave · 18 Outpass" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Occupancy Overview & Roll Call */}
-        <VFSection title="Hostel Building Occupancy & Today's Residence Status" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Boys Hostel A</p>
-              <p className="text-base font-bold text-success mt-0.5">92% Occupied</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Girls Hostel A</p>
-              <p className="text-base font-bold text-success mt-0.5">88% Occupied</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Boys Hostel B</p>
-              <p className="text-base font-bold text-primary mt-0.5">76% Occupied</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Girls Hostel B</p>
-              <p className="text-base font-bold text-primary mt-0.5">81% Occupied</p>
-            </div>
-          </div>
-
-          <VFDataTable
-            columns={[
-              { header: 'Student ID', accessorKey: 'studentId', cell: (r: ResidentRecord) => <span className="font-mono font-bold text-primary">{r.studentId}</span> },
-              { header: 'Resident Name', accessorKey: 'name', cell: (r: ResidentRecord) => <span className="font-bold text-foreground">{r.name}</span> },
-              { header: 'Class', accessorKey: 'class' },
-              { header: 'Hostel Block', accessorKey: 'hostel' },
-              { header: 'Room / Bed', accessorKey: 'roomNo', cell: (r: ResidentRecord) => `${r.roomNo} (${r.bedNo})` },
-              {
-                header: 'Residence Status',
-                accessorKey: 'status',
-                cell: (r: ResidentRecord) => (
-                  <VFBadge variant={r.status === 'Resident' ? 'success' : r.status === 'On Leave' ? 'warning' : 'primary'}>
-                    {r.status}
-                  </VFBadge>
-                ),
-              },
-            ]}
-            data={residentsData}
-            filterPlaceholder="Search resident name or room..."
-          />
-        </VFSection>
-
-        {/* Attention Required & Outpasses */}
-        <VFCard title="Attention Required & Outpass Queue">
-          <div className="space-y-3 text-xs mt-1">
-            <div className="p-2.5 bg-warning/10 border border-warning/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">⚠ 8 Students Unaccounted</span>
-                <VFBadge variant="warning">Roll Call Alert</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">Morning roll call unverified in Boys Hostel A Floor 2</p>
-            </div>
-            <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">🎟 4 Pending Outpass Requests</span>
-                <VFBadge variant="primary">Review</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">Weekend outpass requests awaiting warden signoff</p>
-            </div>
-            <div className="p-2.5 bg-muted/40 rounded-xl border border-border/60 space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">🍽 Today's Mess Schedule</span>
-                <VFBadge variant="success">Breakfast Served</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">Lunch scheduled for 12:30 PM (Poha + Milk Served)</p>
-            </div>
-          </div>
-        </VFCard>
+        <VFStatCard title="Total Resident Students" value="266 Resident" icon={<Users className="h-5 w-5 text-primary" />} trend="up" trendLabel="95% Occupancy" />
+        <VFStatCard title="Active Outpasses" value="8 Students" icon={<DoorOpen className="h-5 w-5 text-amber-500" />} trend="neutral" trendLabel="Weekend Passes" />
+        <VFStatCard title="Night Attendance" value="100% Verified" icon={<CheckCircle2 className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="0 Unaccounted" />
+        <VFStatCard title="Mess Meals Served" value="798 Meals/Day" icon={<Utensils className="h-5 w-5 text-purple-500" />} description="Breakfast, Lunch, Dinner" />
       </div>
     </div>
   );
 
-  // Dedicated Student Residents Submodule Content (NO REPEATING TOP STAT CARDS!)
-  const residentsContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Hostels & Buildings
+  // ----------------------------------------------------
+  const buildingsContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Student Boarder Residents Directory</h3>
-          <p className="text-xs text-muted-foreground">Manage boarder student profiles, assigned room/bed numbers, emergency guardian contacts, and leave status.</p>
+          <h3 className="text-sm font-bold text-foreground">Hostel Blocks & Dormitory Buildings Directory</h3>
+          <p className="text-xs text-muted-foreground">Manage hostel blocks, warden assignments, and building capacity.</p>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Resident</VFButton>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Hostel Block</VFButton>
       </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Student ID', accessorKey: 'studentId', cell: (r: ResidentRecord) => <span className="font-mono font-bold text-primary">{r.studentId}</span> },
-          { header: 'Resident Name', accessorKey: 'name', cell: (r: ResidentRecord) => <span className="font-bold text-foreground">{r.name}</span> },
-          { header: 'Class', accessorKey: 'class' },
-          { header: 'Hostel Block', accessorKey: 'hostel' },
-          { header: 'Room / Bed', accessorKey: 'roomNo', cell: (r: ResidentRecord) => `${r.roomNo} (${r.bedNo})` },
-          {
-            header: 'Residence Status',
-            accessorKey: 'status',
-            cell: (r: ResidentRecord) => (
-              <VFBadge variant={r.status === 'Resident' ? 'success' : r.status === 'On Leave' ? 'warning' : 'primary'}>
-                {r.status}
-              </VFBadge>
-            ),
-          },
-        ]}
-        data={residentsData}
-        filterPlaceholder="Search resident name or room..."
-      />
+      <VFDataTable columns={hostelColumns} data={hostelData} filterPlaceholder="Search hostel block..." />
     </div>
   );
 
-  // 13.3 Specialized Visual Bed Matrix Grid Submodule Content (NO REPEATING TOP STAT CARDS!)
+  // ----------------------------------------------------
+  // SUBMODULE 3 — Floors
+  // ----------------------------------------------------
+  const floorsContent = (
+    <div className="space-y-4">
+      <VFCard title="Building Floor Hierarchy & Layout Plan">
+        <p className="text-xs text-muted-foreground mb-3">Ground Floor, 1st Floor, 2nd Floor room allocation matrix.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 4 — Rooms
+  // ----------------------------------------------------
   const roomsContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Hostel Room & Bed Inventory Allocation Matrix</h3>
-          <p className="text-xs text-muted-foreground">Visual floor plan bed allocation matrix (Green = Available Bed 🟢, Red = Occupied 🔴).</p>
+      <VFCard title="Hostel Rooms & Accommodation Types (Single / Double / Triple)">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mt-2">
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Room 101 (Triple Bed)</span>
+            <p className="text-muted-foreground text-xs mt-1">Block A · 3 Beds · 3 Occupied</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Room 102 (Triple Bed)</span>
+            <p className="text-muted-foreground text-xs mt-1">Block A · 3 Beds · 2 Occupied (1 Free)</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Room 201 (Single Deluxe)</span>
+            <p className="text-muted-foreground text-xs mt-1">Senior Wing Block C · 1 Bed · Occupied</p>
+          </div>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Room</VFButton>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {roomsData.map((rm) => (
-          <VFCard key={rm.id} title={`Room ${rm.roomNo} (${rm.type})`}>
-            <div className="space-y-3 text-xs mt-1">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">{rm.floor}</span>
-                <VFBadge variant={rm.status === 'Full' ? 'warning' : 'success'}>{rm.status}</VFBadge>
-              </div>
-              <p className="text-muted-foreground">Capacity: <span className="font-bold text-foreground">{rm.capacity} Beds ({rm.occupied} Occupied / {rm.available} Free)</span></p>
-
-              {/* Visual Bed Grid */}
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                {Array.from({ length: rm.capacity }).map((_, bIdx) => {
-                  const isOccupied = bIdx < rm.occupied;
-                  return (
-                    <div
-                      key={bIdx}
-                      className={`p-2 rounded-lg border text-center font-bold text-xs ${isOccupied ? 'bg-primary/10 border-primary/40 text-primary' : 'bg-success/10 border-success/40 text-success'}`}
-                    >
-                      Bed B-0{bIdx + 1}
-                      <span className="block text-[10px] font-normal">{isOccupied ? '🔴 Occupied' : '🟢 Free'}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </VFCard>
-        ))}
-      </div>
+      </VFCard>
     </div>
   );
 
-  // 13.6 Leave & Outpass Submodule Content (NO REPEATING TOP STAT CARDS!)
+  // ----------------------------------------------------
+  // SUBMODULE 5 — Beds
+  // ----------------------------------------------------
+  const bedsContent = (
+    <div className="space-y-4">
+      <VFCard title="Bed-Level Accession & Asset ID Tracking">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Unique bed numbers (e.g. Bed 101-A, Bed 101-B, Bed 101-C) with mattress asset tags.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Student Allocation
+  // ----------------------------------------------------
+  const studentAllocationContent = (
+    <div className="space-y-4">
+      <VFCard title="Hostel Room & Bed Allocation Engine">
+        <p className="text-xs text-muted-foreground mb-3">Assign resident students to specific hostel rooms and beds based on grade and house.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Room Transfers
+  // ----------------------------------------------------
+  const transfersContent = (
+    <div className="space-y-4">
+      <VFCard title="Room Transfer & Bed Swap Request Module">
+        <p className="text-xs text-muted-foreground mb-3">Process student room change requests with warden approval workflow.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Hostel Attendance
+  // ----------------------------------------------------
+  const attendanceContent = (
+    <div className="space-y-4">
+      <VFCard title="Night Roll-Call Attendance Terminal (09:00 PM)">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Warden mobile app biometric check for night dormitory presence.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 9 — Leave Management
+  // ----------------------------------------------------
+  const leaveContent = (
+    <div className="space-y-4">
+      <VFCard title="Hostel Overnight & Vacation Leave Applications">
+        <p className="text-xs text-muted-foreground mb-3">Parent OTP verified overnight leave applications.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 10 — Outpass Management
+  // ----------------------------------------------------
   const outpassContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Outpass Requests & Gatekeeper Clearance Queue</h3>
-          <p className="text-xs text-muted-foreground">Issue digital QR outpasses for weekend home visits, clinic visits, and market errands.</p>
-        </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Outpass</VFButton>
-      </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Outpass No', accessorKey: 'outpassNo', cell: (r: OutpassRecord) => <span className="font-mono font-bold text-primary">{r.outpassNo}</span> },
-          { header: 'Student Name', accessorKey: 'studentName', cell: (r: OutpassRecord) => <span className="font-bold text-foreground">{r.studentName}</span> },
-          { header: 'Room No', accessorKey: 'roomNo' },
-          { header: 'Outing Destination', accessorKey: 'destination' },
-          { header: 'Out Time', accessorKey: 'outTime' },
-          { header: 'Expected Return', accessorKey: 'expectedReturn' },
-          {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: (r: OutpassRecord) => (
-              <VFBadge variant={r.status === 'Approved' ? 'success' : r.status === 'Late Return' ? 'danger' : 'warning'}>
-                {r.status}
-              </VFBadge>
-            ),
-          },
-        ]}
-        data={outpassData}
-        filterPlaceholder="Search outpasses or student..."
-      />
+      <VFCard title="Digital Outpass & Gate Pass System">
+        <p className="text-xs text-muted-foreground mb-3">Issue QR code outpasses for local market outings and weekend home visits.</p>
+        <VFBadge variant="warning">8 Active Outpasses Issued</VFBadge>
+      </VFCard>
     </div>
   );
 
-  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
-  const contentMap: Record<string, React.ReactNode> = {
-    dashboard: dashboardContent,
-    buildings: residentsContent,
-    rooms: roomsContent,
-    residents: residentsContent,
-    attendance: residentsContent,
-    outpass: outpassContent,
-    mess: residentsContent,
-    visitors: residentsContent,
-    complaints: residentsContent,
-    'fees-reports': residentsContent,
-  };
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Visitors
+  // ----------------------------------------------------
+  const visitorsContent = (
+    <div className="space-y-4">
+      <VFCard title="Hostel Visitor Register & Parent Entry Log">
+        <p className="text-xs text-muted-foreground mb-3">Log visitor Aadhaar numbers, relationship verification, and visiting room timestamps.</p>
+      </VFCard>
+    </div>
+  );
 
-  const submoduleTabs = (hostelModule?.submodules || [
-    { id: 'dashboard', label: 'Hostel Dashboard' },
-    { id: 'buildings', label: 'Hostel & Buildings' },
-    { id: 'rooms', label: 'Rooms & Beds' },
-    { id: 'residents', label: 'Student Residents' },
-    { id: 'attendance', label: 'Hostel Attendance' },
-    { id: 'outpass', label: 'Leave & Outpass' },
-    { id: 'mess', label: 'Mess & Meals' },
-    { id: 'visitors', label: 'Visitors & Security' },
-    { id: 'complaints', label: 'Complaints & Maintenance' },
-    { id: 'fees-reports', label: 'Hostel Fees & Reports' },
-  ]).map((sub) => ({
-    id: sub.id,
-    label: sub.label,
-    icon: <Building className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || residentsContent,
-  }));
+  // ----------------------------------------------------
+  // SUBMODULE 12 — Hostel Incidents
+  // ----------------------------------------------------
+  const incidentsContent = (
+    <div className="space-y-4">
+      <VFCard title="Hostel Disciplinary & Medical Incident Log">
+        <p className="text-xs text-muted-foreground mb-3 font-mono text-destructive">Record warden incident reports, late night curfews, and infirmary visits.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 13 — Mess Management
+  // ----------------------------------------------------
+  const messContent = (
+    <div className="space-y-4">
+      <VFCard title="Weekly Mess Menu Planner & Meal Count Tracker">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs mt-2">
+          {['Breakfast (07:30 AM)', 'Lunch (01:00 PM)', 'Evening Snacks (05:00 PM)', 'Dinner (08:00 PM)'].map((m, i) => (
+            <div key={i} className="p-3 bg-muted/40 rounded-lg border border-border/60 text-center font-bold text-foreground">{m}</div>
+          ))}
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 14 — Hostel Fees
+  // ----------------------------------------------------
+  const feesContent = (
+    <div className="space-y-4">
+      <VFCard title="Quarterly Room Rent & Mess Fee Demands">
+        <p className="text-xs text-muted-foreground mb-3">Hostel room rent and mess fee collection ledgers.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 15 — Hostel Inventory
+  // ----------------------------------------------------
+  const inventoryContent = (
+    <div className="space-y-4">
+      <VFCard title="Hostel Furniture, Linen & Appliance Inventory">
+        <p className="text-xs text-muted-foreground mb-3">Track beds, study tables, chairs, water coolers, and laundry machines.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 16 — Hostel Reports
+  // ----------------------------------------------------
+  const reportsContent = (
+    <div className="space-y-4">
+      <VFCard title="Hostel Occupancy & Mess Analytics Reports">
+        <p className="text-xs text-muted-foreground mb-3">Monthly occupancy percentage, outpass statistics, and mess food consumption trends.</p>
+        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Hostel Report (PDF)</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 17 — Hostel Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global Hostel Parameters & Curfew Time Rules">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Night Curfew Time" defaultValue="08:30 PM" />
+          <VFInput label="Night Roll Call Time" defaultValue="09:00 PM" />
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 17 SUBMODULE TABS MAPPED
+  // ----------------------------------------------------
+  const submoduleTabs = [
+    { id: 'dashboard', label: 'Hostel Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'buildings', label: 'Hostels & Buildings', icon: <Building2 className="h-3.5 w-3.5" />, content: buildingsContent },
+    { id: 'floors', label: 'Floors', icon: <Building2 className="h-3.5 w-3.5" />, content: floorsContent },
+    { id: 'rooms', label: 'Rooms', icon: <DoorOpen className="h-3.5 w-3.5" />, content: roomsContent },
+    { id: 'beds', label: 'Beds', icon: <Bed className="h-3.5 w-3.5" />, content: bedsContent },
+    { id: 'student-allocation', label: 'Student Allocation', icon: <Users className="h-3.5 w-3.5" />, content: studentAllocationContent },
+    { id: 'transfers', label: 'Room Transfers', icon: <DoorOpen className="h-3.5 w-3.5" />, content: transfersContent },
+    { id: 'attendance', label: 'Hostel Attendance', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: attendanceContent },
+    { id: 'leave', label: 'Leave Management', icon: <Calendar className="h-3.5 w-3.5" />, content: leaveContent },
+    { id: 'outpass', label: 'Outpass Management', icon: <DoorOpen className="h-3.5 w-3.5" />, content: outpassContent },
+    { id: 'visitors', label: 'Visitors', icon: <Users className="h-3.5 w-3.5" />, content: visitorsContent },
+    { id: 'incidents', label: 'Hostel Incidents', icon: <ShieldAlert className="h-3.5 w-3.5" />, content: incidentsContent },
+    { id: 'mess', label: 'Mess Management', icon: <Utensils className="h-3.5 w-3.5" />, content: messContent },
+    { id: 'fees', label: 'Hostel Fees', icon: <Award className="h-3.5 w-3.5" />, content: feesContent },
+    { id: 'inventory', label: 'Hostel Inventory', icon: <Building2 className="h-3.5 w-3.5" />, content: inventoryContent },
+    { id: 'reports', label: 'Hostel Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: 'Hostel Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={submoduleTabs} defaultTabId="dashboard" variant="top-bar" />
+      <VFTabs
+        items={submoduleTabs}
+        activeTabId={activeSubmodule}
+        onTabChange={setActiveSubmodule}
+        variant="top-bar"
+      />
     </VFPageContainer>
   );
 }

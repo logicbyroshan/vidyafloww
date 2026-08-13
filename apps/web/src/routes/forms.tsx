@@ -12,53 +12,51 @@ import {
   VFBadge,
 } from '@vidyamaxx/ui';
 import {
-  MessageSquare,
-  Smartphone,
+  ClipboardCheck,
+  Plus,
   Users,
   CheckCircle2,
   SlidersHorizontal,
-  Plus,
   Clock,
   FileText,
   BarChart3,
   Sparkles,
-  ClipboardCheck,
   HelpCircle,
   FileCheck,
 } from 'lucide-react';
 
-export const Route = createFileRoute('/communication')({
-  component: CommunicationPage,
+export const Route = createFileRoute('/forms')({
+  component: SurveysFormsPage,
 });
 
-function CommunicationPage() {
+function SurveysFormsPage() {
   const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const commData = [
-    { id: '1', title: 'Independence Day Celebrations Circular', channel: 'App Push + SMS', audience: 'All Students & Parents', sentTime: 'Today, 09:00 AM', delivered: '1,240 / 1,248', status: 'Sent' },
-    { id: '2', title: 'Term 1 Exam Date Sheet Release', channel: 'WhatsApp Broadcast', audience: 'Class 9 to 12', sentTime: 'Yesterday, 04:30 PM', delivered: '640 / 650', status: 'Sent' },
-    { id: '3', title: 'Annual Parent Satisfaction Survey 2026', channel: 'Online Form', audience: 'Whole School', sentTime: '10 Aug, 06:45 AM', delivered: '980 Responses', status: 'Active Survey' },
+  const formData = [
+    { code: 'FRM-2026-08', title: 'Annual Parent Satisfaction Survey 2026', type: 'Parent Survey', audience: 'Whole School', target: '1,248 Parents', responses: '980 Received', status: 'Active Survey' },
+    { code: 'FRM-2026-05', title: 'Class 11 Stream Preference Selection', type: 'Student Form', audience: 'Class 10 Students', target: '240 Students', responses: '235 Received', status: 'Closed' },
+    { code: 'FRM-2026-12', title: 'Annual Educational Tour Parent Consent', type: 'Consent Form', audience: 'Class 9 to 12', target: '480 Parents', responses: '462 Approved', status: 'Active Consent' },
   ];
 
-  const commColumns = [
-    { header: 'Message / Form Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
-    { header: 'Channel / Type', accessorKey: 'channel', cell: (r: any) => <VFBadge variant="outline">{r.channel}</VFBadge> },
+  const formColumns = [
+    { header: 'Form Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: 'Form / Survey Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
+    { header: 'Form Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
     { header: 'Target Audience', accessorKey: 'audience' },
-    { header: 'Dispatch Date', accessorKey: 'sentTime' },
-    { header: 'Delivery / Responses', accessorKey: 'delivered', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.delivered}</span> },
+    { header: 'Submissions', accessorKey: 'responses', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.responses}</span> },
     { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
   // ----------------------------------------------------
-  // SUBMODULE 1 — Communication & Forms Dashboard
+  // SUBMODULE 1 — Forms Dashboard
   // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="SMS Credits Remaining" value="48,500 SMS" icon={<Smartphone className="h-5 w-5 text-primary" />} trend="neutral" trendLabel="DLT Verified" />
-        <VFStatCard title="WhatsApp Broadcasts" value="14 Campaigns" icon={<MessageSquare className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="99.2% Delivery" />
-        <VFStatCard title="Active Surveys & Forms" value="8 Live Forms" icon={<ClipboardCheck className="h-5 w-5 text-amber-500" />} description="Parent & Staff Feedback" />
-        <VFStatCard title="Overall Response Rate" value="94.2%" icon={<CheckCircle2 className="h-5 w-5 text-purple-500" />} description="Surveys & Polls" />
+        <VFStatCard title="Active Forms & Surveys" value="8 Live Forms" icon={<ClipboardCheck className="h-5 w-5 text-primary" />} trend="up" trendLabel="Parent & Staff" />
+        <VFStatCard title="Total Submissions" value="1,840 Received" icon={<CheckCircle2 className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="94.2% Response Rate" />
+        <VFStatCard title="Pending Approvals" value="12 Submissions" icon={<FileCheck className="h-5 w-5 text-amber-500" />} description="Consent Slips" />
+        <VFStatCard title="Form Templates" value="18 Ready" icon={<FileText className="h-5 w-5 text-purple-500" />} description="Pre-configured Forms" />
       </div>
     </div>
   );
@@ -71,11 +69,11 @@ function CommunicationPage() {
       <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
         <div>
           <h3 className="text-sm font-bold text-foreground">Drag & Drop Form Builder Studio</h3>
-          <p className="text-xs text-muted-foreground">Create custom forms, surveys, polls, and consent slips with custom fields.</p>
+          <p className="text-xs text-muted-foreground font-mono font-bold text-emerald-500">Design custom forms, surveys, polls, and consent slips with custom fields.</p>
         </div>
         <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create New Form</VFButton>
       </div>
-      <VFDataTable columns={commColumns} data={commData} filterPlaceholder="Search forms or broadcasts..." />
+      <VFDataTable columns={formColumns} data={formData} filterPlaceholder="Search form title or type..." />
     </div>
   );
 
@@ -242,7 +240,7 @@ function CommunicationPage() {
   );
 
   // ----------------------------------------------------
-  // ALL 15 SUBMODULE TABS MAPPED FOR SURVEYS & FORMS + COMMUNICATION
+  // ALL 15 SUBMODULE TABS MAPPED
   // ----------------------------------------------------
   const submoduleTabs = [
     { id: 'dashboard', label: 'Forms Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
@@ -251,7 +249,7 @@ function CommunicationPage() {
     { id: 'parent-forms', label: 'Parent Forms', icon: <Users className="h-3.5 w-3.5" />, content: parentFormsContent },
     { id: 'staff-forms', label: 'Staff Forms', icon: <Users className="h-3.5 w-3.5" />, content: staffFormsContent },
     { id: 'surveys', label: 'Surveys', icon: <HelpCircle className="h-3.5 w-3.5" />, content: surveysContent },
-    { id: 'feedback', label: 'Feedback', icon: <MessageSquare className="h-3.5 w-3.5" />, content: feedbackContent },
+    { id: 'feedback', label: 'Feedback', icon: <FileText className="h-3.5 w-3.5" />, content: feedbackContent },
     { id: 'polls', label: 'Polls', icon: <Sparkles className="h-3.5 w-3.5" />, content: pollsContent },
     { id: 'consent-forms', label: 'Consent Forms', icon: <FileCheck className="h-3.5 w-3.5" />, content: consentFormsContent },
     { id: 'registration-forms', label: 'Registration Forms', icon: <Plus className="h-3.5 w-3.5" />, content: registrationFormsContent },

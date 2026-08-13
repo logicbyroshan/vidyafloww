@@ -16,6 +16,7 @@ import { Route as SystemRouteImport } from './routes/system'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as LoginRouteImport } from './routes/login'
@@ -25,17 +26,23 @@ import { Route as LearningRouteImport } from './routes/learning'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as HrRouteImport } from './routes/hr'
 import { Route as HostelRouteImport } from './routes/hostel'
+import { Route as HomeworkRouteImport } from './routes/homework'
+import { Route as HealthRouteImport } from './routes/health'
+import { Route as GrievancesRouteImport } from './routes/grievances'
 import { Route as FrontOfficeRouteImport } from './routes/front-office'
+import { Route as FormsRouteImport } from './routes/forms'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as DocumentsRouteImport } from './routes/documents'
+import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as CommunicationRouteImport } from './routes/communication'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AdministrationRouteImport } from './routes/administration'
+import { Route as ActivitiesRouteImport } from './routes/activities'
 import { Route as AccountingRouteImport } from './routes/accounting'
 import { Route as AcademicsRouteImport } from './routes/academics'
 import { Route as IndexRouteImport } from './routes/index'
@@ -73,6 +80,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsRoute = ReportsRouteImport.update({
@@ -120,9 +132,29 @@ const HostelRoute = HostelRouteImport.update({
   path: '/hostel',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeworkRoute = HomeworkRouteImport.update({
+  id: '/homework',
+  path: '/homework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrievancesRoute = GrievancesRouteImport.update({
+  id: '/grievances',
+  path: '/grievances',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FrontOfficeRoute = FrontOfficeRouteImport.update({
   id: '/front-office',
   path: '/front-office',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FormsRoute = FormsRouteImport.update({
+  id: '/forms',
+  path: '/forms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FinanceRoute = FinanceRouteImport.update({
@@ -150,6 +182,11 @@ const DocumentsRoute = DocumentsRouteImport.update({
   path: '/documents',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComplianceRoute = ComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CommunicationRoute = CommunicationRouteImport.update({
   id: '/communication',
   path: '/communication',
@@ -175,6 +212,11 @@ const AdministrationRoute = AdministrationRouteImport.update({
   path: '/administration',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActivitiesRoute = ActivitiesRouteImport.update({
+  id: '/activities',
+  path: '/activities',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountingRoute = AccountingRouteImport.update({
   id: '/accounting',
   path: '/accounting',
@@ -195,17 +237,23 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
   '/accounting': typeof AccountingRoute
+  '/activities': typeof ActivitiesRoute
   '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
   '/communication': typeof CommunicationRoute
+  '/compliance': typeof ComplianceRoute
   '/documents': typeof DocumentsRoute
   '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/finance': typeof FinanceRoute
+  '/forms': typeof FormsRoute
   '/front-office': typeof FrontOfficeRoute
+  '/grievances': typeof GrievancesRoute
+  '/health': typeof HealthRoute
+  '/homework': typeof HomeworkRoute
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/inventory': typeof InventoryRoute
@@ -215,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
+  '/resources': typeof ResourcesRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
@@ -227,17 +276,23 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
   '/accounting': typeof AccountingRoute
+  '/activities': typeof ActivitiesRoute
   '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
   '/communication': typeof CommunicationRoute
+  '/compliance': typeof ComplianceRoute
   '/documents': typeof DocumentsRoute
   '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/finance': typeof FinanceRoute
+  '/forms': typeof FormsRoute
   '/front-office': typeof FrontOfficeRoute
+  '/grievances': typeof GrievancesRoute
+  '/health': typeof HealthRoute
+  '/homework': typeof HomeworkRoute
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/inventory': typeof InventoryRoute
@@ -247,6 +302,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
+  '/resources': typeof ResourcesRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
@@ -260,17 +316,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
   '/accounting': typeof AccountingRoute
+  '/activities': typeof ActivitiesRoute
   '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
   '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
   '/communication': typeof CommunicationRoute
+  '/compliance': typeof ComplianceRoute
   '/documents': typeof DocumentsRoute
   '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/finance': typeof FinanceRoute
+  '/forms': typeof FormsRoute
   '/front-office': typeof FrontOfficeRoute
+  '/grievances': typeof GrievancesRoute
+  '/health': typeof HealthRoute
+  '/homework': typeof HomeworkRoute
   '/hostel': typeof HostelRoute
   '/hr': typeof HrRoute
   '/inventory': typeof InventoryRoute
@@ -280,6 +342,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
+  '/resources': typeof ResourcesRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
@@ -294,17 +357,23 @@ export interface FileRouteTypes {
     | '/'
     | '/academics'
     | '/accounting'
+    | '/activities'
     | '/administration'
     | '/admissions'
     | '/ai'
     | '/attendance'
     | '/communication'
+    | '/compliance'
     | '/documents'
     | '/events'
     | '/examinations'
     | '/fees'
     | '/finance'
+    | '/forms'
     | '/front-office'
+    | '/grievances'
+    | '/health'
+    | '/homework'
     | '/hostel'
     | '/hr'
     | '/inventory'
@@ -314,6 +383,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/portal'
     | '/reports'
+    | '/resources'
     | '/security'
     | '/settings'
     | '/students'
@@ -326,17 +396,23 @@ export interface FileRouteTypes {
     | '/'
     | '/academics'
     | '/accounting'
+    | '/activities'
     | '/administration'
     | '/admissions'
     | '/ai'
     | '/attendance'
     | '/communication'
+    | '/compliance'
     | '/documents'
     | '/events'
     | '/examinations'
     | '/fees'
     | '/finance'
+    | '/forms'
     | '/front-office'
+    | '/grievances'
+    | '/health'
+    | '/homework'
     | '/hostel'
     | '/hr'
     | '/inventory'
@@ -346,6 +422,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/portal'
     | '/reports'
+    | '/resources'
     | '/security'
     | '/settings'
     | '/students'
@@ -358,17 +435,23 @@ export interface FileRouteTypes {
     | '/'
     | '/academics'
     | '/accounting'
+    | '/activities'
     | '/administration'
     | '/admissions'
     | '/ai'
     | '/attendance'
     | '/communication'
+    | '/compliance'
     | '/documents'
     | '/events'
     | '/examinations'
     | '/fees'
     | '/finance'
+    | '/forms'
     | '/front-office'
+    | '/grievances'
+    | '/health'
+    | '/homework'
     | '/hostel'
     | '/hr'
     | '/inventory'
@@ -378,6 +461,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/portal'
     | '/reports'
+    | '/resources'
     | '/security'
     | '/settings'
     | '/students'
@@ -391,17 +475,23 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AcademicsRoute: typeof AcademicsRoute
   AccountingRoute: typeof AccountingRoute
+  ActivitiesRoute: typeof ActivitiesRoute
   AdministrationRoute: typeof AdministrationRoute
   AdmissionsRoute: typeof AdmissionsRoute
   AiRoute: typeof AiRoute
   AttendanceRoute: typeof AttendanceRoute
   CommunicationRoute: typeof CommunicationRoute
+  ComplianceRoute: typeof ComplianceRoute
   DocumentsRoute: typeof DocumentsRoute
   EventsRoute: typeof EventsRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
   FinanceRoute: typeof FinanceRoute
+  FormsRoute: typeof FormsRoute
   FrontOfficeRoute: typeof FrontOfficeRoute
+  GrievancesRoute: typeof GrievancesRoute
+  HealthRoute: typeof HealthRoute
+  HomeworkRoute: typeof HomeworkRoute
   HostelRoute: typeof HostelRoute
   HrRoute: typeof HrRoute
   InventoryRoute: typeof InventoryRoute
@@ -411,6 +501,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PortalRoute: typeof PortalRoute
   ReportsRoute: typeof ReportsRoute
+  ResourcesRoute: typeof ResourcesRoute
   SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
   StudentsRoute: typeof StudentsRoute
@@ -469,6 +560,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reports': {
@@ -534,11 +632,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HostelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/homework': {
+      id: '/homework'
+      path: '/homework'
+      fullPath: '/homework'
+      preLoaderRoute: typeof HomeworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grievances': {
+      id: '/grievances'
+      path: '/grievances'
+      fullPath: '/grievances'
+      preLoaderRoute: typeof GrievancesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/front-office': {
       id: '/front-office'
       path: '/front-office'
       fullPath: '/front-office'
       preLoaderRoute: typeof FrontOfficeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forms': {
+      id: '/forms'
+      path: '/forms'
+      fullPath: '/forms'
+      preLoaderRoute: typeof FormsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/finance': {
@@ -576,6 +702,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocumentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compliance': {
+      id: '/compliance'
+      path: '/compliance'
+      fullPath: '/compliance'
+      preLoaderRoute: typeof ComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/communication': {
       id: '/communication'
       path: '/communication'
@@ -611,6 +744,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdministrationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/activities': {
+      id: '/activities'
+      path: '/activities'
+      fullPath: '/activities'
+      preLoaderRoute: typeof ActivitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/accounting': {
       id: '/accounting'
       path: '/accounting'
@@ -639,17 +779,23 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AcademicsRoute: AcademicsRoute,
   AccountingRoute: AccountingRoute,
+  ActivitiesRoute: ActivitiesRoute,
   AdministrationRoute: AdministrationRoute,
   AdmissionsRoute: AdmissionsRoute,
   AiRoute: AiRoute,
   AttendanceRoute: AttendanceRoute,
   CommunicationRoute: CommunicationRoute,
+  ComplianceRoute: ComplianceRoute,
   DocumentsRoute: DocumentsRoute,
   EventsRoute: EventsRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
   FinanceRoute: FinanceRoute,
+  FormsRoute: FormsRoute,
   FrontOfficeRoute: FrontOfficeRoute,
+  GrievancesRoute: GrievancesRoute,
+  HealthRoute: HealthRoute,
+  HomeworkRoute: HomeworkRoute,
   HostelRoute: HostelRoute,
   HrRoute: HrRoute,
   InventoryRoute: InventoryRoute,
@@ -659,6 +805,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PortalRoute: PortalRoute,
   ReportsRoute: ReportsRoute,
+  ResourcesRoute: ResourcesRoute,
   SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
   StudentsRoute: StudentsRoute,

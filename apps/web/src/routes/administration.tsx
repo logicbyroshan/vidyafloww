@@ -2,23 +2,30 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
+  VFInput,
+  VFSelect,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
+  Wrench,
   Building,
-  Sparkles,
-  Plus,
   ShieldCheck,
-  Lock,
-  GitMerge,
-  ArrowRight,
+  MapPin,
+  Clock,
+  SlidersHorizontal,
+  Plus,
+  AlertCircle,
+  Download,
+  Barcode,
+  History,
+  FileText,
+  BarChart3,
+  Calendar,
   Layers,
 } from 'lucide-react';
 
@@ -26,235 +33,257 @@ export const Route = createFileRoute('/administration')({
   component: AdministrationPage,
 });
 
-interface DepartmentRecord {
-  id: string;
-  deptCode: string;
-  deptName: string;
-  headOfDept: string;
-  staffCount: number;
-  activeBudget: string;
-  status: 'Active' | 'Under Review';
-}
-
-interface WorkflowRecord {
-  id: string;
-  workflowId: string;
-  workflowName: string;
-  moduleScope: string;
-  stagesCount: number;
-  approvalChain: string;
-  status: 'Active' | 'Draft';
-}
-
 function AdministrationPage() {
-  const adminModule = MODULE_REGISTRY.find((m) => m.id === 'administration');
+  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const departmentsData: DepartmentRecord[] = [
-    { id: '1', deptCode: 'DEPT-ACAD', deptName: 'Academic & Curriculum Department', headOfDept: 'Dr. Suresh Verma', staffCount: 120, activeBudget: '₹42.5 Lakhs', status: 'Active' },
-    { id: '2', deptCode: 'DEPT-FIN', deptName: 'Finance & Accounts Administration', headOfDept: 'Anita Sharma', staffCount: 12, activeBudget: '₹18.0 Lakhs', status: 'Active' },
-    { id: '3', deptCode: 'DEPT-OPER', deptName: 'Campus Operations & Transport', headOfDept: 'Rajesh Kumar', staffCount: 48, activeBudget: '₹25.0 Lakhs', status: 'Active' },
+  const assetData = [
+    { code: 'AST-LAB-042', name: 'Dell OptiPlex 7090 Workstation', category: 'IT & Computers', location: 'Computer Lab 2', serial: 'SN-984210', value: '₹54,000', status: 'Operational' },
+    { code: 'AST-AC-108', name: 'Daikin 2.0 Ton Inverter AC', category: 'HVAC & Electrical', location: 'Auditorium Main', serial: 'SN-332190', value: '₹62,000', status: 'Under Maintenance' },
+    { code: 'AST-GEN-001', name: 'Kirloskar 125 kVA Diesel Generator', category: 'Power & Utilities', location: 'Power House Substation', serial: 'SN-110482', value: '₹8,50,000', status: 'Operational' },
   ];
 
-  const workflowsData: WorkflowRecord[] = [
-    { id: '1', workflowId: 'WF-FIN-001', workflowName: 'Fee Discount & Concession Approval Workflow', moduleScope: 'Fees & Finance', stagesCount: 3, approvalChain: 'Accountant → Principal → Managing Trustee', status: 'Active' },
-    { id: '2', workflowId: 'WF-HR-002', workflowName: 'Staff Extended Leave Approval Workflow', moduleScope: 'HR & Staff', stagesCount: 2, approvalChain: 'HOD → Principal', status: 'Active' },
-    { id: '3', workflowId: 'WF-EXM-003', workflowName: 'Term Marksheet Modification Audit Workflow', moduleScope: 'Examinations', stagesCount: 3, approvalChain: 'Teacher → Exam Controller → Principal', status: 'Active' },
+  const assetColumns = [
+    { header: 'Asset Tag Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: 'Asset Description', accessorKey: 'name', cell: (r: any) => <span className="font-bold text-foreground">{r.name}</span> },
+    { header: 'Category', accessorKey: 'category' },
+    { header: 'Location / Room', accessorKey: 'location' },
+    { header: 'Book Value', accessorKey: 'value', cell: (r: any) => <span className="font-mono font-bold text-foreground">{r.value}</span> },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'Under Maintenance' ? 'warning' : 'success'}>{r.status}</VFBadge> },
   ];
 
-  // 20.1 Administration Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
+  // ----------------------------------------------------
+  // SUBMODULE 1 — Assets Dashboard
+  // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
-      {/* Top Banner Header */}
-      <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
-        <div>
-          <h2 className="text-base font-bold text-foreground">Institutional Governance & Administration Hub</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Central source of truth for active academic session (2026-27), multi-stage approval workflows, departments, and governance policies.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Sparkles className="h-3.5 w-3.5 text-primary" />}>
-            ✨ Ask Admin AI
-          </VFButton>
-          <VFButton size="sm" variant="outline" leftIcon={<Lock className="h-3.5 w-3.5" />}>
-            Session Lock: 2026-27 🔒
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Department</VFButton>
-        </div>
-      </div>
-
-      {/* Feature 1 — Administration KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Active Academic Session" value="2026 - 2027" icon={<Building className="h-5 w-5 text-primary" />} trend="up" trendLabel="Session Lock Active 🔒" />
-        <VFStatCard title="Institutional Departments" value="8 Active" icon={<Layers className="h-5 w-5 text-secondary" />} description="242 Total Employees" />
-        <VFStatCard title="Approval Workflows" value="14 Active" icon={<GitMerge className="h-5 w-5 text-success" />} description="0 Pending Escalations" />
-        <VFStatCard title="Governance Audit Status" value="100% Compliant" icon={<ShieldCheck className="h-5 w-5 text-warning" />} description="Immutable Logs Enabled" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Departments Directory & Master List */}
-        <VFSection title="Institutional Departments & Budget Allocations" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Total Staff</p>
-              <p className="text-base font-bold text-primary mt-0.5">242 Members</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Active Workflows</p>
-              <p className="text-base font-bold text-success mt-0.5">14 Chains</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Operating Budget</p>
-              <p className="text-base font-bold text-secondary mt-0.5">₹ 85.5 Lakhs</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Policy Status</p>
-              <p className="text-base font-bold text-warning mt-0.5">18 Active Policies</p>
-            </div>
-          </div>
-
-          <VFDataTable
-            columns={[
-              { header: 'Dept Code', accessorKey: 'deptCode', cell: (r: DepartmentRecord) => <span className="font-mono font-bold text-primary">{r.deptCode}</span> },
-              { header: 'Department Name', accessorKey: 'deptName', cell: (r: DepartmentRecord) => <span className="font-bold text-foreground">{r.deptName}</span> },
-              { header: 'Head of Department', accessorKey: 'headOfDept' },
-              { header: 'Staff Count', accessorKey: 'staffCount', cell: (r: DepartmentRecord) => `${r.staffCount} Staff` },
-              { header: 'Active Budget', accessorKey: 'activeBudget', cell: (r: DepartmentRecord) => <span className="font-mono text-success font-bold">{r.activeBudget}</span> },
-              { header: 'Status', accessorKey: 'status', cell: (r: DepartmentRecord) => <VFBadge variant="success">{r.status}</VFBadge> },
-            ]}
-            data={departmentsData}
-            filterPlaceholder="Search department code or name..."
-          />
-        </VFSection>
-
-        {/* Multi-Stage Approval Workflow Summary */}
-        <VFCard title="Multi-Stage Approval Workflows">
-          <div className="space-y-3 text-xs mt-1">
-            <div className="p-3 bg-card border border-border rounded-xl space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">💳 Fee Discount Approval</span>
-                <VFBadge variant="primary">3 Stages</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs font-mono">Accountant → Principal → Managing Trustee</p>
-            </div>
-            <div className="p-3 bg-card border border-border rounded-xl space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">📝 Marksheet Modification</span>
-                <VFBadge variant="primary">3 Stages</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs font-mono">Teacher → Exam Controller → Principal</p>
-            </div>
-            <div className="p-2.5 bg-success/10 border border-success/30 rounded-xl space-y-1">
-              <span className="font-bold text-foreground">🟢 Governance Audit Stream</span>
-              <p className="text-muted-foreground text-xs">All administrative policy changes are logged with immutable audit IDs.</p>
-            </div>
-          </div>
-        </VFCard>
+        <VFStatCard title="Total Fixed Assets" value="2,480 Assets" icon={<Building className="h-5 w-5 text-primary" />} trend="up" trendLabel="₹3.4 Cr Gross Value" />
+        <VFStatCard title="Active Work Orders" value="8 Maintenance" icon={<Wrench className="h-5 w-5 text-amber-500" />} trend="neutral" trendLabel="4 In Progress" />
+        <VFStatCard title="Active AMC Contracts" value="14 Contracts" icon={<ShieldCheck className="h-5 w-5 text-emerald-500" />} description="HVAC, Generator, Lift, CCTV" />
+        <VFStatCard title="Warranty Claims" value="2 Under Review" icon={<Clock className="h-5 w-5 text-purple-500" />} description="OEM Repairs" />
       </div>
     </div>
   );
 
-  // Dedicated Departments Submodule Content (NO REPEATING TOP STAT CARDS!)
-  const departmentsContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Asset Register
+  // ----------------------------------------------------
+  const registerContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Institutional Departments & Office Master Directory</h3>
-          <p className="text-xs text-muted-foreground">Manage academic faculties, administrative offices, department heads, staff allocations, and operating budgets.</p>
+          <h3 className="text-sm font-bold text-foreground">Fixed Asset Barcode Register</h3>
+          <p className="text-xs text-muted-foreground">Comprehensive inventory of physical school machinery, IT hardware, and furniture.</p>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Department</VFButton>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Register New Asset</VFButton>
       </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Dept Code', accessorKey: 'deptCode', cell: (r: DepartmentRecord) => <span className="font-mono font-bold text-primary">{r.deptCode}</span> },
-          { header: 'Department Name', accessorKey: 'deptName', cell: (r: DepartmentRecord) => <span className="font-bold text-foreground">{r.deptName}</span> },
-          { header: 'Head of Department', accessorKey: 'headOfDept' },
-          { header: 'Staff Count', accessorKey: 'staffCount', cell: (r: DepartmentRecord) => `${r.staffCount} Staff` },
-          { header: 'Active Budget', accessorKey: 'activeBudget', cell: (r: DepartmentRecord) => <span className="font-mono text-success font-bold">{r.activeBudget}</span> },
-          { header: 'Status', accessorKey: 'status', cell: (r: DepartmentRecord) => <VFBadge variant="success">{r.status}</VFBadge> },
-        ]}
-        data={departmentsData}
-        filterPlaceholder="Search department code or name..."
-      />
+      <VFDataTable columns={assetColumns} data={assetData} filterPlaceholder="Search asset name or tag..." />
     </div>
   );
 
-  // 20.7 Specialized Multi-Stage Workflow Visual Stepper Submodule Content (NO REPEATING TOP STAT CARDS!)
-  const workflowsContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 3 — Asset Categories
+  // ----------------------------------------------------
+  const categoriesContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Multi-Stage Approval Workflows Builder</h3>
-          <p className="text-xs text-muted-foreground">Define role-based approval hierarchies for financial concessions, staff leave, marks modifications, and purchase orders.</p>
+      <VFCard title="Asset Classification & Depreciation Slabs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mt-2">
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">IT & Computer Equipment</span>
+            <p className="text-muted-foreground text-xs mt-1">Depreciation: 40% WDV · Computers, Laptops, Projectors</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Furniture & Classroom Fixtures</span>
+            <p className="text-muted-foreground text-xs mt-1">Depreciation: 10% WDV · Desks, Benches, Cabinets</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Heavy Machinery & Electrical</span>
+            <p className="text-muted-foreground text-xs mt-1">Depreciation: 15% WDV · Generators, ACs, Solar Panels</p>
+          </div>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>New Approval Chain</VFButton>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4">
-        {workflowsData.map((wf) => (
-          <VFCard key={wf.id} title={wf.workflowName}>
-            <div className="space-y-3 text-xs mt-1">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-primary font-bold">{wf.workflowId}</span>
-                <VFBadge variant="success">{wf.status}</VFBadge>
-              </div>
-              <p className="text-muted-foreground">Module Scope: <span className="font-bold text-foreground">{wf.moduleScope}</span></p>
-
-              {/* Visual Approval Chain Stepper */}
-              <div className="p-3 bg-muted/40 rounded-xl border border-border flex items-center gap-2 overflow-x-auto">
-                <div className="px-3 py-1.5 bg-card border border-border rounded-lg text-foreground font-bold">
-                  Stage 1: Accountant
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                <div className="px-3 py-1.5 bg-card border border-border rounded-lg text-foreground font-bold">
-                  Stage 2: Principal
-                </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                <div className="px-3 py-1.5 bg-primary/20 border border-primary/40 rounded-lg text-primary font-bold">
-                  Stage 3: Managing Trustee
-                </div>
-              </div>
-            </div>
-          </VFCard>
-        ))}
-      </div>
+      </VFCard>
     </div>
   );
 
-  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
-  const contentMap: Record<string, React.ReactNode> = {
-    dashboard: dashboardContent,
-    governance: departmentsContent,
-    sessions: departmentsContent,
-    structures: departmentsContent,
-    departments: departmentsContent,
-    policies: departmentsContent,
-    workflows: workflowsContent,
-    permissions: departmentsContent,
-    audit: departmentsContent,
-    'reports-settings': departmentsContent,
-  };
+  // ----------------------------------------------------
+  // SUBMODULE 4 — Asset Assignment
+  // ----------------------------------------------------
+  const assignmentContent = (
+    <div className="space-y-4">
+      <VFCard title="Department & Staff Custodian Asset Allocation">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Assign laptops, lab equipment, and keys to specific custodian staff members.</p>
+      </VFCard>
+    </div>
+  );
 
-  const submoduleTabs = (adminModule?.submodules || [
-    { id: 'dashboard', label: 'Administration Dashboard' },
-    { id: 'governance', label: 'Institutional Governance' },
-    { id: 'sessions', label: 'Academic Sessions' },
-    { id: 'structures', label: 'Class & Section Structures' },
-    { id: 'departments', label: 'Departments & Offices' },
-    { id: 'policies', label: 'Institutional Policies' },
-    { id: 'workflows', label: 'Approval Workflows' },
-    { id: 'permissions', label: 'Roles & Governance' },
-    { id: 'audit', label: 'Administrative Audit Trail' },
-    { id: 'reports-settings', label: 'Reports & Settings' },
-  ]).map((sub) => ({
-    id: sub.id,
-    label: sub.label,
-    icon: <Building className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || departmentsContent,
-  }));
+  // ----------------------------------------------------
+  // SUBMODULE 5 — Asset Locations
+  // ----------------------------------------------------
+  const locationsContent = (
+    <div className="space-y-4">
+      <VFCard title="Campus Building & Room Location Hierarchy">
+        <p className="text-xs text-muted-foreground mb-3">Track assets across Main Building, Science Block, Auditorium, and Sports Complex.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Asset History
+  // ----------------------------------------------------
+  const historyContent = (
+    <div className="space-y-4">
+      <VFCard title="Asset Lifecycle & Repair Audit Trail">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Complete historical log of acquisition, transfers, repairs, and valuations.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Maintenance Requests
+  // ----------------------------------------------------
+  const maintenanceRequestsContent = (
+    <div className="space-y-4">
+      <VFCard title="Staff Breakdown & Maintenance Helpdesk Tickets">
+        <p className="text-xs text-muted-foreground mb-3">Report broken ACs, projector bulb failures, or plumbing leaks.</p>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Submit Maintenance Request</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Maintenance Work Orders
+  // ----------------------------------------------------
+  const workOrdersContent = (
+    <div className="space-y-4">
+      <VFCard title="Maintenance Work Order Dispatch & Technician Assignment">
+        <p className="text-xs text-muted-foreground mb-3">Assign internal electricians, plumbers, or external technicians to open work orders.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 9 — Repairs
+  // ----------------------------------------------------
+  const repairsContent = (
+    <div className="space-y-4">
+      <VFCard title="Equipment Repair Log & Spare Parts Consumption">
+        <p className="text-xs text-muted-foreground mb-3">Record repair costs, replaced spare parts, and technician resolution notes.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 10 — Preventive Maintenance
+  // ----------------------------------------------------
+  const preventiveMaintenanceContent = (
+    <div className="space-y-4">
+      <VFCard title="Preventive Maintenance Calendar & Service Schedules">
+        <p className="text-xs text-muted-foreground mb-3">Quarterly AC filter cleaning, generator load testing, and elevator safety checks.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Service Contracts
+  // ----------------------------------------------------
+  const serviceContractsContent = (
+    <div className="space-y-4">
+      <VFCard title="Third-Party Service Provider & Vendor Contracts">
+        <p className="text-xs text-muted-foreground mb-3">Manage outsourced janitorial, pest control, and security service agreements.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 12 — Warranty
+  // ----------------------------------------------------
+  const warrantyContent = (
+    <div className="space-y-4">
+      <VFCard title="OEM Manufacturer Warranty Vault & Expiry Tracker">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Track active equipment warranties and claim free OEM repairs before expiry.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 13 — AMC Management
+  // ----------------------------------------------------
+  const amcManagementContent = (
+    <div className="space-y-4">
+      <VFCard title="Annual Maintenance Contract (AMC) Master Register">
+        <p className="text-xs text-muted-foreground mb-3">Comprehensive AMC contracts for CCTV systems, water purifiers, and lab instruments.</p>
+        <VFBadge variant="success">14 Active AMC Contracts</VFBadge>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 14 — Asset Disposal
+  // ----------------------------------------------------
+  const disposalContent = (
+    <div className="space-y-4">
+      <VFCard title="Asset Scrap Write-off & E-Waste Disposal Register">
+        <p className="text-xs text-muted-foreground mb-3">Process obsolete asset write-offs, auction scrap sales, and certified e-waste disposal.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 15 — Maintenance Reports
+  // ----------------------------------------------------
+  const reportsContent = (
+    <div className="space-y-4">
+      <VFCard title="Fixed Asset Depreciation & Maintenance Expense Reports">
+        <p className="text-xs text-muted-foreground mb-3">Export balance sheet asset schedules, depreciation registers, and MTBF breakdown analytics.</p>
+        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Asset Register (PDF)</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 16 — Asset Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global Asset Tagging & Barcode Parameters">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Asset Barcode Prefix" defaultValue="VIDYA-AST-" />
+          <VFSelect label="Default Depreciation Method" options={[{ label: 'Written Down Value (WDV)', value: 'wdv' }, { label: 'Straight Line Method (SLM)', value: 'slm' }]} />
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 16 SUBMODULE TABS MAPPED
+  // ----------------------------------------------------
+  const submoduleTabs = [
+    { id: 'dashboard', label: 'Assets Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'register', label: 'Asset Register', icon: <Barcode className="h-3.5 w-3.5" />, content: registerContent },
+    { id: 'categories', label: 'Asset Categories', icon: <Layers className="h-3.5 w-3.5" />, content: categoriesContent },
+    { id: 'assignment', label: 'Asset Assignment', icon: <FileText className="h-3.5 w-3.5" />, content: assignmentContent },
+    { id: 'locations', label: 'Asset Locations', icon: <MapPin className="h-3.5 w-3.5" />, content: locationsContent },
+    { id: 'history', label: 'Asset History', icon: <History className="h-3.5 w-3.5" />, content: historyContent },
+    { id: 'maintenance-requests', label: 'Maintenance Requests', icon: <Wrench className="h-3.5 w-3.5" />, content: maintenanceRequestsContent },
+    { id: 'work-orders', label: 'Maintenance Work Orders', icon: <Wrench className="h-3.5 w-3.5" />, content: workOrdersContent },
+    { id: 'repairs', label: 'Repairs', icon: <Wrench className="h-3.5 w-3.5" />, content: repairsContent },
+    { id: 'preventive-maintenance', label: 'Preventive Maintenance', icon: <Calendar className="h-3.5 w-3.5" />, content: preventiveMaintenanceContent },
+    { id: 'service-contracts', label: 'Service Contracts', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: serviceContractsContent },
+    { id: 'warranty', label: 'Warranty', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: warrantyContent },
+    { id: 'amc-management', label: 'AMC Management', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: amcManagementContent },
+    { id: 'disposal', label: 'Asset Disposal', icon: <AlertCircle className="h-3.5 w-3.5" />, content: disposalContent },
+    { id: 'reports', label: 'Maintenance Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: 'Asset Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={submoduleTabs} defaultTabId="dashboard" variant="top-bar" />
+      <VFTabs
+        items={submoduleTabs}
+        activeTabId={activeSubmodule}
+        onTabChange={setActiveSubmodule}
+        variant="top-bar"
+      />
     </VFPageContainer>
   );
 }

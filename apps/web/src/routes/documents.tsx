@@ -2,304 +2,295 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
+  VFInput,
+  VFSelect,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
-  Files,
   FileText,
-  Award,
-  Sparkles,
-  Plus,
-  QrCode,
-  AlertTriangle,
   FileCheck,
+  Award,
+  Users,
+  CheckCircle2,
+  SlidersHorizontal,
+  Plus,
+  Download,
+  ShieldCheck,
+  BarChart3,
+  History,
+  Archive,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/documents')({
   component: DocumentsPage,
 });
 
-interface DocumentVaultRecord {
-  id: string;
-  docNo: string;
-  owner: string;
-  docType: string;
-  category: string;
-  uploadedDate: string;
-  status: 'Verified' | 'Pending Verification' | 'Rejected' | 'Expired';
-}
-
-interface CertificateRequestRecord {
-  id: string;
-  reqNo: string;
-  studentName: string;
-  certType: string;
-  requestDate: string;
-  reason: string;
-  status: 'Approved' | 'Pending Review' | 'Issued';
-}
-
 function DocumentsPage() {
-  const documentsModule = MODULE_REGISTRY.find((m) => m.id === 'documents');
+  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const vaultData: DocumentVaultRecord[] = [
-    { id: '1', docNo: 'DOC-STU-2026-001421', owner: 'Rahul Sharma', docType: 'Birth Certificate', category: 'Admission', uploadedDate: '10 Aug 2026', status: 'Verified' },
-    { id: '2', docNo: 'DOC-STU-2026-001422', owner: 'Priya Patel', docType: 'Previous Marksheet', category: 'Academic', uploadedDate: '11 Aug 2026', status: 'Pending Verification' },
-    { id: '3', docNo: 'DOC-EMP-2026-000821', owner: 'Dr. Suresh Verma', docType: 'B.Ed Degree Certificate', category: 'Employee', uploadedDate: '01 Jul 2026', status: 'Verified' },
-    { id: '4', docNo: 'DOC-STU-2026-001423', owner: 'Aman Singh', docType: 'Address Proof (Aadhaar)', category: 'Identity', uploadedDate: '09 Aug 2026', status: 'Rejected' },
+  const docData = [
+    { code: 'DOC-2026-TC01', title: 'Transfer Certificate (TC)', student: 'Rohan Gupta (ADM-003)', type: 'Transfer Certificate', issuedDate: '10 Aug 2026', status: 'Issued' },
+    { code: 'DOC-2026-BF02', title: 'Bonafide Student Certificate', student: 'Aditya Verma (ADM-001)', type: 'Bonafide', issuedDate: '12 Aug 2026', status: 'Issued' },
+    { code: 'DOC-2026-CC03', title: 'Character & Conduct Certificate', student: 'Priya Sharma (ADM-002)', type: 'Character', issuedDate: '08 Aug 2026', status: 'Issued' },
   ];
 
-  const requestsData: CertificateRequestRecord[] = [
-    { id: '1', reqNo: 'REQ-BON-2026-088', studentName: 'Rahul Sharma', certType: 'Bonafide Certificate', requestDate: '11 Aug 2026', reason: 'Passport Application', status: 'Pending Review' },
-    { id: '2', reqNo: 'REQ-TC-2026-042', studentName: 'Neha Sharma', certType: 'Transfer Certificate (TC)', requestDate: '10 Aug 2026', reason: 'School Transfer', status: 'Approved' },
-    { id: '3', reqNo: 'REQ-CHAR-2026-012', studentName: 'Rohit Kumar', certType: 'Character Conduct Certificate', requestDate: '09 Aug 2026', reason: 'Sports Event Entry', status: 'Issued' },
+  const docColumns = [
+    { header: 'Document Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: 'Certificate Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
+    { header: 'Student Name', accessorKey: 'student' },
+    { header: 'Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
+    { header: 'Issued Date', accessorKey: 'issuedDate' },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
-  // 16.1 Document Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
+  // ----------------------------------------------------
+  // SUBMODULE 1 — Documents Dashboard
+  // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
-      {/* Top Banner Header */}
-      <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
-        <div>
-          <h2 className="text-base font-bold text-foreground">Documents & Certificates Command Center</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Manage 12,840 stored documents, 2,420 issued certificates, digital signatures, and public QR verifications.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Sparkles className="h-3.5 w-3.5 text-primary" />}>
-            ✨ Ask Documents AI
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Upload Document</VFButton>
-        </div>
-      </div>
-
-      {/* Feature 1 — Document KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Total Stored Documents" value="12,840" icon={<Files className="h-5 w-5 text-primary" />} trend="up" trendLabel="11,840 Verified" />
-        <VFStatCard title="Total Issued Certificates" value="2,420" icon={<Award className="h-5 w-5 text-secondary" />} trend="up" trendLabel="420 Issued This Month" />
-        <VFStatCard title="Pending Requests" value="84" icon={<FileText className="h-5 w-5 text-warning" />} description="12 TC · 42 Bonafide" />
-        <VFStatCard title="Missing Student Docs" value="42" icon={<AlertTriangle className="h-5 w-5 text-destructive" />} description="600 Missing Files Resolved" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Pending Actions & Certificate Requests */}
-        <VFSection title="Pending Certificate Requests & Approvals Queue" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Pending Verification</p>
-              <p className="text-base font-bold text-warning mt-0.5">12 Documents</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Pending Signatures</p>
-              <p className="text-base font-bold text-primary mt-0.5">3 Approvals</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Verification Requests</p>
-              <p className="text-base font-bold text-secondary mt-0.5">6 External</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Expiring Docs</p>
-              <p className="text-base font-bold text-destructive mt-0.5">18 Files</p>
-            </div>
-          </div>
-
-          <VFDataTable
-            columns={[
-              { header: 'Request No', accessorKey: 'reqNo', cell: (r: CertificateRequestRecord) => <span className="font-mono font-bold text-primary">{r.reqNo}</span> },
-              { header: 'Student Name', accessorKey: 'studentName', cell: (r: CertificateRequestRecord) => <span className="font-bold text-foreground">{r.studentName}</span> },
-              { header: 'Certificate Type', accessorKey: 'certType' },
-              { header: 'Request Date', accessorKey: 'requestDate' },
-              { header: 'Purpose / Reason', accessorKey: 'reason' },
-              {
-                header: 'Status',
-                accessorKey: 'status',
-                cell: (r: CertificateRequestRecord) => (
-                  <VFBadge variant={r.status === 'Issued' ? 'success' : r.status === 'Approved' ? 'primary' : 'warning'}>
-                    {r.status}
-                  </VFBadge>
-                ),
-              },
-            ]}
-            data={requestsData}
-            filterPlaceholder="Search student name or request number..."
-          />
-        </VFSection>
-
-        {/* Recently Issued & Public QR Verification */}
-        <VFCard title="Recently Issued & Public QR Verification">
-          <div className="space-y-3 text-xs mt-1">
-            <div className="p-2.5 bg-success/10 border border-success/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">✓ Bonafide — Aman Patel</span>
-                <VFBadge variant="success">Issued</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">BON/2026/00421 · Signed by Principal · Valid</p>
-            </div>
-            <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">✓ Transfer Certificate — Neha Sharma</span>
-                <VFBadge variant="primary">Issued</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">TC/2026/00092 · Counter-signed · Digital Vaulted</p>
-            </div>
-            <div className="p-2.5 bg-card border border-border rounded-xl space-y-2">
-              <div className="flex items-center gap-2">
-                <QrCode className="h-5 w-5 text-primary shrink-0" />
-                <div>
-                  <p className="font-bold text-foreground">Public QR Verification Portal</p>
-                  <p className="text-muted-foreground text-xs">Cryptographic authenticity verification active</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </VFCard>
+        <VFStatCard title="Total Issued Certificates" value="384 Documents" icon={<FileCheck className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="100% Digitally Signed" />
+        <VFStatCard title="Pending Requests" value="6 Requests" icon={<FileText className="h-5 w-5 text-amber-500" />} trend="neutral" trendLabel="Requires Verification" />
+        <VFStatCard title="TC Certificates Issued" value="14 Issued" icon={<Award className="h-5 w-5 text-primary" />} description="Session 2026-27" />
+        <VFStatCard title="Digital Verification QR" value="100% Active" icon={<ShieldCheck className="h-5 w-5 text-purple-500" />} description="Anti-Fraud Portal Live" />
       </div>
     </div>
   );
 
-  // 16.2 Dedicated Document Vault Submodule Content (NO REPEATING TOP STAT CARDS!)
-  const vaultContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Student Documents
+  // ----------------------------------------------------
+  const studentDocumentsContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Central Institutional Document Vault</h3>
-          <p className="text-xs text-muted-foreground">Encrypted document repository, version control stacks, and OCR text extraction search.</p>
+          <h3 className="text-sm font-bold text-foreground">Student Master Document Vault</h3>
+          <p className="text-xs text-muted-foreground">Aadhaar cards, birth certificates, previous marksheets, and medical records.</p>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Upload Document</VFButton>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Upload Student Doc</VFButton>
       </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Document ID', accessorKey: 'docNo', cell: (r: DocumentVaultRecord) => <span className="font-mono font-bold text-primary">{r.docNo}</span> },
-          { header: 'Owner Name', accessorKey: 'owner', cell: (r: DocumentVaultRecord) => <span className="font-bold text-foreground">{r.owner}</span> },
-          { header: 'Document Type', accessorKey: 'docType' },
-          { header: 'Category', accessorKey: 'category' },
-          { header: 'Uploaded Date', accessorKey: 'uploadedDate' },
-          {
-            header: 'Status',
-            accessorKey: 'status',
-            cell: (r: DocumentVaultRecord) => (
-              <VFBadge variant={r.status === 'Verified' ? 'success' : r.status === 'Rejected' ? 'danger' : 'warning'}>
-                {r.status}
-              </VFBadge>
-            ),
-          },
-        ]}
-        data={vaultData}
-        filterPlaceholder="Search document number or owner..."
-      />
+      <VFDataTable columns={docColumns} data={docData} filterPlaceholder="Search student or certificate..." />
     </div>
   );
 
-  // 16.4 Specialized Certificate Template Live Preview Submodule Content (NO REPEATING TOP STAT CARDS!)
-  const templatesContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 3 — Staff Documents
+  // ----------------------------------------------------
+  const staffDocumentsContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Dynamic Certificate Template Designer Studio</h3>
-          <p className="text-xs text-muted-foreground">Configure Bonafide, Transfer Certificate (TC), Character, and Experience certificate templates with dynamic placeholders.</p>
-        </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Template</VFButton>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="space-y-3">
-          <VFCard title="Bonafide Study Certificate">
-            <div className="space-y-2 text-xs mt-1">
-              <p className="text-muted-foreground">Placeholders: &#123;&#123;student.name&#125;&#125;, &#123;&#123;class.name&#125;&#125;</p>
-              <p className="font-bold text-success">Status: Published (v2)</p>
-              <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
-            </div>
-          </VFCard>
-          <VFCard title="Transfer Certificate (TC)">
-            <div className="space-y-2 text-xs mt-1">
-              <p className="text-muted-foreground">Placeholders: &#123;&#123;tc.number&#125;&#125;, &#123;&#123;conduct&#125;&#125;</p>
-              <p className="font-bold text-success">Status: Published (v3)</p>
-              <VFButton size="sm" variant="outline" className="w-full mt-2">Edit Template</VFButton>
-            </div>
-          </VFCard>
-        </div>
-
-        {/* Dynamic Certificate Live Preview Card */}
-        <div className="lg:col-span-2 bg-card border border-border rounded-xl p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
-            <div className="flex items-center gap-2">
-              <FileCheck className="h-5 w-5 text-primary" />
-              <h3 className="text-sm font-bold text-foreground">Live Certificate Preview (Bonafide)</h3>
-            </div>
-            <VFBadge variant="success">🔒 Authorized Signature Enforced</VFBadge>
-          </div>
-
-          {/* Certificate Border & Parchment Styling */}
-          <div className="p-6 border-4 border-double border-primary/40 rounded-xl bg-muted/20 text-center space-y-4">
-            <h2 className="text-base font-serif font-black tracking-widest text-primary uppercase">VidyaMaxx Academy of Excellence</h2>
-            <p className="text-xs text-muted-foreground font-serif">Affiliated to Central Board of Secondary Education (CBSE)</p>
-            <h3 className="text-sm font-bold text-foreground underline decoration-primary decoration-2 underline-offset-4 uppercase tracking-wider py-1">Bonafide Student Certificate</h3>
-            
-            <p className="text-xs text-foreground/90 font-serif leading-relaxed max-w-lg mx-auto">
-              This is to certify that <span className="font-bold text-primary">Rahul Sharma</span>, Son of <span className="font-bold">Mr. Rajesh Sharma</span>, is a bonafide student of Class <span className="font-bold">10-A</span> (Admission No: <span className="font-mono font-bold">ADM-2026-00421</span>) for the academic session 2026-2027.
-            </p>
-
-            <div className="flex items-center justify-between pt-6 border-t border-border/60 text-xs">
-              <div className="text-left font-mono">
-                <p className="text-muted-foreground">Date: 11 August 2026</p>
-                <p className="text-muted-foreground">Place: New Delhi</p>
-              </div>
-              <div className="p-1 bg-white rounded border border-border">
-                <QrCode className="h-10 w-10 text-black" />
-              </div>
-              <div className="text-right">
-                <p className="font-bold text-foreground font-serif">Dr. Suresh Verma</p>
-                <p className="text-[11px] text-primary font-bold">Principal Signature ✓</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <VFCard title="Faculty & Staff Qualification Document Vault">
+        <p className="text-xs text-muted-foreground mb-3">Degree certificates, B.Ed. credentials, police verification, and experience letters.</p>
+      </VFCard>
     </div>
   );
 
-  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
-  const contentMap: Record<string, React.ReactNode> = {
-    dashboard: dashboardContent,
-    vault: vaultContent,
-    verification: vaultContent,
-    templates: templatesContent,
-    generation: templatesContent,
-    approvals: vaultContent,
-    issuance: vaultContent,
-    requests: vaultContent,
-    history: vaultContent,
-    'reports-settings': vaultContent,
-  };
+  // ----------------------------------------------------
+  // SUBMODULE 4 — Document Requests
+  // ----------------------------------------------------
+  const requestsContent = (
+    <div className="space-y-4">
+      <VFCard title="Parent & Student Certificate Request Inbox">
+        <p className="text-xs text-muted-foreground mb-3">Process parent app applications for Bonafide, Fee, and Character certificates.</p>
+      </VFCard>
+    </div>
+  );
 
-  const submoduleTabs = (documentsModule?.submodules || [
-    { id: 'dashboard', label: 'Document Dashboard' },
-    { id: 'vault', label: 'Document Vault' },
-    { id: 'verification', label: 'Collection & Verification' },
-    { id: 'templates', label: 'Certificate Templates' },
-    { id: 'generation', label: 'Certificate Generation' },
-    { id: 'approvals', label: 'Approval & Digital Signing' },
-    { id: 'issuance', label: 'Issuance & Delivery' },
-    { id: 'requests', label: 'Requests & Applications' },
-    { id: 'history', label: 'Verification & History' },
-    { id: 'reports-settings', label: 'Reports & Settings' },
-  ]).map((sub) => ({
-    id: sub.id,
-    label: sub.label,
-    icon: <Files className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || vaultContent,
-  }));
+  // ----------------------------------------------------
+  // SUBMODULE 5 — Document Templates
+  // ----------------------------------------------------
+  const documentTemplatesContent = (
+    <div className="space-y-4">
+      <VFCard title="Official Institutional Letterhead & Document Templates">
+        <p className="text-xs text-muted-foreground mb-3">Design custom school letterheads, recommendation letters, and official notices.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Certificate Templates
+  // ----------------------------------------------------
+  const certificateTemplatesContent = (
+    <div className="space-y-4">
+      <VFCard title="Border & Layout Certificate Template Studio">
+        <p className="text-xs text-muted-foreground mb-3">Design certificate borders, watermark crests, and principal signature fields.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Bonafide Certificate
+  // ----------------------------------------------------
+  const bonafideContent = (
+    <div className="space-y-4">
+      <VFCard title="Bonafide Student Certificate Generator">
+        <p className="text-xs text-muted-foreground mb-3">Issue official bonafide certificates for bus passes, passport applications, and bank accounts.</p>
+        <VFButton size="sm" leftIcon={<Download className="h-3.5 w-3.5" />}>Generate Bonafide PDF</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Transfer Certificate
+  // ----------------------------------------------------
+  const transferContent = (
+    <div className="space-y-4">
+      <VFCard title="Official Transfer Certificate (TC) Module">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Counter-signed TC generator with Education Department serial numbers and dues verification.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 9 — Character Certificate
+  // ----------------------------------------------------
+  const characterContent = (
+    <div className="space-y-4">
+      <VFCard title="Character & Conduct Certificate Generator">
+        <p className="text-xs text-muted-foreground mb-3">Issue conduct certificates reflecting discipline history and extracurricular participation.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 10 — Study Certificate
+  // ----------------------------------------------------
+  const studyContent = (
+    <div className="space-y-4">
+      <VFCard title="Continuous Study & Attendance Certificate Generator">
+        <p className="text-xs text-muted-foreground mb-3">Issue multi-year study certificates for government reservation quotas.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Fee Certificate
+  // ----------------------------------------------------
+  const feeCertificateContent = (
+    <div className="space-y-4">
+      <VFCard title="Tuition Fee Paid Certificate (Income Tax Sec 80C)">
+        <p className="text-xs text-muted-foreground mb-3">Generate annual fee paid certificates for parent income tax exemption claims.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 12 — Other Certificates
+  // ----------------------------------------------------
+  const otherCertificatesContent = (
+    <div className="space-y-4">
+      <VFCard title="Sports, Merit & Co-Curricular Event Certificates">
+        <p className="text-xs text-muted-foreground mb-3">Issue annual sports day, science fair, and inter-school competition certificates.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 13 — Document Generation
+  // ----------------------------------------------------
+  const generationContent = (
+    <div className="space-y-4">
+      <VFCard title="Bulk Batch Certificate Generation Engine">
+        <p className="text-xs text-muted-foreground mb-3">Generate class-wide graduation certificates or ID cards in a single batch.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 14 — Digital Signature
+  // ----------------------------------------------------
+  const digitalSignatureContent = (
+    <div className="space-y-4">
+      <VFCard title="Principal Cryptographic Digital Signature & e-Sign Studio">
+        <p className="text-xs text-muted-foreground mb-3 font-mono font-bold">Apply secure PKI digital signatures to generated PDF certificates.</p>
+        <VFBadge variant="success">Digital Signature Certificate Active</VFBadge>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 15 — Document Verification
+  // ----------------------------------------------------
+  const verificationContent = (
+    <div className="space-y-4">
+      <VFCard title="Public QR Code Certificate Anti-Fraud Verification Portal">
+        <p className="text-xs text-muted-foreground mb-3">External verification portal allowing third parties to scan QR code and verify authenticity.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 16 — Issue History
+  // ----------------------------------------------------
+  const issueHistoryContent = (
+    <div className="space-y-4">
+      <VFCard title="Complete Issued Certificate Audit Log & Registry">
+        <p className="text-xs text-muted-foreground mb-3">Chronological history of every certificate issued by the institution.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 17 — Document Archive
+  // ----------------------------------------------------
+  const archiveContent = (
+    <div className="space-y-4">
+      <VFCard title="Long-Term Institutional Document Archive & Cloud Backup">
+        <p className="text-xs text-muted-foreground mb-3">Encrypted long-term storage of alumnus records and archived certificates.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 18 — Document Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global Document System Parameters & Security Rules">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Certificate Serial Prefix" defaultValue="VIDYA-2026-" />
+          <VFSelect label="Watermark Security Level" options={[{ label: 'High (QR + Hologram Overlay)', value: 'high' }, { label: 'Standard QR', value: 'std' }]} />
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 18 SUBMODULE TABS MAPPED
+  // ----------------------------------------------------
+  const submoduleTabs = [
+    { id: 'dashboard', label: 'Documents Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'student-documents', label: 'Student Documents', icon: <FileText className="h-3.5 w-3.5" />, content: studentDocumentsContent },
+    { id: 'staff-documents', label: 'Staff Documents', icon: <Users className="h-3.5 w-3.5" />, content: staffDocumentsContent },
+    { id: 'requests', label: 'Document Requests', icon: <FileText className="h-3.5 w-3.5" />, content: requestsContent },
+    { id: 'document-templates', label: 'Document Templates', icon: <FileText className="h-3.5 w-3.5" />, content: documentTemplatesContent },
+    { id: 'certificate-templates', label: 'Certificate Templates', icon: <Award className="h-3.5 w-3.5" />, content: certificateTemplatesContent },
+    { id: 'bonafide', label: 'Bonafide Certificate', icon: <Award className="h-3.5 w-3.5" />, content: bonafideContent },
+    { id: 'transfer', label: 'Transfer Certificate', icon: <Award className="h-3.5 w-3.5" />, content: transferContent },
+    { id: 'character', label: 'Character Certificate', icon: <Award className="h-3.5 w-3.5" />, content: characterContent },
+    { id: 'study', label: 'Study Certificate', icon: <Award className="h-3.5 w-3.5" />, content: studyContent },
+    { id: 'fee-certificate', label: 'Fee Certificate', icon: <Award className="h-3.5 w-3.5" />, content: feeCertificateContent },
+    { id: 'other-certificates', label: 'Other Certificates', icon: <Award className="h-3.5 w-3.5" />, content: otherCertificatesContent },
+    { id: 'generation', label: 'Document Generation', icon: <FileCheck className="h-3.5 w-3.5" />, content: generationContent },
+    { id: 'digital-signature', label: 'Digital Signature', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: digitalSignatureContent },
+    { id: 'verification', label: 'Document Verification', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: verificationContent },
+    { id: 'issue-history', label: 'Issue History', icon: <History className="h-3.5 w-3.5" />, content: issueHistoryContent },
+    { id: 'archive', label: 'Document Archive', icon: <Archive className="h-3.5 w-3.5" />, content: archiveContent },
+    { id: 'settings', label: 'Document Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={submoduleTabs} defaultTabId="dashboard" variant="top-bar" />
+      <VFTabs
+        items={submoduleTabs}
+        activeTabId={activeSubmodule}
+        onTabChange={setActiveSubmodule}
+        variant="top-bar"
+      />
     </VFPageContainer>
   );
 }

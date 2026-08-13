@@ -121,14 +121,10 @@
     scrollbar-width: none;
   }
 
-  /* Dedicated Left-Side Scrollbar for Sidebar (Subtle & Unobtrusive) */
+  /* Dedicated Scrollbar for Sidebar (Subtle & Unobtrusive) */
   .sidebar-left-scrollbar {
-    direction: rtl;
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--muted-foreground) / 0.2) transparent;
-  }
-  .sidebar-left-scrollbar > * {
-    direction: ltr;
   }
   .sidebar-left-scrollbar::-webkit-scrollbar {
     width: 4px;

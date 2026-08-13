@@ -61,17 +61,46 @@ export function VFTabs({
     }
   }, [activeId, scrollToTab]);
 
-  // Attach non-passive native wheel listener to isolate horizontal tabbar scrolling
-  // and completely prevent vertical main window scroll propagation
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(false);
+
+  const checkScrollState = React.useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  React.useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    checkScrollState();
+    el.addEventListener('scroll', checkScrollState);
+    window.addEventListener('resize', checkScrollState);
+    return () => {
+      el.removeEventListener('scroll', checkScrollState);
+      window.removeEventListener('resize', checkScrollState);
+    };
+  }, [items, checkScrollState]);
+
+  // Attach native wheel listener to translate wheel movements into horizontal tab bar scrolling
   React.useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const handleNativeWheel = (e: WheelEvent) => {
-      if (e.deltaY !== 0) {
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      if (maxScrollLeft <= 1) return;
+
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (delta === 0) return;
+
+      const canRight = delta > 0 && container.scrollLeft < maxScrollLeft - 1;
+      const canLeft = delta < 0 && container.scrollLeft > 1;
+
+      if (canRight || canLeft) {
         e.preventDefault();
-        e.stopPropagation();
-        container.scrollLeft += e.deltaY;
+        container.scrollLeft += delta;
       }
     };
 
@@ -92,6 +121,12 @@ export function VFTabs({
     }
   };
 
+  const handleScrollBy = (amount: number) => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
   const activeItem = items.find((item) => item.id === activeId);
 
   if (variant === 'top-bar') {
@@ -99,6 +134,16 @@ export function VFTabs({
       <div className={cn("flex flex-col w-full bg-background", className)} {...props}>
         {/* Full-width sticky top sub-module tab bar header with zero vertical overflow & non-passive horizontal wheel scroll */}
         <div className="w-full h-12 border-b border-border/60 bg-card/90 px-4 py-0 flex items-center backdrop-blur-xl shrink-0 sticky top-0 z-30 overflow-hidden">
+          {canScrollLeft && (
+            <button
+              type="button"
+              onClick={() => handleScrollBy(-220)}
+              title="Scroll tabs left"
+              className="h-6 w-6 rounded-md bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center shrink-0 text-xs font-bold transition-all mr-2 cursor-pointer border border-border/40 shadow-xs"
+            >
+              ‹
+            </button>
+          )}
           <div
             ref={scrollContainerRef}
             className="flex items-center gap-6 overflow-x-auto overflow-y-hidden no-scrollbar flex-1 h-full scroll-smooth"
@@ -134,7 +179,17 @@ export function VFTabs({
               );
             })}
           </div>
-          {rightActions && <div className="ml-4 shrink-0 flex items-center gap-2">{rightActions}</div>}
+          {canScrollRight && (
+            <button
+              type="button"
+              onClick={() => handleScrollBy(220)}
+              title="Scroll tabs right"
+              className="h-6 w-6 rounded-md bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center shrink-0 text-xs font-bold transition-all ml-2 cursor-pointer border border-border/40 shadow-xs"
+            >
+              ›
+            </button>
+          )}
+          {rightActions && <div className="ml-3 shrink-0 flex items-center gap-2">{rightActions}</div>}
         </div>
 
         {/* Tab Panel Content Container with Smooth Framer Motion Entrance Animation */}

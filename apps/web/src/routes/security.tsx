@@ -2,319 +2,239 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
+  VFInput,
+  VFSelect,
   VFTabs,
   VFBadge,
-  VFPieChart,
 } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
   ShieldCheck,
-  Key,
-  Monitor,
-  Sparkles,
-  Plus,
   Lock,
-  AlertTriangle,
-  Laptop,
   Smartphone,
-  LogOut,
+  Eye,
+  AlertTriangle,
+  Users,
+  CheckCircle2,
+  SlidersHorizontal,
+  Download,
+  History,
+  BarChart3,
+  KeyRound,
+  Activity,
+  FileText,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/security')({
   component: SecurityPage,
 });
 
-interface AuditLogRecord {
-  id: string;
-  auditId: string;
-  timestamp: string;
-  actor: string;
-  role: string;
-  action: string;
-  resource: string;
-  ipAddress: string;
-  device: string;
-}
-
-interface IncidentRecord {
-  id: string;
-  incidentNo: string;
-  type: string;
-  severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  description: string;
-  status: 'Investigating' | 'Contained' | 'Resolved';
-  reportedAt: string;
-}
-
 function SecurityPage() {
-  const securityModule = MODULE_REGISTRY.find((m) => m.id === 'security');
+  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const auditLogsData: AuditLogRecord[] = [
-    { id: '1', auditId: 'AUD-2026-009284', timestamp: 'Today 10:42 AM', actor: 'Roshan Singh', role: 'Super Admin', action: 'Updated Class Teacher Assignment', resource: 'Class 10-A', ipAddress: '192.168.1.45', device: 'Windows / Chrome' },
-    { id: '2', auditId: 'AUD-2026-009285', timestamp: 'Today 10:31 AM', actor: 'Anita Sharma', role: 'Accountant', action: 'Exported Fee Collection CSV Report', resource: 'Fee Ledger', ipAddress: '192.168.1.88', device: 'Windows / Edge' },
-    { id: '3', auditId: 'AUD-2026-009286', timestamp: 'Today 10:20 AM', actor: 'Dr. Suresh Verma', role: 'Principal', action: 'Approved Leave Request (LV-042)', resource: 'HR Module', ipAddress: '192.168.1.12', device: 'macOS / Safari' },
+  const auditData = [
+    { eventId: 'SEC-2026-9041', user: 'admin@vidyamaxx.edu (System SuperAdmin)', action: 'ROLE_PERMISSION_GRANT', details: 'Granted Fee Collection Overwrite to Counter Clerk 2', ip: '192.168.1.42', timestamp: 'Today, 10:14 AM', severity: 'High' },
+    { eventId: 'SEC-2026-9040', user: 'principal@vidyamaxx.edu', action: 'DIGITAL_SIGNATURE_APPLIED', details: 'Signed 42 Transfer Certificates Batch TC-2026-08', ip: '192.168.1.10', timestamp: 'Today, 09:45 AM', severity: 'Info' },
+    { eventId: 'SEC-2026-9038', user: 'unknown_attempt', action: 'FAILED_LOGIN_ATTEMPT', details: '5 Incorrect Passwords from IP 45.142.120.4', ip: '45.142.120.4', timestamp: 'Yesterday, 11:30 PM', severity: 'Warning' },
   ];
 
-  const incidentsData: IncidentRecord[] = [
-    { id: '1', incidentNo: 'INC-2026-0042', type: 'Account Access Anomaly', severity: 'High', description: 'Multiple failed logins (18 attempts) on Admin account from unrecognized IP.', status: 'Investigating', reportedAt: 'Today 09:30 AM' },
-    { id: '2', incidentNo: 'INC-2026-0043', type: 'Unusual Data Export', severity: 'Medium', description: 'Unusual bulk student data CSV export triggered by Finance user.', status: 'Contained', reportedAt: '10 Aug 2026' },
+  const auditColumns = [
+    { header: 'Event ID', accessorKey: 'eventId', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.eventId}</span> },
+    { header: 'User Account', accessorKey: 'user', cell: (r: any) => <span className="font-bold text-foreground">{r.user}</span> },
+    { header: 'Action Performed', accessorKey: 'action', cell: (r: any) => <VFBadge variant="outline">{r.action}</VFBadge> },
+    { header: 'Event Details', accessorKey: 'details' },
+    { header: 'Source IP Address', accessorKey: 'ip', cell: (r: any) => <span className="font-mono text-xs">{r.ip}</span> },
+    { header: 'Timestamp', accessorKey: 'timestamp' },
+    { header: 'Severity', accessorKey: 'severity', cell: (r: any) => <VFBadge variant={r.severity === 'Warning' ? 'warning' : r.severity === 'High' ? 'danger' : 'success'}>{r.severity}</VFBadge> },
   ];
 
-  // 23.1 Security Dashboard Submodule Content (ONLY Dashboard has top KPI Stat Cards!)
+  // ----------------------------------------------------
+  // SUBMODULE 1 — Security Dashboard
+  // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
-      {/* Top Banner Header */}
-      <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
-        <div>
-          <h2 className="text-base font-bold text-foreground">Institutional Security & SOC Command Center</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Manage 126 active sessions, immutable audit trails, MFA policies, data privacy controls, and security incidents.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Sparkles className="h-3.5 w-3.5 text-primary" />}>
-            ✨ Ask Security AI
-          </VFButton>
-          <VFButton size="sm" variant="outline" leftIcon={<Lock className="h-3.5 w-3.5" />}>Review Sessions</VFButton>
-        </div>
-      </div>
-
-      {/* Feature 1 — Security KPI Cards (Dashboard Only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Security Health Score" value="94 / 100" icon={<ShieldCheck className="h-5 w-5 text-success" />} trend="up" trendLabel="Grade A+ Healthy Controls 🟢" />
-        <VFStatCard title="Active Concurrent Sessions" value="126 Active" icon={<Monitor className="h-5 w-5 text-primary" />} description="84% MFA Enforced" />
-        <VFStatCard title="Security Alerts" value="3 Alerts" icon={<AlertTriangle className="h-5 w-5 text-warning" />} description="1 High-Risk Event" />
-        <VFStatCard title="Failed Login Attempts" value="18 Attempts" icon={<Key className="h-5 w-5 text-destructive" />} description="Rate-limited 🔒" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* System Health & Audit Feed */}
-        <VFSection title="Security Control Health & Immutable Audit Feed" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <span className="text-xs text-muted-foreground">Authentication</span>
-              <p className="text-xs text-success font-semibold mt-0.5">🟢 Healthy (MFA 84%)</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <span className="text-xs text-muted-foreground">Audit Logging</span>
-              <p className="text-xs text-success font-semibold mt-0.5">🟢 Enabled (Immutable)</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <span className="text-xs text-muted-foreground">Data Protection</span>
-              <p className="text-xs text-success font-semibold mt-0.5">🟢 Configured (Masked)</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <span className="text-xs text-muted-foreground">Backup Status</span>
-              <p className="text-xs text-success font-semibold mt-0.5">🟢 Healthy (Automated)</p>
-            </div>
-          </div>
-
-          <VFDataTable
-            columns={[
-              { header: 'Audit Event ID', accessorKey: 'auditId', cell: (r: AuditLogRecord) => <span className="font-mono font-bold text-primary">{r.auditId}</span> },
-              { header: 'Actor / User', accessorKey: 'actor', cell: (r: AuditLogRecord) => <span className="font-bold text-foreground">{r.actor} ({r.role})</span> },
-              { header: 'Action', accessorKey: 'action' },
-              { header: 'Target Resource', accessorKey: 'resource', cell: (r: AuditLogRecord) => <VFBadge variant="outline">{r.resource}</VFBadge> },
-              { header: 'IP & Device', accessorKey: 'ipAddress', cell: (r: AuditLogRecord) => <span className="font-mono text-muted-foreground text-xs">{r.ipAddress}</span> },
-              { header: 'Time', accessorKey: 'timestamp' },
-            ]}
-            data={auditLogsData}
-            filterPlaceholder="Search audit event ID or user..."
-          />
-        </VFSection>
-
-        {/* Device Breakdown & Alerts */}
-        <VFCard title="Active Device Distribution & Risk Events">
-          <div className="space-y-3 text-xs mt-1">
-            <VFPieChart
-              data={[
-                { name: 'Desktop Windows', value: 82, color: '#0891b2' },
-                { name: 'Mobile Android/iOS', value: 34, color: '#16a34a' },
-                { name: 'macOS Safari', value: 10, color: '#f97316' },
-              ]}
-              height={150}
-            />
-
-            <div className="p-3 bg-destructive/10 border border-destructive/30 rounded-xl space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-foreground">🔴 Multiple Failed Logins</span>
-                <VFBadge variant="danger">High Risk</VFBadge>
-              </div>
-              <p className="text-muted-foreground text-xs">18 attempts on Admin account from IP 198.51.100.42 (Rate-limited).</p>
-            </div>
-
-            <div className="p-2.5 bg-card border border-border rounded-xl space-y-1">
-              <span className="font-mono text-[10px] text-muted-foreground">ℹ Immutable Audit Storage Enforced · Audit records cannot be edited or deleted.</span>
-            </div>
-          </div>
-        </VFCard>
+        <VFStatCard title="Active User Sessions" value="84 Sessions" icon={<Users className="h-5 w-5 text-primary" />} trend="up" trendLabel="Staff & Admins" />
+        <VFStatCard title="Security Score" value="98 / 100" icon={<ShieldCheck className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="SOC 2 Compliant" />
+        <VFStatCard title="Failed Login Attempts" value="5 Blocked" icon={<AlertTriangle className="h-5 w-5 text-amber-500" />} description="IP Rate-limited" />
+        <VFStatCard title="Audit Trail Integrity" value="100% Immutable" icon={<Lock className="h-5 w-5 text-purple-500" />} description="Cryptographic SHA-256 Logs" />
       </div>
     </div>
   );
 
-  // 23.2 Dedicated Audit Logs Submodule Content (NO REPEATING STAT CARDS!)
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Audit Logs
+  // ----------------------------------------------------
   const auditLogsContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
         <div>
-          <h3 className="text-sm font-bold text-foreground">Immutable System Audit Trails & Activity History</h3>
-          <p className="text-xs text-muted-foreground">Cryptographically indexed server-side audit logs. All administrative changes are tracked with before/after state diffs.</p>
+          <h3 className="text-sm font-bold text-foreground">Immutable System Cryptographic Audit Trail</h3>
+          <p className="text-xs text-muted-foreground font-mono">Tamper-evident system log tracking every administrative data modification.</p>
         </div>
-        <VFButton size="sm" variant="outline">Export Audit Logs</VFButton>
+        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Audit Log (CSV)</VFButton>
       </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Audit Event ID', accessorKey: 'auditId', cell: (r: AuditLogRecord) => <span className="font-mono font-bold text-primary">{r.auditId}</span> },
-          { header: 'Actor / User', accessorKey: 'actor', cell: (r: AuditLogRecord) => <span className="font-bold text-foreground">{r.actor} ({r.role})</span> },
-          { header: 'Action', accessorKey: 'action' },
-          { header: 'Target Resource', accessorKey: 'resource', cell: (r: AuditLogRecord) => <VFBadge variant="outline">{r.resource}</VFBadge> },
-          { header: 'IP & Device', accessorKey: 'ipAddress', cell: (r: AuditLogRecord) => <span className="font-mono text-muted-foreground text-xs">{r.ipAddress}</span> },
-          { header: 'Time', accessorKey: 'timestamp' },
-        ]}
-        data={auditLogsData}
-        filterPlaceholder="Search audit event ID or user..."
-      />
+      <VFDataTable columns={auditColumns} data={auditData} filterPlaceholder="Search action, user, or IP address..." />
     </div>
   );
 
-  // 23.3 Specialized Active Sessions Submodule Content
+  // ----------------------------------------------------
+  // SUBMODULE 3 — Login History
+  // ----------------------------------------------------
+  const loginHistoryContent = (
+    <div className="space-y-4">
+      <VFCard title="User Authentication & Login History">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Timestamped record of successful logins, 2FA OTP verifications, and failed passwords.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 4 — Device Sessions
+  // ----------------------------------------------------
   const sessionsContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Active Concurrent User Sessions & Device Security</h3>
-          <p className="text-xs text-muted-foreground">Monitor real-time logged-in devices, IP locations, browser user-agents, and trigger remote session terminations.</p>
-        </div>
-        <VFButton size="sm" variant="danger" leftIcon={<LogOut className="h-3.5 w-3.5" />}>Sign Out All Other Sessions</VFButton>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <VFCard title="Roshan Singh (Super Admin)">
-          <div className="space-y-2 text-xs mt-1">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-foreground flex items-center gap-1">
-                <Laptop className="h-3.5 w-3.5 text-primary" /> Chrome / Windows 11
-              </span>
-              <VFBadge variant="success">Active Now</VFBadge>
-            </div>
-            <p className="text-muted-foreground text-xs font-mono">IP: 192.168.1.45 (New Delhi, India)</p>
-            <p className="text-muted-foreground text-xs">Login Time: Today 08:30 AM · MFA Verified ✓</p>
-            <div className="pt-2 flex justify-end border-t border-border">
-              <VFButton size="sm" variant="outline" className="text-xs h-7">Sign Out Device</VFButton>
-            </div>
-          </div>
-        </VFCard>
-
-        <VFCard title="Anita Sharma (Accountant)">
-          <div className="space-y-2 text-xs mt-1">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-foreground flex items-center gap-1">
-                <Laptop className="h-3.5 w-3.5 text-primary" /> Edge / Windows 10
-              </span>
-              <VFBadge variant="primary">Active 12m ago</VFBadge>
-            </div>
-            <p className="text-muted-foreground text-xs font-mono">IP: 192.168.1.88 (New Delhi, India)</p>
-            <p className="text-muted-foreground text-xs">Login Time: Today 09:15 AM · MFA Verified ✓</p>
-            <div className="pt-2 flex justify-end border-t border-border">
-              <VFButton size="sm" variant="outline" className="text-xs h-7">Sign Out Device</VFButton>
-            </div>
-          </div>
-        </VFCard>
-
-        <VFCard title="Dr. Suresh Verma (Principal)">
-          <div className="space-y-2 text-xs mt-1">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-foreground flex items-center gap-1">
-                <Smartphone className="h-3.5 w-3.5 text-secondary" /> Safari / iOS App
-              </span>
-              <VFBadge variant="outline">Active 45m ago</VFBadge>
-            </div>
-            <p className="text-muted-foreground text-xs font-mono">IP: 192.168.1.12 (New Delhi, India)</p>
-            <p className="text-muted-foreground text-xs">Login Time: Today 07:45 AM · MFA Verified ✓</p>
-            <div className="pt-2 flex justify-end border-t border-border">
-              <VFButton size="sm" variant="outline" className="text-xs h-7">Sign Out Device</VFButton>
-            </div>
-          </div>
-        </VFCard>
-      </div>
+      <VFCard title="Active Device Sessions & Browser Fingerprints">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Monitor Chrome, Safari, and Mobile app sessions with remote sign-out capability.</p>
+        <VFButton size="sm" variant="danger">Terminate All Other Sessions</VFButton>
+      </VFCard>
     </div>
   );
 
-  // 23.9 Incident & SOC Investigations Submodule Content
-  const incidentsContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 5 — Access History
+  // ----------------------------------------------------
+  const accessHistoryContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Security Operations Center (SOC) & Incident Management</h3>
-          <p className="text-xs text-muted-foreground">Investigate security alerts, track threat containment steps, and record post-incident root cause analyses.</p>
-        </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Log New Incident</VFButton>
-      </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'Incident No', accessorKey: 'incidentNo', cell: (r: IncidentRecord) => <span className="font-mono font-bold text-primary">{r.incidentNo}</span> },
-          { header: 'Threat Type', accessorKey: 'type', cell: (r: IncidentRecord) => <span className="font-bold text-foreground">{r.type}</span> },
-          { header: 'Description', accessorKey: 'description' },
-          {
-            header: 'Severity',
-            accessorKey: 'severity',
-            cell: (r: IncidentRecord) => (
-              <VFBadge variant={r.severity === 'Critical' || r.severity === 'High' ? 'danger' : 'warning'}>
-                {r.severity}
-              </VFBadge>
-            ),
-          },
-          { header: 'Reported At', accessorKey: 'reportedAt' },
-          { header: 'Status', accessorKey: 'status', cell: (r: IncidentRecord) => <VFBadge variant="primary">{r.status}</VFBadge> },
-        ]}
-        data={incidentsData}
-        filterPlaceholder="Search incident number or threat type..."
-      />
+      <VFCard title="Resource Access & API Request History">
+        <p className="text-xs text-muted-foreground mb-3">Track access to sensitive student records, fee ledgers, and staff payroll data.</p>
+      </VFCard>
     </div>
   );
 
-  // Submodule map — EVERY tab has its OWN clean dedicated view! No stat card repetition!
-  const contentMap: Record<string, React.ReactNode> = {
-    dashboard: dashboardContent,
-    'audit-logs': auditLogsContent,
-    'sessions-devices': sessionsContent,
-    'access-monitoring': auditLogsContent,
-    'alerts-risk': incidentsContent,
-    'data-privacy': auditLogsContent,
-    authentication: sessionsContent,
-    'security-policies': auditLogsContent,
-    incidents: incidentsContent,
-    'compliance-reports': auditLogsContent,
-    'security-settings': auditLogsContent,
-  };
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Permission Changes
+  // ----------------------------------------------------
+  const permissionChangesContent = (
+    <div className="space-y-4">
+      <VFCard title="Role Permission Modification & Escalation Register">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Audit trail of role assignment additions, removals, and permission grants.</p>
+      </VFCard>
+    </div>
+  );
 
-  const submoduleTabs = (securityModule?.submodules || [
-    { id: 'dashboard', label: 'Security Dashboard' },
-    { id: 'audit-logs', label: 'Audit Logs & History' },
-    { id: 'sessions-devices', label: 'Login, Sessions & Devices' },
-    { id: 'access-monitoring', label: 'Access & Permissions' },
-    { id: 'alerts-risk', label: 'Alerts & Risk Detection' },
-    { id: 'data-privacy', label: 'Data Security & Privacy' },
-    { id: 'authentication', label: 'Authentication & MFA' },
-    { id: 'security-policies', label: 'Security Policies & Controls' },
-    { id: 'incidents', label: 'Incident & SOC Investigations' },
-    { id: 'compliance-reports', label: 'Compliance & Reports' },
-    { id: 'security-settings', label: 'Security Settings' },
-  ]).map((sub) => ({
-    id: sub.id,
-    label: sub.label,
-    icon: <ShieldCheck className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || auditLogsContent,
-  }));
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Data Change History
+  // ----------------------------------------------------
+  const dataChangesContent = (
+    <div className="space-y-4">
+      <VFCard title="Field-Level Record Modification Delta Log">
+        <p className="text-xs text-muted-foreground mb-3">Track exact before and after values for student marks, fee amounts, and staff salaries.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Security Events
+  // ----------------------------------------------------
+  const securityEventsContent = (
+    <div className="space-y-4">
+      <VFCard title="System Security & Threat Event Log">
+        <p className="text-xs text-muted-foreground mb-3">Password resets, API key generations, database backup triggers, and SSL renewals.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 9 — Suspicious Activity
+  // ----------------------------------------------------
+  const suspiciousActivityContent = (
+    <div className="space-y-4">
+      <VFCard title="AI Anomaly & Suspicious Activity Detection Engine">
+        <p className="text-xs text-muted-foreground mb-3 font-mono text-amber-500 font-bold">Detect impossible travel logins, mass data exports, or off-hours access.</p>
+        <VFBadge variant="warning">0 High Risk Anomalies Detected</VFBadge>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 10 — Account Security
+  // ----------------------------------------------------
+  const accountSecurityContent = (
+    <div className="space-y-4">
+      <VFCard title="User Account Password Policies & Two-Factor Authentication (2FA)">
+        <p className="text-xs text-muted-foreground mb-3">Enforce mandatory TOTP 2FA for all administrative accounts and 90-day password expiry.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Session Management
+  // ----------------------------------------------------
+  const sessionManagementContent = (
+    <div className="space-y-4">
+      <VFCard title="Session Timeout & Idle Lock Configuration">
+        <p className="text-xs text-muted-foreground mb-3">Automatic 15-minute idle session lock for fee counter and grade entry screens.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 12 — Security Reports
+  // ----------------------------------------------------
+  const reportsContent = (
+    <div className="space-y-4">
+      <VFCard title="Compliance Audit & Security Infrastructure Reports">
+        <p className="text-xs text-muted-foreground mb-3">Export SOC 2 Type II compliance readiness reports and security incident logs.</p>
+        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Security Audit Report (PDF)</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 13 — Security Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global Security & IP Whitelist Settings">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Session Idle Timeout" defaultValue="15 Minutes" />
+          <VFSelect label="Mandatory 2FA Requirement" options={[{ label: 'Enforced for Admin & Staff', value: 'admin' }, { label: 'Enforced for All Users', value: 'all' }]} />
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 13 SUBMODULE TABS MAPPED
+  // ----------------------------------------------------
+  const submoduleTabs = [
+    { id: 'dashboard', label: 'Security Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'audit-logs', label: 'Audit Logs', icon: <FileText className="h-3.5 w-3.5" />, content: auditLogsContent },
+    { id: 'login-history', label: 'Login History', icon: <History className="h-3.5 w-3.5" />, content: loginHistoryContent },
+    { id: 'sessions', label: 'Device Sessions', icon: <Smartphone className="h-3.5 w-3.5" />, content: sessionsContent },
+    { id: 'access-history', label: 'Access History', icon: <Eye className="h-3.5 w-3.5" />, content: accessHistoryContent },
+    { id: 'permission-changes', label: 'Permission Changes', icon: <KeyRound className="h-3.5 w-3.5" />, content: permissionChangesContent },
+    { id: 'data-changes', label: 'Data Change History', icon: <Activity className="h-3.5 w-3.5" />, content: dataChangesContent },
+    { id: 'security-events', label: 'Security Events', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: securityEventsContent },
+    { id: 'suspicious-activity', label: 'Suspicious Activity', icon: <AlertTriangle className="h-3.5 w-3.5" />, content: suspiciousActivityContent },
+    { id: 'account-security', label: 'Account Security', icon: <Lock className="h-3.5 w-3.5" />, content: accountSecurityContent },
+    { id: 'session-management', label: 'Session Management', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: sessionManagementContent },
+    { id: 'reports', label: 'Security Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: 'Security Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={submoduleTabs} defaultTabId="dashboard" variant="top-bar" />
+      <VFTabs
+        items={submoduleTabs}
+        activeTabId={activeSubmodule}
+        onTabChange={setActiveSubmodule}
+        variant="top-bar"
+      />
     </VFPageContainer>
   );
 }

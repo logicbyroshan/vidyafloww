@@ -103,8 +103,6 @@ function SmallScreenBlocker() {
   );
 }
 
-import Lenis from 'lenis';
-
 export function AppShell() {
   const location = useLocation();
   const { addNotification, isAiChatOpen, setIsAiChatOpen } = useGlobalStore();
@@ -115,30 +113,12 @@ export function AppShell() {
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
 
-  // Initialize Lenis Smooth Scrolling on Main Viewport
+  // Scroll to top on route change
   React.useEffect(() => {
-    if (!mainRef.current) return;
-    const lenis = new Lenis({
-      wrapper: mainRef.current,
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-    });
-
-    let animationFrameId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      animationFrameId = requestAnimationFrame(raf);
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    animationFrameId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      lenis.destroy();
-    };
-  }, []);
+  }, [location.pathname]);
 
   React.useEffect(() => {
     const checkWidth = () => setViewportWidth(window.innerWidth);
@@ -179,7 +159,7 @@ export function AppShell() {
       <div className="max-w-[2000px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row">
         <VFPage className="flex-row h-screen overflow-hidden w-full">
           <Sidebar />
-          <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+          <div className="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300 ease-in-out min-w-0">
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}

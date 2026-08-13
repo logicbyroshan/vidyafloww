@@ -4,13 +4,30 @@
     "baseUrl": ".",
     "jsx": "react-native",
     "paths": {
-      "@/*": ["./src/*"],
-      "@vidyamaxx/api": ["../../packages/api/src/index.ts"],
-      "@vidyamaxx/types": ["../../packages/types/src/index.ts"],
-      "@vidyamaxx/utils": ["../../packages/utils/src/index.ts"],
-      "@vidyamaxx/constants": ["../../packages/constants/src/index.ts"],
-      "@vidyamaxx/validation": ["../../packages/validation/src/index.ts"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@vidyamaxx/api": [
+        "../../packages/api/src/index.ts"
+      ],
+      "@vidyamaxx/types": [
+        "../../packages/types/src/index.ts"
+      ],
+      "@vidyamaxx/utils": [
+        "../../packages/utils/src/index.ts"
+      ],
+      "@vidyamaxx/constants": [
+        "../../packages/constants/src/index.ts"
+      ],
+      "@vidyamaxx/validation": [
+        "../../packages/validation/src/index.ts"
+      ]
     }
   },
-  "include": ["src", "app"]
+  "include": [
+    "src",
+    "app",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

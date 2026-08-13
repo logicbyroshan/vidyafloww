@@ -2,317 +2,322 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
+  VFInput,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
   BookOpen,
-  AlertTriangle,
-  Sparkles,
+  BookMarked,
+  Users,
+  Award,
+  SlidersHorizontal,
   Plus,
-  Search,
-  Star,
+  Send,
+  AlertCircle,
+  Download,
   Barcode,
-  ArrowLeftRight,
+  History,
+  RotateCcw,
+  BarChart3,
   Bookmark,
-  Eye,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/library')({
   component: LibraryPage,
 });
 
-interface BookCatalogItem {
-  id: string;
-  isbn: string;
-  title: string;
-  author: string;
-  category: string;
-  copies: number;
-  available: number;
-  rating: number;
-}
-
-interface CirculationRecord {
-  id: string;
-  accessionNo: string;
-  memberId: string;
-  memberName: string;
-  bookTitle: string;
-  issueDate: string;
-  dueDate: string;
-  status: 'Issued' | 'Returned' | 'Overdue' | 'Renewed';
-}
-
-interface DigitalResourceItem {
-  id: string;
-  title: string;
-  author: string;
-  format: 'PDF E-Book' | 'Video Tutorial' | 'Audio Book' | 'NCERT Guide';
-  category: string;
-  views: number;
-}
-
 function LibraryPage() {
-  const libraryModule = MODULE_REGISTRY.find((m) => m.id === 'library');
+  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
-  const catalogBooks: BookCatalogItem[] = [
-    { id: '1', isbn: '978-0143452123', title: 'Atomic Habits', author: 'James Clear', category: 'Self Development', copies: 10, available: 4, rating: 4.8 },
-    { id: '2', isbn: '978-0131103627', title: 'Concepts of Physics (Vol 1)', author: 'H.C. Verma', category: 'Physics', copies: 18, available: 12, rating: 4.9 },
-    { id: '3', isbn: '978-0070648036', title: 'Wings of Fire', author: 'A.P.J. Abdul Kalam', category: 'Biography', copies: 12, available: 6, rating: 4.7 },
-    { id: '4', isbn: '978-0062316097', title: 'Sapiens: A Brief History', author: 'Yuval Noah Harari', category: 'History', copies: 8, available: 2, rating: 4.6 },
+  const bookData = [
+    { isbn: 'ISBN-978-01', title: 'Concepts of Physics (Vol 1)', author: 'H.C. Verma', category: 'Science / Physics', copies: 12, available: 8, status: 'In Stock' },
+    { isbn: 'ISBN-978-02', title: 'NCERT Mathematics Class 10', author: 'NCERT Editorial', category: 'Mathematics', copies: 25, available: 4, status: 'In Stock' },
+    { isbn: 'ISBN-978-03', title: 'Organic Chemistry Principles', author: 'Morrison & Boyd', category: 'Science / Chemistry', copies: 8, available: 0, status: 'All Issued' },
   ];
 
-  const circulationData: CirculationRecord[] = [
-    { id: '1', accessionNo: 'LIB-004201', memberId: 'LIB-ST-00421', memberName: 'Rahul Sharma', bookTitle: 'Atomic Habits', issueDate: '01 Aug 2026', dueDate: '15 Aug 2026', status: 'Issued' },
-    { id: '2', accessionNo: 'LIB-004202', memberId: 'LIB-ST-00422', memberName: 'Priya Patel', bookTitle: 'Concepts of Physics (Vol 1)', issueDate: '28 Jul 2026', dueDate: '11 Aug 2026', status: 'Overdue' },
-    { id: '3', accessionNo: 'LIB-004203', memberId: 'LIB-ST-00423', memberName: 'Amit Kumar', bookTitle: 'Wings of Fire', issueDate: '05 Aug 2026', dueDate: '19 Aug 2026', status: 'Renewed' },
+  const bookColumns = [
+    { header: 'ISBN Barcode', accessorKey: 'isbn', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.isbn}</span> },
+    { header: 'Book Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
+    { header: 'Author', accessorKey: 'author' },
+    { header: 'Category', accessorKey: 'category' },
+    { header: 'Total Copies', accessorKey: 'copies' },
+    { header: 'Available', accessorKey: 'available', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.available}</span> },
+    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'All Issued' ? 'warning' : 'success'}>{r.status}</VFBadge> },
   ];
 
-  const digitalResources: DigitalResourceItem[] = [
-    { id: '1', title: 'CBSE Class 10 Physics Master Guide', author: 'VidyaMaxx Academic Team', format: 'PDF E-Book', category: 'Physics', views: 420 },
-    { id: '2', title: 'Interactive Organic Chemistry Reactions', author: 'Dr. Sarah Connor', format: 'Video Tutorial', category: 'Chemistry', views: 310 },
-    { id: '3', title: 'Trigonometry Step-by-Step Audio Lecture', author: 'Prof. Rajesh Sharma', format: 'Audio Book', category: 'Mathematics', views: 185 },
-  ];
-
-  // 11.1 Library Dashboard Submodule Content
+  // ----------------------------------------------------
+  // SUBMODULE 1 — Library Dashboard
+  // ----------------------------------------------------
   const dashboardContent = (
     <div className="space-y-4">
-      {/* Top Banner */}
-      <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
-        <div>
-          <h2 className="text-base font-bold text-foreground">Library Command Center & Catalog Engine</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Manage 12,482 books, circulation counters, student reservation queues, and digital e-learning resources.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Sparkles className="h-3.5 w-3.5 text-primary" />}>
-            ✨ Ask Library AI
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Book</VFButton>
-        </div>
-      </div>
-
-      {/* Feature 1 — Library KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Total Collection Books" value="12,482" icon={<BookOpen className="h-5 w-5 text-primary" />} trend="up" trendLabel="8,742 Available on Shelf" />
-        <VFStatCard title="Books Currently Issued" value="2,941" icon={<ArrowLeftRight className="h-5 w-5 text-secondary" />} trend="up" trendLabel="84 Issued Today" />
-        <VFStatCard title="Overdue Books" value="184" icon={<AlertTriangle className="h-5 w-5 text-destructive" />} description="37 Due Today" />
-        <VFStatCard title="Active Reservations" value="799" icon={<Bookmark className="h-5 w-5 text-warning" />} trend="up" trendLabel="8 Pending Collections" />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Circulation Activity & Popular Books */}
-        <VFSection title="Today's Circulation & Popular Books" className="lg:col-span-2 space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Issued Today</p>
-              <p className="text-base font-bold text-success mt-0.5">84 Books</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Returned Today</p>
-              <p className="text-base font-bold text-primary mt-0.5">61 Books</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Renewed Today</p>
-              <p className="text-base font-bold text-secondary mt-0.5">22 Books</p>
-            </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
-              <p className="text-xs text-muted-foreground">Reserved Today</p>
-              <p className="text-base font-bold text-warning mt-0.5">18 Books</p>
-            </div>
-          </div>
-
-          <VFDataTable
-            columns={[
-              { header: 'Accession No', accessorKey: 'accessionNo', cell: (r: CirculationRecord) => <span className="font-mono font-bold text-primary">{r.accessionNo}</span> },
-              { header: 'Member Name', accessorKey: 'memberName', cell: (r: CirculationRecord) => <span className="font-bold text-foreground">{r.memberName}</span> },
-              { header: 'Book Title', accessorKey: 'bookTitle' },
-              { header: 'Due Date', accessorKey: 'dueDate' },
-              {
-                header: 'Status',
-                accessorKey: 'status',
-                cell: (r: CirculationRecord) => (
-                  <VFBadge variant={r.status === 'Issued' ? 'primary' : r.status === 'Overdue' ? 'danger' : 'success'}>
-                    {r.status}
-                  </VFBadge>
-                ),
-              },
-            ]}
-            data={circulationData}
-            filterPlaceholder="Search circulation transactions..."
-          />
-        </VFSection>
-
-        {/* Needs Attention & Popular Now */}
-        <VFCard title="Popular Now & Reservation Queue">
-          <div className="space-y-3 text-xs mt-1">
-            <div className="p-2.5 bg-muted/40 rounded-xl border border-border/60 space-y-1">
-              <p className="font-bold text-foreground">📕 Atomic Habits (James Clear)</p>
-              <p className="text-muted-foreground text-xs">42 Borrows · 3 Students Waiting in Queue</p>
-            </div>
-            <div className="p-2.5 bg-muted/40 rounded-xl border border-border/60 space-y-1">
-              <p className="font-bold text-foreground">📘 NCERT Physics XI (H.C. Verma)</p>
-              <p className="text-muted-foreground text-xs">38 Borrows · 2 Students Waiting in Queue</p>
-            </div>
-            <div className="p-2.5 bg-muted/40 rounded-xl border border-border/60 space-y-1">
-              <p className="font-bold text-foreground">📗 Wings of Fire (A.P.J. Abdul Kalam)</p>
-              <p className="text-muted-foreground text-xs">31 Borrows · Available on Shelf A12</p>
-            </div>
-          </div>
-        </VFCard>
+        <VFStatCard title="Total Books Cataloged" value="4,850 Titles" icon={<BookOpen className="h-5 w-5 text-primary" />} trend="up" trendLabel="+120 New Volumes" />
+        <VFStatCard title="Currently Issued" value="412 Books" icon={<BookMarked className="h-5 w-5 text-amber-500" />} trend="neutral" trendLabel="Circulating" />
+        <VFStatCard title="Overdue Books" value="18 Books" icon={<AlertCircle className="h-5 w-5 text-destructive" />} trend="down" trendLabel="Fine Alerts Sent" />
+        <VFStatCard title="Active Members" value="1,180 Members" icon={<Users className="h-5 w-5 text-emerald-500" />} description="Students & Staff" />
       </div>
     </div>
   );
 
-  // 11.2 Catalog & Discovery Submodule Content
+  // ----------------------------------------------------
+  // SUBMODULE 2 — Book Catalog
+  // ----------------------------------------------------
   const catalogContent = (
     <div className="space-y-4">
-      {/* Search Header */}
-      <div className="bg-card border border-border p-4 rounded-xl space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search 12,482 books by title, author, ISBN, subject, or keyword..."
-            className="w-full bg-muted/40 border border-border/80 rounded-xl pl-9 pr-4 py-2.5 text-xs text-foreground focus:outline-hidden focus:border-primary"
-          />
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Library Book Master Catalog</h3>
+          <p className="text-xs text-muted-foreground">Search by ISBN, title, author, or Dewey decimal classification.</p>
         </div>
-        <div className="flex items-center gap-2 flex-wrap text-xs">
-          <span className="text-muted-foreground font-semibold">Categories:</span>
-          {['All Books', 'Academics', 'Science', 'Technology', 'Literature', 'Fiction', 'Competitive Exams'].map((cat, i) => (
-            <VFBadge key={i} variant={i === 0 ? 'primary' : 'outline'} className="cursor-pointer">
-              {cat}
-            </VFBadge>
-          ))}
-        </div>
+        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add New Book Title</VFButton>
       </div>
-
-      {/* Book Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {catalogBooks.map((book) => (
-          <div key={book.id} className="bg-card border border-border/80 p-4 rounded-xl space-y-2 hover:border-primary/50 transition-colors">
-            <div className="h-36 bg-muted/40 rounded-lg flex items-center justify-center border border-border/40">
-              <BookOpen className="h-10 w-10 text-primary/60" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-foreground line-clamp-1">{book.title}</h3>
-              <p className="text-xs text-muted-foreground">{book.author}</p>
-            </div>
-            <div className="flex items-center justify-between text-xs pt-1">
-              <span className="flex items-center gap-1 font-bold text-warning">
-                <Star className="h-3 w-3 fill-warning text-warning" /> {book.rating}
-              </span>
-              <VFBadge variant="success">🟢 {book.available} Available</VFBadge>
-            </div>
-            <div className="flex items-center gap-2 pt-2">
-              <VFButton size="sm" variant="outline" className="w-full">Reserve</VFButton>
-              <VFButton size="sm" className="w-full">Borrow</VFButton>
-            </div>
-          </div>
-        ))}
-      </div>
+      <VFDataTable columns={bookColumns} data={bookData} filterPlaceholder="Search book title, author, or ISBN..." />
     </div>
   );
 
-  // 11.3 Books & Collection Submodule Content
+  // ----------------------------------------------------
+  // SUBMODULE 3 — Books
+  // ----------------------------------------------------
   const booksContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Collection & Inventory Master</h3>
-          <p className="text-xs text-muted-foreground">Manage ISBN catalog, physical copies, barcodes, shelf mappings, and book condition logs.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <VFButton size="sm" variant="outline" leftIcon={<Barcode className="h-3.5 w-3.5" />}>Barcode Generator</VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Add Book Title</VFButton>
-        </div>
-      </div>
-
-      <VFDataTable
-        columns={[
-          { header: 'ISBN Code', accessorKey: 'isbn', cell: (r: BookCatalogItem) => <span className="font-mono font-bold text-primary">{r.isbn}</span> },
-          { header: 'Book Title', accessorKey: 'title', cell: (r: BookCatalogItem) => <span className="font-bold text-foreground">{r.title}</span> },
-          { header: 'Author', accessorKey: 'author' },
-          { header: 'Subject Category', accessorKey: 'category' },
-          { header: 'Total Copies', accessorKey: 'copies' },
-          { header: 'Available on Shelf', accessorKey: 'available', cell: (r: BookCatalogItem) => <VFBadge variant="success">{r.available} Available</VFBadge> },
-          { header: 'Rating', accessorKey: 'rating', cell: (r: BookCatalogItem) => `★ ${r.rating}` },
-        ]}
-        data={catalogBooks}
-        filterPlaceholder="Search books or ISBN..."
-      />
+      <VFCard title="Book Title & Edition Records">
+        <p className="text-xs text-muted-foreground mb-3">Manage book publisher editions, release years, and rack shelf locations.</p>
+      </VFCard>
     </div>
   );
 
-  // 11.8 Digital Library Submodule Content
-  const digitalContent = (
+  // ----------------------------------------------------
+  // SUBMODULE 4 — Book Copies
+  // ----------------------------------------------------
+  const copiesContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Digital E-Book & Video Library Repository</h3>
-          <p className="text-xs text-muted-foreground">Access 4,200 PDF e-books, NCERT guides, video lectures, and AI document summaries.</p>
-        </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Upload Digital Resource</VFButton>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {digitalResources.map((res) => (
-          <VFCard key={res.id} title={res.title}>
-            <div className="space-y-2 text-xs mt-1">
-              <p className="text-muted-foreground">Author: {res.author}</p>
-              <div className="flex items-center justify-between pt-1">
-                <VFBadge variant="primary">{res.format}</VFBadge>
-                <span className="text-muted-foreground font-mono">{res.views} Views</span>
-              </div>
-              <VFButton size="sm" variant="outline" className="w-full mt-2" leftIcon={<Eye className="h-3.5 w-3.5" />}>
-                Read / View Resource
-              </VFButton>
-            </div>
-          </VFCard>
-        ))}
-      </div>
+      <VFCard title="Barcode Accession Copy Tracking">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Unique accession numbers (e.g. ACC-2026-001) for physical volume copies.</p>
+      </VFCard>
     </div>
   );
 
-  // Submodule map
-  const contentMap: Record<string, React.ReactNode> = {
-    dashboard: dashboardContent,
-    catalog: catalogContent,
-    books: booksContent,
-    members: dashboardContent,
-    'issue-return': dashboardContent,
-    reservations: dashboardContent,
-    fines: dashboardContent,
-    digital: digitalContent,
-    reports: dashboardContent,
-  };
+  // ----------------------------------------------------
+  // SUBMODULE 5 — Categories
+  // ----------------------------------------------------
+  const categoriesContent = (
+    <div className="space-y-4">
+      <VFCard title="Dewey Decimal & Subject Categories">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mt-2">
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Science & Technology (500)</span>
+            <p className="text-muted-foreground text-xs mt-1">1,840 Volumes · Physics, Chemistry, Bio</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Mathematics (510)</span>
+            <p className="text-muted-foreground text-xs mt-1">920 Volumes · Algebra, Geometry, Calculus</p>
+          </div>
+          <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
+            <span className="font-bold text-foreground">Literature & Fiction (800)</span>
+            <p className="text-muted-foreground text-xs mt-1">1,200 Volumes · Classics, Novels, Drama</p>
+          </div>
+        </div>
+      </VFCard>
+    </div>
+  );
 
-  const submoduleTabs = (libraryModule?.submodules || [
-    { id: 'dashboard', label: 'Library Dashboard' },
-    { id: 'catalog', label: 'Catalog & Discovery' },
-    { id: 'books', label: 'Books & Collection' },
-    { id: 'members', label: 'Members' },
-    { id: 'issue-return', label: 'Circulation' },
-    { id: 'reservations', label: 'Reservations & Requests' },
-    { id: 'fines', label: 'Fines & Accounts' },
-    { id: 'digital', label: 'Digital Library' },
-    { id: 'reports', label: 'Library Reports & Settings' },
-  ]).map((sub) => ({
-    id: sub.id,
-    label: sub.label,
-    icon: <BookOpen className="h-3.5 w-3.5" />,
-    content: contentMap[sub.id] || dashboardContent,
-  }));
+  // ----------------------------------------------------
+  // SUBMODULE 6 — Authors & Publishers
+  // ----------------------------------------------------
+  const authorsPublishersContent = (
+    <div className="space-y-4">
+      <VFCard title="Author & Publisher Directory Master">
+        <p className="text-xs text-muted-foreground mb-3">NCERT, Oxford University Press, Pearson, S. Chand, and Tata McGraw Hill.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 7 — Library Members
+  // ----------------------------------------------------
+  const membersContent = (
+    <div className="space-y-4">
+      <VFCard title="Student & Staff Library Membership Register">
+        <p className="text-xs text-muted-foreground mb-3">Barcode member cards, max book issue limits (3 books/student, 5 books/teacher).</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 8 — Issue Books
+  // ----------------------------------------------------
+  const issueContent = (
+    <div className="space-y-4">
+      <VFCard title="Circulation Terminal — Issue Book Barcode Scanner">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Scan member ID card and book accession barcode to issue in 2 seconds.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 9 — Return Books
+  // ----------------------------------------------------
+  const returnContent = (
+    <div className="space-y-4">
+      <VFCard title="Circulation Terminal — Return Book Console & Fine Check">
+        <p className="text-xs text-muted-foreground mb-3">Scan returned book barcode, calculate overdue fines, and return volume to shelf.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 10 — Renewals
+  // ----------------------------------------------------
+  const renewalsContent = (
+    <div className="space-y-4">
+      <VFCard title="Book Borrow Extension & Renewal Terminal">
+        <p className="text-xs text-muted-foreground mb-3">Extend borrowing period by 7 days if no reservation hold exists.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 11 — Reservations
+  // ----------------------------------------------------
+  const reservationsContent = (
+    <div className="space-y-4">
+      <VFCard title="Book Hold & Reservation Request Queue">
+        <p className="text-xs text-muted-foreground mb-3">Students reserve high-demand books online and receive push alert upon return.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 12 — Overdue Books
+  // ----------------------------------------------------
+  const overdueContent = (
+    <div className="space-y-4">
+      <VFCard title="Overdue Books Watchlist & Fine Reminders">
+        <p className="text-xs text-muted-foreground mb-3 font-mono text-destructive">18 books past the 14-day loan period.</p>
+        <VFButton size="sm" leftIcon={<Send className="h-3.5 w-3.5" />}>Send Overdue Reminders</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 13 — Fines
+  // ----------------------------------------------------
+  const finesContent = (
+    <div className="space-y-4">
+      <VFCard title="Overdue Fine Accounts & Collection Log">
+        <p className="text-xs text-muted-foreground mb-3 font-mono">₹5/day late fine collection ledger.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 14 — Lost & Damaged Books
+  // ----------------------------------------------------
+  const lostDamagedContent = (
+    <div className="space-y-4">
+      <VFCard title="Lost Book Replacement & Damage Fine Write-off Log">
+        <p className="text-xs text-muted-foreground mb-3">Process replacement book payments or write-offs for damaged pages.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 15 — Book History
+  // ----------------------------------------------------
+  const historyContent = (
+    <div className="space-y-4">
+      <VFCard title="Accession History & Circulation Audit Trail">
+        <p className="text-xs text-muted-foreground mb-3">Complete historical record of every issue, return, and renewal for each volume.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 16 — Library Inventory
+  // ----------------------------------------------------
+  const inventoryContent = (
+    <div className="space-y-4">
+      <VFCard title="Annual Stock Audit & Accession Verification">
+        <p className="text-xs text-muted-foreground mb-3">Handheld RFID/barcode scanner annual physical audit of library shelves.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 17 — E-books
+  // ----------------------------------------------------
+  const ebooksContent = (
+    <div className="space-y-4">
+      <VFCard title="Digital E-Book & Online Journal Portal">
+        <p className="text-xs text-muted-foreground mb-3">Read e-books online with integrated PDF viewer and search tools.</p>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 18 — Library Reports
+  // ----------------------------------------------------
+  const reportsContent = (
+    <div className="space-y-4">
+      <VFCard title="Circulation Statistics & Popular Books Analytics">
+        <p className="text-xs text-muted-foreground mb-3">Most borrowed books, category distribution, and member reading trends.</p>
+        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Circulation Report (PDF)</VFButton>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // SUBMODULE 19 — Library Settings
+  // ----------------------------------------------------
+  const settingsContent = (
+    <div className="space-y-4">
+      <VFCard title="Global Library Rules & Loan Period Settings">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
+          <VFInput label="Student Max Loan Days" defaultValue="14 Days" />
+          <VFInput label="Late Fine Per Day" defaultValue="₹5.00" />
+        </div>
+      </VFCard>
+    </div>
+  );
+
+  // ----------------------------------------------------
+  // ALL 19 SUBMODULE TABS MAPPED
+  // ----------------------------------------------------
+  const submoduleTabs = [
+    { id: 'dashboard', label: 'Library Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'catalog', label: 'Book Catalog', icon: <BookOpen className="h-3.5 w-3.5" />, content: catalogContent },
+    { id: 'books', label: 'Books', icon: <BookMarked className="h-3.5 w-3.5" />, content: booksContent },
+    { id: 'copies', label: 'Book Copies', icon: <Barcode className="h-3.5 w-3.5" />, content: copiesContent },
+    { id: 'categories', label: 'Categories', icon: <Bookmark className="h-3.5 w-3.5" />, content: categoriesContent },
+    { id: 'authors-publishers', label: 'Authors & Publishers', icon: <Users className="h-3.5 w-3.5" />, content: authorsPublishersContent },
+    { id: 'members', label: 'Library Members', icon: <Users className="h-3.5 w-3.5" />, content: membersContent },
+    { id: 'issue', label: 'Issue Books', icon: <Send className="h-3.5 w-3.5" />, content: issueContent },
+    { id: 'return', label: 'Return Books', icon: <RotateCcw className="h-3.5 w-3.5" />, content: returnContent },
+    { id: 'renewals', label: 'Renewals', icon: <RotateCcw className="h-3.5 w-3.5" />, content: renewalsContent },
+    { id: 'reservations', label: 'Reservations', icon: <Bookmark className="h-3.5 w-3.5" />, content: reservationsContent },
+    { id: 'overdue', label: 'Overdue Books', icon: <AlertCircle className="h-3.5 w-3.5" />, content: overdueContent },
+    { id: 'fines', label: 'Fines', icon: <Award className="h-3.5 w-3.5" />, content: finesContent },
+    { id: 'lost-damaged', label: 'Lost & Damaged Books', icon: <AlertCircle className="h-3.5 w-3.5" />, content: lostDamagedContent },
+    { id: 'history', label: 'Book History', icon: <History className="h-3.5 w-3.5" />, content: historyContent },
+    { id: 'inventory', label: 'Library Inventory', icon: <BookOpen className="h-3.5 w-3.5" />, content: inventoryContent },
+    { id: 'ebooks', label: 'E-books', icon: <BookOpen className="h-3.5 w-3.5" />, content: ebooksContent },
+    { id: 'reports', label: 'Library Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: 'Library Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={submoduleTabs} defaultTabId="dashboard" variant="top-bar" />
+      <VFTabs
+        items={submoduleTabs}
+        activeTabId={activeSubmodule}
+        onTabChange={setActiveSubmodule}
+        variant="top-bar"
+      />
     </VFPageContainer>
   );
 }
