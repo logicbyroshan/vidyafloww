@@ -29,36 +29,45 @@ VidyaMaxx eliminates fragmented, paper-based, and siloed workflows — replacing
 
 ---
 
-## 🏛️ 24 Complete Core Modules Architecture
+## 🏛️ 33 Complete Core Modules Architecture
 
-VidyaMaxx includes 24 fully-implemented core ERP sub-systems:
+VidyaMaxx includes 33 fully-implemented core ERP sub-systems, each with dedicated sub-modules and 100% unique route URL isolation:
 
-| # | Module ID | Route Path | Core Functional Highlights |
-|---|-----------|------------|----------------------------|
+| # | Module ID | Dedicated Route URL | Core Functional Highlights |
+|---|-----------|---------------------|----------------------------|
 | 1 | **Dashboard** | `/` | Central Institutional Intelligence, Live Telematics & Quick Actions |
-| 2 | **Students** | `/students` | Student 360, Health Records, Discipline Logs & Lifecycle |
-| 3 | **Academics** | `/academics` | Class & Section Structures, Subjects, Syllabus & Timetables |
-| 4 | **Admissions** | `/admissions` | CRM Pipeline, AI Document OCR & Merit Evaluation |
-| 5 | **Attendance** | `/attendance` | Biometric Turnstiles, Roll Call & AI Chronic Absenteeism Engine |
-| 6 | **Examinations** | `/examinations` | Report Cards, CBSE Marks Entry & Re-evaluation |
-| 7 | **Fees** | `/fees` | Fee Schedules, Concessions & Online Payment Gateway Integration |
-| 8 | **Finance & Accounting** | `/accounting` | Double-Entry General Ledger, Invoices & Balance Sheets |
-| 9 | **HR & Payroll** | `/hr` | Employee Profiles, Attendance, Salary Slips & Form 16 |
-| 10 | **Library** | `/library` | Catalog Search, RFID Circulation & Overdue Penalties |
-| 11 | **Transport** | `/transport` | GPS Live Bus Telematics, Fuel Logs & Route Management |
-| 12 | **Hostel** | `/hostel` | Room & Bed Inventory Matrix, Outpass QR & Warden Desk |
-| 13 | **Inventory** | `/inventory` | Master Catalog, Fixed Assets & 3-Way Procurement Workflow |
-| 14 | **Learning & LMS** | `/learning` | Lessons, Homework Assignments & MCQ Practice Quizzes |
-| 15 | **Documents** | `/documents` | Central Document Vault & Certificate Live Preview Studio |
-| 16 | **Communication** | `/communication` | Split-Pane Inbox, DLT SMS & Omnichannel Alerts |
-| 17 | **Events & Activities** | `/events` | Monthly Activity Calendar, Clubs Directory & House Scoreboard |
-| 18 | **Front Office** | `/front-office` | Admission CRM Kanban & Gate Pass Badge Printer |
-| 19 | **School Administration** | `/administration` | Multi-Stage Approval Steppers & Governance Policies |
-| 20 | **Parent & Student Portal** | `/portal` | Child Switcher, Timetables, Homework & Fee Payments |
-| 21 | **Reports & Analytics** | `/reports` | Multi-Metric BI Area Charts & AI Natural Language Report Builder |
-| 22 | **Security & Audit** | `/security` | SOC Incident Tracking, Active Devices & Immutable Audit Trails |
-| 23 | **System Administration** | `/system` | Microservice Health, Integrations Marketplace & API Telemetry |
-| 24 | **VidyaMaxx AI** | `/ai` | Intelligent Institutional AI Assistant & Automated Insights |
+| 2 | **Admissions** | `/admissions` | CRM Pipeline, AI Document OCR & Merit Evaluation |
+| 3 | **Students** | `/students` | Student 360°, Health Records, Discipline Logs & Lifecycle |
+| 4 | **Academics** | `/academics` | Class & Section Structures, Subjects, Syllabus & Timetables |
+| 5 | **Timetable** | `/timetable` | Constraint-Based Scheduling, Teacher Workload & Substitutions |
+| 6 | **Attendance** | `/attendance` | Biometric RFID/Face Sync, Roll Call & AI Absenteeism Engine |
+| 7 | **Teaching** | `/learning` | Lesson Plans, Curriculum Pacing & Teacher Planner |
+| 8 | **Homework & Assignments** | `/homework` | Assignment Lifecycle, Submissions, Review & Marking |
+| 9 | **Examinations** | `/examinations` | Question Banks, Hall Tickets, CBSE Marks Entry & Report Cards |
+| 10 | **Learning Resources** | `/resources` | Study Notes, NCERT E-books, PhET Labs & External Links |
+| 11 | **Online Classes** | `/lms` | Live WebRTC Video Rooms, Virtual Schedules & Cloud Recordings |
+| 12 | **Fees & Finance** | `/fees` | Fee Structures, Counter Collections, Receipts & Defaulters |
+| 13 | **Documents & Certificates** | `/documents` | Student Vault, Bonafide/TC Generation & PKI Signatures |
+| 14 | **Library** | `/library` | ISBN Cataloging, Barcode Circulation & E-books |
+| 15 | **Transport** | `/transport` | GPS Live Bus Telematics, Fuel Logs & Route Management |
+| 16 | **Hostel** | `/hostel` | Dorm Matrix, Bed Allocation, Outpass QR & Mess Management |
+| 17 | **Inventory** | `/inventory` | Master Catalog, Stock In/Out, Vendor Purchase Orders & SKUs |
+| 18 | **Assets & Maintenance** | `/administration` | Fixed Assets Register, Maintenance Work Orders & AMC Contracts |
+| 19 | **Staff & HR** | `/hr` | Employee Profiles, Staff Types, Payroll Processing & Payslips |
+| 20 | **Student Health** | `/health` | Medical Records, Checkup Camps, Allergies & Infirmary Logs |
+| 21 | **Counselling & Support** | `/welfare` | Welfare Cases, Counselling Sessions & Confidential Notes |
+| 22 | **Communication** | `/communication` | Omnichannel DLT SMS, WhatsApp Business API & Push Alerts |
+| 23 | **Events & Calendar** | `/events` | Master School Calendar, PTM Booking & Function Schedules |
+| 24 | **Student Activities** | `/activities` | Extracurricular Clubs, Sports Academies & House Leaderboards |
+| 25 | **Surveys & Forms** | `/forms` | Form Builder Studio, Parent/Staff Surveys & Consent Slips |
+| 26 | **Complaints & Grievances** | `/grievances` | Complaint Inbox, SLA Escalation Matrix & Resolution Closure |
+| 27 | **Front Office** | `/front-office` | Visitor Gate Passes, Phone Call Logs & Enquiry CRM |
+| 28 | **Reports & Analytics** | `/reports` | Cross-Module Operational Reports, Report Builder & Data Explorer |
+| 29 | **School Administration** | `/system` | Multi-Campus Settings, Academic Sessions & School Branding |
+| 30 | **Compliance & Records** | `/compliance` | Indian Board Compliance (CBSE/ICSE) & Mandatory Statutory Registers |
+| 31 | **Security & Audit** | `/security` | Cryptographic SHA-256 Audit Logs, Device Sessions & Threat Alerts |
+| 32 | **AI Executive** | `/ai` | Global VidyaMaxx AI Assistant & Natural Language Insights |
+| 33 | **Settings** | `/settings` | System Preferences, Localization & Global Controls |
 
 ---
 
