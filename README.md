@@ -1,135 +1,124 @@
-# VidyaMaxx - AI First School Management System
+<p align="center">
+  <img src="./Vidy%20Max%20Banner.png" alt="VidyaMaxx School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
+</p>
 
 <div align="center">
 
-**Enterprise School Management & SaaS Microservices Platform**
+# VidyaMaxx — Enterprise School Management Platform
 
-*Unifying every aspect of educational institution management into one cohesive digital ecosystem*
+**A unified, multi-tenant digital ecosystem engineered for modern K-12 schools, colleges, and educational networks.**
 
-[![CI](https://github.com/logicbyroshan/vidyamaxx-school-management/actions/workflows/ci.yml/badge.svg)](https://github.com/logicbyroshan/vidyamaxx-school-management/actions/workflows/ci.yml)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)](https://python.org)
-[![Django](https://img.shields.io/badge/Django-5.x-green?logo=django)](https://djangoproject.com)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript)](https://typescriptlang.org)
+[![React 19](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=white)](https://react.dev)
+[![TypeScript 5.6](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://python.org)
+[![Django 5.x](https://img.shields.io/badge/Django-5.x-092E20?logo=django&logoColor=white)](https://djangoproject.com)
+[![TanStack Router](https://img.shields.io/badge/TanStack_Router-1.x-FF4154?logo=reacttable&logoColor=white)](https://tanstack.com/router)
 
 </div>
 
 ---
 
-## 🎯 Project Overview
+## 📖 About VidyaMaxx
 
-VidyaMaxx is a production-grade, multi-tenant **school management platform** built for educational institutions of all sizes. It consolidates admissions, academics, attendance, examinations, finance, HR, LMS, communication, security, system administration, and AI-powered insights into a single platform accessible via web, mobile, and desktop.
+**VidyaMaxx** is an institutional-grade, full-stack educational ERP and student lifecycle management platform. Designed from the ground up to replace fragmented legacy spreadsheets and disparate third-party tools, VidyaMaxx brings every stakeholder — administrators, principals, teachers, students, and parents — into a single, cohesive, and blisteringly fast digital workspace.
 
-### Vision
-
-> *"Empower every school to operate with the efficiency of a world-class institution."*
-
-VidyaMaxx eliminates fragmented, paper-based, and siloed workflows — replacing them with a unified, intelligent, and beautifully designed ERP platform.
+Built with **React 19**, **TypeScript**, **Tailwind CSS**, and **Django REST Framework**, the platform offers 100% type-safe micro-frontends, lightning-fast client-side routing with **TanStack Router**, custom Radix UI design systems, and responsive layouts tailored for desktop, tablet, and mobile.
 
 ---
 
-## 🏛️ 33 Complete Core Modules Architecture
+## 🌟 Core Feature Highlights
 
-VidyaMaxx includes 33 fully-implemented core ERP sub-systems, each with dedicated sub-modules and 100% unique route URL isolation:
+### 1. 🎯 Admissions & Candidate Evaluation Pipeline
+Manage candidate admissions with zero paperwork. Track candidate applications from initial enquiry to final enrollment fee receipt.
+- **Stage-by-Stage Lead Pipeline**: Visual Kanban board tracking enquiries, applications, document verification, interview rounds, and enrollment.
+- **OCR Document Verification**: Split-screen document inspection engine comparing uploaded birth certificates, marksheet scans, and Aadhaar identity proofs.
+- **Candidate Merit Scoring**: Customizable evaluation models calculating candidate academic merit indexes for instant, objective admissions decisions.
+- **One-Click Enrollment**: Seamlessly promote approved applicants directly into active student rosters and generate digital offer letters.
 
-| # | Module ID | Dedicated Route URL | Core Functional Highlights |
-|---|-----------|---------------------|----------------------------|
-| 1 | **Dashboard** | `/` | Central Institutional Intelligence, Live Telematics & Quick Actions |
-| 2 | **Admissions** | `/admissions` | CRM Pipeline, AI Document OCR & Merit Evaluation |
-| 3 | **Students** | `/students` | Student 360°, Health Records, Discipline Logs & Lifecycle |
-| 4 | **Academics** | `/academics` | Class & Section Structures, Subjects, Syllabus & Timetables |
-| 5 | **Timetable** | `/timetable` | Constraint-Based Scheduling, Teacher Workload & Substitutions |
-| 6 | **Attendance** | `/attendance` | Biometric RFID/Face Sync, Roll Call & AI Absenteeism Engine |
-| 7 | **Teaching** | `/learning` | Lesson Plans, Curriculum Pacing & Teacher Planner |
-| 8 | **Homework & Assignments** | `/homework` | Assignment Lifecycle, Submissions, Review & Marking |
-| 9 | **Examinations** | `/examinations` | Question Banks, Hall Tickets, CBSE Marks Entry & Report Cards |
-| 10 | **Learning Resources** | `/resources` | Study Notes, NCERT E-books, PhET Labs & External Links |
-| 11 | **Online Classes** | `/lms` | Live WebRTC Video Rooms, Virtual Schedules & Cloud Recordings |
-| 12 | **Fees & Finance** | `/fees` | Fee Structures, Counter Collections, Receipts & Defaulters |
-| 13 | **Documents & Certificates** | `/documents` | Student Vault, Bonafide/TC Generation & PKI Signatures |
-| 14 | **Library** | `/library` | ISBN Cataloging, Barcode Circulation & E-books |
-| 15 | **Transport** | `/transport` | GPS Live Bus Telematics, Fuel Logs & Route Management |
-| 16 | **Hostel** | `/hostel` | Dorm Matrix, Bed Allocation, Outpass QR & Mess Management |
-| 17 | **Inventory** | `/inventory` | Master Catalog, Stock In/Out, Vendor Purchase Orders & SKUs |
-| 18 | **Assets & Maintenance** | `/administration` | Fixed Assets Register, Maintenance Work Orders & AMC Contracts |
-| 19 | **Staff & HR** | `/hr` | Employee Profiles, Staff Types, Payroll Processing & Payslips |
-| 20 | **Student Health** | `/health` | Medical Records, Checkup Camps, Allergies & Infirmary Logs |
-| 21 | **Counselling & Support** | `/welfare` | Welfare Cases, Counselling Sessions & Confidential Notes |
-| 22 | **Communication** | `/communication` | Omnichannel DLT SMS, WhatsApp Business API & Push Alerts |
-| 23 | **Events & Calendar** | `/events` | Master School Calendar, PTM Booking & Function Schedules |
-| 24 | **Student Activities** | `/activities` | Extracurricular Clubs, Sports Academies & House Leaderboards |
-| 25 | **Surveys & Forms** | `/forms` | Form Builder Studio, Parent/Staff Surveys & Consent Slips |
-| 26 | **Complaints & Grievances** | `/grievances` | Complaint Inbox, SLA Escalation Matrix & Resolution Closure |
-| 27 | **Front Office** | `/front-office` | Visitor Gate Passes, Phone Call Logs & Enquiry CRM |
-| 28 | **Reports & Analytics** | `/reports` | Cross-Module Operational Reports, Report Builder & Data Explorer |
-| 29 | **School Administration** | `/system` | Multi-Campus Settings, Academic Sessions & School Branding |
-| 30 | **Compliance & Records** | `/compliance` | Indian Board Compliance (CBSE/ICSE) & Mandatory Statutory Registers |
-| 31 | **Security & Audit** | `/security` | Cryptographic SHA-256 Audit Logs, Device Sessions & Threat Alerts |
-| 32 | **AI Executive** | `/ai` | Global VidyaMaxx AI Assistant & Natural Language Insights |
-| 33 | **Settings** | `/settings` | System Preferences, Localization & Global Controls |
+### 2. 👥 Complete Student 360° & Lifecycle Master
+A single source of truth for every student record throughout their institutional tenure.
+- **Comprehensive Profile**: Academic history, section allocation, guardian linkages, emergency medical notes, and fee status.
+- **Identity & Records**: Digital student ID card generation, Aadhaar deduplication engine, and transfer certificate (TC) tracking.
+- **Dynamic Class & Section Allocations**: Streamlined batch promotions, section reassignments, roll-number generators, and student status management.
+
+### 3. 🗓️ Timetable Scheduling & Substitution Matrix
+Eliminate scheduling conflicts and automate staff proxy management across all classrooms.
+- **Conflict-Free Master Timetable**: Comprehensive grid matrix balancing class schedules, teacher workloads, and laboratory allocations.
+- **Automated Proxy & Substitution**: Instantly detect teacher absences and auto-match qualified free teachers for cover periods with one click.
+- **Teacher Workload Optimization**: Real-time load meters monitoring weekly period caps, consecutive period rules, and teacher break distributions.
+
+### 4. 📚 Teaching, Curriculum Pacing & Digital Learning Studio
+Empower faculty with modern classroom tools and structured pedagogical frameworks.
+- **Structured 45-Min Lesson Plan Generator**: Input chapter topics to generate standardized CBSE learning objectives, period timelines, and homework tasks.
+- **Syllabus Progress Tracking**: Monitor department-level curriculum completion percentages against annual term targets.
+- **Homework & Assignment Lifecycle**: Create worksheets, track submissions, evaluate assignments with rubrics, and deliver digital teacher feedback.
+- **Virtual LMS Classrooms**: Live WebRTC online lecture studio with screen sharing, digital whiteboard, and lecture replay archives.
 
 ---
 
-## 🏗️ Technology Stack
+## 📸 Screenshots & Application Gallery
 
-### Backend
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| Python | 3.13 | Primary language |
-| Django | 5.x | Web framework |
-| Django REST Framework | 3.15 | API framework |
-| PostgreSQL | 16 | Primary database |
-| Redis | 7 | Cache & message broker |
-| Celery | 5.x | Async task queue |
-| Django Channels | 4.x | WebSocket / real-time |
+> *Drop your application screenshots into the `screenshots/` directory or replace the placeholders below.*
 
-### Web App
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| React | 19 | Core UI framework |
-| Vite | 5.4 | Lightning fast build tool |
-| TypeScript | 5.6 | Strict type safety |
-| Tailwind CSS | 3.4 | Utility-first CSS styling |
-| `@vidyamaxx/ui` | Workspace | Custom enterprise CVA component system |
-| Radix UI | Latest | Accessible UI primitives (`dialog`, `select`, `tabs`, `popover`, `tooltip`) |
-| Framer Motion | 13.x | Fluid scale-in modal & drawer animations |
-| TanStack Table | 9.x | High-performance enterprise data grid |
-| Recharts | 3.x | Custom dark theme BI data visualizations |
-| Lenis | 1.1 | Physics-based smooth scrolling |
-| Sonner | 2.x | Real-time store-synced toast notifications |
-| TanStack Router | 1.x | Type-safe client routing |
-| TanStack Query | 5.x | Server state management & caching |
-| Zustand | 5.x | Global client state |
-| Zod | 3.x | Schema validation |
+| 🖥️ Executive Dashboard & Institutional Radar | 📋 Admissions CRM & Kanban Queue |
+| :---: | :---: |
+| [![Dashboard Overview](https://placehold.co/600x380/18181b/f97316?text=Dashboard+%26+Principal+Radar)](./screenshots/dashboard.png) <br /> *Real-time institutional KPI telemetry, attendance summaries & academic radar* | [![Admissions Pipeline](https://placehold.co/600x380/18181b/f97316?text=Admissions+Kanban+%26+Verification)](./screenshots/admissions.png) <br /> *Visual admissions stages, merit ranking & split-screen OCR verification* |
+| **🗓️ Timetable & Auto-Substitution Matrix** | **📖 Lesson Planning & Teaching Workspace** |
+| [![Timetable Matrix](https://placehold.co/600x380/18181b/f97316?text=Timetable+Matrix+%26+Substitution)](./screenshots/timetable.png) <br /> *Master class period grid, workload balancer & proxy allocation* | [![Teaching Workspace](https://placehold.co/600x380/18181b/f97316?text=Teaching+Studio+%26+Lesson+Planner)](./screenshots/learning.png) <br /> *Curriculum progression, 45-minute lesson plans & digital logs* |
+| **🎓 Student 360° Directory** | **⚙️ School Settings & System Administration** |
+| [![Student 360](https://placehold.co/600x380/18181b/f97316?text=Student+360+Profile+%26+Directory)](./screenshots/students.png) <br /> *Student profiles, guardian contacts, document vault & academic history* | [![School Settings](https://placehold.co/600x380/18181b/f97316?text=Multi-Campus+Settings+%26+Statutory+Registers)](./screenshots/settings.png) <br /> *Multi-campus setup, statutory compliance registers & numbering sequences* |
 
 ---
 
-## 📁 Repository Layout
+## 🏛️ Active Application Modules
+
+VidyaMaxx is organized into clean, isolated modules mapped to distinct, type-safe routes:
+
+| # | Module | Route | Key Capabilities |
+|:---:|---|---|---|
+| **01** | **Dashboard** | `/` | Executive KPIs, Principal Radar, Teacher Portal, Student View, Academic Quality |
+| **02** | **Admissions** | `/admissions` | CRM leads, applications, OCR verification, interviews, merit evaluation, enrollment |
+| **03** | **Students** | `/students` | Student 360° profiles, guardians, section mapping, bulk import, deduplication |
+| **04** | **Academics** | `/academics` | Academic session master, grade structures, subject allocation, curriculum pacing |
+| **05** | **Timetable** | `/timetable` | Period matrix, teacher schedules, room allocation, automated substitutions |
+| **06** | **Attendance** | `/attendance` | Biometric/RFID integration, daily roll call, late records, absentee alerts |
+| **07** | **Teaching** | `/learning` | 45-min lesson plans, teaching plans, chapter topics, lesson notes, teaching diary |
+| **08** | **Homework** | `/homework` | Assignment distribution, worksheet attachments, student submissions, evaluation |
+| **09** | **Examinations** | `/examinations` | Exam schedules, paper setup, marks entry, grades, automated report card generation |
+| **10** | **Learning Resources** | `/resources` | Digital study notes, PDF vaults, video lessons, external educational links |
+| **11** | **Online Classes** | `/lms` | Live video classes, meeting schedules, screen sharing, lecture recording archives |
+| **12** | **Parent/Student Portal** | `/portal` | Dedicated student portal for timetables, attendance stats, and academic notices |
+| **13** | **Settings & Admin** | `/settings` | Multi-campus config, academic calendars, branding, statutory registers & policies |
+
+---
+
+## 🛠️ Technology Stack & Architecture
 
 ```text
-vidyamaxx/
-├── apps/
-│   ├── backend/          Django + DRF API server
-│   ├── web/              React 19 web application (24 core modules)
-│   ├── mobile/           React Native + Expo app
-│   └── desktop/          Electron desktop app
-├── packages/
-│   ├── api/              Typed HTTP client
-│   ├── ui/               Shared UI components & charts
-│   ├── types/            TypeScript type definitions
-│   ├── validation/       Shared Zod schemas
-│   ├── constants/        Routes, roles, module registry
-│   ├── hooks/            Shared React hooks
-│   ├── utils/            Utility functions
-│   ├── config/           App configuration
-│   ├── themes/           Design tokens
-│   ├── icons/            Custom icons
-│   └── assets/           Shared assets
-├── docs/                 13 documentation files
-├── scripts/              Build & utility scripts
-├── docker/               Dockerfiles + Compose
-└── .github/              CI/CD workflows
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            VidyaMaxx Monorepo                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+          │                                                  │
+          ▼                                                  ▼
+┌───────────────────┐                              ┌───────────────────┐
+│     apps/web      │                              │   apps/backend    │
+│  React 19 + Vite  │                              │    Django 5 REST  │
+│  TanStack Router  │                              │ PostgreSQL 16 DB  │
+│  Tailwind CSS 3.4 │                              │   Redis + Celery  │
+└───────────────────┘                              └───────────────────┘
+          │                                                  │
+          ▼                                                  ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                packages/                                    │
+│   ├── @vidyamaxx/ui          (Shared Design System, Cards, Badges, Tabs)   │
+│   ├── @vidyamaxx/constants   (Route Registry, Navigation, System Enums)    │
+│   ├── @vidyamaxx/types       (TypeScript Global Data Interfaces)           │
+│   ├── @vidyamaxx/api         (Typed API Clients & HTTP Services)           │
+│   └── @vidyamaxx/themes      (Color Themes, Tokens & Glassmorphism)        │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -138,53 +127,101 @@ vidyamaxx/
 
 ### Prerequisites
 
-- **Python** 3.13+
-- **Node.js** 20+
-- **pnpm** 9+ — `npm install -g pnpm`
-- **Poetry** — `pip install poetry`
-- **Docker Desktop** (for PostgreSQL + Redis)
+Ensure you have the following installed on your machine:
+- **Node.js**: `v20.x` or `v22.x` ([nodejs.org](https://nodejs.org/))
+- **pnpm**: `v9.x` (`npm install -g pnpm`)
+- **Python**: `3.13+` ([python.org](https://www.python.org/))
+- **Poetry**: ([python-poetry.org](https://python-poetry.org/))
 
-### 1. Install & Build Monorepo
+---
+
+### Step 1: Clone the Repository
 
 ```bash
 git clone https://github.com/logicbyroshan/vidyamaxx-school-management.git
 cd vidyamaxx-school-management
-
-# Install all JavaScript/TypeScript dependencies
-pnpm install
-
-# Run type check across all 14 monorepo packages
-pnpm type-check
 ```
-
-### 2. Start Web Dev Server
-
-```bash
-pnpm --filter=@vidyamaxx/web dev
-```
-
-Web app available at: **http://localhost:3000**
 
 ---
 
-## 🗺️ Roadmap & Completion Status
+### Step 2: Install Frontend Dependencies
 
-| Phase | Status | Focus |
-|-------|--------|-------|
-| 1 — Foundation | ✅ Complete | Monorepo scaffold, configs, docs |
-| 2 — Auth & Multi-tenancy | ✅ Complete | Multi-tenant SaaS, roles, sessions |
-| 3 — Students & Academics | ✅ Complete | Student 360, classes, timetable |
-| 4 — Examinations | ✅ Complete | Exams, grades, report cards |
-| 5 — Finance & Accounting | ✅ Complete | Fees, payments, general ledger |
-| 6 — Communication | ✅ Complete | Split-pane inbox, DLT SMS |
-| 7 — HR & Payroll | ✅ Complete | Staff profiles, attendance, salary |
-| 8 — LMS & Learning | ✅ Complete | Lessons, homework, practice quizzes |
-| 9 — Operations & Logistics | ✅ Complete | Library, transport, hostel, inventory |
-| 10 — Security & System Admin | ✅ Complete | SOC incidents, microservice health |
-| 11 — BI Reports & AI Engine | ✅ Complete | BI Area charts, VidyaMaxx AI |
+```bash
+pnpm install
+```
+
+---
+
+### Step 3: Run the Development Servers
+
+#### 💻 Start the Web Application (Frontend)
+```bash
+pnpm --filter=@vidyamaxx/web dev
+```
+> The frontend application will spin up at **`http://localhost:3000`** with Hot Module Replacement (HMR).
+
+#### 🐍 Start the API Server (Backend)
+```bash
+# In a separate terminal tab:
+cd apps/backend
+poetry install
+poetry run python manage.py migrate
+poetry run python manage.py runserver 8000
+```
+> The Django REST API will be accessible at **`http://localhost:8000/api/v1/`**.
+
+---
+
+### Step 4: Build for Production
+
+To test the production build and verify type correctness across all packages:
+
+```bash
+# Type check the entire monorepo
+pnpm --filter=@vidyamaxx/web type-check
+
+# Compile Vite production bundle
+pnpm --filter=@vidyamaxx/web build
+```
+
+---
+
+## 📁 Monorepo Folder Structure
+
+```text
+vidyamaxx/
+├── apps/
+│   ├── backend/               # Django 5 REST API microservice
+│   └── web/                   # React 19 + TanStack Router Web ERP
+│       ├── src/
+│       │   ├── components/    # Reusable web components & drawers
+│       │   ├── layouts/       # AppShell, Sidebar, Header, CommandPalette
+│       │   ├── routes/        # TanStack Router file-based route definitions
+│       │   ├── stores/        # Zustand global state stores
+│       │   └── index.css      # Tailwind design tokens & dark theme
+├── packages/
+│   ├── ui/                    # @vidyamaxx/ui enterprise UI primitives
+│   ├── constants/             # @vidyamaxx/constants navigation & metadata
+│   ├── types/                 # @vidyamaxx/types TypeScript schemas
+│   ├── api/                   # @vidyamaxx/api HTTP client
+│   └── themes/                # @vidyamaxx/themes styling tokens
+├── screenshots/               # Application UI screenshots & preview assets
+├── Vidy Max Banner.png        # Official brand hero banner
+└── README.md                  # Project documentation
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-Proprietary — All rights reserved. VidyaMaxx Team, 2026.
+Proprietary Software. All rights reserved &copy; 2026 **VidyaMaxx Team**.
