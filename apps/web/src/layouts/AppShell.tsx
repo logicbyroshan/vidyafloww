@@ -6,7 +6,6 @@ import { Header } from './Header';
 import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
-import { AIChatDrawer } from '../components/AIChatDrawer';
 import { useGlobalStore, initTheme } from '../stores/globalStore';
 import { VFPage } from '@vidyamaxx/ui';
 import { Monitor, Smartphone, Laptop, ArrowRight } from 'lucide-react';
@@ -105,7 +104,7 @@ function SmallScreenBlocker() {
 
 export function AppShell() {
   const location = useLocation();
-  const { addNotification, isAiChatOpen, setIsAiChatOpen } = useGlobalStore();
+  const { addNotification } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
@@ -163,7 +162,6 @@ export function AppShell() {
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}
-              onOpenAiChat={() => setIsAiChatOpen(true)}
             />
             <main ref={mainRef} className="flex-1 overflow-y-auto bg-background relative custom-scrollbar">
               <AnimatePresence mode="wait">
@@ -187,10 +185,6 @@ export function AppShell() {
           <NotificationsPanel
             isOpen={isNotificationsOpen}
             onClose={() => setIsNotificationsOpen(false)}
-          />
-          <AIChatDrawer
-            isOpen={isAiChatOpen}
-            onClose={() => setIsAiChatOpen(false)}
           />
           <ToastContainer />
         </VFPage>

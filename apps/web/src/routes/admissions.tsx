@@ -57,19 +57,19 @@ interface Applicant {
   previousSchool: string;
   guardianName: string;
   phone: string;
-  aiFitScore: number;
+  fitScore: number;
   ocrDocStatus: 'Verified' | 'Pending' | 'Flagged';
-  aiRecommendation: 'Instant Admit' | 'Schedule Interview' | 'Needs Review' | 'Rejected';
-  stage: 'Submitted' | 'AI Screened' | 'Interview' | 'Approved';
+  recommendation: 'Instant Admit' | 'Schedule Interview' | 'Needs Review' | 'Rejected';
+  stage: 'Submitted' | 'Screened' | 'Interview' | 'Approved';
   appliedDate: string;
 }
 
 const INITIAL_APPLICANTS: Applicant[] = [
-  { id: '1', applicantId: 'ADM-2026-001', name: 'Aarav Sharma', appliedGrade: 'Class 9', previousSchool: 'Delhi Public School', guardianName: 'Rajesh Sharma', phone: '+91 98765 43210', aiFitScore: 96, ocrDocStatus: 'Verified', aiRecommendation: 'Instant Admit', stage: 'AI Screened', appliedDate: '2026-08-08' },
-  { id: '2', applicantId: 'ADM-2026-002', name: 'Ananya Verma', appliedGrade: 'Class 11-Sci', previousSchool: 'St. Xavier High School', guardianName: 'Sunita Verma', phone: '+91 98123 45678', aiFitScore: 89, ocrDocStatus: 'Verified', aiRecommendation: 'Schedule Interview', stage: 'Interview', appliedDate: '2026-08-09' },
-  { id: '3', applicantId: 'ADM-2026-003', name: 'Rohan Gupta', appliedGrade: 'Class 6', previousSchool: 'Modern School', guardianName: 'Vikram Gupta', phone: '+91 97654 32109', aiFitScore: 64, ocrDocStatus: 'Flagged', aiRecommendation: 'Needs Review', stage: 'Submitted', appliedDate: '2026-08-09' },
-  { id: '4', applicantId: 'ADM-2026-004', name: 'Kavya Nair', appliedGrade: 'Class 11-Com', previousSchool: 'Kendriya Vidyalaya', guardianName: 'Suresh Nair', phone: '+91 99887 76655', aiFitScore: 92, ocrDocStatus: 'Verified', aiRecommendation: 'Instant Admit', stage: 'Approved', appliedDate: '2026-08-07' },
-  { id: '5', applicantId: 'ADM-2026-005', name: 'Ishaan Malhotra', appliedGrade: 'Class 9', previousSchool: 'Ryan International', guardianName: 'Anil Malhotra', phone: '+91 98234 56789', aiFitScore: 48, ocrDocStatus: 'Pending', aiRecommendation: 'Needs Review', stage: 'Submitted', appliedDate: '2026-08-10' },
+  { id: '1', applicantId: 'ADM-2026-001', name: 'Aarav Sharma', appliedGrade: 'Class 9', previousSchool: 'Delhi Public School', guardianName: 'Rajesh Sharma', phone: '+91 98765 43210', fitScore: 96, ocrDocStatus: 'Verified', recommendation: 'Instant Admit', stage: 'Screened', appliedDate: '2026-08-08' },
+  { id: '2', applicantId: 'ADM-2026-002', name: 'Ananya Verma', appliedGrade: 'Class 11-Sci', previousSchool: 'St. Xavier High School', guardianName: 'Sunita Verma', phone: '+91 98123 45678', fitScore: 89, ocrDocStatus: 'Verified', recommendation: 'Schedule Interview', stage: 'Interview', appliedDate: '2026-08-09' },
+  { id: '3', applicantId: 'ADM-2026-003', name: 'Rohan Gupta', appliedGrade: 'Class 6', previousSchool: 'Modern School', guardianName: 'Vikram Gupta', phone: '+91 97654 32109', fitScore: 64, ocrDocStatus: 'Flagged', recommendation: 'Needs Review', stage: 'Submitted', appliedDate: '2026-08-09' },
+  { id: '4', applicantId: 'ADM-2026-004', name: 'Kavya Nair', appliedGrade: 'Class 11-Com', previousSchool: 'Kendriya Vidyalaya', guardianName: 'Suresh Nair', phone: '+91 99887 76655', fitScore: 92, ocrDocStatus: 'Verified', recommendation: 'Instant Admit', stage: 'Approved', appliedDate: '2026-08-07' },
+  { id: '5', applicantId: 'ADM-2026-005', name: 'Ishaan Malhotra', appliedGrade: 'Class 9', previousSchool: 'Ryan International', guardianName: 'Anil Malhotra', phone: '+91 98234 56789', fitScore: 48, ocrDocStatus: 'Pending', recommendation: 'Needs Review', stage: 'Submitted', appliedDate: '2026-08-10' },
 ];
 
 function AdmissionsPage() {
@@ -110,14 +110,14 @@ function AdmissionsPage() {
     { header: 'Grade Applied', accessorKey: 'appliedGrade' },
     { header: 'Guardian Phone', accessorKey: 'phone' },
     {
-      header: 'AI Fit Score',
-      accessorKey: 'aiFitScore',
+      header: 'Evaluation Score',
+      accessorKey: 'fitScore',
       cell: (row: Applicant) => (
         <div className="flex items-center gap-2">
           <div className="w-16 h-2 bg-muted rounded-full overflow-hidden border border-border">
-            <div className={`h-full ${row.aiFitScore >= 80 ? 'bg-primary' : row.aiFitScore >= 60 ? 'bg-warning' : 'bg-destructive'}`} style={{ width: `${row.aiFitScore}%` }} />
+            <div className={`h-full ${row.fitScore >= 80 ? 'bg-primary' : row.fitScore >= 60 ? 'bg-warning' : 'bg-destructive'}`} style={{ width: `${row.fitScore}%` }} />
           </div>
-          <span className="text-xs font-bold text-foreground">{row.aiFitScore}%</span>
+          <span className="text-xs font-bold text-foreground">{row.fitScore}%</span>
         </div>
       ),
     },
@@ -131,11 +131,11 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'AI Verdict',
-      accessorKey: 'aiRecommendation',
+      header: 'Evaluation Verdict',
+      accessorKey: 'recommendation',
       cell: (row: Applicant) => (
-        <VFBadge variant={row.aiRecommendation === 'Instant Admit' ? 'primary' : row.aiRecommendation === 'Schedule Interview' ? 'warning' : 'outline'}>
-          {row.aiRecommendation}
+        <VFBadge variant={row.recommendation === 'Instant Admit' ? 'primary' : row.recommendation === 'Schedule Interview' ? 'warning' : 'outline'}>
+          {row.recommendation}
         </VFBadge>
       ),
     },
@@ -245,9 +245,9 @@ function AdmissionsPage() {
       <div className="flex items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs">
         <div>
           <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-            <BrainCircuit className="h-4 w-4 text-primary" /> Lead Kanban Pipeline & AI Propensity Scoring
+            <BrainCircuit className="h-4 w-4 text-primary" /> Lead Kanban Pipeline & Conversion Scoring
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Drag-and-drop lead stage progression with automated AI conversion scores.</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Drag-and-drop lead stage progression with automated conversion scores.</p>
         </div>
         <VFBadge variant="primary">7 Pipeline Stages</VFBadge>
       </div>
@@ -316,7 +316,7 @@ function AdmissionsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard title="Total Applications Received" value="148" icon={<UserSquare className="h-5 w-5" />} trend="up" trendLabel="+18 today" />
-        <VFStatCard title="AI Instant Approved" value="42" icon={<Sparkles className="h-5 w-5" />} trend="up" trendLabel="Auto-screened" />
+        <VFStatCard title="Auto Screened" value="42" icon={<CheckCircle2 className="h-5 w-5" />} trend="up" trendLabel="Auto-screened" />
         <VFStatCard title="Interviews Pending" value="16" icon={<Clock className="h-5 w-5" />} trend="down" trendLabel="Scheduled for tomorrow" />
         <VFStatCard title="Doc Verified (OCR)" value="94.2%" icon={<FileCheck className="h-5 w-5" />} trend="up" trendLabel="124 documents processed" />
       </div>
@@ -326,7 +326,7 @@ function AdmissionsPage() {
           <Filter className="h-4 w-4 text-primary" /> Filter by Application Workflow Stage:
         </div>
         <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar">
-          {['ALL', 'Submitted', 'AI Screened', 'Interview', 'Approved'].map((st) => (
+          {['ALL', 'Submitted', 'Screened', 'Interview', 'Approved'].map((st) => (
             <button
               key={st}
               onClick={() => setActiveStageFilter(st)}
@@ -442,7 +442,7 @@ function AdmissionsPage() {
   const verificationContent = (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <VFCard title="AI OCR Extraction Engine">
+        <VFCard title="Document OCR Extraction Engine">
           <div className="flex justify-between items-center mt-2">
             <span className="text-2xl font-black text-success">98.4% Match</span>
             <VFBadge variant="success">Active Engine</VFBadge>
@@ -459,7 +459,7 @@ function AdmissionsPage() {
         </VFCard>
       </div>
 
-      <VFCard title="Split-Screen AI Document OCR Inspection">
+      <VFCard title="Split-Screen Document OCR Inspection">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mt-2">
           <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
             <span className="font-bold text-foreground flex items-center gap-2">
@@ -472,7 +472,7 @@ function AdmissionsPage() {
 
           <div className="p-4 bg-muted/40 border border-border/60 rounded-xl space-y-2">
             <span className="font-bold text-foreground flex items-center gap-2 text-success">
-              <CheckCircle2 className="h-4 w-4 text-success" /> AI Extracted Verification Metadata
+              <CheckCircle2 className="h-4 w-4 text-success" /> Extracted Verification Metadata
             </span>
             <div className="space-y-1.5 font-mono text-[11px] text-foreground">
               <p><span className="text-muted-foreground">Extracted Candidate Name:</span> Aarav Sharma (100% Match)</p>
@@ -743,7 +743,7 @@ function AdmissionsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
           <VFInput label="Session Academic Year" defaultValue="2026-2027" />
           <VFInput label="Application Fee Amount (₹)" defaultValue="1000" />
-          <VFSelect label="Default AI Fit Model" options={[{ label: 'Strict Academic Match', value: 'strict' }, { label: 'Holistic Profile Score', value: 'holistic' }]} />
+          <VFSelect label="Default Evaluation Model" options={[{ label: 'Strict Academic Match', value: 'strict' }, { label: 'Holistic Profile Score', value: 'holistic' }]} />
           <VFSelect label="Auto Offer Letter Generation" options={[{ label: 'Enabled (Upon Approval)', value: 'enabled' }, { label: 'Disabled (Manual)', value: 'disabled' }]} />
         </div>
         <div className="pt-4 flex justify-end">
@@ -823,12 +823,12 @@ function AdmissionsPage() {
               <div className="p-4 bg-muted/60 border border-border rounded-xl space-y-2">
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-semibold text-foreground flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-primary" /> Candidate AI Match Index
+                    <Award className="h-3.5 w-3.5 text-primary" /> Candidate Merit Index
                   </span>
-                  <span className="text-sm font-bold text-primary">{selectedApplicant.aiFitScore}/100</span>
+                  <span className="text-sm font-bold text-primary">{selectedApplicant.fitScore}/100</span>
                 </div>
                 <div className="w-full h-2 bg-background rounded-full overflow-hidden border border-border">
-                  <div className="h-full bg-primary rounded-full" style={{ width: `${selectedApplicant.aiFitScore}%` }} />
+                  <div className="h-full bg-primary rounded-full" style={{ width: `${selectedApplicant.fitScore}%` }} />
                 </div>
               </div>
 

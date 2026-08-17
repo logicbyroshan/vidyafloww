@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useGlobalStore } from '../stores/globalStore';
-import { Bell, CheckCircle2, AlertCircle, Info, Trash2, X, CheckCheck, Sparkles } from 'lucide-react';
+import { Bell, CheckCircle2, AlertCircle, Info, Trash2, X, CheckCheck } from 'lucide-react';
 
 export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { notifications, markNotificationRead, markAllNotificationsRead, clearNotifications } =
@@ -105,7 +105,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground p-6 space-y-3">
               <div className="h-12 w-12 rounded-2xl bg-muted border border-border flex items-center justify-center">
-                <Sparkles className="h-6 w-6 text-muted-foreground/50" />
+                <Bell className="h-6 w-6 text-muted-foreground/50" />
               </div>
               <div>
                 <p className="text-xs font-semibold text-foreground">All caught up!</p>

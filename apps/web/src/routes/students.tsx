@@ -335,7 +335,7 @@ function StudentsPage() {
   const duplicatesContent = (
     <div className="space-y-4">
       <VFCard title="Duplicate Student Record Detection & Merge Engine">
-        <p className="text-xs text-muted-foreground mb-3">AI algorithm scans Aadhaar, phone, and name similarities to resolve duplicate records.</p>
+        <p className="text-xs text-muted-foreground mb-3">System algorithm scans Aadhaar, phone, and name similarities to resolve duplicate records.</p>
         <VFBadge variant="success">0 Duplicate Conflicts Detected</VFBadge>
       </VFCard>
     </div>

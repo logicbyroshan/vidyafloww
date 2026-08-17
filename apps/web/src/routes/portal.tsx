@@ -17,7 +17,6 @@ import {
   Calendar as CalendarIcon,
   MessageSquare,
   User,
-  Sparkles,
   CheckCircle2,
   CreditCard,
   Download,
@@ -143,12 +142,12 @@ function ParentStudentPortalPage() {
           </VFCard>
         </VFSection>
 
-        {/* AI Signature Home Assistant */}
-        <VFCard title="✨ Ask VidyaMaxx AI Assistant">
+        {/* Daily Action Summary */}
+        <VFCard title="Daily Action Summary">
           <div className="space-y-3 text-xs mt-1">
             <div className="p-3 bg-primary/10 border border-primary/30 rounded-xl space-y-2">
               <p className="font-bold text-foreground flex items-center gap-1.5 text-xs">
-                <Sparkles className="h-4 w-4 text-primary" /> Today's Action Summary
+                <CheckCircle2 className="h-4 w-4 text-primary" /> Today's Action Summary
               </p>
               <ul className="list-disc list-inside space-y-1 text-muted-foreground text-[11px]">
                 <li>Mathematics homework due tomorrow morning.</li>
@@ -158,7 +157,7 @@ function ParentStudentPortalPage() {
               </ul>
             </div>
             <VFButton size="sm" variant="outline" className="w-full">
-              Ask AI Question
+              Contact Class Teacher
             </VFButton>
           </div>
         </VFCard>

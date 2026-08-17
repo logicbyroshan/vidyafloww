@@ -164,7 +164,7 @@ function OnlineClassesPage() {
   const recordingsContent = (
     <div className="space-y-4">
       <VFCard title="Cloud Session Recording & Auto-Transcription Processing">
-        <p className="text-xs text-muted-foreground mb-3 font-mono">Auto-saves live lectures to cloud storage with AI transcript indexing.</p>
+        <p className="text-xs text-muted-foreground mb-3 font-mono">Auto-saves live lectures to cloud storage with automated transcript indexing.</p>
       </VFCard>
     </div>
   );

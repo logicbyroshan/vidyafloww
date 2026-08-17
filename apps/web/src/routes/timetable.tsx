@@ -245,7 +245,7 @@ function TimetablePage() {
         <VFStatCard title="Pending Substitutes" value="2 Slots" icon={<AlertCircle className="h-5 w-5" />} trend="down" trendLabel="Action Needed" />
       </div>
 
-      <VFCard title="AI Substitute Recommendation & One-Click Bulk Assignment">
+      <VFCard title="Automated Substitute Recommendation & One-Click Assignment">
         <div className="space-y-3 text-xs mt-2">
           {[
             { period: 'Period 3 (09:30 AM)', absent: 'Dr. Sarah Connor', subject: 'Physics', class: 'Class 9-A', proxy: 'Mrs. Anita Desai', match: '94% Match', status: 'Assigned' },
@@ -342,7 +342,7 @@ function TimetablePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
           <VFInput label="Standard Period Duration" defaultValue="45 mins" />
           <VFInput label="Max Periods Per Teacher / Day" defaultValue="6" />
-          <VFSelect label="AI Optimization Model" options={[{ label: 'Minimize Teacher Idle Time', value: 'minimize_idle' }, { label: 'Balanced Spread', value: 'balanced' }]} />
+          <VFSelect label="Schedule Optimization Model" options={[{ label: 'Minimize Teacher Idle Time', value: 'minimize_idle' }, { label: 'Balanced Spread', value: 'balanced' }]} />
         </div>
       </VFCard>
     </div>

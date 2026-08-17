@@ -1,10 +1,9 @@
-import { Search, Bell, Sparkles, Download, Building2 } from 'lucide-react';
+import { Search, Bell, Download, Building2 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
 interface HeaderProps {
   onSearchClick: () => void;
   onNotificationsClick: () => void;
-  onOpenAiChat: () => void;
 }
 
 const SCHOOL = {
@@ -12,7 +11,7 @@ const SCHOOL = {
   logo: '/logo.png',
 };
 
-export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: HeaderProps) {
+export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const { notifications } = useGlobalStore();
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -42,15 +41,6 @@ export function Header({ onSearchClick, onNotificationsClick, onOpenAiChat }: He
         >
           <Download className="h-3.5 w-3.5 shrink-0" />
           <span>Export</span>
-        </button>
-
-        {/* Ask AI */}
-        <button
-          onClick={onOpenAiChat}
-          className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 border border-primary/25 px-2.5 py-[5px] rounded-lg transition-all cursor-pointer"
-        >
-          <Sparkles className="h-3.5 w-3.5 shrink-0" />
-          <span>Ask AI</span>
         </button>
 
         {/* Notifications */}

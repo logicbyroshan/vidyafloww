@@ -67,7 +67,7 @@ export function Preloader({ onDone }: { onDone: () => void }) {
             Vidya<span className="text-primary">Maxx</span>
           </h1>
           <p className="mt-2 text-sm text-muted-foreground tracking-widest uppercase">
-            AI-First School Management
+            Enterprise School Management
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export function Preloader({ onDone }: { onDone: () => void }) {
 
         {/* Status text */}
         <p className="text-xs text-muted-foreground animate-pulse">
-          {phase === 'in' ? 'Initializing...' : phase === 'hold' ? 'Loading AI modules...' : 'Ready'}
+          {phase === 'in' ? 'Initializing...' : phase === 'hold' ? 'Loading modules...' : 'Ready'}
         </p>
       </div>
     </div>

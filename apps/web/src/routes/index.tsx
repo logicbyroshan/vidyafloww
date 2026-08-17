@@ -17,7 +17,6 @@ import {
   GraduationCap,
   CalendarCheck,
   FileText,
-  Sparkles,
   ArrowUpRight,
   ShieldCheck,
   CheckCircle2,
@@ -41,11 +40,11 @@ function DashboardPage() {
 
   // Student Health Radar Mock Data
   const studentData = [
-    { id: '1', name: 'Rahul Sharma', class: '10-A', status: 'Present', riskScore: 'Low (4%)', aiInsight: 'Optimal Performance', lastUpdate: '08:30 AM' },
-    { id: '2', name: 'Priya Patel', class: '10-A', status: 'Absent', riskScore: 'High (78%)', aiInsight: '3rd consecutive absence', lastUpdate: '08:35 AM' },
-    { id: '3', name: 'Amit Kumar', class: '9-B', status: 'Present', riskScore: 'Low (8%)', aiInsight: 'Math improvement +14%', lastUpdate: '08:20 AM' },
-    { id: '4', name: 'Sneha Singh', class: '11-Sci', status: 'Late', riskScore: 'Med (42%)', aiInsight: 'Late arrival pattern', lastUpdate: '09:15 AM' },
-    { id: '5', name: 'Vikram Mehta', class: '12-Com', status: 'Present', riskScore: 'Low (2%)', aiInsight: 'Scholarship candidate', lastUpdate: '08:25 AM' },
+    { id: '1', name: 'Rahul Sharma', class: '10-A', status: 'Present', riskScore: 'Low (4%)', note: 'Optimal Performance', lastUpdate: '08:30 AM' },
+    { id: '2', name: 'Priya Patel', class: '10-A', status: 'Absent', riskScore: 'High (78%)', note: '3rd consecutive absence', lastUpdate: '08:35 AM' },
+    { id: '3', name: 'Amit Kumar', class: '9-B', status: 'Present', riskScore: 'Low (8%)', note: 'Math improvement +14%', lastUpdate: '08:20 AM' },
+    { id: '4', name: 'Sneha Singh', class: '11-Sci', status: 'Late', riskScore: 'Med (42%)', note: 'Late arrival pattern', lastUpdate: '09:15 AM' },
+    { id: '5', name: 'Vikram Mehta', class: '12-Com', status: 'Present', riskScore: 'Low (2%)', note: 'Scholarship candidate', lastUpdate: '08:25 AM' },
   ];
 
   const studentColumns = [
@@ -78,12 +77,11 @@ function DashboardPage() {
       ),
     },
     {
-      header: 'AI Note',
-      accessorKey: 'aiInsight',
+      header: 'Remarks',
+      accessorKey: 'note',
       cell: (r: any) => (
-        <span className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
-          <Sparkles className="h-3.5 w-3.5 text-primary/80 shrink-0" />
-          {r.aiInsight}
+        <span className="text-xs text-muted-foreground font-medium">
+          {r.note}
         </span>
       ),
     },
@@ -96,7 +94,7 @@ function DashboardPage() {
       {selectedNotice && (
         <div className="p-4 bg-primary/10 border border-primary/25 rounded-xl text-xs text-foreground flex items-center justify-between animate-fade-in shadow-xs">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
             <span className="font-medium">{selectedNotice}</span>
           </div>
           <button onClick={() => setSelectedNotice(null)} className="text-muted-foreground hover:text-foreground text-xs font-bold cursor-pointer">
@@ -160,7 +158,7 @@ function DashboardPage() {
           <div className="bg-card border border-border rounded-xl p-4 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-primary" /> Recommended Actions
+                <CheckCircle2 className="h-4 w-4 text-primary" /> Recommended Actions
               </h2>
               <span className="text-xs bg-primary/15 text-primary px-2 py-0.5 rounded-md font-bold">3 Ready</span>
             </div>
@@ -173,7 +171,7 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Review Fee Defaulters (14)</p>
-                    <span className="text-xs bg-primary/15 text-primary px-1.5 py-0.2 rounded-md font-semibold">AI Badge</span>
+                    <span className="text-xs bg-primary/15 text-primary px-1.5 py-0.2 rounded-md font-semibold">Priority</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Auto WhatsApp reminders prepared</p>
                 </div>
@@ -187,7 +185,7 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Absence Alert (Priya Patel)</p>
-                    <span className="text-xs bg-warning/15 text-warning px-1.5 py-0.2 rounded-md font-semibold">AI Flag</span>
+                    <span className="text-xs bg-warning/15 text-warning px-1.5 py-0.2 rounded-md font-semibold">Follow-up</span>
                   </div>
                   <p className="text-xs text-muted-foreground">3 consecutive absences flagged</p>
                 </div>
@@ -201,7 +199,7 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Staff Absence Substitute</p>
-                    <span className="text-xs bg-success/15 text-success px-1.5 py-0.2 rounded-md font-semibold">AI Match</span>
+                    <span className="text-xs bg-success/15 text-success px-1.5 py-0.2 rounded-md font-semibold">Suggested</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Mr. Verma matched (Free Period 3)</p>
                 </div>
@@ -405,7 +403,7 @@ function DashboardPage() {
             <div className="p-3 bg-muted/40 rounded-lg border border-border/60 flex items-center justify-between">
               <div>
                 <p className="font-bold text-foreground">Class 12-Sci Optics Numerical Quiz</p>
-                <p className="text-muted-foreground text-xs mt-0.5">Auto-graded by AI Engine (Avg: 84%)</p>
+                <p className="text-muted-foreground text-xs mt-0.5">Auto-graded (Avg: 84%)</p>
               </div>
               <VFButton size="sm" variant="outline">View Results</VFButton>
             </div>
@@ -545,7 +543,14 @@ function DashboardPage() {
         </VFCard>
       </div>
 
-      <VFCard title="Departmental Academic Performance Breakdown">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <VFStatCard title="Institutional Average" value="84.2%" icon={<Award className="h-5 w-5" />} trend="up" trendLabel="+2.4% vs Term 1" />
+        <VFStatCard title="Pass Percentage" value="99.4%" icon={<GraduationCap className="h-5 w-5" />} trend="up" trendLabel="CBSE Target: 100%" />
+        <VFStatCard title="Distinction Achievers" value="482 Students" icon={<Award className="h-5 w-5" />} trend="up" trendLabel="Above 90% Aggregate" />
+        <VFStatCard title="At-Risk Learners" value="18 Students" icon={<AlertTriangle className="h-5 w-5" />} trend="down" trendLabel="Under Remedial Plan" />
+      </div>
+
+      <VFCard title="Departmental Grade Distribution & Syllabus Pacing">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs mt-2">
           <div className="p-3 bg-muted/40 rounded-lg border border-border/60">
             <p className="font-bold text-foreground">Science Department</p>
@@ -600,48 +605,6 @@ function DashboardPage() {
     </div>
   );
 
-  // 8. AI Executive Submodule Content
-  const aiExecutiveContent = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="AI Insights Triggered" value="142" icon={<Sparkles className="h-5 w-5" />} trend="up" trendLabel="+34 This Week" />
-        <VFStatCard title="Auto Reminders Sent" value="1,280" icon={<Activity className="h-5 w-5" />} trend="up" trendLabel="WhatsApp & SMS" />
-        <VFStatCard title="Anomaly Detection Rate" value="98.4%" icon={<ShieldCheck className="h-5 w-5" />} trend="up" trendLabel="High Precision" />
-        <VFStatCard title="Staff Time Saved" value="145 Hours" icon={<Clock className="h-5 w-5" />} trend="up" trendLabel="This Month" />
-      </div>
-
-      <div className="bg-card border border-border p-4 rounded-xl space-y-4">
-        <div className="flex items-center gap-3 border-b border-border pb-3">
-          <div className="h-10 w-10 rounded-xl bg-primary/20 text-primary font-bold flex items-center justify-center">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-foreground">VidyaFlow Autonomous AI Radar</h3>
-            <p className="text-xs text-muted-foreground">Continuous predictive monitoring across attendance, fee defaulters, and academic drop-offs.</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div className="p-4 bg-muted/40 rounded-xl border border-border/60 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-foreground">Absenteeism Risk Prediction</span>
-              <VFBadge variant="warning">94% Accuracy</VFBadge>
-            </div>
-            <p className="text-muted-foreground">AI flagged 3 candidates likely to exceed 15% absenteeism threshold before end of term.</p>
-          </div>
-
-          <div className="p-4 bg-muted/40 rounded-xl border border-border/60 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-foreground">Fee Defaulter Propensity</span>
-              <VFBadge variant="primary">AI Automation</VFBadge>
-            </div>
-            <p className="text-muted-foreground">Auto-generated WhatsApp payment links scheduled to trigger on 1st of every month.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   const submoduleTabs = [
     { id: 'overview', label: 'Overview', icon: <Activity className="h-3.5 w-3.5" />, content: overviewContent },
     { id: 'principal-radar', label: 'Principal Radar', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: principalRadarContent },
@@ -650,7 +613,6 @@ function DashboardPage() {
     { id: 'revenue-radar', label: 'Revenue Radar', icon: <DollarSign className="h-3.5 w-3.5" />, content: revenueRadarContent },
     { id: 'academic-quality', label: 'Academic Quality', icon: <BookOpen className="h-3.5 w-3.5" />, content: academicQualityContent },
     { id: 'staff-workload', label: 'Staff Workload', icon: <Clock className="h-3.5 w-3.5" />, content: staffWorkloadContent },
-    { id: 'ai-executive', label: 'AI Executive', icon: <Sparkles className="h-3.5 w-3.5 text-primary" />, content: aiExecutiveContent },
   ];
 
   return (

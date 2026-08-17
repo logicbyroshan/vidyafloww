@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { Eye, EyeOff, Sparkles, Zap, GraduationCap, Users, BarChart3, Shield } from 'lucide-react';
+import { Eye, EyeOff, Zap, GraduationCap, Users, BarChart3, Shield } from 'lucide-react';
 import { VFSelect } from '@vidyamaxx/ui';
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
 });
 
-const AI_FEATURES = [
-  { icon: Sparkles, text: 'AI-Assisted Admission Screening' },
-  { icon: GraduationCap, text: 'Smart Attendance Analytics' },
-  { icon: BarChart3, text: 'Predictive Fee Defaulter Alerts' },
-  { icon: Users, text: 'Intelligent Student Profiling' },
+const FEATURES = [
+  { icon: Shield, text: 'Automated Admission Screening' },
+  { icon: GraduationCap, text: 'Real-time Attendance Analytics' },
+  { icon: BarChart3, text: 'Automated Fee Defaulter Alerts' },
+  { icon: Users, text: 'Comprehensive Student 360' },
 ];
 
 function LoginPage() {
@@ -66,19 +66,19 @@ function LoginPage() {
         <div className="relative space-y-6">
           <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-3 py-1.5 rounded-full text-xs font-medium">
             <Zap className="h-3.5 w-3.5" />
-            AI-First School Management Platform
+            Unified School Management Platform
           </div>
           <h2 className="text-4xl font-black text-foreground leading-tight">
             Manage your school<br />
-            <span className="text-primary">intelligently.</span>
+            <span className="text-primary">seamlessly.</span>
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-            VidyaMaxx brings AI to every corner of school administration — from smart admissions to predictive analytics. Built for the modern school.
+            VidyaMaxx unifies every corner of school administration — from smart admissions to real-time analytics. Built for the modern school.
           </p>
 
-          {/* AI Feature list */}
+          {/* Feature list */}
           <div className="space-y-3 mt-8">
-            {AI_FEATURES.map(({ icon: Icon, text }) => (
+            {FEATURES.map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0">
                   <Icon className="h-4 w-4 text-primary" />
@@ -114,11 +114,11 @@ function LoginPage() {
             </p>
           </div>
 
-          {/* AI Badge */}
+          {/* Security Badge */}
           <div className="mb-6 flex items-center gap-2 bg-primary/5 border border-primary/15 rounded-lg px-4 py-3">
-            <Sparkles className="h-4 w-4 text-primary shrink-0" />
+            <Shield className="h-4 w-4 text-primary shrink-0" />
             <p className="text-xs text-muted-foreground">
-              AI modules auto-activate after login — no setup required.
+              Enterprise grade security · All data encrypted in transit & at rest.
             </p>
           </div>
 

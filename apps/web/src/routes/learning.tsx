@@ -13,7 +13,6 @@ import {
 import {
   BookOpen,
   FileText,
-  Sparkles,
   Clock,
   TrendingUp,
   Award,
@@ -22,7 +21,6 @@ import {
   CheckCircle2,
   BookMarked,
   SlidersHorizontal,
-  Bot,
   Send,
   Layers,
   BarChart3,
@@ -36,13 +34,13 @@ export const Route = createFileRoute('/learning')({
 function LearningPage() {
   const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
   const [lessonTopic, setLessonTopic] = React.useState('');
-  const [aiPlan, setAiPlan] = React.useState<string | null>(null);
+  const [generatedPlan, setGeneratedPlan] = React.useState<string | null>(null);
 
   const handleGenerateLessonPlan = (e: React.FormEvent) => {
     e.preventDefault();
     if (!lessonTopic) return;
-    setAiPlan(
-      `📚 AI Lesson Plan Generated for Topic: "${lessonTopic}"\n\n1. Learning Objectives:\n   - Understand core principles and real-world applications.\n   - Solve 5 sample practice problems independently.\n\n2. 45-Min Period Structure:\n   - 00:00-00:10: Introduction & Concept Recap\n   - 00:10-00:25: Interactive Board Explanation\n   - 00:25-00:35: Group Student Activity\n   - 00:35-00:45: Quiz & Homework Assignment`
+    setGeneratedPlan(
+      `📚 Structured 45-Min Lesson Plan Generated for Topic: "${lessonTopic}"\n\n1. Learning Objectives:\n   - Understand core principles and real-world applications.\n   - Solve 5 sample practice problems independently.\n\n2. 45-Min Period Structure:\n   - 00:00-00:10: Introduction & Concept Recap\n   - 00:10-00:25: Interactive Board Explanation\n   - 00:25-00:35: Group Student Activity\n   - 00:35-00:45: Quiz & Homework Assignment`
     );
   };
 
@@ -116,16 +114,16 @@ function LearningPage() {
   );
 
   // ----------------------------------------------------
-  // SUBMODULE 4 — Lesson Planning (AI Generator)
+  // SUBMODULE 4 — Lesson Planning (Plan Generator)
   // ----------------------------------------------------
   const lessonPlanningContent = (
     <div className="space-y-4">
       <div className="bg-card border border-border/80 p-6 rounded-xl space-y-4">
         <div className="flex items-center gap-2 text-primary font-bold text-sm">
-          <Bot className="h-5 w-5" />
-          <span>VidyaFlow AI 45-Min Lesson Plan Generator</span>
+          <BookOpen className="h-5 w-5" />
+          <span>Structured 45-Min Lesson Plan Generator</span>
         </div>
-        <p className="text-xs text-muted-foreground">Input any chapter topic to auto-generate learning objectives, period timelines, and homework tasks.</p>
+        <p className="text-xs text-muted-foreground">Input any chapter topic to generate learning objectives, period timelines, and homework tasks.</p>
 
         <form onSubmit={handleGenerateLessonPlan} className="flex gap-2">
           <input
@@ -140,9 +138,9 @@ function LearningPage() {
           </VFButton>
         </form>
 
-        {aiPlan && (
+        {generatedPlan && (
           <div className="p-4 bg-primary/10 border border-primary/20 rounded-xl text-xs text-foreground space-y-2 animate-fade-in">
-            <p className="whitespace-pre-line leading-relaxed font-mono">{aiPlan}</p>
+            <p className="whitespace-pre-line leading-relaxed font-mono">{generatedPlan}</p>
           </div>
         )}
       </div>
@@ -291,10 +289,10 @@ function LearningPage() {
   // ----------------------------------------------------
   const settingsContent = (
     <div className="space-y-4">
-      <VFCard title="Teaching Workspace Parameters & AI Preferences">
+      <VFCard title="Teaching Workspace Parameters & Curriculum Preferences">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
           <VFSelect label="Default Lesson Plan Template" options={[{ label: 'CBSE 45-Min Standard', value: 'cbse45' }, { label: 'Bloom Taxonomy CBE Model', value: 'bloom' }]} />
-          <VFSelect label="AI Assistant Prompt Model" options={[{ label: 'VidyaFlow AI 4.0 (Advanced)', value: 'vf4' }, { label: 'Standard Assistant', value: 'std' }]} />
+          <VFSelect label="Default Curriculum Framework" options={[{ label: 'CBSE 2026 Framework (Standard)', value: 'cbse' }, { label: 'ICSE Framework', value: 'icse' }]} />
         </div>
       </VFCard>
     </div>
@@ -307,7 +305,7 @@ function LearningPage() {
     { id: 'dashboard', label: 'Teaching Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
     { id: 'my-classes', label: 'My Classes', icon: <Users className="h-3.5 w-3.5" />, content: myClassesContent },
     { id: 'my-subjects', label: 'My Subjects', icon: <BookOpen className="h-3.5 w-3.5" />, content: mySubjectsContent },
-    { id: 'lesson-planning', label: 'Lesson Planning', icon: <Sparkles className="h-3.5 w-3.5 text-primary" />, content: lessonPlanningContent },
+    { id: 'lesson-planning', label: 'Lesson Planning', icon: <BookOpen className="h-3.5 w-3.5" />, content: lessonPlanningContent },
     { id: 'teaching-plans', label: 'Teaching Plans', icon: <Calendar className="h-3.5 w-3.5" />, content: teachingPlansContent },
     { id: 'syllabus-curriculum', label: 'Syllabus & Curriculum', icon: <Layers className="h-3.5 w-3.5" />, content: syllabusCurriculumContent },
     { id: 'topics-chapters', label: 'Topics & Chapters', icon: <BookMarked className="h-3.5 w-3.5" />, content: topicsChaptersContent },

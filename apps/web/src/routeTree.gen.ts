@@ -9,62 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WelfareRouteImport } from './routes/welfare'
-import { Route as TransportRouteImport } from './routes/transport'
 import { Route as TimetableRouteImport } from './routes/timetable'
-import { Route as SystemRouteImport } from './routes/system'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ResourcesRouteImport } from './routes/resources'
-import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
-import { Route as LibraryRouteImport } from './routes/library'
 import { Route as LearningRouteImport } from './routes/learning'
-import { Route as InventoryRouteImport } from './routes/inventory'
-import { Route as HrRouteImport } from './routes/hr'
-import { Route as HostelRouteImport } from './routes/hostel'
 import { Route as HomeworkRouteImport } from './routes/homework'
-import { Route as HealthRouteImport } from './routes/health'
-import { Route as GrievancesRouteImport } from './routes/grievances'
-import { Route as FrontOfficeRouteImport } from './routes/front-office'
-import { Route as FormsRouteImport } from './routes/forms'
-import { Route as FinanceRouteImport } from './routes/finance'
-import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
-import { Route as EventsRouteImport } from './routes/events'
-import { Route as DocumentsRouteImport } from './routes/documents'
-import { Route as ComplianceRouteImport } from './routes/compliance'
-import { Route as CommunicationRouteImport } from './routes/communication'
 import { Route as AttendanceRouteImport } from './routes/attendance'
-import { Route as AiRouteImport } from './routes/ai'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
-import { Route as AdministrationRouteImport } from './routes/administration'
-import { Route as ActivitiesRouteImport } from './routes/activities'
-import { Route as AccountingRouteImport } from './routes/accounting'
 import { Route as AcademicsRouteImport } from './routes/academics'
 import { Route as IndexRouteImport } from './routes/index'
 
-const WelfareRoute = WelfareRouteImport.update({
-  id: '/welfare',
-  path: '/welfare',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TransportRoute = TransportRouteImport.update({
-  id: '/transport',
-  path: '/transport',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TimetableRoute = TimetableRouteImport.update({
   id: '/timetable',
   path: '/timetable',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SystemRoute = SystemRouteImport.update({
-  id: '/system',
-  path: '/system',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StudentsRoute = StudentsRouteImport.update({
@@ -77,19 +39,9 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SecurityRoute = SecurityRouteImport.update({
-  id: '/security',
-  path: '/security',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReportsRoute = ReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalRoute = PortalRouteImport.update({
@@ -107,29 +59,9 @@ const LmsRoute = LmsRouteImport.update({
   path: '/lms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LibraryRoute = LibraryRouteImport.update({
-  id: '/library',
-  path: '/library',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LearningRoute = LearningRouteImport.update({
   id: '/learning',
   path: '/learning',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InventoryRoute = InventoryRouteImport.update({
-  id: '/inventory',
-  path: '/inventory',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HrRoute = HrRouteImport.update({
-  id: '/hr',
-  path: '/hr',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HostelRoute = HostelRouteImport.update({
-  id: '/hostel',
-  path: '/hostel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeworkRoute = HomeworkRouteImport.update({
@@ -137,59 +69,9 @@ const HomeworkRoute = HomeworkRouteImport.update({
   path: '/homework',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HealthRoute = HealthRouteImport.update({
-  id: '/health',
-  path: '/health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GrievancesRoute = GrievancesRouteImport.update({
-  id: '/grievances',
-  path: '/grievances',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FrontOfficeRoute = FrontOfficeRouteImport.update({
-  id: '/front-office',
-  path: '/front-office',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FormsRoute = FormsRouteImport.update({
-  id: '/forms',
-  path: '/forms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FinanceRoute = FinanceRouteImport.update({
-  id: '/finance',
-  path: '/finance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeesRoute = FeesRouteImport.update({
-  id: '/fees',
-  path: '/fees',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ExaminationsRoute = ExaminationsRouteImport.update({
   id: '/examinations',
   path: '/examinations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EventsRoute = EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DocumentsRoute = DocumentsRouteImport.update({
-  id: '/documents',
-  path: '/documents',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ComplianceRoute = ComplianceRouteImport.update({
-  id: '/compliance',
-  path: '/compliance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CommunicationRoute = CommunicationRouteImport.update({
-  id: '/communication',
-  path: '/communication',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AttendanceRoute = AttendanceRouteImport.update({
@@ -197,29 +79,9 @@ const AttendanceRoute = AttendanceRouteImport.update({
   path: '/attendance',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AiRoute = AiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdmissionsRoute = AdmissionsRouteImport.update({
   id: '/admissions',
   path: '/admissions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdministrationRoute = AdministrationRouteImport.update({
-  id: '/administration',
-  path: '/administration',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ActivitiesRoute = ActivitiesRouteImport.update({
-  id: '/activities',
-  path: '/activities',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountingRoute = AccountingRouteImport.update({
-  id: '/accounting',
-  path: '/accounting',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcademicsRoute = AcademicsRouteImport.update({
@@ -236,309 +98,127 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
-  '/accounting': typeof AccountingRoute
-  '/activities': typeof ActivitiesRoute
-  '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
-  '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
-  '/communication': typeof CommunicationRoute
-  '/compliance': typeof ComplianceRoute
-  '/documents': typeof DocumentsRoute
-  '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
-  '/fees': typeof FeesRoute
-  '/finance': typeof FinanceRoute
-  '/forms': typeof FormsRoute
-  '/front-office': typeof FrontOfficeRoute
-  '/grievances': typeof GrievancesRoute
-  '/health': typeof HealthRoute
   '/homework': typeof HomeworkRoute
-  '/hostel': typeof HostelRoute
-  '/hr': typeof HrRoute
-  '/inventory': typeof InventoryRoute
   '/learning': typeof LearningRoute
-  '/library': typeof LibraryRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
-  '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
-  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
-  '/system': typeof SystemRoute
   '/timetable': typeof TimetableRoute
-  '/transport': typeof TransportRoute
-  '/welfare': typeof WelfareRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
-  '/accounting': typeof AccountingRoute
-  '/activities': typeof ActivitiesRoute
-  '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
-  '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
-  '/communication': typeof CommunicationRoute
-  '/compliance': typeof ComplianceRoute
-  '/documents': typeof DocumentsRoute
-  '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
-  '/fees': typeof FeesRoute
-  '/finance': typeof FinanceRoute
-  '/forms': typeof FormsRoute
-  '/front-office': typeof FrontOfficeRoute
-  '/grievances': typeof GrievancesRoute
-  '/health': typeof HealthRoute
   '/homework': typeof HomeworkRoute
-  '/hostel': typeof HostelRoute
-  '/hr': typeof HrRoute
-  '/inventory': typeof InventoryRoute
   '/learning': typeof LearningRoute
-  '/library': typeof LibraryRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
-  '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
-  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
-  '/system': typeof SystemRoute
   '/timetable': typeof TimetableRoute
-  '/transport': typeof TransportRoute
-  '/welfare': typeof WelfareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/academics': typeof AcademicsRoute
-  '/accounting': typeof AccountingRoute
-  '/activities': typeof ActivitiesRoute
-  '/administration': typeof AdministrationRoute
   '/admissions': typeof AdmissionsRoute
-  '/ai': typeof AiRoute
   '/attendance': typeof AttendanceRoute
-  '/communication': typeof CommunicationRoute
-  '/compliance': typeof ComplianceRoute
-  '/documents': typeof DocumentsRoute
-  '/events': typeof EventsRoute
   '/examinations': typeof ExaminationsRoute
-  '/fees': typeof FeesRoute
-  '/finance': typeof FinanceRoute
-  '/forms': typeof FormsRoute
-  '/front-office': typeof FrontOfficeRoute
-  '/grievances': typeof GrievancesRoute
-  '/health': typeof HealthRoute
   '/homework': typeof HomeworkRoute
-  '/hostel': typeof HostelRoute
-  '/hr': typeof HrRoute
-  '/inventory': typeof InventoryRoute
   '/learning': typeof LearningRoute
-  '/library': typeof LibraryRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
-  '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
-  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
-  '/system': typeof SystemRoute
   '/timetable': typeof TimetableRoute
-  '/transport': typeof TransportRoute
-  '/welfare': typeof WelfareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/academics'
-    | '/accounting'
-    | '/activities'
-    | '/administration'
     | '/admissions'
-    | '/ai'
     | '/attendance'
-    | '/communication'
-    | '/compliance'
-    | '/documents'
-    | '/events'
     | '/examinations'
-    | '/fees'
-    | '/finance'
-    | '/forms'
-    | '/front-office'
-    | '/grievances'
-    | '/health'
     | '/homework'
-    | '/hostel'
-    | '/hr'
-    | '/inventory'
     | '/learning'
-    | '/library'
     | '/lms'
     | '/login'
     | '/portal'
-    | '/reports'
     | '/resources'
-    | '/security'
     | '/settings'
     | '/students'
-    | '/system'
     | '/timetable'
-    | '/transport'
-    | '/welfare'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/academics'
-    | '/accounting'
-    | '/activities'
-    | '/administration'
     | '/admissions'
-    | '/ai'
     | '/attendance'
-    | '/communication'
-    | '/compliance'
-    | '/documents'
-    | '/events'
     | '/examinations'
-    | '/fees'
-    | '/finance'
-    | '/forms'
-    | '/front-office'
-    | '/grievances'
-    | '/health'
     | '/homework'
-    | '/hostel'
-    | '/hr'
-    | '/inventory'
     | '/learning'
-    | '/library'
     | '/lms'
     | '/login'
     | '/portal'
-    | '/reports'
     | '/resources'
-    | '/security'
     | '/settings'
     | '/students'
-    | '/system'
     | '/timetable'
-    | '/transport'
-    | '/welfare'
   id:
     | '__root__'
     | '/'
     | '/academics'
-    | '/accounting'
-    | '/activities'
-    | '/administration'
     | '/admissions'
-    | '/ai'
     | '/attendance'
-    | '/communication'
-    | '/compliance'
-    | '/documents'
-    | '/events'
     | '/examinations'
-    | '/fees'
-    | '/finance'
-    | '/forms'
-    | '/front-office'
-    | '/grievances'
-    | '/health'
     | '/homework'
-    | '/hostel'
-    | '/hr'
-    | '/inventory'
     | '/learning'
-    | '/library'
     | '/lms'
     | '/login'
     | '/portal'
-    | '/reports'
     | '/resources'
-    | '/security'
     | '/settings'
     | '/students'
-    | '/system'
     | '/timetable'
-    | '/transport'
-    | '/welfare'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AcademicsRoute: typeof AcademicsRoute
-  AccountingRoute: typeof AccountingRoute
-  ActivitiesRoute: typeof ActivitiesRoute
-  AdministrationRoute: typeof AdministrationRoute
   AdmissionsRoute: typeof AdmissionsRoute
-  AiRoute: typeof AiRoute
   AttendanceRoute: typeof AttendanceRoute
-  CommunicationRoute: typeof CommunicationRoute
-  ComplianceRoute: typeof ComplianceRoute
-  DocumentsRoute: typeof DocumentsRoute
-  EventsRoute: typeof EventsRoute
   ExaminationsRoute: typeof ExaminationsRoute
-  FeesRoute: typeof FeesRoute
-  FinanceRoute: typeof FinanceRoute
-  FormsRoute: typeof FormsRoute
-  FrontOfficeRoute: typeof FrontOfficeRoute
-  GrievancesRoute: typeof GrievancesRoute
-  HealthRoute: typeof HealthRoute
   HomeworkRoute: typeof HomeworkRoute
-  HostelRoute: typeof HostelRoute
-  HrRoute: typeof HrRoute
-  InventoryRoute: typeof InventoryRoute
   LearningRoute: typeof LearningRoute
-  LibraryRoute: typeof LibraryRoute
   LmsRoute: typeof LmsRoute
   LoginRoute: typeof LoginRoute
   PortalRoute: typeof PortalRoute
-  ReportsRoute: typeof ReportsRoute
   ResourcesRoute: typeof ResourcesRoute
-  SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
   StudentsRoute: typeof StudentsRoute
-  SystemRoute: typeof SystemRoute
   TimetableRoute: typeof TimetableRoute
-  TransportRoute: typeof TransportRoute
-  WelfareRoute: typeof WelfareRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/welfare': {
-      id: '/welfare'
-      path: '/welfare'
-      fullPath: '/welfare'
-      preLoaderRoute: typeof WelfareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/transport': {
-      id: '/transport'
-      path: '/transport'
-      fullPath: '/transport'
-      preLoaderRoute: typeof TransportRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/timetable': {
       id: '/timetable'
       path: '/timetable'
       fullPath: '/timetable'
       preLoaderRoute: typeof TimetableRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/system': {
-      id: '/system'
-      path: '/system'
-      fullPath: '/system'
-      preLoaderRoute: typeof SystemRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/students': {
@@ -555,25 +235,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/security': {
-      id: '/security'
-      path: '/security'
-      fullPath: '/security'
-      preLoaderRoute: typeof SecurityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/resources': {
       id: '/resources'
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reports': {
-      id: '/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal': {
@@ -597,39 +263,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LmsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/library': {
-      id: '/library'
-      path: '/library'
-      fullPath: '/library'
-      preLoaderRoute: typeof LibraryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/learning': {
       id: '/learning'
       path: '/learning'
       fullPath: '/learning'
       preLoaderRoute: typeof LearningRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inventory': {
-      id: '/inventory'
-      path: '/inventory'
-      fullPath: '/inventory'
-      preLoaderRoute: typeof InventoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hr': {
-      id: '/hr'
-      path: '/hr'
-      fullPath: '/hr'
-      preLoaderRoute: typeof HrRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hostel': {
-      id: '/hostel'
-      path: '/hostel'
-      fullPath: '/hostel'
-      preLoaderRoute: typeof HostelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/homework': {
@@ -639,81 +277,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeworkRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/health': {
-      id: '/health'
-      path: '/health'
-      fullPath: '/health'
-      preLoaderRoute: typeof HealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/grievances': {
-      id: '/grievances'
-      path: '/grievances'
-      fullPath: '/grievances'
-      preLoaderRoute: typeof GrievancesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/front-office': {
-      id: '/front-office'
-      path: '/front-office'
-      fullPath: '/front-office'
-      preLoaderRoute: typeof FrontOfficeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forms': {
-      id: '/forms'
-      path: '/forms'
-      fullPath: '/forms'
-      preLoaderRoute: typeof FormsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/finance': {
-      id: '/finance'
-      path: '/finance'
-      fullPath: '/finance'
-      preLoaderRoute: typeof FinanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fees': {
-      id: '/fees'
-      path: '/fees'
-      fullPath: '/fees'
-      preLoaderRoute: typeof FeesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/examinations': {
       id: '/examinations'
       path: '/examinations'
       fullPath: '/examinations'
       preLoaderRoute: typeof ExaminationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/documents': {
-      id: '/documents'
-      path: '/documents'
-      fullPath: '/documents'
-      preLoaderRoute: typeof DocumentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/compliance': {
-      id: '/compliance'
-      path: '/compliance'
-      fullPath: '/compliance'
-      preLoaderRoute: typeof ComplianceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/communication': {
-      id: '/communication'
-      path: '/communication'
-      fullPath: '/communication'
-      preLoaderRoute: typeof CommunicationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/attendance': {
@@ -723,39 +291,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AttendanceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ai': {
-      id: '/ai'
-      path: '/ai'
-      fullPath: '/ai'
-      preLoaderRoute: typeof AiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admissions': {
       id: '/admissions'
       path: '/admissions'
       fullPath: '/admissions'
       preLoaderRoute: typeof AdmissionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/administration': {
-      id: '/administration'
-      path: '/administration'
-      fullPath: '/administration'
-      preLoaderRoute: typeof AdministrationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/activities': {
-      id: '/activities'
-      path: '/activities'
-      fullPath: '/activities'
-      preLoaderRoute: typeof ActivitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/accounting': {
-      id: '/accounting'
-      path: '/accounting'
-      fullPath: '/accounting'
-      preLoaderRoute: typeof AccountingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/academics': {
@@ -778,41 +318,18 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AcademicsRoute: AcademicsRoute,
-  AccountingRoute: AccountingRoute,
-  ActivitiesRoute: ActivitiesRoute,
-  AdministrationRoute: AdministrationRoute,
   AdmissionsRoute: AdmissionsRoute,
-  AiRoute: AiRoute,
   AttendanceRoute: AttendanceRoute,
-  CommunicationRoute: CommunicationRoute,
-  ComplianceRoute: ComplianceRoute,
-  DocumentsRoute: DocumentsRoute,
-  EventsRoute: EventsRoute,
   ExaminationsRoute: ExaminationsRoute,
-  FeesRoute: FeesRoute,
-  FinanceRoute: FinanceRoute,
-  FormsRoute: FormsRoute,
-  FrontOfficeRoute: FrontOfficeRoute,
-  GrievancesRoute: GrievancesRoute,
-  HealthRoute: HealthRoute,
   HomeworkRoute: HomeworkRoute,
-  HostelRoute: HostelRoute,
-  HrRoute: HrRoute,
-  InventoryRoute: InventoryRoute,
   LearningRoute: LearningRoute,
-  LibraryRoute: LibraryRoute,
   LmsRoute: LmsRoute,
   LoginRoute: LoginRoute,
   PortalRoute: PortalRoute,
-  ReportsRoute: ReportsRoute,
   ResourcesRoute: ResourcesRoute,
-  SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
   StudentsRoute: StudentsRoute,
-  SystemRoute: SystemRoute,
   TimetableRoute: TimetableRoute,
-  TransportRoute: TransportRoute,
-  WelfareRoute: WelfareRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

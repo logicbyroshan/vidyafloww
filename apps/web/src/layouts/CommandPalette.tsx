@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Command } from 'cmdk';
 import { VFBadge } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
-import { useGlobalStore } from '../stores/globalStore';
 import {
   Search,
   LayoutDashboard,
@@ -11,21 +10,11 @@ import {
   GraduationCap,
   Calendar,
   CalendarCheck,
+  BookOpenCheck,
+  BookMarked,
   ClipboardList,
-  CircleDollarSign,
-  Landmark,
-  Briefcase,
-  BookOpen,
-  Bus,
-  Building,
-  Package,
-  MonitorPlay,
-  Files,
-  MessageSquare,
-  Sparkles,
-  UserCheck,
-  BarChart3,
-  ShieldCheck,
+  FolderGit2,
+  Laptop,
   Settings,
   Plus,
   ArrowRight,
@@ -40,27 +29,16 @@ const ICON_MAP: Record<string, any> = {
   GraduationCap,
   Calendar,
   CalendarCheck,
+  BookOpenCheck,
+  BookMarked,
   ClipboardList,
-  CircleDollarSign,
-  Landmark,
-  Briefcase,
-  BookOpen,
-  Bus,
-  Building,
-  Package,
-  MonitorPlay,
-  Files,
-  MessageSquare,
-  Sparkles,
-  UserCheck,
-  BarChart3,
-  ShieldCheck,
+  FolderGit2,
+  Laptop,
   Settings,
 };
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const navigate = useNavigate();
-  const { toggleAiChat } = useGlobalStore();
   const [search, setSearch] = React.useState('');
 
   const commands = React.useMemo(() => {
@@ -90,22 +68,10 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           onClose();
         },
       },
-      {
-        id: 'act-ask-ai',
-        icon: Sparkles,
-        label: 'Ask VidyaMaxx AI Assistant',
-        route: '',
-        category: 'Actions',
-        shortcut: 'Shift+K',
-        onSelect: () => {
-          onClose();
-          toggleAiChat();
-        },
-      },
     ];
 
     return [...moduleCommands, ...actionCommands];
-  }, [navigate, onClose, toggleAiChat]);
+  }, [navigate, onClose]);
 
   if (!isOpen) return null;
 
@@ -124,7 +90,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             value={search}
             onValueChange={setSearch}
             className="flex-1 h-9 bg-transparent outline-none text-xs text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
-            placeholder="Type a command or search across all 24 ERP modules..."
+            placeholder="Type a command or search across all ERP modules..."
             autoFocus
           />
         </div>
@@ -134,10 +100,10 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1">
             <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
             <p className="font-semibold text-foreground">No matching commands found</p>
-            <p>Try searching for "Admissions", "Fees", "Timetable", "Security", or "AI"</p>
+            <p>Try searching for "Admissions", "Academics", "Timetable", or "Students"</p>
           </Command.Empty>
 
-          <Command.Group heading="24 Main ERP Modules & Actions" className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest">
+          <Command.Group heading="Main ERP Modules & Actions" className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest">
             {commands.map((cmd) => {
               const Icon = cmd.icon;
               return (
@@ -178,17 +144,6 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           </div>
 
           <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => {
-                onClose();
-                toggleAiChat();
-              }}
-              className="flex items-center gap-1 text-primary font-bold text-xs hover:underline cursor-pointer"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>VidyaMaxx AI</span>
-            </button>
-
             {/* Close Button in Bottom Footer */}
             <button
               onClick={onClose}
