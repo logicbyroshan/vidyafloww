@@ -110,11 +110,11 @@ function DashboardPage() {
         />
       </div>
 
-      {/* 2. Main Split Layout: Left Absence Trackers (7 cols) + Right Quick Action Square Grid & License Card (5 cols) */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+      {/* 2. Main Split Layout: Left Absence Trackers (50%) + Right Quick Action Square Grid & License Card (50%) */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
         
-        {/* LEFT COLUMN: Teacher & Student Absences Command Center */}
-        <div className="xl:col-span-7 space-y-5">
+        {/* LEFT COLUMN: Teacher & Student Absences Command Center (50% width) */}
+        <div className="space-y-5">
           {/* Today's Teacher Absences & Substitute Duty Assignment */}
           <VFCard
             title="Teacher Absences & Substitute Duty Today"
@@ -197,23 +197,23 @@ function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT COLUMN: Quick Action Square Grid + Software License Card Below It (Equal space-y-5 gap) */}
-        <div className="xl:col-span-5 space-y-5">
+        {/* RIGHT COLUMN: Quick Action Square Grid 3×4 + Software License Card Below It (50% width) */}
+        <div className="space-y-5">
           
-          {/* Quick Action Square Grid (Big Bold Text & Big Icons) */}
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+          {/* Quick Action Square Grid — 3 cols × 4 rows */}
+          <div className="grid grid-cols-3 gap-3">
             {quickActions.map((action, idx) => {
               const Icon = action.icon;
               return (
                 <Link
                   key={idx}
                   to={action.route}
-                  className="aspect-square p-2.5 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none"
+                  className="aspect-square p-3 rounded-xl border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none"
                 >
-                  <div className={`h-12 w-12 rounded-lg flex items-center justify-center border ${action.color} mb-2 group-hover:scale-110 transition-transform shrink-0`}>
-                    <Icon className="h-6 w-6" />
+                  <div className={`h-14 w-14 rounded-xl flex items-center justify-center border ${action.color} mb-2.5 group-hover:scale-110 transition-transform shrink-0`}>
+                    <Icon className="h-7 w-7" />
                   </div>
-                  <p className="text-base font-black text-foreground group-hover:text-primary transition-colors truncate w-full leading-tight">
+                  <p className="text-base font-black text-foreground group-hover:text-primary transition-colors leading-tight w-full truncate">
                     {action.label}
                   </p>
                 </Link>
