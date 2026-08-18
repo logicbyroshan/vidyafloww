@@ -58,7 +58,7 @@ function DashboardPage() {
     { label: 'Settings', desc: 'School branding', route: '/settings', icon: Settings, color: 'text-slate-400 bg-slate-500/10 border-slate-500/25' },
   ];
 
-  // 1. MAIN TAB: Command Hub
+  // 1. MAIN TAB: Command Hub (Top Full-Width Stat Cards + Left Absences + Right Square Grid & License Card)
   const quickHubContent = (
     <div className="space-y-5">
       {notice && (
@@ -76,7 +76,39 @@ function DashboardPage() {
         </div>
       )}
 
-      {/* Main Split Layout: Left Absence Trackers + Right Quick Action Square Grid & License Card */}
+      {/* 1. Top Full-Width KPI Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <VFStatCard
+          title="Total Students"
+          value="2,451"
+          icon={<Users className="h-5 w-5" />}
+          trend="up"
+          trendLabel="+12 this month"
+        />
+        <VFStatCard
+          title="Teaching Staff"
+          value="98.2%"
+          icon={<GraduationCap className="h-5 w-5" />}
+          trend="up"
+          trendLabel="Optimal coverage"
+        />
+        <VFStatCard
+          title="Today's Attendance"
+          value="94.5%"
+          icon={<CalendarCheck className="h-5 w-5" />}
+          trend="up"
+          trendLabel="+1.2% vs yesterday"
+        />
+        <VFStatCard
+          title="Pending Admissions"
+          value="28"
+          icon={<FileText className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel="18 auto-verified"
+        />
+      </div>
+
+      {/* 2. Main Split Layout: Left Absence Trackers (7 cols) + Right Quick Action Square Grid & License Card (5 cols) */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
         
         {/* LEFT COLUMN: Teacher & Student Absences Command Center */}
@@ -148,10 +180,10 @@ function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT COLUMN: Quick Action Square Grid + Software License Card Below It */}
-        <div className="xl:col-span-5 space-y-4">
+        {/* RIGHT COLUMN: Quick Action Square Grid + Software License Card Below It (Equal space-y-5 gap) */}
+        <div className="xl:col-span-5 space-y-5">
           
-          {/* Quick Action Square Grid (Header removed for clean flush alignment) */}
+          {/* Quick Action Square Grid */}
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
             {quickActions.map((action, idx) => {
               const Icon = action.icon;
@@ -172,19 +204,19 @@ function DashboardPage() {
             })}
           </div>
 
-          {/* Software License & Subscription Card (Placed Below Quick Actions) */}
-          <div className="p-4 bg-card border border-border rounded-lg shadow-xs space-y-3.5">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="h-9 w-9 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-5 w-5" />
+          {/* Software License & Subscription Card (Equal 20px gap below quick actions) */}
+          <div className="p-5 bg-card border border-border rounded-lg shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-3.5">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-6 w-6" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="text-sm font-black text-foreground">{schoolProfile.name}</h4>
                     <VFBadge variant="success">Active</VFBadge>
                   </div>
-                  <p className="text-[11px] text-muted-foreground font-semibold">
+                  <p className="text-xs text-muted-foreground font-semibold">
                     {schoolProfile.affiliation}
                   </p>
                 </div>
@@ -198,24 +230,24 @@ function DashboardPage() {
             </div>
 
             {/* License Sub-Boxes: Square/Balanced Metrics */}
-            <div className="grid grid-cols-3 gap-2.5">
-              <div className="p-2.5 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Validity</span>
-                <p className="text-lg font-black text-success">225 Days</p>
+                <p className="text-xl font-black text-success">225 Days</p>
                 <p className="text-[10px] text-muted-foreground font-semibold">Till 31 Mar 2027</p>
               </div>
 
-              <div className="p-2.5 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
+              <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Capacity</span>
-                <p className="text-lg font-black text-foreground">1,248 Seats</p>
+                <p className="text-xl font-black text-foreground">1,248 Seats</p>
                 <p className="text-[10px] text-primary font-bold">50% Enrolled</p>
               </div>
 
-              <div className="p-2.5 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
+              <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Security</span>
-                <p className="text-lg font-black text-foreground">AES-256</p>
-                <p className="text-[10px] text-success font-bold flex items-center justify-center gap-0.5">
-                  <Server className="h-2.5 w-2.5" /> Online Sync
+                <p className="text-xl font-black text-foreground">AES-256</p>
+                <p className="text-[10px] text-success font-bold flex items-center justify-center gap-1">
+                  <Server className="h-3 w-3" /> Online
                 </p>
               </div>
             </div>
@@ -229,38 +261,6 @@ function DashboardPage() {
   // 2. SEPARATE TAB: Statistics & Analytics
   const analyticsContent = (
     <div className="space-y-6">
-      {/* KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard
-          title="Total Students"
-          value="2,451"
-          icon={<Users className="h-5 w-5" />}
-          trend="up"
-          trendLabel="+12 this month"
-        />
-        <VFStatCard
-          title="Teaching Staff"
-          value="98.2%"
-          icon={<GraduationCap className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Optimal coverage"
-        />
-        <VFStatCard
-          title="Today's Attendance"
-          value="94.5%"
-          icon={<CalendarCheck className="h-5 w-5" />}
-          trend="up"
-          trendLabel="+1.2% vs yesterday"
-        />
-        <VFStatCard
-          title="Pending Admissions"
-          value="28"
-          icon={<FileText className="h-5 w-5" />}
-          trend="neutral"
-          trendLabel="18 auto-verified"
-        />
-      </div>
-
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <VFCard title="Attendance & Intake Trends" description="Monthly comparison for Academic Year 2026-2027">
