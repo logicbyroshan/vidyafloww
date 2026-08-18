@@ -31,6 +31,7 @@ import {
   ClipboardList,
   School,
   Send,
+  UserCheck,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -113,30 +114,43 @@ function DashboardPage() {
         
         {/* LEFT COLUMN: Teacher & Student Absences Command Center */}
         <div className="xl:col-span-7 space-y-5">
-          {/* Today's Teacher Absences & Substitute Proxies */}
+          {/* Today's Teacher Absences & Substitute Duty Assignment */}
           <VFCard
-            title="Teacher Absences & Substitute Proxies Today"
+            title="Teacher Absences & Substitute Duty Today"
             description="4 Faculty absent today (120 of 124 Present)"
           >
             <div className="divide-y divide-border -my-2 text-base">
               {[
-                { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Leave', proxy: 'Assigned: Mr. Verma (Period 3 Lab 204)', status: 'Proxy Assigned' },
-                { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', proxy: 'Assigned: Mrs. Joshi (Period 5 Room 101)', status: 'Proxy Assigned' },
-                { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Board Seminar', proxy: 'Assigned: Mr. Gupta (Period 2 Room 102)', status: 'Proxy Assigned' },
-                { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Morning Leave', proxy: 'Covered: Sports Squad (Period 6 Ground)', status: 'Covered' },
+                { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Leave', duty: 'Proxy: Mr. Verma (Period 3 Lab 204)', status: 'Proxy Assigned' },
+                { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', duty: 'Proxy: Mrs. Joshi (Period 5 Room 101)', status: 'Proxy Assigned' },
+                { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Board Seminar', duty: 'Proxy: Mr. Gupta (Period 2 Room 102)', status: 'Proxy Assigned' },
+                { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Morning Leave', duty: 'Covered: Sports Squad (Period 6 Ground)', status: 'Covered' },
               ].map((t, i) => (
-                <div key={i} className="py-3 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
-                  <div>
-                    <p className="font-bold text-foreground">
-                      {t.teacher} <span className="text-muted-foreground text-xs font-semibold">({t.dept})</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                      Reason: <span className="text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.proxy}</span>
+                <div key={i} className="py-3.5 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-extrabold text-foreground text-base">
+                        {t.teacher}
+                      </p>
+                      <span className="text-sm text-muted-foreground font-bold">({t.dept})</span>
+                      <VFBadge variant="success" className="text-xs">
+                        {t.status}
+                      </VFBadge>
+                    </div>
+                    <p className="text-sm font-semibold text-muted-foreground">
+                      Leave: <span className="font-bold text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.duty}</span>
                     </p>
                   </div>
-                  <VFBadge variant="success" className="shrink-0 self-start sm:self-auto">
-                    {t.status}
-                  </VFBadge>
+                  <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<UserCheck className="h-4 w-4" />}
+                      onClick={() => setNotice(`Duty proxy reassigned for ${t.teacher}.`)}
+                    >
+                      Assign Duty
+                    </VFButton>
+                  </div>
                 </div>
               ))}
             </div>
@@ -149,27 +163,29 @@ function DashboardPage() {
           >
             <div className="divide-y divide-border -my-2 text-base">
               {[
-                { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert Sent' },
-                { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (09:15 AM)', action: 'Gate Pass Verified' },
-                { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism', action: 'SMS Dispatched' },
+                { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert' },
+                { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (09:15 AM Arrival)', action: 'Gate Pass' },
+                { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism (No Leave Note)', action: 'SMS Dispatched' },
                 { student: 'Kavya Nair', class: 'Class 11-Com', issue: 'Approved Medical Leave (Aug 18 - 19)', action: 'Leave Approved' },
               ].map((s, i) => (
-                <div key={i} className="py-3 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
-                  <div>
-                    <p className="font-bold text-foreground">
-                      {s.student} <span className="text-muted-foreground text-xs font-semibold">({s.class})</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                      Note: <span className="text-destructive font-bold">{s.issue}</span>
+                <div key={i} className="py-3.5 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-extrabold text-foreground text-base">
+                        {s.student}
+                      </p>
+                      <span className="text-sm text-muted-foreground font-bold">({s.class})</span>
+                    </div>
+                    <p className="text-sm font-bold text-destructive">
+                      {s.issue}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 self-start sm:self-auto">
-                    <span className="text-xs font-bold text-muted-foreground">{s.action}</span>
+                  <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                     <VFButton
                       size="sm"
                       variant="outline"
-                      leftIcon={<Send className="h-3 w-3" />}
-                      onClick={() => setNotice(`Follow-up notice sent to guardian of ${s.student}.`)}
+                      leftIcon={<Send className="h-3.5 w-3.5" />}
+                      onClick={() => setNotice(`Follow-up notice dispatched to guardian of ${s.student}.`)}
                     >
                       Follow Up
                     </VFButton>
@@ -183,7 +199,7 @@ function DashboardPage() {
         {/* RIGHT COLUMN: Quick Action Square Grid + Software License Card Below It (Equal space-y-5 gap) */}
         <div className="xl:col-span-5 space-y-5">
           
-          {/* Quick Action Square Grid */}
+          {/* Quick Action Square Grid (Big Bold Text & Big Icons) */}
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
             {quickActions.map((action, idx) => {
               const Icon = action.icon;
@@ -193,10 +209,10 @@ function DashboardPage() {
                   to={action.route}
                   className="aspect-square p-2.5 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none"
                 >
-                  <div className={`h-11 w-11 rounded-lg flex items-center justify-center border ${action.color} mb-1.5 group-hover:scale-110 transition-transform shrink-0`}>
+                  <div className={`h-12 w-12 rounded-lg flex items-center justify-center border ${action.color} mb-2 group-hover:scale-110 transition-transform shrink-0`}>
                     <Icon className="h-6 w-6" />
                   </div>
-                  <p className="text-sm font-black text-foreground group-hover:text-primary transition-colors truncate w-full leading-tight">
+                  <p className="text-base font-black text-foreground group-hover:text-primary transition-colors truncate w-full leading-tight">
                     {action.label}
                   </p>
                 </Link>
@@ -213,7 +229,7 @@ function DashboardPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-black text-foreground">{schoolProfile.name}</h4>
+                    <h4 className="text-base font-black text-foreground">{schoolProfile.name}</h4>
                     <VFBadge variant="success">Active</VFBadge>
                   </div>
                   <p className="text-xs text-muted-foreground font-semibold">
@@ -232,22 +248,22 @@ function DashboardPage() {
             {/* License Sub-Boxes: Square/Balanced Metrics */}
             <div className="grid grid-cols-3 gap-3">
               <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Validity</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Validity</span>
                 <p className="text-xl font-black text-success">225 Days</p>
-                <p className="text-[10px] text-muted-foreground font-semibold">Till 31 Mar 2027</p>
+                <p className="text-xs text-muted-foreground font-semibold">Till 31 Mar 2027</p>
               </div>
 
               <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Capacity</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Capacity</span>
                 <p className="text-xl font-black text-foreground">1,248 Seats</p>
-                <p className="text-[10px] text-primary font-bold">50% Enrolled</p>
+                <p className="text-xs text-primary font-bold">50% Enrolled</p>
               </div>
 
               <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Security</span>
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Security</span>
                 <p className="text-xl font-black text-foreground">AES-256</p>
-                <p className="text-[10px] text-success font-bold flex items-center justify-center gap-1">
-                  <Server className="h-3 w-3" /> Online
+                <p className="text-xs text-success font-bold flex items-center justify-center gap-1">
+                  <Server className="h-3.5 w-3.5" /> Online
                 </p>
               </div>
             </div>
