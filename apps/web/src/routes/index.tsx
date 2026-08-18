@@ -111,45 +111,45 @@ function DashboardPage() {
       </div>
 
       {/* 2. Main Split Layout: Left Absence Trackers (50%) + Right Quick Action Square Grid & License Card (50%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start overflow-hidden">
         
         {/* LEFT COLUMN: Teacher & Student Absences Command Center (50% width) */}
-        <div className="space-y-5">
+        <div className="space-y-5 min-w-0">
           {/* Today's Teacher Absences & Substitute Duty Assignment */}
           <VFCard
             title="Teacher Absences & Substitute Duty Today"
             description="4 Faculty absent today (120 of 124 Present)"
           >
-            <div className="divide-y divide-border -my-2 text-base">
+            <div className="divide-y divide-border -my-2">
               {[
-                { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Leave', duty: 'Proxy: Mr. Verma (Period 3 Lab 204)', status: 'Proxy Assigned' },
-                { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', duty: 'Proxy: Mrs. Joshi (Period 5 Room 101)', status: 'Proxy Assigned' },
-                { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Board Seminar', duty: 'Proxy: Mr. Gupta (Period 2 Room 102)', status: 'Proxy Assigned' },
-                { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Morning Leave', duty: 'Covered: Sports Squad (Period 6 Ground)', status: 'Covered' },
+                { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Leave', duty: 'Proxy: Mr. Verma (P3 Lab 204)', status: 'Proxy Assigned' },
+                { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', duty: 'Proxy: Mrs. Joshi (P5 Room 101)', status: 'Proxy Assigned' },
+                { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Board Seminar', duty: 'Proxy: Mr. Gupta (P2 Room 102)', status: 'Proxy Assigned' },
+                { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Morning Leave', duty: 'Sports Squad (P6 Ground)', status: 'Covered' },
               ].map((t, i) => (
-                <div key={i} className="py-3.5 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-extrabold text-foreground text-base">
+                <div key={i} className="py-3 px-1 flex flex-row items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1 space-y-0.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <p className="font-extrabold text-foreground text-sm truncate shrink-0 max-w-[130px]">
                         {t.teacher}
                       </p>
-                      <span className="text-sm text-muted-foreground font-bold">({t.dept})</span>
-                      <VFBadge variant="success" className="text-xs">
+                      <span className="text-xs text-muted-foreground font-bold truncate">({t.dept})</span>
+                      <VFBadge variant="success" className="text-[10px] shrink-0">
                         {t.status}
                       </VFBadge>
                     </div>
-                    <p className="text-sm font-semibold text-muted-foreground">
-                      Leave: <span className="font-bold text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.duty}</span>
+                    <p className="text-xs font-semibold text-muted-foreground truncate">
+                      <span className="font-bold text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.duty}</span>
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                  <div className="shrink-0">
                     <VFButton
                       size="sm"
                       variant="outline"
-                      leftIcon={<UserCheck className="h-4 w-4" />}
+                      leftIcon={<UserCheck className="h-3.5 w-3.5" />}
                       onClick={() => setNotice(`Duty proxy reassigned for ${t.teacher}.`)}
                     >
-                      Assign Duty
+                      Assign
                     </VFButton>
                   </div>
                 </div>
@@ -162,30 +162,30 @@ function DashboardPage() {
             title="Student Absences & Flagged Attendance Today"
             description="68 Pupils absent today (94.5% Overall Attendance)"
           >
-            <div className="divide-y divide-border -my-2 text-base">
+            <div className="divide-y divide-border -my-2">
               {[
                 { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert' },
                 { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (09:15 AM Arrival)', action: 'Gate Pass' },
                 { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism (No Leave Note)', action: 'SMS Dispatched' },
                 { student: 'Kavya Nair', class: 'Class 11-Com', issue: 'Approved Medical Leave (Aug 18 - 19)', action: 'Leave Approved' },
               ].map((s, i) => (
-                <div key={i} className="py-3.5 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-extrabold text-foreground text-base">
+                <div key={i} className="py-3 px-1 flex flex-row items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1 space-y-0.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <p className="font-extrabold text-foreground text-sm truncate shrink-0 max-w-[120px]">
                         {s.student}
                       </p>
-                      <span className="text-sm text-muted-foreground font-bold">({s.class})</span>
+                      <span className="text-xs text-muted-foreground font-bold truncate">({s.class})</span>
                     </div>
-                    <p className="text-sm font-bold text-destructive">
+                    <p className="text-xs font-bold text-destructive truncate">
                       {s.issue}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                  <div className="shrink-0">
                     <VFButton
                       size="sm"
                       variant="outline"
-                      leftIcon={<Send className="h-3.5 w-3.5" />}
+                      leftIcon={<Send className="h-3 w-3" />}
                       onClick={() => setNotice(`Follow-up notice dispatched to guardian of ${s.student}.`)}
                     >
                       Follow Up
@@ -197,8 +197,8 @@ function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT COLUMN: Quick Action Square Grid 3×4 + Software License Card Below It (50% width) */}
-        <div className="space-y-5">
+        {/* RIGHT COLUMN: Quick Action Square Grid 4×3 + Software License Card Below It (50% width) */}
+        <div className="space-y-5 min-w-0">
           
           {/* Quick Action Square Grid — 3 cols × 4 rows */}
           <div className="grid grid-cols-4 gap-3">
@@ -208,12 +208,12 @@ function DashboardPage() {
                 <Link
                   key={idx}
                   to={action.route}
-                  className="aspect-square p-3 rounded-xl border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none"
+                  className="aspect-square p-2 rounded-xl border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none min-w-0"
                 >
-                  <div className={`h-14 w-14 rounded-xl flex items-center justify-center border ${action.color} mb-2.5 group-hover:scale-110 transition-transform shrink-0`}>
-                    <Icon className="h-7 w-7" />
+                  <div className={`h-11 w-11 rounded-xl flex items-center justify-center border ${action.color} mb-2 group-hover:scale-110 transition-transform shrink-0`}>
+                    <Icon className="h-5 w-5" />
                   </div>
-                  <p className="text-base font-black text-foreground group-hover:text-primary transition-colors leading-tight w-full truncate">
+                  <p className="text-sm font-black text-foreground group-hover:text-primary transition-colors leading-tight w-full truncate">
                     {action.label}
                   </p>
                 </Link>
