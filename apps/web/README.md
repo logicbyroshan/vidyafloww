@@ -1,49 +1,41 @@
 # @vidyamaxx/web
 
-React 19 web application for VidyaMaxx — Enterprise School Management Platform.
+React 19 web application for **VidyaMaxx — Enterprise School Management Platform**.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **React 19** + **TypeScript**
-- **Vite 5** — build tool
-- **TanStack Router** — type-safe routing
-- **TanStack Query** — server state management
-- **Zustand** — client state management
-- **Tailwind CSS** + **shadcn/ui** — styling
-- **React Hook Form** + **Zod** — forms and validation
+- **React 19** + **TypeScript 5.6**
+- **Vite 5** — Build tool and dev server
+- **TanStack Router** — Type-safe client-side routing
+- **Zustand** — Client state management with `localStorage` persistence
+- **Tailwind CSS** — Design system styling with bespoke dark palette
+- **Lucide React** — Institutional iconography
 
-## Development
+## 🏛️ Active V1 Routes
+
+- `/` — **Dashboard** (Executive Telemetry, Student Attendance Radar, Hardware Sync)
+- `/students` — **Students** (Enrolled Roster, 360° Profiles, Demographics)
+- `/admissions` — **Admissions** (4-Stage Pipeline, OCR Verification, Merit Scoring)
+- `/attendance` — **Attendance** (Daily Roll Call, One-Click Mark All Present, Absence Alerts)
+- `/academics` — **Academics** (Session Master, Subject Catalog, Section Allocations)
+- `/timetable` — **Timetable** (Period Grid Matrix, Auto-Substitutions, Bell Timings)
+- `/staff` — **Teachers** (Faculty Master Directory, Workload Meters)
+- `/homework` — **Homework** (Assignment Register, Grading Feedback Queue)
+- `/examinations` — **Examinations** (Exam Schedules, Marks Entry, Gradebooks)
+- `/fees` — **Fees & Payments** (Collection Master, Defaulter Alerts)
+- `/notices` — **Notices** (Official Circular Board, Broadcast Publisher)
+- `/reports` — **Reports** (CBSE/RTE Compliance Audits, Excel/PDF Exports)
+- `/settings` — **Settings** (School Identity & Custom Logo Studio, Campuses, RBAC)
+
+## 💻 Development
 
 ```bash
 # From the monorepo root
-pnpm dev --filter=@vidyamaxx/web
+pnpm --filter @vidyamaxx/web dev
 
-# Or from this directory
-pnpm dev
+# Type check
+pnpm --filter @vidyamaxx/web type-check
+
+# Production build
+pnpm --filter @vidyamaxx/web build
 ```
-
-App runs at: `http://localhost:3000`
-
-## Structure
-
-```
-src/
-├── app/           # Root component, providers
-├── assets/        # Static assets
-├── components/    # Shared UI components
-├── features/      # Feature modules (co-located by domain)
-├── hooks/         # App-specific hooks
-├── layouts/       # Page layout components
-├── lib/           # Third-party library configuration
-├── pages/         # Page components (placeholder)
-├── routes/        # TanStack Router route definitions
-├── services/      # API service layer
-├── stores/        # Zustand stores
-├── styles/        # Global CSS
-├── types/         # App-specific TypeScript types
-└── utils/         # App-specific utilities
-```
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and fill in the values.

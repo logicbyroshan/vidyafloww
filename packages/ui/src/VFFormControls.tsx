@@ -165,7 +165,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <SelectPrimitive.Trigger
             id={selectId}
             className={cn(
-              "flex h-8 w-full items-center justify-between rounded-md border border-border/60 bg-muted/40 px-2.5 py-1 text-sm text-foreground font-medium outline-none transition-colors duration-150 cursor-pointer hover:border-border hover:bg-muted/70 data-[state=open]:border-border data-[state=open]:bg-muted/60",
+              "flex h-9 w-full items-center justify-between rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-muted data-[state=open]:border-primary/50",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
@@ -173,13 +173,13 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           >
             <SelectPrimitive.Value placeholder={placeholder} />
             <SelectPrimitive.Icon asChild>
-              <ChevronDown className="h-3 w-3 text-muted-foreground shrink-0 transition-transform duration-150 ml-1" />
+              <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5" />
             </SelectPrimitive.Icon>
           </SelectPrimitive.Trigger>
 
           <SelectPrimitive.Portal>
             <SelectPrimitive.Content
-              className="z-50 min-w-[8rem] overflow-hidden rounded-md border border-border/60 bg-[#0e1017] p-1 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in text-xs text-foreground"
+              className="z-50 min-w-[10rem] overflow-hidden rounded-lg border border-border bg-card p-1 shadow-xl animate-scale-in text-sm text-foreground"
               position="popper"
               sideOffset={4}
             >

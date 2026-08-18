@@ -13,9 +13,24 @@ export interface Notification {
   createdAt: number;
 }
 
+export interface SchoolProfile {
+  name: string;
+  shortCode: string;
+  tagline: string;
+  affiliation: string;
+  logoType: 'icon' | 'custom_image' | 'preset';
+  logoPreset: 'building' | 'shield' | 'graduation' | 'award' | 'book';
+  customLogoUrl?: string;
+  city: string;
+}
+
 interface GlobalState {
   // Theme (always dark)
   theme: Theme;
+
+  // School Identity & Branding
+  schoolProfile: SchoolProfile;
+  updateSchoolProfile: (profile: Partial<SchoolProfile>) => void;
 
   // Sidebar
   sidebarExpanded: boolean;
@@ -40,6 +55,25 @@ export const useGlobalStore = create<GlobalState>()(
     (set) => ({
       // Always dark
       theme: 'dark',
+
+      // School Profile default
+      schoolProfile: {
+        name: 'Springfield Academy',
+        shortCode: 'SA-DELHI',
+        tagline: 'Excellence in Education & Character',
+        affiliation: 'CBSE Affiliation #1630982',
+        logoType: 'preset',
+        logoPreset: 'building',
+        customLogoUrl: '',
+        city: 'New Delhi, India',
+      },
+      updateSchoolProfile: (profile) =>
+        set((state) => ({
+          schoolProfile: {
+            ...state.schoolProfile,
+            ...profile,
+          },
+        })),
 
       // Sidebar state
       sidebarExpanded: true,
@@ -83,6 +117,7 @@ export const useGlobalStore = create<GlobalState>()(
     {
       name: 'vidyamaxx-global-storage',
       partialize: (state) => ({
+        schoolProfile: state.schoolProfile,
         sidebarExpanded: state.sidebarExpanded,
         hasSeenPreloader: state.hasSeenPreloader,
       }),

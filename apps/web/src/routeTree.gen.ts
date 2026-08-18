@@ -11,13 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimetableRouteImport } from './routes/timetable'
 import { Route as StudentsRouteImport } from './routes/students'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PortalRouteImport } from './routes/portal'
+import { Route as NoticesRouteImport } from './routes/notices'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
 import { Route as LearningRouteImport } from './routes/learning'
 import { Route as HomeworkRouteImport } from './routes/homework'
+import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
@@ -34,6 +38,11 @@ const StudentsRoute = StudentsRouteImport.update({
   path: '/students',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -44,9 +53,19 @@ const ResourcesRoute = ResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
   path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticesRoute = NoticesRouteImport.update({
+  id: '/notices',
+  path: '/notices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -67,6 +86,11 @@ const LearningRoute = LearningRouteImport.update({
 const HomeworkRoute = HomeworkRouteImport.update({
   id: '/homework',
   path: '/homework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeesRoute = FeesRouteImport.update({
+  id: '/fees',
+  path: '/fees',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExaminationsRoute = ExaminationsRouteImport.update({
@@ -101,13 +125,17 @@ export interface FileRoutesByFullPath {
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
   '/examinations': typeof ExaminationsRoute
+  '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
   '/learning': typeof LearningRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
+  '/notices': typeof NoticesRoute
   '/portal': typeof PortalRoute
+  '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
   '/students': typeof StudentsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -117,13 +145,17 @@ export interface FileRoutesByTo {
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
   '/examinations': typeof ExaminationsRoute
+  '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
   '/learning': typeof LearningRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
+  '/notices': typeof NoticesRoute
   '/portal': typeof PortalRoute
+  '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
   '/students': typeof StudentsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -134,13 +166,17 @@ export interface FileRoutesById {
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
   '/examinations': typeof ExaminationsRoute
+  '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
   '/learning': typeof LearningRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
+  '/notices': typeof NoticesRoute
   '/portal': typeof PortalRoute
+  '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
+  '/staff': typeof StaffRoute
   '/students': typeof StudentsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -152,13 +188,17 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/attendance'
     | '/examinations'
+    | '/fees'
     | '/homework'
     | '/learning'
     | '/lms'
     | '/login'
+    | '/notices'
     | '/portal'
+    | '/reports'
     | '/resources'
     | '/settings'
+    | '/staff'
     | '/students'
     | '/timetable'
   fileRoutesByTo: FileRoutesByTo
@@ -168,13 +208,17 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/attendance'
     | '/examinations'
+    | '/fees'
     | '/homework'
     | '/learning'
     | '/lms'
     | '/login'
+    | '/notices'
     | '/portal'
+    | '/reports'
     | '/resources'
     | '/settings'
+    | '/staff'
     | '/students'
     | '/timetable'
   id:
@@ -184,13 +228,17 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/attendance'
     | '/examinations'
+    | '/fees'
     | '/homework'
     | '/learning'
     | '/lms'
     | '/login'
+    | '/notices'
     | '/portal'
+    | '/reports'
     | '/resources'
     | '/settings'
+    | '/staff'
     | '/students'
     | '/timetable'
   fileRoutesById: FileRoutesById
@@ -201,13 +249,17 @@ export interface RootRouteChildren {
   AdmissionsRoute: typeof AdmissionsRoute
   AttendanceRoute: typeof AttendanceRoute
   ExaminationsRoute: typeof ExaminationsRoute
+  FeesRoute: typeof FeesRoute
   HomeworkRoute: typeof HomeworkRoute
   LearningRoute: typeof LearningRoute
   LmsRoute: typeof LmsRoute
   LoginRoute: typeof LoginRoute
+  NoticesRoute: typeof NoticesRoute
   PortalRoute: typeof PortalRoute
+  ReportsRoute: typeof ReportsRoute
   ResourcesRoute: typeof ResourcesRoute
   SettingsRoute: typeof SettingsRoute
+  StaffRoute: typeof StaffRoute
   StudentsRoute: typeof StudentsRoute
   TimetableRoute: typeof TimetableRoute
 }
@@ -228,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -242,11 +301,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal': {
       id: '/portal'
       path: '/portal'
       fullPath: '/portal'
       preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notices': {
+      id: '/notices'
+      path: '/notices'
+      fullPath: '/notices'
+      preLoaderRoute: typeof NoticesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -275,6 +348,13 @@ declare module '@tanstack/react-router' {
       path: '/homework'
       fullPath: '/homework'
       preLoaderRoute: typeof HomeworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fees': {
+      id: '/fees'
+      path: '/fees'
+      fullPath: '/fees'
+      preLoaderRoute: typeof FeesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/examinations': {
@@ -321,13 +401,17 @@ const rootRouteChildren: RootRouteChildren = {
   AdmissionsRoute: AdmissionsRoute,
   AttendanceRoute: AttendanceRoute,
   ExaminationsRoute: ExaminationsRoute,
+  FeesRoute: FeesRoute,
   HomeworkRoute: HomeworkRoute,
   LearningRoute: LearningRoute,
   LmsRoute: LmsRoute,
   LoginRoute: LoginRoute,
+  NoticesRoute: NoticesRoute,
   PortalRoute: PortalRoute,
+  ReportsRoute: ReportsRoute,
   ResourcesRoute: ResourcesRoute,
   SettingsRoute: SettingsRoute,
+  StaffRoute: StaffRoute,
   StudentsRoute: StudentsRoute,
   TimetableRoute: TimetableRoute,
 }

@@ -61,8 +61,7 @@
   }
 
   html {
-    /* Sofia Sans: fluid scale 15px at 1000px → 18px at 2000px */
-    font-size: clamp(15px, 0.3vw + 12px, 18px);
+    font-size: 16px;
   }
 
   * {
@@ -71,7 +70,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300 text-base;
     font-family: 'Sofia Sans', system-ui, -apple-system, sans-serif;
     font-feature-settings: "kern" 1, "liga" 1, "rlig" 1;
     letter-spacing: 0.015em;

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
@@ -6,8 +5,6 @@ import {
   VFDataTable,
   VFButton,
   VFCard,
-  VFInput,
-  VFSelect,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
@@ -16,17 +13,8 @@ import {
   FileText,
   Clock,
   TrendingUp,
-  Award,
-  CheckCircle2,
-  SlidersHorizontal,
   Plus,
-  Send,
-  AlertCircle,
   Download,
-  FolderGit,
-  HelpCircle,
-  RotateCcw,
-  BarChart3,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/homework')({
@@ -46,8 +34,6 @@ interface HomeworkRecord {
 }
 
 function HomeworkPage() {
-  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
-
   const homeworkData: HomeworkRecord[] = [
     { id: '1', code: 'HW-MATH-101', title: 'Quadratic Equations & Roots Working', subject: 'Mathematics', class: 'Class 10-A', dueDate: 'Today, 11:59 PM', submitted: 38, totalStudents: 42, status: 'Published' },
     { id: '2', code: 'HW-PHYS-102', title: 'Electromagnetism Numerical Exercises', subject: 'Physics', class: 'Class 10-A', dueDate: 'Tomorrow, 06:00 PM', submitted: 24, totalStudents: 42, status: 'Published' },
@@ -55,236 +41,136 @@ function HomeworkPage() {
   ];
 
   const homeworkColumns = [
-    { header: 'Assignment Code', accessorKey: 'code', cell: (r: HomeworkRecord) => <span className="font-mono font-bold text-primary">{r.code}</span> },
-    { header: 'Title & Topic', accessorKey: 'title', cell: (r: HomeworkRecord) => <span className="font-bold text-foreground">{r.title}</span> },
-    { header: 'Subject', accessorKey: 'subject' },
-    { header: 'Class', accessorKey: 'class' },
-    { header: 'Due Date', accessorKey: 'dueDate' },
-    { header: 'Submissions', accessorKey: 'submitted', cell: (r: HomeworkRecord) => `${r.submitted} / ${r.totalStudents}` },
-    { header: 'Status', accessorKey: 'status', cell: (r: HomeworkRecord) => <VFBadge variant="success">{r.status}</VFBadge> },
+    {
+      header: 'Code',
+      accessorKey: 'code',
+      cell: (r: HomeworkRecord) => <span className="font-mono font-bold text-primary text-base">{r.code}</span>,
+    },
+    {
+      header: 'Title & Topic',
+      accessorKey: 'title',
+      cell: (r: HomeworkRecord) => <span className="font-extrabold text-foreground text-base">{r.title}</span>,
+    },
+    {
+      header: 'Subject',
+      accessorKey: 'subject',
+      cell: (r: HomeworkRecord) => <span className="font-bold text-foreground text-base">{r.subject}</span>,
+    },
+    {
+      header: 'Class',
+      accessorKey: 'class',
+      cell: (r: HomeworkRecord) => <span className="font-bold text-foreground text-base">{r.class}</span>,
+    },
+    {
+      header: 'Due Date',
+      accessorKey: 'dueDate',
+      cell: (r: HomeworkRecord) => <span className="text-muted-foreground text-base font-semibold">{r.dueDate}</span>,
+    },
+    {
+      header: 'Submissions',
+      accessorKey: 'submitted',
+      cell: (r: HomeworkRecord) => <span className="font-black text-foreground text-base">{r.submitted} / {r.totalStudents}</span>,
+    },
+    {
+      header: 'Status',
+      accessorKey: 'status',
+      cell: (r: HomeworkRecord) => <VFBadge variant="success">{r.status}</VFBadge>,
+    },
   ];
 
-  // ----------------------------------------------------
-  // SUBMODULE 1 — Homework Dashboard
-  // ----------------------------------------------------
-  const dashboardContent = (
-    <div className="space-y-4">
+  // 1. Homework List View
+  const listContent = (
+    <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Active Assignments" value="12 Published" icon={<BookMarked className="h-5 w-5 text-primary" />} trend="up" trendLabel="4 Classes" />
-        <VFStatCard title="Submissions Today" value="142 Homeworks" icon={<FileText className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="88% Turn-in Rate" />
-        <VFStatCard title="Pending Grading" value="18 Submissions" icon={<Clock className="h-5 w-5 text-amber-500" />} trend="neutral" trendLabel="Requires Review" />
-        <VFStatCard title="Completion Rate" value="94.2%" icon={<TrendingUp className="h-5 w-5 text-purple-500" />} description="On-time Submissions" />
+        <VFStatCard
+          title="Active Homework"
+          value="12 Published"
+          icon={<BookMarked className="h-5 w-5" />}
+          trend="up"
+          trendLabel="Across 4 classes"
+        />
+        <VFStatCard
+          title="Turned In Today"
+          value="142"
+          icon={<FileText className="h-5 w-5" />}
+          trend="up"
+          trendLabel="88% submission rate"
+        />
+        <VFStatCard
+          title="Pending Grading"
+          value="18"
+          icon={<Clock className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel="Requires review"
+        />
+        <VFStatCard
+          title="On-Time Rate"
+          value="94.2%"
+          icon={<TrendingUp className="h-5 w-5" />}
+          trend="up"
+          trendLabel="Top performance"
+        />
       </div>
-    </div>
-  );
 
-  // ----------------------------------------------------
-  // SUBMODULE 2 — Homework
-  // ----------------------------------------------------
-  const homeworkListContent = (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Homework Master Register</h3>
-          <p className="text-xs text-muted-foreground">Daily homework assignments across all subjects and grades.</p>
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-black text-foreground tracking-tight">Homework Master Register</h2>
+            <p className="text-sm text-muted-foreground font-medium">Assigned homework, deadlines, and submission monitoring</p>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+              Export Register
+            </VFButton>
+            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
+              Create Homework
+            </VFButton>
+          </div>
         </div>
-        <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>Create Homework</VFButton>
-      </div>
-      <VFDataTable columns={homeworkColumns} data={homeworkData} filterPlaceholder="Search homework title..." />
-    </div>
-  );
 
-  // ----------------------------------------------------
-  // SUBMODULE 3 — Assignments
-  // ----------------------------------------------------
-  const assignmentsContent = (
-    <div className="space-y-4">
-      <VFCard title="Term & Unit Long-term Assignments">
-        <p className="text-xs text-muted-foreground mb-3">Manage term-end research papers, case studies, and long-form assignments.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 4 — Worksheets
-  // ----------------------------------------------------
-  const worksheetsContent = (
-    <div className="space-y-4">
-      <VFCard title="Printable & Digital Practice Worksheets">
-        <p className="text-xs text-muted-foreground mb-3">Repository of downloadable PDF worksheets with solution keys.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 5 — Projects
-  // ----------------------------------------------------
-  const projectsContent = (
-    <div className="space-y-4">
-      <VFCard title="Student Group & Capstone Projects">
-        <p className="text-xs text-muted-foreground mb-3">Track group allocations, project milestones, and rubric evaluations.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 6 — Question Sets
-  // ----------------------------------------------------
-  const questionSetsContent = (
-    <div className="space-y-4">
-      <VFCard title="Curated Homework Question Banks & Problem Sets">
-        <p className="text-xs text-muted-foreground mb-3">Reusable problem sets classified by Bloom taxonomy difficulty levels.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 7 — Assignment Distribution
-  // ----------------------------------------------------
-  const distributionContent = (
-    <div className="space-y-4">
-      <VFCard title="Classroom & Group Assignment Dispatch Engine">
-        <p className="text-xs text-muted-foreground mb-3">Distribute homework to specific sections, elective groups, or individual remedial students.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 8 — Student Submissions
-  // ----------------------------------------------------
-  const submissionsContent = (
-    <div className="space-y-4">
-      <VFCard title="Live Student Homework Submissions Inbox">
-        <p className="text-xs text-muted-foreground mb-3 font-mono">Digital PDF attachments, image uploads, and timestamped turn-in receipts.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 9 — Submission Review
-  // ----------------------------------------------------
-  const reviewContent = (
-    <div className="space-y-4">
-      <VFCard title="Teacher Annotation & PDF Correction Interface">
-        <p className="text-xs text-muted-foreground mb-3">Review student PDF submissions with digital pen annotations and margin notes.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 10 — Evaluation & Marks
-  // ----------------------------------------------------
-  const evaluationContent = (
-    <div className="space-y-4">
-      <VFCard title="Homework Marking & Rubric Grading System">
-        <p className="text-xs text-muted-foreground mb-3">Grade student homework using point scales (0-100) or rubric criteria.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 11 — Teacher Feedback
-  // ----------------------------------------------------
-  const feedbackContent = (
-    <div className="space-y-4">
-      <VFCard title="Personalized Teacher Comments & Voice Feedback">
-        <p className="text-xs text-muted-foreground mb-3">Send constructive written and audio feedback to students and parents.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 12 — Resubmissions
-  // ----------------------------------------------------
-  const resubmissionsContent = (
-    <div className="space-y-4">
-      <VFCard title="Homework Correction & Resubmission Workflow">
-        <p className="text-xs text-muted-foreground mb-3">Request students to correct errors and re-submit for revised grading.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 13 — Late Submissions
-  // ----------------------------------------------------
-  const lateSubmissionsContent = (
-    <div className="space-y-4">
-      <VFCard title="Late Turn-in Register & Penalty Rules">
-        <p className="text-xs text-muted-foreground mb-3 font-mono">Track overdue homework, late submission timestamps, and penalty point deductions.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 14 — Completion Tracking
-  // ----------------------------------------------------
-  const completionTrackingContent = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Class 10A Turn-in Rate" value="95.2%" icon={<CheckCircle2 className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="40 / 42 Submitted" />
-        <VFStatCard title="Class 9B Turn-in Rate" value="88.4%" icon={<TrendingUp className="h-5 w-5 text-primary" />} trend="neutral" trendLabel="34 / 38 Submitted" />
-        <VFStatCard title="Late Turn-in Average" value="4.2%" icon={<Clock className="h-5 w-5 text-amber-500" />} description="Across All Subjects" />
-        <VFStatCard title="Defaulter Rate" value="2.1%" icon={<AlertCircle className="h-5 w-5 text-destructive" />} description="Unsubmitted Homework" />
+        <VFDataTable
+          columns={homeworkColumns}
+          data={homeworkData}
+          filterPlaceholder="Search homework by title, code, or subject..."
+        />
       </div>
     </div>
   );
 
-  // ----------------------------------------------------
-  // SUBMODULE 15 — Homework Reports
-  // ----------------------------------------------------
-  const reportsContent = (
-    <div className="space-y-4">
-      <VFCard title="Homework Completion Analytics & Defaulters Report">
-        <p className="text-xs text-muted-foreground mb-3">Export class-wise homework completion statistics and parent notification logs.</p>
-        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Defaulters List (PDF)</VFButton>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 16 — Homework Settings
-  // ----------------------------------------------------
-  const settingsContent = (
-    <div className="space-y-4">
-      <VFCard title="Global Homework Parameters & Default Grace Periods">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
-          <VFInput label="Default Due Cut-off Time" defaultValue="11:59 PM" />
-          <VFSelect label="Late Submission Penalty Rule" options={[{ label: '10% Mark Penalty Per Day', value: '10pct' }, { label: 'Accept Without Penalty', value: 'none' }]} />
+  // 2. Grading Queue View
+  const gradingContent = (
+    <div className="space-y-6">
+      <VFCard title="Pending Grading Submissions Queue" description="Student papers awaiting educator feedback">
+        <div className="divide-y divide-border -my-2 text-base">
+          {[
+            { student: 'Rahul Sharma (Class 10-A)', assignment: 'Electromagnetism Numerical Exercises', turnInTime: 'Today at 02:30 PM', autoScore: '18 / 20' },
+            { student: 'Priya Sharma (Class 10-A)', assignment: 'Quadratic Equations Working', turnInTime: 'Today at 03:15 PM', autoScore: '20 / 20' },
+            { student: 'Kavya Nair (Class 11-Com)', assignment: 'Ledger Accounting Practicals', turnInTime: 'Today at 04:00 PM', autoScore: '19 / 20' },
+          ].map((s, i) => (
+            <div key={i} className="py-3.5 px-1 flex items-center justify-between">
+              <div>
+                <p className="font-bold text-foreground text-base">{s.student}</p>
+                <p className="text-muted-foreground text-xs font-semibold mt-0.5">{s.assignment} · {s.turnInTime}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-black text-success text-base">{s.autoScore}</span>
+                <VFButton size="sm" variant="outline">Review & Grade</VFButton>
+              </div>
+            </div>
+          ))}
         </div>
       </VFCard>
     </div>
   );
 
-  // ----------------------------------------------------
-  // ALL 16 SUBMODULE TABS MAPPED
-  // ----------------------------------------------------
-  const submoduleTabs = [
-    { id: 'dashboard', label: 'Homework Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
-    { id: 'homework-list', label: 'Homework', icon: <BookMarked className="h-3.5 w-3.5" />, content: homeworkListContent },
-    { id: 'assignments', label: 'Assignments', icon: <FileText className="h-3.5 w-3.5" />, content: assignmentsContent },
-    { id: 'worksheets', label: 'Worksheets', icon: <FileText className="h-3.5 w-3.5" />, content: worksheetsContent },
-    { id: 'projects', label: 'Projects', icon: <FolderGit className="h-3.5 w-3.5" />, content: projectsContent },
-    { id: 'question-sets', label: 'Question Sets', icon: <HelpCircle className="h-3.5 w-3.5" />, content: questionSetsContent },
-    { id: 'distribution', label: 'Assignment Distribution', icon: <Send className="h-3.5 w-3.5" />, content: distributionContent },
-    { id: 'submissions', label: 'Student Submissions', icon: <FileText className="h-3.5 w-3.5" />, content: submissionsContent },
-    { id: 'review', label: 'Submission Review', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: reviewContent },
-    { id: 'evaluation', label: 'Evaluation & Marks', icon: <Award className="h-3.5 w-3.5" />, content: evaluationContent },
-    { id: 'feedback', label: 'Teacher Feedback', icon: <Award className="h-3.5 w-3.5" />, content: feedbackContent },
-    { id: 'resubmissions', label: 'Resubmissions', icon: <RotateCcw className="h-3.5 w-3.5" />, content: resubmissionsContent },
-    { id: 'late-submissions', label: 'Late Submissions', icon: <Clock className="h-3.5 w-3.5" />, content: lateSubmissionsContent },
-    { id: 'completion-tracking', label: 'Completion Tracking', icon: <TrendingUp className="h-3.5 w-3.5" />, content: completionTrackingContent },
-    { id: 'reports', label: 'Homework Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
-    { id: 'settings', label: 'Homework Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+  const tabs = [
+    { id: 'list', label: 'Active Homework & Register', icon: <BookMarked className="h-4 w-4" />, content: listContent },
+    { id: 'grading', label: 'Grading Queue', icon: <Clock className="h-4 w-4" />, content: gradingContent },
   ];
 
   return (
     <VFPageContainer>
-      <VFTabs
-        items={submoduleTabs}
-        activeTabId={activeSubmodule}
-        onTabChange={setActiveSubmodule}
-        variant="top-bar"
-      />
+      <VFTabs items={tabs} defaultTabId="list" variant="top-bar" />
     </VFPageContainer>
   );
 }

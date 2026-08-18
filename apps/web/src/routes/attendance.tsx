@@ -2,34 +2,22 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFSection,
   VFStatCard,
   VFButton,
   VFCard,
-  VFInput,
   VFSelect,
-  VFDatePicker,
   VFTabs,
   VFBadge,
 } from '@vidyamaxx/ui';
 import {
   Clock,
-  Users,
-  FileCheck,
-  CheckCircle2,
   UserCheck,
-  Send,
-  AlertTriangle,
-  Calendar,
-  FileText,
-  Bell,
   GraduationCap,
-  Sliders,
-  CheckSquare,
   AlertCircle,
-  Download,
-  ShieldCheck,
-  TrendingUp,
+  CheckSquare,
+  CheckCircle2,
+  Layers,
+  FileText,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/attendance')({
@@ -48,8 +36,8 @@ interface StudentAttendanceRecord {
 
 function AttendancePage() {
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 8-A');
-  const [selectedDate, setSelectedDate] = React.useState<string>('2026-08-11');
-  const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
+  const [selectedDate] = React.useState<string>('2026-08-18');
+  const [notice, setNotice] = React.useState<string | null>(null);
 
   const [studentRoster, setStudentRoster] = React.useState<StudentAttendanceRecord[]>([
     { id: '1', rollNo: '801', name: 'Rahul Sharma', class: 'Class 8-A', status: 'Present', time: '08:02 AM' },
@@ -61,256 +49,232 @@ function AttendancePage() {
 
   const handleMarkAllPresent = () => {
     setStudentRoster(prev => prev.map(s => ({ ...s, status: 'Present', time: '08:00 AM' })));
+    setNotice('All students marked Present for Class 8-A.');
   };
 
   const handleStatusToggle = (id: string, newStatus: 'Present' | 'Absent' | 'Late' | 'Leave') => {
     setStudentRoster(prev => prev.map(s => s.id === id ? { ...s, status: newStatus } : s));
   };
 
-  const filteredRoster = studentRoster;
+  // 1. Daily Roll Call View
+  const rollCallContent = (
+    <div className="space-y-6">
+      {notice && (
+        <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg text-base text-foreground flex items-center justify-between animate-fade-in">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="h-6 w-6 text-primary shrink-0" />
+            <span className="font-bold">{notice}</span>
+          </div>
+          <button
+            onClick={() => setNotice(null)}
+            className="text-muted-foreground hover:text-foreground text-sm font-black cursor-pointer px-2 py-1"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
-  // ----------------------------------------------------
-  // SUBMODULE 1 — Attendance Dashboard
-  // ----------------------------------------------------
-  const dashboardContent = (
-    <div className="space-y-4">
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Today's Student Attendance" value="94.8%" icon={<GraduationCap className="h-5 w-5 text-emerald-500" />} trend="up" trendLabel="1,180 / 1,248 Present" />
-        <VFStatCard title="Staff Attendance Rate" value="96.2%" icon={<UserCheck className="h-5 w-5 text-primary" />} trend="up" trendLabel="120 / 124 Staff Present" />
-        <VFStatCard title="Uninformed Absences" value="14 Students" icon={<AlertCircle className="h-5 w-5 text-destructive" />} trend="down" trendLabel="SMS Alerts Dispatched" />
-        <VFStatCard title="Biometric Gate Punches" value="2,410 Punches" icon={<Clock className="h-5 w-5" />} trend="neutral" trendLabel="100% Hardware Synced" />
+        <VFStatCard
+          title="Student Attendance"
+          value="94.8%"
+          icon={<GraduationCap className="h-5 w-5" />}
+          trend="up"
+          trendLabel="1,180 / 1,248 Present"
+        />
+        <VFStatCard
+          title="Staff Attendance"
+          value="96.2%"
+          icon={<UserCheck className="h-5 w-5" />}
+          trend="up"
+          trendLabel="120 / 124 Present"
+        />
+        <VFStatCard
+          title="Uninformed Absences"
+          value="14"
+          icon={<AlertCircle className="h-5 w-5" />}
+          trend="down"
+          trendLabel="Alerts dispatched"
+        />
+        <VFStatCard
+          title="Biometric Gate Punches"
+          value="2,410"
+          icon={<Clock className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel="Gate sync active"
+        />
       </div>
-    </div>
-  );
 
-  // ----------------------------------------------------
-  // SUBMODULE 2 — Today's Attendance
-  // ----------------------------------------------------
-  const todaysAttendanceContent = (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
-        <div>
-          <h3 className="text-sm font-bold text-foreground">Today's Campus Live Attendance Summary</h3>
-          <p className="text-xs text-muted-foreground font-mono">Date: 2026-08-11 · Morning Assembly & Gate Entry Status</p>
+      {/* Interactive Roll Call Box */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-60">
+              <VFSelect
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(String(e.target.value))}
+                options={[
+                  { label: 'Class 8 - Section A', value: 'Class 8-A' },
+                  { label: 'Class 9 - Section B', value: 'Class 9-B' },
+                  { label: 'Class 10 - Section A', value: 'Class 10-A' },
+                ]}
+              />
+            </div>
+            <span className="text-sm font-bold text-foreground">Date: {selectedDate}</span>
+          </div>
+          <VFButton
+            size="sm"
+            variant="outline"
+            onClick={handleMarkAllPresent}
+            leftIcon={<CheckSquare className="h-4 w-4 text-success" />}
+          >
+            Mark All Present
+          </VFButton>
         </div>
-        <VFBadge variant="success">94.8% Overall Present</VFBadge>
-      </div>
-    </div>
-  );
 
-  // ----------------------------------------------------
-  // SUBMODULE 3 — Class Attendance
-  // ----------------------------------------------------
-  const classAttendanceContent = (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs gap-3">
-        <div className="flex items-center gap-3 flex-wrap">
-          <VFSelect
-            value={selectedClass}
-            onChange={(e) => setSelectedClass(String(e.target.value))}
-            options={[
-              { label: 'Class 8 - Section A', value: 'Class 8-A' },
-              { label: 'Class 9 - Section B', value: 'Class 9-B' },
-              { label: 'Class 10 - Section A', value: 'Class 10-A' },
-            ]}
-          />
-          <VFDatePicker value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-        </div>
-        <VFButton size="sm" variant="outline" onClick={handleMarkAllPresent} leftIcon={<CheckSquare className="h-4 w-4 text-emerald-500" />}>
-          Mark All Present
-        </VFButton>
-      </div>
-
-      <VFSection title={`${selectedClass} Homeroom Roster (${selectedDate})`}>
-        <div className="bg-card border border-border rounded-xl p-4 shadow-xs space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            {filteredRoster.map((s) => (
-              <div key={s.id} className="p-3 bg-muted/30 rounded-xl border border-border/60 flex items-center justify-between">
-                <div>
-                  <span className="font-mono text-[11px] font-bold text-primary">Roll #{s.rollNo}</span>
-                  <p className="font-bold text-foreground text-sm mt-0.5">{s.name}</p>
-                  <p className="text-muted-foreground text-[10px]">{s.time ? `Check-in: ${s.time}` : s.remarks || 'No check-in'}</p>
+        {/* Student Roster Single Clean Container */}
+        <div className="border border-border rounded-lg bg-card overflow-hidden">
+          <div className="divide-y divide-border">
+            {studentRoster.map((student) => (
+              <div key={student.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-muted/30 transition-colors">
+                <div className="flex items-center gap-3.5">
+                  <div className="h-9 w-9 rounded-md bg-primary/15 text-primary font-black text-sm flex items-center justify-center shrink-0">
+                    {student.rollNo}
+                  </div>
+                  <div>
+                    <p className="font-black text-foreground text-base leading-tight">{student.name}</p>
+                    <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                      Roll No {student.rollNo} {student.time ? `· Entry Time: ${student.time}` : ''} {student.remarks ? `· Note: ${student.remarks}` : ''}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  {(['Present', 'Absent', 'Late', 'Leave'] as const).map((st) => (
-                    <button
-                      key={st}
-                      onClick={() => handleStatusToggle(s.id, st)}
-                      className={`px-2 py-1 rounded text-[11px] font-bold cursor-pointer ${
-                        s.status === st ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                      }`}
-                    >
-                      {st}
-                    </button>
-                  ))}
+
+                <div className="flex items-center gap-2 self-end sm:self-auto">
+                  {(['Present', 'Absent', 'Late', 'Leave'] as const).map((status) => {
+                    const isSelected = student.status === status;
+                    return (
+                      <button
+                        key={status}
+                        onClick={() => handleStatusToggle(student.id, status)}
+                        className={`px-4 py-1.5 rounded-md text-sm font-bold transition-all cursor-pointer border ${
+                          isSelected
+                            ? status === 'Present'
+                              ? 'bg-success text-white border-success shadow-xs'
+                              : status === 'Absent'
+                              ? 'bg-destructive text-white border-destructive shadow-xs'
+                              : status === 'Late'
+                              ? 'bg-warning text-white border-warning shadow-xs'
+                              : 'bg-muted-foreground text-white border-muted-foreground shadow-xs'
+                            : 'bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground border-border'
+                        }`}
+                      >
+                        {status}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </VFSection>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 4 — Period Attendance
-  // ----------------------------------------------------
-  const periodAttendanceContent = (
-    <div className="space-y-4">
-      <VFCard title="Subject Period-wise Attendance Tracker">
-        <p className="text-xs text-muted-foreground mb-3 font-mono">Log attendance for specific 45-minute subject periods (P1 to P7).</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 5 — Student Attendance
-  // ----------------------------------------------------
-  const studentAttendanceContent = (
-    <div className="space-y-4">
-      <VFCard title="360° Individual Student Attendance Record & Heatmap">
-        <p className="text-xs text-muted-foreground mb-3">Multi-month attendance calendar, monthly percentages, and excused leave logs.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 6 — Attendance Corrections
-  // ----------------------------------------------------
-  const correctionsContent = (
-    <div className="space-y-4">
-      <VFCard title="Attendance Regularization & Correction Requests">
-        <p className="text-xs text-muted-foreground mb-3">Teacher and parent requests for retro-correcting accidental absence records.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 7 — Leave Management
-  // ----------------------------------------------------
-  const leaveManagementContent = (
-    <div className="space-y-4">
-      <VFCard title="Student & Staff Leave Approval Workflow">
-        <p className="text-xs text-muted-foreground mb-3">Approve medical leave applications, duty leave requests, and casual leaves.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 8 — Holiday Management
-  // ----------------------------------------------------
-  const holidayManagementContent = (
-    <div className="space-y-4">
-      <VFCard title="Institutional Holiday Calendar & Restricted Holidays">
-        <p className="text-xs text-muted-foreground mb-3">Gazetted national holidays, local festival breaks, and winter/summer vacation blocks.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 9 — Late & Early Records
-  // ----------------------------------------------------
-  const lateEarlyContent = (
-    <div className="space-y-4">
-      <VFCard title="Late Arrival & Early Departure Log">
-        <p className="text-xs text-muted-foreground mb-3">Track gate punch timestamps past 08:15 AM cut-off and early gate pass permits.</p>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 10 — Attendance Summary
-  // ----------------------------------------------------
-  const summaryContent = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard title="Monthly Total Working Days" value="24 Days" icon={<Calendar className="h-5 w-5" />} trend="neutral" trendLabel="August 2026" />
-        <VFStatCard title="Average Class Attendance" value="94.2%" icon={<TrendingUp className="h-5 w-5" />} trend="up" trendLabel="+1.2% Target Met" />
-        <VFStatCard title="Total Leaves Sanctioned" value="48 Days" icon={<FileCheck className="h-5 w-5" />} description="Campus-wide" />
-        <VFStatCard title="Punctuality Score" value="96.8%" icon={<CheckCircle2 className="h-5 w-5 text-emerald-500" />} description="On-time Ratio" />
       </div>
     </div>
   );
 
-  // ----------------------------------------------------
-  // SUBMODULE 11 — Low Attendance
-  // ----------------------------------------------------
-  const lowAttendanceContent = (
-    <div className="space-y-4">
-      <VFCard title="75% Board Eligibility Low Attendance Watchlist">
-        <p className="text-xs text-muted-foreground mb-3 font-mono">Flag students at risk of board examination hall ticket withholding due to low attendance.</p>
-        <VFBadge variant="danger">4 Students Flagged Below 75%</VFBadge>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 12 — Attendance Alerts
-  // ----------------------------------------------------
-  const alertsContent = (
-    <div className="space-y-4">
-      <VFCard title="Automated Parent SMS & WhatsApp Absence Alerts">
-        <p className="text-xs text-muted-foreground mb-3">Instant automated notification dispatch engine triggered on unexcused absence.</p>
-        <VFButton size="sm" leftIcon={<Send className="h-3.5 w-3.5" />}>Trigger Daily Absence Digest</VFButton>
-      </VFCard>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // SUBMODULE 13 — Attendance Reports
-  // ----------------------------------------------------
+  // 2. Class Summary & Trends View
   const reportsContent = (
-    <div className="space-y-4">
-      <VFCard title="Exportable Attendance Registers & Analytics Reports">
-        <p className="text-xs text-muted-foreground mb-3">Generate CBSE format Form IV attendance registers, monthly summaries, and PDF exports.</p>
-        <VFButton size="sm" variant="outline" leftIcon={<Download className="h-3.5 w-3.5" />}>Export Form IV Register (PDF)</VFButton>
-      </VFCard>
-    </div>
-  );
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <VFCard title="Class 8-A Average" description="Current attendance rate">
+          <p className="text-3xl font-black text-success mt-1">96.2%</p>
+          <p className="text-sm font-bold text-muted-foreground mt-0.5">38 of 40 Students Present</p>
+        </VFCard>
+        <VFCard title="Class 9-B Average" description="Current attendance rate">
+          <p className="text-3xl font-black text-primary mt-1">94.0%</p>
+          <p className="text-sm font-bold text-muted-foreground mt-0.5">36 of 38 Students Present</p>
+        </VFCard>
+        <VFCard title="Class 10-A Average" description="Current attendance rate">
+          <p className="text-3xl font-black text-success mt-1">98.5%</p>
+          <p className="text-sm font-bold text-muted-foreground mt-0.5">39 of 40 Students Present</p>
+        </VFCard>
+      </div>
 
-  // ----------------------------------------------------
-  // SUBMODULE 14 — Attendance Settings
-  // ----------------------------------------------------
-  const settingsContent = (
-    <div className="space-y-4">
-      <VFCard title="Global Attendance Parameters & Gate Cut-off Times">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-2">
-          <VFInput label="Late Cut-off Time" defaultValue="08:15 AM" />
-          <VFInput label="Minimum Required %" defaultValue="75.0%" />
-          <VFSelect label="Default Capture Channel" options={[{ label: 'Biometric Gate + Teacher App', value: 'biometric' }, { label: 'Teacher App Manual', value: 'manual' }]} />
+      <VFCard title="Weekly Attendance Trends by Section">
+        <div className="space-y-4 mt-1">
+          {[
+            { grade: 'Middle Wing (Classes 6 - 8)', rate: 95.4, present: '360/380 Students' },
+            { grade: 'Secondary Wing (Classes 9 - 10)', rate: 94.8, present: '420/440 Students' },
+            { grade: 'Senior Secondary (Classes 11 - 12)', rate: 96.8, present: '400/415 Students' },
+          ].map((w, i) => (
+            <div key={i} className="space-y-1.5 text-base">
+              <div className="flex justify-between font-bold">
+                <span className="text-foreground text-base">{w.grade}</span>
+                <span className="text-muted-foreground text-sm font-semibold">{w.present} ({w.rate}%)</span>
+              </div>
+              <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
+                <div className="h-full bg-primary rounded-full" style={{ width: `${w.rate}%` }} />
+              </div>
+            </div>
+          ))}
         </div>
       </VFCard>
     </div>
   );
 
-  // ----------------------------------------------------
-  // ALL 14 SUBMODULE TABS MAPPED
-  // ----------------------------------------------------
-  const submoduleTabs = [
-    { id: 'dashboard', label: 'Attendance Dashboard', icon: <GraduationCap className="h-3.5 w-3.5" />, content: dashboardContent },
-    { id: 'todays-attendance', label: "Today's Attendance", icon: <Clock className="h-3.5 w-3.5" />, content: todaysAttendanceContent },
-    { id: 'class-attendance', label: 'Class Attendance', icon: <Users className="h-3.5 w-3.5" />, content: classAttendanceContent },
-    { id: 'period-attendance', label: 'Period Attendance', icon: <Clock className="h-3.5 w-3.5" />, content: periodAttendanceContent },
-    { id: 'student-attendance', label: 'Student Attendance', icon: <GraduationCap className="h-3.5 w-3.5" />, content: studentAttendanceContent },
-    { id: 'corrections', label: 'Attendance Corrections', icon: <ShieldCheck className="h-3.5 w-3.5" />, content: correctionsContent },
-    { id: 'leave-management', label: 'Leave Management', icon: <FileText className="h-3.5 w-3.5" />, content: leaveManagementContent },
-    { id: 'holiday-management', label: 'Holiday Management', icon: <Calendar className="h-3.5 w-3.5" />, content: holidayManagementContent },
-    { id: 'late-early', label: 'Late & Early Records', icon: <AlertTriangle className="h-3.5 w-3.5" />, content: lateEarlyContent },
-    { id: 'summary', label: 'Attendance Summary', icon: <TrendingUp className="h-3.5 w-3.5" />, content: summaryContent },
-    { id: 'low-attendance', label: 'Low Attendance', icon: <AlertCircle className="h-3.5 w-3.5" />, content: lowAttendanceContent },
-    { id: 'alerts', label: 'Attendance Alerts', icon: <Bell className="h-3.5 w-3.5" />, content: alertsContent },
-    { id: 'reports', label: 'Attendance Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
-    { id: 'settings', label: 'Attendance Settings', icon: <Sliders className="h-3.5 w-3.5" />, content: settingsContent },
+  // 3. Leave Requests View
+  const leaveContent = (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <VFCard title="Pending Student Leave Applications">
+          <div className="divide-y divide-border -my-2 text-base">
+            {[
+              { name: 'Kavya Nair (Class 11-Com)', reason: 'Medical Checkup', dates: 'Aug 19 - Aug 20', status: 'Pending Approval' },
+              { name: 'Aditya Verma (Class 9-A)', reason: 'Family Function', dates: 'Aug 22', status: 'Pending Approval' },
+            ].map((l, i) => (
+              <div key={i} className="py-3 px-1 flex items-center justify-between">
+                <div>
+                  <p className="font-bold text-foreground text-base">{l.name}</p>
+                  <p className="text-muted-foreground text-xs font-semibold mt-0.5">{l.reason} · {l.dates}</p>
+                </div>
+                <div className="flex gap-2">
+                  <VFButton size="sm">Approve</VFButton>
+                  <VFButton size="sm" variant="outline">Reject</VFButton>
+                </div>
+              </div>
+            ))}
+          </div>
+        </VFCard>
+
+        <VFCard title="Staff Planned Leaves">
+          <div className="divide-y divide-border -my-2 text-base">
+            {[
+              { name: 'Mrs. Sunita Verma (Mathematics)', type: 'Casual Leave', dates: 'Aug 21', substitute: 'Assigned: Mr. Arvind Gupta' },
+              { name: 'Dr. Rajesh Sharma (Physics)', type: 'Duty Leave / Workshop', dates: 'Aug 25', substitute: 'Assigned: Ms. Pooja Rao' },
+            ].map((s, i) => (
+              <div key={i} className="py-3 px-1 flex items-center justify-between">
+                <div>
+                  <p className="font-bold text-foreground text-base">{s.name}</p>
+                  <p className="text-muted-foreground text-xs font-semibold mt-0.5">{s.type} · {s.dates} · {s.substitute}</p>
+                </div>
+                <VFBadge variant="success">Approved</VFBadge>
+              </div>
+            ))}
+          </div>
+        </VFCard>
+      </div>
+    </div>
+  );
+
+  const tabs = [
+    { id: 'rollcall', label: 'Daily Roll Call', icon: <CheckSquare className="h-4 w-4" />, content: rollCallContent },
+    { id: 'reports', label: 'Class Reports & Trends', icon: <Layers className="h-4 w-4" />, content: reportsContent },
+    { id: 'leaves', label: 'Leave Requests', icon: <FileText className="h-4 w-4" />, content: leaveContent },
   ];
 
   return (
     <VFPageContainer>
-      <VFTabs
-        items={submoduleTabs}
-        activeTabId={activeSubmodule}
-        onTabChange={setActiveSubmodule}
-        variant="top-bar"
-      />
+      <VFTabs items={tabs} defaultTabId="rollcall" variant="top-bar" />
     </VFPageContainer>
   );
 }

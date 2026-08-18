@@ -50,15 +50,15 @@ export function VFPageHeader({
   return (
     <div
       className={cn(
-        "flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 pb-3.5 mb-1 gap-3",
+        "flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-3",
         className
       )}
       {...props}
     >
-      <div className="space-y-0.5 min-w-0">
-        {breadcrumbs && <div className="mb-1.5">{breadcrumbs}</div>}
-        <h1 className="text-base font-black tracking-tight text-foreground leading-tight">{title}</h1>
-        {description && <p className="text-sm text-muted-foreground font-medium">{description}</p>}
+      <div className="space-y-1 min-w-0">
+        {breadcrumbs && <div className="mb-1">{breadcrumbs}</div>}
+        <h1 className="text-xl font-bold tracking-tight text-foreground leading-tight">{title}</h1>
+        {description && <p className="text-xs text-muted-foreground font-normal">{description}</p>}
       </div>
       {actions && <VFPageActions>{actions}</VFPageActions>}
     </div>
@@ -81,17 +81,17 @@ export function VFSection({
   ...props
 }: VFSectionProps) {
   return (
-    <section className={cn("space-y-3", className)} {...props}>
+    <section className={cn("space-y-3.5", className)} {...props}>
       {(title || description || actions) && (
         <div className="flex items-center justify-between gap-3">
           <div className="space-y-0.5 min-w-0">
-            {title && <h2 className="text-xs font-bold uppercase tracking-widest text-foreground/80">{title}</h2>}
+            {title && <h2 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">{title}</h2>}
             {description && <p className="text-xs text-muted-foreground">{description}</p>}
           </div>
           {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
         </div>
       )}
-      <div className="space-y-3.5">{children}</div>
+      <div className="space-y-4">{children}</div>
     </section>
   );
 }

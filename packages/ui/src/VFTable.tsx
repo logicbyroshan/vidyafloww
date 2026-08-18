@@ -14,18 +14,18 @@ const flexRender = (TanStackTableModule as any).flexRender;
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border/70 rounded-xl bg-card shadow-xs">
-      <table className={cn("w-full border-collapse text-left text-xs", className)} {...props} />
+    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card">
+      <table className={cn("w-full border-collapse text-left text-base", className)} {...props} />
     </div>
   );
 }
 
 export function VFTableHead({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead className={cn("bg-muted/40 border-b border-border/80", className)} {...props} />;
+  return <thead className={cn("bg-muted/50 border-b border-border", className)} {...props} />;
 }
 
 export function VFTableBody({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <tbody className={cn("divide-y divide-border/60", className)} {...props} />;
+  return <tbody className={cn("divide-y divide-border", className)} {...props} />;
 }
 
 export function VFTableRow({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) {
@@ -48,7 +48,7 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "px-3.5 py-3 font-bold text-xs text-muted-foreground uppercase tracking-widest select-none whitespace-nowrap",
+        "px-4 py-3 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
         sticky && "sticky top-0 bg-card z-10",
         className
       )}
@@ -58,7 +58,7 @@ export function VFTableHeaderCell({
 }
 
 export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("px-3.5 py-3 align-middle text-foreground/90 whitespace-nowrap text-xs", className)} {...props} />;
+  return <td className={cn("px-4 py-3 align-middle text-foreground whitespace-nowrap text-base font-semibold", className)} {...props} />;
 }
 
 // VFDataTable: High-level, fail-safe data table component
@@ -199,9 +199,9 @@ export function VFDataTable<T>({
     <div className="space-y-3.5 w-full">
       {/* Toolbar / Search & Column Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        <div className="relative max-w-sm flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="relative max-w-md flex-1">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </span>
@@ -210,7 +210,7 @@ export function VFDataTable<T>({
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search table records..."}
-            className="w-full pl-9 pr-4 h-9 border border-border/80 rounded-lg bg-card text-xs focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all shadow-xs text-foreground placeholder:text-muted-foreground"
+            className="w-full pl-10 pr-4 h-11 border border-border rounded-lg bg-card text-base focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
@@ -218,7 +218,7 @@ export function VFDataTable<T>({
         <div className="relative self-end sm:self-auto">
           <VFButton
             variant="outline"
-            size="sm"
+            size="md"
             onClick={() => setShowColumnDropdown(!showColumnDropdown)}
             leftIcon={
               <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,8 +229,8 @@ export function VFDataTable<T>({
             Columns ({activeColumns.length}/{columns.length})
           </VFButton>
           {showColumnDropdown && (
-            <div className="absolute right-0 mt-2 w-52 bg-card border border-border/80 rounded-xl shadow-xl z-30 p-2 space-y-1 animate-scale-in">
-              <span className="block text-[10px] font-bold text-muted-foreground uppercase px-2 py-1 select-none">
+            <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-lg shadow-xl z-30 p-2 space-y-1 animate-scale-in">
+              <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
                 Visible Columns
               </span>
               {columns.map((c) => {
@@ -239,15 +239,15 @@ export function VFDataTable<T>({
                 return (
                   <label
                     key={key}
-                    className="flex items-center gap-2.5 px-2 py-1.5 hover:bg-muted/60 rounded-lg text-xs text-foreground cursor-pointer select-none"
+                    className="flex items-center gap-2.5 px-2.5 py-1.5 hover:bg-muted rounded-md text-sm text-foreground cursor-pointer select-none font-semibold"
                   >
                     <input
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => toggleColumn(key)}
-                      className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                      className="rounded border-input text-primary focus:ring-primary h-4 w-4"
                     />
-                    <span className="font-medium truncate">{c.header}</span>
+                    <span className="truncate">{c.header}</span>
                   </label>
                 );
               })}
