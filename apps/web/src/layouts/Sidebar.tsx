@@ -81,21 +81,21 @@ export function Sidebar() {
     <aside
       className={cn(
         'flex flex-col h-full bg-card border-r border-border transition-all duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-visible',
-        sidebarExpanded ? 'w-64' : 'w-20'
+        sidebarExpanded ? 'w-52' : 'w-20'
       )}
     >
       {/* Sidebar Header & Brand Logo — height is strictly h-[72px] to match Navbar perfectly */}
-      <div className="flex h-[72px] items-center px-4 border-b border-border relative shrink-0">
+      <div className="flex h-[60px] items-center px-4 border-b border-border relative shrink-0">
         <div className={cn('flex items-center w-full min-w-0 overflow-hidden', !sidebarExpanded && 'justify-center')}>
           <img
             src="/logo.png"
             alt="VidyaMaxx Logo"
-            className="h-12 w-12 object-contain shrink-0 drop-shadow-sm transition-all duration-300 ease-in-out"
+            className="h-9 w-9 object-contain shrink-0 drop-shadow-sm transition-all duration-300 ease-in-out"
           />
           <div
             className={cn(
               'flex flex-col min-w-0 transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap',
-              sidebarExpanded ? 'opacity-100 max-w-[170px] ml-3' : 'opacity-0 max-w-0 ml-0 pointer-events-none'
+              sidebarExpanded ? 'opacity-100 max-w-[160px] ml-3' : 'opacity-0 max-w-0 ml-0 pointer-events-none'
             )}
           >
             <span className="text-2xl font-black tracking-tight leading-none text-foreground">
