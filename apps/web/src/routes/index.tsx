@@ -357,8 +357,8 @@ function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Student Enrollment by School Wing */}
         <VFCard title="Student Enrollment by School Wing" description="Class tier strength distribution across 1,248 pupils">
-          <div className="flex flex-col sm:flex-row items-center gap-6 mt-1">
-            <div className="w-full sm:w-1/2 h-56">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
+            <div className="shrink-0" style={{ width: 220, height: 220 }}>
               <VFPieChart
                 data={[
                   { name: 'Primary Wing (1-5)', value: 430, color: '#3b82f6' },
@@ -369,19 +369,24 @@ function DashboardPage() {
                 height={220}
               />
             </div>
-            <div className="w-full sm:w-1/2 space-y-2.5">
+            <div className="flex-1 space-y-3">
               {[
-                { label: 'Primary Wing (Grades 1-5)', value: '430 Students', pct: '34.5%', color: 'bg-blue-500' },
-                { label: 'Middle School (Grades 6-8)', value: '374 Students', pct: '30.0%', color: 'bg-cyan-500' },
-                { label: 'High School (Grades 9-10)', value: '250 Students', pct: '20.0%', color: 'bg-emerald-500' },
-                { label: 'Senior Secondary (11-12)', value: '194 Students', pct: '15.5%', color: 'bg-amber-500' },
+                { label: 'Primary Wing (Gr. 1-5)', value: '430', pct: '34.5%', color: 'bg-blue-500', bar: '35%' },
+                { label: 'Middle School (Gr. 6-8)', value: '374', pct: '30.0%', color: 'bg-cyan-500', bar: '30%' },
+                { label: 'High School (Gr. 9-10)', value: '250', pct: '20.0%', color: 'bg-emerald-500', bar: '20%' },
+                { label: 'Senior Sec (Gr. 11-12)', value: '194', pct: '15.5%', color: 'bg-amber-500', bar: '15.5%' },
               ].map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className={`h-3 w-3 rounded-full ${item.color} shrink-0`} />
-                    <span className="font-bold text-foreground">{item.label}</span>
+                <div key={idx}>
+                  <div className="flex items-center justify-between text-sm mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`h-2.5 w-2.5 rounded-full ${item.color} shrink-0`} />
+                      <span className="font-bold text-foreground">{item.label}</span>
+                    </div>
+                    <span className="font-black text-foreground tabular-nums">{item.value} <span className="text-muted-foreground font-semibold">({item.pct})</span></span>
                   </div>
-                  <span className="font-black text-muted-foreground">{item.value} ({item.pct})</span>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${item.color}`} style={{ width: item.bar }} />
+                  </div>
                 </div>
               ))}
             </div>
@@ -389,9 +394,9 @@ function DashboardPage() {
         </VFCard>
 
         {/* Academic Grade Tier Distribution */}
-        <VFCard title="Academic Grade Performance Tier" description="Term 1 evaluation marks distribution">
-          <div className="flex flex-col sm:flex-row items-center gap-6 mt-1">
-            <div className="w-full sm:w-1/2 h-56">
+        <VFCard title="Academic Grade Performance Tier" description="Term 1 evaluation marks distribution across 1,248 students">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
+            <div className="shrink-0" style={{ width: 220, height: 220 }}>
               <VFPieChart
                 data={[
                   { name: 'Distinction (A1 - 90%+)', value: 524, color: '#10b981' },
@@ -403,20 +408,25 @@ function DashboardPage() {
                 height={220}
               />
             </div>
-            <div className="w-full sm:w-1/2 space-y-2 text-sm">
+            <div className="flex-1 space-y-3">
               {[
-                { label: 'Distinction (A1 · 90%+)', value: '524', pct: '42.0%', color: 'bg-emerald-500' },
-                { label: 'First Div (A2 · 80-89%)', value: '386', pct: '30.9%', color: 'bg-blue-500' },
-                { label: 'Second Div (B1 · 70-79%)', value: '225', pct: '18.0%', color: 'bg-amber-500' },
-                { label: 'Average (B2 · 60-69%)', value: '88', pct: '7.1%', color: 'bg-purple-500' },
-                { label: 'Remedial Support (<60%)', value: '25', pct: '2.0%', color: 'bg-rose-500' },
+                { label: 'Distinction (A1 · 90%+)', value: '524', pct: '42.0%', color: 'bg-emerald-500', bar: '42%' },
+                { label: 'First Div (A2 · 80-89%)', value: '386', pct: '30.9%', color: 'bg-blue-500', bar: '31%' },
+                { label: 'Second Div (B1 · 70-79%)', value: '225', pct: '18.0%', color: 'bg-amber-500', bar: '18%' },
+                { label: 'Average (B2 · 60-69%)', value: '88', pct: '7.1%', color: 'bg-purple-500', bar: '7%' },
+                { label: 'Remedial Support (<60%)', value: '25', pct: '2.0%', color: 'bg-rose-500', bar: '2%' },
               ].map((tier, idx) => (
-                <div key={idx} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className={`h-2.5 w-2.5 rounded-full ${tier.color} shrink-0`} />
-                    <span className="font-bold text-foreground">{tier.label}</span>
+                <div key={idx}>
+                  <div className="flex items-center justify-between text-sm mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`h-2.5 w-2.5 rounded-full ${tier.color} shrink-0`} />
+                      <span className="font-bold text-foreground">{tier.label}</span>
+                    </div>
+                    <span className="font-black text-foreground tabular-nums">{tier.value} <span className="text-muted-foreground font-semibold">({tier.pct})</span></span>
                   </div>
-                  <span className="font-black text-muted-foreground">{tier.value} ({tier.pct})</span>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${tier.color}`} style={{ width: tier.bar, minWidth: '6px' }} />
+                  </div>
                 </div>
               ))}
             </div>
@@ -460,36 +470,22 @@ function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Attendance Risk Classification */}
         <VFCard title="Attendance Health & Risk Segments" description="Biometric gate audit classification across 1,248 students">
-          <div className="space-y-3.5 mt-2">
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">Regular Attendance (Above 90%)</span>
-                <span className="text-success font-black">1,120 Pupils (89.7%)</span>
+          <div className="space-y-4 mt-2">
+            {[
+              { label: 'Regular Attendance (Above 90%)', count: '1,120 Pupils', pct: '89.7%', bar: '89.7%', colorBar: 'bg-emerald-500', colorText: 'text-emerald-400' },
+              { label: 'Moderate Risk (75% – 89%)', count: '94 Pupils', pct: '7.5%', bar: '7.5%', colorBar: 'bg-amber-500', colorText: 'text-amber-400' },
+              { label: 'Critical Absentee Risk (Below 75%)', count: '34 Pupils', pct: '2.8%', bar: '2.8%', colorBar: 'bg-rose-500', colorText: 'text-rose-400' },
+            ].map((row, idx) => (
+              <div key={idx}>
+                <div className="flex items-center justify-between text-sm font-bold mb-1.5">
+                  <span className="text-foreground">{row.label}</span>
+                  <span className={`${row.colorText} font-black tabular-nums`}>{row.count} ({row.pct})</span>
+                </div>
+                <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${row.colorBar}`} style={{ width: row.bar, minWidth: '12px' }} />
+                </div>
               </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-success rounded-full" style={{ width: '89.7%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">Moderate Attendance (75% - 89%)</span>
-                <span className="text-warning font-black">94 Pupils (7.5%)</span>
-              </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-warning rounded-full" style={{ width: '7.5%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">Critical Absentee Risk (Below 75%)</span>
-                <span className="text-destructive font-black">34 Pupils (2.8%)</span>
-              </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-destructive rounded-full" style={{ width: '2.8%' }} />
-              </div>
-            </div>
+            ))}
           </div>
         </VFCard>
 
