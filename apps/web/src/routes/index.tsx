@@ -201,7 +201,7 @@ function DashboardPage() {
         <div className="space-y-5">
           
           {/* Quick Action Square Grid — 3 cols × 4 rows */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             {quickActions.map((action, idx) => {
               const Icon = action.icon;
               return (
