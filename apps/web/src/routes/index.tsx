@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFStatCard,
@@ -9,33 +9,40 @@ import {
   VFCard,
   VFAreaChart,
   VFBarChart,
+  VFButton,
 } from '@vidyamaxx/ui';
 import {
   Users,
   GraduationCap,
   CalendarCheck,
   FileText,
-  ArrowUpRight,
   ShieldCheck,
   CheckCircle2,
-  UserCheck,
   Clock,
   BookOpen,
-  Activity,
-  AlertTriangle,
   Award,
-  Briefcase,
-  Layers,
+  CreditCard,
+  Bell,
+  FileSpreadsheet,
+  Settings,
+  Calendar,
+  UserPlus,
+  Key,
+  Server,
+  ArrowRight,
+  Send,
 } from 'lucide-react';
+import { useGlobalStore } from '../stores/globalStore';
 
 export const Route = createFileRoute('/')({
   component: DashboardPage,
 });
 
 function DashboardPage() {
-  const [selectedNotice, setSelectedNotice] = React.useState<string | null>(null);
+  const { schoolProfile } = useGlobalStore();
+  const [notice, setNotice] = React.useState<string | null>(null);
 
-  // Student Attendance & Health Radar Mock Data
+  // Student Attendance Radar Data
   const studentData = [
     { id: '1', name: 'Rahul Sharma', class: '10-A', status: 'Present', riskScore: 'Low (4%)', note: 'Optimal Attendance', lastUpdate: '08:30 AM' },
     { id: '2', name: 'Priya Patel', class: '10-A', status: 'Absent', riskScore: 'High (78%)', note: '3rd consecutive absence', lastUpdate: '08:35 AM' },
@@ -69,7 +76,7 @@ function DashboardPage() {
       accessorKey: 'riskScore',
       cell: (r: any) => (
         <span
-          className={`text-sm font-bold px-3 py-1 rounded-md ${
+          className={`text-xs font-bold px-2.5 py-0.5 rounded-md ${
             r.riskScore.startsWith('High')
               ? 'bg-destructive/15 text-destructive border border-destructive/25'
               : r.riskScore.startsWith('Med')
@@ -93,312 +100,357 @@ function DashboardPage() {
     },
   ];
 
-  // 1. Overview View
-  const overviewContent = (
+  // Quick Action navigation shortcuts
+  const quickActions = [
+    { label: 'Mark Daily Attendance', desc: 'Roll call for classes', route: '/attendance', icon: CalendarCheck, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
+    { label: 'New Admission Intake', desc: 'Review & admit candidates', route: '/admissions', icon: UserPlus, color: 'text-amber-400 bg-amber-500/10 border-amber-500/20' },
+    { label: 'Students Directory', desc: '360° student records', route: '/students', icon: GraduationCap, color: 'text-blue-400 bg-blue-500/10 border-blue-500/20' },
+    { label: 'Teachers', desc: 'Faculty load & profiles', route: '/staff', icon: Users, color: 'text-purple-400 bg-purple-500/10 border-purple-500/20' },
+    { label: 'Timetable & Proxies', desc: 'Period matrix & cover', route: '/timetable', icon: Calendar, color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20' },
+    { label: 'Fees & Collections', desc: 'Record dues & receipts', route: '/fees', icon: CreditCard, color: 'text-green-400 bg-green-500/10 border-green-500/20' },
+    { label: 'Broadcast Notice', desc: 'Announce via SMS & App', route: '/notices', icon: Bell, color: 'text-orange-400 bg-orange-500/10 border-orange-500/20' },
+    { label: 'Homework Register', desc: 'Assignments & grading', route: '/homework', icon: BookOpen, color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
+    { label: 'Compliance Reports', desc: 'CBSE & RTE audits', route: '/reports', icon: FileSpreadsheet, color: 'text-rose-400 bg-rose-500/10 border-rose-500/20' },
+    { label: 'Portal Settings', desc: 'School logo & identity', route: '/settings', icon: Settings, color: 'text-slate-400 bg-slate-500/10 border-slate-500/20' },
+  ];
+
+  // 1. MAIN TAB: Quick Command Center (No Statistics here per user request)
+  const quickHubContent = (
     <div className="space-y-6">
-      {selectedNotice && (
+      {notice && (
         <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg text-base text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="h-6 w-6 text-primary shrink-0" />
-            <span className="font-bold">{selectedNotice}</span>
+            <span className="font-bold">{notice}</span>
           </div>
           <button
-            onClick={() => setSelectedNotice(null)}
-            className="text-muted-foreground hover:text-foreground text-base font-black cursor-pointer px-3 py-1.5"
+            onClick={() => setNotice(null)}
+            className="text-muted-foreground hover:text-foreground text-sm font-black cursor-pointer px-2 py-1"
           >
-            Dismiss
+            ✕
           </button>
         </div>
       )}
 
-      {/* KPI Cards */}
+      {/* Software License & Institutional Identity Banner */}
+      <div className="p-5 bg-card border border-border rounded-lg shadow-xs space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/70 pb-3">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-lg font-black text-foreground">{schoolProfile.name} — Command Portal</h2>
+                <VFBadge variant="success">Enterprise License Active</VFBadge>
+              </div>
+              <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                {schoolProfile.affiliation} · {schoolProfile.city}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <Link to="/settings">
+              <VFButton size="sm" variant="outline" leftIcon={<Key className="h-3.5 w-3.5" />}>
+                Manage License
+              </VFButton>
+            </Link>
+          </div>
+        </div>
+
+        {/* License Specifications & Sync Status Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm pt-1">
+          <div>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">License Edition</span>
+            <span className="font-bold text-foreground mt-0.5 block">VidyaMaxx Enterprise Suite</span>
+          </div>
+          <div>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Validity Period</span>
+            <span className="font-bold text-success mt-0.5 block">Valid till 31 March 2027</span>
+          </div>
+          <div>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Student Seat Allocation</span>
+            <span className="font-bold text-foreground mt-0.5 block">1,248 / 2,500 Enrolled (50%)</span>
+          </div>
+          <div>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Server & Cloud Sync</span>
+            <span className="font-bold text-primary mt-0.5 flex items-center gap-1.5">
+              <Server className="h-3.5 w-3.5" /> Online · Encrypted AES-256
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Action Shortcuts Grid */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-black text-foreground tracking-tight">Quick Action Command Hub</h3>
+            <p className="text-xs text-muted-foreground font-medium">Direct shortcuts to key school workflows</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {quickActions.map((action, idx) => {
+            const Icon = action.icon;
+            return (
+              <Link
+                key={idx}
+                to={action.route}
+                className="p-3.5 rounded-lg border border-border bg-card hover:border-primary/40 hover:bg-muted/40 transition-all flex flex-col justify-between group h-28 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <div className={`h-8 w-8 rounded-md flex items-center justify-center border ${action.color}`}>
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                </div>
+                <div>
+                  <p className="text-sm font-black text-foreground group-hover:text-primary transition-colors truncate">
+                    {action.label}
+                  </p>
+                  <p className="text-xs text-muted-foreground font-medium truncate mt-0.5">
+                    {action.desc}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Live Absence & Attendance Tracker Today (Teachers & Students NOT Present) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* 1. Teacher Absences & Assigned Substitutes Today */}
+        <VFCard
+          title="Teacher Absences & Substitute Proxies Today"
+          description="4 Faculty absent today (120 of 124 Present)"
+        >
+          <div className="divide-y divide-border -my-2 text-base">
+            {[
+              { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Checkup', proxy: 'Assigned: Mr. Verma (Period 3 Lab 204)', status: 'Proxy Assigned' },
+              { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', proxy: 'Assigned: Mrs. Joshi (Period 5 Room 101)', status: 'Proxy Assigned' },
+              { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Duty Leave / Board Seminar', proxy: 'Assigned: Mr. Gupta (Period 2 Room 102)', status: 'Proxy Assigned' },
+              { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Half-Day Leave (Morning)', proxy: 'Covered: Sports Squad (Period 6 Ground)', status: 'Covered' },
+            ].map((t, i) => (
+              <div key={i} className="py-3 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <p className="font-bold text-foreground text-sm">
+                    {t.teacher} <span className="text-muted-foreground text-xs font-semibold">({t.dept})</span>
+                  </p>
+                  <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                    Reason: <span className="text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.proxy}</span>
+                  </p>
+                </div>
+                <VFBadge variant="success" className="shrink-0 self-start sm:self-auto">
+                  {t.status}
+                </VFBadge>
+              </div>
+            ))}
+          </div>
+        </VFCard>
+
+        {/* 2. Student Absences & Flagged Roll Call Today */}
+        <VFCard
+          title="Student Absences & Flagged Attendance Today"
+          description="68 Pupils absent today (94.5% Daily Attendance)"
+        >
+          <div className="divide-y divide-border -my-2 text-base">
+            {[
+              { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert Sent' },
+              { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (Arrival 09:15 AM)', action: 'Gate Pass Verified' },
+              { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism', action: 'SMS Dispatched' },
+              { student: 'Kavya Nair', class: 'Class 11-Com', issue: 'Approved Medical Leave (Aug 18 - 19)', action: 'Leave Approved' },
+            ].map((s, i) => (
+              <div key={i} className="py-3 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <p className="font-bold text-foreground text-sm">
+                    {s.student} <span className="text-muted-foreground text-xs font-semibold">({s.class})</span>
+                  </p>
+                  <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                    Note: <span className="text-destructive font-bold">{s.issue}</span>
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 self-start sm:self-auto">
+                  <span className="text-xs font-bold text-muted-foreground">{s.action}</span>
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<Send className="h-3 w-3" />}
+                    onClick={() => setNotice(`Follow-up notice sent to guardian of ${s.student}.`)}
+                  >
+                    Follow Up
+                  </VFButton>
+                </div>
+              </div>
+            ))}
+          </div>
+        </VFCard>
+      </div>
+
+      {/* Student Attendance Radar Table */}
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-base font-black text-foreground tracking-tight">Live Student Attendance Radar</h3>
+          <p className="text-xs text-muted-foreground font-medium">Real-time gate and classroom roll call stream</p>
+        </div>
+
+        <VFDataTable
+          columns={studentColumns}
+          data={studentData}
+          filterPlaceholder="Search radar by student name or class..."
+        />
+      </div>
+    </div>
+  );
+
+  // 2. SEPARATE TAB: Statistics & Analytics (KPIs and Charts moved here)
+  const analyticsContent = (
+    <div className="space-y-6">
+      {/* KPI Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard
           title="Total Students"
           value="2,451"
-          icon={<Users className="h-6 w-6" />}
+          icon={<Users className="h-5 w-5" />}
           trend="up"
           trendLabel="+12 this month"
         />
         <VFStatCard
           title="Teaching Staff"
           value="98.2%"
-          icon={<GraduationCap className="h-6 w-6" />}
+          icon={<GraduationCap className="h-5 w-5" />}
           trend="up"
           trendLabel="Optimal coverage"
         />
         <VFStatCard
           title="Today's Attendance"
           value="94.5%"
-          icon={<CalendarCheck className="h-6 w-6" />}
+          icon={<CalendarCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="+1.2% vs yesterday"
         />
         <VFStatCard
           title="Pending Admissions"
           value="28"
-          icon={<FileText className="h-6 w-6" />}
+          icon={<FileText className="h-5 w-5" />}
           trend="neutral"
           trendLabel="18 auto-verified"
         />
       </div>
 
-      {/* Charts Row */}
+      {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <VFCard title="Attendance & Intake Trends" description="Monthly comparison for Academic Year 2026-2027">
-          <VFAreaChart
-            height={220}
-            xKey="month"
-            data={[
-              { month: 'Apr', attendance: 92, intake: 210 },
-              { month: 'May', attendance: 94, intake: 240 },
-              { month: 'Jun', attendance: 91, intake: 190 },
-              { month: 'Jul', attendance: 96, intake: 310 },
-              { month: 'Aug', attendance: 95, intake: 280 },
-              { month: 'Sep', attendance: 97, intake: 340 },
-            ]}
-            dataKeys={[
-              { key: 'attendance', name: 'Attendance Rate (%)', color: '#06b6d4' },
-              { key: 'intake', name: 'Admissions Intake', color: '#6366f1' },
-            ]}
-          />
+          <div className="h-64 mt-2">
+            <VFAreaChart
+              data={[
+                { label: 'Apr', intake: 180, attendance: 92 },
+                { label: 'May', intake: 220, attendance: 94 },
+                { label: 'Jun', intake: 190, attendance: 91 },
+                { label: 'Jul', intake: 310, attendance: 96 },
+                { label: 'Aug', intake: 280, attendance: 95 },
+                { label: 'Sep', intake: 340, attendance: 97 },
+              ]}
+              xKey="label"
+              dataKeys={[
+                { key: 'intake', color: '#6366f1', name: 'Student Intake' },
+                { key: 'attendance', color: '#06b6d4', name: 'Avg Attendance %' },
+              ]}
+            />
+          </div>
         </VFCard>
 
         <VFCard title="Fee Collection Status" description="Quarterly breakdown in ₹ Lakhs">
-          <VFBarChart
-            height={220}
-            xKey="quarter"
-            data={[
-              { quarter: 'Q1', collected: 84, target: 90 },
-              { quarter: 'Q2', collected: 96, target: 95 },
-              { quarter: 'Q3', collected: 78, target: 85 },
-              { quarter: 'Q4', collected: 88, target: 92 },
-            ]}
-            dataKeys={[
-              { key: 'collected', name: 'Collected', color: '#10b981' },
-              { key: 'target', name: 'Target', color: '#f59e0b' },
-            ]}
-          />
+          <div className="h-64 mt-2">
+            <VFBarChart
+              data={[
+                { label: 'Q1', target: 85, collected: 80 },
+                { label: 'Q2', target: 95, collected: 92 },
+                { label: 'Q3', target: 90, collected: 70 },
+                { label: 'Q4', target: 100, collected: 88 },
+              ]}
+              xKey="label"
+              dataKeys={[
+                { key: 'collected', color: '#10b981', name: 'Collected' },
+                { key: 'target', color: '#f59e0b', name: 'Projected' },
+              ]}
+            />
+          </div>
         </VFCard>
       </div>
 
-      {/* Table & Clean Flattened Action Lists */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-black text-foreground tracking-tight">Student Attendance Radar</h2>
-            <span className="text-sm font-bold text-muted-foreground">Live real-time feed</span>
+      {/* Department Allocation Breakdown */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { dept: 'Science & Math', count: '640 Students', staff: '38 Teachers', score: '94% GPA' },
+          { dept: 'Languages & Arts', count: '480 Students', staff: '32 Teachers', score: '92% GPA' },
+          { dept: 'Commerce & Economics', count: '420 Students', staff: '24 Teachers', score: '95% GPA' },
+          { dept: 'Sports & Co-Curricular', count: '911 Active', staff: '18 Faculty', score: '14 Trophies' },
+        ].map((d, i) => (
+          <div key={i} className="p-4 rounded-lg bg-card border border-border space-y-1 shadow-xs">
+            <p className="font-bold text-foreground text-sm">{d.dept}</p>
+            <p className="text-xl font-black text-primary">{d.count}</p>
+            <div className="flex justify-between text-xs text-muted-foreground font-semibold pt-1 border-t border-border/70">
+              <span>{d.staff}</span>
+              <span className="text-success font-bold">{d.score}</span>
+            </div>
           </div>
-          <VFDataTable columns={studentColumns} data={studentData} filterPlaceholder="Filter students by name or class..." />
-        </div>
-
-        <div className="space-y-4">
-          {/* Priority Actions — Flat list with simple dividers, NO nested boxes */}
-          <VFCard title="Priority Actions" description="Items requiring immediate attention">
-            <div className="divide-y divide-border -my-2">
-              <button
-                onClick={() => setSelectedNotice('Fee reminder notice queued for 14 defaulters.')}
-                className="w-full text-left py-3.5 px-2 hover:bg-muted/50 rounded-lg transition-all flex items-center justify-between group cursor-pointer"
-              >
-                <div className="space-y-1">
-                  <p className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-                    Fee Defaulters (14 Students)
-                  </p>
-                  <p className="text-sm text-muted-foreground font-medium">Auto WhatsApp reminders ready</p>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
-              </button>
-
-              <button
-                onClick={() => setSelectedNotice('Parental alert trigger queued for Priya Patel.')}
-                className="w-full text-left py-3.5 px-2 hover:bg-muted/50 rounded-lg transition-all flex items-center justify-between group cursor-pointer"
-              >
-                <div className="space-y-1">
-                  <p className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-                    Absence Alert: Priya Patel
-                  </p>
-                  <p className="text-sm text-muted-foreground font-medium">3 consecutive absences flagged</p>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
-              </button>
-
-              <button
-                onClick={() => setSelectedNotice('Class 10-A substitute teacher auto-assigned.')}
-                className="w-full text-left py-3.5 px-2 hover:bg-muted/50 rounded-lg transition-all flex items-center justify-between group cursor-pointer"
-              >
-                <div className="space-y-1">
-                  <p className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-                    Staff Substitute Matched
-                  </p>
-                  <p className="text-sm text-muted-foreground font-medium">Mr. Verma matched for Period 3</p>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
-              </button>
-            </div>
-          </VFCard>
-
-          {/* System Hardware Sync — Flat list, NO nested boxes */}
-          <VFCard title="System Hardware Sync">
-            <div className="divide-y divide-border -my-2">
-              <div className="flex justify-between items-center py-3.5 px-2">
-                <span className="flex items-center gap-2.5 text-base text-foreground font-bold">
-                  <ShieldCheck className="h-5 w-5 text-success" /> OCR Document Engine
-                </span>
-                <VFBadge variant="success">Active</VFBadge>
-              </div>
-              <div className="flex justify-between items-center py-3.5 px-2">
-                <span className="flex items-center gap-2.5 text-base text-foreground font-bold">
-                  <ShieldCheck className="h-5 w-5 text-success" /> Biometric Gate Sync
-                </span>
-                <VFBadge variant="success">Online</VFBadge>
-              </div>
-            </div>
-          </VFCard>
-        </div>
+        ))}
       </div>
     </div>
   );
 
-  // 2. Academic Insights View
-  const academicContent = (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <VFStatCard
-          title="Institutional Score"
-          value="96.4 / 100"
-          icon={<Award className="h-6 w-6" />}
-          trend="up"
-          trendLabel="Grade A+ Status"
-        />
-        <VFStatCard
-          title="Term Pass Rate"
-          value="94.8%"
-          icon={<GraduationCap className="h-6 w-6" />}
-          trend="up"
-          trendLabel="+2.4% vs Term 1"
-        />
-        <VFStatCard
-          title="Syllabus On Track"
-          value="92.1%"
-          icon={<BookOpen className="h-6 w-6" />}
-          trend="up"
-          trendLabel="All Departments"
-        />
-        <VFStatCard
-          title="At-Risk Learners"
-          value="18"
-          icon={<AlertTriangle className="h-6 w-6" />}
-          trend="down"
-          trendLabel="Under Remedial Plan"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <VFCard title="Science Department" description="Physics, Chemistry, Biology">
-          <div className="space-y-2 mt-2">
-            <div className="flex justify-between items-center">
-              <span className="text-base font-bold text-muted-foreground">Average Score</span>
-              <span className="text-lg font-black text-foreground">92.4%</span>
-            </div>
-            <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-success rounded-full w-[92%]" />
-            </div>
-          </div>
-        </VFCard>
-
-        <VFCard title="Mathematics Department" description="Algebra, Geometry, Calculus">
-          <div className="space-y-2 mt-2">
-            <div className="flex justify-between items-center">
-              <span className="text-base font-bold text-muted-foreground">Average Score</span>
-              <span className="text-lg font-black text-foreground">89.6%</span>
-            </div>
-            <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-primary rounded-full w-[89%]" />
-            </div>
-          </div>
-        </VFCard>
-
-        <VFCard title="Humanities & Languages" description="English, Social Science, Hindi">
-          <div className="space-y-2 mt-2">
-            <div className="flex justify-between items-center">
-              <span className="text-base font-bold text-muted-foreground">Average Score</span>
-              <span className="text-lg font-black text-foreground">86.8%</span>
-            </div>
-            <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-secondary rounded-full w-[86%]" />
-            </div>
-          </div>
-        </VFCard>
-      </div>
-    </div>
-  );
-
-  // 3. Operations & Staff View
+  // 3. Operations & Hardware Sync View
   const operationsContent = (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard
-          title="Total Staff"
-          value="242"
-          icon={<Users className="h-6 w-6" />}
-          trend="up"
-          trendLabel="164 Teaching · 78 Support"
-        />
-        <VFStatCard
-          title="Average Load"
-          value="26.4 Periods"
-          icon={<Clock className="h-6 w-6" />}
-          trend="neutral"
-          trendLabel="Balanced weekly"
-        />
-        <VFStatCard
-          title="Staff Attendance"
-          value="97.5%"
-          icon={<UserCheck className="h-6 w-6" />}
-          trend="up"
-          trendLabel="6 on planned leave"
-        />
-        <VFStatCard
-          title="Substitutes Today"
-          value="4"
-          icon={<Briefcase className="h-6 w-6" />}
-          trend="up"
-          trendLabel="100% auto-matched"
-        />
-      </div>
-
-      <VFCard title="Departmental Period Allocation">
-        <div className="divide-y divide-border -my-2">
-          {[
-            { dept: 'Science Department', head: 'Dr. Rajesh Sharma', staff: '28 Teachers', load: '24 Periods / Wk', status: 'Optimal' },
-            { dept: 'Mathematics Department', head: 'Mrs. Sunita Verma', staff: '32 Teachers', load: '26 Periods / Wk', status: 'Optimal' },
-            { dept: 'Languages & Humanities', head: 'Mr. Arvind Gupta', staff: '40 Teachers', load: '22 Periods / Wk', status: 'Balanced' },
-          ].map((d, i) => (
-            <div key={i} className="py-4 px-2 flex items-center justify-between">
-              <div>
-                <p className="font-extrabold text-foreground text-base">{d.dept}</p>
-                <p className="text-muted-foreground text-sm font-semibold mt-0.5">Head: {d.head} · {d.staff}</p>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="font-extrabold text-foreground text-base">{d.load}</span>
-                <VFBadge variant="success">{d.status}</VFBadge>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <VFCard title="Biometric Gate Hardware Sync" description="Turnstiles & RFID scanners">
+          <div className="divide-y divide-border -my-2 text-base">
+            <div className="flex justify-between items-center py-3 px-1">
+              <span className="font-bold text-foreground text-sm">Gate Terminal 1 (Main)</span>
+              <VFBadge variant="success">Online (0ms lag)</VFBadge>
             </div>
-          ))}
-        </div>
-      </VFCard>
+            <div className="flex justify-between items-center py-3 px-1">
+              <span className="font-bold text-foreground text-sm">Gate Terminal 2 (North)</span>
+              <VFBadge variant="success">Online (0ms lag)</VFBadge>
+            </div>
+            <div className="flex justify-between items-center py-3 px-1">
+              <span className="font-bold text-foreground text-sm">Staff RFID Terminal</span>
+              <VFBadge variant="success">Online</VFBadge>
+            </div>
+          </div>
+        </VFCard>
+
+        <VFCard title="SMS & WhatsApp Gateway" description="Carrier delivery pipelines">
+          <div className="space-y-2 mt-1 text-base">
+            <p className="text-2xl font-black text-foreground">99.8% Delivery</p>
+            <p className="text-muted-foreground text-sm font-semibold">Active carriers: Twilio & Gupshup</p>
+            <VFBadge variant="success">Gateway Operational</VFBadge>
+          </div>
+        </VFCard>
+
+        <VFCard title="Automated Nightly Backups" description="Encrypted disaster recovery">
+          <div className="space-y-2 mt-1 text-base">
+            <p className="text-2xl font-black text-foreground">Daily 02:00 AM</p>
+            <p className="text-muted-foreground text-sm font-semibold">Last backup: Today at 02:00 AM (248MB)</p>
+            <VFBadge variant="outline">Encrypted AES-256</VFBadge>
+          </div>
+        </VFCard>
+      </div>
     </div>
   );
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: <Activity className="h-5 w-5" />, content: overviewContent },
-    { id: 'academic', label: 'Academic Insights', icon: <GraduationCap className="h-5 w-5" />, content: academicContent },
-    { id: 'operations', label: 'Operations & Staff', icon: <Layers className="h-5 w-5" />, content: operationsContent },
+    { id: 'quick-hub', label: 'Command Hub & Live Radar', icon: <Clock className="h-4 w-4" />, content: quickHubContent },
+    { id: 'analytics', label: 'Statistics & Insights', icon: <Award className="h-4 w-4" />, content: analyticsContent },
+    { id: 'operations', label: 'Operations & Hardware', icon: <ShieldCheck className="h-4 w-4" />, content: operationsContent },
   ];
 
   return (
     <VFPageContainer>
-      <VFTabs items={tabs} defaultTabId="overview" variant="top-bar" />
+      <VFTabs items={tabs} defaultTabId="quick-hub" variant="top-bar" />
     </VFPageContainer>
   );
 }
