@@ -62,7 +62,7 @@ function DashboardPage() {
 
   // 1. MAIN TAB: Command Hub
   const quickHubContent = (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {notice && (
         <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg text-base text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
@@ -79,7 +79,7 @@ function DashboardPage() {
       )}
 
       {/* 1. Top Full-Width KPI Metric Cards */}
-      <div className="grid grid-cols-2 min-[900px]:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 min-[900px]:grid-cols-4 gap-4">
         <VFStatCard
           title="Total Students"
           value="2,451"
@@ -111,7 +111,7 @@ function DashboardPage() {
       </div>
 
       {/* 2. Main Split Layout: Left Absence Trackers (50%) + Right Quick Action Square Grid & License Card (50%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start overflow-hidden">
         
         {/* LEFT COLUMN: Teacher & Student Absences Command Center (50% width) */}
         <div className="space-y-5 min-w-0">
@@ -222,49 +222,49 @@ function DashboardPage() {
           </div>
 
           {/* Software License & Subscription Card (Equal 20px gap below quick actions) */}
-          <div className="p-5 bg-card border border-border rounded-lg shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3.5">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-6 w-6" />
+          <div className="p-4 bg-card border border-border rounded-lg shadow-xs space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="h-8 w-8 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-4 w-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-base font-black text-foreground">{schoolProfile.name}</h4>
+                    <h4 className="text-sm font-black text-foreground truncate">{schoolProfile.name}</h4>
                     <VFBadge variant="success">Active</VFBadge>
                   </div>
-                  <p className="text-xs text-muted-foreground font-semibold">
+                  <p className="text-xs text-muted-foreground font-semibold truncate">
                     {schoolProfile.affiliation}
                   </p>
                 </div>
               </div>
 
-              <Link to="/settings">
-                <VFButton size="sm" variant="outline" leftIcon={<Key className="h-3.5 w-3.5" />}>
+              <Link to="/settings" className="shrink-0 ml-2">
+                <VFButton size="sm" variant="outline" leftIcon={<Key className="h-3 w-3" />}>
                   Manage
                 </VFButton>
               </Link>
             </div>
 
-            {/* License Sub-Boxes: Square/Balanced Metrics */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Validity</span>
-                <p className="text-xl font-black text-success">225 Days</p>
-                <p className="text-xs text-muted-foreground font-semibold">Till 31 Mar 2027</p>
+            {/* License Sub-Boxes */}
+            <div className="grid grid-cols-3 gap-2">
+              <div className="p-2 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Validity</span>
+                <p className="text-base font-black text-success whitespace-nowrap">225 Days</p>
+                <p className="text-[10px] text-muted-foreground font-semibold">Mar 2027</p>
               </div>
 
-              <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Capacity</span>
-                <p className="text-xl font-black text-foreground">1,248 Seats</p>
-                <p className="text-xs text-primary font-bold">50% Enrolled</p>
+              <div className="p-2 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Capacity</span>
+                <p className="text-base font-black text-foreground whitespace-nowrap">1,248</p>
+                <p className="text-[10px] text-primary font-bold">50% Enrolled</p>
               </div>
 
-              <div className="p-3 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Security</span>
-                <p className="text-xl font-black text-foreground">AES-256</p>
-                <p className="text-xs text-success font-bold flex items-center justify-center gap-1">
-                  <Server className="h-3.5 w-3.5" /> Online
+              <div className="p-2 rounded-lg bg-background/60 border border-border space-y-0.5 text-center">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Security</span>
+                <p className="text-base font-black text-foreground whitespace-nowrap">AES-256</p>
+                <p className="text-[10px] text-success font-bold flex items-center justify-center gap-0.5">
+                  <Server className="h-3 w-3" /> Online
                 </p>
               </div>
             </div>
@@ -277,9 +277,9 @@ function DashboardPage() {
 
   // 2. SEPARATE TAB: Comprehensive Statistics & Analytics Suite
   const analyticsContent = (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* 1. Academic & Institutional Key Performance Indicators */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard
           title="Academic GPA Index"
           value="3.84 / 4.0"
@@ -311,7 +311,7 @@ function DashboardPage() {
       </div>
 
       {/* 2. Primary Comparative Trends (Area & Bar Charts) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Attendance & Student Intake Trends */}
         <VFCard title="Attendance & Intake Trends" description="Monthly comparison for Academic Year 2026-2027">
           <div className="h-64 mt-2">
@@ -354,7 +354,7 @@ function DashboardPage() {
       </div>
 
       {/* 3. Demographics & Distribution (Donut / Pie Charts with Legends) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Student Enrollment by School Wing */}
         <VFCard title="Student Enrollment by School Wing" description="Class tier strength distribution across 1,248 pupils">
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
@@ -435,7 +435,7 @@ function DashboardPage() {
       </div>
 
       {/* 4. Department Academic Performance & Syllabus Pacing Matrix */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { dept: 'Science & Mathematics', count: '640 Students', staff: '38 Teachers', score: '94% Dept GPA', pace: '98% Syllabus Completed' },
           { dept: 'Languages & Humanities', count: '480 Students', staff: '32 Teachers', score: '92% Dept GPA', pace: '95% Syllabus Completed' },
@@ -467,7 +467,7 @@ function DashboardPage() {
       </div>
 
       {/* 5. Attendance Health Risk & Payment Channels Analysis */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Attendance Risk Classification */}
         <VFCard title="Attendance Health & Risk Segments" description="Biometric gate audit classification across 1,248 students">
           <div className="space-y-4 mt-2">
@@ -539,7 +539,7 @@ function DashboardPage() {
 
   // 3. Operations & Hardware Sync View
   const operationsContent = (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <VFCard title="Biometric Gate Hardware Sync" description="Turnstiles & RFID scanners">
           <div className="divide-y divide-border -my-2 text-base">

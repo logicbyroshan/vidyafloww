@@ -107,7 +107,7 @@ export function VFTabs({
         </div>
 
         {/* Tab Content */}
-        <div className="p-6 w-full flex-1" role="tabpanel">
+        <div className="p-4 w-full flex-1" role="tabpanel">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeId}
