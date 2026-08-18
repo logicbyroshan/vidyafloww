@@ -3,7 +3,6 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFStatCard,
-  VFDataTable,
   VFBadge,
   VFTabs,
   VFCard,
@@ -29,8 +28,10 @@ import {
   UserPlus,
   Key,
   Server,
-  ArrowRight,
+  ClipboardList,
+  School,
   Send,
+  Sparkles,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -42,81 +43,25 @@ function DashboardPage() {
   const { schoolProfile } = useGlobalStore();
   const [notice, setNotice] = React.useState<string | null>(null);
 
-  // Student Attendance Radar Data
-  const studentData = [
-    { id: '1', name: 'Rahul Sharma', class: '10-A', status: 'Present', riskScore: 'Low (4%)', note: 'Optimal Attendance', lastUpdate: '08:30 AM' },
-    { id: '2', name: 'Priya Patel', class: '10-A', status: 'Absent', riskScore: 'High (78%)', note: '3rd consecutive absence', lastUpdate: '08:35 AM' },
-    { id: '3', name: 'Amit Kumar', class: '9-B', status: 'Present', riskScore: 'Low (8%)', note: 'Math progress +14%', lastUpdate: '08:20 AM' },
-    { id: '4', name: 'Sneha Singh', class: '11-Sci', status: 'Late', riskScore: 'Med (42%)', note: 'Bus 4 late arrival', lastUpdate: '09:15 AM' },
-    { id: '5', name: 'Vikram Mehta', class: '12-Com', status: 'Present', riskScore: 'Low (2%)', note: 'Scholarship student', lastUpdate: '08:25 AM' },
-  ];
-
-  const studentColumns = [
-    {
-      header: 'Student Name',
-      accessorKey: 'name',
-      cell: (r: any) => <span className="font-extrabold text-foreground text-base">{r.name}</span>,
-    },
-    {
-      header: 'Class',
-      accessorKey: 'class',
-      cell: (r: any) => <span className="font-bold text-foreground text-base">{r.class}</span>,
-    },
-    {
-      header: 'Status',
-      accessorKey: 'status',
-      cell: (r: any) => (
-        <VFBadge variant={r.status === 'Present' ? 'success' : r.status === 'Absent' ? 'danger' : 'warning'}>
-          {r.status}
-        </VFBadge>
-      ),
-    },
-    {
-      header: 'Risk Score',
-      accessorKey: 'riskScore',
-      cell: (r: any) => (
-        <span
-          className={`text-xs font-bold px-2.5 py-0.5 rounded-md ${
-            r.riskScore.startsWith('High')
-              ? 'bg-destructive/15 text-destructive border border-destructive/25'
-              : r.riskScore.startsWith('Med')
-              ? 'bg-warning/15 text-warning border border-warning/25'
-              : 'bg-success/15 text-success border border-success/25'
-          }`}
-        >
-          {r.riskScore}
-        </span>
-      ),
-    },
-    {
-      header: 'Remarks',
-      accessorKey: 'note',
-      cell: (r: any) => <span className="text-base text-muted-foreground font-medium">{r.note}</span>,
-    },
-    {
-      header: 'Updated',
-      accessorKey: 'lastUpdate',
-      cell: (r: any) => <span className="text-base text-muted-foreground font-mono font-bold">{r.lastUpdate}</span>,
-    },
-  ];
-
-  // Quick Action navigation shortcuts
+  // 12 Quick Action navigation shortcuts (3x4 Grid on the right)
   const quickActions = [
-    { label: 'Mark Daily Attendance', desc: 'Roll call for classes', route: '/attendance', icon: CalendarCheck, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
-    { label: 'New Admission Intake', desc: 'Review & admit candidates', route: '/admissions', icon: UserPlus, color: 'text-amber-400 bg-amber-500/10 border-amber-500/20' },
-    { label: 'Students Directory', desc: '360° student records', route: '/students', icon: GraduationCap, color: 'text-blue-400 bg-blue-500/10 border-blue-500/20' },
-    { label: 'Teachers', desc: 'Faculty load & profiles', route: '/staff', icon: Users, color: 'text-purple-400 bg-purple-500/10 border-purple-500/20' },
-    { label: 'Timetable & Proxies', desc: 'Period matrix & cover', route: '/timetable', icon: Calendar, color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20' },
-    { label: 'Fees & Collections', desc: 'Record dues & receipts', route: '/fees', icon: CreditCard, color: 'text-green-400 bg-green-500/10 border-green-500/20' },
-    { label: 'Broadcast Notice', desc: 'Announce via SMS & App', route: '/notices', icon: Bell, color: 'text-orange-400 bg-orange-500/10 border-orange-500/20' },
-    { label: 'Homework Register', desc: 'Assignments & grading', route: '/homework', icon: BookOpen, color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' },
-    { label: 'Compliance Reports', desc: 'CBSE & RTE audits', route: '/reports', icon: FileSpreadsheet, color: 'text-rose-400 bg-rose-500/10 border-rose-500/20' },
-    { label: 'Portal Settings', desc: 'School logo & identity', route: '/settings', icon: Settings, color: 'text-slate-400 bg-slate-500/10 border-slate-500/20' },
+    { label: 'Attendance', desc: 'Daily roll call', route: '/attendance', icon: CalendarCheck, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25' },
+    { label: 'Admissions', desc: 'Intake pipeline', route: '/admissions', icon: UserPlus, color: 'text-amber-400 bg-amber-500/10 border-amber-500/25' },
+    { label: 'Students', desc: '360° directory', route: '/students', icon: GraduationCap, color: 'text-blue-400 bg-blue-500/10 border-blue-500/25' },
+    { label: 'Teachers', desc: 'Faculty workload', route: '/staff', icon: Users, color: 'text-purple-400 bg-purple-500/10 border-purple-500/25' },
+    { label: 'Timetable', desc: 'Periods & proxies', route: '/timetable', icon: Calendar, color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/25' },
+    { label: 'Fees', desc: 'Dues & receipts', route: '/fees', icon: CreditCard, color: 'text-green-400 bg-green-500/10 border-green-500/25' },
+    { label: 'Notices', desc: 'Broadcast circular', route: '/notices', icon: Bell, color: 'text-orange-400 bg-orange-500/10 border-orange-500/25' },
+    { label: 'Homework', desc: 'Assignments queue', route: '/homework', icon: BookOpen, color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/25' },
+    { label: 'Exams', desc: 'Marks & grades', route: '/examinations', icon: ClipboardList, color: 'text-violet-400 bg-violet-500/10 border-violet-500/25' },
+    { label: 'Academics', desc: 'Sessions & syllabus', route: '/academics', icon: School, color: 'text-teal-400 bg-teal-500/10 border-teal-500/25' },
+    { label: 'Reports', desc: 'CBSE / RTE audits', route: '/reports', icon: FileSpreadsheet, color: 'text-rose-400 bg-rose-500/10 border-rose-500/25' },
+    { label: 'Settings', desc: 'School branding', route: '/settings', icon: Settings, color: 'text-slate-400 bg-slate-500/10 border-slate-500/25' },
   ];
 
-  // 1. MAIN TAB: Quick Command Center (No Statistics here per user request)
+  // 1. MAIN TAB: Command Hub (License Card, Today's Absences on Left | 3x4 Quick Action Grid on Right)
   const quickHubContent = (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {notice && (
         <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg text-base text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
@@ -132,180 +77,167 @@ function DashboardPage() {
         </div>
       )}
 
-      {/* Software License & Institutional Identity Banner */}
-      <div className="p-5 bg-card border border-border rounded-lg shadow-xs space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/70 pb-3">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
-              <ShieldCheck className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h2 className="text-lg font-black text-foreground">{schoolProfile.name} — Command Portal</h2>
-                <VFBadge variant="success">Enterprise License Active</VFBadge>
+      {/* Main Split Layout: Left Content (7 cols) + Right Quick Actions Grid (5 cols) */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+        {/* LEFT COLUMN: License Card + Teacher/Student Absences Today */}
+        <div className="xl:col-span-7 space-y-5">
+          {/* Software License & Subscription Card */}
+          <div className="p-5 bg-card border border-border rounded-lg shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3.5">
+              <div className="flex items-center gap-3">
+                <div className="h-11 w-11 rounded-lg bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-black text-foreground">{schoolProfile.name}</h2>
+                    <VFBadge variant="success">Active License</VFBadge>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                    {schoolProfile.affiliation} · {schoolProfile.city}
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                {schoolProfile.affiliation} · {schoolProfile.city}
-              </p>
+
+              <Link to="/settings">
+                <VFButton size="sm" variant="outline" leftIcon={<Key className="h-3.5 w-3.5" />}>
+                  Manage License
+                </VFButton>
+              </Link>
+            </div>
+
+            {/* License Remaining Days & Capacity Banner */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div className="p-3.5 rounded-lg bg-background/60 border border-border space-y-1">
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">License Validity</span>
+                <p className="text-2xl font-black text-success">225 Days Left</p>
+                <p className="text-xs text-muted-foreground font-semibold">Valid till 31 March 2027</p>
+              </div>
+
+              <div className="p-3.5 rounded-lg bg-background/60 border border-border space-y-1">
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Student Seat Allocation</span>
+                <p className="text-2xl font-black text-foreground">1,248 / 2,500</p>
+                <p className="text-xs text-primary font-bold">50% Capacity Enrolled</p>
+              </div>
+
+              <div className="p-3.5 rounded-lg bg-background/60 border border-border space-y-1">
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Edition & Cloud Sync</span>
+                <p className="text-sm font-black text-foreground mt-0.5">Enterprise Suite</p>
+                <p className="text-xs text-success font-bold flex items-center gap-1 mt-1">
+                  <Server className="h-3 w-3" /> Online (AES-256 Encrypted)
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <Link to="/settings">
-              <VFButton size="sm" variant="outline" leftIcon={<Key className="h-3.5 w-3.5" />}>
-                Manage License
-              </VFButton>
-            </Link>
-          </div>
+          {/* Today's Teacher Absences & Substitute Proxies */}
+          <VFCard
+            title="Teacher Absences & Substitute Proxies Today"
+            description="4 Faculty absent today (120 of 124 Present)"
+          >
+            <div className="divide-y divide-border -my-2 text-base">
+              {[
+                { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Leave', proxy: 'Assigned: Mr. Verma (Period 3 Lab 204)', status: 'Proxy Assigned' },
+                { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', proxy: 'Assigned: Mrs. Joshi (Period 5 Room 101)', status: 'Proxy Assigned' },
+                { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Board Seminar', proxy: 'Assigned: Mr. Gupta (Period 2 Room 102)', status: 'Proxy Assigned' },
+                { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Morning Leave', proxy: 'Covered: Sports Squad (Period 6 Ground)', status: 'Covered' },
+              ].map((t, i) => (
+                <div key={i} className="py-2.5 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+                  <div>
+                    <p className="font-bold text-foreground">
+                      {t.teacher} <span className="text-muted-foreground text-xs font-semibold">({t.dept})</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                      Reason: <span className="text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.proxy}</span>
+                    </p>
+                  </div>
+                  <VFBadge variant="success" className="shrink-0 self-start sm:self-auto">
+                    {t.status}
+                  </VFBadge>
+                </div>
+              ))}
+            </div>
+          </VFCard>
+
+          {/* Today's Student Absences & Flagged Attendance */}
+          <VFCard
+            title="Student Absences & Flagged Attendance Today"
+            description="68 Pupils absent today (94.5% Overall Attendance)"
+          >
+            <div className="divide-y divide-border -my-2 text-base">
+              {[
+                { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert Sent' },
+                { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (09:15 AM)', action: 'Gate Pass Verified' },
+                { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism', action: 'SMS Dispatched' },
+                { student: 'Kavya Nair', class: 'Class 11-Com', issue: 'Approved Medical Leave (Aug 18 - 19)', action: 'Leave Approved' },
+              ].map((s, i) => (
+                <div key={i} className="py-2.5 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
+                  <div>
+                    <p className="font-bold text-foreground">
+                      {s.student} <span className="text-muted-foreground text-xs font-semibold">({s.class})</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+                      Note: <span className="text-destructive font-bold">{s.issue}</span>
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <span className="text-xs font-bold text-muted-foreground">{s.action}</span>
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<Send className="h-3 w-3" />}
+                      onClick={() => setNotice(`Follow-up notice sent to guardian of ${s.student}.`)}
+                    >
+                      Follow Up
+                    </VFButton>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </VFCard>
         </div>
 
-        {/* License Specifications & Sync Status Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm pt-1">
-          <div>
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">License Edition</span>
-            <span className="font-bold text-foreground mt-0.5 block">VidyaMaxx Enterprise Suite</span>
+        {/* RIGHT COLUMN: 3 by 4 Quick Action Command Grid */}
+        <div className="xl:col-span-5 space-y-3.5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-black text-foreground tracking-tight flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" /> Quick Action Hub
+              </h3>
+              <p className="text-xs text-muted-foreground font-medium">Direct one-click access to modules</p>
+            </div>
+            <VFBadge variant="outline">12 Shortcuts</VFBadge>
           </div>
-          <div>
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Validity Period</span>
-            <span className="font-bold text-success mt-0.5 block">Valid till 31 March 2027</span>
-          </div>
-          <div>
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Student Seat Allocation</span>
-            <span className="font-bold text-foreground mt-0.5 block">1,248 / 2,500 Enrolled (50%)</span>
-          </div>
-          <div>
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Server & Cloud Sync</span>
-            <span className="font-bold text-primary mt-0.5 flex items-center gap-1.5">
-              <Server className="h-3.5 w-3.5" /> Online · Encrypted AES-256
-            </span>
-          </div>
-        </div>
-      </div>
 
-      {/* Quick Action Shortcuts Grid */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-base font-black text-foreground tracking-tight">Quick Action Command Hub</h3>
-            <p className="text-xs text-muted-foreground font-medium">Direct shortcuts to key school workflows</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {quickActions.map((action, idx) => {
-            const Icon = action.icon;
-            return (
-              <Link
-                key={idx}
-                to={action.route}
-                className="p-3.5 rounded-lg border border-border bg-card hover:border-primary/40 hover:bg-muted/40 transition-all flex flex-col justify-between group h-28 shadow-xs"
-              >
-                <div className="flex items-center justify-between">
-                  <div className={`h-8 w-8 rounded-md flex items-center justify-center border ${action.color}`}>
+          {/* 3 columns x 4 rows Grid */}
+          <div className="grid grid-cols-3 gap-2.5">
+            {quickActions.map((action, idx) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={idx}
+                  to={action.route}
+                  className="p-3 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group h-24 shadow-xs"
+                >
+                  <div className={`h-8 w-8 rounded-md flex items-center justify-center border ${action.color} mb-1.5 group-hover:scale-105 transition-transform`}>
                     <Icon className="h-4 w-4" />
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <div>
-                  <p className="text-sm font-black text-foreground group-hover:text-primary transition-colors truncate">
+                  <p className="text-xs font-black text-foreground group-hover:text-primary transition-colors truncate w-full">
                     {action.label}
                   </p>
-                  <p className="text-xs text-muted-foreground font-medium truncate mt-0.5">
+                  <p className="text-[10px] text-muted-foreground font-medium truncate w-full">
                     {action.desc}
                   </p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Live Absence & Attendance Tracker Today (Teachers & Students NOT Present) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* 1. Teacher Absences & Assigned Substitutes Today */}
-        <VFCard
-          title="Teacher Absences & Substitute Proxies Today"
-          description="4 Faculty absent today (120 of 124 Present)"
-        >
-          <div className="divide-y divide-border -my-2 text-base">
-            {[
-              { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Checkup', proxy: 'Assigned: Mr. Verma (Period 3 Lab 204)', status: 'Proxy Assigned' },
-              { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', proxy: 'Assigned: Mrs. Joshi (Period 5 Room 101)', status: 'Proxy Assigned' },
-              { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Duty Leave / Board Seminar', proxy: 'Assigned: Mr. Gupta (Period 2 Room 102)', status: 'Proxy Assigned' },
-              { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Half-Day Leave (Morning)', proxy: 'Covered: Sports Squad (Period 6 Ground)', status: 'Covered' },
-            ].map((t, i) => (
-              <div key={i} className="py-3 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                  <p className="font-bold text-foreground text-sm">
-                    {t.teacher} <span className="text-muted-foreground text-xs font-semibold">({t.dept})</span>
-                  </p>
-                  <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                    Reason: <span className="text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.proxy}</span>
-                  </p>
-                </div>
-                <VFBadge variant="success" className="shrink-0 self-start sm:self-auto">
-                  {t.status}
-                </VFBadge>
-              </div>
-            ))}
+                </Link>
+              );
+            })}
           </div>
-        </VFCard>
-
-        {/* 2. Student Absences & Flagged Roll Call Today */}
-        <VFCard
-          title="Student Absences & Flagged Attendance Today"
-          description="68 Pupils absent today (94.5% Daily Attendance)"
-        >
-          <div className="divide-y divide-border -my-2 text-base">
-            {[
-              { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert Sent' },
-              { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (Arrival 09:15 AM)', action: 'Gate Pass Verified' },
-              { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism', action: 'SMS Dispatched' },
-              { student: 'Kavya Nair', class: 'Class 11-Com', issue: 'Approved Medical Leave (Aug 18 - 19)', action: 'Leave Approved' },
-            ].map((s, i) => (
-              <div key={i} className="py-3 px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                  <p className="font-bold text-foreground text-sm">
-                    {s.student} <span className="text-muted-foreground text-xs font-semibold">({s.class})</span>
-                  </p>
-                  <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                    Note: <span className="text-destructive font-bold">{s.issue}</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <span className="text-xs font-bold text-muted-foreground">{s.action}</span>
-                  <VFButton
-                    size="sm"
-                    variant="outline"
-                    leftIcon={<Send className="h-3 w-3" />}
-                    onClick={() => setNotice(`Follow-up notice sent to guardian of ${s.student}.`)}
-                  >
-                    Follow Up
-                  </VFButton>
-                </div>
-              </div>
-            ))}
-          </div>
-        </VFCard>
-      </div>
-
-      {/* Student Attendance Radar Table */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-base font-black text-foreground tracking-tight">Live Student Attendance Radar</h3>
-          <p className="text-xs text-muted-foreground font-medium">Real-time gate and classroom roll call stream</p>
         </div>
-
-        <VFDataTable
-          columns={studentColumns}
-          data={studentData}
-          filterPlaceholder="Search radar by student name or class..."
-        />
       </div>
     </div>
   );
 
-  // 2. SEPARATE TAB: Statistics & Analytics (KPIs and Charts moved here)
+  // 2. SEPARATE TAB: Statistics & Analytics
   const analyticsContent = (
     <div className="space-y-6">
       {/* KPI Stats */}
@@ -443,7 +375,7 @@ function DashboardPage() {
   );
 
   const tabs = [
-    { id: 'quick-hub', label: 'Command Hub & Live Radar', icon: <Clock className="h-4 w-4" />, content: quickHubContent },
+    { id: 'quick-hub', label: 'Command Hub', icon: <Clock className="h-4 w-4" />, content: quickHubContent },
     { id: 'analytics', label: 'Statistics & Insights', icon: <Award className="h-4 w-4" />, content: analyticsContent },
     { id: 'operations', label: 'Operations & Hardware', icon: <ShieldCheck className="h-4 w-4" />, content: operationsContent },
   ];
