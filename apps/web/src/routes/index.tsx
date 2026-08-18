@@ -31,7 +31,6 @@ import {
   ClipboardList,
   School,
   Send,
-  Sparkles,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -152,41 +151,25 @@ function DashboardPage() {
         {/* RIGHT COLUMN: Quick Action Square Grid + Software License Card Below It */}
         <div className="xl:col-span-5 space-y-4">
           
-          {/* Quick Action Hub with 1:1 Square Boxes */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-black text-foreground tracking-tight flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-primary" /> Quick Actions Hub
-                </h3>
-                <p className="text-xs text-muted-foreground font-medium">Direct one-click access</p>
-              </div>
-              <VFBadge variant="outline">12 Shortcuts</VFBadge>
-            </div>
-
-            {/* 4 columns x 3 rows (or 3 columns x 4 rows) of SQUARE boxes */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
-              {quickActions.map((action, idx) => {
-                const Icon = action.icon;
-                return (
-                  <Link
-                    key={idx}
-                    to={action.route}
-                    className="aspect-square p-2 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none"
-                  >
-                    <div className={`h-8 w-8 rounded-md flex items-center justify-center border ${action.color} mb-1 group-hover:scale-110 transition-transform shrink-0`}>
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <p className="text-xs font-black text-foreground group-hover:text-primary transition-colors truncate w-full leading-tight">
-                      {action.label}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground font-medium truncate w-full mt-0.5 leading-none">
-                      {action.desc}
-                    </p>
-                  </Link>
-                );
-              })}
-            </div>
+          {/* Quick Action Square Grid (Header removed for clean flush alignment) */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+            {quickActions.map((action, idx) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={idx}
+                  to={action.route}
+                  className="aspect-square p-2.5 rounded-lg border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none"
+                >
+                  <div className={`h-11 w-11 rounded-lg flex items-center justify-center border ${action.color} mb-1.5 group-hover:scale-110 transition-transform shrink-0`}>
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <p className="text-sm font-black text-foreground group-hover:text-primary transition-colors truncate w-full leading-tight">
+                    {action.label}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Software License & Subscription Card (Placed Below Quick Actions) */}
