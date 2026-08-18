@@ -27,17 +27,17 @@ export function VFStatCard({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-card p-5 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 hover:border-primary/40 group min-w-0 shadow-xs",
+        "rounded-lg border border-border bg-card p-4 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 hover:border-primary/40 group min-w-0 shadow-xs",
         className
       )}
       {...props}
     >
-      <div className="flex items-center justify-between gap-3 mb-2.5 min-w-0">
-        <span className="text-sm font-bold text-muted-foreground tracking-normal truncate" title={title}>
+      <div className="flex items-center justify-between gap-2 mb-2 min-w-0">
+        <span className="text-xs font-bold text-muted-foreground tracking-normal truncate" title={title}>
           {title}
         </span>
         {icon && (
-          <div className="h-8 w-8 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+          <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
             {icon}
           </div>
         )}
@@ -47,13 +47,13 @@ export function VFStatCard({
         {isLoading ? (
           <div className="h-8 w-24 bg-muted animate-pulse rounded-md" />
         ) : (
-          <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground leading-none truncate">
+          <div className="text-2xl font-black tracking-tight text-foreground leading-none truncate">
             {value}
           </div>
         )}
         
         {!isLoading && displayLabel && (
-          <div className="flex items-center gap-2 mt-2.5 flex-wrap min-w-0 text-sm">
+          <div className="flex items-center gap-1.5 mt-2 flex-wrap min-w-0 text-xs">
             {trend && (
               <span
                 className={cn(

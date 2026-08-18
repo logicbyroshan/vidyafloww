@@ -22,21 +22,21 @@ export function VFCard({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-card p-5 text-card-foreground shadow-xs transition-all duration-200",
+        "rounded-lg border border-border bg-card p-4 text-card-foreground shadow-xs transition-all duration-200",
         className
       )}
       {...props}
     >
       {(title || description || actions) && (
-        <div className={cn("flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-border/70", headerClassName)}>
+        <div className={cn("flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 mb-2 border-b border-border/70", headerClassName)}>
           <div>
-            {title && <h3 className="text-base font-black text-foreground tracking-tight">{title}</h3>}
+            {title && <h3 className="text-sm font-black text-foreground tracking-tight">{title}</h3>}
             {description && <p className="text-xs text-muted-foreground font-medium mt-0.5">{description}</p>}
           </div>
         </div>
       )}
       {children && (
-        <div className={cn("space-y-4", bodyClassName)}>
+        <div className={cn("space-y-3", bodyClassName)}>
           {children}
         </div>
       )}

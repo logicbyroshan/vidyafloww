@@ -54,7 +54,7 @@ export function VFTabs({
     return (
       <div className={cn("flex flex-col w-full bg-background", className)} {...props}>
         {/* Top Sub-Navigation Header - Clean open tabs without outer enclosing box */}
-        <div className="w-full border-b border-border bg-card px-6 flex items-center justify-between shrink-0 sticky top-0 z-20">
+        <div className="w-full border-b border-border bg-card px-4 flex items-center justify-between shrink-0 sticky top-0 z-20">
           <div
             className="flex items-center gap-7 max-w-full overflow-x-auto no-scrollbar"
             role="tablist"
