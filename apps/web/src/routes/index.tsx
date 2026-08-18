@@ -79,7 +79,7 @@ function DashboardPage() {
       )}
 
       {/* 1. Top Full-Width KPI Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 min-[900px]:grid-cols-4 gap-5">
         <VFStatCard
           title="Total Students"
           value="2,451"
@@ -111,7 +111,7 @@ function DashboardPage() {
       </div>
 
       {/* 2. Main Split Layout: Left Absence Trackers (50%) + Right Quick Action Square Grid & License Card (50%) */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
         
         {/* LEFT COLUMN: Teacher & Student Absences Command Center (50% width) */}
         <div className="space-y-5">
