@@ -163,7 +163,7 @@ export function AppShell() {
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}
             />
-            <main ref={mainRef} className="flex-1 overflow-y-auto bg-background relative custom-scrollbar">
+            <main ref={mainRef} className="flex-1 overflow-y-auto min-w-0 bg-background relative custom-scrollbar">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}

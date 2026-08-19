@@ -10,6 +10,7 @@ import {
   VFBarChart,
   VFPieChart,
   VFButton,
+  cn,
 } from '@vidyamaxx/ui';
 import {
   Users,
@@ -31,8 +32,6 @@ import {
   Server,
   ClipboardList,
   School,
-  Send,
-  UserCheck,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -44,20 +43,20 @@ function DashboardPage() {
   const { schoolProfile } = useGlobalStore();
   const [notice, setNotice] = React.useState<string | null>(null);
 
-  // 12 Quick Action navigation shortcuts (Square boxes on the right)
+  // 12 Quick Action navigation shortcuts (Square boxes on the right) with unified Indigo section theme
   const quickActions = [
-    { label: 'Attendance', desc: 'Daily roll call', route: '/attendance', icon: CalendarCheck, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25' },
-    { label: 'Admissions', desc: 'Intake pipeline', route: '/admissions', icon: UserPlus, color: 'text-amber-400 bg-amber-500/10 border-amber-500/25' },
-    { label: 'Students', desc: '360° directory', route: '/students', icon: GraduationCap, color: 'text-blue-400 bg-blue-500/10 border-blue-500/25' },
-    { label: 'Teachers', desc: 'Faculty load', route: '/staff', icon: Users, color: 'text-purple-400 bg-purple-500/10 border-purple-500/25' },
-    { label: 'Timetable', desc: 'Periods & proxy', route: '/timetable', icon: Calendar, color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/25' },
-    { label: 'Fees', desc: 'Dues & receipts', route: '/fees', icon: CreditCard, color: 'text-green-400 bg-green-500/10 border-green-500/25' },
-    { label: 'Notices', desc: 'Circular board', route: '/notices', icon: Bell, color: 'text-orange-400 bg-orange-500/10 border-orange-500/25' },
-    { label: 'Homework', desc: 'Assignments', route: '/homework', icon: BookOpen, color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/25' },
-    { label: 'Exams', desc: 'Marks & grades', route: '/examinations', icon: ClipboardList, color: 'text-violet-400 bg-violet-500/10 border-violet-500/25' },
-    { label: 'Academics', desc: 'Grade structure', route: '/academics', icon: School, color: 'text-teal-400 bg-teal-500/10 border-teal-500/25' },
-    { label: 'Reports', desc: 'CBSE & RTE audit', route: '/reports', icon: FileSpreadsheet, color: 'text-rose-400 bg-rose-500/10 border-rose-500/25' },
-    { label: 'Settings', desc: 'School branding', route: '/settings', icon: Settings, color: 'text-slate-400 bg-slate-500/10 border-slate-500/25' },
+    { label: 'Attendance', desc: 'Daily roll call', route: '/attendance', icon: CalendarCheck },
+    { label: 'Admissions', desc: 'Intake pipeline', route: '/admissions', icon: UserPlus },
+    { label: 'Students', desc: '360° directory', route: '/students', icon: GraduationCap },
+    { label: 'Teachers', desc: 'Faculty load', route: '/staff', icon: Users },
+    { label: 'Timetable', desc: 'Periods & proxy', route: '/timetable', icon: Calendar },
+    { label: 'Fees', desc: 'Dues & receipts', route: '/fees', icon: CreditCard },
+    { label: 'Notices', desc: 'Circular board', route: '/notices', icon: Bell },
+    { label: 'Homework', desc: 'Assignments', route: '/homework', icon: BookOpen },
+    { label: 'Exams', desc: 'Marks & grades', route: '/examinations', icon: ClipboardList },
+    { label: 'Academics', desc: 'Grade structure', route: '/academics', icon: School },
+    { label: 'Reports', desc: 'CBSE & RTE audit', route: '/reports', icon: FileSpreadsheet },
+    { label: 'Settings', desc: 'School branding', route: '/settings', icon: Settings },
   ];
 
   // 1. MAIN TAB: Command Hub
@@ -78,14 +77,15 @@ function DashboardPage() {
         </div>
       )}
 
-      {/* 1. Top Full-Width KPI Metric Cards */}
-      <div className="grid grid-cols-2 min-[900px]:grid-cols-4 gap-4">
+      {/* 1. Top Full-Width KPI Metric Cards — Unified Sky Blue Theme */}
+      <div className="grid grid-cols-2 min-[900px]:grid-cols-4 gap-5 sm:gap-6">
         <VFStatCard
           title="Total Students"
           value="2,451"
           icon={<Users className="h-5 w-5" />}
           trend="up"
           trendLabel="+12 this month"
+          accentColor="blue"
         />
         <VFStatCard
           title="Teaching Staff"
@@ -93,6 +93,7 @@ function DashboardPage() {
           icon={<GraduationCap className="h-5 w-5" />}
           trend="up"
           trendLabel="Optimal coverage"
+          accentColor="blue"
         />
         <VFStatCard
           title="Today's Attendance"
@@ -100,6 +101,7 @@ function DashboardPage() {
           icon={<CalendarCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="+1.2% vs yesterday"
+          accentColor="blue"
         />
         <VFStatCard
           title="Pending Admissions"
@@ -107,49 +109,89 @@ function DashboardPage() {
           icon={<FileText className="h-5 w-5" />}
           trend="neutral"
           trendLabel="18 auto-verified"
+          accentColor="blue"
         />
       </div>
 
       {/* 2. Main Split Layout: Left Absence Trackers (50%) + Right Quick Action Square Grid & License Card (50%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 items-start overflow-hidden pt-1">
         
         {/* LEFT COLUMN: Teacher & Student Absences Command Center (50% width) */}
-        <div className="space-y-5 min-w-0">
+        <div className="space-y-6 min-w-0">
           {/* Today's Teacher Absences & Substitute Duty Assignment */}
           <VFCard
-            title="Teacher Absences & Substitute Duty Today"
-            description="4 Faculty absent today (120 of 124 Present)"
+            title="Faculty Absences & Proxy Roster"
+            description="4 Absent Today · 100% Substitute Coverage"
+            className="border-amber-500/25 bg-gradient-to-br from-amber-500/8 via-card to-card"
+            actions={<VFBadge variant="warning" className="text-xs">4 On Leave</VFBadge>}
           >
-            <div className="divide-y divide-border -my-2">
+            <div className="space-y-3 pt-1">
               {[
-                { teacher: 'Dr. Rajesh Sharma', dept: 'Physics (HOD)', reason: 'Medical Leave', duty: 'Proxy: Mr. Verma (P3 Lab 204)', status: 'Proxy Assigned' },
-                { teacher: 'Ms. Pooja Rao', dept: 'English Literature', reason: 'Casual Leave', duty: 'Proxy: Mrs. Joshi (P5 Room 101)', status: 'Proxy Assigned' },
-                { teacher: 'Mr. Deepak Mishra', dept: 'Hindi', reason: 'Board Seminar', duty: 'Proxy: Mr. Gupta (P2 Room 102)', status: 'Proxy Assigned' },
-                { teacher: 'Coach Vikram Singh', dept: 'Physical Education', reason: 'Morning Leave', duty: 'Sports Squad (P6 Ground)', status: 'Covered' },
+                {
+                  teacher: 'Dr. Rajesh Sharma',
+                  dept: 'Physics · Senior HOD',
+                  reason: 'Medical Leave',
+                  proxy: 'Mr. Arvind Gupta',
+                  slot: 'Period 3 (Lab 204)',
+                },
+                {
+                  teacher: 'Ms. Pooja Rao',
+                  dept: 'English Literature',
+                  reason: 'Casual Leave',
+                  proxy: 'Mrs. S. Joshi',
+                  slot: 'Period 5 (Room 101)',
+                },
+                {
+                  teacher: 'Mr. Deepak Mishra',
+                  dept: 'Hindi Department',
+                  reason: 'Board Seminar',
+                  proxy: 'Mr. R. Verma',
+                  slot: 'Period 2 (Room 102)',
+                },
+                {
+                  teacher: 'Coach Vikram Singh',
+                  dept: 'Physical Education',
+                  reason: 'Morning Duty',
+                  proxy: 'Sports Squad',
+                  slot: 'Period 6 (Ground)',
+                },
               ].map((t, i) => (
-                <div key={i} className="py-3 px-1 flex flex-row items-center justify-between gap-2">
-                  <div className="min-w-0 flex-1 space-y-0.5">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <p className="font-extrabold text-foreground text-sm truncate shrink-0 max-w-[130px]">
-                        {t.teacher}
-                      </p>
-                      <span className="text-xs text-muted-foreground font-bold truncate">({t.dept})</span>
-                      <VFBadge variant="success" className="text-[10px] shrink-0">
-                        {t.status}
-                      </VFBadge>
+                <div
+                  key={i}
+                  className="p-3 rounded-lg border border-border/80 bg-background/50 hover:bg-background/80 transition-all flex items-center justify-between gap-3"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="h-9 w-9 rounded-lg bg-amber-500/15 text-amber-400 font-black text-xs flex items-center justify-center shrink-0 border border-amber-500/30">
+                      {t.teacher.split(' ').slice(0, 2).map(n => n[0]).join('')}
                     </div>
-                    <p className="text-xs font-semibold text-muted-foreground truncate">
-                      <span className="font-bold text-foreground">{t.reason}</span> · <span className="text-success font-bold">{t.duty}</span>
-                    </p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-foreground text-sm truncate">{t.teacher}</p>
+                        <span className="text-[11px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold shrink-0">
+                          {t.reason}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground font-medium truncate mt-0.5">
+                        {t.dept}
+                      </p>
+                    </div>
                   </div>
-                  <div className="shrink-0">
+
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <div className="text-right hidden sm:block">
+                      <div className="text-xs font-bold text-emerald-400 flex items-center gap-1 justify-end">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block" />
+                        {t.proxy}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground font-medium">{t.slot}</p>
+                    </div>
                     <VFButton
                       size="sm"
                       variant="outline"
-                      leftIcon={<UserCheck className="h-3.5 w-3.5" />}
-                      onClick={() => setNotice(`Duty proxy reassigned for ${t.teacher}.`)}
+                      className="h-8 px-2.5 text-xs"
+                      onClick={() => setNotice(`Substitute proxy updated for ${t.teacher}.`)}
                     >
-                      Assign
+                      Reassign
                     </VFButton>
                   </div>
                 </div>
@@ -159,81 +201,125 @@ function DashboardPage() {
 
           {/* Today's Student Absences & Flagged Attendance */}
           <VFCard
-            title="Student Absences & Flagged Attendance Today"
-            description="68 Pupils absent today (94.5% Overall Attendance)"
+            title="Student Attendance Exceptions & Alerts"
+            description="68 Pupils Absent Today · 94.5% Net Attendance"
+            className="border-rose-500/25 bg-gradient-to-br from-rose-500/8 via-card to-card"
+            actions={<VFBadge variant="danger" className="text-xs">4 Alerts</VFBadge>}
           >
-            <div className="divide-y divide-border -my-2">
+            <div className="space-y-3 pt-1">
               {[
-                { student: 'Priya Patel', class: 'Class 10-A', issue: '3rd Consecutive Absence (Uninformed)', action: 'WhatsApp Alert' },
-                { student: 'Sneha Singh', class: 'Class 11-Sci', issue: 'Bus Route 4 Delayed (09:15 AM Arrival)', action: 'Gate Pass' },
-                { student: 'Amit Patel', class: 'Class 8-A', issue: 'Uninformed Absenteeism (No Leave Note)', action: 'SMS Dispatched' },
-                { student: 'Kavya Nair', class: 'Class 11-Com', issue: 'Approved Medical Leave (Aug 18 - 19)', action: 'Leave Approved' },
+                {
+                  student: 'Priya Patel',
+                  class: 'Class 10-A · Roll #18',
+                  alert: '3rd Consecutive Absence (Uninformed)',
+                  severity: 'danger',
+                  action: 'WhatsApp Alert',
+                },
+                {
+                  student: 'Sneha Singh',
+                  class: 'Class 11-Sci · Roll #04',
+                  alert: 'Bus Route 4 Delayed (09:15 AM Arrival)',
+                  severity: 'warning',
+                  action: 'Issue Gate Pass',
+                },
+                {
+                  student: 'Amit Patel',
+                  class: 'Class 8-A · Roll #29',
+                  alert: 'Uninformed Absenteeism (No Note)',
+                  severity: 'danger',
+                  action: 'Send SMS',
+                },
+                {
+                  student: 'Kavya Nair',
+                  class: 'Class 11-Com · Roll #12',
+                  alert: 'Medical Leave (Aug 18 – Aug 19)',
+                  severity: 'neutral',
+                  action: 'Leave Approved',
+                },
               ].map((s, i) => (
-                <div key={i} className="py-3 px-1 flex flex-row items-center justify-between gap-2">
-                  <div className="min-w-0 flex-1 space-y-0.5">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <p className="font-extrabold text-foreground text-sm truncate shrink-0 max-w-[120px]">
-                        {s.student}
-                      </p>
-                      <span className="text-xs text-muted-foreground font-bold truncate">({s.class})</span>
+                <div
+                  key={i}
+                  className="p-3 rounded-lg border border-border/80 bg-background/50 hover:bg-background/80 transition-all flex items-center justify-between gap-3"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="h-9 w-9 rounded-lg bg-rose-500/15 text-rose-400 font-black text-xs flex items-center justify-center shrink-0 border border-rose-500/30">
+                      {s.student.split(' ').map(n => n[0]).join('')}
                     </div>
-                    <p className="text-xs font-bold text-destructive truncate">
-                      {s.issue}
-                    </p>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-foreground text-sm truncate">{s.student}</p>
+                        <span className="text-[10px] text-muted-foreground font-semibold truncate hidden sm:inline">
+                          {s.class}
+                        </span>
+                      </div>
+                      <p className={cn(
+                        "text-xs font-semibold truncate mt-0.5",
+                        s.severity === 'danger' && 'text-destructive',
+                        s.severity === 'warning' && 'text-amber-400',
+                        s.severity === 'neutral' && 'text-emerald-400'
+                      )}>
+                        {s.alert}
+                      </p>
+                    </div>
                   </div>
-                  <div className="shrink-0">
-                    <VFButton
-                      size="sm"
-                      variant="outline"
-                      leftIcon={<Send className="h-3 w-3" />}
-                      onClick={() => setNotice(`Follow-up notice dispatched to guardian of ${s.student}.`)}
-                    >
-                      Follow Up
-                    </VFButton>
-                  </div>
+
+                  <VFButton
+                    size="sm"
+                    variant={s.severity === 'danger' ? 'danger' : 'outline'}
+                    className="h-8 px-2.5 text-xs shrink-0"
+                    onClick={() => setNotice(`Action "${s.action}" executed for ${s.student}.`)}
+                  >
+                    {s.action}
+                  </VFButton>
                 </div>
               ))}
             </div>
           </VFCard>
         </div>
 
-        {/* RIGHT COLUMN: Quick Action Square Grid 4×3 + Software License Card Below It (50% width) */}
-        <div className="space-y-5 min-w-0">
+        {/* RIGHT COLUMN: Quick Action Section Card 4×3 + Software License Card Below It (50% width) */}
+        <div className="space-y-6 min-w-0">
           
-          {/* Quick Action Square Grid — 3 cols × 4 rows */}
-          <div className="grid grid-cols-4 gap-3">
-            {quickActions.map((action, idx) => {
-              const Icon = action.icon;
-              return (
-                <Link
-                  key={idx}
-                  to={action.route}
-                  className="aspect-square p-2 rounded-xl border border-border bg-card hover:border-primary/50 hover:bg-muted/50 transition-all flex flex-col items-center justify-center text-center group shadow-xs select-none min-w-0"
-                >
-                  <div className={`h-11 w-11 rounded-xl flex items-center justify-center border ${action.color} mb-2 group-hover:scale-110 transition-transform shrink-0`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <p className="text-sm font-black text-foreground group-hover:text-primary transition-colors leading-tight w-full truncate">
-                    {action.label}
-                  </p>
-                </Link>
-              );
-            })}
-          </div>
+          {/* Quick Action Command Shortcuts Card — Unified Indigo Section Theme */}
+          <VFCard
+            title="Quick Action Command Shortcuts"
+            description="1-Click direct launch into school administrative modules"
+            className="border-indigo-500/25 bg-gradient-to-br from-indigo-500/8 via-card to-card"
+          >
+            <div className="grid grid-cols-4 gap-3.5 pt-1.5">
+              {quickActions.map((action, idx) => {
+                const Icon = action.icon;
+                return (
+                  <Link
+                    key={idx}
+                    to={action.route}
+                    className="aspect-square p-2.5 rounded-xl border border-indigo-500/25 bg-gradient-to-b from-indigo-500/10 via-card to-card hover:border-indigo-400/60 hover:from-indigo-500/20 hover:shadow-indigo-500/10 transition-all duration-200 flex flex-col items-center justify-center text-center group shadow-xs select-none min-w-0 relative overflow-hidden"
+                  >
+                    <div className="h-11 w-11 rounded-xl flex items-center justify-center border border-indigo-500/30 bg-indigo-500/15 text-indigo-400 mb-2 group-hover:scale-110 group-hover:bg-indigo-500/25 transition-all shrink-0 shadow-xs">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <p className="text-sm font-bold text-foreground group-hover:text-indigo-400 transition-colors leading-tight w-full truncate">
+                      {action.label}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </VFCard>
 
-          {/* Software License & Subscription Card (Equal 20px gap below quick actions) */}
-          <div className="p-4 bg-card border border-border rounded-lg shadow-xs space-y-3">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="h-8 w-8 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-4 w-4" />
+          {/* Software License & Subscription Card — Unified Emerald Section Theme */}
+          <div className="p-5 sm:p-6 bg-gradient-to-br from-emerald-500/10 via-card to-card border border-emerald-500/30 rounded-xl shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-3.5">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="h-9 w-9 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-black text-foreground truncate">{schoolProfile.name}</h4>
+                    <h4 className="text-base font-black text-foreground truncate">{schoolProfile.name}</h4>
                     <VFBadge variant="success">Active</VFBadge>
                   </div>
-                  <p className="text-xs text-muted-foreground font-semibold truncate">
+                  <p className="text-xs text-muted-foreground font-semibold truncate mt-0.5">
                     {schoolProfile.affiliation}
                   </p>
                 </div>
@@ -275,10 +361,10 @@ function DashboardPage() {
     </div>
   );
 
-  // 2. SEPARATE TAB: Comprehensive Statistics & Analytics Suite
+  // 2. SEPARATE TAB: Comprehensive Statistics & Analytics Suite (Clean, Calm & Unified)
   const analyticsContent = (
     <div className="space-y-5">
-      {/* 1. Academic & Institutional Key Performance Indicators */}
+      {/* 1. Academic & Institutional Key Performance Indicators — Unified Sky Blue Theme */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard
           title="Academic GPA Index"
@@ -286,6 +372,7 @@ function DashboardPage() {
           icon={<Award className="h-5 w-5" />}
           trend="up"
           trendLabel="+0.12 vs Term 1"
+          accentColor="blue"
         />
         <VFStatCard
           title="CBSE Pass Percentage"
@@ -293,6 +380,7 @@ function DashboardPage() {
           icon={<GraduationCap className="h-5 w-5" />}
           trend="up"
           trendLabel="Board Standard 2026"
+          accentColor="blue"
         />
         <VFStatCard
           title="Student-Teacher Ratio"
@@ -300,6 +388,7 @@ function DashboardPage() {
           icon={<Users className="h-5 w-5" />}
           trend="neutral"
           trendLabel="Optimal individual focus"
+          accentColor="blue"
         />
         <VFStatCard
           title="Fee Realization Rate"
@@ -307,6 +396,7 @@ function DashboardPage() {
           icon={<CreditCard className="h-5 w-5" />}
           trend="up"
           trendLabel="₹4.86 Cr collected"
+          accentColor="blue"
         />
       </div>
 
@@ -326,8 +416,8 @@ function DashboardPage() {
               ]}
               xKey="label"
               dataKeys={[
-                { key: 'intake', color: '#6366f1', name: 'Student Intake' },
-                { key: 'attendance', color: '#06b6d4', name: 'Avg Attendance %' },
+                { key: 'intake', color: '#3b82f6', name: 'Student Intake' },
+                { key: 'attendance', color: '#10b981', name: 'Avg Attendance %' },
               ]}
             />
           </div>
@@ -345,48 +435,47 @@ function DashboardPage() {
               ]}
               xKey="label"
               dataKeys={[
-                { key: 'collected', color: '#10b981', name: 'Collected Revenue' },
-                { key: 'target', color: '#f59e0b', name: 'Target Budget' },
+                { key: 'collected', color: '#3b82f6', name: 'Collected Revenue' },
+                { key: 'target', color: '#64748b', name: 'Target Budget' },
               ]}
             />
           </div>
         </VFCard>
       </div>
 
-      {/* 3. Demographics & Distribution (Donut / Pie Charts with Legends) */}
+      {/* 3. Demographics & Grade Distribution — Clean Scannable Metric Tiles */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Student Enrollment by School Wing */}
         <VFCard title="Student Enrollment by School Wing" description="Class tier strength distribution across 1,248 pupils">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
-            <div className="shrink-0" style={{ width: 220, height: 220 }}>
+          <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
+            <div className="shrink-0" style={{ width: 180, height: 180 }}>
               <VFPieChart
                 data={[
-                  { name: 'Primary Wing (1-5)', value: 430, color: '#3b82f6' },
-                  { name: 'Middle School (6-8)', value: 374, color: '#06b6d4' },
-                  { name: 'High School (9-10)', value: 250, color: '#10b981' },
-                  { name: 'Senior Sec (11-12)', value: 194, color: '#f59e0b' },
+                  { name: 'Primary (1-5)', value: 430, color: '#3b82f6' },
+                  { name: 'Middle (6-8)', value: 374, color: '#60a5fa' },
+                  { name: 'High School (9-10)', value: 250, color: '#93c5fd' },
+                  { name: 'Senior Sec (11-12)', value: 194, color: '#bfdbfe' },
                 ]}
-                height={220}
+                height={180}
               />
             </div>
-            <div className="flex-1 space-y-3">
+            <div className="grid grid-cols-2 gap-2.5 w-full flex-1">
               {[
-                { label: 'Primary Wing (Gr. 1-5)', value: '430', pct: '34.5%', color: 'bg-blue-500', bar: '35%' },
-                { label: 'Middle School (Gr. 6-8)', value: '374', pct: '30.0%', color: 'bg-cyan-500', bar: '30%' },
-                { label: 'High School (Gr. 9-10)', value: '250', pct: '20.0%', color: 'bg-emerald-500', bar: '20%' },
-                { label: 'Senior Sec (Gr. 11-12)', value: '194', pct: '15.5%', color: 'bg-amber-500', bar: '15.5%' },
+                { title: 'Primary Wing', grade: 'Grades 1 – 5', count: '430', pct: '34.5%', dot: 'bg-blue-500' },
+                { title: 'Middle School', grade: 'Grades 6 – 8', count: '374', pct: '30.0%', dot: 'bg-blue-400' },
+                { title: 'High School', grade: 'Grades 9 – 10', count: '250', pct: '20.0%', dot: 'bg-blue-300' },
+                { title: 'Senior Secondary', grade: 'Grades 11 – 12', count: '194', pct: '15.5%', dot: 'bg-blue-200' },
               ].map((item, idx) => (
-                <div key={idx}>
-                  <div className="flex items-center justify-between text-sm mb-1">
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2.5 w-2.5 rounded-full ${item.color} shrink-0`} />
-                      <span className="font-bold text-foreground">{item.label}</span>
-                    </div>
-                    <span className="font-black text-foreground tabular-nums">{item.value} <span className="text-muted-foreground font-semibold">({item.pct})</span></span>
+                <div key={idx} className="p-2.5 rounded-lg border border-border/80 bg-background/50 space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className={`h-2 w-2 rounded-full ${item.dot} shrink-0`} />
+                    <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
                   </div>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${item.color}`} style={{ width: item.bar }} />
+                  <div className="flex items-baseline justify-between pt-0.5">
+                    <span className="text-base font-extrabold text-foreground">{item.count}</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">{item.pct}</span>
                   </div>
+                  <p className="text-[10px] text-muted-foreground font-medium">{item.grade}</p>
                 </div>
               ))}
             </div>
@@ -395,38 +484,35 @@ function DashboardPage() {
 
         {/* Academic Grade Tier Distribution */}
         <VFCard title="Academic Grade Performance Tier" description="Term 1 evaluation marks distribution across 1,248 students">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
-            <div className="shrink-0" style={{ width: 220, height: 220 }}>
+          <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
+            <div className="shrink-0" style={{ width: 180, height: 180 }}>
               <VFPieChart
                 data={[
-                  { name: 'Distinction (A1 - 90%+)', value: 524, color: '#10b981' },
-                  { name: 'First Div (A2 - 80-89%)', value: 386, color: '#3b82f6' },
-                  { name: 'Second Div (B1 - 70-79%)', value: 225, color: '#f59e0b' },
-                  { name: 'Average (B2 - 60-69%)', value: 88, color: '#8b5cf6' },
-                  { name: 'Needs Support (<60%)', value: 25, color: '#ef4444' },
+                  { name: 'Distinction (90%+)', value: 524, color: '#10b981' },
+                  { name: 'First Division (80-89%)', value: 386, color: '#34d399' },
+                  { name: 'Second Division (70-79%)', value: 225, color: '#6ee7b7' },
+                  { name: 'Passing & Support (<70%)', value: 113, color: '#93c5fd' },
                 ]}
-                height={220}
+                height={180}
               />
             </div>
-            <div className="flex-1 space-y-3">
+            <div className="grid grid-cols-2 gap-2.5 w-full flex-1">
               {[
-                { label: 'Distinction (A1 · 90%+)', value: '524', pct: '42.0%', color: 'bg-emerald-500', bar: '42%' },
-                { label: 'First Div (A2 · 80-89%)', value: '386', pct: '30.9%', color: 'bg-blue-500', bar: '31%' },
-                { label: 'Second Div (B1 · 70-79%)', value: '225', pct: '18.0%', color: 'bg-amber-500', bar: '18%' },
-                { label: 'Average (B2 · 60-69%)', value: '88', pct: '7.1%', color: 'bg-purple-500', bar: '7%' },
-                { label: 'Remedial Support (<60%)', value: '25', pct: '2.0%', color: 'bg-rose-500', bar: '2%' },
+                { label: 'Distinction', range: 'A1 · 90%+', count: '524', pct: '42.0%', dot: 'bg-emerald-500' },
+                { label: 'First Division', range: 'A2 · 80 – 89%', count: '386', pct: '30.9%', dot: 'bg-emerald-400' },
+                { label: 'Second Division', range: 'B1 · 70 – 79%', count: '225', pct: '18.0%', dot: 'bg-emerald-300' },
+                { label: 'Passing / Support', range: 'B2 & Support', count: '113', pct: '9.1%', dot: 'bg-blue-300' },
               ].map((tier, idx) => (
-                <div key={idx}>
-                  <div className="flex items-center justify-between text-sm mb-1">
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2.5 w-2.5 rounded-full ${tier.color} shrink-0`} />
-                      <span className="font-bold text-foreground">{tier.label}</span>
-                    </div>
-                    <span className="font-black text-foreground tabular-nums">{tier.value} <span className="text-muted-foreground font-semibold">({tier.pct})</span></span>
+                <div key={idx} className="p-2.5 rounded-lg border border-border/80 bg-background/50 space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className={`h-2 w-2 rounded-full ${tier.dot} shrink-0`} />
+                    <p className="text-xs font-bold text-foreground truncate">{tier.label}</p>
                   </div>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${tier.color}`} style={{ width: tier.bar, minWidth: '6px' }} />
+                  <div className="flex items-baseline justify-between pt-0.5">
+                    <span className="text-base font-extrabold text-foreground">{tier.count}</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">{tier.pct}</span>
                   </div>
+                  <p className="text-[10px] text-muted-foreground font-medium">{tier.range}</p>
                 </div>
               ))}
             </div>
@@ -434,56 +520,50 @@ function DashboardPage() {
         </VFCard>
       </div>
 
-      {/* 4. Department Academic Performance & Syllabus Pacing Matrix */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { dept: 'Science & Mathematics', count: '640 Students', staff: '38 Teachers', score: '94% Dept GPA', pace: '98% Syllabus Completed' },
-          { dept: 'Languages & Humanities', count: '480 Students', staff: '32 Teachers', score: '92% Dept GPA', pace: '95% Syllabus Completed' },
-          { dept: 'Commerce & Economics', count: '420 Students', staff: '24 Teachers', score: '95% Dept GPA', pace: '97% Syllabus Completed' },
-          { dept: 'Sports & Co-Curricular', count: '911 Active', staff: '18 Faculty', score: '14 National Trophies', pace: '100% Activity Active' },
-        ].map((d, i) => (
-          <div key={i} className="p-4 rounded-lg bg-card border border-border space-y-2 shadow-xs">
-            <div className="flex items-center justify-between">
-              <p className="font-extrabold text-foreground text-sm truncate">{d.dept}</p>
-              <VFBadge variant="success" className="text-[10px]">Optimal</VFBadge>
-            </div>
-            <p className="text-2xl font-black text-primary">{d.count}</p>
-            <div className="space-y-1 text-xs text-muted-foreground font-semibold pt-1 border-t border-border/70">
-              <div className="flex justify-between">
-                <span>Faculty Strength:</span>
-                <span className="font-bold text-foreground">{d.staff}</span>
+      {/* 4. Department Performance & Academic Velocity Matrix */}
+      <VFCard title="Department Academic Performance & Velocity" description="Faculty strength, departmental GPA standing, and curriculum pacing">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+          {[
+            { dept: 'Science & Mathematics', count: '640 Pupils', staff: '38 Faculty', gpa: '94% GPA', pace: '98% Pace', status: 'On Track' },
+            { dept: 'Languages & Humanities', count: '480 Pupils', staff: '32 Faculty', gpa: '92% GPA', pace: '95% Pace', status: 'On Track' },
+            { dept: 'Commerce & Economics', count: '420 Pupils', staff: '24 Faculty', gpa: '95% GPA', pace: '97% Pace', status: 'Optimal' },
+            { dept: 'Sports & Co-Curricular', count: '911 Pupils', staff: '18 Faculty', gpa: '14 Trophies', pace: '100% Active', status: 'Optimal' },
+          ].map((d, i) => (
+            <div key={i} className="p-3 rounded-lg bg-background/50 border border-border/80 space-y-2.5 hover:bg-background/80 transition-all">
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-foreground text-xs truncate">{d.dept}</p>
+                <VFBadge variant="success" className="text-[10px]">{d.status}</VFBadge>
               </div>
-              <div className="flex justify-between">
-                <span>Academic Standing:</span>
-                <span className="text-success font-bold">{d.score}</span>
+              <div>
+                <p className="text-lg font-extrabold text-foreground">{d.count}</p>
+                <p className="text-[11px] text-muted-foreground font-semibold">{d.staff}</p>
               </div>
-              <div className="flex justify-between">
-                <span>Curriculum Pacing:</span>
-                <span className="text-foreground font-bold">{d.pace}</span>
+              <div className="flex items-center justify-between pt-2 border-t border-border/70 text-xs">
+                <span className="font-bold text-emerald-400">{d.gpa}</span>
+                <span className="font-semibold text-muted-foreground">{d.pace}</span>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </VFCard>
 
-      {/* 5. Attendance Health Risk & Payment Channels Analysis */}
+      {/* 5. Attendance Health Risk & Payment Channels Analysis — Clean Visual Stat Boxes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Attendance Risk Classification */}
         <VFCard title="Attendance Health & Risk Segments" description="Biometric gate audit classification across 1,248 students">
-          <div className="space-y-4 mt-2">
+          <div className="grid grid-cols-3 gap-3 pt-1">
             {[
-              { label: 'Regular Attendance (Above 90%)', count: '1,120 Pupils', pct: '89.7%', bar: '89.7%', colorBar: 'bg-emerald-500', colorText: 'text-emerald-400' },
-              { label: 'Moderate Risk (75% – 89%)', count: '94 Pupils', pct: '7.5%', bar: '7.5%', colorBar: 'bg-amber-500', colorText: 'text-amber-400' },
-              { label: 'Critical Absentee Risk (Below 75%)', count: '34 Pupils', pct: '2.8%', bar: '2.8%', colorBar: 'bg-rose-500', colorText: 'text-rose-400' },
+              { label: 'Regular Attendance', subtitle: 'Above 90%', count: '1,120', pct: '89.7%', tag: 'Healthy', badgeVariant: 'success' as const },
+              { label: 'Moderate Risk', subtitle: '75% – 89%', count: '94', pct: '7.5%', tag: 'Monitor', badgeVariant: 'warning' as const },
+              { label: 'Critical Absentee', subtitle: 'Below 75%', count: '34', pct: '2.8%', tag: 'Action Req', badgeVariant: 'danger' as const },
             ].map((row, idx) => (
-              <div key={idx}>
-                <div className="flex items-center justify-between text-sm font-bold mb-1.5">
-                  <span className="text-foreground">{row.label}</span>
-                  <span className={`${row.colorText} font-black tabular-nums`}>{row.count} ({row.pct})</span>
+              <div key={idx} className="p-3 rounded-lg border border-border/80 bg-background/50 space-y-1.5 text-center">
+                <div className="flex justify-center">
+                  <VFBadge variant={row.badgeVariant} className="text-[10px]">{row.tag}</VFBadge>
                 </div>
-                <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                  <div className={`h-full rounded-full ${row.colorBar}`} style={{ width: row.bar, minWidth: '12px' }} />
-                </div>
+                <p className="text-xl font-extrabold text-foreground">{row.count}</p>
+                <p className="text-xs font-bold text-foreground truncate">{row.label}</p>
+                <p className="text-[11px] text-muted-foreground font-medium">{row.subtitle} · {row.pct}</p>
               </div>
             ))}
           </div>
@@ -491,96 +571,32 @@ function DashboardPage() {
 
         {/* Digital Fee Payment Gateway Channels */}
         <VFCard title="Fee Collection Payment Channels" description="Breakdown of digital gateway transactions for Quarter 2">
-          <div className="space-y-3.5 mt-2">
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">UPI & QR Gateway (Razorpay / PayU)</span>
-                <span className="text-primary font-black">₹2.82 Cr (58%)</span>
+          <div className="grid grid-cols-2 gap-3 pt-1">
+            {[
+              { label: 'UPI & QR Gateway', provider: 'Razorpay / PayU', amount: '₹2.82 Cr', share: '58% of Total' },
+              { label: 'Net Banking & RTGS', provider: 'Instant Transfer', amount: '₹1.16 Cr', share: '24% of Total' },
+              { label: 'Cards & POS Portal', provider: 'Debit / Credit', amount: '₹58 Lakh', share: '12% of Total' },
+              { label: 'Counter & Cheque', provider: 'Bank Clearance', amount: '₹30 Lakh', share: '6% of Total' },
+            ].map((chan, idx) => (
+              <div key={idx} className="p-2.5 rounded-lg border border-border/80 bg-background/50 space-y-1">
+                <div className="flex justify-between items-baseline">
+                  <p className="text-xs font-bold text-foreground truncate">{chan.label}</p>
+                  <span className="text-[10px] font-semibold text-muted-foreground">{chan.share}</span>
+                </div>
+                <p className="text-base font-extrabold text-foreground">{chan.amount}</p>
+                <p className="text-[10px] text-muted-foreground font-medium">{chan.provider}</p>
               </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-primary rounded-full" style={{ width: '58%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">Net Banking & Instant RTGS</span>
-                <span className="text-cyan-400 font-black">₹1.16 Cr (24%)</span>
-              </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-cyan-500 rounded-full" style={{ width: '24%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">Credit / Debit Card Online Portal</span>
-                <span className="text-amber-400 font-black">₹58 Lakh (12%)</span>
-              </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-amber-500 rounded-full" style={{ width: '12%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-sm font-bold pb-1">
-                <span className="text-foreground">Bank Cheque / Counter Deposit</span>
-                <span className="text-muted-foreground font-black">₹30 Lakh (6%)</span>
-              </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-muted-foreground/50 rounded-full" style={{ width: '6%' }} />
-              </div>
-            </div>
+            ))}
           </div>
         </VFCard>
       </div>
     </div>
   );
 
-  // 3. Operations & Hardware Sync View
-  const operationsContent = (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <VFCard title="Biometric Gate Hardware Sync" description="Turnstiles & RFID scanners">
-          <div className="divide-y divide-border -my-2 text-base">
-            <div className="flex justify-between items-center py-3 px-1">
-              <span className="font-bold text-foreground text-sm">Gate Terminal 1 (Main)</span>
-              <VFBadge variant="success">Online (0ms lag)</VFBadge>
-            </div>
-            <div className="flex justify-between items-center py-3 px-1">
-              <span className="font-bold text-foreground text-sm">Gate Terminal 2 (North)</span>
-              <VFBadge variant="success">Online (0ms lag)</VFBadge>
-            </div>
-            <div className="flex justify-between items-center py-3 px-1">
-              <span className="font-bold text-foreground text-sm">Staff RFID Terminal</span>
-              <VFBadge variant="success">Online</VFBadge>
-            </div>
-          </div>
-        </VFCard>
-
-        <VFCard title="SMS & WhatsApp Gateway" description="Carrier delivery pipelines">
-          <div className="space-y-2 mt-1 text-base">
-            <p className="text-2xl font-black text-foreground">99.8% Delivery</p>
-            <p className="text-muted-foreground text-sm font-semibold">Active carriers: Twilio & Gupshup</p>
-            <VFBadge variant="success">Gateway Operational</VFBadge>
-          </div>
-        </VFCard>
-
-        <VFCard title="Automated Nightly Backups" description="Encrypted disaster recovery">
-          <div className="space-y-2 mt-1 text-base">
-            <p className="text-2xl font-black text-foreground">Daily 02:00 AM</p>
-            <p className="text-muted-foreground text-sm font-semibold">Last backup: Today at 02:00 AM (248MB)</p>
-            <VFBadge variant="outline">Encrypted AES-256</VFBadge>
-          </div>
-        </VFCard>
-      </div>
-    </div>
-  );
-
+  // Top Tabs: Only 2 tabs (Command Hub & Statistics & Insights)
   const tabs = [
     { id: 'quick-hub', label: 'Command Hub', icon: <Clock className="h-4 w-4" />, content: quickHubContent },
     { id: 'analytics', label: 'Statistics & Insights', icon: <Award className="h-4 w-4" />, content: analyticsContent },
-    { id: 'operations', label: 'Operations & Hardware', icon: <ShieldCheck className="h-4 w-4" />, content: operationsContent },
   ];
 
   return (

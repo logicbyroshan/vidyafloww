@@ -98,6 +98,7 @@ function TimetablePage() {
           icon={<Calendar className="h-5 w-5" />}
           trend="up"
           trendLabel="Live Term 2"
+          accentColor="cyan"
         />
         <VFStatCard
           title="Daily Slots"
@@ -105,6 +106,7 @@ function TimetablePage() {
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
           trendLabel="48 sections"
+          accentColor="blue"
         />
         <VFStatCard
           title="Today's Substitutes"
@@ -112,6 +114,7 @@ function TimetablePage() {
           icon={<RefreshCw className="h-5 w-5" />}
           trend="down"
           trendLabel="100% assigned"
+          accentColor="amber"
         />
         <VFStatCard
           title="Schedule Quality"
@@ -119,6 +122,7 @@ function TimetablePage() {
           icon={<Award className="h-5 w-5" />}
           trend="up"
           trendLabel="0 slot conflicts"
+          accentColor="emerald"
         />
       </div>
 
@@ -145,8 +149,8 @@ function TimetablePage() {
       </div>
 
       {/* Timetable Grid */}
-      <div className="border border-border rounded-lg bg-card overflow-x-auto">
-        <table className="w-full text-base text-left">
+      <div className="border border-border rounded-lg bg-card overflow-x-auto custom-scrollbar">
+        <table className="w-full text-base text-left min-w-[700px]">
           <thead>
             <tr className="border-b border-border bg-muted/50">
               <th className="p-4 font-black text-xs text-muted-foreground uppercase tracking-wider">Day</th>

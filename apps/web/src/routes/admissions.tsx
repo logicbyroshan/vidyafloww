@@ -154,6 +154,7 @@ function AdmissionsPage() {
           icon={<Phone className="h-5 w-5" />}
           trend="up"
           trendLabel="+28 this week"
+          accentColor="cyan"
         />
         <VFStatCard
           title="Applications Received"
@@ -161,6 +162,7 @@ function AdmissionsPage() {
           icon={<FileCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="18 submitted today"
+          accentColor="amber"
         />
         <VFStatCard
           title="Merit Approved"
@@ -168,6 +170,7 @@ function AdmissionsPage() {
           icon={<CheckCircle2 className="h-5 w-5" />}
           trend="up"
           trendLabel="Ready for enrollment"
+          accentColor="purple"
         />
         <VFStatCard
           title="Final Enrolled"
@@ -175,6 +178,7 @@ function AdmissionsPage() {
           icon={<UserPlus className="h-5 w-5" />}
           trend="up"
           trendLabel="86.3% conversion"
+          accentColor="emerald"
         />
       </div>
 

@@ -85,12 +85,12 @@ export function Sidebar() {
       )}
     >
       {/* Sidebar Header & Brand Logo — height is strictly h-[72px] to match Navbar perfectly */}
-      <div className="flex h-[60px] items-center px-4 border-b border-border relative shrink-0">
+      <div className="flex h-[72px] items-center px-4 border-b border-border relative shrink-0">
         <div className={cn('flex items-center w-full min-w-0 overflow-hidden', !sidebarExpanded && 'justify-center')}>
           <img
             src="/logo.png"
             alt="VidyaMaxx Logo"
-            className="h-9 w-9 object-contain shrink-0 drop-shadow-sm transition-all duration-300 ease-in-out"
+            className="h-10 w-10 object-contain shrink-0 drop-shadow-sm transition-all duration-300 ease-in-out"
           />
           <div
             className={cn(
@@ -117,13 +117,13 @@ export function Sidebar() {
       </div>
 
       {/* Categorized Navigation List */}
-      <div className="flex-1 overflow-y-auto p-3 sidebar-left-scrollbar custom-scrollbar space-y-3">
+      <div className="flex-1 overflow-y-auto p-3.5 sidebar-left-scrollbar custom-scrollbar space-y-3.5">
         {NAVIGATION_SECTIONS.map((section, secIdx) => (
           <div
             key={secIdx}
             className={cn(
-              "space-y-1",
-              secIdx > 0 && "border-t border-border/70 pt-2.5 mt-2"
+              "space-y-1.5",
+              secIdx > 0 && "border-t border-border/70 pt-3 mt-2.5"
             )}
           >
             {section.title && sidebarExpanded && (
@@ -139,7 +139,7 @@ export function Sidebar() {
               </div>
             )}
 
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               {section.items.map((item) => {
                 const Icon = item.icon;
                 const isActive =
@@ -153,7 +153,7 @@ export function Sidebar() {
                     to={item.route}
                     className={cn(
                       'flex items-center transition-all duration-150 text-base outline-none whitespace-nowrap font-bold',
-                      sidebarExpanded ? 'w-full h-10 px-3.5 py-2 rounded-lg' : 'w-11 h-11 mx-auto rounded-lg justify-center p-0',
+                      sidebarExpanded ? 'w-full h-11 px-3.5 py-2.5 rounded-xl' : 'w-11 h-11 mx-auto rounded-xl justify-center p-0',
                       isActive
                         ? 'bg-primary/15 text-primary border border-primary/30 shadow-xs'
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent'

@@ -15,7 +15,7 @@ export function VFPage({ className, ...props }: React.HTMLAttributes<HTMLDivElem
 export function VFPageContainer({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex-1 flex flex-col w-full max-w-[2000px] min-w-[1000px] mx-auto min-h-0 bg-background animate-fade-in", className)}
+      className={cn("flex-1 flex flex-col w-full max-w-[2000px] min-w-0 mx-auto min-h-0 bg-background animate-fade-in", className)}
       {...props}
     />
   );

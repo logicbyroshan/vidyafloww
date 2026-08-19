@@ -54,9 +54,9 @@ export function VFTabs({
     return (
       <div className={cn("flex flex-col w-full bg-background", className)} {...props}>
         {/* Top Sub-Navigation Header - Clean open tabs without outer enclosing box */}
-        <div className="w-full border-b border-border bg-card px-4 flex items-center justify-between shrink-0 sticky top-0 z-20">
+        <div className="w-full border-b border-border bg-card px-6 flex items-center justify-between shrink-0 sticky top-0 z-20 h-[58px]">
           <div
-            className="flex items-center gap-7 max-w-full overflow-x-auto no-scrollbar"
+            className="flex items-center gap-8 max-w-full overflow-x-auto no-scrollbar h-full"
             role="tablist"
           >
             {items.map((item) => {
@@ -69,7 +69,7 @@ export function VFTabs({
                   disabled={item.disabled}
                   onClick={() => handleTabClick(item.id, item.disabled)}
                   className={cn(
-                    "relative inline-flex items-center gap-2.5 py-3.5 text-base font-bold transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
+                    "relative inline-flex items-center gap-2.5 h-full text-base font-bold transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
                     isActive
                       ? "text-primary font-black"
                       : "text-muted-foreground hover:text-foreground",
@@ -84,7 +84,7 @@ export function VFTabs({
                     )}
                     <span>{item.label}</span>
                     {item.badge !== undefined && (
-                      <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-black bg-primary/15 text-primary border border-primary/20">
+                      <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs font-black bg-primary/15 text-primary border border-primary/20">
                         {item.badge}
                       </span>
                     )}
@@ -107,7 +107,7 @@ export function VFTabs({
         </div>
 
         {/* Tab Content */}
-        <div className="p-4 w-full flex-1" role="tabpanel">
+        <div className="p-6 sm:p-7 w-full flex-1" role="tabpanel">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeId}

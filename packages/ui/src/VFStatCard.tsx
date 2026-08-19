@@ -9,7 +9,51 @@ export interface VFStatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   trend?: 'up' | 'down' | 'neutral';
   trendLabel?: string;
   isLoading?: boolean;
+  accentColor?: 'blue' | 'emerald' | 'amber' | 'purple' | 'rose' | 'cyan' | 'indigo' | 'primary';
 }
+
+const ACCENT_STYLES: Record<string, { card: string; topBar: string; icon: string }> = {
+  blue: {
+    card: "bg-gradient-to-br from-blue-500/10 via-card to-card border-blue-500/30 hover:border-blue-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-blue-500 via-sky-400 to-transparent",
+    icon: "bg-blue-500/15 text-blue-400 border border-blue-500/30 shadow-xs",
+  },
+  emerald: {
+    card: "bg-gradient-to-br from-emerald-500/10 via-card to-card border-emerald-500/30 hover:border-emerald-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-emerald-500 via-teal-400 to-transparent",
+    icon: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-xs",
+  },
+  amber: {
+    card: "bg-gradient-to-br from-amber-500/10 via-card to-card border-amber-500/30 hover:border-amber-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-amber-500 via-orange-400 to-transparent",
+    icon: "bg-amber-500/15 text-amber-400 border border-amber-500/30 shadow-xs",
+  },
+  purple: {
+    card: "bg-gradient-to-br from-purple-500/10 via-card to-card border-purple-500/30 hover:border-purple-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-purple-500 via-pink-400 to-transparent",
+    icon: "bg-purple-500/15 text-purple-400 border border-purple-500/30 shadow-xs",
+  },
+  rose: {
+    card: "bg-gradient-to-br from-rose-500/10 via-card to-card border-rose-500/30 hover:border-rose-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-rose-500 via-red-400 to-transparent",
+    icon: "bg-rose-500/15 text-rose-400 border border-rose-500/30 shadow-xs",
+  },
+  cyan: {
+    card: "bg-gradient-to-br from-cyan-500/10 via-card to-card border-cyan-500/30 hover:border-cyan-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-cyan-500 via-blue-400 to-transparent",
+    icon: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 shadow-xs",
+  },
+  indigo: {
+    card: "bg-gradient-to-br from-indigo-500/10 via-card to-card border-indigo-500/30 hover:border-indigo-400/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-indigo-500 via-purple-400 to-transparent",
+    icon: "bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 shadow-xs",
+  },
+  primary: {
+    card: "bg-gradient-to-br from-primary/10 via-card to-card border-primary/30 hover:border-primary/60 shadow-xs",
+    topBar: "bg-gradient-to-r from-primary via-primary/80 to-transparent",
+    icon: "bg-primary/15 text-primary border border-primary/30 shadow-xs",
+  },
+};
 
 export function VFStatCard({
   title,
@@ -19,31 +63,42 @@ export function VFStatCard({
   trend,
   trendLabel,
   isLoading = false,
+  accentColor = 'primary',
   className,
   ...props
 }: VFStatCardProps) {
   const displayLabel = trendLabel || description;
+  const accent = accentColor ? (ACCENT_STYLES[accentColor] || ACCENT_STYLES.primary) : ACCENT_STYLES.primary;
 
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-card p-4 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 hover:border-primary/40 group min-w-0 shadow-xs",
+        "rounded-xl border bg-card p-5 sm:p-6 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 group min-w-0 shadow-xs",
+        accent ? accent.card : "border-border hover:border-primary/40",
         className
       )}
       {...props}
     >
-      <div className="flex items-center justify-between gap-2 mb-2 min-w-0">
+      {accent && (
+        <div className={cn("absolute top-0 left-0 right-0 h-1", accent.topBar)} />
+      )}
+      <div className="flex items-center justify-between gap-2 mb-3 min-w-0">
         <span className="text-xs font-bold text-muted-foreground tracking-normal truncate" title={title}>
           {title}
         </span>
         {icon && (
-          <div className="h-7 w-7 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+          <div
+            className={cn(
+              "h-8 w-8 rounded-lg flex items-center justify-center shrink-0 transition-all",
+              accent ? accent.icon : "bg-muted text-muted-foreground group-hover:text-primary group-hover:bg-primary/10"
+            )}
+          >
             {icon}
           </div>
         )}
       </div>
       
-      <div className="flex flex-col gap-1 min-w-0">
+      <div className="flex flex-col gap-1.5 min-w-0">
         {isLoading ? (
           <div className="h-8 w-24 bg-muted animate-pulse rounded-md" />
         ) : (
@@ -53,7 +108,7 @@ export function VFStatCard({
         )}
         
         {!isLoading && displayLabel && (
-          <div className="flex items-center gap-1.5 mt-2 flex-wrap min-w-0 text-xs">
+          <div className="flex items-center gap-2 mt-3 flex-wrap min-w-0 text-xs">
             {trend && (
               <span
                 className={cn(

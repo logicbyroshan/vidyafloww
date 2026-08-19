@@ -141,6 +141,7 @@ function FeesPage() {
           icon={<DollarSign className="h-5 w-5" />}
           trend="up"
           trendLabel="1,248 Students"
+          accentColor="blue"
         />
         <VFStatCard
           title="Collected Revenue"
@@ -148,6 +149,7 @@ function FeesPage() {
           icon={<CreditCard className="h-5 w-5" />}
           trend="up"
           trendLabel="92.7% Collected"
+          accentColor="emerald"
         />
         <VFStatCard
           title="Pending Dues"
@@ -155,6 +157,7 @@ function FeesPage() {
           icon={<AlertCircle className="h-5 w-5" />}
           trend="down"
           trendLabel="74 Defaulters"
+          accentColor="rose"
         />
         <VFStatCard
           title="Collection Rate"
@@ -162,6 +165,7 @@ function FeesPage() {
           icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
           trendLabel="+4.2% vs Last Year"
+          accentColor="amber"
         />
       </div>
 

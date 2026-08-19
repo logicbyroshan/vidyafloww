@@ -11,22 +11,44 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 1. **Desktop Viewport Restriction**:
    - Minimum supported width is **1000px**.
    - If accessed on viewports below 1000px, a blocking overlay prompts users to use the VidyaMaxx Mobile App (`SmallScreenBlocker`).
-2. **Fluid Typography Scaling (Sofia Sans)**:
-   - Root HTML font uses **Sofia Sans** with CSS `clamp()` scaling:
+2. **Fluid Responsive Typography Clamping (Sofia Sans)**:
+   - Root HTML font uses **Sofia Sans** with fluid CSS `clamp()` and breakpoint scaling:
      ```css
-     font-family: 'Sofia Sans', system-ui, -apple-system, sans-serif;
-     font-size: clamp(15px, 0.3vw + 12px, 18px);
-     letter-spacing: 0.015em;
+     html {
+       /* Fluid base scaling from 15.5px up to 21.5px on large viewports */
+       font-size: clamp(15.5px, 0.75rem + 0.5vw, 19.5px);
+     }
+     @media (min-width: 1440px) { html { font-size: 17.5px; } }
+     @media (min-width: 1680px) { html { font-size: 18.25px; } }
+     @media (min-width: 1920px) { html { font-size: 19.0px; } }
+     @media (min-width: 2560px) { html { font-size: 21.5px; } }
      ```
-   - Scales text smoothly and proportionally between 1000px and 1920px viewports without breaking container bounds or vertical button alignment.
-3. **Sidebar Header & Combined Height Lock**:
-   - Sidebar top logo container is locked to `h-24` (`6rem`), perfectly matching the combined height of Header (`h-12` / `3rem`) + Tabbar (`h-12` / `3rem`) across fluid typography scales.
-   - Sidebar scrollbar is positioned on the far left edge (`.sidebar-left-scrollbar` with `direction: rtl` and subtle neutral gray thumb).
-   - Sidebar collapse button uses `z-50` with `shadow-md` overlay.
-4. **Global `VidyaMaxx AI` Assistant Sidebar Placement**:
-   - The `VidyaMaxx AI` Assistant button is located in the sidebar footer **directly above the User Profile card** (`bg-primary/10 border-primary/30 text-primary font-bold shadow-xs`).
-   - Renders exactly one Lucide `Sparkles` icon with `VidyaMaxx AI` label.
-   - Triggers the global AI Assistant Chat drawer (`AIChatDrawer.tsx`) via `useGlobalStore`.
+   - Scales text smoothly and proportionally across 1080p, 2K, and 4K displays while maintaining zero line overflow and perfect vertical alignment.
+3. **Standardized Typographic Hierarchy**:
+   - **Primary Navigation**: `text-base font-bold/font-semibold` with `h-5 w-5` icons (Sidebar items & Top Tab Bar options share identical scale).
+   - **Section & Card Titles**: `text-base font-extrabold text-foreground tracking-tight` across `VFCard`, `VFCardTitle`, and sub-rosters.
+   - **Section Subtitles**: `text-xs text-muted-foreground font-medium`.
+   - **Hero Metric Values**: `text-2xl font-black leading-none` across all `VFStatCard`s.
+   - **Table Primary Cells**: `text-sm font-bold text-foreground` (student/staff names, admission IDs).
+   - **Table Secondary Cells**: `text-sm font-semibold text-muted-foreground` (classes, contact numbers).
+4. **Header & Sidebar Height Lock (`h-[72px]`)**:
+   - Top Navbar (`Header.tsx`) and Sidebar brand header (`Sidebar.tsx`) are strictly locked to `h-[72px]`, providing generous vertical breathing room.
+   - Sub-navigation tab bar (`VFTabs.tsx`) is styled at `h-[58px] px-6` with fluid spring-animated active indicator underlines.
+5. **Generous Spacing & Card Dimensions**:
+   - Page containers use `p-6 sm:p-7` for spacious exterior margins.
+   - Structural grid layouts use `gap-6 sm:gap-7` and `space-y-6`.
+   - Cards (`VFCard`, `VFStatCard`) use `p-5 sm:p-6` with `rounded-xl` and `space-y-4` internal content spacing.
+
+---
+
+## Section-by-Section Dedicated Single Color System
+
+To eliminate visual chaos and rainbow noise, each functional section is assigned a single, dedicated color identity:
+- 🔷 **Institutional Metrics (Top KPIs)**: `Sky Blue` (`accentColor="blue"`)
+- 🟣 **Quick Action Command Launchpad**: `Royal Indigo` (`border-indigo-500/25 bg-indigo-500/10`)
+- 🟡 **Faculty Roster & Operations**: `Warm Amber` (`border-amber-500/25 bg-amber-500/8`)
+- 🔴 **Student Attendance Exceptions**: `Rose Red` (`border-rose-500/25 bg-rose-500/8`)
+- 🟢 **Software License & Cloud Health**: `Emerald Green` (`border-emerald-500/30 bg-emerald-500/10`)
 
 ---
 
@@ -38,7 +60,7 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 2. **Route Page & Tab Content Revealing Transitions (`Framer Motion`)**:
    - Main `<Outlet />` in `AppShell.tsx` and tab panels in `VFTabs.tsx` are wrapped in `<AnimatePresence>` + `<motion.div>`.
    - On route navigation or submodule tab switching, page components fade and slide up smoothly with staggered revealing motion (`duration: 0.28s`, bezier `[0.16, 1, 0.3, 1]`).
-   - Tab indicators use Framer Motion spring layouts (`layoutId="activeTabIndicator"`).
+   - Tab indicators use Framer Motion spring layouts (`layoutId="activeTabUnderline"`).
 
 ---
 
@@ -47,12 +69,9 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 1. **Single Viewport & No Dual Scrolling**:
    - The top tabbar is rendered at `sticky top-0 z-30` inside `<main>`.
    - Tabpanel content does NOT contain nested vertical `overflow-y-auto` scrollbars, making `<main>` the single, unified vertical scroll container.
-2. **Horizontal Mouse Wheel & Native Event Isolation**:
-   - Tabbar scroll container uses a **native non-passive wheel listener** (`{ passive: false }`) with `e.preventDefault()`.
-   - Mouse wheeling over tabs scrolls tabs horizontally without scrolling the parent main page.
-3. **Auto-Centering Smooth Scroll**:
+2. **Auto-Centering Smooth Scroll**:
    - Clicking or selecting any tab triggers `scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })` to focus active tabs.
-4. **Zero Vertical Jitter**:
+3. **Zero Vertical Jitter**:
    - Container locked with `overflow-y-hidden h-full items-center no-scrollbar`.
 
 ---
@@ -100,4 +119,4 @@ VidyaMaxx uses a custom, high-density **AI-First Enterprise Desktop Interface** 
 
 ---
 
-*Last updated: 2026-08-11*
+*Last updated: 2026-08-19*

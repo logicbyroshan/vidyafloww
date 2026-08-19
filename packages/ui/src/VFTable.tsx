@@ -14,7 +14,7 @@ const flexRender = (TanStackTableModule as any).flexRender;
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card">
+    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card custom-scrollbar">
       <table className={cn("w-full border-collapse text-left text-base", className)} {...props} />
     </div>
   );

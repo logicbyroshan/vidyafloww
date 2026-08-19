@@ -82,6 +82,7 @@ function AttendancePage() {
           icon={<GraduationCap className="h-5 w-5" />}
           trend="up"
           trendLabel="1,180 / 1,248 Present"
+          accentColor="emerald"
         />
         <VFStatCard
           title="Staff Attendance"
@@ -89,6 +90,7 @@ function AttendancePage() {
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="120 / 124 Present"
+          accentColor="blue"
         />
         <VFStatCard
           title="Uninformed Absences"
@@ -96,6 +98,7 @@ function AttendancePage() {
           icon={<AlertCircle className="h-5 w-5" />}
           trend="down"
           trendLabel="Alerts dispatched"
+          accentColor="rose"
         />
         <VFStatCard
           title="Biometric Gate Punches"
@@ -103,6 +106,7 @@ function AttendancePage() {
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
           trendLabel="Gate sync active"
+          accentColor="cyan"
         />
       </div>
 

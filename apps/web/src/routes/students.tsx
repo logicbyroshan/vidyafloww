@@ -105,6 +105,7 @@ function StudentsPage() {
           icon={<Users className="h-5 w-5" />}
           trend="up"
           trendLabel="+42 this term"
+          accentColor="blue"
         />
         <VFStatCard
           title="Regular Attendance"
@@ -112,6 +113,7 @@ function StudentsPage() {
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="1,210 Active"
+          accentColor="emerald"
         />
         <VFStatCard
           title="Pending Transfers"
@@ -119,6 +121,7 @@ function StudentsPage() {
           icon={<ArrowRight className="h-5 w-5" />}
           trend="neutral"
           trendLabel="TC in process"
+          accentColor="amber"
         />
         <VFStatCard
           title="Academic Average"
@@ -126,6 +129,7 @@ function StudentsPage() {
           icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
           trendLabel="Above target"
+          accentColor="purple"
         />
       </div>
 

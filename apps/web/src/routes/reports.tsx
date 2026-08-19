@@ -121,6 +121,7 @@ function ReportsPage() {
           icon={<FileSpreadsheet className="h-5 w-5" />}
           trend="up"
           trendLabel="1-Click Excel Export"
+          accentColor="cyan"
         />
         <VFStatCard
           title="CBSE Compliance"
@@ -128,6 +129,7 @@ function ReportsPage() {
           icon={<ShieldCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="Board Standard 2026"
+          accentColor="emerald"
         />
         <VFStatCard
           title="Attendance Accuracy"
@@ -135,6 +137,7 @@ function ReportsPage() {
           icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
           trendLabel="Biometric Gate Linked"
+          accentColor="blue"
         />
         <VFStatCard
           title="Fee Reconciliations"
@@ -142,6 +145,7 @@ function ReportsPage() {
           icon={<BarChart3 className="h-5 w-5" />}
           trend="up"
           trendLabel="Quarter 2 Audited"
+          accentColor="amber"
         />
       </div>
 

@@ -162,6 +162,7 @@ function SchoolAdministrationPage() {
           icon={<Calendar className="h-5 w-5" />}
           trend="up"
           trendLabel="Term 1 In Progress"
+          accentColor="amber"
         />
         <VFStatCard
           title="Campuses"
@@ -169,6 +170,7 @@ function SchoolAdministrationPage() {
           icon={<Building className="h-5 w-5" />}
           trend="neutral"
           trendLabel="Main & North Branch"
+          accentColor="blue"
         />
         <VFStatCard
           title="CBSE Affiliation"
@@ -176,6 +178,7 @@ function SchoolAdministrationPage() {
           icon={<ShieldCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="Valid till 2030"
+          accentColor="emerald"
         />
         <VFStatCard
           title="Audit Registers"
@@ -183,6 +186,7 @@ function SchoolAdministrationPage() {
           icon={<FileCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="RTE Compliant"
+          accentColor="purple"
         />
       </div>
 

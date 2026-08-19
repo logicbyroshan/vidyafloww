@@ -188,6 +188,7 @@ function StaffPage() {
           icon={<Users className="h-5 w-5" />}
           trend="up"
           trendLabel="94 Teaching · 30 Admin"
+          accentColor="blue"
         />
         <VFStatCard
           title="Today's Present"
@@ -195,6 +196,7 @@ function StaffPage() {
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
           trendLabel="96.8% Staff Attendance"
+          accentColor="emerald"
         />
         <VFStatCard
           title="Avg Period Load"
@@ -202,6 +204,7 @@ function StaffPage() {
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
           trendLabel="Optimal work balance"
+          accentColor="amber"
         />
         <VFStatCard
           title="Faculty Retention"
@@ -209,6 +212,7 @@ function StaffPage() {
           icon={<Award className="h-5 w-5" />}
           trend="up"
           trendLabel="Top academic satisfaction"
+          accentColor="purple"
         />
       </div>
 
