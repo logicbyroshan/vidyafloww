@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimetableRouteImport } from './routes/timetable'
 import { Route as StudentsRouteImport } from './routes/students'
+import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as StaffRouteImport } from './routes/staff'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -36,6 +37,11 @@ const TimetableRoute = TimetableRouteImport.update({
 const StudentsRoute = StudentsRouteImport.update({
   id: '/students',
   path: '/students',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatisticsRoute = StatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StaffRoute = StaffRouteImport.update({
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
   '/staff': typeof StaffRoute
+  '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
   '/staff': typeof StaffRoute
+  '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
   '/staff': typeof StaffRoute
+  '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
   '/timetable': typeof TimetableRoute
 }
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/settings'
     | '/staff'
+    | '/statistics'
     | '/students'
     | '/timetable'
   fileRoutesByTo: FileRoutesByTo
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/settings'
     | '/staff'
+    | '/statistics'
     | '/students'
     | '/timetable'
   id:
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/settings'
     | '/staff'
+    | '/statistics'
     | '/students'
     | '/timetable'
   fileRoutesById: FileRoutesById
@@ -260,6 +272,7 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   SettingsRoute: typeof SettingsRoute
   StaffRoute: typeof StaffRoute
+  StatisticsRoute: typeof StatisticsRoute
   StudentsRoute: typeof StudentsRoute
   TimetableRoute: typeof TimetableRoute
 }
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/students'
       fullPath: '/students'
       preLoaderRoute: typeof StudentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/statistics': {
+      id: '/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof StatisticsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/staff': {
@@ -412,6 +432,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   SettingsRoute: SettingsRoute,
   StaffRoute: StaffRoute,
+  StatisticsRoute: StatisticsRoute,
   StudentsRoute: StudentsRoute,
   TimetableRoute: TimetableRoute,
 }

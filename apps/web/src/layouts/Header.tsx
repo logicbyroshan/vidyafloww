@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, BarChart3 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { cn } from '@vidyamaxx/ui';
 
@@ -132,8 +133,18 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         </div>
       </div>
 
-      {/* Right: Search, Export, Notifications & School Identity */}
+      {/* Right: Statistics, Search, Export, Notifications & School Identity */}
       <div className="flex items-center gap-3 shrink-0">
+        {/* Unified Statistics Direct Nav Trigger */}
+        <Link
+          to="/statistics"
+          className="flex items-center gap-2 text-sm font-bold text-foreground hover:text-primary hover:bg-muted border border-border px-3.5 h-10 rounded-xl transition-all cursor-pointer bg-muted/40 group"
+          title="Institutional Statistics & Analytics Hub"
+        >
+          <BarChart3 className="h-4 w-4 text-primary shrink-0 group-hover:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Statistics</span>
+        </Link>
+
         {/* Compact Search Trigger */}
         <button
           onClick={onSearchClick}

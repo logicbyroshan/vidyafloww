@@ -4,25 +4,20 @@ import JSZip from 'jszip';
 import {
   VFPageContainer,
   VFTabs,
-  VFCard,
   VFBadge,
   VFButton,
   VFDataTable,
-  VFStatCard,
   VFDrawer,
   VFDialog,
   cn,
 } from '@vidyamaxx/ui';
 import {
   Users,
-  UserCheck,
-  TrendingUp,
   ArrowRight,
   Eye,
   Plus,
   Download,
   GraduationCap,
-  FileCheck2,
   FileText,
   Clock,
   ShieldCheck,
@@ -1264,167 +1259,7 @@ function StudentsPage() {
     </div>
   );
 
-  // ─── TAB 3: STUDENT ANALYTICS & DEMOGRAPHICS ──────────────────────────────────
-  const analyticsAndStatsContent = (
-    <div className="space-y-5">
-      {/* Session Context Banner */}
-      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
-            <BarChart3 className="h-5 w-5" />
-          </div>
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="text-sm font-extrabold text-foreground">
-              Institutional Intelligence Scope
-            </span>
-            <VFBadge variant="outline">Verified CBSE Analytics</VFBadge>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <VFButton
-            variant="outline"
-            size="sm"
-            leftIcon={<Download className="h-4 w-4" />}
-            onClick={() => setIsExportModalOpen(true)}
-          >
-            Export Insights PDF
-          </VFButton>
-        </div>
-      </div>
-
-      {/* Primary KPI Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-        <VFStatCard
-          title="Total Enrolled"
-          value={activeSession === '2026–2027' ? "1,248" : "1,180"}
-          icon={<Users className="h-5 w-5" />}
-          trend="up"
-          trendLabel={`Session ${activeSession}`}
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Regular Attendance"
-          value="96.9%"
-          icon={<UserCheck className="h-5 w-5" />}
-          trend="up"
-          trendLabel="1,210 Active"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Active Class Divisions"
-          value="16 Sections"
-          icon={<FileText className="h-5 w-5" />}
-          trend="neutral"
-          trendLabel="Classes 9 to 12"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Academic Average"
-          value="94.8%"
-          icon={<TrendingUp className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Term 1 Benchmark"
-          accentColor="blue"
-        />
-      </div>
-
-      {/* Secondary TC & Migration KPI Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-        <VFStatCard
-          title="Total TC Issued"
-          value="142"
-          icon={<FileCheck2 className="h-5 w-5" />}
-          trend="up"
-          trendLabel="+14 this term"
-          accentColor="amber"
-        />
-        <VFStatCard
-          title="Graduated / Alumni"
-          value="310"
-          icon={<GraduationCap className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Class 12 Batch"
-          accentColor="amber"
-        />
-        <VFStatCard
-          title="Pending Verification"
-          value="3 Requests"
-          icon={<Clock className="h-5 w-5" />}
-          trend="neutral"
-          trendLabel="Principal Queue"
-          accentColor="amber"
-        />
-        <VFStatCard
-          title="CBSE Migration Rate"
-          value="100%"
-          icon={<ShieldCheck className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Fully Compliant"
-          accentColor="amber"
-        />
-      </div>
-
-      {/* Demographic Matrix 3-Card Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <VFCard title="Gender Distribution" description="Current student population balance">
-          <div className="space-y-3 mt-1">
-            <p className="text-2xl font-black text-foreground">640 Boys / 608 Girls</p>
-            <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex">
-              <div className="h-full bg-blue-500 w-[51.2%]" />
-              <div className="h-full bg-pink-500 w-[48.8%]" />
-            </div>
-            <p className="text-xs font-bold text-muted-foreground">51.2% Male · 48.8% Female</p>
-          </div>
-        </VFCard>
-
-        <VFCard title="Quota & Reserved Seats" description="Compliance with RTE standards">
-          <div className="space-y-3 mt-1">
-            <p className="text-2xl font-black text-foreground">186 Students</p>
-            <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-emerald-500 w-[75%]" />
-            </div>
-            <p className="text-xs font-bold text-muted-foreground">15% RTE Quota fully compliant</p>
-          </div>
-        </VFCard>
-
-        <VFCard title="House Allocations" description="Four competitive student squads">
-          <div className="space-y-3 mt-1">
-            <p className="text-2xl font-black text-foreground">4 Houses</p>
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-red-500/15 text-red-400 border border-red-500/25 text-center">Red: 312</span>
-              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-blue-500/15 text-blue-400 border border-blue-500/25 text-center">Blue: 310</span>
-              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-green-500/15 text-green-400 border border-green-500/25 text-center">Green: 314</span>
-              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/25 text-center">Yellow: 312</span>
-            </div>
-          </div>
-        </VFCard>
-      </div>
-
-      {/* Class-Wise Enrollment Breakdown */}
-      <VFCard title="Class-Wise Enrollment Breakdown" description="Distribution across academic wings and sections">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-base pt-1">
-          {[
-            { grade: 'Class 9', total: '320 Students', sections: '4 Sections', standing: '96.2% Avg' },
-            { grade: 'Class 10', total: '310 Students', sections: '4 Sections', standing: '97.8% Avg' },
-            { grade: 'Class 11', total: '308 Students', sections: '4 Sections', standing: '94.5% Avg' },
-            { grade: 'Class 12', total: '310 Students', sections: '4 Sections', standing: '98.1% Avg' },
-          ].map((c, i) => (
-            <div key={i} className="p-3.5 rounded-xl bg-background/50 border border-border space-y-1.5">
-              <div className="flex items-center justify-between">
-                <p className="font-black text-foreground text-base">{c.grade}</p>
-                <VFBadge variant="outline">{c.sections}</VFBadge>
-              </div>
-              <p className="text-xl font-extrabold text-foreground">{c.total}</p>
-              <p className="text-xs text-emerald-400 font-bold">{c.standing}</p>
-            </div>
-          ))}
-        </div>
-      </VFCard>
-    </div>
-  );
-
-  // ─── 3 TABS CONFIGURATION ────────────────────────────────────────────────────
+  // ─── 2 TABS CONFIGURATION (CLEAN DATA PAGES) ─────────────────────────────────
   const tabs = [
     {
       id: 'enrolled',
@@ -1439,12 +1274,6 @@ function StudentsPage() {
       icon: <GraduationCap className="h-5 w-5" />,
       badge: currentTcAndAlumniList.length,
       content: tcAndAlumniContent,
-    },
-    {
-      id: 'analytics_demographics',
-      label: 'Student Analytics & Demographics',
-      icon: <BarChart3 className="h-5 w-5" />,
-      content: analyticsAndStatsContent,
     },
   ];
 

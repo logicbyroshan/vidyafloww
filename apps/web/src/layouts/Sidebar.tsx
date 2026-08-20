@@ -19,6 +19,7 @@ import {
   ChevronRight,
   LogOut,
   LucideIcon,
+  BarChart3,
 } from 'lucide-react';
 
 interface NavItem {
@@ -60,6 +61,7 @@ const NAVIGATION_SECTIONS: NavSection[] = [
   {
     title: 'Finance & Operations',
     items: [
+      { id: 'statistics', label: 'Statistics', route: '/statistics', icon: BarChart3 },
       { id: 'fees', label: 'Fees & Payments', route: '/fees', icon: CreditCard },
       { id: 'notices', label: 'Notices', route: '/notices', icon: Bell },
       { id: 'reports', label: 'Reports', route: '/reports', icon: FileSpreadsheet },
