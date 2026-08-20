@@ -61,31 +61,31 @@
   }
 
   html {
-    /* Refined modern responsive typography: balanced scale for high readability without oversized elements */
-    font-size: clamp(13.5px, 0.75rem + 0.2vw, 15px);
+    /* Balanced modern typography sweet spot: comfortable readability, clean proportional metrics */
+    font-size: clamp(15px, 0.8rem + 0.25vw, 16.5px);
   }
 
   @media (min-width: 1440px) {
     html {
-      font-size: 14.5px;
+      font-size: 16px;
     }
   }
 
   @media (min-width: 1680px) {
     html {
-      font-size: 15px;
+      font-size: 16.25px;
     }
   }
 
   @media (min-width: 1920px) {
     html {
-      font-size: 15.25px;
+      font-size: 16.5px;
     }
   }
 
   @media (min-width: 2560px) {
     html {
-      font-size: 16.5px;
+      font-size: 18px;
     }
   }
 

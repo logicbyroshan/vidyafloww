@@ -825,7 +825,7 @@ function StudentsPage() {
         <div className="flex items-center justify-center">
           <div
             onClick={() => openStudentDrawer(r)}
-            className="relative overflow-hidden rounded-md border border-primary/30 shadow-xs w-8 h-[41px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-primary transition-all"
+            className="relative overflow-hidden rounded-md border border-primary/30 shadow-xs w-9 h-[46px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-primary transition-all"
             style={{ aspectRatio: '19.5 / 25' }}
             title="Click to view 360° student profile"
           >
@@ -841,7 +841,7 @@ function StudentsPage() {
             />
             <div
               style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full bg-primary/20 text-primary font-black text-[10px] hidden items-center justify-center border border-primary/30"
+              className="w-full h-full bg-primary/20 text-primary font-black text-xs hidden items-center justify-center border border-primary/30"
             >
               {r.name.split(' ').map((n: string) => n[0]).join('')}
             </div>
@@ -855,7 +855,7 @@ function StudentsPage() {
       cell: (r: any) => (
         <span
           onClick={() => openStudentDrawer(r)}
-          className="font-mono font-bold text-primary text-xs cursor-pointer hover:underline"
+          className="font-mono font-bold text-primary text-sm cursor-pointer hover:underline"
         >
           {r.admNo}
         </span>
@@ -867,9 +867,9 @@ function StudentsPage() {
       cell: (r: any) => (
         <div
           onClick={() => openStudentDrawer(r)}
-          className="flex items-center gap-2 cursor-pointer group"
+          className="flex items-center gap-2.5 cursor-pointer group"
         >
-          <span className="font-extrabold text-foreground text-xs group-hover:text-primary transition-colors">
+          <span className="font-extrabold text-foreground text-sm group-hover:text-primary transition-colors">
             {r.name}
           </span>
         </div>
@@ -878,12 +878,12 @@ function StudentsPage() {
     {
       header: 'Class & Section',
       accessorKey: 'class',
-      cell: (r: any) => <span className="text-foreground font-bold text-xs">{r.class} · Sec {r.section}</span>,
+      cell: (r: any) => <span className="text-foreground font-bold text-sm">{r.class} · Sec {r.section}</span>,
     },
     {
       header: 'Roll No',
       accessorKey: 'roll',
-      cell: (r: any) => <span className="font-bold text-foreground text-xs">{r.roll}</span>,
+      cell: (r: any) => <span className="font-bold text-foreground text-sm">{r.roll}</span>,
     },
     {
       header: 'House',
@@ -893,7 +893,7 @@ function StudentsPage() {
     {
       header: 'Guardian Phone',
       accessorKey: 'phone',
-      cell: (r: any) => <span className="text-muted-foreground font-mono text-xs font-semibold">{r.phone}</span>,
+      cell: (r: any) => <span className="text-muted-foreground font-mono text-sm font-semibold">{r.phone}</span>,
     },
     {
       header: 'Status',
@@ -911,7 +911,7 @@ function StudentsPage() {
         <VFButton
           size="sm"
           variant="outline"
-          leftIcon={<Eye className="h-3.5 w-3.5" />}
+          leftIcon={<Eye className="h-4 w-4" />}
           onClick={() => openStudentDrawer(r)}
         >
           View Profile
@@ -928,7 +928,7 @@ function StudentsPage() {
       cell: (r: any) => (
         <div className="flex items-center justify-center">
           <div
-            className="relative overflow-hidden rounded-md border border-amber-500/30 shadow-xs w-8 h-[41px] shrink-0 bg-muted flex items-center justify-center"
+            className="relative overflow-hidden rounded-md border border-amber-500/30 shadow-xs w-9 h-[46px] shrink-0 bg-muted flex items-center justify-center"
             style={{ aspectRatio: '19.5 / 25' }}
           >
             <img
@@ -943,7 +943,7 @@ function StudentsPage() {
             />
             <div
               style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full bg-amber-500/20 text-amber-400 font-black text-[10px] hidden items-center justify-center border border-amber-500/30"
+              className="w-full h-full bg-amber-500/20 text-amber-400 font-black text-xs hidden items-center justify-center border border-amber-500/30"
             >
               {r.name.split(' ').map((n: string) => n[0]).join('')}
             </div>
@@ -956,8 +956,8 @@ function StudentsPage() {
       accessorKey: 'tcNo',
       cell: (r: any) => (
         <div className="flex flex-col">
-          <span className="font-mono font-bold text-amber-400 text-xs">{r.tcNo}</span>
-          <span className="font-mono text-[10px] text-muted-foreground">{r.admNo}</span>
+          <span className="font-mono font-bold text-amber-400 text-sm">{r.tcNo}</span>
+          <span className="font-mono text-xs text-muted-foreground">{r.admNo}</span>
         </div>
       ),
     },
@@ -966,8 +966,8 @@ function StudentsPage() {
       accessorKey: 'name',
       cell: (r: any) => (
         <div className="flex flex-col">
-          <span className="font-extrabold text-foreground text-xs">{r.name}</span>
-          <span className="text-[10px] text-muted-foreground font-semibold">{r.previousClass}</span>
+          <span className="font-extrabold text-foreground text-sm">{r.name}</span>
+          <span className="text-xs text-muted-foreground font-semibold">{r.previousClass}</span>
         </div>
       ),
     },
@@ -976,12 +976,12 @@ function StudentsPage() {
       accessorKey: 'type',
       cell: (r: any) => (
         <span className={cn(
-          "text-[11px] font-bold px-2 py-0.5 rounded-md border inline-flex items-center gap-1",
+          "text-xs font-bold px-2.5 py-1 rounded-md border inline-flex items-center gap-1.5",
           r.type.includes('Passed Out')
             ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
             : "bg-amber-500/15 text-amber-400 border-amber-500/30"
         )}>
-          {r.type.includes('Passed Out') ? <GraduationCap className="h-3 w-3" /> : <ArrowRight className="h-3 w-3" />}
+          {r.type.includes('Passed Out') ? <GraduationCap className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
           {r.type}
         </span>
       ),
@@ -991,15 +991,15 @@ function StudentsPage() {
       accessorKey: 'tcReason',
       cell: (r: any) => (
         <div className="flex flex-col">
-          <span className="text-xs font-bold text-foreground truncate max-w-[200px]">{r.tcReason}</span>
-          <span className="text-[10px] text-muted-foreground truncate max-w-[200px]">{r.destination}</span>
+          <span className="text-sm font-bold text-foreground truncate max-w-[220px]">{r.tcReason}</span>
+          <span className="text-xs text-muted-foreground truncate max-w-[220px]">{r.destination}</span>
         </div>
       ),
     },
     {
       header: 'Issue / Release Date',
       accessorKey: 'issueDate',
-      cell: (r: any) => <span className="font-mono text-xs font-semibold text-muted-foreground">{r.issueDate}</span>,
+      cell: (r: any) => <span className="font-mono text-sm font-semibold text-muted-foreground">{r.issueDate}</span>,
     },
     {
       header: 'Verification Status',
@@ -1014,11 +1014,11 @@ function StudentsPage() {
       header: 'Actions',
       accessorKey: 'action',
       cell: (r: any) => (
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <VFButton
             size="sm"
             variant="outline"
-            leftIcon={<Download className="h-3 w-3" />}
+            leftIcon={<Download className="h-3.5 w-3.5" />}
             onClick={() => alert(`Downloading official Certificate for ${r.name} (${r.tcNo})`)}
           >
             Certificate
@@ -1030,18 +1030,18 @@ function StudentsPage() {
 
   // ─── TAB 1: ENROLLED STUDENTS ────────────────────────────────────────────────
   const enrolledStudentsContent = (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {/* Unified Control Command Bar (Clean, without duplicate session badge) */}
-      <div className="p-2.5 sm:p-3 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-2.5 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
         {/* Left: Class Filters & Student Count */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2.5 flex-wrap">
           {/* Class / Grade Filter */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted/60 border border-border">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-muted/60 border border-border">
             <span className="text-xs font-bold text-muted-foreground">Class:</span>
             <select
               value={selectedClassFilter}
               onChange={(e) => setSelectedClassFilter(e.target.value)}
-              className="bg-transparent text-xs font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-primary transition-colors border-none"
+              className="bg-transparent text-sm font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-primary transition-colors border-none"
             >
               <option value="all" className="bg-card text-foreground font-bold">All Classes & Wings</option>
               <option value="Class 9" className="bg-card text-foreground font-bold">Class 9 Only</option>
@@ -1052,23 +1052,23 @@ function StudentsPage() {
           </div>
 
           {/* Quick Active Badge */}
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
             <span>Enrolled:</span>
             <span className="font-extrabold text-foreground">{currentEnrolledList.length} Students</span>
           </span>
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
+        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
           <VFButton
             variant="outline"
             size="sm"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
+            leftIcon={<Download className="h-4 w-4" />}
             onClick={() => setIsExportModalOpen(true)}
           >
             Export Roster
           </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>
+          <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
             Add Student
           </VFButton>
         </div>
@@ -1085,18 +1085,18 @@ function StudentsPage() {
 
   // ─── TAB 2: TRANSFERS, TC & ALUMNI ───────────────────────────────────────────
   const tcAndAlumniContent = (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {/* Unified Control Command Bar (Clean, without duplicate session badge) */}
-      <div className="p-2.5 sm:p-3 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-2.5 shadow-xs">
+      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
         {/* Left: Category Filters & Count */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2.5 flex-wrap">
           {/* Record Category Filter */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted/60 border border-border">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-muted/60 border border-border">
             <span className="text-xs font-bold text-muted-foreground">Type:</span>
             <select
               value={selectedTcFilter}
               onChange={(e) => setSelectedTcFilter(e.target.value)}
-              className="bg-transparent text-xs font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-amber-400 transition-colors border-none"
+              className="bg-transparent text-sm font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-amber-400 transition-colors border-none"
             >
               <option value="all" className="bg-card text-foreground font-bold">All TC & Alumni Records</option>
               <option value="tc" className="bg-card text-foreground font-bold">Transfer Certificates (TC)</option>
@@ -1105,23 +1105,23 @@ function StudentsPage() {
           </div>
 
           {/* Quick Count Badge */}
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
             <span>Records:</span>
             <span className="font-extrabold text-foreground">{currentTcAndAlumniList.length}</span>
           </span>
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
+        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
           <VFButton
             variant="outline"
             size="sm"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
+            leftIcon={<Download className="h-4 w-4" />}
             onClick={() => setIsExportModalOpen(true)}
           >
             Export TC Ledger
           </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-3.5 w-3.5" />}>
+          <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
             Issue New TC
           </VFButton>
         </div>
@@ -1138,15 +1138,15 @@ function StudentsPage() {
 
   // ─── TAB 3: STUDENT ANALYTICS & DEMOGRAPHICS ──────────────────────────────────
   const analyticsAndStatsContent = (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Session Context Banner */}
-      <div className="p-2.5 sm:p-3 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-2.5 shadow-xs">
-        <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
-            <BarChart3 className="h-4 w-4" />
+      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
+            <BarChart3 className="h-5 w-5" />
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-extrabold text-foreground">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="text-sm font-extrabold text-foreground">
               Institutional Intelligence Scope
             </span>
             <VFBadge variant="outline">Verified CBSE Analytics</VFBadge>
@@ -1157,7 +1157,7 @@ function StudentsPage() {
           <VFButton
             variant="outline"
             size="sm"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
+            leftIcon={<Download className="h-4 w-4" />}
             onClick={() => setIsExportModalOpen(true)}
           >
             Export Insights PDF
