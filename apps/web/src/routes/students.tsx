@@ -19,8 +19,6 @@ import {
   Download,
   GraduationCap,
   FileText,
-  Clock,
-  ShieldCheck,
   BarChart3,
   ChevronLeft,
   ChevronRight,
@@ -42,7 +40,6 @@ import {
   Send,
   ExternalLink,
   Award,
-  AlertCircle,
   FileCheck,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -987,80 +984,6 @@ function StudentsPage() {
       header: 'Roll No',
       accessorKey: 'roll',
       cell: (r: any) => <span className="font-bold text-foreground text-sm">{r.roll}</span>,
-    },
-    {
-      header: 'ID Card Status',
-      accessorKey: 'idCardStatus',
-      cell: (r: any) => {
-        const status = r.idCardStatus || 'Issued & Active';
-        if (status.includes('Issued')) {
-          return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
-              <CreditCard className="h-3.5 w-3.5" />
-              <span>Issued</span>
-            </span>
-          );
-        }
-        if (status.includes('Pending Print')) {
-          return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/25">
-              <Clock className="h-3.5 w-3.5" />
-              <span>Pending Print</span>
-            </span>
-          );
-        }
-        if (status.includes('Application Received')) {
-          return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-500/15 text-blue-400 border border-blue-500/25">
-              <FileText className="h-3.5 w-3.5" />
-              <span>New App.</span>
-            </span>
-          );
-        }
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/15 text-rose-400 border border-rose-500/25">
-            <AlertCircle className="h-3.5 w-3.5" />
-            <span>Re-issue Req.</span>
-          </span>
-        );
-      },
-    },
-    {
-      header: 'Board / Exam Form',
-      accessorKey: 'examFormStatus',
-      cell: (r: any) => {
-        const formStatus = r.examFormStatus || 'Forwarded to Board';
-        if (formStatus.includes('Forwarded')) {
-          return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
-              <Send className="h-3.5 w-3.5" />
-              <span>CBSE Forwarded</span>
-            </span>
-          );
-        }
-        if (formStatus.includes('LOC Verified')) {
-          return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-purple-500/15 text-purple-400 border border-purple-500/25">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              <span>LOC Verified</span>
-            </span>
-          );
-        }
-        if (formStatus.includes('Admit Card')) {
-          return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-cyan-500/15 text-cyan-400 border border-cyan-500/25">
-              <Award className="h-3.5 w-3.5" />
-              <span>Admit Card Ready</span>
-            </span>
-          );
-        }
-        return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/25">
-            <Clock className="h-3.5 w-3.5" />
-            <span>Pending Submission</span>
-          </span>
-        );
-      },
     },
     {
       header: 'House',
