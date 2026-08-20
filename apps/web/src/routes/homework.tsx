@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFStatCard,
   VFDataTable,
   VFButton,
   VFCard,
@@ -10,9 +9,7 @@ import {
 } from '@vidyamaxx/ui';
 import {
   BookMarked,
-  FileText,
   Clock,
-  TrendingUp,
   Plus,
   Download,
 } from 'lucide-react';
@@ -81,35 +78,30 @@ function HomeworkPage() {
   // 1. Homework List View
   const listContent = (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard
-          title="Active Homework"
-          value="12 Published"
-          icon={<BookMarked className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Across 4 classes"
-        />
-        <VFStatCard
-          title="Turned In Today"
-          value="142"
-          icon={<FileText className="h-5 w-5" />}
-          trend="up"
-          trendLabel="88% submission rate"
-        />
-        <VFStatCard
-          title="Pending Grading"
-          value="18"
-          icon={<Clock className="h-5 w-5" />}
-          trend="neutral"
-          trendLabel="Requires review"
-        />
-        <VFStatCard
-          title="On-Time Rate"
-          value="94.2%"
-          icon={<TrendingUp className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Top performance"
-        />
+      {/* 4 Enclosed Top Metric KPI Cards */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Active Homework</span>
+            <span className="text-2xl font-black text-foreground mt-1 block">12 Published</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Across 4 classes</span>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Turned In Today</span>
+            <span className="text-2xl font-black text-emerald-400 mt-1 block">142</span>
+            <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">88% submission rate</span>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Pending Grading</span>
+            <span className="text-2xl font-black text-amber-400 mt-1 block">18</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Requires review</span>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">On-Time Velocity</span>
+            <span className="text-2xl font-black text-emerald-400 mt-1 block">94.2%</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Top institutional grade</span>
+          </div>
+        </div>
       </div>
 
       <div className="space-y-4">

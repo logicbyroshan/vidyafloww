@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFStatCard,
   VFButton,
   VFCard,
   VFSelect,
@@ -12,8 +11,6 @@ import {
 import {
   Calendar,
   Clock,
-  RefreshCw,
-  Award,
   Download,
   Users,
 } from 'lucide-react';
@@ -90,44 +87,34 @@ function TimetablePage() {
   // 1. Weekly Class Schedule View
   const scheduleContent = (
     <div className="space-y-6">
-      {/* KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard
-          title="Active Schedule"
-          value="Version 4.2"
-          icon={<Calendar className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Live Term 2"
-          accentColor="cyan"
-        />
-        <VFStatCard
-          title="Daily Slots"
-          value="184 Slots"
-          icon={<Clock className="h-5 w-5" />}
-          trend="neutral"
-          trendLabel="48 sections"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Today's Substitutes"
-          value="4 Proxies"
-          icon={<RefreshCw className="h-5 w-5" />}
-          trend="down"
-          trendLabel="100% assigned"
-          accentColor="amber"
-        />
-        <VFStatCard
-          title="Schedule Quality"
-          value="98 / 100"
-          icon={<Award className="h-5 w-5" />}
-          trend="up"
-          trendLabel="0 slot conflicts"
-          accentColor="emerald"
-        />
+      {/* 4 Enclosed Top Metric KPI Cards */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Active Schedule</span>
+            <span className="text-2xl font-black text-foreground mt-1 block">Version 4.2</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Live for Term 2</span>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Daily Slots</span>
+            <span className="text-2xl font-black text-foreground mt-1 block">184 Slots</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Across 48 sections</span>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Today's Substitutes</span>
+            <span className="text-2xl font-black text-emerald-400 mt-1 block">4 Proxies</span>
+            <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">100% Assigned</span>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Schedule Quality</span>
+            <span className="text-2xl font-black text-emerald-400 mt-1 block">98 / 100</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">0 Slot Conflicts</span>
+          </div>
+        </div>
       </div>
 
       {/* Class Selector Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-60">
             <VFSelect
