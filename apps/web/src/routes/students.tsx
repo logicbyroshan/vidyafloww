@@ -24,12 +24,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Phone,
-  MapPin,
-  HeartPulse,
   Printer,
   MessageSquare,
-  Sparkles,
-  BookOpen,
   Edit3,
   Bus,
   FileSpreadsheet,
@@ -45,7 +41,6 @@ import {
   Check,
   Copy,
   Receipt,
-  Trophy,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -968,7 +963,7 @@ function StudentsPage() {
       cell: (r: any) => (
         <span
           onClick={() => openStudentDrawer(r)}
-          className="font-mono font-bold text-primary text-sm cursor-pointer hover:underline"
+          className="font-mono font-semibold text-foreground/90 text-sm cursor-pointer hover:text-primary transition-colors"
         >
           {r.admNo}
         </span>
@@ -991,22 +986,33 @@ function StudentsPage() {
     {
       header: 'Class & Section',
       accessorKey: 'class',
-      cell: (r: any) => <span className="text-foreground font-bold text-sm">{r.class} · Sec {r.section}</span>,
+      cell: (r: any) => <span className="text-foreground font-semibold text-sm">{r.class} · Sec {r.section}</span>,
     },
     {
       header: 'Roll No',
       accessorKey: 'roll',
-      cell: (r: any) => <span className="font-bold text-foreground text-sm">{r.roll}</span>,
+      cell: (r: any) => <span className="font-mono text-muted-foreground text-sm font-medium">{r.roll}</span>,
     },
     {
       header: 'House',
       accessorKey: 'house',
-      cell: (r: any) => <VFBadge variant="outline">{r.house}</VFBadge>,
+      cell: (r: any) => (
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
+          <span className={cn(
+            "h-1.5 w-1.5 rounded-full shrink-0",
+            r.house?.includes('Red') && "bg-red-400",
+            r.house?.includes('Blue') && "bg-blue-400",
+            r.house?.includes('Green') && "bg-emerald-400",
+            r.house?.includes('Yellow') && "bg-amber-400"
+          )} />
+          {r.house}
+        </span>
+      ),
     },
     {
       header: 'Guardian Phone',
       accessorKey: 'phone',
-      cell: (r: any) => <span className="text-muted-foreground font-mono text-sm font-semibold">{r.phone}</span>,
+      cell: (r: any) => <span className="text-muted-foreground font-mono text-sm">{r.phone}</span>,
     },
     {
       header: 'Status',
@@ -1024,7 +1030,7 @@ function StudentsPage() {
         <VFButton
           size="sm"
           variant="outline"
-          leftIcon={<Eye className="h-4 w-4" />}
+          leftIcon={<Eye className="h-3.5 w-3.5" />}
           onClick={() => openStudentDrawer(r)}
         >
           View Profile
@@ -1041,7 +1047,7 @@ function StudentsPage() {
       cell: (r: any) => (
         <div className="flex items-center justify-center">
           <div
-            className="relative overflow-hidden rounded-lg border border-amber-500/40 shadow-sm w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center"
+            className="relative overflow-hidden rounded-lg border border-border/80 shadow-sm w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center"
             style={{ aspectRatio: '19.5 / 25' }}
           >
             <img
@@ -1056,7 +1062,7 @@ function StudentsPage() {
             />
             <div
               style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full bg-amber-500/20 text-amber-400 font-black text-sm hidden items-center justify-center border border-amber-500/30"
+              className="w-full h-full bg-muted text-muted-foreground font-black text-sm hidden items-center justify-center"
             >
               {r.name.split(' ').map((n: string) => n[0]).join('')}
             </div>
@@ -1069,7 +1075,7 @@ function StudentsPage() {
       accessorKey: 'tcNo',
       cell: (r: any) => (
         <div className="flex flex-col">
-          <span className="font-mono font-bold text-amber-400 text-sm">{r.tcNo}</span>
+          <span className="font-mono font-semibold text-foreground text-sm">{r.tcNo}</span>
           <span className="font-mono text-xs text-muted-foreground">{r.admNo}</span>
         </div>
       ),
@@ -1092,9 +1098,9 @@ function StudentsPage() {
           "text-xs font-bold px-2.5 py-1 rounded-md border inline-flex items-center gap-1.5",
           r.type.includes('Passed Out')
             ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
-            : "bg-amber-500/15 text-amber-400 border-amber-500/30"
+            : "bg-muted text-muted-foreground border-border"
         )}>
-          {r.type.includes('Passed Out') ? <GraduationCap className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+          {r.type.includes('Passed Out') ? <GraduationCap className="h-3.5 w-3.5 text-emerald-400" /> : <ArrowRight className="h-3.5 w-3.5" />}
           {r.type}
         </span>
       ),
@@ -1228,53 +1234,52 @@ function StudentsPage() {
             : ''
         }
         className="w-[840px] max-w-[95vw] sm:max-w-3xl lg:max-w-4xl"
-        headerActions={
-          <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl border border-border">
-            <button
-              onClick={handlePrevStudent}
-              disabled={selectedStudentIndex === 0}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
-              title="Previous Student (Keyboard: ←)"
-            >
-              <ChevronLeft className="h-4.5 w-4.5" />
-            </button>
-            <span className="text-xs font-mono font-bold px-2 text-foreground select-none">
-              {selectedStudentIndex !== null ? selectedStudentIndex + 1 : 1} / {currentEnrolledList.length}
-            </span>
-            <button
-              onClick={handleNextStudent}
-              disabled={selectedStudentIndex === currentEnrolledList.length - 1}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
-              title="Next Student (Keyboard: →)"
-            >
-              <ChevronRight className="h-4.5 w-4.5" />
-            </button>
-          </div>
-        }
         footerActions={
-          <div className="flex items-center justify-between w-full gap-2 flex-wrap">
+          <div className="flex items-center justify-between w-full gap-3 flex-wrap">
+            {/* 1. Bottom Stepper (Moved from top to save vertical space) */}
+            <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border">
+              <button
+                onClick={handlePrevStudent}
+                disabled={selectedStudentIndex === 0}
+                className="p-1 rounded-md text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+                title="Previous Student (Keyboard: ←)"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <span className="text-xs font-mono font-bold px-2 text-foreground select-none">
+                {selectedStudentIndex !== null ? selectedStudentIndex + 1 : 1} / {currentEnrolledList.length}
+              </span>
+              <button
+                onClick={handleNextStudent}
+                disabled={selectedStudentIndex === currentEnrolledList.length - 1}
+                className="p-1 rounded-md text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+                title="Next Student (Keyboard: →)"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* 2. Action Buttons */}
             <div className="flex items-center gap-2">
               <VFButton
                 variant="outline"
                 size="sm"
-                leftIcon={<MessageSquare className="h-4 w-4 text-emerald-400" />}
+                leftIcon={<MessageSquare className="h-3.5 w-3.5 text-emerald-400" />}
                 onClick={() => window.open(`https://wa.me/${activeStudent?.phone?.replace(/[^0-9]/g, '')}`, '_blank')}
               >
-                WhatsApp Parent
+                WhatsApp
               </VFButton>
               <VFButton
                 variant="outline"
                 size="sm"
-                leftIcon={<Printer className="h-4 w-4 text-primary" />}
+                leftIcon={<Printer className="h-3.5 w-3.5" />}
                 onClick={() => openIdCardModal(activeStudent)}
               >
-                Print ID Badge
+                Print ID
               </VFButton>
-            </div>
-            <div className="flex items-center gap-2">
               <VFButton
                 size="sm"
-                leftIcon={<Edit3 className="h-4 w-4" />}
+                leftIcon={<Edit3 className="h-3.5 w-3.5" />}
                 onClick={() => alert(`Editing student profile for ${activeStudent?.name}`)}
               >
                 Edit Profile
@@ -1284,89 +1289,82 @@ function StudentsPage() {
         }
       >
         {activeStudent && (
-          <div className="space-y-4 animate-fade-in pb-4">
-            {/* 1. Hero Identity Card (19.5:25 Biometric Photo & Quick Dossier) */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-card via-card to-primary/10 border border-border shadow-md p-4 sm:p-5">
-              <div className="absolute top-0 right-0 w-44 h-44 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-              
-              <div className="flex items-start gap-4 sm:gap-5 relative z-10">
-                {/* 19.5 : 25 Calibrated Portrait */}
-                <div className="relative shrink-0 group">
-                  <div
-                    className="relative overflow-hidden rounded-xl border-2 border-primary/50 shadow-md w-[88px] h-[112px] bg-muted/80 flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+          <div className="space-y-4 animate-fade-in pb-2">
+            {/* 1. Flat Clean Hero Identity Row (No Box-in-Box, Clean Typography) */}
+            <div className="flex items-start gap-4 pb-4 border-b border-border/60">
+              {/* 19.5 : 25 Calibrated Portrait */}
+              <div className="relative shrink-0">
+                <div
+                  className="relative overflow-hidden rounded-xl border border-border/80 shadow-xs w-20 h-[102px] bg-muted flex items-center justify-center"
+                  style={{ aspectRatio: '19.5 / 25' }}
+                >
+                  <img
+                    src={activeStudent.avatarUrl}
+                    alt={activeStudent.name}
                     style={{ aspectRatio: '19.5 / 25' }}
+                    className="w-full h-full object-cover"
+                    onError={(e: any) => {
+                      e.target.style.display = 'none';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div
+                    style={{ aspectRatio: '19.5 / 25' }}
+                    className="w-full h-full bg-muted text-muted-foreground font-black text-xl hidden items-center justify-center"
                   >
-                    <img
-                      src={activeStudent.avatarUrl}
-                      alt={activeStudent.name}
-                      style={{ aspectRatio: '19.5 / 25' }}
-                      className="w-full h-full object-cover"
-                      onError={(e: any) => {
-                        e.target.style.display = 'none';
-                        if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                    <div
-                      style={{ aspectRatio: '19.5 / 25' }}
-                      className="w-full h-full bg-primary/20 text-primary font-black text-2xl hidden items-center justify-center"
-                    >
-                      {activeStudent.name.split(' ').map((n: string) => n[0]).join('')}
-                    </div>
+                    {activeStudent.name.split(' ').map((n: string) => n[0]).join('')}
                   </div>
-                  <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-card ring-1 ring-emerald-500/50" title="Active Enrollment" />
+                </div>
+                <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-card" title="Active Enrollment" />
+              </div>
+
+              {/* Student Identity Information */}
+              <div className="flex-1 min-w-0 space-y-1.5">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <h3 className="text-xl font-bold text-foreground tracking-tight truncate">
+                    {activeStudent.name}
+                  </h3>
+                  <VFBadge variant="success">{activeStudent.status}</VFBadge>
                 </div>
 
-                {/* Identity Metadata & Tags */}
-                <div className="flex-1 min-w-0 space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight truncate">
-                        {activeStudent.name}
-                      </h3>
-                      <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground font-mono">
-                        <span className="font-bold text-primary">{activeStudent.admNo}</span>
-                        <span>•</span>
-                        <span>Roll #{activeStudent.roll}</span>
-                        <span>•</span>
-                        <span className="font-semibold">{activeStudent.class} (Sec {activeStudent.section})</span>
-                      </div>
-                    </div>
-                    <VFBadge variant="success" className="shrink-0 font-extrabold">{activeStudent.status}</VFBadge>
-                  </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
+                  <span className="font-semibold text-foreground/90">{activeStudent.admNo}</span>
+                  <span>•</span>
+                  <span>Roll #{activeStudent.roll}</span>
+                  <span>•</span>
+                  <span>{activeStudent.class} (Sec {activeStudent.section})</span>
+                </div>
 
-                  {/* Badges Row */}
-                  <div className="flex items-center gap-2 flex-wrap pt-0.5">
-                    {/* House Squad Badge */}
+                {/* Badges Row */}
+                <div className="flex items-center gap-2 flex-wrap pt-1">
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
                     <span className={cn(
-                      "text-xs font-black px-2.5 py-0.5 rounded-lg border",
-                      activeStudent.house?.includes('Red') && "bg-red-500/15 text-red-400 border-red-500/30",
-                      activeStudent.house?.includes('Blue') && "bg-blue-500/15 text-blue-400 border-blue-500/30",
-                      activeStudent.house?.includes('Green') && "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-                      activeStudent.house?.includes('Yellow') && "bg-amber-500/15 text-amber-400 border-amber-500/30"
-                    )}>
-                      {activeStudent.house}
-                    </span>
+                      "h-1.5 w-1.5 rounded-full shrink-0",
+                      activeStudent.house?.includes('Red') && "bg-red-400",
+                      activeStudent.house?.includes('Blue') && "bg-blue-400",
+                      activeStudent.house?.includes('Green') && "bg-emerald-400",
+                      activeStudent.house?.includes('Yellow') && "bg-amber-400"
+                    )} />
+                    {activeStudent.house}
+                  </span>
 
-                    {/* Blood Group */}
-                    <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                      🩸 {activeStudent.bloodGroup || 'B+'}
-                    </span>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-muted/60 text-muted-foreground border border-border">
+                    🩸 {activeStudent.bloodGroup || 'B+'}
+                  </span>
 
-                    {/* Academic Session */}
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-muted text-muted-foreground border border-border">
-                      AY {activeSession}
-                    </span>
-                  </div>
+                  <span className="text-xs font-mono font-medium px-2 py-0.5 rounded-md bg-muted/60 text-muted-foreground border border-border">
+                    AY {activeSession}
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* 2. In-Drawer Segmented Navigation Tabs (Streamlined 3-Tab Architecture) */}
-            <div className="grid grid-cols-3 gap-1.5 p-1.5 rounded-xl bg-muted/60 border border-border">
+            {/* 2. Sleek 3-Tab Segmented Pill Navigation */}
+            <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-muted/50 border border-border">
               {[
-                { id: 'overview', label: 'Profile & Bio', icon: <UserCheck className="h-4 w-4" />, badge: 'Active' },
-                { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" />, badge: 'A1 · 95.4%' },
-                { id: 'credentials', label: 'Credentials & Board', icon: <CreditCard className="h-4 w-4" />, badge: 'Verified' },
+                { id: 'overview', label: 'Profile & Bio', icon: <UserCheck className="h-4 w-4" /> },
+                { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
+                { id: 'credentials', label: 'ID Card & Board', icon: <CreditCard className="h-4 w-4" /> },
               ].map((tab) => {
                 const isActive = drawerTab === tab.id;
                 return (
@@ -1374,96 +1372,79 @@ function StudentsPage() {
                     key={tab.id}
                     onClick={() => setDrawerTab(tab.id as any)}
                     className={cn(
-                      "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-black transition-all cursor-pointer outline-none",
+                      "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer outline-none",
                       isActive
-                        ? "bg-primary text-primary-foreground shadow-sm ring-1 ring-primary"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                        ? "bg-card text-foreground shadow-xs border border-border font-bold"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                     )}
                   >
                     {tab.icon}
                     <span>{tab.label}</span>
-                    {tab.badge && (
-                      <span className={cn(
-                        "text-[10px] px-1.5 py-0.2 rounded-md font-extrabold hidden sm:inline-block",
-                        isActive
-                          ? "bg-primary-foreground/20 text-primary-foreground"
-                          : "bg-muted text-muted-foreground border border-border"
-                      )}>
-                        {tab.badge}
-                      </span>
-                    )}
                   </button>
                 );
               })}
             </div>
 
-            {/* 3. Tab Contents */}
+            {/* 3. Clean Flat Tab Content (No Nested Boxes) */}
 
-            {/* TAB 1: PROFILE & BIO (Dossier, Contact, Logistics & Financial Status) */}
+            {/* TAB 1: PROFILE & BIO */}
             {drawerTab === 'overview' && (
-              <div className="space-y-4 animate-fade-in">
-                {/* 4 KPI Summary Cards */}
+              <div className="space-y-4 animate-fade-in pt-1">
+                {/* 4 Flat KPI Tiles */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  <div className="p-3 rounded-xl bg-card border border-border space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Attendance</span>
-                    <p className="text-lg font-black text-emerald-400">{activeStudent.attendance}</p>
-                    <span className="text-[10px] font-semibold text-muted-foreground block">Regular & Active</span>
+                  <div className="p-3 rounded-xl bg-muted/20 border border-border/60">
+                    <span className="text-[11px] font-medium text-muted-foreground block">Attendance</span>
+                    <span className="text-lg font-bold text-emerald-400 mt-0.5 block">{activeStudent.attendance}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-card border border-border space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">GPA / Grade</span>
-                    <p className="text-lg font-black text-primary">{activeStudent.gpa}</p>
-                    <span className="text-[10px] font-semibold text-muted-foreground block">Grade Point Avg</span>
+                  <div className="p-3 rounded-xl bg-muted/20 border border-border/60">
+                    <span className="text-[11px] font-medium text-muted-foreground block">GPA</span>
+                    <span className="text-lg font-bold text-foreground mt-0.5 block">{activeStudent.gpa}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-card border border-border space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Class Standing</span>
-                    <p className="text-lg font-black text-amber-400">{activeStudent.rank}</p>
-                    <span className="text-[10px] font-semibold text-muted-foreground block">Sec A Benchmark</span>
+                  <div className="p-3 rounded-xl bg-muted/20 border border-border/60">
+                    <span className="text-[11px] font-medium text-muted-foreground block">Class Rank</span>
+                    <span className="text-lg font-bold text-foreground mt-0.5 block">{activeStudent.rank}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-card border border-border space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Fee Clearance</span>
-                    <p className="text-lg font-black text-emerald-400">{activeStudent.feeStatus}</p>
-                    <span className="text-[10px] font-semibold text-muted-foreground block">Zero Dues (₹0.00)</span>
+                  <div className="p-3 rounded-xl bg-muted/20 border border-border/60">
+                    <span className="text-[11px] font-medium text-muted-foreground block">Fee Status</span>
+                    <span className="text-lg font-bold text-emerald-400 mt-0.5 block">Cleared</span>
                   </div>
                 </div>
 
-                {/* Family & Guardian Contact Dossier */}
-                <div className="p-4 rounded-xl bg-card border border-border space-y-3">
-                  <div className="flex items-center justify-between border-b border-border/60 pb-2">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                      <Phone className="h-3.5 w-3.5 text-primary" />
-                      Family & Guardian Contact Dossier
-                    </h4>
-                    <VFBadge variant="outline">Verified Guardian</VFBadge>
-                  </div>
+                {/* Family & Contact Details (Flat Section) */}
+                <div className="space-y-3 pt-2">
+                  <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5 pb-2 border-b border-border/60">
+                    <Phone className="h-3.5 w-3.5 text-muted-foreground" />
+                    Family & Contact Information
+                  </h4>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">Father / Primary Guardian</span>
-                      <p className="text-sm font-black text-foreground mt-0.5">{activeStudent.guardian}</p>
+                      <span className="text-muted-foreground text-[11px] block">Father / Primary Guardian</span>
+                      <span className="font-semibold text-foreground text-sm block mt-0.5">{activeStudent.guardian}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">Mother's Name</span>
-                      <p className="text-sm font-black text-foreground mt-0.5">{activeStudent.motherName}</p>
+                      <span className="text-muted-foreground text-[11px] block">Mother's Name</span>
+                      <span className="font-semibold text-foreground text-sm block mt-0.5">{activeStudent.motherName}</span>
                     </div>
                   </div>
 
-                  {/* Direct Contact Actions Row */}
-                  <div className="p-3 rounded-xl bg-muted/40 border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
-                    <div className="min-w-0">
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">Primary Phone / WhatsApp</span>
-                      <p className="text-sm font-mono font-black text-primary mt-0.5">{activeStudent.phone}</p>
+                  {/* Phone & Direct WhatsApp Action */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-muted/30 border border-border/60">
+                    <div>
+                      <span className="text-[10px] text-muted-foreground font-semibold uppercase block">Primary Contact</span>
+                      <span className="font-mono font-bold text-foreground text-sm">{activeStudent.phone}</span>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-2">
                       <button
                         onClick={() => window.open(`https://wa.me/${activeStudent.phone.replace(/[^0-9]/g, '')}`, '_blank')}
-                        className="px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-extrabold flex items-center gap-1.5 cursor-pointer transition-all"
+                        className="px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
                       >
                         <MessageSquare className="h-3.5 w-3.5" />
                         <span>WhatsApp</span>
                       </button>
                       <button
                         onClick={() => handleCopy(activeStudent.phone, 'phone')}
-                        className="px-3 py-1.5 rounded-lg bg-card hover:bg-muted border border-border text-foreground text-xs font-extrabold flex items-center gap-1.5 cursor-pointer transition-all"
+                        className="px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
                       >
                         {copiedText === 'phone' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
                         <span>{copiedText === 'phone' ? 'Copied' : 'Copy'}</span>
@@ -1471,334 +1452,292 @@ function StudentsPage() {
                     </div>
                   </div>
 
-                  {/* Student Email Address */}
-                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30 border border-border/80 text-xs">
-                    <div className="min-w-0 pr-2">
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">Institutional Email</span>
-                      <span className="font-mono text-muted-foreground font-semibold truncate block">{activeStudent.email}</span>
+                  {/* Email & Address */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+                    <div>
+                      <span className="text-muted-foreground text-[11px] block">Student Email</span>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="font-mono text-muted-foreground truncate">{activeStudent.email}</span>
+                        <button
+                          onClick={() => handleCopy(activeStudent.email, 'email')}
+                          className="text-xs text-muted-foreground hover:text-foreground cursor-pointer shrink-0"
+                        >
+                          {copiedText === 'email' ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                        </button>
+                      </div>
                     </div>
-                    <button
-                      onClick={() => handleCopy(activeStudent.email, 'email')}
-                      className="text-xs font-bold text-primary hover:underline shrink-0 cursor-pointer"
-                    >
-                      {copiedText === 'email' ? 'Copied!' : 'Copy Email'}
-                    </button>
-                  </div>
-
-                  {/* Residential Address */}
-                  <div className="pt-1">
-                    <span className="text-[10px] font-bold uppercase text-muted-foreground flex items-center gap-1">
-                      <MapPin className="h-3 w-3 text-rose-400" /> Residential Address
-                    </span>
-                    <p className="text-xs font-semibold text-foreground mt-0.5">{activeStudent.address}</p>
+                    <div>
+                      <span className="text-muted-foreground text-[11px] block">Residential Address</span>
+                      <span className="font-medium text-foreground mt-0.5 block">{activeStudent.address}</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* School Logistics, Commute & Health */}
-                <div className="p-4 rounded-xl bg-card border border-border space-y-3">
-                  <h4 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5 border-b border-border/60 pb-2">
-                    <Bus className="h-3.5 w-3.5 text-primary" />
-                    School Operations, Commute & Health Profile
+                {/* Operations & Medical (Flat Section) */}
+                <div className="space-y-3 pt-2">
+                  <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5 pb-2 border-b border-border/60">
+                    <Bus className="h-3.5 w-3.5 text-muted-foreground" />
+                    School Operations & Medical
                   </h4>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                    <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase flex items-center gap-1">
-                        <BookOpen className="h-3 w-3 text-primary" /> Assigned Class Teacher
-                      </span>
-                      <p className="text-xs font-black text-foreground mt-1">{activeStudent.classTeacher}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div>
+                      <span className="text-muted-foreground text-[11px] block">Class Teacher</span>
+                      <span className="font-semibold text-foreground mt-0.5 block">{activeStudent.classTeacher}</span>
                     </div>
-
-                    <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase flex items-center gap-1">
-                        <Bus className="h-3 w-3 text-amber-400" /> Commute & Route
-                      </span>
-                      <p className="text-xs font-black text-foreground mt-1">{activeStudent.transport}</p>
+                    <div>
+                      <span className="text-muted-foreground text-[11px] block">Commute Route</span>
+                      <span className="font-semibold text-foreground mt-0.5 block">{activeStudent.transport}</span>
                     </div>
-
-                    <div className="sm:col-span-2 p-3 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase flex items-center gap-1">
-                        <HeartPulse className="h-3 w-3 text-rose-400" /> Medical & Allergy Remarks
-                      </span>
-                      <p className="text-xs font-semibold text-foreground/90 mt-1">{activeStudent.medical}</p>
+                    <div>
+                      <span className="text-muted-foreground text-[11px] block">Medical Remarks</span>
+                      <span className="font-medium text-muted-foreground mt-0.5 block">{activeStudent.medical}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Institutional Accounts & Fee Ledger Summary Card */}
-                <div className="p-4 rounded-xl bg-card border border-border space-y-3">
-                  <div className="flex items-center justify-between border-b border-border/60 pb-2">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                      <DollarSign className="h-3.5 w-3.5 text-primary" />
-                      Institutional Accounts & Fee Ledger Summary
+                {/* Fee Status Summary (Flat Section) */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <DollarSign className="h-3.5 w-3.5 text-muted-foreground" />
+                      Fee Ledger Overview
                     </h4>
-                    <VFBadge variant="success">100% Cleared</VFBadge>
+                    <span className="text-xs font-mono font-medium text-muted-foreground">Session {activeSession}</span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2.5 pt-1">
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border text-center">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Total Annual</span>
-                      <span className="text-sm font-black text-foreground mt-0.5 block">₹ 78,000</span>
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/60 text-xs flex-wrap gap-2">
+                    <div className="flex items-center gap-6">
+                      <div>
+                        <span className="text-muted-foreground text-[10px] block uppercase">Annual Fee</span>
+                        <span className="font-mono font-bold text-foreground text-sm">₹ 78,000</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground text-[10px] block uppercase">Realized</span>
+                        <span className="font-mono font-bold text-emerald-400 text-sm">₹ 78,000</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground text-[10px] block uppercase">Balance</span>
+                        <span className="font-mono font-bold text-foreground text-sm">₹ 0.00</span>
+                      </div>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border text-center">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Paid Realized</span>
-                      <span className="text-sm font-black text-emerald-400 mt-0.5 block">₹ 78,000</span>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border text-center">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Outstanding</span>
-                      <span className="text-sm font-black text-foreground mt-0.5 block">₹ 0.00</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-2 border-t border-border/60">
-                    <VFButton
-                      size="sm"
-                      variant="outline"
-                      className="w-full"
-                      leftIcon={<Receipt className="h-3.5 w-3.5" />}
-                      onClick={() => alert(`Downloading consolidated fee receipt for ${activeStudent.name}`)}
+                    <button
+                      onClick={() => alert(`Downloading fee receipt for ${activeStudent.name}`)}
+                      className="text-xs font-semibold text-muted-foreground hover:text-foreground flex items-center gap-1 cursor-pointer"
                     >
-                      Download Consolidated Receipt
-                    </VFButton>
+                      <Receipt className="h-3.5 w-3.5" />
+                      <span>Download Receipt</span>
+                    </button>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* TAB 2: ACADEMICS & EXAMS (Comprehensive Marksheet & Benchmarks) */}
+            {/* TAB 2: ACADEMICS & EXAMS */}
             {drawerTab === 'academics' && (
-              <div className="space-y-4 animate-fade-in">
-                {/* Scorecard Hero Banner */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-primary/20 via-card to-emerald-500/10 border border-primary/30 space-y-3.5">
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="h-9 w-9 rounded-xl bg-primary/20 text-primary flex items-center justify-center font-black">
-                        <Trophy className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm sm:text-base font-black text-foreground">Term 1 Benchmark Marksheet</h4>
-                        <p className="text-[11px] text-muted-foreground font-semibold">Official CBSE Grade Record · Session {activeSession}</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 rounded-xl text-xs font-black bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-xs">
-                      Distinction (95.4% Aggregate)
-                    </span>
+              <div className="space-y-4 animate-fade-in pt-1">
+                {/* Term Summary Row */}
+                <div className="flex items-center justify-between p-3.5 rounded-xl bg-muted/20 border border-border/60 flex-wrap gap-3">
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground">Term 1 Assessment Report</h4>
+                    <span className="text-xs text-muted-foreground">CBSE Standard Curriculum · {activeSession}</span>
                   </div>
-
-                  {/* 3 Metric Pills */}
-                  <div className="grid grid-cols-3 gap-2.5 pt-1 border-t border-border/50">
-                    <div className="text-center p-2.5 rounded-xl bg-card/70 border border-border">
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">Aggregate</span>
-                      <span className="text-lg font-black text-foreground">477 / 500</span>
+                  <div className="flex items-center gap-4 text-xs font-mono">
+                    <div className="text-right">
+                      <span className="text-muted-foreground text-[10px] block uppercase">Aggregate</span>
+                      <span className="font-bold text-foreground text-sm">477 / 500 (95.4%)</span>
                     </div>
-                    <div className="text-center p-2.5 rounded-xl bg-card/70 border border-border">
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">Cohort Rank</span>
-                      <span className="text-lg font-black text-primary">#2 of 40</span>
-                    </div>
-                    <div className="text-center p-2.5 rounded-xl bg-card/70 border border-border">
-                      <span className="text-[10px] font-bold uppercase text-muted-foreground block">CBSE Honors</span>
-                      <span className="text-lg font-black text-emerald-400">A1 Grade</span>
+                    <div className="text-right">
+                      <span className="text-muted-foreground text-[10px] block uppercase">Cohort Rank</span>
+                      <span className="font-bold text-emerald-400 text-sm">#2 / 40 (A1)</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Subject-Wise Marksheet List */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border space-y-3.5">
-                  <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                      <BarChart3 className="h-4 w-4 text-primary" />
-                      Subject-Wise Assessment Breakdown
-                    </h4>
-                    <span className="text-xs font-bold text-muted-foreground">5 Core Subjects</span>
+                {/* Marksheet Subject List */}
+                <div className="space-y-2 pt-1">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground font-semibold px-1 pb-1 border-b border-border/40">
+                    <span>Subject</span>
+                    <span className="pr-1">Score & Grade</span>
                   </div>
 
-                  <div className="space-y-2.5 pt-1">
-                    {[
-                      { subject: 'Mathematics (041)', max: 100, score: 98, grade: 'A1', highest: 99, classAvg: '78.2%', status: 'Top 2%' },
-                      { subject: 'Science (086)', max: 100, score: 95, grade: 'A1', highest: 98, classAvg: '76.5%', status: 'Top 5%' },
-                      { subject: 'English Core (301)', max: 100, score: 92, grade: 'A1', highest: 95, classAvg: '81.0%', status: 'Distinction' },
-                      { subject: 'Computer Applications (165)', max: 100, score: 99, grade: 'A1', highest: 99, classAvg: '84.6%', status: 'Subject Topper' },
-                      { subject: 'Social Science (087)', max: 100, score: 94, grade: 'A1', highest: 96, classAvg: '77.8%', status: 'Top 5%' },
-                    ].map((sub, idx) => (
-                      <div key={idx} className="p-3.5 rounded-xl bg-muted/25 hover:bg-muted/40 border border-border transition-colors space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="h-2 w-2 rounded-full bg-primary" />
-                            <span className="text-xs sm:text-sm font-black text-foreground">{sub.subject}</span>
-                          </div>
-                          <div className="flex items-center gap-2.5">
-                            <span className="text-xs sm:text-sm font-black text-foreground font-mono">{sub.score} / {sub.max}</span>
-                            <span className={cn(
-                              "px-2 py-0.5 rounded-md text-xs font-black border",
-                              sub.grade === 'A1' ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" : "bg-blue-500/15 text-blue-400 border-blue-500/30"
-                            )}>
-                              {sub.grade}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Progress Meter */}
-                        <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
-                          <div
-                            className={cn(
-                              "h-full rounded-full transition-all duration-500",
-                              sub.score >= 95 ? "bg-emerald-500" : "bg-primary"
-                            )}
-                            style={{ width: `${sub.score}%` }}
-                          />
-                        </div>
-
-                        {/* Benchmark Info */}
-                        <div className="flex items-center justify-between text-[11px] font-semibold text-muted-foreground pt-0.5">
-                          <span>Highest: <strong className="text-foreground">{sub.highest}</strong> · Class Avg: <strong className="text-foreground">{sub.classAvg}</strong></span>
-                          <span className="text-emerald-400 font-bold">{sub.status}</span>
+                  {[
+                    { subject: 'Mathematics (041)', max: 100, score: 98, grade: 'A1', highest: 99, classAvg: '78.2%' },
+                    { subject: 'Science (086)', max: 100, score: 95, grade: 'A1', highest: 98, classAvg: '76.5%' },
+                    { subject: 'English Core (301)', max: 100, score: 92, grade: 'A1', highest: 95, classAvg: '81.0%' },
+                    { subject: 'Computer Applications (165)', max: 100, score: 99, grade: 'A1', highest: 99, classAvg: '84.6%' },
+                    { subject: 'Social Science (087)', max: 100, score: 94, grade: 'A1', highest: 96, classAvg: '77.8%' },
+                  ].map((sub, idx) => (
+                    <div key={idx} className="p-3 rounded-lg bg-muted/15 border border-border/50 space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-foreground">{sub.subject}</span>
+                        <div className="flex items-center gap-2 font-mono">
+                          <span className="font-bold text-foreground">{sub.score} / {sub.max}</span>
+                          <span className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-muted text-muted-foreground border border-border">
+                            {sub.grade}
+                          </span>
                         </div>
                       </div>
-                    ))}
-                  </div>
+
+                      {/* Progress Bar */}
+                      <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-emerald-500"
+                          style={{ width: `${sub.score}%` }}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
+                        <span>Class Avg: {sub.classAvg}</span>
+                        <span>Highest: {sub.highest}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                {/* Teacher's Appraisal Note */}
-                <div className="p-4 rounded-xl bg-primary/10 border border-primary/25 space-y-1.5">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-primary flex items-center gap-1">
-                    <Sparkles className="h-3.5 w-3.5" /> Teacher's Academic Appraisal
-                  </span>
-                  <p className="text-xs sm:text-sm text-foreground font-medium italic">
-                    "{activeStudent.name} demonstrates exceptional problem-solving and mathematical acuity. Consistently submits homework early and participates actively in class discussions."
-                  </p>
-                  <span className="text-xs font-bold text-muted-foreground block text-right">
-                    — {activeStudent.classTeacher}
-                  </span>
+                {/* Teacher Appraisal Note */}
+                <div className="p-3 rounded-lg bg-muted/20 border border-border/60 text-xs text-muted-foreground italic">
+                  "{activeStudent.name} demonstrates exceptional conceptual understanding and regular homework submissions."
+                  <span className="block text-right not-italic font-semibold text-foreground pt-1">— {activeStudent.classTeacher}</span>
                 </div>
 
-                {/* Direct Action Link to Examinations Module */}
+                {/* Examinations Module Link */}
                 <Link
                   to="/examinations"
-                  className="w-full flex items-center justify-center gap-2 p-3.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm font-black shadow-xs transition-all cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 p-2.5 rounded-lg border border-border hover:bg-muted text-xs font-semibold text-foreground transition-colors"
                 >
-                  <span>Open Full Examination & Gradebook Hub</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <span>Open Full Examination Module</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
                 </Link>
               </div>
             )}
 
-            {/* TAB 3: CREDENTIALS & BOARD (Smart ID, RFID & CBSE LOC Dossier) */}
+            {/* TAB 3: ID CARD & BOARD (Exact 85 : 54 Ratio CR80 Card Preview) */}
             {drawerTab === 'credentials' && (
-              <div className="space-y-4 animate-fade-in">
-                {/* 🪪 Smart ID Badge & RFID Section */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                      <CreditCard className="h-4 w-4 text-primary" />
-                      Smart ID Card & RFID Studio
+              <div className="space-y-4 animate-fade-in pt-1">
+                {/* 🪪 Standard CR80 Biometric ID Card Preview (Exact 85 : 54 Ratio) */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <CreditCard className="h-3.5 w-3.5 text-muted-foreground" />
+                      Standard CR80 ID Card (85mm × 54mm)
                     </h4>
-                    <VFBadge variant={activeStudent.idCardStatus?.includes('Issued') ? 'success' : 'warning'}>
-                      {activeStudent.idCardStatus || 'Issued & Active'}
-                    </VFBadge>
+                    <span className="text-[11px] font-mono text-muted-foreground">Ratio: 85 : 54</span>
                   </div>
 
-                  {/* ID Card Mockup Preview */}
-                  <div className="p-5 rounded-2xl bg-gradient-to-b from-card via-card to-muted/40 border-2 border-primary/40 shadow-xl text-center relative overflow-hidden space-y-3">
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-emerald-500 to-primary" />
-                    
-                    <div>
-                      <h4 className="text-xs font-black tracking-wider uppercase text-primary">SPRINGFIELD ACADEMY</h4>
-                      <p className="text-[10px] text-muted-foreground font-semibold">Institutional Smart ID Credential</p>
-                    </div>
+                  {/* Exact 85 : 54 Landscape CR80 Physical Card Mockup */}
+                  <div className="flex justify-center py-2">
+                    <div
+                      className="w-full max-w-[425px] rounded-xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/40 shadow-md p-3.5 flex flex-col justify-between relative overflow-hidden"
+                      style={{ aspectRatio: '85 / 54' }}
+                    >
+                      {/* Top Header Bar */}
+                      <div className="flex items-center justify-between border-b border-border/60 pb-1.5">
+                        <div>
+                          <h5 className="text-[11px] font-extrabold uppercase tracking-wider text-foreground">
+                            SPRINGFIELD ACADEMY
+                          </h5>
+                          <p className="text-[9px] text-muted-foreground">CBSE Affiliated · AY {activeSession}</p>
+                        </div>
+                        <span className="text-[9px] font-mono font-bold text-muted-foreground border border-border px-1 rounded">
+                          CR-80
+                        </span>
+                      </div>
 
-                    {/* 19.5 : 25 Portrait */}
-                    <div className="flex justify-center">
-                      <div
-                        className="relative overflow-hidden rounded-xl border-2 border-primary/50 shadow-md w-20 h-[102px] bg-muted flex items-center justify-center"
-                        style={{ aspectRatio: '19.5 / 25' }}
-                      >
-                        <img
-                          src={activeStudent.avatarUrl}
-                          alt={activeStudent.name}
+                      {/* Card Body: 19.5:25 Photo & Student Credentials */}
+                      <div className="flex items-center gap-3 py-1">
+                        {/* 19.5 : 25 Portrait */}
+                        <div
+                          className="relative overflow-hidden rounded-md border border-border shadow-2xs w-[66px] h-[85px] bg-muted shrink-0 flex items-center justify-center"
                           style={{ aspectRatio: '19.5 / 25' }}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
+                        >
+                          <img
+                            src={activeStudent.avatarUrl}
+                            alt={activeStudent.name}
+                            style={{ aspectRatio: '19.5 / 25' }}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
 
-                    <div>
-                      <h3 className="text-sm font-black text-foreground">{activeStudent.name}</h3>
-                      <p className="text-xs font-mono font-bold text-primary">{activeStudent.admNo}</p>
-                      <p className="text-[11px] text-muted-foreground font-bold">{activeStudent.class} · Sec {activeStudent.section} · Roll #{activeStudent.roll}</p>
-                    </div>
-
-                    {/* Barcode Mockup */}
-                    <div className="pt-2 border-t border-border/60 flex flex-col items-center gap-1">
-                      <div className="flex items-center justify-center gap-1 h-5 w-44 opacity-80">
-                        <div className="h-full w-1 bg-foreground rounded" />
-                        <div className="h-full w-0.5 bg-foreground rounded" />
-                        <div className="h-full w-2 bg-foreground rounded" />
-                        <div className="h-full w-1 bg-foreground rounded" />
-                        <div className="h-full w-3 bg-foreground rounded" />
-                        <div className="h-full w-0.5 bg-foreground rounded" />
-                        <div className="h-full w-2 bg-foreground rounded" />
-                        <div className="h-full w-1 bg-foreground rounded" />
+                        {/* Student Details */}
+                        <div className="flex-1 min-w-0 space-y-0.5 text-[11px]">
+                          <p className="font-extrabold text-foreground text-xs truncate">{activeStudent.name}</p>
+                          <p className="font-mono text-[10px] text-muted-foreground font-semibold">{activeStudent.admNo}</p>
+                          <p className="text-muted-foreground text-[10px]">
+                            {activeStudent.class} (Sec {activeStudent.section}) · Roll #{activeStudent.roll}
+                          </p>
+                          <div className="flex items-center gap-2 pt-0.5 text-[10px] text-muted-foreground">
+                            <span>Blood: <strong>{activeStudent.bloodGroup || 'B+'}</strong></span>
+                            <span>•</span>
+                            <span>{activeStudent.house}</span>
+                          </div>
+                          <p className="text-[9px] text-muted-foreground font-mono truncate">
+                            Emergency: {activeStudent.phone}
+                          </p>
+                        </div>
                       </div>
-                      <span className="text-[9px] font-mono text-muted-foreground">*{activeStudent.admNo}*</span>
+
+                      {/* Barcode & Verification Stripe */}
+                      <div className="flex items-center justify-between border-t border-border/60 pt-1">
+                        <div className="flex items-center gap-0.5 h-3 opacity-70">
+                          <div className="h-full w-0.5 bg-foreground" />
+                          <div className="h-full w-1 bg-foreground" />
+                          <div className="h-full w-0.5 bg-foreground" />
+                          <div className="h-full w-1.5 bg-foreground" />
+                          <div className="h-full w-0.5 bg-foreground" />
+                          <div className="h-full w-2 bg-foreground" />
+                          <div className="h-full w-0.5 bg-foreground" />
+                          <div className="h-full w-1 bg-foreground" />
+                          <div className="h-full w-0.5 bg-foreground" />
+                        </div>
+                        <span className="text-[8px] font-mono text-muted-foreground">
+                          *{activeStudent.admNo}*
+                        </span>
+                        <span className="text-[8px] font-mono text-emerald-400 font-bold">
+                          {activeStudent.idCardStatus || 'Active'}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* ID Lifecycle Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Card Lifecycle</span>
-                      <span className="text-xs font-extrabold text-emerald-400 block mt-0.5">{activeStudent.idCardStatus || 'Issued & Active'}</span>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Issue Date</span>
-                      <span className="text-xs font-bold text-foreground block mt-0.5">{activeStudent.idCardIssueDate || '12 Aug 2026'}</span>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">RFID Tag Serial</span>
-                      <span className="text-xs font-mono font-bold text-primary block mt-0.5">{activeStudent.idCardBatch || 'IDC-2026-B1-9982'}</span>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-muted/30 border border-border">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Library Access</span>
-                      <span className="text-xs font-bold text-foreground block mt-0.5">Automated Gate Clear</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-2 border-t border-border/60">
+                  {/* ID Print Actions */}
+                  <div className="flex items-center gap-2">
                     <VFButton
                       size="sm"
-                      variant="primary"
+                      variant="outline"
                       className="flex-1"
                       leftIcon={<Printer className="h-3.5 w-3.5" />}
                       onClick={() => openIdCardModal(activeStudent)}
                     >
-                      Print ID Badge
+                      Print ID Badge (85×54mm)
                     </VFButton>
                     <VFButton
                       size="sm"
                       variant="outline"
-                      leftIcon={<FileText className="h-3.5 w-3.5 text-amber-400" />}
-                      onClick={() => alert(`Submitted replacement / re-issue application for ${activeStudent.name}`)}
+                      className="flex-1"
+                      leftIcon={<FileText className="h-3.5 w-3.5 text-muted-foreground" />}
+                      onClick={() => alert(`Generated print-ready 85×54mm PDF for ${activeStudent.name}`)}
                     >
-                      Request Re-issue
+                      Export PDF Preview
                     </VFButton>
                   </div>
                 </div>
 
-                {/* 📋 Official CBSE Board Examination Dossier */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground flex items-center gap-1.5">
-                      <Send className="h-4 w-4 text-primary" />
-                      Official CBSE Board Examination Dossier
+                {/* 📋 Official CBSE Board Examination Registry (Flat Section) */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Send className="h-3.5 w-3.5 text-muted-foreground" />
+                      CBSE Board & LOC Registry
                     </h4>
-                    <VFBadge variant="success">LOC Forwarded</VFBadge>
+                    <span className="text-xs font-medium text-emerald-400">LOC Forwarded</span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                    <div className="p-3 rounded-lg bg-muted/30 border border-border space-y-1">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Official Board Roll No</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 rounded-lg bg-muted/20 border border-border/60 space-y-1">
+                      <span className="text-[10px] text-muted-foreground uppercase font-medium block">Official Board Roll No</span>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-mono font-black text-primary">{activeStudent.examRollNo || 'CBSE-2026-994812'}</span>
+                        <span className="font-mono font-bold text-foreground">{activeStudent.examRollNo || 'CBSE-2026-994812'}</span>
                         <button
                           onClick={() => handleCopy(activeStudent.examRollNo || 'CBSE-2026-994812', 'rollNo')}
                           className="text-xs text-muted-foreground hover:text-foreground cursor-pointer"
@@ -1808,33 +1747,33 @@ function StudentsPage() {
                       </div>
                     </div>
 
-                    <div className="p-3 rounded-lg bg-muted/30 border border-border space-y-1">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Exam Center Code</span>
-                      <p className="text-sm font-mono font-bold text-foreground">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</p>
+                    <div className="p-3 rounded-lg bg-muted/20 border border-border/60 space-y-1">
+                      <span className="text-[10px] text-muted-foreground uppercase font-medium block">Center Code</span>
+                      <span className="font-mono font-bold text-foreground block">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</span>
                     </div>
 
-                    <div className="sm:col-span-2 p-3 rounded-lg bg-muted/30 border border-border space-y-1">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase block">Assigned Examination Center</span>
-                      <p className="text-xs font-bold text-foreground">Govt Model Senior Secondary School, Sector 4, Central Delhi</p>
+                    <div className="sm:col-span-2 p-3 rounded-lg bg-muted/20 border border-border/60 text-xs">
+                      <span className="text-[10px] text-muted-foreground uppercase font-medium block">Examination Center</span>
+                      <span className="font-medium text-foreground mt-0.5 block">Govt Model Sr Sec School, Sector 4, Central Delhi</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2 border-t border-border/60">
+                  <div className="flex items-center gap-2 pt-1">
                     <VFButton
                       size="sm"
                       variant="outline"
                       className="flex-1"
-                      leftIcon={<FileCheck className="h-3.5 w-3.5 text-purple-400" />}
+                      leftIcon={<FileCheck className="h-3.5 w-3.5" />}
                       onClick={() => alert(`Opening official CBSE LOC Verification Dossier for ${activeStudent.name}`)}
                     >
                       View LOC Form
                     </VFButton>
                     <VFButton
                       size="sm"
-                      variant="primary"
+                      variant="outline"
                       className="flex-1"
                       leftIcon={<Award className="h-3.5 w-3.5" />}
-                      onClick={() => alert(`Downloading official Board Hall Ticket / Admit Card for ${activeStudent.name}`)}
+                      onClick={() => alert(`Downloading Board Admit Card for ${activeStudent.name}`)}
                     >
                       Download Admit Card
                     </VFButton>
@@ -1846,13 +1785,13 @@ function StudentsPage() {
         )}
       </VFDrawer>
 
-      {/* 🪪 ID CARD BADGE PREVIEW & PRINT MODAL */}
+      {/* 🪪 ID CARD BADGE PREVIEW & PRINT MODAL (Exact 85 : 54 Ratio) */}
       <VFDialog
         isOpen={isIdCardModalOpen}
         onClose={() => setIsIdCardModalOpen(false)}
-        title="Student Identity Card & Smart Badge"
-        description="Official institutional credential with 19.5:25 ratio biometric portrait and barcode verification"
-        className="max-w-md"
+        title="Student Identity Card (CR-80 Standard)"
+        description="Standard 85.6mm × 54mm physical card badge with 19.5:25 biometric portrait"
+        className="max-w-lg"
         footerActions={
           <>
             <VFButton
@@ -1870,32 +1809,36 @@ function StudentsPage() {
                 setIsIdCardModalOpen(false);
               }}
             >
-              Print ID Badge
+              Print Card (85×54mm)
             </VFButton>
           </>
         }
       >
         {idCardStudent && (
-          <div className="p-2 flex flex-col items-center justify-center">
-            {/* Realistic ID Card Mockup */}
-            <div className="w-[300px] rounded-2xl bg-gradient-to-b from-card via-card to-muted/40 border-2 border-primary/40 shadow-2xl p-5 text-center relative overflow-hidden space-y-3.5">
-              {/* Top Accent Header */}
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-emerald-500 to-primary" />
-
-              {/* School Header */}
-              <div className="pt-1">
-                <h4 className="text-sm font-black tracking-wider uppercase text-primary">
-                  SPRINGFIELD ACADEMY
-                </h4>
-                <p className="text-[10px] text-muted-foreground font-semibold">
-                  CBSE Affiliated · Academic Session {activeSession}
-                </p>
+          <div className="p-2 flex flex-col items-center justify-center space-y-3">
+            {/* Exact 85 : 54 Ratio CR80 Physical Card */}
+            <div
+              className="w-full max-w-[425px] rounded-xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/40 shadow-xl p-4 flex flex-col justify-between relative overflow-hidden"
+              style={{ aspectRatio: '85 / 54' }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-border/60 pb-1.5">
+                <div>
+                  <h4 className="text-xs font-black uppercase tracking-wider text-foreground">
+                    SPRINGFIELD ACADEMY
+                  </h4>
+                  <p className="text-[9px] text-muted-foreground">CBSE Affiliated · AY {activeSession}</p>
+                </div>
+                <span className="text-[9px] font-mono font-bold text-muted-foreground border border-border px-1 rounded">
+                  85 × 54 mm
+                </span>
               </div>
 
-              {/* ID Portrait (19.5:25) */}
-              <div className="flex justify-center">
+              {/* Body */}
+              <div className="flex items-center gap-3.5 py-1.5">
+                {/* 19.5 : 25 Portrait */}
                 <div
-                  className="relative overflow-hidden rounded-xl border-2 border-primary/50 shadow-md w-24 h-[123px] bg-muted flex items-center justify-center"
+                  className="relative overflow-hidden rounded-md border border-border shadow-2xs w-[72px] h-[92px] bg-muted shrink-0 flex items-center justify-center"
                   style={{ aspectRatio: '19.5 / 25' }}
                 >
                   <img
@@ -1905,64 +1848,39 @@ function StudentsPage() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
 
-              {/* Student Name & Class */}
-              <div className="space-y-0.5">
-                <h3 className="text-base font-black text-foreground">
-                  {idCardStudent.name}
-                </h3>
-                <p className="text-xs font-mono font-bold text-primary">
-                  {idCardStudent.admNo}
-                </p>
-                <div className="flex items-center justify-center gap-2 pt-1">
-                  <span className="text-[11px] font-bold text-foreground bg-muted px-2 py-0.5 rounded border border-border">
-                    {idCardStudent.class} (Sec {idCardStudent.section})
-                  </span>
-                  <span className="text-[11px] font-bold text-foreground bg-muted px-2 py-0.5 rounded border border-border">
-                    Roll #{idCardStudent.roll}
-                  </span>
-                </div>
-              </div>
-
-              {/* Credentials Grid */}
-              <div className="grid grid-cols-2 gap-2 text-left bg-muted/40 p-2.5 rounded-xl border border-border/60 text-[11px]">
-                <div>
-                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">Blood Group</span>
-                  <span className="font-extrabold text-amber-400">{idCardStudent.bloodGroup || 'B+'}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">House</span>
-                  <span className="font-bold text-foreground">{idCardStudent.house}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">Emergency Phone</span>
-                  <span className="font-mono font-bold text-foreground truncate">{idCardStudent.phone}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">Issue Status</span>
-                  <span className="font-bold text-emerald-400">{idCardStudent.idCardStatus || 'Issued'}</span>
+                {/* Details */}
+                <div className="flex-1 min-w-0 space-y-0.5 text-xs">
+                  <h4 className="font-bold text-foreground text-sm truncate">{idCardStudent.name}</h4>
+                  <p className="font-mono text-[11px] text-muted-foreground font-semibold">{idCardStudent.admNo}</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    {idCardStudent.class} (Sec {idCardStudent.section}) · Roll #{idCardStudent.roll}
+                  </p>
+                  <div className="flex items-center gap-2 pt-0.5 text-[10px] text-muted-foreground">
+                    <span>Blood: <strong>{idCardStudent.bloodGroup || 'B+'}</strong></span>
+                    <span>•</span>
+                    <span>{idCardStudent.house}</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground font-mono truncate">
+                    Emergency: {idCardStudent.phone}
+                  </p>
                 </div>
               </div>
 
-              {/* Barcode & Verification Stripe */}
-              <div className="pt-1 flex flex-col items-center gap-1 border-t border-border/60">
-                <div className="flex items-center justify-center gap-1 h-6 w-48 opacity-80">
-                  <div className="h-full w-1 bg-foreground rounded" />
-                  <div className="h-full w-0.5 bg-foreground rounded" />
-                  <div className="h-full w-2 bg-foreground rounded" />
-                  <div className="h-full w-1 bg-foreground rounded" />
-                  <div className="h-full w-0.5 bg-foreground rounded" />
-                  <div className="h-full w-3 bg-foreground rounded" />
-                  <div className="h-full w-1 bg-foreground rounded" />
-                  <div className="h-full w-2 bg-foreground rounded" />
-                  <div className="h-full w-0.5 bg-foreground rounded" />
-                  <div className="h-full w-1 bg-foreground rounded" />
-                  <div className="h-full w-2 bg-foreground rounded" />
+              {/* Barcode Footer */}
+              <div className="flex items-center justify-between border-t border-border/60 pt-1 text-[9px] font-mono text-muted-foreground">
+                <div className="flex items-center gap-0.5 h-3.5 opacity-70">
+                  <div className="h-full w-0.5 bg-foreground" />
+                  <div className="h-full w-1 bg-foreground" />
+                  <div className="h-full w-0.5 bg-foreground" />
+                  <div className="h-full w-1.5 bg-foreground" />
+                  <div className="h-full w-0.5 bg-foreground" />
+                  <div className="h-full w-2 bg-foreground" />
+                  <div className="h-full w-0.5 bg-foreground" />
+                  <div className="h-full w-1 bg-foreground" />
                 </div>
-                <span className="text-[9px] font-mono text-muted-foreground tracking-widest">
-                  *{idCardStudent.admNo}*
-                </span>
+                <span>*{idCardStudent.admNo}*</span>
+                <span className="text-emerald-400 font-bold">{idCardStudent.idCardStatus || 'Active'}</span>
               </div>
             </div>
           </div>
