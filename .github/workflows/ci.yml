@@ -1,10 +1,8 @@
 name: CI
 
+# Disabled automatic push/PR triggers during development — manual trigger only
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

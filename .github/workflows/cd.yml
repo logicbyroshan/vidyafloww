@@ -1,8 +1,7 @@
 name: CD — Deploy
 
+# Disabled automatic push triggers — deployment is only triggered manually via workflow_dispatch
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       environment:
