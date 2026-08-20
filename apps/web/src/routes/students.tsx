@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import JSZip from 'jszip';
 import {
   VFPageContainer,
@@ -43,6 +43,12 @@ import {
   CheckCircle2,
   Loader2,
   Settings,
+  CreditCard,
+  Send,
+  ExternalLink,
+  Award,
+  AlertCircle,
+  FileCheck,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -54,6 +60,15 @@ function StudentsPage() {
   const { activeSession } = useGlobalStore();
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
+
+  // ID Card Preview Modal State
+  const [isIdCardModalOpen, setIsIdCardModalOpen] = React.useState<boolean>(false);
+  const [idCardStudent, setIdCardStudent] = React.useState<any>(null);
+
+  const openIdCardModal = (student: any) => {
+    setIdCardStudent(student);
+    setIsIdCardModalOpen(true);
+  };
 
   // Export Modal State
   const [isExportModalOpen, setIsExportModalOpen] = React.useState<boolean>(false);
@@ -90,6 +105,19 @@ function StudentsPage() {
         medical: 'No known allergies',
         classTeacher: 'Dr. Rajesh Sharma',
         session: '2026–2027',
+        idCardStatus: 'Issued & Active',
+        idCardIssueDate: '12 Aug 2026',
+        idCardBatch: 'IDC-2026-B1',
+        examFormStatus: 'Forwarded to Board',
+        examRollNo: 'CBSE-2026-994812',
+        centerCode: 'DEL-CENTRAL-401',
+        recentTestScores: [
+          { subject: 'Mathematics', score: '98/100', grade: 'A1' },
+          { subject: 'Science', score: '95/100', grade: 'A1' },
+          { subject: 'English Core', score: '92/100', grade: 'A1' },
+          { subject: 'Computer Applications', score: '99/100', grade: 'A1' },
+          { subject: 'Social Science', score: '94/100', grade: 'A1' },
+        ],
       },
       {
         admNo: 'ADM-2026-002',
@@ -115,6 +143,19 @@ function StudentsPage() {
         medical: 'Asthma (Inhaler with Infirmary)',
         classTeacher: 'Dr. Rajesh Sharma',
         session: '2026–2027',
+        idCardStatus: 'Issued & Active',
+        idCardIssueDate: '12 Aug 2026',
+        idCardBatch: 'IDC-2026-B1',
+        examFormStatus: 'LOC Verified (CBSE)',
+        examRollNo: 'CBSE-2026-994813',
+        centerCode: 'DEL-CENTRAL-401',
+        recentTestScores: [
+          { subject: 'Mathematics', score: '94/100', grade: 'A1' },
+          { subject: 'Science', score: '96/100', grade: 'A1' },
+          { subject: 'English Core', score: '95/100', grade: 'A1' },
+          { subject: 'Computer Applications', score: '97/100', grade: 'A1' },
+          { subject: 'Social Science', score: '91/100', grade: 'A1' },
+        ],
       },
       {
         admNo: 'ADM-2026-003',
@@ -140,6 +181,19 @@ function StudentsPage() {
         medical: 'Nut allergy',
         classTeacher: 'Ms. Pooja Rao',
         session: '2026–2027',
+        idCardStatus: 'Pending Print',
+        idCardIssueDate: 'Queue #04',
+        idCardBatch: 'IDC-2026-B2',
+        examFormStatus: 'Pending Submission',
+        examRollNo: 'DRAFT-LOC-103',
+        centerCode: 'Unassigned',
+        recentTestScores: [
+          { subject: 'Mathematics', score: '82/100', grade: 'B1' },
+          { subject: 'Science', score: '85/100', grade: 'A2' },
+          { subject: 'English Core', score: '88/100', grade: 'A2' },
+          { subject: 'Computer Applications', score: '90/100', grade: 'A2' },
+          { subject: 'Social Science', score: '79/100', grade: 'B2' },
+        ],
       },
       {
         admNo: 'ADM-2026-004',
@@ -165,6 +219,19 @@ function StudentsPage() {
         medical: 'None',
         classTeacher: 'Mr. Deepak Mishra',
         session: '2026–2027',
+        idCardStatus: 'Application Received (New)',
+        idCardIssueDate: 'Verification Stage',
+        idCardBatch: 'IDC-2026-B2',
+        examFormStatus: 'Admit Card Released',
+        examRollNo: 'CBSE-2026-884021',
+        centerCode: 'DEL-SOUTH-209',
+        recentTestScores: [
+          { subject: 'Accountancy', score: '99/100', grade: 'A1' },
+          { subject: 'Business Studies', score: '98/100', grade: 'A1' },
+          { subject: 'Economics', score: '97/100', grade: 'A1' },
+          { subject: 'English Core', score: '95/100', grade: 'A1' },
+          { subject: 'Applied Mathematics', score: '96/100', grade: 'A1' },
+        ],
       },
       {
         admNo: 'ADM-2026-005',
@@ -190,6 +257,19 @@ function StudentsPage() {
         medical: 'Spectacles (-2.5D)',
         classTeacher: 'Dr. Rajesh Sharma',
         session: '2026–2027',
+        idCardStatus: 'Issued & Active',
+        idCardIssueDate: '15 Aug 2026',
+        idCardBatch: 'IDC-2026-B1',
+        examFormStatus: 'Forwarded to Board',
+        examRollNo: 'CBSE-2026-884022',
+        centerCode: 'DEL-SOUTH-209',
+        recentTestScores: [
+          { subject: 'Physics', score: '91/100', grade: 'A1' },
+          { subject: 'Chemistry', score: '88/100', grade: 'A2' },
+          { subject: 'Mathematics', score: '93/100', grade: 'A1' },
+          { subject: 'Computer Science', score: '95/100', grade: 'A1' },
+          { subject: 'English Core', score: '90/100', grade: 'A2' },
+        ],
       },
       {
         admNo: 'ADM-2026-006',
@@ -215,6 +295,19 @@ function StudentsPage() {
         medical: 'None',
         classTeacher: 'Mr. Arvind Gupta',
         session: '2026–2027',
+        idCardStatus: 'Re-issue Requested',
+        idCardIssueDate: 'Replacement Pending',
+        idCardBatch: 'IDC-2026-RE',
+        examFormStatus: 'LOC Verified (CBSE)',
+        examRollNo: 'CBSE-2026-773908',
+        centerCode: 'DEL-EAST-114',
+        recentTestScores: [
+          { subject: 'Mathematics', score: '95/100', grade: 'A1' },
+          { subject: 'Science', score: '93/100', grade: 'A1' },
+          { subject: 'English Core', score: '96/100', grade: 'A1' },
+          { subject: 'Information Tech', score: '98/100', grade: 'A1' },
+          { subject: 'Social Science', score: '92/100', grade: 'A1' },
+        ],
       },
       {
         admNo: 'ADM-2026-007',
@@ -240,6 +333,19 @@ function StudentsPage() {
         medical: 'None',
         classTeacher: 'Mrs. S. Joshi',
         session: '2026–2027',
+        idCardStatus: 'Issued & Active',
+        idCardIssueDate: '10 Aug 2026',
+        idCardBatch: 'IDC-2026-B1',
+        examFormStatus: 'Admit Card Released',
+        examRollNo: 'CBSE-2026-662904',
+        centerCode: 'DEL-CENTRAL-401',
+        recentTestScores: [
+          { subject: 'Accountancy', score: '88/100', grade: 'A2' },
+          { subject: 'Business Studies', score: '91/100', grade: 'A1' },
+          { subject: 'Economics', score: '87/100', grade: 'A2' },
+          { subject: 'English Core', score: '90/100', grade: 'A2' },
+          { subject: 'Informatics Practices', score: '94/100', grade: 'A1' },
+        ],
       },
       {
         admNo: 'ADM-2026-008',
@@ -265,6 +371,19 @@ function StudentsPage() {
         medical: 'None',
         classTeacher: 'Coach Vikram Singh',
         session: '2026–2027',
+        idCardStatus: 'Issued & Active',
+        idCardIssueDate: '10 Aug 2026',
+        idCardBatch: 'IDC-2026-B1',
+        examFormStatus: 'Admit Card Released',
+        examRollNo: 'CBSE-2026-662905',
+        centerCode: 'DEL-CENTRAL-401',
+        recentTestScores: [
+          { subject: 'Physics', score: '99/100', grade: 'A1' },
+          { subject: 'Chemistry', score: '98/100', grade: 'A1' },
+          { subject: 'Mathematics', score: '100/100', grade: 'A1' },
+          { subject: 'Computer Science', score: '100/100', grade: 'A1' },
+          { subject: 'English Core', score: '98/100', grade: 'A1' },
+        ],
       },
     ],
     '2025–2026': [
@@ -875,6 +994,80 @@ function StudentsPage() {
       cell: (r: any) => <span className="font-bold text-foreground text-sm">{r.roll}</span>,
     },
     {
+      header: 'ID Card Status',
+      accessorKey: 'idCardStatus',
+      cell: (r: any) => {
+        const status = r.idCardStatus || 'Issued & Active';
+        if (status.includes('Issued')) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+              <CreditCard className="h-3.5 w-3.5" />
+              <span>Issued</span>
+            </span>
+          );
+        }
+        if (status.includes('Pending Print')) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/25">
+              <Clock className="h-3.5 w-3.5" />
+              <span>Pending Print</span>
+            </span>
+          );
+        }
+        if (status.includes('Application Received')) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-500/15 text-blue-400 border border-blue-500/25">
+              <FileText className="h-3.5 w-3.5" />
+              <span>New App.</span>
+            </span>
+          );
+        }
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-rose-500/15 text-rose-400 border border-rose-500/25">
+            <AlertCircle className="h-3.5 w-3.5" />
+            <span>Re-issue Req.</span>
+          </span>
+        );
+      },
+    },
+    {
+      header: 'Board / Exam Form',
+      accessorKey: 'examFormStatus',
+      cell: (r: any) => {
+        const formStatus = r.examFormStatus || 'Forwarded to Board';
+        if (formStatus.includes('Forwarded')) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+              <Send className="h-3.5 w-3.5" />
+              <span>CBSE Forwarded</span>
+            </span>
+          );
+        }
+        if (formStatus.includes('LOC Verified')) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-purple-500/15 text-purple-400 border border-purple-500/25">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              <span>LOC Verified</span>
+            </span>
+          );
+        }
+        if (formStatus.includes('Admit Card')) {
+          return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-cyan-500/15 text-cyan-400 border border-cyan-500/25">
+              <Award className="h-3.5 w-3.5" />
+              <span>Admit Card Ready</span>
+            </span>
+          );
+        }
+        return (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/25">
+            <Clock className="h-3.5 w-3.5" />
+            <span>Pending Submission</span>
+          </span>
+        );
+      },
+    },
+    {
       header: 'House',
       accessorKey: 'house',
       cell: (r: any) => <VFBadge variant="outline">{r.house}</VFBadge>,
@@ -1464,9 +1657,295 @@ function StudentsPage() {
                 </div>
               </div>
             </div>
+
+            {/* 🪪 ID Card & Smart Credentials Lifecycle Section */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <CreditCard className="h-3.5 w-3.5 text-primary" />
+                  ID Card & Smart Credentials
+                </h4>
+                <VFBadge variant={activeStudent.idCardStatus?.includes('Issued') ? 'success' : 'warning'}>
+                  {activeStudent.idCardStatus || 'Issued & Active'}
+                </VFBadge>
+              </div>
+              <div className="p-4 rounded-xl bg-muted/30 border border-border space-y-3.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="p-2.5 rounded-lg bg-card/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">Card Status</span>
+                    <p className="text-xs font-extrabold text-foreground mt-0.5">{activeStudent.idCardStatus || 'Issued & Active'}</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-card/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">Issue / Queue Date</span>
+                    <p className="text-xs font-bold text-foreground mt-0.5">{activeStudent.idCardIssueDate || '12 Aug 2026'}</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-card/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">Batch & RFID Tag</span>
+                    <p className="text-xs font-mono font-bold text-primary mt-0.5">{activeStudent.idCardBatch || 'IDC-2026-B1'}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/50 flex-wrap">
+                  <span className="text-xs text-muted-foreground">
+                    Official Student Identity Credential & RFID Library Tag
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<Printer className="h-3.5 w-3.5 text-primary" />}
+                      onClick={() => openIdCardModal(activeStudent)}
+                    >
+                      Print ID Card
+                    </VFButton>
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<FileText className="h-3.5 w-3.5 text-amber-400" />}
+                      onClick={() => alert(`Submitted replacement / new ID card application for ${activeStudent.name}`)}
+                    >
+                      New Application
+                    </VFButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📋 CBSE / Board & Exam Form Lifecycle Section */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Send className="h-3.5 w-3.5 text-primary" />
+                  CBSE / Board & Exam Form Forwarding
+                </h4>
+                <VFBadge variant={activeStudent.examFormStatus?.includes('Pending') ? 'warning' : 'info'}>
+                  {activeStudent.examFormStatus || 'Forwarded to Board'}
+                </VFBadge>
+              </div>
+              <div className="p-4 rounded-xl bg-muted/30 border border-border space-y-3.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="p-2.5 rounded-lg bg-card/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">Board Roll No</span>
+                    <p className="text-xs font-mono font-black text-primary mt-0.5">{activeStudent.examRollNo || 'CBSE-2026-994812'}</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-card/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">Exam Center Code</span>
+                    <p className="text-xs font-mono font-bold text-foreground mt-0.5">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-card/60 border border-border">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">LOC Status</span>
+                    <p className="text-xs font-bold text-emerald-400 mt-0.5">Verified & Forwarded</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/50 flex-wrap">
+                  <span className="text-xs text-muted-foreground">
+                    Official CBSE List of Candidates (LOC) Registry
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<FileCheck className="h-3.5 w-3.5 text-purple-400" />}
+                      onClick={() => alert(`Opening CBSE LOC Verification Record for ${activeStudent.name} (${activeStudent.examRollNo})`)}
+                    >
+                      View LOC Form
+                    </VFButton>
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<Award className="h-3.5 w-3.5 text-cyan-400" />}
+                      onClick={() => alert(`Downloading Board Admit Card for ${activeStudent.name}`)}
+                    >
+                      Download Admit Card
+                    </VFButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 📊 Academic Examination & Test Performance Hub (with direct Jump to /examinations) */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <BarChart3 className="h-3.5 w-3.5 text-primary" />
+                  Examination & Test Performance Hub
+                </h4>
+                <Link
+                  to="/examinations"
+                  className="inline-flex items-center gap-1 text-xs font-black text-primary hover:underline hover:text-primary/80 transition-colors"
+                >
+                  <span>Go to Examinations Module</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+              <div className="p-4 rounded-xl bg-muted/30 border border-border space-y-3.5">
+                {/* Subject-Wise Scores List */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {(activeStudent.recentTestScores || [
+                    { subject: 'Mathematics', score: '98/100', grade: 'A1' },
+                    { subject: 'Science', score: '95/100', grade: 'A1' },
+                    { subject: 'English Core', score: '92/100', grade: 'A1' },
+                    { subject: 'Computer Applications', score: '99/100', grade: 'A1' },
+                    { subject: 'Social Science', score: '94/100', grade: 'A1' },
+                  ]).map((t: any, idx: number) => (
+                    <div key={idx} className="p-2.5 rounded-lg bg-card/60 border border-border flex items-center justify-between">
+                      <div className="min-w-0 pr-2">
+                        <p className="text-xs font-bold text-foreground truncate">{t.subject}</p>
+                        <p className="text-[11px] font-mono text-muted-foreground">{t.score}</p>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-md text-[11px] font-black bg-primary/15 text-primary border border-primary/30 shrink-0">
+                        {t.grade}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/50 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground font-semibold">
+                      Term Standing:
+                    </span>
+                    <span className="text-xs font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                      Distinction (96.2% Avg)
+                    </span>
+                  </div>
+                  <Link
+                    to="/examinations"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-extrabold hover:bg-primary/90 transition-all shadow-xs"
+                  >
+                    <span>Open Exam Gradebook</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </VFDrawer>
+
+      {/* 🪪 ID CARD BADGE PREVIEW & PRINT MODAL */}
+      <VFDialog
+        isOpen={isIdCardModalOpen}
+        onClose={() => setIsIdCardModalOpen(false)}
+        title="Student Identity Card & Smart Badge"
+        description="Official institutional credential with 19.5:25 ratio biometric portrait and barcode verification"
+        className="max-w-md"
+        footerActions={
+          <>
+            <VFButton
+              variant="outline"
+              size="sm"
+              onClick={() => setIsIdCardModalOpen(false)}
+            >
+              Close
+            </VFButton>
+            <VFButton
+              size="sm"
+              leftIcon={<Printer className="h-4 w-4" />}
+              onClick={() => {
+                alert(`Sending ID Badge print job to institutional badge printer for ${idCardStudent?.name}`);
+                setIsIdCardModalOpen(false);
+              }}
+            >
+              Print ID Badge
+            </VFButton>
+          </>
+        }
+      >
+        {idCardStudent && (
+          <div className="p-2 flex flex-col items-center justify-center">
+            {/* Realistic ID Card Mockup */}
+            <div className="w-[300px] rounded-2xl bg-gradient-to-b from-card via-card to-muted/40 border-2 border-primary/40 shadow-2xl p-5 text-center relative overflow-hidden space-y-3.5">
+              {/* Top Accent Header */}
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-emerald-500 to-primary" />
+
+              {/* School Header */}
+              <div className="pt-1">
+                <h4 className="text-sm font-black tracking-wider uppercase text-primary">
+                  SPRINGFIELD ACADEMY
+                </h4>
+                <p className="text-[10px] text-muted-foreground font-semibold">
+                  CBSE Affiliated · Academic Session {activeSession}
+                </p>
+              </div>
+
+              {/* ID Portrait (19.5:25) */}
+              <div className="flex justify-center">
+                <div
+                  className="relative overflow-hidden rounded-xl border-2 border-primary/50 shadow-md w-24 h-[123px] bg-muted flex items-center justify-center"
+                  style={{ aspectRatio: '19.5 / 25' }}
+                >
+                  <img
+                    src={idCardStudent.avatarUrl}
+                    alt={idCardStudent.name}
+                    style={{ aspectRatio: '19.5 / 25' }}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Student Name & Class */}
+              <div className="space-y-0.5">
+                <h3 className="text-base font-black text-foreground">
+                  {idCardStudent.name}
+                </h3>
+                <p className="text-xs font-mono font-bold text-primary">
+                  {idCardStudent.admNo}
+                </p>
+                <div className="flex items-center justify-center gap-2 pt-1">
+                  <span className="text-[11px] font-bold text-foreground bg-muted px-2 py-0.5 rounded border border-border">
+                    {idCardStudent.class} (Sec {idCardStudent.section})
+                  </span>
+                  <span className="text-[11px] font-bold text-foreground bg-muted px-2 py-0.5 rounded border border-border">
+                    Roll #{idCardStudent.roll}
+                  </span>
+                </div>
+              </div>
+
+              {/* Credentials Grid */}
+              <div className="grid grid-cols-2 gap-2 text-left bg-muted/40 p-2.5 rounded-xl border border-border/60 text-[11px]">
+                <div>
+                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">Blood Group</span>
+                  <span className="font-extrabold text-amber-400">{idCardStudent.bloodGroup || 'B+'}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">House</span>
+                  <span className="font-bold text-foreground">{idCardStudent.house}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">Emergency Phone</span>
+                  <span className="font-mono font-bold text-foreground truncate">{idCardStudent.phone}</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground block text-[10px] uppercase font-bold">Issue Status</span>
+                  <span className="font-bold text-emerald-400">{idCardStudent.idCardStatus || 'Issued'}</span>
+                </div>
+              </div>
+
+              {/* Barcode & Verification Stripe */}
+              <div className="pt-1 flex flex-col items-center gap-1 border-t border-border/60">
+                <div className="flex items-center justify-center gap-1 h-6 w-48 opacity-80">
+                  <div className="h-full w-1 bg-foreground rounded" />
+                  <div className="h-full w-0.5 bg-foreground rounded" />
+                  <div className="h-full w-2 bg-foreground rounded" />
+                  <div className="h-full w-1 bg-foreground rounded" />
+                  <div className="h-full w-0.5 bg-foreground rounded" />
+                  <div className="h-full w-3 bg-foreground rounded" />
+                  <div className="h-full w-1 bg-foreground rounded" />
+                  <div className="h-full w-2 bg-foreground rounded" />
+                  <div className="h-full w-0.5 bg-foreground rounded" />
+                  <div className="h-full w-1 bg-foreground rounded" />
+                  <div className="h-full w-2 bg-foreground rounded" />
+                </div>
+                <span className="text-[9px] font-mono text-muted-foreground tracking-widest">
+                  *{idCardStudent.admNo}*
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </VFDialog>
 
       {/* 📦 ADVANCED EXPORT MODAL (XLSX, ZIP Photos in 19.5:25, and File Naming Templates) */}
       <VFDialog
