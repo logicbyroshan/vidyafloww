@@ -1,4 +1,4 @@
-import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen } from 'lucide-react';
+import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
 interface HeaderProps {
@@ -7,7 +7,7 @@ interface HeaderProps {
 }
 
 export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
-  const { notifications, schoolProfile } = useGlobalStore();
+  const { notifications, schoolProfile, activeSession, setActiveSession, academicSessions } = useGlobalStore();
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const renderSchoolEmblem = () => {
@@ -48,13 +48,35 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             VidyaMaxx Command Portal
           </span>
           <span className="text-[11px] text-muted-foreground font-semibold mt-1 hidden sm:inline truncate">
-            Academic Session 2026–2027 · Term 1
+            Academic Session {activeSession} · Active Term
           </span>
         </div>
       </div>
 
-      {/* Right: Search, Actions & School Identity */}
+      {/* Right: Session Selector, Search, Actions & School Identity */}
       <div className="flex items-center gap-3 shrink-0">
+        {/* WHICH SESSION ARE WE IN BADGE & SELECTOR */}
+        <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-primary/10 border border-primary/30 text-primary h-11 transition-all shadow-xs" title="Current Academic Session">
+          <Calendar className="h-4 w-4 shrink-0 text-primary" />
+          <div className="flex flex-col text-left">
+            <span className="text-[9px] font-black uppercase tracking-widest text-primary/80 leading-none">
+              Session
+            </span>
+            <select
+              value={activeSession}
+              onChange={(e) => setActiveSession(e.target.value)}
+              className="bg-transparent text-xs font-black text-foreground outline-none cursor-pointer pr-1 leading-tight hover:text-primary transition-colors border-none"
+            >
+              {academicSessions.map((session) => (
+                <option key={session} value={session} className="bg-card text-foreground font-bold">
+                  {session} {session === '2026–2027' ? '(Active)' : '(Archived)'}
+                </option>
+              ))}
+            </select>
+          </div>
+          <span className="h-2 w-2 rounded-full bg-emerald-400 shrink-0 inline-block animate-pulse ml-0.5" />
+        </div>
+
         {/* Compact Search Trigger on Right Side */}
         <button
           onClick={onSearchClick}

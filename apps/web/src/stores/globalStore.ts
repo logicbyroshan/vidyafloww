@@ -32,6 +32,11 @@ interface GlobalState {
   schoolProfile: SchoolProfile;
   updateSchoolProfile: (profile: Partial<SchoolProfile>) => void;
 
+  // Academic Sessions & Active Session State
+  academicSessions: string[];
+  activeSession: string;
+  setActiveSession: (session: string) => void;
+
   // Sidebar
   sidebarExpanded: boolean;
   toggleSidebar: () => void;
@@ -74,6 +79,11 @@ export const useGlobalStore = create<GlobalState>()(
             ...profile,
           },
         })),
+
+      // Academic Session state
+      academicSessions: ['2026–2027', '2025–2026', '2024–2025'],
+      activeSession: '2026–2027',
+      setActiveSession: (activeSession) => set({ activeSession }),
 
       // Sidebar state
       sidebarExpanded: true,
