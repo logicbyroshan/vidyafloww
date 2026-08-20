@@ -163,12 +163,12 @@ export function VFConfirmDialog({
   );
 }
 
-// VFDrawer (Sliding sheet from the right powered by Radix + Framer Motion)
 export interface VFDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   description?: string;
+  headerActions?: React.ReactNode;
   children: React.ReactNode;
   footerActions?: React.ReactNode;
   className?: string;
@@ -179,6 +179,7 @@ export function VFDrawer({
   onClose,
   title,
   description,
+  headerActions,
   children,
   footerActions,
   className,
@@ -211,28 +212,31 @@ export function VFDrawer({
                   )}
                 >
                   {/* Header */}
-                  <div className="flex items-start justify-between p-6 border-b border-border/40">
-                    <div className="space-y-1">
-                      <DialogPrimitive.Title className="text-lg font-semibold text-foreground leading-none">
+                  <div className="flex items-center justify-between p-5 sm:p-6 border-b border-border/40 shrink-0">
+                    <div className="space-y-1 min-w-0 flex-1 pr-3">
+                      <DialogPrimitive.Title className="text-lg font-bold text-foreground leading-none truncate">
                         {title}
                       </DialogPrimitive.Title>
                       {description && (
-                        <DialogPrimitive.Description className="text-xs text-muted-foreground">
+                        <DialogPrimitive.Description className="text-xs text-muted-foreground truncate">
                           {description}
                         </DialogPrimitive.Description>
                       )}
                     </div>
-                    <DialogPrimitive.Close asChild>
-                      <button
-                        onClick={onClose}
-                        className="text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        aria-label="Close drawer"
-                      >
-                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </DialogPrimitive.Close>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {headerActions}
+                      <DialogPrimitive.Close asChild>
+                        <button
+                          onClick={onClose}
+                          className="text-muted-foreground hover:text-foreground p-1.5 rounded-lg hover:bg-muted transition-colors outline-none cursor-pointer"
+                          aria-label="Close drawer"
+                        >
+                          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </DialogPrimitive.Close>
+                    </div>
                   </div>
 
                   {/* Content */}

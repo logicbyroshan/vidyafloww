@@ -8,6 +8,7 @@ import {
   VFButton,
   VFDataTable,
   VFStatCard,
+  VFDrawer,
   cn,
 } from '@vidyamaxx/ui';
 import {
@@ -25,6 +26,17 @@ import {
   Clock,
   ShieldCheck,
   BarChart3,
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  MapPin,
+  HeartPulse,
+  Printer,
+  MessageSquare,
+  Sparkles,
+  BookOpen,
+  Edit3,
+  Bus,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -34,49 +46,470 @@ export const Route = createFileRoute('/students')({
 
 function StudentsPage() {
   const { activeSession, setActiveSession, academicSessions } = useGlobalStore();
-  const [selectedStudent, setSelectedStudent] = React.useState<any | null>(null);
+  const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [selectedClassFilter, setSelectedClassFilter] = React.useState<string>('all');
   const [selectedTcFilter, setSelectedTcFilter] = React.useState<string>('all');
 
-  // Enrolled active students dataset (Session-aware)
+  // Enrolled active students dataset (Session-aware with rich dossier details)
   const allStudentsBySession: Record<string, any[]> = {
     '2026–2027': [
-      { admNo: 'ADM-2026-001', name: 'Aditya Verma', class: 'Class 9', section: 'A', roll: '101', house: 'Red House', guardian: 'Rajesh Verma', phone: '+91 98765 43210', status: 'Active', attendance: '98.2%', gpa: '3.92', session: '2026–2027' },
-      { admNo: 'ADM-2026-002', name: 'Priya Sharma', class: 'Class 9', section: 'A', roll: '102', house: 'Blue House', guardian: 'Sunita Sharma', phone: '+91 98123 45678', status: 'Active', attendance: '95.4%', gpa: '3.88', session: '2026–2027' },
-      { admNo: 'ADM-2026-003', name: 'Rahul Gupta', class: 'Class 9', section: 'B', roll: '103', house: 'Green House', guardian: 'Vikram Gupta', phone: '+91 97654 32109', status: 'Active', attendance: '91.0%', gpa: '3.45', session: '2026–2027' },
-      { admNo: 'ADM-2026-004', name: 'Kavya Nair', class: 'Class 11-Com', section: 'A', roll: '201', house: 'Yellow House', guardian: 'Suresh Nair', phone: '+91 99887 76655', status: 'Active', attendance: '97.5%', gpa: '3.95', session: '2026–2027' },
-      { admNo: 'ADM-2026-005', name: 'Ishaan Malhotra', class: 'Class 11-Sci', section: 'B', roll: '202', house: 'Red House', guardian: 'Anil Malhotra', phone: '+91 98234 56789', status: 'Active', attendance: '94.0%', gpa: '3.70', session: '2026–2027' },
-      { admNo: 'ADM-2026-006', name: 'Sneha Rao', class: 'Class 10', section: 'A', roll: '108', house: 'Blue House', guardian: 'Mahesh Rao', phone: '+91 97711 22334', status: 'Active', attendance: '96.2%', gpa: '3.81', session: '2026–2027' },
-      { admNo: 'ADM-2026-007', name: 'Vikram Mehta', class: 'Class 12-Com', section: 'A', roll: '304', house: 'Green House', guardian: 'Deepak Mehta', phone: '+91 98345 67890', status: 'Active', attendance: '92.8%', gpa: '3.62', session: '2026–2027' },
-      { admNo: 'ADM-2026-008', name: 'Ananya Deshmukh', class: 'Class 12-Sci', section: 'A', roll: '305', house: 'Yellow House', guardian: 'Sanjay Deshmukh', phone: '+91 98456 78901', status: 'Active', attendance: '99.1%', gpa: '3.98', session: '2026–2027' },
+      {
+        admNo: 'ADM-2026-001',
+        name: 'Aditya Verma',
+        avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 9',
+        section: 'A',
+        roll: '101',
+        house: 'Red House',
+        guardian: 'Rajesh Verma',
+        motherName: 'Sunita Verma',
+        phone: '+91 98765 43210',
+        email: 'aditya.v@student.vidyamaxx.edu',
+        address: '402, Royal Greens, Sector 14, New Delhi',
+        dob: '14 May 2011',
+        bloodGroup: 'B+',
+        status: 'Active',
+        attendance: '98.2%',
+        gpa: '3.92',
+        rank: '#2 in Class',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 4 (Stop #12)',
+        medical: 'No known allergies',
+        classTeacher: 'Dr. Rajesh Sharma',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-002',
+        name: 'Priya Sharma',
+        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 9',
+        section: 'A',
+        roll: '102',
+        house: 'Blue House',
+        guardian: 'Sunita Sharma',
+        motherName: 'Sunita Sharma',
+        phone: '+91 98123 45678',
+        email: 'priya.s@student.vidyamaxx.edu',
+        address: '11-B, Pocket C, Vasant Kunj, New Delhi',
+        dob: '22 Aug 2011',
+        bloodGroup: 'O+',
+        status: 'Active',
+        attendance: '95.4%',
+        gpa: '3.88',
+        rank: '#4 in Class',
+        feeStatus: 'Paid',
+        transport: 'Self (Parent Drop)',
+        medical: 'Asthma (Inhaler with Infirmary)',
+        classTeacher: 'Dr. Rajesh Sharma',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-003',
+        name: 'Rahul Gupta',
+        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 9',
+        section: 'B',
+        roll: '103',
+        house: 'Green House',
+        guardian: 'Vikram Gupta',
+        motherName: 'Meenakshi Gupta',
+        phone: '+91 97654 32109',
+        email: 'rahul.g@student.vidyamaxx.edu',
+        address: '88, Anand Lok, New Delhi',
+        dob: '05 Jan 2011',
+        bloodGroup: 'A+',
+        status: 'Active',
+        attendance: '91.0%',
+        gpa: '3.45',
+        rank: '#14 in Class',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 2 (Stop #5)',
+        medical: 'Nut allergy',
+        classTeacher: 'Ms. Pooja Rao',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-004',
+        name: 'Kavya Nair',
+        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 11-Com',
+        section: 'A',
+        roll: '201',
+        house: 'Yellow House',
+        guardian: 'Suresh Nair',
+        motherName: 'Latha Nair',
+        phone: '+91 99887 76655',
+        email: 'kavya.n@student.vidyamaxx.edu',
+        address: '304, Palm Grove, Dwarka Sector 6, New Delhi',
+        dob: '19 Nov 2009',
+        bloodGroup: 'AB+',
+        status: 'Active',
+        attendance: '97.5%',
+        gpa: '3.95',
+        rank: '#1 in Commerce',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 7 (Stop #3)',
+        medical: 'None',
+        classTeacher: 'Mr. Deepak Mishra',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-005',
+        name: 'Ishaan Malhotra',
+        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 11-Sci',
+        section: 'B',
+        roll: '202',
+        house: 'Red House',
+        guardian: 'Anil Malhotra',
+        motherName: 'Kiran Malhotra',
+        phone: '+91 98234 56789',
+        email: 'ishaan.m@student.vidyamaxx.edu',
+        address: '52, Shivalik Enclave, New Delhi',
+        dob: '02 Feb 2009',
+        bloodGroup: 'O-',
+        status: 'Active',
+        attendance: '94.0%',
+        gpa: '3.70',
+        rank: '#8 in Science',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 9 (Stop #1)',
+        medical: 'Spectacles (-2.5D)',
+        classTeacher: 'Dr. Rajesh Sharma',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-006',
+        name: 'Sneha Rao',
+        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 10',
+        section: 'A',
+        roll: '108',
+        house: 'Blue House',
+        guardian: 'Mahesh Rao',
+        motherName: 'Deepa Rao',
+        phone: '+91 97711 22334',
+        email: 'sneha.r@student.vidyamaxx.edu',
+        address: 'B-14, Mayur Vihar Phase 1, New Delhi',
+        dob: '12 Jul 2010',
+        bloodGroup: 'B-',
+        status: 'Active',
+        attendance: '96.2%',
+        gpa: '3.81',
+        rank: '#5 in Class',
+        feeStatus: 'Paid',
+        transport: 'Metro Pass / Self',
+        medical: 'None',
+        classTeacher: 'Mr. Arvind Gupta',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-007',
+        name: 'Vikram Mehta',
+        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 12-Com',
+        section: 'A',
+        roll: '304',
+        house: 'Green House',
+        guardian: 'Deepak Mehta',
+        motherName: 'Anju Mehta',
+        phone: '+91 98345 67890',
+        email: 'vikram.m@student.vidyamaxx.edu',
+        address: '77, Greater Kailash 2, New Delhi',
+        dob: '30 Sep 2008',
+        bloodGroup: 'A-',
+        status: 'Active',
+        attendance: '92.8%',
+        gpa: '3.62',
+        rank: '#11 in Commerce',
+        feeStatus: 'Paid',
+        transport: 'Self (Two-Wheeler)',
+        medical: 'None',
+        classTeacher: 'Mrs. S. Joshi',
+        session: '2026–2027',
+      },
+      {
+        admNo: 'ADM-2026-008',
+        name: 'Ananya Deshmukh',
+        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 12-Sci',
+        section: 'A',
+        roll: '305',
+        house: 'Yellow House',
+        guardian: 'Sanjay Deshmukh',
+        motherName: 'Rekha Deshmukh',
+        phone: '+91 98456 78901',
+        email: 'ananya.d@student.vidyamaxx.edu',
+        address: 'C-9, Hauz Khas Enclave, New Delhi',
+        dob: '18 Dec 2008',
+        bloodGroup: 'AB-',
+        status: 'Active',
+        attendance: '99.1%',
+        gpa: '3.98',
+        rank: '#1 in School',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 1 (Stop #4)',
+        medical: 'None',
+        classTeacher: 'Coach Vikram Singh',
+        session: '2026–2027',
+      },
     ],
     '2025–2026': [
-      { admNo: 'ADM-2025-012', name: 'Rohan Sen', class: 'Class 10', section: 'A', roll: '112', house: 'Red House', guardian: 'Arun Sen', phone: '+91 98111 22233', status: 'Archived', attendance: '94.5%', gpa: '3.75', session: '2025–2026' },
-      { admNo: 'ADM-2025-045', name: 'Tanvi Joshi', class: 'Class 11-Com', section: 'B', roll: '215', house: 'Blue House', guardian: 'Vikas Joshi', phone: '+91 98222 33344', status: 'Archived', attendance: '96.0%', gpa: '3.89', session: '2025–2026' },
-      { admNo: 'ADM-2025-078', name: 'Karan Singhal', class: 'Class 12-Sci', section: 'A', roll: '310', house: 'Green House', guardian: 'Rajesh Singhal', phone: '+91 98333 44455', status: 'Archived', attendance: '93.2%', gpa: '3.65', session: '2025–2026' },
+      {
+        admNo: 'ADM-2025-012',
+        name: 'Rohan Sen',
+        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 10',
+        section: 'A',
+        roll: '112',
+        house: 'Red House',
+        guardian: 'Arun Sen',
+        motherName: 'Shalini Sen',
+        phone: '+91 98111 22233',
+        email: 'rohan.s@student.vidyamaxx.edu',
+        address: '104, Golf Links, New Delhi',
+        dob: '10 Mar 2010',
+        bloodGroup: 'B+',
+        status: 'Archived',
+        attendance: '94.5%',
+        gpa: '3.75',
+        rank: '#7 in Class',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 3',
+        medical: 'None',
+        classTeacher: 'Dr. Rajesh Sharma',
+        session: '2025–2026',
+      },
+      {
+        admNo: 'ADM-2025-045',
+        name: 'Tanvi Joshi',
+        avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 11-Com',
+        section: 'B',
+        roll: '215',
+        house: 'Blue House',
+        guardian: 'Vikas Joshi',
+        motherName: 'Geeta Joshi',
+        phone: '+91 98222 33344',
+        email: 'tanvi.j@student.vidyamaxx.edu',
+        address: '45, Defence Colony, New Delhi',
+        dob: '25 Jun 2009',
+        bloodGroup: 'O+',
+        status: 'Archived',
+        attendance: '96.0%',
+        gpa: '3.89',
+        rank: '#3 in Commerce',
+        feeStatus: 'Paid',
+        transport: 'Self Drop',
+        medical: 'None',
+        classTeacher: 'Mrs. S. Joshi',
+        session: '2025–2026',
+      },
+      {
+        admNo: 'ADM-2025-078',
+        name: 'Karan Singhal',
+        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 12-Sci',
+        section: 'A',
+        roll: '310',
+        house: 'Green House',
+        guardian: 'Rajesh Singhal',
+        motherName: 'Poonam Singhal',
+        phone: '+91 98333 44455',
+        email: 'karan.s@student.vidyamaxx.edu',
+        address: '12, Sundar Nagar, New Delhi',
+        dob: '14 Jan 2008',
+        bloodGroup: 'A+',
+        status: 'Archived',
+        attendance: '93.2%',
+        gpa: '3.65',
+        rank: '#9 in Science',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 6',
+        medical: 'None',
+        classTeacher: 'Dr. Rajesh Sharma',
+        session: '2025–2026',
+      },
     ],
     '2024–2025': [
-      { admNo: 'ADM-2024-009', name: 'Meera Iyer', class: 'Class 12-Hum', section: 'A', roll: '301', house: 'Yellow House', guardian: 'K. Iyer', phone: '+91 98444 55566', status: 'Archived', attendance: '95.8%', gpa: '3.91', session: '2024–2025' },
-      { admNo: 'ADM-2024-034', name: 'Devendra Chouhan', class: 'Class 12-Sci', section: 'B', roll: '318', house: 'Red House', guardian: 'N. Chouhan', phone: '+91 98555 66677', status: 'Archived', attendance: '91.4%', gpa: '3.50', session: '2024–2025' },
+      {
+        admNo: 'ADM-2024-009',
+        name: 'Meera Iyer',
+        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 12-Hum',
+        section: 'A',
+        roll: '301',
+        house: 'Yellow House',
+        guardian: 'K. Iyer',
+        motherName: 'Radha Iyer',
+        phone: '+91 98444 55566',
+        email: 'meera.i@student.vidyamaxx.edu',
+        address: '9, Chanakyapuri, New Delhi',
+        dob: '08 Aug 2007',
+        bloodGroup: 'B+',
+        status: 'Archived',
+        attendance: '95.8%',
+        gpa: '3.91',
+        rank: '#1 in Humanities',
+        feeStatus: 'Paid',
+        transport: 'Self',
+        medical: 'None',
+        classTeacher: 'Ms. Pooja Rao',
+        session: '2024–2025',
+      },
+      {
+        admNo: 'ADM-2024-034',
+        name: 'Devendra Chouhan',
+        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+        class: 'Class 12-Sci',
+        section: 'B',
+        roll: '318',
+        house: 'Red House',
+        guardian: 'N. Chouhan',
+        motherName: 'Suman Chouhan',
+        phone: '+91 98555 66677',
+        email: 'devendra.c@student.vidyamaxx.edu',
+        address: '61, Civil Lines, New Delhi',
+        dob: '11 Nov 2007',
+        bloodGroup: 'O+',
+        status: 'Archived',
+        attendance: '91.4%',
+        gpa: '3.50',
+        rank: '#15 in Science',
+        feeStatus: 'Paid',
+        transport: 'Bus Route 8',
+        medical: 'None',
+        classTeacher: 'Mr. Arvind Gupta',
+        session: '2024–2025',
+      },
     ],
   };
 
   // TC & Alumni / Passed out dataset (Session-aware)
   const tcAndAlumniDataBySession: Record<string, any[]> = {
     '2026–2027': [
-      { tcNo: 'TC-2026-089', admNo: 'ADM-2025-104', name: 'Simran Kaur', type: 'Transfer Certificate (TC)', previousClass: 'Class 10-B', destination: 'DPS International, Noida (Parent Relocation)', issueDate: '12 Aug 2026', status: 'TC Issued', tcReason: 'Parent Transfer', conduct: 'Exemplary' },
-      { tcNo: 'TC-2026-090', admNo: 'ADM-2024-055', name: 'Harshit Saxena', type: 'Transfer Certificate (TC)', previousClass: 'Class 11-Sci', destination: 'The Heritage School, Gurgaon', issueDate: '18 Aug 2026', status: 'TC Issued', tcReason: 'Board Stream Shift', conduct: 'Good' },
-      { tcNo: 'TC-2026-091', admNo: 'ADM-2025-212', name: 'Divya Khurana', type: 'Transfer Certificate (TC)', previousClass: 'Class 8-A', destination: 'Army Public School, Pune', issueDate: '19 Aug 2026', status: 'Principal Review', tcReason: 'Defense Posting', conduct: 'Excellent' },
-      { tcNo: 'ALUM-2026-001', admNo: 'ADM-2022-014', name: 'Aarav Pillai', type: 'Passed Out (Alumni)', previousClass: 'Class 12-Sci (2026 Batch)', destination: 'IIT Bombay · B.Tech CSE', issueDate: '30 May 2026', status: 'Passed Out', tcReason: 'CBSE Board Clearance (97.4%)', conduct: 'Distinction' },
-      { tcNo: 'ALUM-2026-002', admNo: 'ADM-2022-088', name: 'Neha Bhattacharya', type: 'Passed Out (Alumni)', previousClass: 'Class 12-Com (2026 Batch)', destination: 'SRCC Delhi · B.Com (Hons)', issueDate: '30 May 2026', status: 'Passed Out', tcReason: 'CBSE Board Clearance (98.2%)', conduct: 'Distinction' },
-      { tcNo: 'ALUM-2026-003', admNo: 'ADM-2022-105', name: 'Riddhima Kapoor', type: 'Passed Out (Alumni)', previousClass: 'Class 12-Hum (2026 Batch)', destination: 'St. Stephen’s College · BA Economics', issueDate: '30 May 2026', status: 'Passed Out', tcReason: 'CBSE Board Clearance (96.8%)', conduct: 'Distinction' },
+      {
+        tcNo: 'TC-2026-089',
+        admNo: 'ADM-2025-104',
+        name: 'Simran Kaur',
+        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        type: 'Transfer Certificate (TC)',
+        previousClass: 'Class 10-B',
+        destination: 'DPS International, Noida (Parent Relocation)',
+        issueDate: '12 Aug 2026',
+        status: 'TC Issued',
+        tcReason: 'Parent Transfer',
+        conduct: 'Exemplary',
+      },
+      {
+        tcNo: 'TC-2026-090',
+        admNo: 'ADM-2024-055',
+        name: 'Harshit Saxena',
+        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        type: 'Transfer Certificate (TC)',
+        previousClass: 'Class 11-Sci',
+        destination: 'The Heritage School, Gurgaon',
+        issueDate: '18 Aug 2026',
+        status: 'TC Issued',
+        tcReason: 'Board Stream Shift',
+        conduct: 'Good',
+      },
+      {
+        tcNo: 'TC-2026-091',
+        admNo: 'ADM-2025-212',
+        name: 'Divya Khurana',
+        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        type: 'Transfer Certificate (TC)',
+        previousClass: 'Class 8-A',
+        destination: 'Army Public School, Pune',
+        issueDate: '19 Aug 2026',
+        status: 'Principal Review',
+        tcReason: 'Defense Posting',
+        conduct: 'Excellent',
+      },
+      {
+        tcNo: 'ALUM-2026-001',
+        admNo: 'ADM-2022-014',
+        name: 'Aarav Pillai',
+        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        type: 'Passed Out (Alumni)',
+        previousClass: 'Class 12-Sci (2026 Batch)',
+        destination: 'IIT Bombay · B.Tech CSE',
+        issueDate: '30 May 2026',
+        status: 'Passed Out',
+        tcReason: 'CBSE Board Clearance (97.4%)',
+        conduct: 'Distinction',
+      },
+      {
+        tcNo: 'ALUM-2026-002',
+        admNo: 'ADM-2022-088',
+        name: 'Neha Bhattacharya',
+        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+        type: 'Passed Out (Alumni)',
+        previousClass: 'Class 12-Com (2026 Batch)',
+        destination: 'SRCC Delhi · B.Com (Hons)',
+        issueDate: '30 May 2026',
+        status: 'Passed Out',
+        tcReason: 'CBSE Board Clearance (98.2%)',
+        conduct: 'Distinction',
+      },
+      {
+        tcNo: 'ALUM-2026-003',
+        admNo: 'ADM-2022-105',
+        name: 'Riddhima Kapoor',
+        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        type: 'Passed Out (Alumni)',
+        previousClass: 'Class 12-Hum (2026 Batch)',
+        destination: 'St. Stephen’s College · BA Economics',
+        issueDate: '30 May 2026',
+        status: 'Passed Out',
+        tcReason: 'CBSE Board Clearance (96.8%)',
+        conduct: 'Distinction',
+      },
     ],
     '2025–2026': [
-      { tcNo: 'ALUM-2025-014', admNo: 'ADM-2021-002', name: 'Siddharth Roy', type: 'Passed Out (Alumni)', previousClass: 'Class 12-Sci (2025 Batch)', destination: 'BITS Pilani', issueDate: '28 May 2025', status: 'Passed Out', tcReason: 'CBSE Board Clearance (95.6%)', conduct: 'Distinction' },
-      { tcNo: 'TC-2025-044', admNo: 'ADM-2023-087', name: 'Manav Chawla', type: 'Transfer Certificate (TC)', previousClass: 'Class 9-A', destination: 'Modern School, Barakhamba', issueDate: '15 Oct 2025', status: 'TC Issued', tcReason: 'Residential Change', conduct: 'Good' },
+      {
+        tcNo: 'ALUM-2025-014',
+        admNo: 'ADM-2021-002',
+        name: 'Siddharth Roy',
+        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+        type: 'Passed Out (Alumni)',
+        previousClass: 'Class 12-Sci (2025 Batch)',
+        destination: 'BITS Pilani',
+        issueDate: '28 May 2025',
+        status: 'Passed Out',
+        tcReason: 'CBSE Board Clearance (95.6%)',
+        conduct: 'Distinction',
+      },
+      {
+        tcNo: 'TC-2025-044',
+        admNo: 'ADM-2023-087',
+        name: 'Manav Chawla',
+        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80',
+        type: 'Transfer Certificate (TC)',
+        previousClass: 'Class 9-A',
+        destination: 'Modern School, Barakhamba',
+        issueDate: '15 Oct 2025',
+        status: 'TC Issued',
+        tcReason: 'Residential Change',
+        conduct: 'Good',
+      },
     ],
     '2024–2025': [
-      { tcNo: 'ALUM-2024-008', admNo: 'ADM-2020-001', name: 'Varun Grover', type: 'Passed Out (Alumni)', previousClass: 'Class 12-Sci (2024 Batch)', destination: 'AIIMS New Delhi', issueDate: '25 May 2024', status: 'Passed Out', tcReason: 'CBSE Board Clearance (99.0%)', conduct: 'Distinction' },
+      {
+        tcNo: 'ALUM-2024-008',
+        admNo: 'ADM-2020-001',
+        name: 'Varun Grover',
+        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80',
+        type: 'Passed Out (Alumni)',
+        previousClass: 'Class 12-Sci (2024 Batch)',
+        destination: 'AIIMS New Delhi',
+        issueDate: '25 May 2024',
+        status: 'Passed Out',
+        tcReason: 'CBSE Board Clearance (99.0%)',
+        conduct: 'Distinction',
+      },
     ],
   };
 
@@ -92,22 +525,91 @@ function StudentsPage() {
     }
   );
 
-  // Table Columns for Tab 1: Enrolled Students
+  // Active student object inside the drawer
+  const activeStudent =
+    selectedStudentIndex !== null && selectedStudentIndex >= 0 && selectedStudentIndex < currentEnrolledList.length
+      ? currentEnrolledList[selectedStudentIndex]
+      : null;
+
+  // Next / Previous Navigation Handlers
+  const handlePrevStudent = () => {
+    if (selectedStudentIndex !== null && selectedStudentIndex > 0) {
+      setSelectedStudentIndex(selectedStudentIndex - 1);
+    }
+  };
+
+  const handleNextStudent = () => {
+    if (selectedStudentIndex !== null && selectedStudentIndex < currentEnrolledList.length - 1) {
+      setSelectedStudentIndex(selectedStudentIndex + 1);
+    }
+  };
+
+  const openStudentDrawer = (student: any) => {
+    const idx = currentEnrolledList.findIndex((s) => s.admNo === student.admNo);
+    setSelectedStudentIndex(idx >= 0 ? idx : 0);
+    setIsDrawerOpen(true);
+  };
+
+  // Keyboard navigation listener for ArrowLeft / ArrowRight
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isDrawerOpen) return;
+      if (e.key === 'ArrowLeft') handlePrevStudent();
+      if (e.key === 'ArrowRight') handleNextStudent();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isDrawerOpen, selectedStudentIndex, currentEnrolledList.length]);
+
+  // Table Columns for Tab 1: Enrolled Students (with dedicated Photo column)
   const enrolledStudentColumns = [
+    {
+      header: 'Photo',
+      accessorKey: 'photo',
+      cell: (r: any) => (
+        <div className="flex items-center justify-center">
+          <img
+            src={r.avatarUrl}
+            alt={r.name}
+            className="h-10 w-10 rounded-xl object-cover border border-primary/30 shadow-xs cursor-pointer hover:scale-105 transition-transform"
+            onClick={() => openStudentDrawer(r)}
+            onError={(e: any) => {
+              e.target.style.display = 'none';
+              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          <div
+            onClick={() => openStudentDrawer(r)}
+            className="h-10 w-10 rounded-xl bg-primary/20 text-primary font-black text-sm hidden items-center justify-center border border-primary/30 cursor-pointer"
+          >
+            {r.name.split(' ').map((n: string) => n[0]).join('')}
+          </div>
+        </div>
+      ),
+    },
     {
       header: 'Admission No',
       accessorKey: 'admNo',
-      cell: (r: any) => <span className="font-mono font-bold text-primary text-base">{r.admNo}</span>,
+      cell: (r: any) => (
+        <span
+          onClick={() => openStudentDrawer(r)}
+          className="font-mono font-bold text-primary text-base cursor-pointer hover:underline"
+        >
+          {r.admNo}
+        </span>
+      ),
     },
     {
       header: 'Student Name',
       accessorKey: 'name',
       cell: (r: any) => (
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-primary/15 text-primary font-bold text-sm flex items-center justify-center shrink-0 border border-primary/20">
-            {r.name.split(' ').map((n: string) => n[0]).join('')}
-          </div>
-          <span className="font-extrabold text-foreground text-base">{r.name}</span>
+        <div
+          onClick={() => openStudentDrawer(r)}
+          className="flex items-center gap-2.5 cursor-pointer group"
+        >
+          <span className="font-extrabold text-foreground text-base group-hover:text-primary transition-colors">
+            {r.name}
+          </span>
         </div>
       ),
     },
@@ -148,7 +650,7 @@ function StudentsPage() {
           size="sm"
           variant="outline"
           leftIcon={<Eye className="h-4 w-4" />}
-          onClick={() => setSelectedStudent(r)}
+          onClick={() => openStudentDrawer(r)}
         >
           View Profile
         </VFButton>
@@ -156,8 +658,27 @@ function StudentsPage() {
     },
   ];
 
-  // Table Columns for Tab 2: TC & Passed Out / Alumni
   const tcAndAlumniColumns = [
+    {
+      header: 'Photo',
+      accessorKey: 'photo',
+      cell: (r: any) => (
+        <div className="flex items-center justify-center">
+          <img
+            src={r.avatarUrl}
+            alt={r.name}
+            className="h-10 w-10 rounded-xl object-cover border border-amber-500/30 shadow-xs"
+            onError={(e: any) => {
+              e.target.style.display = 'none';
+              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          <div className="h-10 w-10 rounded-xl bg-amber-500/20 text-amber-400 font-black text-sm hidden items-center justify-center border border-amber-500/30">
+            {r.name.split(' ').map((n: string) => n[0]).join('')}
+          </div>
+        </div>
+      ),
+    },
     {
       header: 'Record / TC No',
       accessorKey: 'tcNo',
@@ -172,14 +693,9 @@ function StudentsPage() {
       header: 'Student Name',
       accessorKey: 'name',
       cell: (r: any) => (
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-amber-500/15 text-amber-400 font-bold text-sm flex items-center justify-center shrink-0 border border-amber-500/30">
-            {r.name.split(' ').map((n: string) => n[0]).join('')}
-          </div>
-          <div className="flex flex-col">
-            <span className="font-extrabold text-foreground text-base">{r.name}</span>
-            <span className="text-xs text-muted-foreground font-semibold">{r.previousClass}</span>
-          </div>
+        <div className="flex flex-col">
+          <span className="font-extrabold text-foreground text-base">{r.name}</span>
+          <span className="text-xs text-muted-foreground font-semibold">{r.previousClass}</span>
         </div>
       ),
     },
@@ -240,14 +756,10 @@ function StudentsPage() {
     },
   ];
 
-  // ─── TAB 1: CLEAN ENROLLED STUDENTS MASTER DIRECTORY ──────────────────────────
   const enrolledStudentsContent = (
     <div className="space-y-4">
-      {/* Unified Single Control & Academic Command Bar */}
       <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs">
-        {/* Left: Academic Session Selector & Class Filters */}
         <div className="flex items-center gap-2.5 flex-wrap">
-          {/* Academic Session Pill */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/25 text-primary">
             <Calendar className="h-4 w-4 shrink-0 text-primary" />
             <span className="text-xs font-black uppercase tracking-wider text-primary/80">Session:</span>
@@ -263,8 +775,6 @@ function StudentsPage() {
               ))}
             </select>
           </div>
-
-          {/* Class / Grade Filter */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 border border-border">
             <span className="text-xs font-bold text-muted-foreground">Class:</span>
             <select
@@ -279,15 +789,11 @@ function StudentsPage() {
               <option value="Class 12" className="bg-card text-foreground font-bold">Class 12 Only</option>
             </select>
           </div>
-
-          {/* Quick Active Badge */}
           <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
             <span>Enrolled:</span>
             <span className="font-extrabold text-foreground">{currentEnrolledList.length} Students</span>
           </span>
         </div>
-
-        {/* Right: Actions */}
         <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
           <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
             Export Roster
@@ -297,54 +803,6 @@ function StudentsPage() {
           </VFButton>
         </div>
       </div>
-
-      {/* Selected Student Profile Preview Card (if open) */}
-      {selectedStudent && (
-        <div className="p-5 bg-card border border-primary/40 rounded-xl shadow-xs animate-fade-in space-y-4">
-          <div className="flex items-center justify-between border-b border-border pb-3">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-primary/15 text-primary font-black flex items-center justify-center text-base shrink-0 border border-primary/30">
-                {selectedStudent.name.split(' ').map((n: string) => n[0]).join('')}
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-foreground">{selectedStudent.name}</h3>
-                <p className="text-sm text-muted-foreground font-semibold">{selectedStudent.admNo} · {selectedStudent.class} (Sec {selectedStudent.section}) · Session {selectedStudent.session}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <VFBadge variant="success">Active Student</VFBadge>
-              <button
-                onClick={() => setSelectedStudent(null)}
-                className="text-sm text-muted-foreground hover:text-foreground font-bold px-2.5 py-1 rounded-lg hover:bg-muted cursor-pointer transition-colors"
-              >
-                ✕ Close
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-1">
-            <div className="p-3 rounded-lg bg-background/50 border border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Attendance Rate</p>
-              <p className="text-xl font-black text-emerald-400 mt-1">{selectedStudent.attendance}</p>
-            </div>
-            <div className="p-3 rounded-lg bg-background/50 border border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">GPA / Rank</p>
-              <p className="text-xl font-black text-primary mt-1">{selectedStudent.gpa} (Top 5%)</p>
-            </div>
-            <div className="p-3 rounded-lg bg-background/50 border border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Guardian Contact</p>
-              <p className="text-sm font-bold text-foreground mt-1">{selectedStudent.guardian}</p>
-              <p className="text-xs text-muted-foreground font-mono">{selectedStudent.phone}</p>
-            </div>
-            <div className="p-3 rounded-lg bg-background/50 border border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Assigned House</p>
-              <p className="text-base font-bold text-foreground mt-1">{selectedStudent.house}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Main Clean Enrolled Students Table */}
       <VFDataTable
         columns={enrolledStudentColumns}
         data={currentEnrolledList}
@@ -353,14 +811,10 @@ function StudentsPage() {
     </div>
   );
 
-  // ─── TAB 2: CLEAN TRANSFERS, TC & ALUMNI REGISTRY ─────────────────────────────
   const tcAndAlumniContent = (
     <div className="space-y-4">
-      {/* Unified Single Control & TC Command Bar */}
       <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs">
-        {/* Left: Academic Session & Category Filters */}
         <div className="flex items-center gap-2.5 flex-wrap">
-          {/* Academic Session Pill */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400">
             <Calendar className="h-4 w-4 shrink-0 text-amber-400" />
             <span className="text-xs font-black uppercase tracking-wider text-amber-400/80">Session:</span>
@@ -376,8 +830,6 @@ function StudentsPage() {
               ))}
             </select>
           </div>
-
-          {/* Record Category Filter */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 border border-border">
             <span className="text-xs font-bold text-muted-foreground">Type:</span>
             <select
@@ -390,15 +842,11 @@ function StudentsPage() {
               <option value="alumni" className="bg-card text-foreground font-bold">Passed Out Alumni</option>
             </select>
           </div>
-
-          {/* Quick Count Badge */}
           <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
             <span>Records:</span>
             <span className="font-extrabold text-foreground">{currentTcAndAlumniList.length}</span>
           </span>
         </div>
-
-        {/* Right: Actions */}
         <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
           <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
             Export TC Ledger
@@ -408,8 +856,6 @@ function StudentsPage() {
           </VFButton>
         </div>
       </div>
-
-      {/* Main Clean TC & Alumni Table */}
       <VFDataTable
         columns={tcAndAlumniColumns}
         data={currentTcAndAlumniList}
@@ -418,10 +864,8 @@ function StudentsPage() {
     </div>
   );
 
-  // ─── TAB 3: DEDICATED STUDENT ANALYTICS & DEMOGRAPHICS ─────────────────────────
   const analyticsAndStatsContent = (
     <div className="space-y-6">
-      {/* Session Context Banner */}
       <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
@@ -448,15 +892,12 @@ function StudentsPage() {
             <VFBadge variant="outline">Verified CBSE Analytics</VFBadge>
           </div>
         </div>
-
         <div className="flex items-center gap-2">
           <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
             Export Insights PDF
           </VFButton>
         </div>
       </div>
-
-      {/* Primary KPI Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
           title="Total Enrolled"
@@ -491,8 +932,6 @@ function StudentsPage() {
           accentColor="blue"
         />
       </div>
-
-      {/* Secondary TC & Migration KPI Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
           title="Total TC Issued"
@@ -527,8 +966,6 @@ function StudentsPage() {
           accentColor="amber"
         />
       </div>
-
-      {/* Demographic Matrix 3-Card Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <VFCard title="Gender Distribution" description="Current student population balance">
           <div className="space-y-3 mt-1">
@@ -540,7 +977,6 @@ function StudentsPage() {
             <p className="text-xs font-bold text-muted-foreground">51.2% Male · 48.8% Female</p>
           </div>
         </VFCard>
-
         <VFCard title="Quota & Reserved Seats" description="Compliance with RTE standards">
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">186 Students</p>
@@ -550,7 +986,6 @@ function StudentsPage() {
             <p className="text-xs font-bold text-muted-foreground">15% RTE Quota fully compliant</p>
           </div>
         </VFCard>
-
         <VFCard title="House Allocations" description="Four competitive student squads">
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">4 Houses</p>
@@ -563,8 +998,6 @@ function StudentsPage() {
           </div>
         </VFCard>
       </div>
-
-      {/* Class-Wise Enrollment Breakdown */}
       <VFCard title="Class-Wise Enrollment Breakdown" description="Distribution across academic wings and sections">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-base pt-1">
           {[
@@ -587,7 +1020,6 @@ function StudentsPage() {
     </div>
   );
 
-  // ─── 3 CLEAN DEDICATED TABS ───────────────────────────────────────────────────
   const tabs = [
     {
       id: 'enrolled',
@@ -614,6 +1046,201 @@ function StudentsPage() {
   return (
     <VFPageContainer>
       <VFTabs items={tabs} defaultTabId="enrolled" variant="top-bar" />
+
+      <VFDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title={activeStudent ? activeStudent.name : 'Student Dossier'}
+        description={
+          activeStudent
+            ? `${activeStudent.admNo} · ${activeStudent.class} (Sec ${activeStudent.section}) · Roll #${activeStudent.roll}`
+            : ''
+        }
+        className="max-w-xl sm:max-w-2xl"
+        headerActions={
+          <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl border border-border">
+            <button
+              onClick={handlePrevStudent}
+              disabled={selectedStudentIndex === 0}
+              className="p-1 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+              title="Previous Student (Keyboard: ←)"
+            >
+              <ChevronLeft className="h-4.5 w-4.5" />
+            </button>
+            <span className="text-xs font-mono font-bold px-2 text-foreground select-none">
+              {selectedStudentIndex !== null ? selectedStudentIndex + 1 : 1} / {currentEnrolledList.length}
+            </span>
+            <button
+              onClick={handleNextStudent}
+              disabled={selectedStudentIndex === currentEnrolledList.length - 1}
+              className="p-1 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+              title="Next Student (Keyboard: →)"
+            >
+              <ChevronRight className="h-4.5 w-4.5" />
+            </button>
+          </div>
+        }
+        footerActions={
+          <div className="flex items-center justify-between w-full gap-2 flex-wrap">
+            <div className="flex items-center gap-2">
+              <VFButton
+                variant="outline"
+                size="sm"
+                leftIcon={<MessageSquare className="h-4 w-4" />}
+                onClick={() => alert(`Opening WhatsApp notification channel for ${activeStudent?.name}`)}
+              >
+                WhatsApp
+              </VFButton>
+              <VFButton
+                variant="outline"
+                size="sm"
+                leftIcon={<Printer className="h-4 w-4" />}
+                onClick={() => alert(`Printing official ID badge for ${activeStudent?.name}`)}
+              >
+                Print ID
+              </VFButton>
+            </div>
+            <div className="flex items-center gap-2">
+              <VFButton
+                size="sm"
+                leftIcon={<Edit3 className="h-4 w-4" />}
+                onClick={() => alert(`Editing student profile for ${activeStudent?.name}`)}
+              >
+                Edit Profile
+              </VFButton>
+            </div>
+          </div>
+        }
+      >
+        {activeStudent && (
+          <div className="space-y-5 animate-fade-in">
+            <div className="p-4 rounded-xl bg-gradient-to-r from-primary/15 via-card to-card border border-primary/25 flex items-start gap-4">
+              <div className="relative shrink-0">
+                <img
+                  src={activeStudent.avatarUrl}
+                  alt={activeStudent.name}
+                  className="h-20 w-20 rounded-2xl object-cover border-2 border-primary/40 shadow-sm"
+                  onError={(e: any) => {
+                    e.target.style.display = 'none';
+                    if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="h-20 w-20 rounded-2xl bg-primary/20 text-primary font-black text-2xl hidden items-center justify-center border-2 border-primary/40">
+                  {activeStudent.name.split(' ').map((n: string) => n[0]).join('')}
+                </div>
+                <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-card" />
+              </div>
+
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-xl font-black text-foreground tracking-tight truncate">
+                    {activeStudent.name}
+                  </h3>
+                  <VFBadge variant="success">{activeStudent.status}</VFBadge>
+                </div>
+                <p className="text-xs text-muted-foreground font-mono font-bold">
+                  {activeStudent.admNo} · Roll No {activeStudent.roll}
+                </p>
+                <div className="flex items-center gap-2 pt-1 flex-wrap">
+                  <VFBadge variant="outline">{activeStudent.house}</VFBadge>
+                  <span className="text-xs font-bold text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md border border-border">
+                    {activeStudent.class} (Sec {activeStudent.section})
+                  </span>
+                  <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+                    Blood: {activeStudent.bloodGroup}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                Academic Standing & Performance
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3 rounded-xl bg-muted/30 border border-border">
+                  <span className="text-[11px] font-bold text-muted-foreground">Attendance</span>
+                  <p className="text-lg font-black text-emerald-400 mt-0.5">{activeStudent.attendance}</p>
+                </div>
+                <div className="p-3 rounded-xl bg-muted/30 border border-border">
+                  <span className="text-[11px] font-bold text-muted-foreground">GPA / Grade</span>
+                  <p className="text-lg font-black text-primary mt-0.5">{activeStudent.gpa}</p>
+                </div>
+                <div className="p-3 rounded-xl bg-muted/30 border border-border">
+                  <span className="text-[11px] font-bold text-muted-foreground">Class Standing</span>
+                  <p className="text-lg font-black text-foreground mt-0.5">{activeStudent.rank}</p>
+                </div>
+                <div className="p-3 rounded-xl bg-muted/30 border border-border">
+                  <span className="text-[11px] font-bold text-muted-foreground">Fee Status</span>
+                  <p className="text-lg font-black text-emerald-400 mt-0.5">{activeStudent.feeStatus}</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
+                <Phone className="h-3.5 w-3.5 text-primary" />
+                Family & Guardian Information
+              </h4>
+              <div className="p-4 rounded-xl bg-muted/30 border border-border space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-[11px] font-bold text-muted-foreground">Father / Primary Guardian</span>
+                    <p className="text-sm font-extrabold text-foreground mt-0.5">{activeStudent.guardian}</p>
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-bold text-muted-foreground">Mother's Name</span>
+                    <p className="text-sm font-extrabold text-foreground mt-0.5">{activeStudent.motherName}</p>
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-bold text-muted-foreground">Guardian Phone / WhatsApp</span>
+                    <p className="text-sm font-mono font-bold text-primary mt-0.5">{activeStudent.phone}</p>
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-bold text-muted-foreground">Student Email Address</span>
+                    <p className="text-sm font-mono font-bold text-muted-foreground mt-0.5 truncate">{activeStudent.email}</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-border/50 pt-2.5">
+                  <span className="text-[11px] font-bold text-muted-foreground flex items-center gap-1">
+                    <MapPin className="h-3 w-3" /> Residential Address
+                  </span>
+                  <p className="text-xs font-semibold text-foreground mt-0.5">{activeStudent.address}</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
+                <Bus className="h-3.5 w-3.5 text-primary" />
+                School Logistics & Health Profile
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                  <span className="text-[11px] font-bold text-muted-foreground flex items-center gap-1">
+                    <BookOpen className="h-3 w-3 text-primary" /> Assigned Class Teacher
+                  </span>
+                  <p className="text-sm font-bold text-foreground">{activeStudent.classTeacher}</p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                  <span className="text-[11px] font-bold text-muted-foreground flex items-center gap-1">
+                    <Bus className="h-3 w-3 text-amber-400" /> Commute & Route
+                  </span>
+                  <p className="text-sm font-bold text-foreground">{activeStudent.transport}</p>
+                </div>
+                <div className="sm:col-span-2 p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                  <span className="text-[11px] font-bold text-muted-foreground flex items-center gap-1">
+                    <HeartPulse className="h-3 w-3 text-rose-400" /> Medical & Allergy Remarks
+                  </span>
+                  <p className="text-xs font-bold text-foreground/90">{activeStudent.medical}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </VFDrawer>
     </VFPageContainer>
   );
 }
