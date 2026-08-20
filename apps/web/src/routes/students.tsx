@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFTabs,
+  VFCard,
   VFBadge,
   VFButton,
   VFDataTable,
@@ -23,6 +24,7 @@ import {
   FileText,
   Clock,
   ShieldCheck,
+  BarChart3,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -34,6 +36,7 @@ function StudentsPage() {
   const { activeSession, setActiveSession, academicSessions } = useGlobalStore();
   const [selectedStudent, setSelectedStudent] = React.useState<any | null>(null);
   const [selectedClassFilter, setSelectedClassFilter] = React.useState<string>('all');
+  const [selectedTcFilter, setSelectedTcFilter] = React.useState<string>('all');
 
   // Enrolled active students dataset (Session-aware)
   const allStudentsBySession: Record<string, any[]> = {
@@ -81,7 +84,13 @@ function StudentsPage() {
     (s) => selectedClassFilter === 'all' || s.class.includes(selectedClassFilter)
   );
 
-  const currentTcAndAlumniList = tcAndAlumniDataBySession[activeSession] || tcAndAlumniDataBySession['2026–2027'];
+  const currentTcAndAlumniList = (tcAndAlumniDataBySession[activeSession] || tcAndAlumniDataBySession['2026–2027']).filter(
+    (r) => {
+      if (selectedTcFilter === 'tc') return r.type.includes('Transfer Certificate');
+      if (selectedTcFilter === 'alumni') return r.type.includes('Passed Out');
+      return true;
+    }
+  );
 
   // Table Columns for Tab 1: Enrolled Students
   const enrolledStudentColumns = [
@@ -231,87 +240,65 @@ function StudentsPage() {
     },
   ];
 
-  // ─── TAB 1 CONTENT: ENROLLED STUDENTS MASTER ROSTER ───────────────────────────
+  // ─── TAB 1: CLEAN ENROLLED STUDENTS MASTER DIRECTORY ──────────────────────────
   const enrolledStudentsContent = (
-    <div className="space-y-6">
-      {/* Session Banner with Quick Switcher */}
-      <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 via-card to-card border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
-            <Calendar className="h-5 w-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-extrabold text-foreground">
-                Active Session Roster: <span className="text-primary">{activeSession}</span>
-              </h3>
-              <VFBadge variant={activeSession === '2026–2027' ? 'success' : 'outline'}>
-                {activeSession === '2026–2027' ? 'Current Academic Term' : 'Historical Archive'}
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-              Showing active enrolled students registered in academic session {activeSession}
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Session Switch Buttons */}
-        <div className="flex items-center gap-2 shrink-0 bg-background/60 p-1 rounded-xl border border-border">
-          <span className="text-xs font-bold text-muted-foreground px-2">Switch Session:</span>
-          {academicSessions.map((session) => (
-            <button
-              key={session}
-              onClick={() => setActiveSession(session)}
-              className={cn(
-                "px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer",
-                activeSession === session
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
+    <div className="space-y-4">
+      {/* Unified Single Control & Academic Command Bar */}
+      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs">
+        {/* Left: Academic Session Selector & Class Filters */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Academic Session Pill */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/25 text-primary">
+            <Calendar className="h-4 w-4 shrink-0 text-primary" />
+            <span className="text-xs font-black uppercase tracking-wider text-primary/80">Session:</span>
+            <select
+              value={activeSession}
+              onChange={(e) => setActiveSession(e.target.value)}
+              className="bg-transparent text-xs font-extrabold text-foreground outline-none cursor-pointer pr-1 hover:text-primary transition-colors border-none"
             >
-              {session}
-            </button>
-          ))}
+              {academicSessions.map((session) => (
+                <option key={session} value={session} className="bg-card text-foreground font-bold">
+                  {session} {session === '2026–2027' ? '(Active)' : '(Archived)'}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Class / Grade Filter */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 border border-border">
+            <span className="text-xs font-bold text-muted-foreground">Class:</span>
+            <select
+              value={selectedClassFilter}
+              onChange={(e) => setSelectedClassFilter(e.target.value)}
+              className="bg-transparent text-xs font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-primary transition-colors border-none"
+            >
+              <option value="all" className="bg-card text-foreground font-bold">All Classes & Wings</option>
+              <option value="Class 9" className="bg-card text-foreground font-bold">Class 9 Only</option>
+              <option value="Class 10" className="bg-card text-foreground font-bold">Class 10 Only</option>
+              <option value="Class 11" className="bg-card text-foreground font-bold">Class 11 Only</option>
+              <option value="Class 12" className="bg-card text-foreground font-bold">Class 12 Only</option>
+            </select>
+          </div>
+
+          {/* Quick Active Badge */}
+          <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
+            <span>Enrolled:</span>
+            <span className="font-extrabold text-foreground">{currentEnrolledList.length} Students</span>
+          </span>
+        </div>
+
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
+          <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+            Export Roster
+          </VFButton>
+          <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
+            Add Student
+          </VFButton>
         </div>
       </div>
 
-      {/* KPI Stats for Enrolled Students */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-        <VFStatCard
-          title="Total Enrolled"
-          value={activeSession === '2026–2027' ? "1,248" : "1,180"}
-          icon={<Users className="h-5 w-5" />}
-          trend="up"
-          trendLabel={`Session ${activeSession}`}
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Regular Attendance"
-          value="96.9%"
-          icon={<UserCheck className="h-5 w-5" />}
-          trend="up"
-          trendLabel="1,210 Active"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Active Class Divisions"
-          value="16 Sections"
-          icon={<FileText className="h-5 w-5" />}
-          trend="neutral"
-          trendLabel="Classes 9 to 12"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Academic Average"
-          value="94.8%"
-          icon={<TrendingUp className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Term 1 Benchmark"
-          accentColor="blue"
-        />
-      </div>
-
-      {/* Selected Student Profile Drawer/Card */}
+      {/* Selected Student Profile Preview Card (if open) */}
       {selectedStudent && (
         <div className="p-5 bg-card border border-primary/40 rounded-xl shadow-xs animate-fade-in space-y-4">
           <div className="flex items-center justify-between border-b border-border pb-3">
@@ -357,92 +344,155 @@ function StudentsPage() {
         </div>
       )}
 
-      {/* Main Enrolled Students Table */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 className="text-lg font-black text-foreground tracking-tight">
-              Enrolled Students Master Roster ({activeSession})
-            </h2>
-            <p className="text-sm text-muted-foreground font-medium">
-              Manage and view 360° academic records for session {activeSession}
-            </p>
-          </div>
-          <div className="flex items-center gap-2.5 flex-wrap">
-            {/* Filter by Grade */}
-            <select
-              value={selectedClassFilter}
-              onChange={(e) => setSelectedClassFilter(e.target.value)}
-              className="bg-card border border-border text-xs font-bold text-foreground rounded-xl px-3 py-2 outline-none cursor-pointer h-9"
-            >
-              <option value="all">All Classes & Grades</option>
-              <option value="Class 9">Class 9 Only</option>
-              <option value="Class 10">Class 10 Only</option>
-              <option value="Class 11">Class 11 Only</option>
-              <option value="Class 12">Class 12 Only</option>
-            </select>
-
-            <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
-              Export Roster
-            </VFButton>
-            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
-              Add Student
-            </VFButton>
-          </div>
-        </div>
-
-        <VFDataTable
-          columns={enrolledStudentColumns}
-          data={currentEnrolledList}
-          filterPlaceholder="Search by student name, roll number, or admission ID..."
-        />
-      </div>
+      {/* Main Clean Enrolled Students Table */}
+      <VFDataTable
+        columns={enrolledStudentColumns}
+        data={currentEnrolledList}
+        filterPlaceholder="Search by student name, roll number, or admission ID..."
+      />
     </div>
   );
 
-  // ─── TAB 2 CONTENT: TRANSFERS, TC & PASSED OUT / ALUMNI ───────────────────────
+  // ─── TAB 2: CLEAN TRANSFERS, TC & ALUMNI REGISTRY ─────────────────────────────
   const tcAndAlumniContent = (
-    <div className="space-y-6">
-      {/* Session Context Banner */}
-      <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-card to-card border border-amber-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
-            <GraduationCap className="h-5 w-5" />
+    <div className="space-y-4">
+      {/* Unified Single Control & TC Command Bar */}
+      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs">
+        {/* Left: Academic Session & Category Filters */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Academic Session Pill */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400">
+            <Calendar className="h-4 w-4 shrink-0 text-amber-400" />
+            <span className="text-xs font-black uppercase tracking-wider text-amber-400/80">Session:</span>
+            <select
+              value={activeSession}
+              onChange={(e) => setActiveSession(e.target.value)}
+              className="bg-transparent text-xs font-extrabold text-foreground outline-none cursor-pointer pr-1 hover:text-amber-400 transition-colors border-none"
+            >
+              {academicSessions.map((session) => (
+                <option key={session} value={session} className="bg-card text-foreground font-bold">
+                  {session} {session === '2026–2027' ? '(Active)' : '(Archived)'}
+                </option>
+              ))}
+            </select>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-base font-extrabold text-foreground">
-                Transfers, TC & Alumni Registry: <span className="text-amber-400">{activeSession}</span>
-              </h3>
-              <VFBadge variant="warning">TC & Alumni Bureau</VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-              Official archive of students graduated, migrated, or issued Transfer Certificates (TC)
-            </p>
+
+          {/* Record Category Filter */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 border border-border">
+            <span className="text-xs font-bold text-muted-foreground">Type:</span>
+            <select
+              value={selectedTcFilter}
+              onChange={(e) => setSelectedTcFilter(e.target.value)}
+              className="bg-transparent text-xs font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-amber-400 transition-colors border-none"
+            >
+              <option value="all" className="bg-card text-foreground font-bold">All TC & Alumni Records</option>
+              <option value="tc" className="bg-card text-foreground font-bold">Transfer Certificates (TC)</option>
+              <option value="alumni" className="bg-card text-foreground font-bold">Passed Out Alumni</option>
+            </select>
           </div>
+
+          {/* Quick Count Badge */}
+          <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
+            <span>Records:</span>
+            <span className="font-extrabold text-foreground">{currentTcAndAlumniList.length}</span>
+          </span>
         </div>
 
-        {/* Quick Session Switch */}
-        <div className="flex items-center gap-2 shrink-0 bg-background/60 p-1 rounded-xl border border-border">
-          <span className="text-xs font-bold text-muted-foreground px-2">Session:</span>
-          {academicSessions.map((session) => (
-            <button
-              key={session}
-              onClick={() => setActiveSession(session)}
-              className={cn(
-                "px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer",
-                activeSession === session
-                  ? "bg-amber-500 text-black font-extrabold shadow-xs"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              {session}
-            </button>
-          ))}
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
+          <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+            Export TC Ledger
+          </VFButton>
+          <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
+            Issue New TC
+          </VFButton>
         </div>
       </div>
 
-      {/* KPI Stats for TC & Alumni */}
+      {/* Main Clean TC & Alumni Table */}
+      <VFDataTable
+        columns={tcAndAlumniColumns}
+        data={currentTcAndAlumniList}
+        filterPlaceholder="Search by student name, TC number, or destination school..."
+      />
+    </div>
+  );
+
+  // ─── TAB 3: DEDICATED STUDENT ANALYTICS & DEMOGRAPHICS ─────────────────────────
+  const analyticsAndStatsContent = (
+    <div className="space-y-6">
+      {/* Session Context Banner */}
+      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
+            <BarChart3 className="h-5 w-5" />
+          </div>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="text-sm font-extrabold text-foreground">
+              Institutional Intelligence Scope:
+            </span>
+            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400">
+              <Calendar className="h-3.5 w-3.5" />
+              <select
+                value={activeSession}
+                onChange={(e) => setActiveSession(e.target.value)}
+                className="bg-transparent text-xs font-black text-foreground outline-none cursor-pointer pr-1 hover:text-blue-400 transition-colors border-none"
+              >
+                {academicSessions.map((session) => (
+                  <option key={session} value={session} className="bg-card text-foreground font-bold">
+                    AY {session} {session === '2026–2027' ? '(Active)' : '(Archived)'}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <VFBadge variant="outline">Verified CBSE Analytics</VFBadge>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+            Export Insights PDF
+          </VFButton>
+        </div>
+      </div>
+
+      {/* Primary KPI Metrics Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+        <VFStatCard
+          title="Total Enrolled"
+          value={activeSession === '2026–2027' ? "1,248" : "1,180"}
+          icon={<Users className="h-5 w-5" />}
+          trend="up"
+          trendLabel={`Session ${activeSession}`}
+          accentColor="blue"
+        />
+        <VFStatCard
+          title="Regular Attendance"
+          value="96.9%"
+          icon={<UserCheck className="h-5 w-5" />}
+          trend="up"
+          trendLabel="1,210 Active"
+          accentColor="blue"
+        />
+        <VFStatCard
+          title="Active Class Divisions"
+          value="16 Sections"
+          icon={<FileText className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel="Classes 9 to 12"
+          accentColor="blue"
+        />
+        <VFStatCard
+          title="Academic Average"
+          value="94.8%"
+          icon={<TrendingUp className="h-5 w-5" />}
+          trend="up"
+          trendLabel="Term 1 Benchmark"
+          accentColor="blue"
+        />
+      </div>
+
+      {/* Secondary TC & Migration KPI Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
           title="Total TC Issued"
@@ -478,37 +528,66 @@ function StudentsPage() {
         />
       </div>
 
-      {/* Main TC & Alumni Table */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 className="text-lg font-black text-foreground tracking-tight">
-              Transfer Certificate & Alumni Archive ({activeSession})
-            </h2>
-            <p className="text-sm text-muted-foreground font-medium">
-              Official records of students issued Transfer Certificates, withdrawals, and alumni graduations
-            </p>
+      {/* Demographic Matrix 3-Card Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <VFCard title="Gender Distribution" description="Current student population balance">
+          <div className="space-y-3 mt-1">
+            <p className="text-2xl font-black text-foreground">640 Boys / 608 Girls</p>
+            <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex">
+              <div className="h-full bg-blue-500 w-[51.2%]" />
+              <div className="h-full bg-pink-500 w-[48.8%]" />
+            </div>
+            <p className="text-xs font-bold text-muted-foreground">51.2% Male · 48.8% Female</p>
           </div>
-          <div className="flex items-center gap-2.5">
-            <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
-              Export TC Ledger
-            </VFButton>
-            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
-              Issue New TC
-            </VFButton>
-          </div>
-        </div>
+        </VFCard>
 
-        <VFDataTable
-          columns={tcAndAlumniColumns}
-          data={currentTcAndAlumniList}
-          filterPlaceholder="Search by student name, TC number, or destination school..."
-        />
+        <VFCard title="Quota & Reserved Seats" description="Compliance with RTE standards">
+          <div className="space-y-3 mt-1">
+            <p className="text-2xl font-black text-foreground">186 Students</p>
+            <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 w-[75%]" />
+            </div>
+            <p className="text-xs font-bold text-muted-foreground">15% RTE Quota fully compliant</p>
+          </div>
+        </VFCard>
+
+        <VFCard title="House Allocations" description="Four competitive student squads">
+          <div className="space-y-3 mt-1">
+            <p className="text-2xl font-black text-foreground">4 Houses</p>
+            <div className="grid grid-cols-2 gap-2 mt-1">
+              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-red-500/15 text-red-400 border border-red-500/25 text-center">Red: 312</span>
+              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-blue-500/15 text-blue-400 border border-blue-500/25 text-center">Blue: 310</span>
+              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-green-500/15 text-green-400 border border-green-500/25 text-center">Green: 314</span>
+              <span className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/25 text-center">Yellow: 312</span>
+            </div>
+          </div>
+        </VFCard>
       </div>
+
+      {/* Class-Wise Enrollment Breakdown */}
+      <VFCard title="Class-Wise Enrollment Breakdown" description="Distribution across academic wings and sections">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-base pt-1">
+          {[
+            { grade: 'Class 9', total: '320 Students', sections: '4 Sections', standing: '96.2% Avg' },
+            { grade: 'Class 10', total: '310 Students', sections: '4 Sections', standing: '97.8% Avg' },
+            { grade: 'Class 11', total: '308 Students', sections: '4 Sections', standing: '94.5% Avg' },
+            { grade: 'Class 12', total: '310 Students', sections: '4 Sections', standing: '98.1% Avg' },
+          ].map((c, i) => (
+            <div key={i} className="p-3.5 rounded-xl bg-background/50 border border-border space-y-1.5">
+              <div className="flex items-center justify-between">
+                <p className="font-black text-foreground text-base">{c.grade}</p>
+                <VFBadge variant="outline">{c.sections}</VFBadge>
+              </div>
+              <p className="text-xl font-extrabold text-foreground">{c.total}</p>
+              <p className="text-xs text-emerald-400 font-bold">{c.standing}</p>
+            </div>
+          ))}
+        </div>
+      </VFCard>
     </div>
   );
 
-  // ─── STRICTLY ONLY 2 TABS AS REQUESTED ─────────────────────────────────────────
+  // ─── 3 CLEAN DEDICATED TABS ───────────────────────────────────────────────────
   const tabs = [
     {
       id: 'enrolled',
@@ -523,6 +602,12 @@ function StudentsPage() {
       icon: <GraduationCap className="h-5 w-5" />,
       badge: currentTcAndAlumniList.length,
       content: tcAndAlumniContent,
+    },
+    {
+      id: 'analytics_demographics',
+      label: 'Student Analytics & Demographics',
+      icon: <BarChart3 className="h-5 w-5" />,
+      content: analyticsAndStatsContent,
     },
   ];
 
