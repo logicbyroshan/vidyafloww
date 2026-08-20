@@ -130,7 +130,7 @@ export function Sidebar() {
           >
             {section.title && sidebarExpanded && (
               <div className="px-3 pt-0.5 pb-0.5">
-                <span className="text-[11px] font-black text-primary/90 uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-muted-foreground/80 uppercase tracking-wider">
                   {section.title}
                 </span>
               </div>
@@ -154,18 +154,18 @@ export function Sidebar() {
                     key={item.id}
                     to={item.route}
                     className={cn(
-                      'flex items-center transition-all duration-150 text-sm outline-none whitespace-nowrap font-bold',
+                      'flex items-center transition-all duration-150 text-sm outline-none whitespace-nowrap font-medium',
                       sidebarExpanded ? 'w-full h-10 px-3 py-2 rounded-xl' : 'w-10 h-10 mx-auto rounded-xl justify-center p-0',
                       isActive
-                        ? 'bg-primary/15 text-primary border border-primary/30 shadow-xs font-black'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent'
+                        ? 'bg-muted text-foreground border border-border shadow-2xs font-semibold'
+                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground border border-transparent'
                     )}
                     title={!sidebarExpanded ? item.label : undefined}
                   >
                     <Icon
                       className={cn(
                         'h-4.5 w-4.5 shrink-0 transition-colors',
-                        isActive ? 'text-primary' : 'text-muted-foreground'
+                        isActive ? 'text-foreground' : 'text-muted-foreground'
                       )}
                     />
                     <span

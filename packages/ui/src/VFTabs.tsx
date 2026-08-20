@@ -69,22 +69,22 @@ export function VFTabs({
                   disabled={item.disabled}
                   onClick={() => handleTabClick(item.id, item.disabled)}
                   className={cn(
-                    "relative inline-flex items-center gap-2.5 h-full text-sm font-bold transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
+                    "relative inline-flex items-center gap-2 h-full text-sm transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0 font-medium",
                     isActive
-                      ? "text-primary font-black"
+                      ? "text-foreground font-bold"
                       : "text-muted-foreground hover:text-foreground",
                     item.disabled && "opacity-40 cursor-not-allowed"
                   )}
                 >
-                  <span className="flex items-center gap-2.5">
+                  <span className="flex items-center gap-2">
                     {item.icon && (
-                      <span className={cn("transition-colors", isActive ? "text-primary" : "text-muted-foreground")}>
+                      <span className={cn("transition-colors", isActive ? "text-foreground" : "text-muted-foreground")}>
                         {item.icon}
                       </span>
                     )}
                     <span>{item.label}</span>
                     {item.badge !== undefined && (
-                      <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs font-black bg-primary/15 text-primary border border-primary/20">
+                      <span className="ml-1 px-1.5 py-0.2 rounded-md text-xs font-semibold bg-muted text-muted-foreground border border-border">
                         {item.badge}
                       </span>
                     )}
@@ -94,7 +94,7 @@ export function VFTabs({
                   {isActive && (
                     <motion.div
                       layoutId="activeTabUnderline"
-                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary z-10 rounded-t-full"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground z-10 rounded-t-full"
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
                   )}
@@ -142,16 +142,16 @@ export function VFTabs({
               disabled={item.disabled}
               onClick={() => handleTabClick(item.id, item.disabled)}
               className={cn(
-                "relative inline-flex items-center gap-2.5 py-3 text-base font-bold transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
+                "relative inline-flex items-center gap-2.5 py-3 text-base font-medium transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
                 isActive
-                  ? "text-primary font-black"
+                  ? "text-foreground font-bold"
                   : "text-muted-foreground hover:text-foreground",
                 item.disabled && "opacity-40 cursor-not-allowed"
               )}
             >
               <span className="flex items-center gap-2.5">
                 {item.icon && (
-                  <span className={cn("transition-colors", isActive ? "text-primary" : "text-muted-foreground")}>
+                  <span className={cn("transition-colors", isActive ? "text-foreground" : "text-muted-foreground")}>
                     {item.icon}
                   </span>
                 )}
@@ -161,7 +161,7 @@ export function VFTabs({
               {isActive && (
                 <motion.div
                   layoutId="activeTabUnderlineGeneral"
-                  className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary z-10 rounded-t-full"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground z-10 rounded-t-full"
                   transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
               )}
