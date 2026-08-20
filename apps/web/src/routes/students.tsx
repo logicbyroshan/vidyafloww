@@ -1046,15 +1046,8 @@ function StudentsPage() {
                   </button>
                 </div>
 
-                {/* 2. Action Buttons */}
+                {/* 2. Action Buttons: Close on left, Edit Profile on right */}
                 <div className="flex items-center gap-2.5">
-                  <VFButton
-                    size="sm"
-                    leftIcon={<Edit3 className="h-4 w-4" />}
-                    onClick={handleStartEdit}
-                  >
-                    Edit Profile
-                  </VFButton>
                   <VFButton
                     variant="outline"
                     size="sm"
@@ -1066,6 +1059,13 @@ function StudentsPage() {
                     }}
                   >
                     Close
+                  </VFButton>
+                  <VFButton
+                    size="sm"
+                    leftIcon={<Edit3 className="h-4 w-4" />}
+                    onClick={handleStartEdit}
+                  >
+                    Edit Profile
                   </VFButton>
                 </div>
               </>
@@ -1465,27 +1465,29 @@ function StudentsPage() {
                 {/* TAB 1: PROFILE & BIO */}
                 {drawerTab === 'overview' && (
                   <div className="space-y-6 animate-fade-in pt-1">
-                    {/* 4 Spacious KPI Tiles */}
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-                      <div className="p-4.5 rounded-2xl bg-card border border-border/80 shadow-xs hover:border-foreground/20 transition-all">
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Attendance</span>
-                        <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeStudent.attendance}</span>
-                        <span className="text-[11px] text-muted-foreground mt-0.5 block">Consistent Regular</span>
-                      </div>
-                      <div className="p-4.5 rounded-2xl bg-card border border-border/80 shadow-xs hover:border-foreground/20 transition-all">
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">GPA Score</span>
-                        <span className="text-2xl font-black text-foreground mt-1 block">{activeStudent.gpa}</span>
-                        <span className="text-[11px] text-muted-foreground mt-0.5 block">4.0 Scale Standard</span>
-                      </div>
-                      <div className="p-4.5 rounded-2xl bg-card border border-border/80 shadow-xs hover:border-foreground/20 transition-all">
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Cohort Standing</span>
-                        <span className="text-2xl font-black text-foreground mt-1 block">{activeStudent.rank}</span>
-                        <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Top Tier Standing</span>
-                      </div>
-                      <div className="p-4.5 rounded-2xl bg-card border border-border/80 shadow-xs hover:border-foreground/20 transition-all">
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Fee Clearance</span>
-                        <span className="text-2xl font-black text-emerald-400 mt-1 block">Cleared</span>
-                        <span className="text-[11px] text-muted-foreground mt-0.5 block">No Dues Pending</span>
+                    {/* 4 Enclosed KPI Metric Tiles */}
+                    <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Attendance</span>
+                          <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeStudent.attendance}</span>
+                          <span className="text-[11px] text-muted-foreground mt-0.5 block">Consistent Regular</span>
+                        </div>
+                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">GPA Score</span>
+                          <span className="text-2xl font-black text-foreground mt-1 block">{activeStudent.gpa}</span>
+                          <span className="text-[11px] text-muted-foreground mt-0.5 block">4.0 Scale Standard</span>
+                        </div>
+                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Cohort Standing</span>
+                          <span className="text-2xl font-black text-foreground mt-1 block">{activeStudent.rank}</span>
+                          <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Top Tier Standing</span>
+                        </div>
+                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Fee Clearance</span>
+                          <span className="text-2xl font-black text-emerald-400 mt-1 block">Cleared</span>
+                          <span className="text-[11px] text-muted-foreground mt-0.5 block">No Dues Pending</span>
+                        </div>
                       </div>
                     </div>
 

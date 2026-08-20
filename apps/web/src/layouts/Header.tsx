@@ -60,23 +60,21 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         <div className="relative" ref={sessionMenuRef}>
           <button
             onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
-            className="flex items-center gap-2.5 px-3.5 h-10 rounded-xl bg-muted/50 hover:bg-muted border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group"
+            className="flex items-center gap-2.5 px-3 h-9 rounded-xl bg-muted/40 hover:bg-muted border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group"
             title="Switch Academic Session"
           >
             <Calendar className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Session:
-              </span>
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+              <span>Session:</span>
               <span className="text-sm font-bold text-foreground font-mono">
                 {activeSession}
               </span>
-              {activeSession === '2026–2027' && (
-                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 ml-0.5">
-                  Active
-                </span>
-              )}
             </div>
+            {activeSession === '2026–2027' && (
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                Active
+              </span>
+            )}
             <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ml-0.5", isSessionMenuOpen && "rotate-180")} />
           </button>
 
@@ -102,17 +100,23 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                       setIsSessionMenuOpen(false);
                     }}
                     className={cn(
-                      "flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm transition-all cursor-pointer text-left font-semibold outline-none",
+                      "flex items-center justify-between w-full px-2.5 py-2 rounded-lg text-sm transition-all cursor-pointer text-left font-semibold outline-none",
                       isCurrent
                         ? "bg-muted text-foreground border border-border font-bold"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                     )}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-mono">{session}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 flex items-center justify-center shrink-0">
+                        {isCurrent ? (
+                          <Check className="h-4 w-4 text-emerald-400" />
+                        ) : (
+                          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
+                        )}
+                      </div>
+                      <span className="font-mono text-xs">{session}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div>
                       {isActiveAY ? (
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                           Active AY
@@ -122,7 +126,6 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                           Archived
                         </span>
                       )}
-                      {isCurrent && <Check className="h-4 w-4 text-emerald-400 ml-1 shrink-0" />}
                     </div>
                   </button>
                 );

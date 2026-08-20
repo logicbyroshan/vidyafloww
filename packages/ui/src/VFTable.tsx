@@ -42,14 +42,14 @@ export function VFTableRow({ className, ...props }: React.HTMLAttributes<HTMLTab
 
 export function VFTableHeaderCell({
   className,
-  sticky = false,
+  sticky = true,
   ...props
 }: React.ThHTMLAttributes<HTMLTableCellElement> & { sticky?: boolean }) {
   return (
     <th
       className={cn(
-        "px-5 py-3 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
-        sticky && "sticky top-0 bg-card z-10",
+        "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md",
+        sticky && "sticky top-[58px] z-10 border-b border-border shadow-2xs",
         className
       )}
       {...props}
@@ -212,8 +212,8 @@ export function VFDataTable<T>({
 
   return (
     <div className="space-y-3.5 w-full">
-      {/* Unified Single Action Command Bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+      {/* Unified Single Action Command Bar (Sticky on Scroll) */}
+      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-md pt-2 pb-3 -mt-2 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <div className="relative max-w-md flex-1">
           <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
             <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
