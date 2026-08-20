@@ -166,9 +166,10 @@ export function VFConfirmDialog({
 export interface VFDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   description?: string;
   headerActions?: React.ReactNode;
+  hideHeader?: boolean;
   children: React.ReactNode;
   footerActions?: React.ReactNode;
   className?: string;
@@ -180,6 +181,7 @@ export function VFDrawer({
   title,
   description,
   headerActions,
+  hideHeader = false,
   children,
   footerActions,
   className,
@@ -211,42 +213,51 @@ export function VFDrawer({
                     className
                   )}
                 >
-                  {/* Header */}
-                  <div className="flex items-center justify-between p-5 sm:p-6 border-b border-border/40 shrink-0">
-                    <div className="space-y-1 min-w-0 flex-1 pr-3">
-                      <DialogPrimitive.Title className="text-lg font-bold text-foreground leading-none truncate">
-                        {title}
-                      </DialogPrimitive.Title>
-                      {description && (
-                        <DialogPrimitive.Description className="text-xs text-muted-foreground truncate">
-                          {description}
-                        </DialogPrimitive.Description>
-                      )}
+                  {/* Accessible Title */}
+                  {hideHeader && (
+                    <DialogPrimitive.Title className="sr-only">
+                      {title || 'Details'}
+                    </DialogPrimitive.Title>
+                  )}
+
+                  {/* Visible Header (if not hidden) */}
+                  {!hideHeader && (
+                    <div className="flex items-center justify-between p-5 sm:p-6 border-b border-border/40 shrink-0">
+                      <div className="space-y-1 min-w-0 flex-1 pr-3">
+                        <DialogPrimitive.Title className="text-lg font-bold text-foreground leading-none truncate">
+                          {title}
+                        </DialogPrimitive.Title>
+                        {description && (
+                          <DialogPrimitive.Description className="text-xs text-muted-foreground truncate">
+                            {description}
+                          </DialogPrimitive.Description>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {headerActions}
+                        <DialogPrimitive.Close asChild>
+                          <button
+                            onClick={onClose}
+                            className="text-muted-foreground hover:text-foreground p-1.5 rounded-lg hover:bg-muted transition-colors outline-none cursor-pointer"
+                            aria-label="Close drawer"
+                          >
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </DialogPrimitive.Close>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      {headerActions}
-                      <DialogPrimitive.Close asChild>
-                        <button
-                          onClick={onClose}
-                          className="text-muted-foreground hover:text-foreground p-1.5 rounded-lg hover:bg-muted transition-colors outline-none cursor-pointer"
-                          aria-label="Close drawer"
-                        >
-                          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </DialogPrimitive.Close>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Content */}
-                  <div className="flex-1 overflow-y-auto p-6 text-sm text-foreground/90 space-y-4">
+                  <div className="flex-1 overflow-y-auto p-5 sm:p-6 text-sm text-foreground/90 space-y-4">
                     {children}
                   </div>
 
                   {/* Footer */}
                   {footerActions && (
-                    <div className="flex items-center justify-end gap-2 p-6 border-t border-border/40 bg-muted/20">
+                    <div className="flex items-center justify-end gap-2 p-4 sm:p-5 border-t border-border/40 bg-muted/20">
                       {footerActions}
                     </div>
                   )}
