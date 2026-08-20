@@ -54,9 +54,9 @@ export function VFTabs({
     return (
       <div className={cn("flex flex-col w-full bg-background", className)} {...props}>
         {/* Top Sub-Navigation Header - Clean open tabs without outer enclosing box */}
-        <div className="w-full border-b border-border bg-card px-6 flex items-center justify-between shrink-0 sticky top-0 z-20 h-[58px]">
+        <div className="w-full border-b border-border bg-card px-4 sm:px-5 flex items-center justify-between shrink-0 sticky top-0 z-20 h-[46px]">
           <div
-            className="flex items-center gap-8 max-w-full overflow-x-auto no-scrollbar h-full"
+            className="flex items-center gap-6 max-w-full overflow-x-auto no-scrollbar h-full"
             role="tablist"
           >
             {items.map((item) => {
@@ -69,14 +69,14 @@ export function VFTabs({
                   disabled={item.disabled}
                   onClick={() => handleTabClick(item.id, item.disabled)}
                   className={cn(
-                    "relative inline-flex items-center gap-2.5 h-full text-base font-bold transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
+                    "relative inline-flex items-center gap-2 h-full text-xs sm:text-sm font-bold transition-all outline-none select-none cursor-pointer whitespace-nowrap shrink-0",
                     isActive
                       ? "text-primary font-black"
                       : "text-muted-foreground hover:text-foreground",
                     item.disabled && "opacity-40 cursor-not-allowed"
                   )}
                 >
-                  <span className="flex items-center gap-2.5">
+                  <span className="flex items-center gap-2">
                     {item.icon && (
                       <span className={cn("transition-colors", isActive ? "text-primary" : "text-muted-foreground")}>
                         {item.icon}
@@ -84,7 +84,7 @@ export function VFTabs({
                     )}
                     <span>{item.label}</span>
                     {item.badge !== undefined && (
-                      <span className="ml-1.5 px-2 py-0.5 rounded-full text-xs font-black bg-primary/15 text-primary border border-primary/20">
+                      <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-black bg-primary/15 text-primary border border-primary/20">
                         {item.badge}
                       </span>
                     )}
@@ -94,7 +94,7 @@ export function VFTabs({
                   {isActive && (
                     <motion.div
                       layoutId="activeTabUnderline"
-                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-primary z-10 rounded-t-full"
+                      className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary z-10 rounded-t-full"
                       transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
                   )}
@@ -103,19 +103,19 @@ export function VFTabs({
             })}
           </div>
 
-          {rightActions && <div className="ml-4 shrink-0 flex items-center gap-3 py-2">{rightActions}</div>}
+          {rightActions && <div className="ml-3 shrink-0 flex items-center gap-2 py-1">{rightActions}</div>}
         </div>
 
         {/* Tab Content */}
-        <div className="p-6 sm:p-7 w-full flex-1" role="tabpanel">
+        <div className="p-3.5 sm:p-4.5 w-full flex-1" role="tabpanel">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeId}
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-6 w-full"
+              exit={{ opacity: 0, y: -3 }}
+              transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-4 w-full"
             >
               {activeItem ? activeItem.content : null}
             </motion.div>

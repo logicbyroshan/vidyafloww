@@ -48,7 +48,7 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "px-4 py-3 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
+        "px-3.5 py-2.5 font-black text-[11px] text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
         sticky && "sticky top-0 bg-card z-10",
         className
       )}
@@ -58,7 +58,7 @@ export function VFTableHeaderCell({
 }
 
 export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("px-4 py-3 align-middle text-foreground whitespace-nowrap text-base font-semibold", className)} {...props} />;
+  return <td className={cn("px-3.5 py-2 align-middle text-foreground whitespace-nowrap text-xs font-semibold", className)} {...props} />;
 }
 
 // VFDataTable: High-level, fail-safe data table component
@@ -196,12 +196,12 @@ export function VFDataTable<T>({
   const displayedRows = table && table.getRowModel ? table.getRowModel().rows : null;
 
   return (
-    <div className="space-y-3.5 w-full">
+    <div className="space-y-3 w-full">
       {/* Toolbar / Search & Column Controls */}
-      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5">
         <div className="relative max-w-md flex-1">
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </span>
@@ -210,7 +210,7 @@ export function VFDataTable<T>({
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search table records..."}
-            className="w-full pl-10 pr-4 h-11 border border-border rounded-lg bg-card text-base focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+            className="w-full pl-9 pr-3.5 h-9 border border-border rounded-lg bg-card text-xs focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
@@ -218,10 +218,10 @@ export function VFDataTable<T>({
         <div className="relative self-end sm:self-auto">
           <VFButton
             variant="outline"
-            size="md"
+            size="sm"
             onClick={() => setShowColumnDropdown(!showColumnDropdown)}
             leftIcon={
-              <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-3.5 w-3.5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
               </svg>
             }
