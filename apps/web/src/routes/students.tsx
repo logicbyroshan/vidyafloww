@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import JSZip from 'jszip';
 import {
   VFPageContainer,
   VFTabs,
@@ -9,6 +10,7 @@ import {
   VFDataTable,
   VFStatCard,
   VFDrawer,
+  VFDialog,
   cn,
 } from '@vidyamaxx/ui';
 import {
@@ -37,6 +39,11 @@ import {
   BookOpen,
   Edit3,
   Bus,
+  FileSpreadsheet,
+  Archive,
+  CheckCircle2,
+  Loader2,
+  Settings,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -51,13 +58,21 @@ function StudentsPage() {
   const [selectedClassFilter, setSelectedClassFilter] = React.useState<string>('all');
   const [selectedTcFilter, setSelectedTcFilter] = React.useState<string>('all');
 
+  // Export Modal State
+  const [isExportModalOpen, setIsExportModalOpen] = React.useState<boolean>(false);
+  const [exportFormat, setExportFormat] = React.useState<'xlsx' | 'zip' | 'bundle'>('bundle');
+  const [namingPattern, setNamingPattern] = React.useState<'id-name' | 'roll-name' | 'name-id' | 'id-only' | 'custom'>('id-name');
+  const [customColumnKey, setCustomColumnKey] = React.useState<string>('admNo');
+  const [isExporting, setIsExporting] = React.useState<boolean>(false);
+  const [exportProgressText, setExportProgressText] = React.useState<string>('');
+
   // Enrolled active students dataset (Session-aware with rich dossier details)
   const allStudentsBySession: Record<string, any[]> = {
     '2026–2027': [
       {
         admNo: 'ADM-2026-001',
         name: 'Aditya Verma',
-        avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80',
         class: 'Class 9',
         section: 'A',
         roll: '101',
@@ -82,7 +97,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-002',
         name: 'Priya Sharma',
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
         class: 'Class 9',
         section: 'A',
         roll: '102',
@@ -107,7 +122,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-003',
         name: 'Rahul Gupta',
-        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
         class: 'Class 9',
         section: 'B',
         roll: '103',
@@ -132,7 +147,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-004',
         name: 'Kavya Nair',
-        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80',
         class: 'Class 11-Com',
         section: 'A',
         roll: '201',
@@ -157,7 +172,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-005',
         name: 'Ishaan Malhotra',
-        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
         class: 'Class 11-Sci',
         section: 'B',
         roll: '202',
@@ -182,7 +197,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-006',
         name: 'Sneha Rao',
-        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
         class: 'Class 10',
         section: 'A',
         roll: '108',
@@ -207,7 +222,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-007',
         name: 'Vikram Mehta',
-        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=80',
         class: 'Class 12-Com',
         section: 'A',
         roll: '304',
@@ -232,7 +247,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2026-008',
         name: 'Ananya Deshmukh',
-        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
         class: 'Class 12-Sci',
         section: 'A',
         roll: '305',
@@ -259,7 +274,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2025-012',
         name: 'Rohan Sen',
-        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
         class: 'Class 10',
         section: 'A',
         roll: '112',
@@ -284,7 +299,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2025-045',
         name: 'Tanvi Joshi',
-        avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=80',
         class: 'Class 11-Com',
         section: 'B',
         roll: '215',
@@ -309,7 +324,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2025-078',
         name: 'Karan Singhal',
-        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&auto=format&fit=crop&q=80',
         class: 'Class 12-Sci',
         section: 'A',
         roll: '310',
@@ -336,7 +351,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2024-009',
         name: 'Meera Iyer',
-        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80',
         class: 'Class 12-Hum',
         section: 'A',
         roll: '301',
@@ -361,7 +376,7 @@ function StudentsPage() {
       {
         admNo: 'ADM-2024-034',
         name: 'Devendra Chouhan',
-        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
         class: 'Class 12-Sci',
         section: 'B',
         roll: '318',
@@ -393,7 +408,7 @@ function StudentsPage() {
         tcNo: 'TC-2026-089',
         admNo: 'ADM-2025-104',
         name: 'Simran Kaur',
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
         type: 'Transfer Certificate (TC)',
         previousClass: 'Class 10-B',
         destination: 'DPS International, Noida (Parent Relocation)',
@@ -406,7 +421,7 @@ function StudentsPage() {
         tcNo: 'TC-2026-090',
         admNo: 'ADM-2024-055',
         name: 'Harshit Saxena',
-        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
         type: 'Transfer Certificate (TC)',
         previousClass: 'Class 11-Sci',
         destination: 'The Heritage School, Gurgaon',
@@ -419,7 +434,7 @@ function StudentsPage() {
         tcNo: 'TC-2026-091',
         admNo: 'ADM-2025-212',
         name: 'Divya Khurana',
-        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80',
         type: 'Transfer Certificate (TC)',
         previousClass: 'Class 8-A',
         destination: 'Army Public School, Pune',
@@ -432,7 +447,7 @@ function StudentsPage() {
         tcNo: 'ALUM-2026-001',
         admNo: 'ADM-2022-014',
         name: 'Aarav Pillai',
-        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
         type: 'Passed Out (Alumni)',
         previousClass: 'Class 12-Sci (2026 Batch)',
         destination: 'IIT Bombay · B.Tech CSE',
@@ -445,7 +460,7 @@ function StudentsPage() {
         tcNo: 'ALUM-2026-002',
         admNo: 'ADM-2022-088',
         name: 'Neha Bhattacharya',
-        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
         type: 'Passed Out (Alumni)',
         previousClass: 'Class 12-Com (2026 Batch)',
         destination: 'SRCC Delhi · B.Com (Hons)',
@@ -458,7 +473,7 @@ function StudentsPage() {
         tcNo: 'ALUM-2026-003',
         admNo: 'ADM-2022-105',
         name: 'Riddhima Kapoor',
-        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
         type: 'Passed Out (Alumni)',
         previousClass: 'Class 12-Hum (2026 Batch)',
         destination: 'St. Stephen’s College · BA Economics',
@@ -473,7 +488,7 @@ function StudentsPage() {
         tcNo: 'ALUM-2025-014',
         admNo: 'ADM-2021-002',
         name: 'Siddharth Roy',
-        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
         type: 'Passed Out (Alumni)',
         previousClass: 'Class 12-Sci (2025 Batch)',
         destination: 'BITS Pilani',
@@ -486,7 +501,7 @@ function StudentsPage() {
         tcNo: 'TC-2025-044',
         admNo: 'ADM-2023-087',
         name: 'Manav Chawla',
-        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&auto=format&fit=crop&q=80',
         type: 'Transfer Certificate (TC)',
         previousClass: 'Class 9-A',
         destination: 'Modern School, Barakhamba',
@@ -501,7 +516,7 @@ function StudentsPage() {
         tcNo: 'ALUM-2024-008',
         admNo: 'ADM-2020-001',
         name: 'Varun Grover',
-        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80',
+        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=80',
         type: 'Passed Out (Alumni)',
         previousClass: 'Class 12-Sci (2024 Batch)',
         destination: 'AIIMS New Delhi',
@@ -525,13 +540,11 @@ function StudentsPage() {
     }
   );
 
-  // Active student object inside the drawer
   const activeStudent =
     selectedStudentIndex !== null && selectedStudentIndex >= 0 && selectedStudentIndex < currentEnrolledList.length
       ? currentEnrolledList[selectedStudentIndex]
       : null;
 
-  // Next / Previous Navigation Handlers
   const handlePrevStudent = () => {
     if (selectedStudentIndex !== null && selectedStudentIndex > 0) {
       setSelectedStudentIndex(selectedStudentIndex - 1);
@@ -550,7 +563,6 @@ function StudentsPage() {
     setIsDrawerOpen(true);
   };
 
-  // Keyboard navigation listener for ArrowLeft / ArrowRight
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isDrawerOpen) return;
@@ -561,28 +573,279 @@ function StudentsPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isDrawerOpen, selectedStudentIndex, currentEnrolledList.length]);
 
-  // Table Columns for Tab 1: Enrolled Students (with dedicated Photo column)
+  // Photo Naming Template Generator
+  const getFormattedPhotoName = (student: any) => {
+    const sanitize = (str: string) => String(str || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const cleanName = sanitize(student.name);
+    const cleanAdmNo = sanitize(student.admNo);
+    const cleanRoll = sanitize(student.roll || '0');
+
+    switch (namingPattern) {
+      case 'id-name':
+        return `${cleanAdmNo}-${cleanName}.jpg`;
+      case 'roll-name':
+        return `${cleanRoll}_${cleanName}.jpg`;
+      case 'name-id':
+        return `${cleanName}_${cleanAdmNo}.jpg`;
+      case 'id-only':
+        return `${cleanAdmNo}.jpg`;
+      case 'custom': {
+        const val = sanitize(student[customColumnKey] || 'record');
+        return `${val}-${cleanName}.jpg`;
+      }
+      default:
+        return `${cleanAdmNo}-${cleanName}.jpg`;
+    }
+  };
+
+  // Helper to generate Canvas-based 19.5:25 Photo Blob
+  const createPhotoBlob = async (student: any): Promise<Blob> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 390;
+        canvas.height = 500; // 19.5 : 25 ratio
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => resolve(blob || new Blob([])), 'image/jpeg', 0.92);
+        } else {
+          resolve(new Blob([]));
+        }
+      };
+      img.onerror = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 390;
+        canvas.height = 500;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#1e293b';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#ea580c';
+          ctx.beginPath();
+          ctx.arc(195, 200, 90, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 64px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const initials = student.name.split(' ').map((n: string) => n[0]).join('');
+          ctx.fillText(initials, 195, 200);
+
+          ctx.font = 'bold 24px sans-serif';
+          ctx.fillText(student.name, 195, 340);
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '20px monospace';
+          ctx.fillText(student.admNo, 195, 380);
+          canvas.toBlob((blob) => resolve(blob || new Blob([])), 'image/jpeg', 0.92);
+        } else {
+          resolve(new Blob([]));
+        }
+      };
+      img.src = student.avatarUrl;
+    });
+  };
+
+  // Generate Excel Spreadsheet (.xlsx compatible XML)
+  const generateXlsxSpreadsheet = (students: any[]) => {
+    let xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Header">
+   <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Size="11"/>
+   <Interior ss:Color="#EA580C" ss:Pattern="Solid"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+  </Style>
+  <Style ss:ID="Data">
+   <Font ss:Size="10"/>
+   <Alignment ss:Vertical="Center"/>
+  </Style>
+  <Style ss:ID="Mono">
+   <Font ss:FontName="Courier New" ss:Bold="1" ss:Color="#0369A1" ss:Size="10"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Students Roster ${activeSession}">
+  <Table ss:DefaultRowHeight="24">
+   <Column ss:Width="160"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="150"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="70"/>
+   <Column ss:Width="80"/>
+   <Column ss:Width="100"/>
+   <Column ss:Width="130"/>
+   <Column ss:Width="140"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="70"/>
+   <Column ss:Width="80"/>
+   <Column ss:Width="220"/>
+   <Row ss:Height="28">
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Photo Filename (19.5x25)</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Admission No</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Student Name</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Class</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Section</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Roll No</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">House</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Guardian Name</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Guardian Phone</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Student Email</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Attendance</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">GPA</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Blood Group</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Residential Address</Data></Cell>
+   </Row>`;
+
+    students.forEach((s) => {
+      const photoName = getFormattedPhotoName(s);
+      xml += `
+   <Row>
+    <Cell ss:StyleID="Mono"><Data ss:Type="String">${photoName}</Data></Cell>
+    <Cell ss:StyleID="Mono"><Data ss:Type="String">${s.admNo}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.name}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.class}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.section || 'A'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.roll || '-'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.house || 'Unassigned'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.guardian || ''}</Data></Cell>
+    <Cell ss:StyleID="Mono"><Data ss:Type="String">${s.phone || ''}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.email || ''}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.attendance || 'N/A'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.gpa || 'N/A'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.bloodGroup || 'O+'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${s.address || ''}</Data></Cell>
+   </Row>`;
+    });
+
+    xml += `
+  </Table>
+ </Worksheet>
+</Workbook>`;
+    return new Blob([xml], { type: 'application/vnd.ms-excel' });
+  };
+
+  // Main Export Handler
+  const handleExecuteExport = async () => {
+    setIsExporting(true);
+    setExportProgressText('Preparing student dossier & assets...');
+
+    try {
+      const targetList = currentEnrolledList;
+
+      if (exportFormat === 'xlsx') {
+        setExportProgressText('Generating formatted Excel spreadsheet...');
+        const blob = generateXlsxSpreadsheet(targetList);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VidyaMaxx_Students_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}_Roster.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else if (exportFormat === 'zip') {
+        setExportProgressText(`Packaging ${targetList.length} student photos in 19.5:25 ratio...`);
+        const zip = new JSZip();
+        const photosFolder = zip.folder(`student_photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}`);
+
+        for (let i = 0; i < targetList.length; i++) {
+          const student = targetList[i];
+          setExportProgressText(`Packing photo ${i + 1} of ${targetList.length} (${student.name})...`);
+          const filename = getFormattedPhotoName(student);
+          const photoBlob = await createPhotoBlob(student);
+          photosFolder?.file(filename, photoBlob);
+        }
+
+        setExportProgressText('Compressing ZIP archive...');
+        const content = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VidyaMaxx_Student_Photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else if (exportFormat === 'bundle') {
+        setExportProgressText(`Building complete package (Excel Roster + ${targetList.length} Photos in 19.5:25 ratio)...`);
+        const zip = new JSZip();
+
+        const xlsxBlob = generateXlsxSpreadsheet(targetList);
+        zip.file(`Students_Master_Roster_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.xlsx`, xlsxBlob);
+
+        const photosFolder = zip.folder('student_photos_19.5x25');
+        for (let i = 0; i < targetList.length; i++) {
+          const student = targetList[i];
+          setExportProgressText(`Processing photo ${i + 1} of ${targetList.length} (${student.name})...`);
+          const filename = getFormattedPhotoName(student);
+          const photoBlob = await createPhotoBlob(student);
+          photosFolder?.file(filename, photoBlob);
+        }
+
+        setExportProgressText('Finalizing bundled archive...');
+        const content = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VidyaMaxx_Complete_Student_Bundle_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      setExportProgressText('Export completed successfully!');
+      setTimeout(() => {
+        setIsExporting(false);
+        setIsExportModalOpen(false);
+        setExportProgressText('');
+      }, 800);
+    } catch (err) {
+      console.error('Export failed', err);
+      alert('Export failed. Please check permissions and retry.');
+      setIsExporting(false);
+      setExportProgressText('');
+    }
+  };
+
+  // Table Columns for Tab 1: Enrolled Students (with 19.5 : 25 ID Photo Portrait)
   const enrolledStudentColumns = [
     {
       header: 'Photo',
       accessorKey: 'photo',
       cell: (r: any) => (
         <div className="flex items-center justify-center">
-          <img
-            src={r.avatarUrl}
-            alt={r.name}
-            className="h-10 w-10 rounded-xl object-cover border border-primary/30 shadow-xs cursor-pointer hover:scale-105 transition-transform"
-            onClick={() => openStudentDrawer(r)}
-            onError={(e: any) => {
-              e.target.style.display = 'none';
-              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-            }}
-          />
           <div
             onClick={() => openStudentDrawer(r)}
-            className="h-10 w-10 rounded-xl bg-primary/20 text-primary font-black text-sm hidden items-center justify-center border border-primary/30 cursor-pointer"
+            className="relative overflow-hidden rounded-md border border-primary/30 shadow-xs w-9 h-[46px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-primary transition-all"
+            style={{ aspectRatio: '19.5 / 25' }}
+            title="Click to view 360° student profile"
           >
-            {r.name.split(' ').map((n: string) => n[0]).join('')}
+            <img
+              src={r.avatarUrl}
+              alt={r.name}
+              style={{ aspectRatio: '19.5 / 25' }}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+              onError={(e: any) => {
+                e.target.style.display = 'none';
+                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+            <div
+              style={{ aspectRatio: '19.5 / 25' }}
+              className="w-full h-full bg-primary/20 text-primary font-black text-xs hidden items-center justify-center border border-primary/30"
+            >
+              {r.name.split(' ').map((n: string) => n[0]).join('')}
+            </div>
           </div>
         </div>
       ),
@@ -658,23 +921,33 @@ function StudentsPage() {
     },
   ];
 
+  // Table Columns for Tab 2: TC & Passed Out / Alumni (with 19.5 : 25 ID Photo Portrait)
   const tcAndAlumniColumns = [
     {
       header: 'Photo',
       accessorKey: 'photo',
       cell: (r: any) => (
         <div className="flex items-center justify-center">
-          <img
-            src={r.avatarUrl}
-            alt={r.name}
-            className="h-10 w-10 rounded-xl object-cover border border-amber-500/30 shadow-xs"
-            onError={(e: any) => {
-              e.target.style.display = 'none';
-              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-            }}
-          />
-          <div className="h-10 w-10 rounded-xl bg-amber-500/20 text-amber-400 font-black text-sm hidden items-center justify-center border border-amber-500/30">
-            {r.name.split(' ').map((n: string) => n[0]).join('')}
+          <div
+            className="relative overflow-hidden rounded-md border border-amber-500/30 shadow-xs w-9 h-[46px] shrink-0 bg-muted flex items-center justify-center"
+            style={{ aspectRatio: '19.5 / 25' }}
+          >
+            <img
+              src={r.avatarUrl}
+              alt={r.name}
+              style={{ aspectRatio: '19.5 / 25' }}
+              className="w-full h-full object-cover"
+              onError={(e: any) => {
+                e.target.style.display = 'none';
+                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+            <div
+              style={{ aspectRatio: '19.5 / 25' }}
+              className="w-full h-full bg-amber-500/20 text-amber-400 font-black text-xs hidden items-center justify-center border border-amber-500/30"
+            >
+              {r.name.split(' ').map((n: string) => n[0]).join('')}
+            </div>
           </div>
         </div>
       ),
@@ -756,10 +1029,14 @@ function StudentsPage() {
     },
   ];
 
+  // ─── TAB 1: ENROLLED STUDENTS ────────────────────────────────────────────────
   const enrolledStudentsContent = (
     <div className="space-y-4">
+      {/* Unified Single Control & Academic Command Bar */}
       <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs">
+        {/* Left: Session Selector & Class Filters */}
         <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Academic Session Pill */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/25 text-primary">
             <Calendar className="h-4 w-4 shrink-0 text-primary" />
             <span className="text-xs font-black uppercase tracking-wider text-primary/80">Session:</span>
@@ -775,6 +1052,8 @@ function StudentsPage() {
               ))}
             </select>
           </div>
+
+          {/* Class / Grade Filter */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 border border-border">
             <span className="text-xs font-bold text-muted-foreground">Class:</span>
             <select
@@ -789,13 +1068,22 @@ function StudentsPage() {
               <option value="Class 12" className="bg-card text-foreground font-bold">Class 12 Only</option>
             </select>
           </div>
+
+          {/* Quick Active Badge */}
           <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
             <span>Enrolled:</span>
             <span className="font-extrabold text-foreground">{currentEnrolledList.length} Students</span>
           </span>
         </div>
+
+        {/* Right: Actions */}
         <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
-          <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+          <VFButton
+            variant="outline"
+            size="sm"
+            leftIcon={<Download className="h-4 w-4" />}
+            onClick={() => setIsExportModalOpen(true)}
+          >
             Export Roster
           </VFButton>
           <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
@@ -803,6 +1091,8 @@ function StudentsPage() {
           </VFButton>
         </div>
       </div>
+
+      {/* Main Clean Enrolled Students Table */}
       <VFDataTable
         columns={enrolledStudentColumns}
         data={currentEnrolledList}
@@ -811,10 +1101,14 @@ function StudentsPage() {
     </div>
   );
 
+  // ─── TAB 2: TRANSFERS, TC & ALUMNI ───────────────────────────────────────────
   const tcAndAlumniContent = (
     <div className="space-y-4">
+      {/* Unified Single Control & TC Command Bar */}
       <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs">
+        {/* Left: Academic Session & Category Filters */}
         <div className="flex items-center gap-2.5 flex-wrap">
+          {/* Academic Session Pill */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400">
             <Calendar className="h-4 w-4 shrink-0 text-amber-400" />
             <span className="text-xs font-black uppercase tracking-wider text-amber-400/80">Session:</span>
@@ -830,6 +1124,8 @@ function StudentsPage() {
               ))}
             </select>
           </div>
+
+          {/* Record Category Filter */}
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 border border-border">
             <span className="text-xs font-bold text-muted-foreground">Type:</span>
             <select
@@ -842,13 +1138,22 @@ function StudentsPage() {
               <option value="alumni" className="bg-card text-foreground font-bold">Passed Out Alumni</option>
             </select>
           </div>
+
+          {/* Quick Count Badge */}
           <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
             <span>Records:</span>
             <span className="font-extrabold text-foreground">{currentTcAndAlumniList.length}</span>
           </span>
         </div>
+
+        {/* Right: Actions */}
         <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
-          <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+          <VFButton
+            variant="outline"
+            size="sm"
+            leftIcon={<Download className="h-4 w-4" />}
+            onClick={() => setIsExportModalOpen(true)}
+          >
             Export TC Ledger
           </VFButton>
           <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
@@ -856,6 +1161,8 @@ function StudentsPage() {
           </VFButton>
         </div>
       </div>
+
+      {/* Main Clean TC & Alumni Table */}
       <VFDataTable
         columns={tcAndAlumniColumns}
         data={currentTcAndAlumniList}
@@ -864,8 +1171,10 @@ function StudentsPage() {
     </div>
   );
 
+  // ─── TAB 3: STUDENT ANALYTICS & DEMOGRAPHICS ──────────────────────────────────
   const analyticsAndStatsContent = (
     <div className="space-y-6">
+      {/* Session Context Banner */}
       <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
@@ -892,12 +1201,20 @@ function StudentsPage() {
             <VFBadge variant="outline">Verified CBSE Analytics</VFBadge>
           </div>
         </div>
+
         <div className="flex items-center gap-2">
-          <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+          <VFButton
+            variant="outline"
+            size="sm"
+            leftIcon={<Download className="h-4 w-4" />}
+            onClick={() => setIsExportModalOpen(true)}
+          >
             Export Insights PDF
           </VFButton>
         </div>
       </div>
+
+      {/* Primary KPI Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
           title="Total Enrolled"
@@ -932,6 +1249,8 @@ function StudentsPage() {
           accentColor="blue"
         />
       </div>
+
+      {/* Secondary TC & Migration KPI Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
           title="Total TC Issued"
@@ -966,6 +1285,8 @@ function StudentsPage() {
           accentColor="amber"
         />
       </div>
+
+      {/* Demographic Matrix 3-Card Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <VFCard title="Gender Distribution" description="Current student population balance">
           <div className="space-y-3 mt-1">
@@ -977,6 +1298,7 @@ function StudentsPage() {
             <p className="text-xs font-bold text-muted-foreground">51.2% Male · 48.8% Female</p>
           </div>
         </VFCard>
+
         <VFCard title="Quota & Reserved Seats" description="Compliance with RTE standards">
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">186 Students</p>
@@ -986,6 +1308,7 @@ function StudentsPage() {
             <p className="text-xs font-bold text-muted-foreground">15% RTE Quota fully compliant</p>
           </div>
         </VFCard>
+
         <VFCard title="House Allocations" description="Four competitive student squads">
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">4 Houses</p>
@@ -998,6 +1321,8 @@ function StudentsPage() {
           </div>
         </VFCard>
       </div>
+
+      {/* Class-Wise Enrollment Breakdown */}
       <VFCard title="Class-Wise Enrollment Breakdown" description="Distribution across academic wings and sections">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-base pt-1">
           {[
@@ -1020,6 +1345,7 @@ function StudentsPage() {
     </div>
   );
 
+  // ─── 3 TABS CONFIGURATION ────────────────────────────────────────────────────
   const tabs = [
     {
       id: 'enrolled',
@@ -1047,6 +1373,7 @@ function StudentsPage() {
     <VFPageContainer>
       <VFTabs items={tabs} defaultTabId="enrolled" variant="top-bar" />
 
+      {/* 360° STUDENT PROFILE SIDE DRAWER */}
       <VFDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
@@ -1114,19 +1441,29 @@ function StudentsPage() {
       >
         {activeStudent && (
           <div className="space-y-5 animate-fade-in">
+            {/* Student Header Card with 19.5 : 25 ID Photo Portrait */}
             <div className="p-4 rounded-xl bg-gradient-to-r from-primary/15 via-card to-card border border-primary/25 flex items-start gap-4">
               <div className="relative shrink-0">
-                <img
-                  src={activeStudent.avatarUrl}
-                  alt={activeStudent.name}
-                  className="h-20 w-20 rounded-2xl object-cover border-2 border-primary/40 shadow-sm"
-                  onError={(e: any) => {
-                    e.target.style.display = 'none';
-                    if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                <div className="h-20 w-20 rounded-2xl bg-primary/20 text-primary font-black text-2xl hidden items-center justify-center border-2 border-primary/40">
-                  {activeStudent.name.split(' ').map((n: string) => n[0]).join('')}
+                <div
+                  className="relative overflow-hidden rounded-xl border-2 border-primary/40 shadow-sm w-20 h-[102px] bg-muted flex items-center justify-center"
+                  style={{ aspectRatio: '19.5 / 25' }}
+                >
+                  <img
+                    src={activeStudent.avatarUrl}
+                    alt={activeStudent.name}
+                    style={{ aspectRatio: '19.5 / 25' }}
+                    className="w-full h-full object-cover"
+                    onError={(e: any) => {
+                      e.target.style.display = 'none';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div
+                    style={{ aspectRatio: '19.5 / 25' }}
+                    className="w-full h-full bg-primary/20 text-primary font-black text-2xl hidden items-center justify-center border-2 border-primary/40"
+                  >
+                    {activeStudent.name.split(' ').map((n: string) => n[0]).join('')}
+                  </div>
                 </div>
                 <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-card" />
               </div>
@@ -1153,6 +1490,7 @@ function StudentsPage() {
               </div>
             </div>
 
+            {/* Academic Standings & Key Metrics Grid */}
             <div>
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
@@ -1178,6 +1516,7 @@ function StudentsPage() {
               </div>
             </div>
 
+            {/* Family & Guardian Dossier */}
             <div>
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
                 <Phone className="h-3.5 w-3.5 text-primary" />
@@ -1212,6 +1551,7 @@ function StudentsPage() {
               </div>
             </div>
 
+            {/* School Operations & Health Notes */}
             <div>
               <h4 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
                 <Bus className="h-3.5 w-3.5 text-primary" />
@@ -1241,6 +1581,238 @@ function StudentsPage() {
           </div>
         )}
       </VFDrawer>
+
+      {/* 📦 ADVANCED EXPORT MODAL (XLSX, ZIP Photos in 19.5:25, and File Naming Templates) */}
+      <VFDialog
+        isOpen={isExportModalOpen}
+        onClose={() => { if (!isExporting) setIsExportModalOpen(false); }}
+        title="Export Student Data & Media Package"
+        description={`Configure export format, spreadsheet columns, and 19.5 : 25 student photo naming for Session ${activeSession}`}
+        className="max-w-xl"
+        footerActions={
+          <>
+            <VFButton
+              variant="outline"
+              size="sm"
+              onClick={() => setIsExportModalOpen(false)}
+              disabled={isExporting}
+            >
+              Cancel
+            </VFButton>
+            <VFButton
+              size="sm"
+              leftIcon={isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              onClick={handleExecuteExport}
+              disabled={isExporting}
+            >
+              {isExporting ? 'Generating...' : 'Start Export'}
+            </VFButton>
+          </>
+        }
+      >
+        <div className="space-y-4 pt-1">
+          {/* Step 1: Select Export Package Type */}
+          <div>
+            <label className="text-xs font-black uppercase tracking-wider text-muted-foreground block mb-2">
+              1. Choose Export Package
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {/* Option 1: Combined Bundle */}
+              <div
+                onClick={() => setExportFormat('bundle')}
+                className={cn(
+                  "p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between",
+                  exportFormat === 'bundle'
+                    ? "bg-primary/15 border-primary shadow-xs ring-1 ring-primary"
+                    : "bg-card border-border hover:bg-muted/40"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <Archive className={cn("h-5 w-5", exportFormat === 'bundle' ? "text-primary" : "text-muted-foreground")} />
+                    {exportFormat === 'bundle' && <CheckCircle2 className="h-4 w-4 text-primary" />}
+                  </div>
+                  <h4 className="text-xs font-black text-foreground">Complete Bundle</h4>
+                  <p className="text-[11px] text-muted-foreground mt-1 leading-tight">
+                    Excel Roster + 19.5:25 Photos in ZIP
+                  </p>
+                </div>
+                <VFBadge variant="outline" className="mt-2 text-[10px] w-fit">Recommended</VFBadge>
+              </div>
+
+              {/* Option 2: Excel Spreadsheet Only */}
+              <div
+                onClick={() => setExportFormat('xlsx')}
+                className={cn(
+                  "p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between",
+                  exportFormat === 'xlsx'
+                    ? "bg-primary/15 border-primary shadow-xs ring-1 ring-primary"
+                    : "bg-card border-border hover:bg-muted/40"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <FileSpreadsheet className={cn("h-5 w-5", exportFormat === 'xlsx' ? "text-primary" : "text-muted-foreground")} />
+                    {exportFormat === 'xlsx' && <CheckCircle2 className="h-4 w-4 text-primary" />}
+                  </div>
+                  <h4 className="text-xs font-black text-foreground">Excel Sheet (.xlsx)</h4>
+                  <p className="text-[11px] text-muted-foreground mt-1 leading-tight">
+                    Formatted tables with photo filenames
+                  </p>
+                </div>
+                <span className="text-[10px] font-bold text-muted-foreground mt-2">Spreadsheet only</span>
+              </div>
+
+              {/* Option 3: Photos ZIP Only */}
+              <div
+                onClick={() => setExportFormat('zip')}
+                className={cn(
+                  "p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between",
+                  exportFormat === 'zip'
+                    ? "bg-primary/15 border-primary shadow-xs ring-1 ring-primary"
+                    : "bg-card border-border hover:bg-muted/40"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <Download className={cn("h-5 w-5", exportFormat === 'zip' ? "text-primary" : "text-muted-foreground")} />
+                    {exportFormat === 'zip' && <CheckCircle2 className="h-4 w-4 text-primary" />}
+                  </div>
+                  <h4 className="text-xs font-black text-foreground">Photos ZIP (.zip)</h4>
+                  <p className="text-[11px] text-muted-foreground mt-1 leading-tight">
+                    All images in exact 19.5:25 ratio
+                  </p>
+                </div>
+                <span className="text-[10px] font-bold text-muted-foreground mt-2">{currentEnrolledList.length} Photos</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 2: Photo Naming Convention (Required for ZIP & DB Storage) */}
+          {(exportFormat === 'zip' || exportFormat === 'bundle') && (
+            <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Settings className="h-3.5 w-3.5 text-primary" />
+                  2. Photo File Naming Template
+                </label>
+                <VFBadge variant="outline">Aspect 19.5 : 25</VFBadge>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label
+                  onClick={() => setNamingPattern('id-name')}
+                  className={cn(
+                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'id-name'
+                      ? "bg-primary/10 border-primary text-foreground"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="naming"
+                    checked={namingPattern === 'id-name'}
+                    onChange={() => setNamingPattern('id-name')}
+                    className="text-primary accent-primary"
+                  />
+                  <span>{`{Unique ID}-{Student Name}`}</span>
+                </label>
+
+                <label
+                  onClick={() => setNamingPattern('roll-name')}
+                  className={cn(
+                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'roll-name'
+                      ? "bg-primary/10 border-primary text-foreground"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="naming"
+                    checked={namingPattern === 'roll-name'}
+                    onChange={() => setNamingPattern('roll-name')}
+                    className="text-primary accent-primary"
+                  />
+                  <span>{`{Roll No}_{Student Name}`}</span>
+                </label>
+
+                <label
+                  onClick={() => setNamingPattern('name-id')}
+                  className={cn(
+                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'name-id'
+                      ? "bg-primary/10 border-primary text-foreground"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="naming"
+                    checked={namingPattern === 'name-id'}
+                    onChange={() => setNamingPattern('name-id')}
+                    className="text-primary accent-primary"
+                  />
+                  <span>{`{Student Name}_{Unique ID}`}</span>
+                </label>
+
+                <label
+                  onClick={() => setNamingPattern('custom')}
+                  className={cn(
+                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'custom'
+                      ? "bg-primary/10 border-primary text-foreground"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="naming"
+                    checked={namingPattern === 'custom'}
+                    onChange={() => setNamingPattern('custom')}
+                    className="text-primary accent-primary"
+                  />
+                  <span>Custom Column Prefix</span>
+                </label>
+              </div>
+
+              {/* Custom Unique Column Picker */}
+              {namingPattern === 'custom' && (
+                <div className="flex items-center gap-2 pt-1">
+                  <span className="text-xs font-bold text-muted-foreground">Unique Column:</span>
+                  <select
+                    value={customColumnKey}
+                    onChange={(e) => setCustomColumnKey(e.target.value)}
+                    className="bg-card border border-border text-xs font-bold text-foreground rounded-lg px-2.5 py-1.5 outline-none cursor-pointer"
+                  >
+                    <option value="admNo">Admission No (Unique ID)</option>
+                    <option value="roll">Roll Number</option>
+                    <option value="phone">Guardian Phone</option>
+                    <option value="house">House Squad</option>
+                  </select>
+                </div>
+              )}
+
+              {/* Live Filename Preview */}
+              <div className="p-2.5 rounded-lg bg-background/80 border border-border flex items-center justify-between text-xs">
+                <span className="font-bold text-muted-foreground">Output Filename Preview:</span>
+                <span className="font-mono font-bold text-primary truncate max-w-[280px]">
+                  {currentEnrolledList[0] ? getFormattedPhotoName(currentEnrolledList[0]) : 'ADM-2026-001-Aditya_Verma.jpg'}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Progress or Status message */}
+          {isExporting && (
+            <div className="p-3 rounded-xl bg-primary/10 border border-primary/30 flex items-center gap-3 animate-pulse">
+              <Loader2 className="h-5 w-5 text-primary animate-spin shrink-0" />
+              <p className="text-xs font-bold text-primary">{exportProgressText}</p>
+            </div>
+          )}
+        </div>
+      </VFDialog>
     </VFPageContainer>
   );
 }
