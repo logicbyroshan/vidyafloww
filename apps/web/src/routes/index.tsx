@@ -78,7 +78,7 @@ function DashboardPage() {
       )}
 
       {/* 1. Top Full-Width KPI Metric Cards — Unified Sky Blue Theme */}
-      <div className="grid grid-cols-2 min-[900px]:grid-cols-4 gap-5 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
           title="Total Students"
           value="2,451"
@@ -113,17 +113,17 @@ function DashboardPage() {
         />
       </div>
 
-      {/* 2. Main Split Layout: Left Absence Trackers (50%) + Right Quick Action Square Grid & License Card (50%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 items-start overflow-hidden pt-1">
+      {/* 2. Main Split Layout: Left Absence Trackers + Right Quick Action Launchpad & License Card */}
+      <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 sm:gap-7 items-start overflow-hidden pt-1">
         
-        {/* LEFT COLUMN: Teacher & Student Absences Command Center (50% width) */}
+        {/* LEFT COLUMN: Teacher & Student Absences Command Center */}
         <div className="space-y-6 min-w-0">
           {/* Today's Teacher Absences & Substitute Duty Assignment */}
           <VFCard
             title="Faculty Absences & Proxy Roster"
             description="4 Absent Today · 100% Substitute Coverage"
             className="border-amber-500/25 bg-gradient-to-br from-amber-500/8 via-card to-card"
-            actions={<VFBadge variant="warning" className="text-xs">4 On Leave</VFBadge>}
+            actions={<VFBadge variant="warning" className="text-xs font-bold">4 On Leave</VFBadge>}
           >
             <div className="space-y-3 pt-1">
               {[
@@ -158,16 +158,17 @@ function DashboardPage() {
               ].map((t, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-lg border border-border/80 bg-background/50 hover:bg-background/80 transition-all flex items-center justify-between gap-3"
+                  className="p-3.5 sm:p-4 rounded-xl border border-border/80 bg-background/50 hover:bg-background/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
+                  {/* Left: Teacher info */}
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-9 w-9 rounded-lg bg-amber-500/15 text-amber-400 font-black text-xs flex items-center justify-center shrink-0 border border-amber-500/30">
+                    <div className="h-10 w-10 rounded-xl bg-amber-500/15 text-amber-400 font-black text-xs sm:text-sm flex items-center justify-center shrink-0 border border-amber-500/30">
                       {t.teacher.split(' ').slice(0, 2).map(n => n[0]).join('')}
                     </div>
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-bold text-foreground text-sm truncate">{t.teacher}</p>
-                        <span className="text-[11px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold shrink-0">
+                        <span className="text-[11px] px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold shrink-0">
                           {t.reason}
                         </span>
                       </div>
@@ -177,18 +178,19 @@ function DashboardPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2.5 shrink-0">
-                    <div className="text-right hidden sm:block">
-                      <div className="text-xs font-bold text-emerald-400 flex items-center gap-1 justify-end">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block" />
-                        {t.proxy}
+                  {/* Right: Proxy teacher and Reassign */}
+                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
+                    <div className="text-left sm:text-right">
+                      <div className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 sm:justify-end">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
+                        <span>{t.proxy}</span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground font-medium">{t.slot}</p>
+                      <p className="text-[11px] text-muted-foreground font-semibold">{t.slot}</p>
                     </div>
                     <VFButton
                       size="sm"
                       variant="outline"
-                      className="h-8 px-2.5 text-xs"
+                      className="h-8 px-3 text-xs font-bold"
                       onClick={() => setNotice(`Substitute proxy updated for ${t.teacher}.`)}
                     >
                       Reassign
@@ -204,7 +206,7 @@ function DashboardPage() {
             title="Student Attendance Exceptions & Alerts"
             description="68 Pupils Absent Today · 94.5% Net Attendance"
             className="border-rose-500/25 bg-gradient-to-br from-rose-500/8 via-card to-card"
-            actions={<VFBadge variant="danger" className="text-xs">4 Alerts</VFBadge>}
+            actions={<VFBadge variant="danger" className="text-xs font-bold">4 Alerts</VFBadge>}
           >
             <div className="space-y-3 pt-1">
               {[
@@ -239,22 +241,22 @@ function DashboardPage() {
               ].map((s, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-lg border border-border/80 bg-background/50 hover:bg-background/80 transition-all flex items-center justify-between gap-3"
+                  className="p-3.5 sm:p-4 rounded-xl border border-border/80 bg-background/50 hover:bg-background/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-9 w-9 rounded-lg bg-rose-500/15 text-rose-400 font-black text-xs flex items-center justify-center shrink-0 border border-rose-500/30">
+                    <div className="h-10 w-10 rounded-xl bg-rose-500/15 text-rose-400 font-black text-xs sm:text-sm flex items-center justify-center shrink-0 border border-rose-500/30">
                       {s.student.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-bold text-foreground text-sm truncate">{s.student}</p>
-                        <span className="text-[10px] text-muted-foreground font-semibold truncate hidden sm:inline">
+                        <span className="text-xs text-muted-foreground font-semibold">
                           {s.class}
                         </span>
                       </div>
                       <p className={cn(
-                        "text-xs font-semibold truncate mt-0.5",
-                        s.severity === 'danger' && 'text-destructive',
+                        "text-xs font-semibold mt-0.5 truncate",
+                        s.severity === 'danger' && 'text-rose-400',
                         s.severity === 'warning' && 'text-amber-400',
                         s.severity === 'neutral' && 'text-emerald-400'
                       )}>
@@ -266,7 +268,7 @@ function DashboardPage() {
                   <VFButton
                     size="sm"
                     variant={s.severity === 'danger' ? 'danger' : 'outline'}
-                    className="h-8 px-2.5 text-xs shrink-0"
+                    className="h-8 px-3.5 text-xs font-bold shrink-0 self-end sm:self-center"
                     onClick={() => setNotice(`Action "${s.action}" executed for ${s.student}.`)}
                   >
                     {s.action}
@@ -277,7 +279,7 @@ function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT COLUMN: Quick Action Section Card 4×3 + Software License Card Below It (50% width) */}
+        {/* RIGHT COLUMN: Quick Action Section Card + Software License Card */}
         <div className="space-y-6 min-w-0">
           
           {/* Quick Action Command Shortcuts Card — Unified Indigo Section Theme */}
@@ -286,19 +288,19 @@ function DashboardPage() {
             description="1-Click direct launch into school administrative modules"
             className="border-indigo-500/25 bg-gradient-to-br from-indigo-500/8 via-card to-card"
           >
-            <div className="grid grid-cols-4 gap-3.5 pt-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 pt-1.5">
               {quickActions.map((action, idx) => {
                 const Icon = action.icon;
                 return (
                   <Link
                     key={idx}
                     to={action.route}
-                    className="aspect-square p-2.5 rounded-xl border border-indigo-500/25 bg-gradient-to-b from-indigo-500/10 via-card to-card hover:border-indigo-400/60 hover:from-indigo-500/20 hover:shadow-indigo-500/10 transition-all duration-200 flex flex-col items-center justify-center text-center group shadow-xs select-none min-w-0 relative overflow-hidden"
+                    className="p-3 rounded-xl border border-indigo-500/25 bg-gradient-to-b from-indigo-500/10 via-card to-card hover:border-indigo-400/60 hover:from-indigo-500/20 hover:shadow-indigo-500/10 transition-all duration-200 flex flex-col items-center justify-center text-center group shadow-xs select-none min-h-[96px] relative overflow-hidden"
                   >
                     <div className="h-11 w-11 rounded-xl flex items-center justify-center border border-indigo-500/30 bg-indigo-500/15 text-indigo-400 mb-2 group-hover:scale-110 group-hover:bg-indigo-500/25 transition-all shrink-0 shadow-xs">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <p className="text-sm font-bold text-foreground group-hover:text-indigo-400 transition-colors leading-tight w-full truncate">
+                    <p className="text-xs sm:text-sm font-bold text-foreground group-hover:text-indigo-400 transition-colors leading-snug w-full text-center truncate px-1">
                       {action.label}
                     </p>
                   </Link>

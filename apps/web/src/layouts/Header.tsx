@@ -38,26 +38,42 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
 
   return (
     <header className="h-[72px] border-b border-border bg-card flex items-center justify-between px-6 sticky top-0 z-20 shrink-0 select-none">
-      {/* Left: Searchbar */}
-      <div className="flex items-center gap-4">
+      {/* Left: Portal Brand & Context */}
+      <div className="flex items-center gap-3">
+        <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold shadow-xs shrink-0">
+          <Building2 className="h-5 w-5" />
+        </div>
+        <div className="flex flex-col min-w-0">
+          <span className="text-sm font-black text-foreground tracking-tight leading-none truncate">
+            VidyaMaxx Command Portal
+          </span>
+          <span className="text-[11px] text-muted-foreground font-semibold mt-1 hidden sm:inline truncate">
+            Academic Session 2026–2027 · Term 1
+          </span>
+        </div>
+      </div>
+
+      {/* Right: Search, Actions & School Identity */}
+      <div className="flex items-center gap-3 shrink-0">
+        {/* Compact Search Trigger on Right Side */}
         <button
           onClick={onSearchClick}
-          className="flex items-center gap-3 text-base text-muted-foreground bg-muted/50 hover:bg-muted border border-border px-4 rounded-xl w-80 sm:w-[420px] lg:w-[480px] transition-all outline-none cursor-pointer group h-11"
+          className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground bg-muted/50 hover:bg-muted border border-border px-3.5 h-11 rounded-xl transition-all outline-none cursor-pointer group"
+          title="Search students, classes, records... (⌘K)"
         >
-          <Search className="h-4.5 w-4.5 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
-          <span className="flex-1 text-left truncate text-sm font-medium">Search students, classes, records...</span>
-          <kbd className="hidden sm:inline-flex h-6 select-none items-center rounded border border-border bg-background px-2 font-mono text-xs font-bold text-muted-foreground">
+          <Search className="h-4.5 w-4.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+          <span className="hidden md:inline text-sm font-semibold text-muted-foreground group-hover:text-foreground">
+            Search
+          </span>
+          <kbd className="inline-flex h-5 select-none items-center rounded border border-border bg-background px-1.5 font-mono text-[11px] font-bold text-muted-foreground">
             ⌘K
           </kbd>
         </button>
-      </div>
 
-      {/* Right: Actions & Custom School Identity */}
-      <div className="flex items-center gap-3.5">
         {/* Export */}
         <button
           onClick={() => {}}
-          className="hidden md:flex items-center gap-2 text-sm font-bold text-foreground hover:bg-muted border border-border px-4 rounded-xl transition-all cursor-pointer h-11"
+          className="hidden md:flex items-center gap-2 text-sm font-bold text-foreground hover:bg-muted border border-border px-3.5 rounded-xl transition-all cursor-pointer h-11"
           title="Export Data"
         >
           <Download className="h-4.5 w-4.5 shrink-0" />
@@ -77,14 +93,14 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         </button>
 
         {/* Divider */}
-        <div className="h-7 w-[1px] bg-border mx-1" />
+        <div className="h-7 w-[1px] bg-border mx-0.5 hidden sm:block" />
 
         {/* Dynamic School Logo & Name on Right */}
         <div className="flex items-center gap-2.5 px-3 rounded-xl bg-muted/40 border border-border h-11 transition-all">
           <div className="h-7 w-7 rounded-lg bg-primary/15 flex items-center justify-center shrink-0 overflow-hidden">
             {renderSchoolEmblem()}
           </div>
-          <span className="text-sm font-extrabold text-foreground tracking-tight max-w-[180px] truncate" title={schoolProfile.name}>
+          <span className="text-sm font-extrabold text-foreground tracking-tight max-w-[150px] truncate" title={schoolProfile.name}>
             {schoolProfile.name}
           </span>
         </div>
