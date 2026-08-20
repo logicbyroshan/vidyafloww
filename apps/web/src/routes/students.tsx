@@ -3,7 +3,6 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import JSZip from 'jszip';
 import {
   VFPageContainer,
-  VFTabs,
   VFBadge,
   VFButton,
   VFDataTable,
@@ -12,13 +11,11 @@ import {
   cn,
 } from '@vidyamaxx/ui';
 import {
-  Users,
   UserCheck,
   ArrowRight,
   Eye,
   Plus,
   Download,
-  GraduationCap,
   FileText,
   BarChart3,
   ChevronLeft,
@@ -33,7 +30,6 @@ import {
   CheckCircle2,
   Loader2,
   Settings,
-  CreditCard,
   Send,
   Award,
   FileCheck,
@@ -518,136 +514,22 @@ function StudentsPage() {
     ],
   };
 
-  // TC & Alumni / Passed out dataset (Session-aware)
-  const tcAndAlumniDataBySession: Record<string, any[]> = {
-    '2026–2027': [
-      {
-        tcNo: 'TC-2026-089',
-        admNo: 'ADM-2025-104',
-        name: 'Simran Kaur',
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-        type: 'Transfer Certificate (TC)',
-        previousClass: 'Class 10-B',
-        destination: 'DPS International, Noida (Parent Relocation)',
-        issueDate: '12 Aug 2026',
-        status: 'TC Issued',
-        tcReason: 'Parent Transfer',
-        conduct: 'Exemplary',
-      },
-      {
-        tcNo: 'TC-2026-090',
-        admNo: 'ADM-2024-055',
-        name: 'Harshit Saxena',
-        avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
-        type: 'Transfer Certificate (TC)',
-        previousClass: 'Class 11-Sci',
-        destination: 'The Heritage School, Gurgaon',
-        issueDate: '18 Aug 2026',
-        status: 'TC Issued',
-        tcReason: 'Board Stream Shift',
-        conduct: 'Good',
-      },
-      {
-        tcNo: 'TC-2026-091',
-        admNo: 'ADM-2025-212',
-        name: 'Divya Khurana',
-        avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80',
-        type: 'Transfer Certificate (TC)',
-        previousClass: 'Class 8-A',
-        destination: 'Army Public School, Pune',
-        issueDate: '19 Aug 2026',
-        status: 'Principal Review',
-        tcReason: 'Defense Posting',
-        conduct: 'Excellent',
-      },
-      {
-        tcNo: 'ALUM-2026-001',
-        admNo: 'ADM-2022-014',
-        name: 'Aarav Pillai',
-        avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
-        type: 'Passed Out (Alumni)',
-        previousClass: 'Class 12-Sci (2026 Batch)',
-        destination: 'IIT Bombay · B.Tech CSE',
-        issueDate: '30 May 2026',
-        status: 'Passed Out',
-        tcReason: 'CBSE Board Clearance (97.4%)',
-        conduct: 'Distinction',
-      },
-      {
-        tcNo: 'ALUM-2026-002',
-        admNo: 'ADM-2022-088',
-        name: 'Neha Bhattacharya',
-        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
-        type: 'Passed Out (Alumni)',
-        previousClass: 'Class 12-Com (2026 Batch)',
-        destination: 'SRCC Delhi · B.Com (Hons)',
-        issueDate: '30 May 2026',
-        status: 'Passed Out',
-        tcReason: 'CBSE Board Clearance (98.2%)',
-        conduct: 'Distinction',
-      },
-      {
-        tcNo: 'ALUM-2026-003',
-        admNo: 'ADM-2022-105',
-        name: 'Riddhima Kapoor',
-        avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
-        type: 'Passed Out (Alumni)',
-        previousClass: 'Class 12-Hum (2026 Batch)',
-        destination: 'St. Stephen’s College · BA Economics',
-        issueDate: '30 May 2026',
-        status: 'Passed Out',
-        tcReason: 'CBSE Board Clearance (96.8%)',
-        conduct: 'Distinction',
-      },
-    ],
-    '2025–2026': [
-      {
-        tcNo: 'ALUM-2025-014',
-        admNo: 'ADM-2021-002',
-        name: 'Siddharth Roy',
-        avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
-        type: 'Passed Out (Alumni)',
-        previousClass: 'Class 12-Sci (2025 Batch)',
-        destination: 'BITS Pilani',
-        issueDate: '28 May 2025',
-        status: 'Passed Out',
-        tcReason: 'CBSE Board Clearance (95.6%)',
-        conduct: 'Distinction',
-      },
-      {
-        tcNo: 'TC-2025-044',
-        admNo: 'ADM-2023-087',
-        name: 'Manav Chawla',
-        avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&auto=format&fit=crop&q=80',
-        type: 'Transfer Certificate (TC)',
-        previousClass: 'Class 9-A',
-        destination: 'Modern School, Barakhamba',
-        issueDate: '15 Oct 2025',
-        status: 'TC Issued',
-        tcReason: 'Residential Change',
-        conduct: 'Good',
-      },
-    ],
-    '2024–2025': [
-      {
-        tcNo: 'ALUM-2024-008',
-        admNo: 'ADM-2020-001',
-        name: 'Varun Grover',
-        avatarUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=80',
-        type: 'Passed Out (Alumni)',
-        previousClass: 'Class 12-Sci (2024 Batch)',
-        destination: 'AIIMS New Delhi',
-        issueDate: '25 May 2024',
-        status: 'Passed Out',
-        tcReason: 'CBSE Board Clearance (99.0%)',
-        conduct: 'Distinction',
-      },
-    ],
-  };
-
+  // Enrolled students state by Academic Session
   const [enrolledStudentsMap, setEnrolledStudentsMap] = React.useState<Record<string, any[]>>(allStudentsBySession);
   const currentEnrolledList = enrolledStudentsMap[activeSession] || enrolledStudentsMap['2026–2027'] || [];
-  const currentTcAndAlumniList = tcAndAlumniDataBySession[activeSession] || tcAndAlumniDataBySession['2026–2027'] || [];
+
+  // Certificate Modal State (TC, Character, Bonafide)
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = React.useState<boolean>(false);
+  const [certificateType, setCertificateType] = React.useState<'tc' | 'character' | 'bonafide'>('tc');
+  const [certificateStudent, setCertificateStudent] = React.useState<any>(null);
+  const [tcReason, setTcReason] = React.useState<string>('Parent Relocation');
+  const [destinationSchool, setDestinationSchool] = React.useState<string>('');
+
+  const openCertificateModal = (type: 'tc' | 'character' | 'bonafide', student: any) => {
+    setCertificateType(type);
+    setCertificateStudent(student);
+    setIsCertificateModalOpen(true);
+  };
 
   const [isEditingStudent, setIsEditingStudent] = React.useState<boolean>(false);
   const [studentFormData, setStudentFormData] = React.useState<any>(null);
@@ -959,7 +841,8 @@ function StudentsPage() {
     }
   };
 
-  // Table Columns for Tab 1: Enrolled Students (with 19.5 : 25 ID Photo Portrait)
+
+  // Main Students Master Table Columns
   const enrolledStudentColumns = [
     {
       header: 'Photo',
@@ -968,7 +851,7 @@ function StudentsPage() {
         <div className="flex items-center justify-center">
           <div
             onClick={() => openStudentDrawer(r)}
-            className="relative overflow-hidden rounded-lg border border-primary/40 shadow-sm w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-primary hover:shadow-md transition-all"
+            className="relative overflow-hidden rounded-lg border border-border/80 shadow-xs w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
             style={{ aspectRatio: '19.5 / 25' }}
             title="Click to view 360° student profile"
           >
@@ -984,7 +867,7 @@ function StudentsPage() {
             />
             <div
               style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full bg-primary/20 text-primary font-black text-sm hidden items-center justify-center border border-primary/30"
+              className="w-full h-full bg-muted text-muted-foreground font-black text-sm hidden items-center justify-center border border-border"
             >
               {r.name.split(' ').map((n: string) => n[0]).join('')}
             </div>
@@ -996,10 +879,7 @@ function StudentsPage() {
       header: 'Admission No',
       accessorKey: 'admNo',
       cell: (r: any) => (
-        <span
-          onClick={() => openStudentDrawer(r)}
-          className="font-mono font-semibold text-foreground/90 text-sm cursor-pointer hover:text-primary transition-colors"
-        >
+        <span className="font-mono font-semibold text-foreground/90 text-sm">
           {r.admNo}
         </span>
       ),
@@ -1008,25 +888,27 @@ function StudentsPage() {
       header: 'Student Name',
       accessorKey: 'name',
       cell: (r: any) => (
-        <div
+        <button
           onClick={() => openStudentDrawer(r)}
-          className="flex items-center gap-2.5 cursor-pointer group"
+          className="text-left font-bold text-foreground hover:underline cursor-pointer tracking-tight text-sm"
         >
-          <span className="font-extrabold text-foreground text-sm group-hover:text-primary transition-colors">
-            {r.name}
-          </span>
-        </div>
+          {r.name}
+        </button>
       ),
     },
     {
       header: 'Class & Section',
       accessorKey: 'class',
-      cell: (r: any) => <span className="text-foreground font-semibold text-sm">{r.class} · Sec {r.section}</span>,
+      cell: (r: any) => (
+        <span className="font-medium text-foreground text-sm">
+          {r.class} · Sec {r.section}
+        </span>
+      ),
     },
     {
       header: 'Roll No',
       accessorKey: 'roll',
-      cell: (r: any) => <span className="font-mono text-muted-foreground text-sm font-medium">{r.roll}</span>,
+      cell: (r: any) => <span className="font-mono text-muted-foreground text-sm">{r.roll}</span>,
     },
     {
       header: 'House',
@@ -1074,118 +956,9 @@ function StudentsPage() {
     },
   ];
 
-  // Table Columns for Tab 2: TC & Passed Out / Alumni (with 19.5 : 25 ID Photo Portrait)
-  const tcAndAlumniColumns = [
-    {
-      header: 'Photo',
-      accessorKey: 'photo',
-      cell: (r: any) => (
-        <div className="flex items-center justify-center">
-          <div
-            className="relative overflow-hidden rounded-lg border border-border/80 shadow-sm w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center"
-            style={{ aspectRatio: '19.5 / 25' }}
-          >
-            <img
-              src={r.avatarUrl}
-              alt={r.name}
-              style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full object-cover"
-              onError={(e: any) => {
-                e.target.style.display = 'none';
-                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-              }}
-            />
-            <div
-              style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full bg-muted text-muted-foreground font-black text-sm hidden items-center justify-center"
-            >
-              {r.name.split(' ').map((n: string) => n[0]).join('')}
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      header: 'Record / TC No',
-      accessorKey: 'tcNo',
-      cell: (r: any) => (
-        <div className="flex flex-col">
-          <span className="font-mono font-semibold text-foreground text-sm">{r.tcNo}</span>
-          <span className="font-mono text-xs text-muted-foreground">{r.admNo}</span>
-        </div>
-      ),
-    },
-    {
-      header: 'Student Name',
-      accessorKey: 'name',
-      cell: (r: any) => (
-        <div className="flex flex-col">
-          <span className="font-extrabold text-foreground text-sm">{r.name}</span>
-          <span className="text-xs text-muted-foreground font-semibold">{r.previousClass}</span>
-        </div>
-      ),
-    },
-    {
-      header: 'Category Type',
-      accessorKey: 'type',
-      cell: (r: any) => (
-        <span className={cn(
-          "text-xs font-bold px-2.5 py-1 rounded-md border inline-flex items-center gap-1.5",
-          r.type.includes('Passed Out')
-            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
-            : "bg-muted text-muted-foreground border-border"
-        )}>
-          {r.type.includes('Passed Out') ? <GraduationCap className="h-3.5 w-3.5 text-emerald-400" /> : <ArrowRight className="h-3.5 w-3.5" />}
-          {r.type}
-        </span>
-      ),
-    },
-    {
-      header: 'Reason / Board Standing',
-      accessorKey: 'tcReason',
-      cell: (r: any) => (
-        <div className="flex flex-col">
-          <span className="text-sm font-bold text-foreground truncate max-w-[220px]">{r.tcReason}</span>
-          <span className="text-xs text-muted-foreground truncate max-w-[220px]">{r.destination}</span>
-        </div>
-      ),
-    },
-    {
-      header: 'Issue / Release Date',
-      accessorKey: 'issueDate',
-      cell: (r: any) => <span className="font-mono text-sm font-semibold text-muted-foreground">{r.issueDate}</span>,
-    },
-    {
-      header: 'Verification Status',
-      accessorKey: 'status',
-      cell: (r: any) => (
-        <VFBadge variant={r.status === 'Passed Out' || r.status === 'TC Issued' ? 'success' : 'warning'}>
-          {r.status}
-        </VFBadge>
-      ),
-    },
-    {
-      header: 'Actions',
-      accessorKey: 'action',
-      cell: (r: any) => (
-        <div className="flex items-center gap-2">
-          <VFButton
-            size="sm"
-            variant="outline"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
-            onClick={() => alert(`Downloading official Certificate for ${r.name} (${r.tcNo})`)}
-          >
-            Certificate
-          </VFButton>
-        </div>
-      ),
-    },
-  ];
-
-  // ─── TAB 1: ENROLLED STUDENTS ────────────────────────────────────────────────
-  const enrolledStudentsContent = (
-    <div className="space-y-4">
-      {/* Main Clean Enrolled Students Table with Unified Single Command Bar */}
+  return (
+    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4">
+      {/* Main Clean Enrolled Students Master Table */}
       <VFDataTable
         columns={enrolledStudentColumns}
         data={currentEnrolledList}
@@ -1206,57 +979,6 @@ function StudentsPage() {
           </>
         }
       />
-    </div>
-  );
-
-  // ─── TAB 2: TRANSFERS, TC & ALUMNI ───────────────────────────────────────────
-  const tcAndAlumniContent = (
-    <div className="space-y-4">
-      {/* Main Clean TC & Alumni Table with Unified Single Command Bar */}
-      <VFDataTable
-        columns={tcAndAlumniColumns}
-        data={currentTcAndAlumniList}
-        filterPlaceholder="Search by student name, TC number, or destination school..."
-        rightActions={
-          <>
-            <VFButton
-              variant="outline"
-              size="sm"
-              leftIcon={<Download className="h-4 w-4" />}
-              onClick={() => setIsExportModalOpen(true)}
-            >
-              Export TC Ledger
-            </VFButton>
-            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
-              Issue New TC
-            </VFButton>
-          </>
-        }
-      />
-    </div>
-  );
-
-  // ─── 2 TABS CONFIGURATION (CLEAN DATA PAGES) ─────────────────────────────────
-  const tabs = [
-    {
-      id: 'enrolled',
-      label: 'Enrolled Students',
-      icon: <Users className="h-5 w-5" />,
-      badge: currentEnrolledList.length,
-      content: enrolledStudentsContent,
-    },
-    {
-      id: 'transfers_alumni',
-      label: 'Transfers, TC & Alumni',
-      icon: <GraduationCap className="h-5 w-5" />,
-      badge: currentTcAndAlumniList.length,
-      content: tcAndAlumniContent,
-    },
-  ];
-
-  return (
-    <VFPageContainer>
-      <VFTabs items={tabs} defaultTabId="enrolled" variant="top-bar" />
 
       {/* 360° STUDENT PROFILE SIDE DRAWER */}
       <VFDrawer
@@ -1319,24 +1041,8 @@ function StudentsPage() {
                   </button>
                 </div>
 
-                {/* 2. Action Buttons with Close / Cancel */}
+                {/* 2. Action Buttons (Cleaned up: WhatsApp and Print ID are in their respective profile tabs) */}
                 <div className="flex items-center gap-2">
-                  <VFButton
-                    variant="outline"
-                    size="sm"
-                    leftIcon={<MessageSquare className="h-3.5 w-3.5 text-emerald-400" />}
-                    onClick={() => window.open(`https://wa.me/${activeStudent?.phone?.replace(/[^0-9]/g, '')}`, '_blank')}
-                  >
-                    WhatsApp
-                  </VFButton>
-                  <VFButton
-                    variant="outline"
-                    size="sm"
-                    leftIcon={<Printer className="h-3.5 w-3.5" />}
-                    onClick={() => openIdCardModal(activeStudent)}
-                  >
-                    Print ID
-                  </VFButton>
                   <VFButton
                     size="sm"
                     leftIcon={<Edit3 className="h-3.5 w-3.5" />}
@@ -1530,7 +1236,7 @@ function StudentsPage() {
               {[
                 { id: 'overview', label: 'Profile & Bio', icon: <UserCheck className="h-4 w-4" /> },
                 { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
-                { id: 'credentials', label: 'ID Card & Board', icon: <CreditCard className="h-4 w-4" /> },
+                { id: 'credentials', label: 'Certificates & ID Card', icon: <FileText className="h-4 w-4" /> },
               ].map((tab) => {
                 const isActive = drawerTab === tab.id;
                 return (
@@ -1853,15 +1559,15 @@ function StudentsPage() {
               </div>
             )}
 
-            {/* TAB 3: ID CARD & BOARD REGISTRY (CR80 Standard 85 : 54 Ratio) */}
+            {/* TAB 3: CERTIFICATES, TC & ID HUB (CR80 Standard 85 : 54 Ratio) */}
             {drawerTab === 'credentials' && (
               <div className="space-y-4 animate-fade-in pt-1">
-                {/* 🪪 Physical Card Preview (Exact 85:54 ratio) */}
+                {/* 1. 🪪 Physical Card Preview (Exact 85:54 ratio) */}
                 <div className="p-4 rounded-xl bg-muted/30 border border-border/70 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-xs font-bold text-foreground">Standard ID Card Preview</h4>
-                      <span className="text-[11px] text-muted-foreground">Standard CR-80 physical dimensions (85.6mm × 54mm)</span>
+                      <h4 className="text-xs font-bold text-foreground">Standard Student ID Card</h4>
+                      <span className="text-[11px] text-muted-foreground">Standard CR-80 physical card dimensions (85.6mm × 54mm)</span>
                     </div>
                     <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                       Ratio 85 : 54
@@ -1912,7 +1618,7 @@ function StudentsPage() {
                             <span>•</span>
                             <span>{activeStudent.house}</span>
                           </div>
-                          <p className="text-[10px] text-muted-foreground font-mono truncate">
+                          <p className="text-[9px] text-muted-foreground font-mono truncate">
                             Emergency: {activeStudent.phone}
                           </p>
                         </div>
@@ -1933,7 +1639,7 @@ function StudentsPage() {
                     </div>
                   </div>
 
-                  {/* ID Print Actions */}
+                  {/* ID Print Actions inside the Tab */}
                   <div className="flex items-center gap-2">
                     <VFButton
                       size="sm"
@@ -1956,7 +1662,88 @@ function StudentsPage() {
                   </div>
                 </div>
 
-                {/* 📋 Official CBSE Board Examination Registry in Uniform Boxes */}
+                {/* 2. 📜 Official Certificates & Transfer Clearance (TC) Hub */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Award className="h-3.5 w-3.5 text-muted-foreground" />
+                      Institutional Certificates & Transfer (TC)
+                    </h4>
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                      Active · Good Standing
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    {/* Transfer Certificate (TC) */}
+                    <div className="p-3 rounded-xl bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
+                      <div>
+                        <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                          <FileSpreadsheet className="h-3.5 w-3.5 text-muted-foreground" />
+                          <span>Transfer Certificate (TC)</span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          Official school leaving clearance certificate with verified dues clearance.
+                        </p>
+                      </div>
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        className="w-full text-xs"
+                        leftIcon={<FileText className="h-3.5 w-3.5" />}
+                        onClick={() => openCertificateModal('tc', activeStudent)}
+                      >
+                        Issue / Print TC
+                      </VFButton>
+                    </div>
+
+                    {/* Character Certificate */}
+                    <div className="p-3 rounded-xl bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
+                      <div>
+                        <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                          <Award className="h-3.5 w-3.5 text-muted-foreground" />
+                          <span>Character Certificate</span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          Certifies exemplary behavioral record, academic discipline, and conduct.
+                        </p>
+                      </div>
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        className="w-full text-xs"
+                        leftIcon={<CheckCircle2 className="h-3.5 w-3.5" />}
+                        onClick={() => openCertificateModal('character', activeStudent)}
+                      >
+                        Character Certificate
+                      </VFButton>
+                    </div>
+
+                    {/* Bonafide Certificate */}
+                    <div className="p-3 rounded-xl bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
+                      <div>
+                        <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                          <FileCheck className="h-3.5 w-3.5 text-muted-foreground" />
+                          <span>Bonafide Certificate</span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          Proof of institutional enrollment for visa, passport, bus pass, or bank accounts.
+                        </p>
+                      </div>
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        className="w-full text-xs"
+                        leftIcon={<Download className="h-3.5 w-3.5" />}
+                        onClick={() => openCertificateModal('bonafide', activeStudent)}
+                      >
+                        Bonafide Certificate
+                      </VFButton>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. 📋 Official CBSE Board Examination Registry */}
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between pb-2 border-b border-border/60">
                     <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
@@ -2017,6 +1804,129 @@ function StudentsPage() {
           </div>
         )}
       </VFDrawer>
+
+      {/* 📜 INSTITUTIONAL CERTIFICATES & TC MODAL */}
+      <VFDialog
+        isOpen={isCertificateModalOpen}
+        onClose={() => setIsCertificateModalOpen(false)}
+        title={
+          certificateType === 'tc'
+            ? 'Official Transfer Certificate (TC)'
+            : certificateType === 'character'
+            ? 'Character & Conduct Certificate'
+            : 'Bonafide Student Certificate'
+        }
+        description={`Institutional certificate generation and issuance for ${certificateStudent?.name || 'student'}`}
+        className="max-w-xl"
+        footerActions={
+          <>
+            <VFButton
+              variant="outline"
+              size="sm"
+              onClick={() => setIsCertificateModalOpen(false)}
+            >
+              Cancel
+            </VFButton>
+            <VFButton
+              size="sm"
+              leftIcon={<Printer className="h-4 w-4" />}
+              onClick={() => {
+                alert(`Printing official ${certificateType.toUpperCase()} for ${certificateStudent?.name}`);
+                setIsCertificateModalOpen(false);
+              }}
+            >
+              Print Certificate
+            </VFButton>
+          </>
+        }
+      >
+        {certificateStudent && (
+          <div className="p-2 space-y-4 text-xs">
+            {/* Certificate Form & Verification Preview */}
+            <div className="p-4 rounded-xl border border-border/80 bg-card space-y-3 font-sans">
+              <div className="text-center border-b border-border/60 pb-3">
+                <h3 className="font-black text-sm uppercase tracking-wider text-foreground">
+                  VidyaMaxx Senior Secondary Academy
+                </h3>
+                <p className="text-[10px] text-muted-foreground">CBSE Affiliation No: 2130889 · Sector 14, New Delhi</p>
+                <div className="inline-block mt-2 px-3 py-1 rounded bg-muted border border-border">
+                  <span className="font-bold text-xs uppercase text-foreground">
+                    {certificateType === 'tc'
+                      ? 'TRANSFER CERTIFICATE (TC)'
+                      : certificateType === 'character'
+                      ? 'CHARACTER & CONDUCT CERTIFICATE'
+                      : 'BONAFIDE STUDENT CERTIFICATE'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 py-1">
+                <div>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Student Name</span>
+                  <span className="font-bold text-foreground text-xs">{certificateStudent.name}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Admission / Scholar No</span>
+                  <span className="font-mono font-bold text-foreground text-xs">{certificateStudent.admNo}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Class & Section</span>
+                  <span className="font-semibold text-foreground text-xs">{certificateStudent.class} (Sec {certificateStudent.section})</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Academic Session</span>
+                  <span className="font-mono font-semibold text-foreground text-xs">{activeSession}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Father / Guardian</span>
+                  <span className="font-medium text-foreground text-xs">{certificateStudent.guardian}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Issue Serial No</span>
+                  <span className="font-mono font-bold text-emerald-400 text-xs">
+                    {certificateType.toUpperCase()}-{activeSession.substring(0, 4)}-00492
+                  </span>
+                </div>
+              </div>
+
+              {certificateType === 'tc' && (
+                <div className="pt-2 border-t border-border/60 space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] text-muted-foreground uppercase block font-bold">TC Reason</label>
+                      <select
+                        value={tcReason}
+                        onChange={(e) => setTcReason(e.target.value)}
+                        className="w-full bg-muted border border-border rounded-md px-2 py-1 text-xs text-foreground mt-0.5 outline-none"
+                      >
+                        <option value="Parent Relocation">Parent Relocation</option>
+                        <option value="Higher Studies">Higher Studies</option>
+                        <option value="Board Stream Change">Board Stream Change</option>
+                        <option value="Personal Reasons">Personal Reasons</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-muted-foreground uppercase block font-bold">Destination School</label>
+                      <input
+                        type="text"
+                        value={destinationSchool}
+                        onChange={(e) => setDestinationSchool(e.target.value)}
+                        placeholder="e.g. Modern School, Barakhamba"
+                        className="w-full bg-muted border border-border rounded-md px-2 py-1 text-xs text-foreground mt-0.5 outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-3 border-t border-border/60 flex items-center justify-between text-[10px] text-muted-foreground">
+                <span>Verified by Institutional Registrar</span>
+                <span className="font-serif italic font-bold text-foreground">Principal Seal & Signature</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </VFDialog>
 
       {/* 🪪 ID CARD BADGE PREVIEW & PRINT MODAL (Exact 85 : 54 Ratio) */}
       <VFDialog
