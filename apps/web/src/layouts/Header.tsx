@@ -1,5 +1,7 @@
-import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar } from 'lucide-react';
+import * as React from 'react';
+import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { cn } from '@vidyamaxx/ui';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -8,7 +10,21 @@ interface HeaderProps {
 
 export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const { notifications, schoolProfile, activeSession, setActiveSession, academicSessions } = useGlobalStore();
+  const [isSessionMenuOpen, setIsSessionMenuOpen] = React.useState(false);
+  const sessionMenuRef = React.useRef<HTMLDivElement>(null);
   const unreadCount = notifications.filter((n) => !n.read).length;
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sessionMenuRef.current && !sessionMenuRef.current.contains(event.target as Node)) {
+        setIsSessionMenuOpen(false);
+      }
+    };
+    if (isSessionMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSessionMenuOpen]);
 
   const renderSchoolEmblem = () => {
     if (schoolProfile.customLogoUrl) {
@@ -38,27 +54,81 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
 
   return (
     <header className="h-[64px] border-b border-border bg-card flex items-center justify-between px-5 sticky top-0 z-20 shrink-0 select-none">
-      {/* Left: Active Academic Session Control */}
+      {/* Left: Custom Styled Active Academic Session Dropdown */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-primary/10 border border-primary/25 text-primary shadow-xs transition-all" title="Active Academic Session">
-          <Calendar className="h-4.5 w-4.5 shrink-0 text-primary" />
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-black uppercase tracking-wider text-primary/80">
-              Session:
-            </span>
-            <select
-              value={activeSession}
-              onChange={(e) => setActiveSession(e.target.value)}
-              className="bg-transparent text-sm font-black text-foreground outline-none cursor-pointer pr-1 hover:text-primary transition-colors border-none"
-            >
-              {academicSessions.map((session) => (
-                <option key={session} value={session} className="bg-card text-foreground font-bold">
-                  {session} {session === '2026–2027' ? '(Active)' : '(Archived)'}
-                </option>
-              ))}
-            </select>
-          </div>
-          <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0 inline-block animate-pulse ml-0.5" />
+        <div className="relative" ref={sessionMenuRef}>
+          <button
+            onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
+            className="flex items-center gap-2.5 px-3.5 h-10 rounded-xl bg-primary/10 hover:bg-primary/15 border border-primary/25 text-primary shadow-xs transition-all cursor-pointer outline-none group"
+            title="Switch Academic Session"
+          >
+            <Calendar className="h-4.5 w-4.5 shrink-0 text-primary" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black uppercase tracking-wider text-primary/80">
+                Session:
+              </span>
+              <span className="text-sm font-black text-foreground">
+                {activeSession}
+              </span>
+              {activeSession === '2026–2027' && (
+                <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 ml-0.5">
+                  Active
+                </span>
+              )}
+            </div>
+            <ChevronDown className={cn("h-4 w-4 text-primary/80 transition-transform duration-200 ml-0.5", isSessionMenuOpen && "rotate-180")} />
+            <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0 inline-block animate-pulse ml-0.5" />
+          </button>
+
+          {/* Custom Animated Glassmorphic Dropdown Menu */}
+          {isSessionMenuOpen && (
+            <div className="absolute left-0 mt-2 w-64 rounded-xl border border-border bg-card shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
+              <div className="px-2.5 py-1.5 border-b border-border/60 mb-1">
+                <span className="text-[11px] font-black text-muted-foreground uppercase tracking-wider block">
+                  Select Academic Session
+                </span>
+                <span className="text-[10px] text-muted-foreground font-medium">
+                  Changes live institutional database context
+                </span>
+              </div>
+              {academicSessions.map((session) => {
+                const isCurrent = session === activeSession;
+                const isActiveAY = session === '2026–2027';
+                return (
+                  <button
+                    key={session}
+                    onClick={() => {
+                      setActiveSession(session);
+                      setIsSessionMenuOpen(false);
+                    }}
+                    className={cn(
+                      "flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm transition-all cursor-pointer text-left font-bold outline-none",
+                      isCurrent
+                        ? "bg-primary/15 text-primary border border-primary/30 font-black"
+                        : "text-foreground hover:bg-muted"
+                    )}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Calendar className={cn("h-4 w-4", isCurrent ? "text-primary" : "text-muted-foreground")} />
+                      <span>{session}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {isActiveAY ? (
+                        <span className="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                          Active AY
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-muted text-muted-foreground border border-border">
+                          Archived
+                        </span>
+                      )}
+                      {isCurrent && <Check className="h-4 w-4 text-primary ml-1 shrink-0" />}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 

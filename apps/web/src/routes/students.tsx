@@ -54,8 +54,6 @@ function StudentsPage() {
   const { activeSession } = useGlobalStore();
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
-  const [selectedClassFilter, setSelectedClassFilter] = React.useState<string>('all');
-  const [selectedTcFilter, setSelectedTcFilter] = React.useState<string>('all');
 
   // Export Modal State
   const [isExportModalOpen, setIsExportModalOpen] = React.useState<boolean>(false);
@@ -527,17 +525,8 @@ function StudentsPage() {
     ],
   };
 
-  const currentEnrolledList = (allStudentsBySession[activeSession] || allStudentsBySession['2026–2027']).filter(
-    (s) => selectedClassFilter === 'all' || s.class.includes(selectedClassFilter)
-  );
-
-  const currentTcAndAlumniList = (tcAndAlumniDataBySession[activeSession] || tcAndAlumniDataBySession['2026–2027']).filter(
-    (r) => {
-      if (selectedTcFilter === 'tc') return r.type.includes('Transfer Certificate');
-      if (selectedTcFilter === 'alumni') return r.type.includes('Passed Out');
-      return true;
-    }
-  );
+  const currentEnrolledList = allStudentsBySession[activeSession] || allStudentsBySession['2026–2027'];
+  const currentTcAndAlumniList = tcAndAlumniDataBySession[activeSession] || tcAndAlumniDataBySession['2026–2027'];
 
   const activeStudent =
     selectedStudentIndex !== null && selectedStudentIndex >= 0 && selectedStudentIndex < currentEnrolledList.length
@@ -1031,54 +1020,26 @@ function StudentsPage() {
   // ─── TAB 1: ENROLLED STUDENTS ────────────────────────────────────────────────
   const enrolledStudentsContent = (
     <div className="space-y-4">
-      {/* Unified Control Command Bar (Clean, without duplicate session badge) */}
-      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
-        {/* Left: Class Filters & Student Count */}
-        <div className="flex items-center gap-2.5 flex-wrap">
-          {/* Class / Grade Filter */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-muted/60 border border-border">
-            <span className="text-xs font-bold text-muted-foreground">Class:</span>
-            <select
-              value={selectedClassFilter}
-              onChange={(e) => setSelectedClassFilter(e.target.value)}
-              className="bg-transparent text-sm font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-primary transition-colors border-none"
-            >
-              <option value="all" className="bg-card text-foreground font-bold">All Classes & Wings</option>
-              <option value="Class 9" className="bg-card text-foreground font-bold">Class 9 Only</option>
-              <option value="Class 10" className="bg-card text-foreground font-bold">Class 10 Only</option>
-              <option value="Class 11" className="bg-card text-foreground font-bold">Class 11 Only</option>
-              <option value="Class 12" className="bg-card text-foreground font-bold">Class 12 Only</option>
-            </select>
-          </div>
-
-          {/* Quick Active Badge */}
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
-            <span>Enrolled:</span>
-            <span className="font-extrabold text-foreground">{currentEnrolledList.length} Students</span>
-          </span>
-        </div>
-
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
-          <VFButton
-            variant="outline"
-            size="sm"
-            leftIcon={<Download className="h-4 w-4" />}
-            onClick={() => setIsExportModalOpen(true)}
-          >
-            Export Roster
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
-            Add Student
-          </VFButton>
-        </div>
-      </div>
-
-      {/* Main Clean Enrolled Students Table */}
+      {/* Main Clean Enrolled Students Table with Unified Single Command Bar */}
       <VFDataTable
         columns={enrolledStudentColumns}
         data={currentEnrolledList}
         filterPlaceholder="Search by student name, roll number, or admission ID..."
+        rightActions={
+          <>
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<Download className="h-4 w-4" />}
+              onClick={() => setIsExportModalOpen(true)}
+            >
+              Export Roster
+            </VFButton>
+            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
+              Add Student
+            </VFButton>
+          </>
+        }
       />
     </div>
   );
@@ -1086,52 +1047,26 @@ function StudentsPage() {
   // ─── TAB 2: TRANSFERS, TC & ALUMNI ───────────────────────────────────────────
   const tcAndAlumniContent = (
     <div className="space-y-4">
-      {/* Unified Control Command Bar (Clean, without duplicate session badge) */}
-      <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
-        {/* Left: Category Filters & Count */}
-        <div className="flex items-center gap-2.5 flex-wrap">
-          {/* Record Category Filter */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-muted/60 border border-border">
-            <span className="text-xs font-bold text-muted-foreground">Type:</span>
-            <select
-              value={selectedTcFilter}
-              onChange={(e) => setSelectedTcFilter(e.target.value)}
-              className="bg-transparent text-sm font-bold text-foreground outline-none cursor-pointer pr-1 hover:text-amber-400 transition-colors border-none"
-            >
-              <option value="all" className="bg-card text-foreground font-bold">All TC & Alumni Records</option>
-              <option value="tc" className="bg-card text-foreground font-bold">Transfer Certificates (TC)</option>
-              <option value="alumni" className="bg-card text-foreground font-bold">Passed Out Alumni</option>
-            </select>
-          </div>
-
-          {/* Quick Count Badge */}
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-muted/40 border border-border text-xs font-bold text-muted-foreground">
-            <span>Records:</span>
-            <span className="font-extrabold text-foreground">{currentTcAndAlumniList.length}</span>
-          </span>
-        </div>
-
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
-          <VFButton
-            variant="outline"
-            size="sm"
-            leftIcon={<Download className="h-4 w-4" />}
-            onClick={() => setIsExportModalOpen(true)}
-          >
-            Export TC Ledger
-          </VFButton>
-          <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
-            Issue New TC
-          </VFButton>
-        </div>
-      </div>
-
-      {/* Main Clean TC & Alumni Table */}
+      {/* Main Clean TC & Alumni Table with Unified Single Command Bar */}
       <VFDataTable
         columns={tcAndAlumniColumns}
         data={currentTcAndAlumniList}
         filterPlaceholder="Search by student name, TC number, or destination school..."
+        rightActions={
+          <>
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<Download className="h-4 w-4" />}
+              onClick={() => setIsExportModalOpen(true)}
+            >
+              Export TC Ledger
+            </VFButton>
+            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
+              Issue New TC
+            </VFButton>
+          </>
+        }
       />
     </div>
   );
