@@ -48,7 +48,7 @@ export function VFTableHeaderCell({
   return (
     <th
       className={cn(
-        "px-4 py-2.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
+        "px-5 py-3 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap",
         sticky && "sticky top-0 bg-card z-10",
         className
       )}
@@ -58,7 +58,7 @@ export function VFTableHeaderCell({
 }
 
 export function VFTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("px-4 py-2.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold", className)} {...props} />;
+  return <td className={cn("px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold", className)} {...props} />;
 }
 
 // VFDataTable: High-level, fail-safe data table component
