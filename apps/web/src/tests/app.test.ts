@@ -18,6 +18,11 @@ describe('VidyaMaxx Shared Utilities', () => {
     expect(formatted).toContain('2,45,000');
   });
 
+  it('formats dates properly', () => {
+    const formatted = formatDate(new Date('2026-08-24T00:00:00.000Z'));
+    expect(formatted).toContain('2026');
+  });
+
   it('truncates strings properly', () => {
     expect(truncate('VidyaMaxx Enterprise School Platform', 15)).toBe('VidyaMaxx Enter...');
     expect(truncate('Short', 10)).toBe('Short');

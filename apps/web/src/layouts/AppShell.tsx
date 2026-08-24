@@ -130,15 +130,17 @@ export function AppShell() {
 
   React.useEffect(() => {
     initTheme();
-    const timer = setTimeout(() => {
-      addNotification({
-        title: 'Welcome to VidyaMaxx',
-        description: 'Your enterprise school management platform is ready.',
-        type: 'info',
-      });
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/forgot-password') {
+      const timer = setTimeout(() => {
+        addNotification({
+          title: 'Welcome to VidyaMaxx',
+          description: 'Your enterprise school management platform is ready.',
+          type: 'info',
+        });
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -157,6 +159,19 @@ export function AppShell() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const isAuthPage =
+    location.pathname === '/login' ||
+    location.pathname === '/signup' ||
+    location.pathname === '/forgot-password';
+
+  if (isAuthPage) {
+    return (
+      <div className="w-full min-h-screen bg-background text-foreground overflow-x-hidden">
+        <Outlet />
+      </div>
+    );
+  }
+
   if (viewportWidth < 1000) {
     return <SmallScreenBlocker />;
   }
@@ -165,14 +180,14 @@ export function AppShell() {
     <div className="w-full bg-background min-h-screen">
       <div className="max-w-[2000px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row">
         <VFPage className="flex-row h-screen overflow-hidden w-full">
-          <Sidebar onAIClick={() => setIsAIDrawerOpen(true)} />
+          <Sidebar />
           <div className="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300 ease-in-out min-w-0">
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}
               onAIClick={() => setIsAIDrawerOpen(true)}
             />
-            <main ref={mainRef} className="flex-1 overflow-y-auto min-w-0 bg-background relative custom-scrollbar">
+            <main ref={mainRef} className="flex-1 overflow-hidden min-w-0 bg-background relative flex flex-col">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}
@@ -180,7 +195,7 @@ export function AppShell() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full min-h-full"
+                  className="w-full flex-1 flex flex-col min-h-0 overflow-hidden"
                 >
                   <Outlet />
                 </motion.div>

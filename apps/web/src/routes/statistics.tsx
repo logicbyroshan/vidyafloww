@@ -6,6 +6,9 @@ import {
   VFBadge,
   VFButton,
   VFStatCard,
+  VFAreaChart,
+  VFBarChart,
+  VFPieChart,
 } from '@vidyamaxx/ui';
 import {
   BarChart3,
@@ -23,8 +26,6 @@ import {
   Sparkles,
   Award,
   School,
-  CheckCircle2,
-  AlertCircle,
   Layers,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -74,6 +75,43 @@ function StatisticsPage() {
           accentColor="blue"
         />
       </div>
+
+      {/* Student Enrollment by Wing Pie Chart & Metric Tiles */}
+      <VFCard title="Student Enrollment by School Wing" description="Class tier strength distribution across 1,248 pupils">
+        <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
+          <div className="shrink-0" style={{ width: 180, height: 180 }}>
+            <VFPieChart
+              data={[
+                { name: 'Primary (1-5)', value: 430, color: '#3b82f6' },
+                { name: 'Middle (6-8)', value: 374, color: '#60a5fa' },
+                { name: 'High School (9-10)', value: 250, color: '#93c5fd' },
+                { name: 'Senior Sec (11-12)', value: 194, color: '#bfdbfe' },
+              ]}
+              height={180}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3 w-full flex-1">
+            {[
+              { title: 'Primary Wing', grade: 'Grades 1 – 5', count: '430', pct: '34.5%', dot: 'bg-blue-500' },
+              { title: 'Middle School', grade: 'Grades 6 – 8', count: '374', pct: '30.0%', dot: 'bg-blue-400' },
+              { title: 'High School', grade: 'Grades 9 – 10', count: '250', pct: '20.0%', dot: 'bg-blue-300' },
+              { title: 'Senior Secondary', grade: 'Grades 11 – 12', count: '194', pct: '15.5%', dot: 'bg-blue-200' },
+            ].map((item, idx) => (
+              <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card/60 space-y-1">
+                <div className="flex items-center gap-1.5">
+                  <span className={`h-2 w-2 rounded-full ${item.dot} shrink-0`} />
+                  <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
+                </div>
+                <div className="flex items-baseline justify-between pt-0.5">
+                  <span className="text-base font-extrabold text-foreground">{item.count}</span>
+                  <span className="text-[11px] font-semibold text-muted-foreground">{item.pct}</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground font-medium">{item.grade}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </VFCard>
 
       {/* Demographic Matrix 3-Card Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -157,30 +195,6 @@ function StatisticsPage() {
           ))}
         </div>
       </VFCard>
-
-      {/* 3-Year Historical Growth Comparison */}
-      <VFCard title="Historical Session Growth Trend" description="Institutional enrollment expansion over past 3 academic cycles">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
-          <div className="p-4 rounded-xl bg-muted/20 border border-border space-y-1">
-            <span className="text-xs font-bold text-muted-foreground">Session 2024–2025</span>
-            <p className="text-xl font-black text-foreground">1,090 Students</p>
-            <p className="text-xs text-muted-foreground">Base Benchmark</p>
-          </div>
-          <div className="p-4 rounded-xl bg-muted/20 border border-border space-y-1">
-            <span className="text-xs font-bold text-muted-foreground">Session 2025–2026</span>
-            <p className="text-xl font-black text-foreground">1,180 Students</p>
-            <p className="text-xs text-emerald-400 font-bold">+8.2% Year-over-Year</p>
-          </div>
-          <div className="p-4 rounded-xl bg-primary/10 border border-primary/30 space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-primary">Session 2026–2027 (Active)</span>
-              <VFBadge variant="success">Current AY</VFBadge>
-            </div>
-            <p className="text-2xl font-black text-foreground">1,248 Students</p>
-            <p className="text-xs text-emerald-400 font-bold">+5.7% Year-over-Year (+158 Overall)</p>
-          </div>
-        </div>
-      </VFCard>
     </div>
   );
 
@@ -223,6 +237,70 @@ function StatisticsPage() {
         />
       </div>
 
+      {/* Academic Grade Tier Distribution Pie Chart */}
+      <VFCard title="Academic Grade Performance Tier" description="Term 1 evaluation marks distribution across 1,248 students">
+        <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
+          <div className="shrink-0" style={{ width: 180, height: 180 }}>
+            <VFPieChart
+              data={[
+                { name: 'Distinction (90%+)', value: 524, color: '#10b981' },
+                { name: 'First Division (80-89%)', value: 386, color: '#34d399' },
+                { name: 'Second Division (70-79%)', value: 225, color: '#6ee7b7' },
+                { name: 'Passing & Support (<70%)', value: 113, color: '#93c5fd' },
+              ]}
+              height={180}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3 w-full flex-1">
+            {[
+              { label: 'Distinction', range: 'A1 · 90%+', count: '524', pct: '42.0%', dot: 'bg-emerald-500' },
+              { label: 'First Division', range: 'A2 · 80 – 89%', count: '386', pct: '30.9%', dot: 'bg-emerald-400' },
+              { label: 'Second Division', range: 'B1 · 70 – 79%', count: '225', pct: '18.0%', dot: 'bg-emerald-300' },
+              { label: 'Passing / Support', range: 'B2 & Support', count: '113', pct: '9.1%', dot: 'bg-blue-300' },
+            ].map((tier, idx) => (
+              <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card/60 space-y-1">
+                <div className="flex items-center gap-1.5">
+                  <span className={`h-2 w-2 rounded-full ${tier.dot} shrink-0`} />
+                  <p className="text-xs font-bold text-foreground truncate">{tier.label}</p>
+                </div>
+                <div className="flex items-baseline justify-between pt-0.5">
+                  <span className="text-base font-extrabold text-foreground">{tier.count}</span>
+                  <span className="text-[11px] font-semibold text-muted-foreground">{tier.pct}</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground font-medium">{tier.range}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </VFCard>
+
+      {/* Department Performance & Academic Velocity Matrix */}
+      <VFCard title="Department Academic Performance & Velocity" description="Faculty strength, departmental GPA standing, and curriculum pacing">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-1">
+          {[
+            { dept: 'Science & Mathematics', count: '640 Pupils', staff: '38 Faculty', gpa: '94% GPA', pace: '98% Pace', status: 'On Track' },
+            { dept: 'Languages & Humanities', count: '480 Pupils', staff: '32 Faculty', gpa: '92% GPA', pace: '95% Pace', status: 'On Track' },
+            { dept: 'Commerce & Economics', count: '420 Pupils', staff: '24 Faculty', gpa: '95% GPA', pace: '97% Pace', status: 'Optimal' },
+            { dept: 'Sports & Co-Curricular', count: '911 Pupils', staff: '18 Faculty', gpa: '14 Trophies', pace: '100% Active', status: 'Optimal' },
+          ].map((d, i) => (
+            <div key={i} className="p-3.5 rounded-xl bg-card border border-border space-y-2.5 hover:bg-muted/40 transition-all">
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-foreground text-xs truncate">{d.dept}</p>
+                <VFBadge variant="success" className="text-[10px]">{d.status}</VFBadge>
+              </div>
+              <div>
+                <p className="text-xl font-extrabold text-foreground">{d.count}</p>
+                <p className="text-[11px] text-muted-foreground font-semibold">{d.staff}</p>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-border/70 text-xs">
+                <span className="font-bold text-emerald-400">{d.gpa}</span>
+                <span className="font-semibold text-muted-foreground">{d.pace}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </VFCard>
+
       {/* Subject Performance Breakdown Grid */}
       <VFCard title="Subject-Wise Academic Standings" description="Curriculum mastery and average score distribution across key disciplines">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
@@ -247,68 +325,6 @@ function StatisticsPage() {
           ))}
         </div>
       </VFCard>
-
-      {/* CBSE Grade Distribution Matrix */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <VFCard title="CBSE Letter Grade Distribution" description="Cohort distribution across 9-point grading scale">
-          <div className="space-y-3 pt-1">
-            {[
-              { grade: 'A1 (91% - 100%)', count: '524 Students', pct: 42, color: 'bg-emerald-500' },
-              { grade: 'A2 (81% - 90%)', count: '386 Students', pct: 31, color: 'bg-blue-500' },
-              { grade: 'B1 (71% - 80%)', count: '224 Students', pct: 18, color: 'bg-amber-500' },
-              { grade: 'B2 (61% - 70%)', count: '88 Students', pct: 7, color: 'bg-purple-500' },
-              { grade: 'C & Below (< 60%)', count: '26 Students', pct: 2, color: 'bg-rose-500' },
-            ].map((g, i) => (
-              <div key={i} className="space-y-1">
-                <div className="flex items-center justify-between text-xs font-bold">
-                  <span className="text-foreground">{g.grade}</span>
-                  <span className="text-muted-foreground">{g.count} ({g.pct}%)</span>
-                </div>
-                <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
-                  <div className={`h-full ${g.color}`} style={{ width: `${g.pct}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </VFCard>
-
-        <VFCard title="Academic Stream Comparison" description="Class 11 & 12 specialization performance">
-          <div className="space-y-4 pt-1">
-            <div className="p-3.5 rounded-xl bg-muted/30 border border-border flex items-center justify-between">
-              <div>
-                <h4 className="font-extrabold text-foreground text-sm">Science Stream (PCM / PCB)</h4>
-                <p className="text-xs text-muted-foreground">308 Students enrolled</p>
-              </div>
-              <div className="text-right">
-                <p className="text-base font-black text-primary">95.4% Avg</p>
-                <span className="text-[10px] font-bold text-emerald-400">100% Pass Rate</span>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-muted/30 border border-border flex items-center justify-between">
-              <div>
-                <h4 className="font-extrabold text-foreground text-sm">Commerce Stream</h4>
-                <p className="text-xs text-muted-foreground">220 Students enrolled</p>
-              </div>
-              <div className="text-right">
-                <p className="text-base font-black text-primary">94.1% Avg</p>
-                <span className="text-[10px] font-bold text-emerald-400">98.8% Pass Rate</span>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-muted/30 border border-border flex items-center justify-between">
-              <div>
-                <h4 className="font-extrabold text-foreground text-sm">Humanities & Arts</h4>
-                <p className="text-xs text-muted-foreground">92 Students enrolled</p>
-              </div>
-              <div className="text-right">
-                <p className="text-base font-black text-primary">93.8% Avg</p>
-                <span className="text-[10px] font-bold text-emerald-400">97.5% Pass Rate</span>
-              </div>
-            </div>
-          </div>
-        </VFCard>
-      </div>
     </div>
   );
 
@@ -349,6 +365,47 @@ function StatisticsPage() {
           accentColor="blue"
         />
       </div>
+
+      {/* Attendance & Student Intake Trends Area Chart */}
+      <VFCard title="Attendance & Intake Trends" description="Monthly comparison for Academic Year 2026-2027">
+        <div className="h-64 mt-2">
+          <VFAreaChart
+            data={[
+              { label: 'Apr', intake: 180, attendance: 92 },
+              { label: 'May', intake: 220, attendance: 94 },
+              { label: 'Jun', intake: 190, attendance: 91 },
+              { label: 'Jul', intake: 310, attendance: 96 },
+              { label: 'Aug', intake: 280, attendance: 95 },
+              { label: 'Sep', intake: 340, attendance: 97 },
+            ]}
+            xKey="label"
+            dataKeys={[
+              { key: 'intake', color: '#3b82f6', name: 'Student Intake' },
+              { key: 'attendance', color: '#10b981', name: 'Avg Attendance %' },
+            ]}
+          />
+        </div>
+      </VFCard>
+
+      {/* Attendance Health Risk Segments */}
+      <VFCard title="Attendance Health & Risk Segments" description="Biometric gate audit classification across 1,248 students">
+        <div className="grid grid-cols-3 gap-3 pt-1">
+          {[
+            { label: 'Regular Attendance', subtitle: 'Above 90%', count: '1,120', pct: '89.7%', tag: 'Healthy', badgeVariant: 'success' as const },
+            { label: 'Moderate Risk', subtitle: '75% – 89%', count: '94', pct: '7.5%', tag: 'Monitor', badgeVariant: 'warning' as const },
+            { label: 'Critical Absentee', subtitle: 'Below 75%', count: '34', pct: '2.8%', tag: 'Action Req', badgeVariant: 'danger' as const },
+          ].map((row, idx) => (
+            <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card space-y-1.5 text-center">
+              <div className="flex justify-center">
+                <VFBadge variant={row.badgeVariant} className="text-[10px]">{row.tag}</VFBadge>
+              </div>
+              <p className="text-xl font-extrabold text-foreground">{row.count}</p>
+              <p className="text-xs font-bold text-foreground truncate">{row.label}</p>
+              <p className="text-[11px] text-muted-foreground font-medium">{row.subtitle} · {row.pct}</p>
+            </div>
+          ))}
+        </div>
+      </VFCard>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <VFCard title="Wing-Wise Attendance Performance" description="Regular attendance tracking across school divisions">
@@ -452,17 +509,20 @@ function StatisticsPage() {
           </div>
         </VFCard>
 
-        <VFCard title="Alumni University Placements" description="Class 12 graduate university progression">
+        <VFCard title="Top Destination Institutions" description="Alumni admission transitions into higher secondary & colleges">
           <div className="space-y-3 pt-1">
             {[
-              { destination: 'Premier Engineering (IITs, NITs, BITS)', count: '105 Students (34%)' },
-              { destination: 'Medical & Dental Institutes (AIIMS, NEET)', count: '68 Students (22%)' },
-              { destination: 'Commerce & Management (DU, SRCC, IIM IPM)', count: '87 Students (28%)' },
-              { destination: 'Global & International Universities (US, UK, CA)', count: '50 Students (16%)' },
+              { dest: 'Delhi University (DU) Colleges', count: '124 Alumni', standing: 'Top Merit Tier' },
+              { dest: 'IITs / NITs Engineering', count: '68 Alumni', standing: 'JEE Advanced' },
+              { dest: 'AIIMS & Medical Colleges', count: '34 Alumni', standing: 'NEET Qualified' },
+              { dest: 'Overseas Universities (US/UK/CAN)', count: '28 Alumni', standing: 'SAT / IELTS Cleared' },
             ].map((d, i) => (
               <div key={i} className="p-3.5 rounded-xl bg-card border border-border flex items-center justify-between">
-                <h4 className="font-extrabold text-foreground text-sm">{d.destination}</h4>
-                <span className="text-xs font-black text-amber-400">{d.count}</span>
+                <div>
+                  <h4 className="font-extrabold text-foreground text-sm">{d.dest}</h4>
+                  <p className="text-xs text-muted-foreground">{d.standing}</p>
+                </div>
+                <VFBadge variant="outline">{d.count}</VFBadge>
               </div>
             ))}
           </div>
@@ -471,32 +531,32 @@ function StatisticsPage() {
     </div>
   );
 
-  // ─── TAB 5: FINANCIAL & REVENUE STATISTICS ─────────────────────────────────
+  // ─── TAB 5: FINANCE, FEES & AID ─────────────────────────────────────────────
   const financeContent = (
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
-          title="Total Expected Revenue"
-          value="₹ 4.82 Cr"
+          title="Total Fee Collection"
+          value="₹ 4.86 Cr"
           icon={<CreditCard className="h-5 w-5" />}
           trend="up"
-          trendLabel={`Session ${activeSession}`}
+          trendLabel="98.1% of Target"
           accentColor="blue"
         />
         <VFStatCard
-          title="Realized Fee Collections"
-          value="₹ 4.73 Cr"
-          icon={<CheckCircle2 className="h-5 w-5" />}
+          title="Quarter 2 Collection Rate"
+          value="96.4%"
+          icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
-          trendLabel="98.1% Clearance Rate"
+          trendLabel="₹ 1.24 Cr Realized"
           accentColor="blue"
         />
         <VFStatCard
           title="Outstanding Dues"
-          value="₹ 9.20 Lakh"
-          icon={<AlertCircle className="h-5 w-5" />}
+          value="₹ 9.2 Lakh"
+          icon={<Clock className="h-5 w-5" />}
           trend="down"
-          trendLabel="1.9% of Total"
+          trendLabel="38 Student Accounts"
           accentColor="blue"
         />
         <VFStatCard
@@ -508,6 +568,46 @@ function StatisticsPage() {
           accentColor="blue"
         />
       </div>
+
+      {/* Fee Collection Status vs Target Bar Chart */}
+      <VFCard title="Fee Collection Status vs Target" description="Quarterly breakdown in ₹ Lakhs (Collected vs Projected)">
+        <div className="h-64 mt-2">
+          <VFBarChart
+            data={[
+              { label: 'Q1', target: 85, collected: 80 },
+              { label: 'Q2', target: 95, collected: 92 },
+              { label: 'Q3', target: 90, collected: 70 },
+              { label: 'Q4', target: 100, collected: 88 },
+            ]}
+            xKey="label"
+            dataKeys={[
+              { key: 'collected', color: '#3b82f6', name: 'Collected Revenue' },
+              { key: 'target', color: '#64748b', name: 'Target Budget' },
+            ]}
+          />
+        </div>
+      </VFCard>
+
+      {/* Digital Fee Payment Gateway Channels */}
+      <VFCard title="Fee Collection Payment Channels" description="Breakdown of digital gateway transactions for Quarter 2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+          {[
+            { label: 'UPI & QR Gateway', provider: 'Razorpay / PayU', amount: '₹2.82 Cr', share: '58% of Total' },
+            { label: 'Net Banking & RTGS', provider: 'Instant Transfer', amount: '₹1.16 Cr', share: '24% of Total' },
+            { label: 'Cards & POS Portal', provider: 'Debit / Credit', amount: '₹58 Lakh', share: '12% of Total' },
+            { label: 'Counter & Cheque', provider: 'Bank Clearance', amount: '₹30 Lakh', share: '6% of Total' },
+          ].map((chan, idx) => (
+            <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card space-y-1">
+              <div className="flex justify-between items-baseline">
+                <p className="text-xs font-bold text-foreground truncate">{chan.label}</p>
+                <span className="text-[10px] font-semibold text-muted-foreground">{chan.share}</span>
+              </div>
+              <p className="text-lg font-extrabold text-foreground">{chan.amount}</p>
+              <p className="text-[10px] text-muted-foreground font-medium">{chan.provider}</p>
+            </div>
+          ))}
+        </div>
+      </VFCard>
 
       <VFCard title="Wing-Wise Fee Collection Realization" description="Quarterly collection audit across divisions">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
@@ -574,9 +674,9 @@ function StatisticsPage() {
   ];
 
   return (
-    <VFPageContainer>
+    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4 animate-fade-in custom-scrollbar overflow-y-auto">
       {/* Session Context Banner */}
-      <div className="p-3.5 sm:p-4 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
+      <div className="p-3.5 sm:p-4 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs shrink-0">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
             <BarChart3 className="h-5 w-5" />

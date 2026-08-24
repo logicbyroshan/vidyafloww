@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as TanStackTableModule from '@tanstack/react-table';
+import { Search, SlidersHorizontal } from 'lucide-react';
 import { cn } from './utils';
 import { VFLoadingTable } from './VFLoading';
 import { VFEmptyState } from './VFEmptyState';
@@ -14,18 +15,18 @@ const flexRender = (TanStackTableModule as any).flexRender;
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card custom-scrollbar">
-      <table className={cn("w-full border-collapse text-left text-base", className)} {...props} />
+    <div className="w-full overflow-x-auto border border-border rounded-xl bg-card custom-scrollbar">
+      <table className={cn("w-full border-collapse text-left text-sm", className)} {...props} />
     </div>
   );
 }
 
 export function VFTableHead({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead className={cn("bg-muted/50 border-b border-border", className)} {...props} />;
+  return <thead className={cn("bg-card/95 border-b border-border sticky top-0 z-10 backdrop-blur-md shadow-2xs", className)} {...props} />;
 }
 
 export function VFTableBody({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <tbody className={cn("divide-y divide-border", className)} {...props} />;
+  return <tbody className={cn("divide-y divide-border/80", className)} {...props} />;
 }
 
 export function VFTableRow({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) {
@@ -49,7 +50,7 @@ export function VFTableHeaderCell({
     <th
       className={cn(
         "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md",
-        sticky && "sticky top-[58px] z-10 border-b border-border shadow-2xs",
+        sticky && "sticky top-0 z-10 border-b border-border shadow-2xs",
         className
       )}
       {...props}
@@ -86,6 +87,8 @@ export interface VFDataTableProps<T> {
   filterPlaceholder?: string;
   onFilterChange?: (value: string) => void;
   rightActions?: React.ReactNode;
+  className?: string;
+  tableClassName?: string;
 }
 
 export function VFDataTable<T>({
@@ -99,6 +102,8 @@ export function VFDataTable<T>({
   filterPlaceholder,
   onFilterChange,
   rightActions,
+  className,
+  tableClassName,
 }: VFDataTableProps<T>) {
   const [sorting, setSorting] = React.useState<any[]>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -211,21 +216,17 @@ export function VFDataTable<T>({
   const displayedRows = table && table.getRowModel ? table.getRowModel().rows : null;
 
   return (
-    <div className="space-y-3.5 w-full">
-      {/* Unified Single Action Command Bar (Sticky on Scroll) */}
-      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-md pt-2 pb-3 -mt-2 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+    <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-2xl shadow-xs overflow-hidden", className)}>
+      {/* Unified Table Header Command Toolbar */}
+      <div className="p-4 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
         <div className="relative max-w-md flex-1">
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-            <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </span>
+          <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search records..."}
-            className="w-full pl-10 pr-4 h-10 border border-border rounded-xl bg-card text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+            className="w-full pl-10 pr-4 h-10 border border-border rounded-xl bg-muted/40 hover:bg-muted/70 focus:bg-background text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
@@ -237,11 +238,7 @@ export function VFDataTable<T>({
               variant="outline"
               size="sm"
               onClick={() => setShowColumnDropdown(!showColumnDropdown)}
-              leftIcon={
-                <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              }
+              leftIcon={<SlidersHorizontal className="h-4 w-4 text-muted-foreground" />}
             >
               Columns ({activeColumns.length}/{columns.length})
             </VFButton>
@@ -276,82 +273,101 @@ export function VFDataTable<T>({
         </div>
       </div>
 
-      {/* Main Table Content Render View */}
-      {isLoading ? (
-        <VFLoadingTable rows={5} cols={activeColumns.length} />
-      ) : processedData.length === 0 ? (
-        <VFEmptyState
-          title={emptyTitle}
-          description={emptyDescription}
-        />
-      ) : (
-        <VFTable>
-          <VFTableHead>
-            <VFTableRow>
-              {activeColumns.map((col) => {
-                const key = String(col.accessorKey);
-                const sortStatus = sorting.find((s) => s.id === key);
-                const isSortable = col.sortable ?? true;
-                return (
-                  <VFTableHeaderCell
-                    key={key}
-                    className={cn(isSortable && "cursor-pointer hover:bg-muted/60 transition-colors")}
-                    onClick={() => {
-                      if (!isSortable) return;
-                      const isAsc = sortStatus?.id === key && !sortStatus.desc;
-                      setSorting([{ id: key, desc: isAsc }]);
-                    }}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span>{col.header}</span>
-                      {isSortable && (
-                        <span className="text-muted-foreground/80 font-mono text-[10px]">
-                          {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
-                        </span>
+      {/* Main Scrollable Table Area */}
+      <div className="flex-1 overflow-auto custom-scrollbar w-full relative min-h-0 bg-card">
+        {isLoading ? (
+          <div className="p-6">
+            <VFLoadingTable rows={6} cols={activeColumns.length} />
+          </div>
+        ) : processedData.length === 0 ? (
+          <div className="h-full min-h-[300px] flex items-center justify-center p-8">
+            <VFEmptyState
+              title={emptyTitle}
+              description={emptyDescription}
+            />
+          </div>
+        ) : (
+          <table className={cn("w-full border-collapse text-left text-sm", tableClassName)}>
+            <thead className="bg-card sticky top-0 z-10 border-b border-border shadow-2xs">
+              <tr>
+                {activeColumns.map((col) => {
+                  const key = String(col.accessorKey);
+                  const sortStatus = sorting.find((s) => s.id === key);
+                  const isSortable = col.sortable ?? true;
+                  return (
+                    <th
+                      key={key}
+                      className={cn(
+                        "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
+                        isSortable && "cursor-pointer hover:bg-muted/60 transition-colors"
                       )}
-                    </div>
-                  </VFTableHeaderCell>
-                );
-              })}
-            </VFTableRow>
-          </VFTableHead>
-          <VFTableBody>
-            {displayedRows && displayedRows.length > 0 ? (
-              // TanStack Table Managed Rows
-              displayedRows.map((row: any) => (
-                <VFTableRow key={row.id}>
-                  {row.getVisibleCells()
-                    .filter((cell: any) => visibleColumns.includes(cell.column.id))
-                    .map((cell: any) => (
-                      <VFTableCell key={cell.id}>
-                        {flexRender ? flexRender(cell.column.columnDef.cell, cell.getContext()) : cell.value}
-                      </VFTableCell>
-                    ))}
-                </VFTableRow>
-              ))
-            ) : (
-              // Direct Fail-Safe Data Array Map (Guarantees Data Always Renders!)
-              processedData.map((row: any, rowIndex: number) => (
-                <VFTableRow key={row.id || rowIndex}>
-                  {activeColumns.map((col) => {
-                    const key = String(col.accessorKey);
-                    const rawVal = row[key];
-                    return (
-                      <VFTableCell key={key}>
-                        {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
-                      </VFTableCell>
-                    );
-                  })}
-                </VFTableRow>
-              ))
-            )}
-          </VFTableBody>
-        </VFTable>
-      )}
+                      onClick={() => {
+                        if (!isSortable) return;
+                        const isAsc = sortStatus?.id === key && !sortStatus.desc;
+                        setSorting([{ id: key, desc: isAsc }]);
+                      }}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>{col.header}</span>
+                        {isSortable && (
+                          <span className="text-muted-foreground/80 font-mono text-[10px]">
+                            {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
+                          </span>
+                        )}
+                      </div>
+                    </th>
+                  );
+                })}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/80">
+              {displayedRows && displayedRows.length > 0 ? (
+                displayedRows.map((row: any) => (
+                  <tr
+                    key={row.id}
+                    className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
+                  >
+                    {row.getVisibleCells()
+                      .filter((cell: any) => visibleColumns.includes(cell.column.id))
+                      .map((cell: any) => (
+                        <td
+                          key={cell.id}
+                          className="px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold"
+                        >
+                          {flexRender ? flexRender(cell.column.columnDef.cell, cell.getContext()) : cell.value}
+                        </td>
+                      ))}
+                  </tr>
+                ))
+              ) : (
+                processedData.map((row: any, rowIndex: number) => (
+                  <tr
+                    key={row.id || rowIndex}
+                    className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
+                  >
+                    {activeColumns.map((col) => {
+                      const key = String(col.accessorKey);
+                      const rawVal = row[key];
+                      return (
+                        <td
+                          key={key}
+                          className="px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold"
+                        >
+                          {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
       {/* Pagination Footer Controls */}
       {pagination && !isLoading && processedData.length > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between border-t border-border/60 pt-3 mt-2 gap-2">
+        <div className="flex flex-col sm:flex-row items-center justify-between border-t border-border bg-card px-5 py-3 gap-2 shrink-0">
           <p className="text-xs text-muted-foreground">
             Showing page <span className="font-bold text-foreground">{pagination.currentPage}</span> of{' '}
             <span className="font-bold text-foreground">{pagination.totalPages}</span> (

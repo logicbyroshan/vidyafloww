@@ -199,8 +199,28 @@
   to   { transform: scale(1);    opacity: 1; }
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
 .animate-slide-in-right {
   animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover,
+.group:hover .animate-marquee {
+  animation-play-state: paused !important;
 }
 
 .animate-fade-in {

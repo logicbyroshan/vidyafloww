@@ -134,6 +134,25 @@ pnpm --filter @vidyamaxx/web build
 
 ---
 
+## 🔐 Authentication & API Documentation
+
+VidyaMaxx features a standalone, enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
+
+- 📘 **Complete REST API Specification**: [`API_DOCUMENTATION.md`](./API_DOCUMENTATION.md)
+  - **Endpoints Covered**:
+    - `POST /api/v1/auth/login` (Standard credentials login)
+    - `POST /api/v1/auth/google` (Google Workspace SSO)
+    - `POST /api/v1/auth/register` (4-step multi-role registration)
+    - `POST /api/v1/auth/otp/verify` (6-digit OTP verification)
+    - `POST /api/v1/auth/password/reset` (Password recovery)
+    - `POST /api/v1/auth/username/lookup` (User ID retrieval)
+    - `GET /api/v1/auth/me` (Authenticated profile & permission scopes)
+    - `POST /api/v1/auth/refresh` (JWT session renewal)
+  - **Security Standards**: RFC 7807 Error Responses, 15-minute JWT Access Tokens, 7-day HTTP-Only Refresh Cookies, Rate Limiting, and CBSE Compliance.
+
+---
+
 ## 📄 License
 
 Proprietary Software. All rights reserved &copy; 2026 **VidyaMaxx Team**.
+

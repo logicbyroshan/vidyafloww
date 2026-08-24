@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Link } from '@tanstack/react-router';
-import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, BarChart3, Sparkles } from 'lucide-react';
+import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, Sparkles } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { cn } from '@vidyamaxx/ui';
 
@@ -136,18 +135,8 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
         </div>
       </div>
 
-      {/* Right: Statistics, Search, Export, Notifications & School Identity */}
+      {/* Right: AI Copilot, Search, Notifications & School Identity */}
       <div className="flex items-center gap-3 shrink-0">
-        {/* Unified Statistics Direct Nav Trigger */}
-        <Link
-          to="/statistics"
-          className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted border border-border px-3.5 h-10 rounded-xl transition-all cursor-pointer bg-muted/30 group"
-          title="Institutional Statistics & Analytics Hub"
-        >
-          <BarChart3 className="h-4 w-4 text-muted-foreground group-hover:text-foreground shrink-0 transition-colors" />
-          <span className="hidden sm:inline">Statistics</span>
-        </Link>
-
         {/* AI Copilot Direct Trigger */}
         {onAIClick && (
           <button
@@ -176,16 +165,6 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
           <kbd className="inline-flex h-5 select-none items-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             ⌘K
           </kbd>
-        </button>
-
-        {/* Export Button */}
-        <button
-          onClick={() => {}}
-          className="hidden md:flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted border border-border px-3.5 rounded-xl transition-all cursor-pointer h-10"
-          title="Export Data"
-        >
-          <Download className="h-4 w-4 shrink-0" />
-          <span>Export</span>
         </button>
 
         {/* Notifications */}
