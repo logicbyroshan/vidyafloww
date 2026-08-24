@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Link } from '@tanstack/react-router';
-import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, BarChart3 } from 'lucide-react';
+import { Search, Bell, Download, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, BarChart3, Sparkles } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { cn } from '@vidyamaxx/ui';
 
 interface HeaderProps {
   onSearchClick: () => void;
   onNotificationsClick: () => void;
+  onAIClick?: () => void;
 }
 
-export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
+export function Header({ onSearchClick, onNotificationsClick, onAIClick }: HeaderProps) {
   const { notifications, schoolProfile, activeSession, setActiveSession, academicSessions } = useGlobalStore();
   const [isSessionMenuOpen, setIsSessionMenuOpen] = React.useState(false);
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
@@ -146,6 +147,21 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           <BarChart3 className="h-4 w-4 text-muted-foreground group-hover:text-foreground shrink-0 transition-colors" />
           <span className="hidden sm:inline">Statistics</span>
         </Link>
+
+        {/* AI Copilot Direct Trigger */}
+        {onAIClick && (
+          <button
+            onClick={onAIClick}
+            className="flex items-center gap-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/30 px-3.5 h-10 rounded-xl transition-all cursor-pointer shadow-xs group"
+            title="Open VidyaMaxx AI Assistant (Shift+K)"
+          >
+            <Sparkles className="h-4 w-4 text-primary group-hover:scale-110 transition-transform animate-pulse" />
+            <span className="hidden sm:inline">AI Copilot</span>
+            <kbd className="inline-flex h-5 select-none items-center rounded border border-primary/30 bg-primary/15 px-1.5 font-mono text-[10px] font-bold text-primary">
+              ⇧K
+            </kbd>
+          </button>
+        )}
 
         {/* Compact Search Trigger */}
         <button

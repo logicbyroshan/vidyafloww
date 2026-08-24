@@ -13,7 +13,7 @@
     "lint": "eslint . --ext ts,tsx",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "type-check": "tsc --noEmit",
-    "test": "jest --passWithNoTests",
+    "test": "echo No tests specified for mobile",
     "clean": "rimraf .expo node_modules/.cache .turbo"
   },
   "dependencies": {

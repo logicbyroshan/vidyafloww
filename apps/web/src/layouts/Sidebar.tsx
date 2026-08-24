@@ -20,7 +20,12 @@ import {
   LogOut,
   LucideIcon,
   BarChart3,
+  Sparkles,
 } from 'lucide-react';
+
+interface SidebarProps {
+  onAIClick?: () => void;
+}
 
 interface NavItem {
   id: string;
@@ -75,7 +80,7 @@ const NAVIGATION_SECTIONS: NavSection[] = [
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ onAIClick }: SidebarProps) {
   const { sidebarExpanded, toggleSidebar } = useGlobalStore();
   const location = useLocation();
 
@@ -183,6 +188,32 @@ export function Sidebar() {
           </div>
         ))}
       </div>
+
+      {/* AI Copilot Button in Sidebar */}
+      {onAIClick && (
+        <div className="p-2 border-t border-border bg-card shrink-0">
+          <button
+            onClick={onAIClick}
+            className={cn(
+              'flex items-center transition-all duration-150 text-sm font-bold bg-primary/10 hover:bg-primary/20 text-primary border border-primary/25 shadow-2xs outline-none cursor-pointer',
+              sidebarExpanded ? 'w-full h-10 px-3 py-2 rounded-xl justify-between' : 'w-10 h-10 mx-auto rounded-xl justify-center p-0'
+            )}
+            title="✨ VidyaMaxx AI Copilot (Shift+K)"
+          >
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="h-4.5 w-4.5 text-primary shrink-0 animate-pulse" />
+              {sidebarExpanded && (
+                <span className="font-black text-xs uppercase tracking-wider">VidyaMaxx AI</span>
+              )}
+            </div>
+            {sidebarExpanded && (
+              <kbd className="inline-flex h-4.5 select-none items-center rounded border border-primary/30 bg-primary/15 px-1 font-mono text-[9px] font-bold text-primary">
+                ⇧K
+              </kbd>
+            )}
+          </button>
+        </div>
+      )}
 
       {/* User Profile in Sidebar Bottom */}
       <div className="p-2.5 border-t border-border bg-card/60 shrink-0">

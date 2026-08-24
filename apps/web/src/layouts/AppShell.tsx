@@ -6,6 +6,7 @@ import { Header } from './Header';
 import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
+import { AIChatDrawer } from '../components/AIChatDrawer';
 import { useGlobalStore, initTheme } from '../stores/globalStore';
 import { VFPage } from '@vidyamaxx/ui';
 import { Monitor, Smartphone, Laptop, ArrowRight } from 'lucide-react';
@@ -107,6 +108,7 @@ export function AppShell() {
   const { addNotification } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
+  const [isAIDrawerOpen, setIsAIDrawerOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
   const [viewportWidth, setViewportWidth] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth : 1200
@@ -140,9 +142,15 @@ export function AppShell() {
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      // Ctrl+K / Cmd+K for Command Palette
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && !e.shiftKey) {
         e.preventDefault();
         setIsCommandPaletteOpen(true);
+      }
+      // Shift+K for VidyaMaxx AI Copilot Drawer
+      if (e.shiftKey && e.key.toLowerCase() === 'k' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        setIsAIDrawerOpen((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -157,11 +165,12 @@ export function AppShell() {
     <div className="w-full bg-background min-h-screen">
       <div className="max-w-[2000px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row">
         <VFPage className="flex-row h-screen overflow-hidden w-full">
-          <Sidebar />
+          <Sidebar onAIClick={() => setIsAIDrawerOpen(true)} />
           <div className="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300 ease-in-out min-w-0">
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}
+              onAIClick={() => setIsAIDrawerOpen(true)}
             />
             <main ref={mainRef} className="flex-1 overflow-y-auto min-w-0 bg-background relative custom-scrollbar">
               <AnimatePresence mode="wait">
@@ -185,6 +194,10 @@ export function AppShell() {
           <NotificationsPanel
             isOpen={isNotificationsOpen}
             onClose={() => setIsNotificationsOpen(false)}
+          />
+          <AIChatDrawer
+            isOpen={isAIDrawerOpen}
+            onClose={() => setIsAIDrawerOpen(false)}
           />
           <ToastContainer />
         </VFPage>

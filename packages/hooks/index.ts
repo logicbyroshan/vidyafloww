@@ -1,2 +1,5 @@
-﻿// TODO: Export hooks package members
+/**
+ * @vidyamaxx/hooks
+ */
 
+export * from './src/index';

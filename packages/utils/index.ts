@@ -1,2 +1,5 @@
-﻿// TODO: Export utils package members
+/**
+ * @vidyamaxx/utils
+ */
 
+export * from './src/index';
