@@ -499,7 +499,7 @@ export const VFSwitch = React.forwardRef<HTMLInputElement, VFSwitchProps>(
     };
 
     return (
-      <div className="flex flex-col">
+      <div className={cn("flex flex-col", className)}>
         <div className="flex items-center justify-between gap-4">
           <div className="text-xs flex flex-col">
             <label htmlFor={switchId} className="font-medium text-foreground cursor-pointer select-none">

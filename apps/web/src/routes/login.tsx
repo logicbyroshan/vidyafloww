@@ -103,6 +103,7 @@ function ProfessionalAuthPage() {
     }
 
     setIsLoading(false);
+    sessionStorage.setItem('vidyamaxx_just_logged_in', 'true');
     navigate({ to: '/' });
   };
 
@@ -112,6 +113,7 @@ function ProfessionalAuthPage() {
     setStatusMessage({ type: 'success', text: 'Connecting to Google Workspace Single Sign-On (SSO)...' });
     await new Promise((r) => setTimeout(r, 800));
     setIsLoading(false);
+    sessionStorage.setItem('vidyamaxx_just_logged_in', 'true');
     navigate({ to: '/' });
   };
 
@@ -185,7 +187,7 @@ function ProfessionalAuthPage() {
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={cn(
-                  'p-3.5 rounded-xl border text-xs font-medium flex items-center gap-2.5 shadow-xs',
+                  'p-3.5 rounded-md border text-xs font-medium flex items-center gap-2.5 shadow-xs',
                   statusMessage.type === 'error'
                     ? 'bg-destructive/10 border-destructive/30 text-destructive'
                     : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
@@ -227,7 +229,7 @@ function ProfessionalAuthPage() {
                     type="button"
                     onClick={handleGoogleSSO}
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-xl bg-card hover:bg-muted/70 border border-border text-foreground font-semibold text-xs sm:text-sm shadow-xs transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-md bg-card hover:bg-muted/70 border border-border text-foreground font-semibold text-xs sm:text-sm shadow-xs transition-colors cursor-pointer"
                   >
                     <svg
                       width="18"
@@ -291,7 +293,7 @@ function ProfessionalAuthPage() {
                           placeholder="name@school.edu.in or ADM-2026"
                           value={loginIdentifier}
                           onChange={(e) => setLoginIdentifier(e.target.value)}
-                          className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                          className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                         />
                       </div>
                     </div>
@@ -319,7 +321,7 @@ function ProfessionalAuthPage() {
                           placeholder="••••••••"
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
-                          className="w-full h-11 pl-10 pr-11 rounded-xl bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                          className="w-full h-11 pl-10 pr-11 rounded-md bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                         />
                         <button
                           type="button"
@@ -348,7 +350,7 @@ function ProfessionalAuthPage() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99] disabled:opacity-50 cursor-pointer mt-1"
+                      className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.99] disabled:opacity-50 cursor-pointer mt-1"
                     >
                       {isLoading ? (
                         <>
@@ -448,7 +450,7 @@ function ProfessionalAuthPage() {
                               key={role.id}
                               onClick={() => setSignupRole(role.id as any)}
                               className={cn(
-                                'p-3.5 rounded-xl border flex items-center gap-3.5 cursor-pointer transition-all',
+                                'p-3.5 rounded-md border flex items-center gap-3.5 cursor-pointer transition-all',
                                 isSelected
                                   ? 'bg-card border-primary ring-1 ring-primary shadow-xs'
                                   : 'bg-muted/40 border-border hover:bg-muted/70'
@@ -477,7 +479,7 @@ function ProfessionalAuthPage() {
                       <button
                         type="button"
                         onClick={() => setSignupStep(2)}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer mt-2"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer mt-2"
                       >
                         <span>Continue to Step 2</span>
                         <ArrowRight className="h-4 w-4" />
@@ -496,7 +498,7 @@ function ProfessionalAuthPage() {
                           placeholder="Dr. Rajesh Sharma"
                           value={signupName}
                           onChange={(e) => setSignupName(e.target.value)}
-                          className="w-full h-11 px-4 rounded-xl bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                          className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                         />
                       </div>
 
@@ -508,7 +510,7 @@ function ProfessionalAuthPage() {
                           placeholder="rajesh.s@school.edu.in"
                           value={signupEmail}
                           onChange={(e) => setSignupEmail(e.target.value)}
-                          className="w-full h-11 px-4 rounded-xl bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                          className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                         />
                       </div>
 
@@ -520,7 +522,7 @@ function ProfessionalAuthPage() {
                             placeholder="+91 98765 43210"
                             value={signupPhone}
                             onChange={(e) => setSignupPhone(e.target.value)}
-                            className="w-full h-11 px-4 rounded-xl bg-background border border-border text-xs sm:text-sm text-foreground font-mono focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground font-mono focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                         <div className="space-y-1.5">
@@ -530,7 +532,7 @@ function ProfessionalAuthPage() {
                             placeholder="CBSE-DEL-401"
                             value={signupSchoolCode}
                             onChange={(e) => setSignupSchoolCode(e.target.value)}
-                            className="w-full h-11 px-4 rounded-xl bg-background border border-border text-xs sm:text-sm text-foreground font-mono uppercase focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground font-mono uppercase focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -539,7 +541,7 @@ function ProfessionalAuthPage() {
                         <button
                           type="button"
                           onClick={() => setSignupStep(1)}
-                          className="w-1/3 h-11 rounded-xl bg-card border border-border text-foreground font-bold text-xs hover:bg-muted cursor-pointer"
+                          className="w-1/3 h-11 rounded-md bg-card border border-border text-foreground font-bold text-xs hover:bg-muted cursor-pointer"
                         >
                           Back
                         </button>
@@ -553,7 +555,7 @@ function ProfessionalAuthPage() {
                             setStatusMessage(null);
                             setSignupStep(3);
                           }}
-                          className="flex-1 h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                          className="flex-1 h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
                         >
                           <span>Continue to Security</span>
                           <ArrowRight className="h-4 w-4" />
@@ -575,7 +577,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={signupPassword}
                             onChange={(e) => setSignupPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-11 rounded-xl bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-11 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                           <button
                             type="button"
@@ -617,7 +619,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={signupConfirmPassword}
                             onChange={(e) => setSignupConfirmPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -638,7 +640,7 @@ function ProfessionalAuthPage() {
                         <button
                           type="button"
                           onClick={() => setSignupStep(2)}
-                          className="w-1/3 h-11 rounded-xl bg-card border border-border text-foreground font-bold text-xs hover:bg-muted cursor-pointer"
+                          className="w-1/3 h-11 rounded-md bg-card border border-border text-foreground font-bold text-xs hover:bg-muted cursor-pointer"
                         >
                           Back
                         </button>
@@ -656,7 +658,7 @@ function ProfessionalAuthPage() {
                             setStatusMessage(null);
                             setSignupStep(4);
                           }}
-                          className="flex-1 h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                          className="flex-1 h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
                         >
                           <span>Send Code</span>
                           <ArrowRight className="h-4 w-4" />
@@ -668,7 +670,7 @@ function ProfessionalAuthPage() {
                   {/* Step 4: OTP Verification */}
                   {signupStep === 4 && (
                     <div className="space-y-4.5 animate-fade-in">
-                      <div className="p-3.5 rounded-xl bg-muted/40 border border-border text-center text-xs space-y-0.5">
+                      <div className="p-3.5 rounded-md bg-muted/40 border border-border text-center text-xs space-y-0.5">
                         <p className="text-muted-foreground">Verification code sent to:</p>
                         <p className="font-mono font-bold text-foreground">{signupEmail || 'admin@school.edu.in'}</p>
                       </div>
@@ -691,7 +693,7 @@ function ProfessionalAuthPage() {
                                 next?.focus();
                               }
                             }}
-                            className="w-12 h-13 rounded-xl bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            className="w-12 h-13 rounded-md bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                           />
                         ))}
                       </div>
@@ -709,7 +711,7 @@ function ProfessionalAuthPage() {
                           });
                           setTimeout(() => navigate({ to: '/' }), 700);
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
                         {isLoading ? (
                           <>
@@ -781,7 +783,7 @@ function ProfessionalAuthPage() {
                             placeholder="admin@vidyamaxx.edu.in"
                             value={fpIdentifier}
                             onChange={(e) => setFpIdentifier(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -800,7 +802,7 @@ function ProfessionalAuthPage() {
                           setStatusMessage(null);
                           setFpStep(2);
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
                         {isLoading ? (
                           <>
@@ -838,7 +840,7 @@ function ProfessionalAuthPage() {
                                 next?.focus();
                               }
                             }}
-                            className="w-12 h-13 rounded-xl bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            className="w-12 h-13 rounded-md bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                           />
                         ))}
                       </div>
@@ -846,7 +848,7 @@ function ProfessionalAuthPage() {
                       <button
                         type="button"
                         onClick={() => setFpStep(3)}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
                         <span>Verify Code & Continue</span>
                         <ArrowRight className="h-4 w-4" />
@@ -866,7 +868,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={fpNewPassword}
                             onChange={(e) => setFpNewPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -881,7 +883,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={fpConfirmPassword}
                             onChange={(e) => setFpConfirmPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -900,7 +902,7 @@ function ProfessionalAuthPage() {
                           setStatusMessage(null);
                           setFpStep(4);
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
                         {isLoading ? (
                           <>
@@ -919,7 +921,7 @@ function ProfessionalAuthPage() {
 
                   {fpStep === 4 && (
                     <div className="space-y-5 text-center animate-fade-in py-2">
-                      <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
+                      <div className="h-12 w-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
                         <CheckCircle2 className="h-6 w-6" />
                       </div>
                       <div className="space-y-1">
@@ -934,7 +936,7 @@ function ProfessionalAuthPage() {
                           setAuthMode('login');
                           setFpStep(1);
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
                         <span>Proceed to Sign In</span>
                         <ArrowRight className="h-4 w-4" />
@@ -995,7 +997,7 @@ function ProfessionalAuthPage() {
                             placeholder="+91 98765 43210"
                             value={fuPhone}
                             onChange={(e) => setFuPhone(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-sm font-mono text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm font-mono text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -1009,7 +1011,7 @@ function ProfessionalAuthPage() {
                             placeholder="14 May 2011"
                             value={fuDob}
                             onChange={(e) => setFuDob(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-xl bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                           />
                         </div>
                       </div>
@@ -1028,7 +1030,7 @@ function ProfessionalAuthPage() {
                           setStatusMessage(null);
                           setFuStep(2);
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer mt-1"
                       >
                         {isLoading ? (
                           <>
@@ -1066,7 +1068,7 @@ function ProfessionalAuthPage() {
                                 next?.focus();
                               }
                             }}
-                            className="w-12 h-13 rounded-xl bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            className="w-12 h-13 rounded-md bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                           />
                         ))}
                       </div>
@@ -1082,7 +1084,7 @@ function ProfessionalAuthPage() {
                           });
                           setFuStep(3);
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
                         <span>Verify Code & Reveal ID</span>
                         <ArrowRight className="h-4 w-4" />
@@ -1092,9 +1094,9 @@ function ProfessionalAuthPage() {
 
                   {fuStep === 3 && recoveredUsername && (
                     <div className="space-y-4.5 animate-fade-in">
-                      <div className="p-4.5 rounded-2xl bg-background border border-border space-y-3.5 shadow-xs">
+                      <div className="p-4.5 rounded-lg bg-background border border-border space-y-3.5 shadow-xs">
                         <div className="flex items-center gap-3 pb-3 border-b border-border">
-                          <div className="h-9 w-9 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0">
+                          <div className="h-9 w-9 rounded-md bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0">
                             <UserCheck className="h-4.5 w-4.5" />
                           </div>
                           <div>
@@ -1103,7 +1105,7 @@ function ProfessionalAuthPage() {
                           </div>
                         </div>
 
-                        <div className="p-3 rounded-xl bg-muted/40 border border-border space-y-1">
+                        <div className="p-3 rounded-md bg-muted/40 border border-border space-y-1">
                           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                             Your Institutional User ID:
                           </span>
@@ -1131,7 +1133,7 @@ function ProfessionalAuthPage() {
                           setLoginIdentifier(recoveredUsername.username);
                           setAuthMode('login');
                         }}
-                        className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                        className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
                         <span>Sign In With This User ID</span>
                         <ArrowRight className="h-4 w-4" />

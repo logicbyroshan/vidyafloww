@@ -97,7 +97,7 @@ function StatisticsPage() {
               { title: 'High School', grade: 'Grades 9 – 10', count: '250', pct: '20.0%', dot: 'bg-blue-300' },
               { title: 'Senior Secondary', grade: 'Grades 11 – 12', count: '194', pct: '15.5%', dot: 'bg-blue-200' },
             ].map((item, idx) => (
-              <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card/60 space-y-1">
+              <div key={idx} className="p-3 rounded-md border border-border/80 bg-card/60 space-y-1">
                 <div className="flex items-center gap-1.5">
                   <span className={`h-2 w-2 rounded-full ${item.dot} shrink-0`} />
                   <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
@@ -181,7 +181,7 @@ function StatisticsPage() {
             { grade: 'Class 11', total: '308 Students', sections: '4 Sections', standing: '94.5% Attendance', ratio: '77 / Section' },
             { grade: 'Class 12', total: '310 Students', sections: '4 Sections', standing: '98.1% Attendance', ratio: '77 / Section' },
           ].map((c, i) => (
-            <div key={i} className="p-4 rounded-xl bg-card border border-border space-y-2 hover:border-primary/40 transition-colors">
+            <div key={i} className="p-4 rounded-md bg-card border border-border space-y-2 hover:border-primary/40 transition-colors">
               <div className="flex items-center justify-between">
                 <p className="font-black text-foreground text-base">{c.grade}</p>
                 <VFBadge variant="outline">{c.sections}</VFBadge>
@@ -258,7 +258,7 @@ function StatisticsPage() {
               { label: 'Second Division', range: 'B1 · 70 – 79%', count: '225', pct: '18.0%', dot: 'bg-emerald-300' },
               { label: 'Passing / Support', range: 'B2 & Support', count: '113', pct: '9.1%', dot: 'bg-blue-300' },
             ].map((tier, idx) => (
-              <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card/60 space-y-1">
+              <div key={idx} className="p-3 rounded-md border border-border/80 bg-card/60 space-y-1">
                 <div className="flex items-center gap-1.5">
                   <span className={`h-2 w-2 rounded-full ${tier.dot} shrink-0`} />
                   <p className="text-xs font-bold text-foreground truncate">{tier.label}</p>
@@ -283,7 +283,7 @@ function StatisticsPage() {
             { dept: 'Commerce & Economics', count: '420 Pupils', staff: '24 Faculty', gpa: '95% GPA', pace: '97% Pace', status: 'Optimal' },
             { dept: 'Sports & Co-Curricular', count: '911 Pupils', staff: '18 Faculty', gpa: '14 Trophies', pace: '100% Active', status: 'Optimal' },
           ].map((d, i) => (
-            <div key={i} className="p-3.5 rounded-xl bg-card border border-border space-y-2.5 hover:bg-muted/40 transition-all">
+            <div key={i} className="p-3.5 rounded-md bg-card border border-border space-y-2.5 hover:bg-muted/40 transition-all">
               <div className="flex items-center justify-between">
                 <p className="font-bold text-foreground text-xs truncate">{d.dept}</p>
                 <VFBadge variant="success" className="text-[10px]">{d.status}</VFBadge>
@@ -312,7 +312,7 @@ function StatisticsPage() {
             { subject: 'Accountancy & Commerce', avg: '93.6%', toppers: '38 Students (A1)', progress: 94 },
             { subject: 'Social Sciences & Humanities', avg: '91.8%', toppers: '35 Students (A1)', progress: 92 },
           ].map((sub, i) => (
-            <div key={i} className="p-4 rounded-xl bg-card border border-border space-y-2">
+            <div key={i} className="p-4 rounded-md bg-card border border-border space-y-2">
               <div className="flex items-center justify-between">
                 <h4 className="font-extrabold text-foreground text-sm">{sub.subject}</h4>
                 <span className="text-sm font-black text-primary">{sub.avg}</span>
@@ -395,7 +395,7 @@ function StatisticsPage() {
             { label: 'Moderate Risk', subtitle: '75% – 89%', count: '94', pct: '7.5%', tag: 'Monitor', badgeVariant: 'warning' as const },
             { label: 'Critical Absentee', subtitle: 'Below 75%', count: '34', pct: '2.8%', tag: 'Action Req', badgeVariant: 'danger' as const },
           ].map((row, idx) => (
-            <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card space-y-1.5 text-center">
+            <div key={idx} className="p-3 rounded-md border border-border/80 bg-card space-y-1.5 text-center">
               <div className="flex justify-center">
                 <VFBadge variant={row.badgeVariant} className="text-[10px]">{row.tag}</VFBadge>
               </div>
@@ -416,7 +416,7 @@ function StatisticsPage() {
               { wing: 'Secondary Wing (Classes 9 - 10)', rate: '96.2%', count: '96.8% on Mondays' },
               { wing: 'Senior Secondary (Classes 11 - 12)', rate: '97.1%', count: '98.0% on Mondays' },
             ].map((w, i) => (
-              <div key={i} className="p-3.5 rounded-xl bg-card border border-border flex items-center justify-between">
+              <div key={i} className="p-3.5 rounded-md bg-card border border-border flex items-center justify-between">
                 <div>
                   <h4 className="font-extrabold text-foreground text-sm">{w.wing}</h4>
                   <p className="text-xs text-muted-foreground">{w.count}</p>
@@ -435,7 +435,7 @@ function StatisticsPage() {
               { route: 'Route #4 (Dwarka Sector 6 - 21)', load: '50 / 52 Seats (96%)', status: 'Near Capacity' },
               { route: 'Route #7 (Noida Sector 62 / Indirapuram)', load: '42 / 52 Seats (80%)', status: 'Optimal' },
             ].map((r, i) => (
-              <div key={i} className="p-3.5 rounded-xl bg-card border border-border flex items-center justify-between">
+              <div key={i} className="p-3.5 rounded-md bg-card border border-border flex items-center justify-between">
                 <div>
                   <h4 className="font-extrabold text-foreground text-sm">{r.route}</h4>
                   <p className="text-xs text-muted-foreground">{r.load}</p>
@@ -517,7 +517,7 @@ function StatisticsPage() {
               { dest: 'AIIMS & Medical Colleges', count: '34 Alumni', standing: 'NEET Qualified' },
               { dest: 'Overseas Universities (US/UK/CAN)', count: '28 Alumni', standing: 'SAT / IELTS Cleared' },
             ].map((d, i) => (
-              <div key={i} className="p-3.5 rounded-xl bg-card border border-border flex items-center justify-between">
+              <div key={i} className="p-3.5 rounded-md bg-card border border-border flex items-center justify-between">
                 <div>
                   <h4 className="font-extrabold text-foreground text-sm">{d.dest}</h4>
                   <p className="text-xs text-muted-foreground">{d.standing}</p>
@@ -597,7 +597,7 @@ function StatisticsPage() {
             { label: 'Cards & POS Portal', provider: 'Debit / Credit', amount: '₹58 Lakh', share: '12% of Total' },
             { label: 'Counter & Cheque', provider: 'Bank Clearance', amount: '₹30 Lakh', share: '6% of Total' },
           ].map((chan, idx) => (
-            <div key={idx} className="p-3 rounded-xl border border-border/80 bg-card space-y-1">
+            <div key={idx} className="p-3 rounded-md border border-border/80 bg-card space-y-1">
               <div className="flex justify-between items-baseline">
                 <p className="text-xs font-bold text-foreground truncate">{chan.label}</p>
                 <span className="text-[10px] font-semibold text-muted-foreground">{chan.share}</span>
@@ -617,7 +617,7 @@ function StatisticsPage() {
             { wing: 'Secondary Wing', collected: '₹ 1.18 Cr', rate: '97.9% Paid', dues: '₹ 2.4 Lakh' },
             { wing: 'Senior Secondary', collected: '₹ 1.12 Cr', rate: '97.2% Paid', dues: '₹ 3.9 Lakh' },
           ].map((f, i) => (
-            <div key={i} className="p-4 rounded-xl bg-card border border-border space-y-2">
+            <div key={i} className="p-4 rounded-md bg-card border border-border space-y-2">
               <div className="flex items-center justify-between">
                 <h4 className="font-extrabold text-foreground text-sm">{f.wing}</h4>
                 <VFBadge variant="success">{f.rate}</VFBadge>
@@ -674,11 +674,11 @@ function StatisticsPage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4 animate-fade-in custom-scrollbar overflow-y-auto">
+    <VFPageContainer className="space-y-2.5 sm:space-y-3">
       {/* Session Context Banner */}
-      <div className="p-3.5 sm:p-4 rounded-xl bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs shrink-0">
+      <div className="p-3.5 sm:p-4 rounded-md bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
+          <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
             <BarChart3 className="h-5 w-5" />
           </div>
           <div>

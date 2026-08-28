@@ -304,9 +304,9 @@ function FeesPage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4">
+    <VFPageContainer className="space-y-2.5 sm:space-y-3">
       {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-xl text-sm text-foreground flex items-center justify-between animate-fade-in">
+        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
             <span className="font-bold">{notice}</span>
@@ -321,24 +321,24 @@ function FeesPage() {
       )}
 
       {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Total Expected Q2</span>
             <span className="text-2xl font-black text-foreground mt-1 block">₹5.24 Cr</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">1,248 Enrolled Students</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Collected Revenue</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">₹4.86 Cr</span>
             <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">92.7% Collection Ratio</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Outstanding Balance</span>
             <span className="text-2xl font-black text-foreground mt-1 block">₹38.2 Lakh</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">74 Pending Defaulters</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Collection Velocity</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">96.4%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">+4.2% vs Previous AY</span>
@@ -387,6 +387,7 @@ function FeesPage() {
         hideHeader={true}
         title={activeFee ? activeFee.receiptNo : 'Fee Receipt'}
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
+        bodyClassName="p-5 sm:p-6 space-y-4"
         footerActions={
           <div className="flex items-center justify-between w-full gap-3 flex-wrap">
             {isRecordingPayment ? (
@@ -420,7 +421,7 @@ function FeesPage() {
             ) : (
               <>
                 {/* 1. Bottom Stepper */}
-                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-xl border border-border">
+                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-md border border-border">
                   <button
                     onClick={handlePrevFee}
                     disabled={selectedFeeIndex === 0}
@@ -484,7 +485,7 @@ function FeesPage() {
             {isRecordingPayment ? (
               <div className="space-y-6 animate-fade-in">
                 {/* Header Banner */}
-                <div className="p-5 rounded-2xl bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
+                <div className="p-5 rounded-lg bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-muted text-foreground border border-border">
@@ -503,7 +504,7 @@ function FeesPage() {
                 </div>
 
                 {/* Payment Input Form */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <CreditCard className="h-4 w-4 text-muted-foreground" />
                     <span>Payment Transaction Details</span>
@@ -518,7 +519,7 @@ function FeesPage() {
                         type="number"
                         value={paymentAmount}
                         onChange={(e) => setPaymentAmount(e.target.value)}
-                        className="w-full h-11 px-4 text-base font-mono font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-base font-mono font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -529,7 +530,7 @@ function FeesPage() {
                       <select
                         value={paymentMode}
                         onChange={(e) => setPaymentMode(e.target.value)}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       >
                         {['UPI / Razorpay', 'Net Banking (HDFC)', 'Credit Card', 'Cheque Deposit', 'Cash at Counter', 'Demand Draft'].map((m) => (
                           <option key={m} value={m}>{m}</option>
@@ -546,7 +547,7 @@ function FeesPage() {
                         placeholder="e.g. RZP_PAY_9918239012 or CHQ-00412"
                         value={paymentRef}
                         onChange={(e) => setPaymentRef(e.target.value)}
-                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -556,7 +557,7 @@ function FeesPage() {
               /* 2. VIEW INVOICE MODE */
               <div className="space-y-6 animate-fade-in">
                 {/* Hero Card */}
-                <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-md flex items-center justify-between gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
+                <div className="p-6 rounded-lg bg-card border border-border/80 shadow-md flex items-center justify-between gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-sm font-bold text-foreground bg-muted px-3 py-1 rounded-lg border border-border">
@@ -586,26 +587,26 @@ function FeesPage() {
                 </div>
 
                 {/* 4 Enclosed KPI Stat Tiles */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+                <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Total Assessed</span>
                       <span className="text-2xl font-black text-foreground mt-1 block">₹{activeFee.totalFee.toLocaleString('en-IN')}</span>
                       <span className="text-[11px] text-muted-foreground mt-0.5 block">{activeFee.quarter}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Paid to Date</span>
                       <span className="text-2xl font-black text-emerald-400 mt-1 block">₹{activeFee.paidAmount.toLocaleString('en-IN')}</span>
                       <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">{activeFee.paidDate !== '—' ? `On ${activeFee.paidDate}` : 'Unpaid'}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Remaining Balance</span>
                       <span className={cn('text-2xl font-black mt-1 block', activeFee.dueAmount === 0 ? 'text-muted-foreground' : 'text-rose-400')}>
                         {activeFee.dueAmount === 0 ? '₹0' : `₹${activeFee.dueAmount.toLocaleString('en-IN')}`}
                       </span>
                       <span className="text-[11px] text-muted-foreground mt-0.5 block">{activeFee.dueAmount === 0 ? 'No Dues Pending' : 'Action Required'}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Payment Method</span>
                       <span className="text-lg font-bold text-foreground mt-1 block truncate">{activeFee.paymentMode}</span>
                       <span className="text-[11px] text-muted-foreground mt-0.5 block font-mono truncate">{activeFee.transactionRef}</span>
@@ -614,7 +615,7 @@ function FeesPage() {
                 </div>
 
                 {/* Itemized Fee Structure Breakdown */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <Receipt className="h-4 w-4 text-muted-foreground" />
                     <span>Itemized Fee Assessment Breakdown</span>
@@ -645,13 +646,13 @@ function FeesPage() {
                 </div>
 
                 {/* Parent Communication & Reminders */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <Send className="h-4 w-4 text-muted-foreground" />
                     <span>Parent Communication & Direct Payment Broadcast</span>
                   </h4>
 
-                  <div className="p-4 rounded-xl bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="p-4 rounded-md bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                       <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Parent Registered Mobile</span>
                       <span className="font-mono text-lg font-bold text-foreground mt-1 block">{activeFee.phone}</span>
@@ -659,14 +660,14 @@ function FeesPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => window.open(`https://wa.me/${activeFee.phone.replace(/[^0-9]/g, '')}?text=Dear%20Parent,%20fee%20receipt%20for%20${encodeURIComponent(activeFee.studentName)}%20(${activeFee.receiptNo})%20is%20ready.%20Total:%20INR%20${activeFee.totalFee}.`, '_blank')}
-                        className="px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
+                        className="px-4 py-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
                       >
                         <MessageSquare className="h-4 w-4" />
                         <span>Send WhatsApp Receipt</span>
                       </button>
                       <button
                         onClick={() => handleCopy(activeFee.phone, 'phone')}
-                        className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+                        className="px-3.5 py-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
                       >
                         {copiedKey === 'phone' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
                         <span>{copiedKey === 'phone' ? 'Copied' : 'Copy'}</span>

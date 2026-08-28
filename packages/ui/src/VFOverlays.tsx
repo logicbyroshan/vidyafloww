@@ -173,6 +173,7 @@ export interface VFDrawerProps {
   children: React.ReactNode;
   footerActions?: React.ReactNode;
   className?: string;
+  bodyClassName?: string;
 }
 
 export function VFDrawer({
@@ -185,6 +186,7 @@ export function VFDrawer({
   children,
   footerActions,
   className,
+  bodyClassName,
 }: VFDrawerProps) {
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
@@ -251,7 +253,7 @@ export function VFDrawer({
                   )}
 
                   {/* Content */}
-                  <div className="flex-1 overflow-y-auto p-5 sm:p-6 text-sm text-foreground/90 space-y-4">
+                  <div className={cn("flex-1 min-h-0 overflow-y-auto text-sm text-foreground/90", bodyClassName)}>
                     {children}
                   </div>
 

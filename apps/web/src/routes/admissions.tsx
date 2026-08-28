@@ -763,7 +763,7 @@ function AdmissionsPage() {
         <div className="flex items-center gap-3.5">
           <div
             onClick={() => openApplicantDrawer(r)}
-            className="overflow-hidden rounded-xl border border-border shadow-xs w-11 h-[56px] bg-muted shrink-0 cursor-pointer hover:border-primary/50 transition-colors"
+            className="overflow-hidden rounded-md border border-border shadow-xs w-11 h-[56px] bg-muted shrink-0 cursor-pointer hover:border-primary/50 transition-colors"
             style={{ aspectRatio: '19.5 / 25' }}
             title="Click to view 360° Candidate Dossier"
           >
@@ -856,9 +856,9 @@ function AdmissionsPage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4 h-full overflow-hidden">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
       {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-xl text-sm text-foreground flex items-center justify-between animate-fade-in shrink-0">
+        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in shrink-0">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
             <span className="font-bold">{notice}</span>
@@ -911,6 +911,7 @@ function AdmissionsPage() {
         hideHeader={true}
         title={activeApplicant ? activeApplicant.name : 'Candidate Dossier'}
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
+        bodyClassName="p-5 sm:p-6 space-y-4"
         footerActions={
           <div className="flex items-center justify-between w-full gap-3 flex-wrap">
             {isEditingApplicant ? (
@@ -944,7 +945,7 @@ function AdmissionsPage() {
             ) : (
               <>
                 {/* 1. Bottom Stepper (< 1 of 25 >) */}
-                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-xl border border-border">
+                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-md border border-border">
                   <button
                     onClick={handlePrevApplicant}
                     disabled={selectedApplicantIndex === 0}
@@ -1009,10 +1010,10 @@ function AdmissionsPage() {
             {isEditingApplicant ? (
               <div className="space-y-6 animate-fade-in">
                 {/* Edit Header Banner */}
-                <div className="p-5 rounded-2xl bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
+                <div className="p-5 rounded-lg bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-4">
                     <div
-                      className="relative overflow-hidden rounded-xl border border-border shadow-xs w-16 h-[82px] bg-muted shrink-0"
+                      className="relative overflow-hidden rounded-md border border-border shadow-xs w-16 h-[82px] bg-muted shrink-0"
                       style={{ aspectRatio: '19.5 / 25' }}
                     >
                       <img
@@ -1040,7 +1041,7 @@ function AdmissionsPage() {
                 </div>
 
                 {/* Section 1: Candidate Identity */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <GraduationCap className="h-4 w-4 text-muted-foreground" />
                     <span>Candidate Identity & Applied Grade</span>
@@ -1055,7 +1056,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.name || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, name: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1067,7 +1068,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.appliedGrade || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, appliedGrade: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1079,7 +1080,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.streamPreference || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, streamPreference: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1091,7 +1092,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.dob || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, dob: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1102,7 +1103,7 @@ function AdmissionsPage() {
                       <select
                         value={applicantFormData?.bloodGroup || 'B+'}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, bloodGroup: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       >
                         {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
                           <option key={bg} value={bg}>{bg}</option>
@@ -1117,7 +1118,7 @@ function AdmissionsPage() {
                       <select
                         value={applicantFormData?.stage || 'Submitted'}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, stage: e.target.value as any })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       >
                         {['Submitted', 'Screened', 'Interview', 'Approved'].map((s) => (
                           <option key={s} value={s}>{s}</option>
@@ -1132,7 +1133,7 @@ function AdmissionsPage() {
                       <select
                         value={applicantFormData?.ocrDocStatus || 'Pending'}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, ocrDocStatus: e.target.value as any })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       >
                         {['Verified', 'Pending', 'Flagged'].map((s) => (
                           <option key={s} value={s}>{s}</option>
@@ -1148,7 +1149,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.quotaCategory || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, quotaCategory: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1160,14 +1161,14 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.avatarUrl || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, avatarUrl: e.target.value })}
-                        className="w-full h-11 px-4 text-xs font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-xs font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Section 2: Guardian & Contact */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <Phone className="h-4 w-4 text-muted-foreground" />
                     <span>Parent / Guardian & Contact Records</span>
@@ -1182,7 +1183,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.guardianName || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, guardianName: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1194,7 +1195,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.motherName || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, motherName: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1206,7 +1207,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.phone || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, phone: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-mono font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1218,7 +1219,7 @@ function AdmissionsPage() {
                         type="email"
                         value={applicantFormData?.email || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, email: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -1230,7 +1231,7 @@ function AdmissionsPage() {
                         type="text"
                         value={applicantFormData?.address || ''}
                         onChange={(e) => setApplicantFormData({ ...applicantFormData!, address: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -1242,11 +1243,11 @@ function AdmissionsPage() {
                  ═══════════════════════════════════════════════════════════════ */
               <div className="space-y-6 animate-fade-in">
                 {/* Spacious Hero Banner Card */}
-                <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-md flex items-center gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
+                <div className="p-6 rounded-lg bg-card border border-border/80 shadow-md flex items-center gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
                   {/* 19.5 : 25 Portrait with Active Status Dot */}
                   <div className="relative shrink-0 mx-auto sm:mx-0">
                     <div
-                      className="relative overflow-hidden rounded-2xl border border-border shadow-md w-28 h-[143.5px] bg-muted flex items-center justify-center"
+                      className="relative overflow-hidden rounded-lg border border-border shadow-md w-28 h-[143.5px] bg-muted flex items-center justify-center"
                       style={{ aspectRatio: '19.5 / 25' }}
                     >
                       <img
@@ -1322,7 +1323,7 @@ function AdmissionsPage() {
                 </div>
 
                 {/* Sleek 4-Tab Segmented Pill Navigation */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1.5 rounded-2xl bg-muted/50 border border-border">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1.5 rounded-lg bg-muted/50 border border-border">
                   {[
                     { id: 'overview', label: 'Candidate Profile & Bio', icon: <UserCheck className="h-4 w-4" /> },
                     { id: 'academics', label: 'Academics & Entrance', icon: <BarChart3 className="h-4 w-4" /> },
@@ -1335,7 +1336,7 @@ function AdmissionsPage() {
                         key={tab.id}
                         onClick={() => setDrawerTab(tab.id as any)}
                         className={cn(
-                          'flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer outline-none',
+                          'flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-xs font-semibold transition-all cursor-pointer outline-none',
                           isActive
                             ? 'bg-card text-foreground shadow-xs border border-border font-bold'
                             : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
@@ -1354,24 +1355,24 @@ function AdmissionsPage() {
                 {drawerTab === 'overview' && (
                   <div className="space-y-6 animate-fade-in pt-1">
                     {/* 4 Enclosed Metric Tiles */}
-                    <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+                    <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">AI Fit Score</span>
                           <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeApplicant.fitScore}%</span>
                           <span className="text-[11px] text-muted-foreground mt-0.5 block">High Academic Aptitude</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Doc Verification</span>
                           <span className="text-2xl font-black text-foreground mt-1 block">{activeApplicant.ocrDocStatus}</span>
                           <span className="text-[11px] text-muted-foreground mt-0.5 block">OCR Match Verified</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Recommendation</span>
                           <span className="text-lg font-black text-foreground mt-1 block truncate">{activeApplicant.recommendation}</span>
                           <span className="text-[11px] text-muted-foreground mt-0.5 block">Automated Screening</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Admissions Quota</span>
                           <span className="text-lg font-black text-primary mt-1 block truncate">{activeApplicant.quotaCategory}</span>
                           <span className="text-[11px] text-muted-foreground mt-0.5 block">CBSE Criteria Met</span>
@@ -1380,14 +1381,14 @@ function AdmissionsPage() {
                     </div>
 
                     {/* Family & Contact Details */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                         <Phone className="h-4 w-4 text-muted-foreground" />
                         <span>Family & Guardian Contact Dossier</span>
                       </h4>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">
                             Father / Primary Guardian
                           </span>
@@ -1397,7 +1398,7 @@ function AdmissionsPage() {
                           <span className="text-xs text-muted-foreground mt-0.5 block">Authorized Pickup Contact</span>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">
                             Mother's Full Name
                           </span>
@@ -1406,7 +1407,7 @@ function AdmissionsPage() {
                         </div>
 
                         {/* Phone & Direct Action Box */}
-                        <div className="sm:col-span-2 p-4 rounded-xl bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="sm:col-span-2 p-4 rounded-md bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                           <div>
                             <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Primary Contact Number</span>
                             <span className="font-mono text-lg font-bold text-foreground mt-1 block">{activeApplicant.phone}</span>
@@ -1414,14 +1415,14 @@ function AdmissionsPage() {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => window.open(`https://wa.me/${activeApplicant.phone.replace(/[^0-9]/g, '')}`, '_blank')}
-                              className="px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
+                              className="px-4 py-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
                             >
                               <MessageSquare className="h-4 w-4" />
                               <span>WhatsApp Guardian</span>
                             </button>
                             <button
                               onClick={() => handleCopy(activeApplicant.phone, 'phone')}
-                              className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+                              className="px-3.5 py-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
                             >
                               {copiedKey === 'phone' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
                               <span>{copiedKey === 'phone' ? 'Copied' : 'Copy'}</span>
@@ -1430,7 +1431,7 @@ function AdmissionsPage() {
                         </div>
 
                         {/* Email & Residential Address */}
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Guardian Email</span>
                           <div className="flex items-center justify-between gap-2 mt-1">
                             <span className="font-mono text-sm font-semibold text-foreground truncate">{activeApplicant.email}</span>
@@ -1443,7 +1444,7 @@ function AdmissionsPage() {
                           </div>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Residential Address</span>
                           <span className="text-sm font-semibold text-foreground mt-1 block truncate">{activeApplicant.address}</span>
                         </div>
@@ -1451,22 +1452,22 @@ function AdmissionsPage() {
                     </div>
 
                     {/* School Logistics, Commute & Stream Preference */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                         <Bus className="h-4 w-4 text-muted-foreground" />
                         <span>Logistics, Track Preference & Health Status</span>
                       </h4>
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Applied Track / Stream</span>
                           <span className="text-sm font-bold text-foreground mt-1 block">{activeApplicant.streamPreference}</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Transport Preference</span>
                           <span className="text-sm font-bold text-foreground mt-1 block">{activeApplicant.transportPreference}</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Medical & Physical Fitness</span>
                           <span className={cn('text-sm font-bold mt-1 block', activeApplicant.medicalClearance ? 'text-emerald-400' : 'text-amber-400')}>
                             {activeApplicant.medicalClearance ? '✓ Cleared & Verified' : '⚠ Pending Doctor Certificate'}
@@ -1483,7 +1484,7 @@ function AdmissionsPage() {
                 {drawerTab === 'academics' && (
                   <div className="space-y-6 animate-fade-in pt-1">
                     {/* Entrance Exam Standing */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <div className="flex items-center justify-between pb-3 border-b border-border/60">
                         <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                           <Award className="h-4 w-4 text-primary" />
@@ -1493,17 +1494,17 @@ function AdmissionsPage() {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Entrance Test Score</span>
                           <span className="text-2xl font-black text-foreground mt-1 block">{activeApplicant.entranceScore}</span>
                           <span className="text-[11px] text-emerald-400 font-semibold mt-0.5 block">Top Tier Percentile</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Entrance Merit Rank</span>
                           <span className="text-2xl font-black text-foreground mt-1 block">{activeApplicant.entranceRank}</span>
                           <span className="text-[11px] text-muted-foreground mt-0.5 block">General Admissions Pool</span>
                         </div>
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Prior School Performance</span>
                           <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeApplicant.previousMarks}</span>
                           <span className="text-[11px] text-muted-foreground mt-0.5 block">{activeApplicant.previousSchool}</span>
@@ -1512,7 +1513,7 @@ function AdmissionsPage() {
                     </div>
 
                     {/* Subject-Wise Prior Academic Scorecard */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                         <BarChart3 className="h-4 w-4 text-muted-foreground" />
                         <span>Prior Academic Scorecard & Subject Breakdown</span>
@@ -1521,7 +1522,7 @@ function AdmissionsPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                         {activeApplicant.subjectScores && activeApplicant.subjectScores.length > 0 ? (
                           activeApplicant.subjectScores.map((sub, i) => (
-                            <div key={i} className="p-3.5 rounded-xl bg-muted/30 border border-border/60 flex items-center justify-between">
+                            <div key={i} className="p-3.5 rounded-md bg-muted/30 border border-border/60 flex items-center justify-between">
                               <div>
                                 <span className="font-bold text-foreground text-sm block">{sub.subject}</span>
                                 <span className="text-xs font-mono text-muted-foreground mt-0.5 block">Score: {sub.score}</span>
@@ -1541,7 +1542,7 @@ function AdmissionsPage() {
 
                     {/* Interview & Faculty Evaluation */}
                     {activeApplicant.interviewRecord && (
-                      <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                      <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                         <div className="flex items-center justify-between pb-3 border-b border-border/60">
                           <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                             <School className="h-4 w-4 text-muted-foreground" />
@@ -1551,7 +1552,7 @@ function AdmissionsPage() {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="p-4 rounded-xl bg-muted/30 border border-border/60 space-y-1">
+                          <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-1">
                             <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Interviewer</span>
                             <span className="text-sm font-bold text-foreground block">{activeApplicant.interviewRecord.interviewer}</span>
                             <div className="flex items-center gap-2 pt-2">
@@ -1560,7 +1561,7 @@ function AdmissionsPage() {
                             </div>
                           </div>
 
-                          <div className="p-4 rounded-xl bg-muted/30 border border-border/60 space-y-1">
+                          <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-1">
                             <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Panel Recommendation</span>
                             <span className="text-sm font-bold text-emerald-400 block">{activeApplicant.interviewRecord.recommendation}</span>
                             <p className="text-xs text-muted-foreground pt-1 italic">"{activeApplicant.interviewRecord.remarks}"</p>
@@ -1577,9 +1578,9 @@ function AdmissionsPage() {
                 {drawerTab === 'documents' && (
                   <div className="space-y-6 animate-fade-in pt-1">
                     {/* OCR Status Summary Banner */}
-                    <div className="p-5 rounded-2xl bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
+                    <div className="p-5 rounded-lg bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
                       <div className="flex items-center gap-3.5">
-                        <div className="h-10 w-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
+                        <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
                           <FileCheck className="h-5 w-5" />
                         </div>
                         <div>
@@ -1597,7 +1598,7 @@ function AdmissionsPage() {
                     </div>
 
                     {/* Interactive Document Checklist */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                         <FileText className="h-4 w-4 text-muted-foreground" />
                         <span>Mandatory Document Clearance Matrix</span>
@@ -1638,7 +1639,7 @@ function AdmissionsPage() {
                         ].map((doc, idx) => (
                           <div
                             key={idx}
-                            className="p-4 rounded-xl bg-muted/30 border border-border/60 flex items-center justify-between gap-4 flex-wrap"
+                            className="p-4 rounded-md bg-muted/30 border border-border/60 flex items-center justify-between gap-4 flex-wrap"
                           >
                             <div className="flex items-center gap-3">
                               <div
@@ -1670,7 +1671,7 @@ function AdmissionsPage() {
                 {drawerTab === 'decisions' && (
                   <div className="space-y-6 animate-fade-in pt-1">
                     {/* Decision Pipeline Status */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <div className="flex items-center justify-between pb-3 border-b border-border/60">
                         <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                           <FileBadge2 className="h-4 w-4 text-primary" />
@@ -1682,7 +1683,7 @@ function AdmissionsPage() {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60 space-y-2">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-2">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Admission Status</span>
                           <p className="text-xl font-black text-foreground">
                             {activeApplicant.stage === 'Approved' ? 'Provisional Offer Issued' : 'Under Review & Screening'}
@@ -1692,7 +1693,7 @@ function AdmissionsPage() {
                           </p>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60 space-y-2">
+                        <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-2">
                           <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Annual Tuition & Fees</span>
                           <p className="text-xl font-black text-foreground">{activeApplicant.annualFee}</p>
                           <p className="text-xs text-muted-foreground">
@@ -1703,7 +1704,7 @@ function AdmissionsPage() {
                     </div>
 
                     {/* Official Offer Letter Preview & Print Action */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                       <div className="flex items-center justify-between pb-3 border-b border-border/60 flex-wrap gap-2">
                         <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
                           <Printer className="h-4 w-4 text-muted-foreground" />
@@ -1724,7 +1725,7 @@ function AdmissionsPage() {
                         </div>
                       </div>
 
-                      <div className="p-5 rounded-xl bg-muted/20 border border-border/60 font-serif text-sm space-y-3 leading-relaxed text-foreground">
+                      <div className="p-5 rounded-md bg-muted/20 border border-border/60 font-serif text-sm space-y-3 leading-relaxed text-foreground">
                         <div className="flex items-center justify-between border-b border-border/50 pb-2 text-xs font-mono font-semibold text-muted-foreground">
                           <span>Ref: VM/ADM/{activeSession.split('–')[0]}/{activeApplicant.applicantId}</span>
                           <span>Date: {activeApplicant.appliedDate}</span>
@@ -1779,7 +1780,7 @@ function AdmissionsPage() {
         }
       >
         {offerApplicant && (
-          <div className="space-y-5 p-4 rounded-xl bg-card border border-border text-foreground font-serif text-sm">
+          <div className="space-y-5 p-4 rounded-md bg-card border border-border text-foreground font-serif text-sm">
             <div className="text-center pb-4 border-b border-border space-y-1">
               <h2 className="text-xl font-black tracking-tight text-foreground font-sans uppercase">
                 VidyaMaxx International Academy

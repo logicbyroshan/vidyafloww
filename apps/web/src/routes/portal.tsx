@@ -70,7 +70,7 @@ function ParentStudentPortalPage() {
   const homeTabContent = (
     <div className="space-y-4">
       {/* Personalized Greeting & Child Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-card border border-border p-4 rounded-xl shadow-xs gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-card border border-border p-4 rounded-md shadow-xs gap-3">
         <div>
           <h2 className="text-base font-bold text-foreground">Good morning, Mr. Sharma 👋</h2>
           <p className="text-xs text-muted-foreground mt-0.5">Tuesday, 11 August 2026 · Viewing portal for <span className="font-bold text-primary">{activeChild.name} ({activeChild.classSection})</span></p>
@@ -104,19 +104,19 @@ function ParentStudentPortalPage() {
         {/* Today's Schedule & Action Center */}
         <VFSection title="Today's Timetable & Action Center" className="lg:col-span-2 space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 bg-card border border-border/60 rounded-xl space-y-1">
+            <div className="p-3 bg-card border border-border/60 rounded-md space-y-1">
               <span className="text-xs font-bold text-foreground">📚 10:00 AM</span>
               <p className="text-xs text-muted-foreground">Mathematics (Room 12)</p>
             </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl space-y-1">
+            <div className="p-3 bg-card border border-border/60 rounded-md space-y-1">
               <span className="text-xs font-bold text-foreground">🧪 11:00 AM</span>
               <p className="text-xs text-muted-foreground">Physics (Lab 2)</p>
             </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl space-y-1">
+            <div className="p-3 bg-card border border-border/60 rounded-md space-y-1">
               <span className="text-xs font-bold text-foreground">🍱 12:30 PM</span>
               <p className="text-xs text-muted-foreground">Lunch Break</p>
             </div>
-            <div className="p-3 bg-card border border-border/60 rounded-xl space-y-1">
+            <div className="p-3 bg-card border border-border/60 rounded-md space-y-1">
               <span className="text-xs font-bold text-foreground">📖 02:00 PM</span>
               <p className="text-xs text-muted-foreground">English (Room 12)</p>
             </div>
@@ -124,14 +124,14 @@ function ParentStudentPortalPage() {
 
           <VFCard title="Needs Your Immediate Attention">
             <div className="space-y-2 text-xs mt-1">
-              <div className="p-2.5 bg-warning/10 border border-warning/30 rounded-xl flex items-center justify-between">
+              <div className="p-2.5 bg-warning/10 border border-warning/30 rounded-md flex items-center justify-between">
                 <div>
                   <span className="font-bold text-foreground">⚠ Mathematics Chapter 5 Homework</span>
                   <p className="text-muted-foreground text-xs">Due tomorrow 08:00 AM</p>
                 </div>
                 <VFButton size="sm" variant="outline">Submit Homework</VFButton>
               </div>
-              <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-xl flex items-center justify-between">
+              <div className="p-2.5 bg-primary/10 border border-primary/30 rounded-md flex items-center justify-between">
                 <div>
                   <span className="font-bold text-foreground">💰 Term 2 Fee Installment ({activeChild.feeDueAmount})</span>
                   <p className="text-muted-foreground text-xs">Due by 15 August 2026</p>
@@ -145,7 +145,7 @@ function ParentStudentPortalPage() {
         {/* Daily Action Summary */}
         <VFCard title="Daily Action Summary">
           <div className="space-y-3 text-xs mt-1">
-            <div className="p-3 bg-primary/10 border border-primary/30 rounded-xl space-y-2">
+            <div className="p-3 bg-primary/10 border border-primary/30 rounded-md space-y-2">
               <p className="font-bold text-foreground flex items-center gap-1.5 text-xs">
                 <CheckCircle2 className="h-4 w-4 text-primary" /> Today's Action Summary
               </p>
@@ -168,7 +168,7 @@ function ParentStudentPortalPage() {
   // 21.3 📚 ACADEMICS TAB CONTENT
   const academicsTabContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-md">
         <div>
           <h3 className="text-sm font-bold text-foreground">Academic Progress & Homework Feed</h3>
           <p className="text-xs text-muted-foreground">Overall Performance: <span className="font-bold text-success">82.4% Average</span> · View subject breakdown, test scores, and homework submissions.</p>
@@ -177,19 +177,19 @@ function ParentStudentPortalPage() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
+        <div className="p-3 bg-card border border-border/60 rounded-md text-center">
           <p className="text-xs text-muted-foreground">Mathematics</p>
           <p className="text-base font-bold text-primary mt-0.5">88% (A+)</p>
         </div>
-        <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
+        <div className="p-3 bg-card border border-border/60 rounded-md text-center">
           <p className="text-xs text-muted-foreground">Science</p>
           <p className="text-base font-bold text-success mt-0.5">84% (A)</p>
         </div>
-        <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
+        <div className="p-3 bg-card border border-border/60 rounded-md text-center">
           <p className="text-xs text-muted-foreground">English</p>
           <p className="text-base font-bold text-secondary mt-0.5">79% (B+)</p>
         </div>
-        <div className="p-3 bg-card border border-border/60 rounded-xl text-center">
+        <div className="p-3 bg-card border border-border/60 rounded-md text-center">
           <p className="text-xs text-muted-foreground">Social Science</p>
           <p className="text-base font-bold text-primary mt-0.5">81% (A)</p>
         </div>
@@ -220,7 +220,7 @@ function ParentStudentPortalPage() {
   // 21.11 👤 PROFILE & SERVICES TAB CONTENT
   const profileTabContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-md">
         <div>
           <h3 className="text-sm font-bold text-foreground">Student Profile, Digital ID Pass & Services</h3>
           <p className="text-xs text-muted-foreground">Manage family contacts, transport route live telematics, library borrowings, fee receipts, and digital ID card.</p>
@@ -231,7 +231,7 @@ function ParentStudentPortalPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Digital ID Card Preview */}
         <VFCard title="Digital Student ID Card">
-          <div className="p-4 bg-muted/30 border border-border rounded-xl text-center space-y-3 mt-1">
+          <div className="p-4 bg-muted/30 border border-border rounded-md text-center space-y-3 mt-1">
             <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center font-bold text-primary text-xl">
               RS
             </div>
@@ -249,7 +249,7 @@ function ParentStudentPortalPage() {
         {/* Transport & Library Quick Cards */}
         <VFCard title="Connected Services Status" className="lg:col-span-2">
           <div className="space-y-3 text-xs mt-1">
-            <div className="p-3 bg-primary/10 border border-primary/30 rounded-xl space-y-1">
+            <div className="p-3 bg-primary/10 border border-primary/30 rounded-md space-y-1">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-foreground flex items-center gap-1.5">
                   <Bus className="h-4 w-4 text-primary" /> Route 4 School Bus
@@ -258,7 +258,7 @@ function ParentStudentPortalPage() {
               </div>
               <p className="text-muted-foreground text-xs">Vehicle: Bus 12 · Driver: Mr. Singh (+91 98765 43210)</p>
             </div>
-            <div className="p-3 bg-card border border-border rounded-xl space-y-1">
+            <div className="p-3 bg-card border border-border rounded-md space-y-1">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-foreground flex items-center gap-1.5">
                   <BookOpen className="h-4 w-4 text-secondary" /> Library Borrowed Books

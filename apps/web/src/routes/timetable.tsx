@@ -88,24 +88,24 @@ function TimetablePage() {
   const scheduleContent = (
     <div className="space-y-6">
       {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Active Schedule</span>
             <span className="text-2xl font-black text-foreground mt-1 block">Version 4.2</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Live for Term 2</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Daily Slots</span>
             <span className="text-2xl font-black text-foreground mt-1 block">184 Slots</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Across 48 sections</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Today's Substitutes</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">4 Proxies</span>
             <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">100% Assigned</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Schedule Quality</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">98 / 100</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">0 Slot Conflicts</span>
@@ -114,7 +114,7 @@ function TimetablePage() {
       </div>
 
       {/* Class Selector Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-lg border border-border/80 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-60">
             <VFSelect

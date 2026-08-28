@@ -1,21 +1,14 @@
 import * as React from 'react';
-import * as TanStackTableModule from '@tanstack/react-table';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { cn } from './utils';
 import { VFLoadingTable } from './VFLoading';
 import { VFEmptyState } from './VFEmptyState';
 import { VFButton } from './VFButton';
 
-const useReactTable = (TanStackTableModule as any).useReactTable || (TanStackTableModule as any).ReactTable;
-const getCoreRowModel = (TanStackTableModule as any).getCoreRowModel || (TanStackTableModule as any).createCoreRowModel;
-const getSortedRowModel = (TanStackTableModule as any).getSortedRowModel || (TanStackTableModule as any).createSortedRowModel;
-const getFilteredRowModel = (TanStackTableModule as any).getFilteredRowModel || (TanStackTableModule as any).createFilteredRowModel;
-const flexRender = (TanStackTableModule as any).flexRender;
-
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-xl bg-card custom-scrollbar">
+    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card custom-scrollbar">
       <table className={cn("w-full border-collapse text-left text-sm", className)} {...props} />
     </div>
   );
@@ -91,7 +84,7 @@ export interface VFDataTableProps<T> {
   tableClassName?: string;
 }
 
-export function VFDataTable<T>({
+export function VFDataTable<T extends Record<string, any>>({
   columns,
   data = [],
   isLoading = false,
@@ -105,7 +98,7 @@ export function VFDataTable<T>({
   className,
   tableClassName,
 }: VFDataTableProps<T>) {
-  const [sorting, setSorting] = React.useState<any[]>([]);
+  const [sorting, setSorting] = React.useState<Array<{ id: string; desc: boolean }>>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState<string[]>(
     columns.map((c) => String(c.accessorKey))
@@ -154,48 +147,6 @@ export function VFDataTable<T>({
     return result;
   }, [data, globalFilter, sorting]);
 
-  // TanStack Table columns definition
-  const tanstackColumns = React.useMemo(() => {
-    return columns.map((col) => ({
-      id: String(col.accessorKey),
-      header: col.header,
-      accessorKey: String(col.accessorKey),
-      enableSorting: col.sortable ?? true,
-      cell: (info: any) => {
-        const row = info.row.original;
-        return col.cell ? col.cell(row) : (info.getValue() as React.ReactNode);
-      },
-    }));
-  }, [columns]);
-
-  // TanStack Table Instance
-  const table = React.useMemo(() => {
-    if (!useReactTable) return null;
-    try {
-      return useReactTable({
-        data: processedData,
-        columns: tanstackColumns,
-        state: { sorting, globalFilter },
-        onSortingChange: (updater: any) => {
-          const nextSorting = typeof updater === 'function' ? updater(sorting) : updater;
-          setSorting(nextSorting);
-          if (nextSorting && nextSorting.length > 0 && onSort) {
-            onSort(nextSorting[0].id, nextSorting[0].desc ? 'desc' : 'asc');
-          }
-        },
-        onGlobalFilterChange: (val: any) => {
-          setGlobalFilter(val);
-          if (onFilterChange) onFilterChange(val);
-        },
-        getCoreRowModel: getCoreRowModel ? getCoreRowModel() : undefined,
-        getSortedRowModel: getSortedRowModel ? getSortedRowModel() : undefined,
-        getFilteredRowModel: getFilteredRowModel ? getFilteredRowModel() : undefined,
-      });
-    } catch {
-      return null;
-    }
-  }, [processedData, tanstackColumns, sorting, globalFilter, onSort, onFilterChange]);
-
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setGlobalFilter(val);
@@ -213,12 +164,11 @@ export function VFDataTable<T>({
   };
 
   const activeColumns = columns.filter((col) => visibleColumns.includes(String(col.accessorKey)));
-  const displayedRows = table && table.getRowModel ? table.getRowModel().rows : null;
 
   return (
-    <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-2xl shadow-xs overflow-hidden", className)}>
+    <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-lg shadow-xs overflow-hidden", className)}>
       {/* Unified Table Header Command Toolbar */}
-      <div className="p-4 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
+      <div className="p-3.5 sm:p-4 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
         <div className="relative max-w-md flex-1">
           <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <input
@@ -226,7 +176,7 @@ export function VFDataTable<T>({
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search records..."}
-            className="w-full pl-10 pr-4 h-10 border border-border rounded-xl bg-muted/40 hover:bg-muted/70 focus:bg-background text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+            className="w-full pl-10 pr-4 h-9 border border-border rounded bg-muted/40 hover:bg-muted/70 focus:bg-background text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
@@ -243,7 +193,7 @@ export function VFDataTable<T>({
               Columns ({activeColumns.length}/{columns.length})
             </VFButton>
             {showColumnDropdown && (
-              <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-2xl z-30 p-2 space-y-1 animate-scale-in">
+              <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
                 <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
                   Visible Columns
                 </span>
@@ -253,13 +203,13 @@ export function VFDataTable<T>({
                   return (
                     <label
                       key={key}
-                      className="flex items-center gap-2.5 px-2.5 py-1.5 hover:bg-muted rounded-lg text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
+                      className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
                     >
                       <input
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => toggleColumn(key)}
-                        className="rounded border-input text-primary focus:ring-primary h-4 w-4"
+                        className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
                       />
                       <span className="truncate">{c.header}</span>
                     </label>
@@ -304,7 +254,9 @@ export function VFDataTable<T>({
                       onClick={() => {
                         if (!isSortable) return;
                         const isAsc = sortStatus?.id === key && !sortStatus.desc;
-                        setSorting([{ id: key, desc: isAsc }]);
+                        const nextSort = [{ id: key, desc: isAsc }];
+                        setSorting(nextSort);
+                        if (onSort) onSort(key, isAsc ? 'asc' : 'desc');
                       }}
                     >
                       <div className="flex items-center gap-1.5">
@@ -321,45 +273,25 @@ export function VFDataTable<T>({
               </tr>
             </thead>
             <tbody className="divide-y divide-border/80">
-              {displayedRows && displayedRows.length > 0 ? (
-                displayedRows.map((row: any) => (
-                  <tr
-                    key={row.id}
-                    className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
-                  >
-                    {row.getVisibleCells()
-                      .filter((cell: any) => visibleColumns.includes(cell.column.id))
-                      .map((cell: any) => (
-                        <td
-                          key={cell.id}
-                          className="px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold"
-                        >
-                          {flexRender ? flexRender(cell.column.columnDef.cell, cell.getContext()) : cell.value}
-                        </td>
-                      ))}
-                  </tr>
-                ))
-              ) : (
-                processedData.map((row: any, rowIndex: number) => (
-                  <tr
-                    key={row.id || rowIndex}
-                    className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
-                  >
-                    {activeColumns.map((col) => {
-                      const key = String(col.accessorKey);
-                      const rawVal = row[key];
-                      return (
-                        <td
-                          key={key}
-                          className="px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold"
-                        >
-                          {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))
-              )}
+              {processedData.map((row: any, rowIndex: number) => (
+                <tr
+                  key={row.id || rowIndex}
+                  className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
+                >
+                  {activeColumns.map((col) => {
+                    const key = String(col.accessorKey);
+                    const rawVal = row[key];
+                    return (
+                      <td
+                        key={key}
+                        className="px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold"
+                      >
+                        {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

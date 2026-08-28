@@ -68,7 +68,7 @@ function ResourcesPage() {
   // ----------------------------------------------------
   const notesContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-md shadow-xs">
         <div>
           <h3 className="text-sm font-bold text-foreground">Teacher Revision Notes Directory</h3>
           <p className="text-xs text-muted-foreground">Classroom lecture notes, summary cheat-sheets, and formula guides.</p>

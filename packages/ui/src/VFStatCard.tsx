@@ -2,14 +2,15 @@ import * as React from 'react';
 import { cn } from './utils';
 
 export interface VFStatCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string;
+  title?: string;
   value: string | number;
   icon?: React.ReactNode;
   description?: string;
   trend?: 'up' | 'down' | 'neutral';
   trendLabel?: string;
   isLoading?: boolean;
-  accentColor?: 'blue' | 'emerald' | 'amber' | 'purple' | 'rose' | 'cyan' | 'indigo' | 'primary';
+  accentColor?: 'blue' | 'emerald' | 'amber' | 'purple' | 'rose' | 'cyan' | 'indigo' | 'primary' | 'none';
+  showTopBar?: boolean;
 }
 
 const ACCENT_STYLES: Record<string, { card: string; topBar: string; icon: string }> = {
@@ -64,82 +65,88 @@ export function VFStatCard({
   trendLabel,
   isLoading = false,
   accentColor = 'primary',
+  showTopBar = true,
   className,
   ...props
 }: VFStatCardProps) {
   const displayLabel = trendLabel || description;
-  const accent = accentColor ? (ACCENT_STYLES[accentColor] || ACCENT_STYLES.primary) : ACCENT_STYLES.primary;
+  const accent = accentColor !== 'none' && accentColor ? (ACCENT_STYLES[accentColor] || ACCENT_STYLES.primary) : null;
 
   return (
     <div
       className={cn(
-        "rounded-xl border bg-card p-4 sm:p-5 text-card-foreground flex flex-col justify-between relative overflow-hidden transition-all duration-200 group min-w-0 shadow-xs",
+        "rounded-lg border bg-card p-3 sm:p-3.5 text-card-foreground flex flex-col justify-center relative overflow-hidden transition-all duration-200 group min-w-0 shadow-xs",
         accent ? accent.card : "border-border hover:border-primary/40",
         className
       )}
       {...props}
     >
-      {accent && (
+      {accent && showTopBar && (
         <div className={cn("absolute top-0 left-0 right-0 h-[3.5px]", accent.topBar)} />
       )}
-      <div className="flex items-center justify-between gap-2.5 mb-2.5 min-w-0">
-        <span className="text-xs font-bold text-muted-foreground tracking-normal truncate" title={title}>
-          {title}
-        </span>
+      
+      {/* Top / Main Section: Left has Title & Value, Right has Large Icon Badge */}
+      <div className={cn("flex items-center justify-between gap-3 min-w-0", displayLabel ? "mb-2.5" : "my-auto")}>
+        <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+          {title && (
+            <span className="text-xs font-bold text-muted-foreground tracking-normal truncate" title={title}>
+              {title}
+            </span>
+          )}
+          {isLoading ? (
+            <div className="h-8 w-24 bg-muted animate-pulse rounded-md mt-1" />
+          ) : (
+            <div className="text-2xl sm:text-[26px] font-black tracking-tight text-foreground leading-tight truncate">
+              {value}
+            </div>
+          )}
+        </div>
+
         {icon && (
           <div
             className={cn(
-              "h-8 w-8 rounded-lg flex items-center justify-center shrink-0 transition-all",
-              accent ? accent.icon : "bg-muted text-muted-foreground group-hover:text-primary group-hover:bg-primary/10"
+              "h-11 w-11 rounded-md flex items-center justify-center shrink-0 transition-all duration-200 shadow-xs group-hover:scale-105",
+              accent ? accent.icon : "bg-blue-500/15 text-blue-400 border border-blue-500/30"
             )}
           >
             {icon}
           </div>
         )}
       </div>
-      
-      <div className="flex flex-col gap-1.5 min-w-0">
-        {isLoading ? (
-          <div className="h-8 w-24 bg-muted animate-pulse rounded-md" />
-        ) : (
-          <div className="text-2xl font-black tracking-tight text-foreground leading-none truncate">
-            {value}
-          </div>
-        )}
-        
-        {!isLoading && displayLabel && (
-          <div className="flex items-center gap-2 mt-2.5 flex-wrap min-w-0 text-xs">
-            {trend && (
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1 font-bold rounded-md px-2 py-0.5 text-xs truncate max-w-full",
-                  trend === 'up' && "bg-success/15 text-success border border-success/30",
-                  trend === 'down' && "bg-destructive/15 text-destructive border border-destructive/30",
-                  trend === 'neutral' && "bg-muted text-muted-foreground border border-border"
-                )}
-              >
-                {trend === 'up' && (
-                  <svg className="h-3.5 w-3.5 stroke-[2.5] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                  </svg>
-                )}
-                {trend === 'down' && (
-                  <svg className="h-3.5 w-3.5 stroke-[2.5] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                  </svg>
-                )}
-                <span className="truncate">{trendLabel || displayLabel}</span>
-              </span>
-            )}
-            {!trend && (
-              <span className="text-xs font-semibold text-muted-foreground truncate">{displayLabel}</span>
-            )}
-            {trend && description && trendLabel && (
-              <span className="text-xs text-muted-foreground truncate font-medium">{description}</span>
-            )}
-          </div>
-        )}
-      </div>
+
+      {/* Bottom Section: Trend Badge & Subtitle */}
+      {!isLoading && displayLabel && (
+        <div className="flex items-center gap-2 flex-wrap min-w-0 text-xs mt-auto">
+          {trend && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 font-bold rounded px-2 py-0.5 text-xs truncate max-w-full",
+                trend === 'up' && "bg-success/15 text-success border border-success/30",
+                trend === 'down' && "bg-destructive/15 text-destructive border border-destructive/30",
+                trend === 'neutral' && "bg-muted text-muted-foreground border border-border"
+              )}
+            >
+              {trend === 'up' && (
+                <svg className="h-3.5 w-3.5 stroke-[2.5] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              )}
+              {trend === 'down' && (
+                <svg className="h-3.5 w-3.5 stroke-[2.5] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              )}
+              <span className="truncate">{trendLabel || displayLabel}</span>
+            </span>
+          )}
+          {!trend && (
+            <span className="text-xs font-semibold text-muted-foreground truncate">{displayLabel}</span>
+          )}
+          {trend && description && trendLabel && (
+            <span className="text-xs text-muted-foreground truncate font-medium">{description}</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -66,7 +66,7 @@ function AttendancePage() {
   const rollCallContent = (
     <div className="space-y-6">
       {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-xl text-sm text-foreground flex items-center justify-between animate-fade-in">
+        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
             <span className="font-bold">{notice}</span>
@@ -81,26 +81,26 @@ function AttendancePage() {
       )}
 
       {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Class Rate</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">{attendanceRate}%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">{presentCount} of {studentRoster.length} Present</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Absent Today</span>
             <span className={cn('text-2xl font-black mt-1 block', absentCount > 0 ? 'text-rose-400' : 'text-muted-foreground')}>
               {absentCount} Students
             </span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Uninformed Absences</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Late Arrivals</span>
             <span className="text-2xl font-black text-amber-400 mt-1 block">{lateCount} Late</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">After 08:15 AM Gate Punch</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Academic AY</span>
             <span className="text-xl font-mono font-bold text-foreground mt-1 block">{activeSession}</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Biometric Gateway Synchronized</span>
@@ -109,7 +109,7 @@ function AttendancePage() {
       </div>
 
       {/* Interactive Roll Call Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-lg border border-border/80 shadow-xs">
         <div className="flex items-center gap-3 flex-wrap">
           <div className="w-60">
             <VFSelect
@@ -122,7 +122,7 @@ function AttendancePage() {
               ]}
             />
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono font-bold px-3 py-2 rounded-xl bg-muted border border-border text-foreground">
+          <div className="flex items-center gap-2 text-xs font-mono font-bold px-3 py-2 rounded-md bg-muted border border-border text-foreground">
             <Calendar className="h-4 w-4 text-muted-foreground" />
             <span>{selectedDate}</span>
           </div>
@@ -148,12 +148,12 @@ function AttendancePage() {
       </div>
 
       {/* Student Roster Single Clean Container */}
-      <div className="border border-border/80 rounded-2xl bg-card overflow-hidden shadow-xs">
+      <div className="border border-border/80 rounded-lg bg-card overflow-hidden shadow-xs">
         <div className="divide-y divide-border/60">
           {studentRoster.map((student) => (
             <div key={student.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-muted/30 transition-colors">
               <div className="flex items-center gap-3.5">
-                <div className="h-10 w-10 rounded-xl bg-muted border border-border font-mono text-foreground font-black text-sm flex items-center justify-center shrink-0">
+                <div className="h-10 w-10 rounded-md bg-muted border border-border font-mono text-foreground font-black text-sm flex items-center justify-center shrink-0">
                   {student.rollNo}
                 </div>
                 <div>
@@ -172,7 +172,7 @@ function AttendancePage() {
                       key={status}
                       onClick={() => handleStatusToggle(student.id, status)}
                       className={cn(
-                        'px-4 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border',
+                        'px-4 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer border',
                         isSelected
                           ? status === 'Present'
                             ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 shadow-xs'
@@ -192,7 +192,7 @@ function AttendancePage() {
                 {student.status === 'Absent' && (
                   <button
                     onClick={() => window.open(`https://wa.me/${student.phone.replace(/[^0-9]/g, '')}?text=Dear%20Parent,%20your%20ward%20${encodeURIComponent(student.name)}%20was%20marked%20Absent%20today%20(${selectedDate}).%20Please%20contact%20school%20office.`, '_blank')}
-                    className="p-2 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25 transition-colors cursor-pointer"
+                    className="p-2 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25 transition-colors cursor-pointer"
                     title="Send WhatsApp Absence Alert"
                   >
                     <MessageSquare className="h-3.5 w-3.5" />
@@ -209,19 +209,19 @@ function AttendancePage() {
   // 2. Class Summary & Trends View
   const reportsContent = (
     <div className="space-y-6">
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Class 8-A Section</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">96.2%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">38 of 40 Students Present</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Class 9-B Section</span>
             <span className="text-2xl font-black text-foreground mt-1 block">94.0%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">36 of 38 Students Present</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Class 10-A Section</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">98.5%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">39 of 40 Students Present</span>
@@ -229,7 +229,7 @@ function AttendancePage() {
         </div>
       </div>
 
-      <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+      <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
         <h4 className="text-sm font-bold text-foreground pb-2 border-b border-border/60">
           Weekly Attendance Aggregate by Wing
         </h4>
@@ -258,7 +258,7 @@ function AttendancePage() {
   const leaveContent = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+        <div className="p-5 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
           <h4 className="text-sm font-bold text-foreground pb-2 border-b border-border/60">
             Pending Student Leave Applications
           </h4>
@@ -281,7 +281,7 @@ function AttendancePage() {
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+        <div className="p-5 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
           <h4 className="text-sm font-bold text-foreground pb-2 border-b border-border/60">
             Staff Planned Leaves & Duty Substitutes
           </h4>
@@ -311,7 +311,7 @@ function AttendancePage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4">
+    <VFPageContainer className="space-y-2.5 sm:space-y-3">
       <VFTabs items={tabs} defaultTabId="rollcall" variant="top-bar" />
     </VFPageContainer>
   );

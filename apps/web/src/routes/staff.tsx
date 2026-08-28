@@ -246,7 +246,7 @@ function StaffPage() {
       cell: (r: StaffRecord) => (
         <div className="flex items-center gap-3.5">
           <div
-            className="overflow-hidden rounded-xl border border-border shadow-xs w-11 h-[56px] bg-muted shrink-0"
+            className="overflow-hidden rounded-md border border-border shadow-xs w-11 h-[56px] bg-muted shrink-0"
             style={{ aspectRatio: '19.5 / 25' }}
           >
             <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover" />
@@ -300,26 +300,26 @@ function StaffPage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4">
+    <VFPageContainer className="space-y-2.5 sm:space-y-3">
       {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Faculty Strength</span>
             <span className="text-2xl font-black text-foreground mt-1 block">124 Staff</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">94 Teaching · 30 Admin</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Today's Present</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">120 Present</span>
             <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">96.8% Staff Attendance</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Average Load</span>
             <span className="text-2xl font-black text-foreground mt-1 block">23.4 / Wk</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Balanced Teaching Hours</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Faculty Retention</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">98.2%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Exemplary Satisfaction</span>
@@ -364,6 +364,7 @@ function StaffPage() {
         hideHeader={true}
         title={activeStaff ? activeStaff.name : 'Faculty Dossier'}
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
+        bodyClassName="p-5 sm:p-6 space-y-4"
         footerActions={
           <div className="flex items-center justify-between w-full gap-3 flex-wrap">
             {isEditingStaff ? (
@@ -397,7 +398,7 @@ function StaffPage() {
             ) : (
               <>
                 {/* 1. Bottom Stepper */}
-                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-xl border border-border">
+                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-md border border-border">
                   <button
                     onClick={handlePrevStaff}
                     disabled={selectedStaffIndex === 0}
@@ -452,10 +453,10 @@ function StaffPage() {
             {isEditingStaff ? (
               <div className="space-y-6 animate-fade-in">
                 {/* Header Banner */}
-                <div className="p-5 rounded-2xl bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
+                <div className="p-5 rounded-lg bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-4">
                     <div
-                      className="relative overflow-hidden rounded-xl border border-border shadow-xs w-16 h-[82px] bg-muted shrink-0"
+                      className="relative overflow-hidden rounded-md border border-border shadow-xs w-16 h-[82px] bg-muted shrink-0"
                       style={{ aspectRatio: '19.5 / 25' }}
                     >
                       <img
@@ -483,7 +484,7 @@ function StaffPage() {
                 </div>
 
                 {/* Section 1: Personal & Position Info */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <UserCheck className="h-4 w-4 text-muted-foreground" />
                     <span>Faculty Designation & Position</span>
@@ -498,7 +499,7 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.name || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, name: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -510,7 +511,7 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.designation || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, designation: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -521,7 +522,7 @@ function StaffPage() {
                       <select
                         value={staffFormData?.department || 'Science & Math'}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, department: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       >
                         {['Science & Math', 'Humanities & Languages', 'Commerce & Social Sciences', 'Computer Science & AI', 'Sports & Arts'].map((d) => (
                           <option key={d} value={d}>{d}</option>
@@ -537,7 +538,7 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.subject || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, subject: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -548,7 +549,7 @@ function StaffPage() {
                       <select
                         value={staffFormData?.status || 'Active'}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, status: e.target.value as any })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       >
                         {['Active', 'On Leave', 'Probation'].map((st) => (
                           <option key={st} value={st}>{st}</option>
@@ -564,7 +565,7 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.assignedClasses || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, assignedClasses: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -576,14 +577,14 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.avatarUrl || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, avatarUrl: e.target.value })}
-                        className="w-full h-11 px-4 text-xs font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-xs font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Section 2: Contact & Personal Records */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <Phone className="h-4 w-4 text-muted-foreground" />
                     <span>Contact & Address Records</span>
@@ -598,7 +599,7 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.phone || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, phone: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-mono font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -610,7 +611,7 @@ function StaffPage() {
                         type="email"
                         value={staffFormData?.email || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, email: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
 
@@ -622,7 +623,7 @@ function StaffPage() {
                         type="text"
                         value={staffFormData?.address || ''}
                         onChange={(e) => setStaffFormData({ ...staffFormData!, address: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
+                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -632,10 +633,10 @@ function StaffPage() {
               /* 2. VIEW MODE */
               <div className="space-y-6 animate-fade-in">
                 {/* Hero Card */}
-                <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-md flex items-center gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
+                <div className="p-6 rounded-lg bg-card border border-border/80 shadow-md flex items-center gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
                   <div className="relative shrink-0 mx-auto sm:mx-0">
                     <div
-                      className="relative overflow-hidden rounded-2xl border border-border shadow-md w-28 h-[143.5px] bg-muted flex items-center justify-center"
+                      className="relative overflow-hidden rounded-lg border border-border shadow-md w-28 h-[143.5px] bg-muted flex items-center justify-center"
                       style={{ aspectRatio: '19.5 / 25' }}
                     >
                       <img
@@ -679,24 +680,24 @@ function StaffPage() {
                 </div>
 
                 {/* 4 Enclosed KPI Stat Tiles */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+                <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Weekly Load</span>
                       <span className="text-2xl font-black text-foreground mt-1 block">{activeStaff.weeklyPeriods} Periods</span>
                       <span className="text-[11px] text-muted-foreground mt-0.5 block">Standard Workload</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Attendance Rate</span>
                       <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeStaff.attendance}</span>
                       <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Exemplary Regularity</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Salary Grade</span>
                       <span className="text-xl font-bold text-foreground mt-1 block">{activeStaff.salaryGrade.split(' ')[1] || 'PGT-8'}</span>
                       <span className="text-[11px] text-muted-foreground mt-0.5 block">{activeStaff.salaryGrade}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+                    <div className="p-4 rounded-md bg-muted/40 border border-border/80">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Years of Service</span>
                       <span className="text-2xl font-black text-foreground mt-1 block">{activeStaff.experience}</span>
                       <span className="text-[11px] text-muted-foreground mt-0.5 block">Joined {activeStaff.joinDate}</span>
@@ -705,14 +706,14 @@ function StaffPage() {
                 </div>
 
                 {/* Contact & Family Records */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <Phone className="h-4 w-4 text-muted-foreground" />
                     <span>Contact & Communications</span>
                   </h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="sm:col-span-2 p-4 rounded-xl bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="sm:col-span-2 p-4 rounded-md bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Contact Phone</span>
                         <span className="font-mono text-lg font-bold text-foreground mt-1 block">{activeStaff.phone}</span>
@@ -720,14 +721,14 @@ function StaffPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => window.open(`https://wa.me/${activeStaff.phone.replace(/[^0-9]/g, '')}`, '_blank')}
-                          className="px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
+                          className="px-4 py-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
                         >
                           <MessageSquare className="h-4 w-4" />
                           <span>Message on WhatsApp</span>
                         </button>
                         <button
                           onClick={() => handleCopy(activeStaff.phone, 'phone')}
-                          className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+                          className="px-3.5 py-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
                         >
                           {copiedKey === 'phone' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
                           <span>{copiedKey === 'phone' ? 'Copied' : 'Copy'}</span>
@@ -735,7 +736,7 @@ function StaffPage() {
                       </div>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                    <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                       <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Official Email</span>
                       <div className="flex items-center justify-between gap-2 mt-1">
                         <span className="font-mono text-sm font-semibold text-foreground truncate">{activeStaff.email}</span>
@@ -748,7 +749,7 @@ function StaffPage() {
                       </div>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                    <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                       <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Residential Address</span>
                       <span className="text-sm font-semibold text-foreground mt-1 block truncate">{activeStaff.address}</span>
                     </div>
@@ -756,18 +757,18 @@ function StaffPage() {
                 </div>
 
                 {/* Academic Qualifications & Allocations */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
                   <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
                     <GraduationCap className="h-4 w-4 text-muted-foreground" />
                     <span>Qualifications & Academic Allocations</span>
                   </h4>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                    <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                       <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Qualifications</span>
                       <span className="text-sm font-bold text-foreground mt-1 block">{activeStaff.qualification}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+                    <div className="p-4 rounded-md bg-muted/30 border border-border/60">
                       <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Assigned Classes</span>
                       <span className="text-sm font-bold text-foreground mt-1 block">{activeStaff.assignedClasses}</span>
                     </div>

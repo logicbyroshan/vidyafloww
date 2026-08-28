@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, Sparkles } from 'lucide-react';
+import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { cn } from '@vidyamaxx/ui';
 
 interface HeaderProps {
   onSearchClick: () => void;
   onNotificationsClick: () => void;
-  onAIClick?: () => void;
 }
 
-export function Header({ onSearchClick, onNotificationsClick, onAIClick }: HeaderProps) {
+export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const { notifications, schoolProfile, activeSession, setActiveSession, academicSessions } = useGlobalStore();
   const [isSessionMenuOpen, setIsSessionMenuOpen] = React.useState(false);
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
@@ -60,7 +59,7 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
         <div className="relative" ref={sessionMenuRef}>
           <button
             onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
-            className="flex items-center gap-2.5 px-3 h-9 rounded-xl bg-muted/40 hover:bg-muted border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group"
+            className="flex items-center gap-2.5 px-3 h-9 rounded-md bg-muted/40 hover:bg-muted border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group"
             title="Switch Academic Session"
           >
             <Calendar className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -80,13 +79,10 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
 
           {/* Custom Animated Glassmorphic Dropdown Menu */}
           {isSessionMenuOpen && (
-            <div className="absolute left-0 mt-2 w-64 rounded-xl border border-border bg-card shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
+            <div className="absolute left-0 mt-2 w-64 rounded-lg border border-border bg-card shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
               <div className="px-2.5 py-1.5 border-b border-border/60 mb-1">
                 <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
                   Select Academic Session
-                </span>
-                <span className="text-[10px] text-muted-foreground font-medium">
-                  Changes live institutional database context
                 </span>
               </div>
               {academicSessions.map((session) => {
@@ -100,7 +96,7 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
                       setIsSessionMenuOpen(false);
                     }}
                     className={cn(
-                      "flex items-center justify-between w-full px-2.5 py-2 rounded-lg text-sm transition-all cursor-pointer text-left font-semibold outline-none",
+                      "flex items-center justify-between w-full px-2.5 py-1.5 rounded-md text-sm transition-all cursor-pointer text-left font-semibold outline-none",
                       isCurrent
                         ? "bg-muted text-foreground border border-border font-bold"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -118,11 +114,11 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
                     </div>
                     <div>
                       {isActiveAY ? (
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                           Active AY
                         </span>
                       ) : (
-                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-muted text-muted-foreground border border-border">
+                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border">
                           Archived
                         </span>
                       )}
@@ -135,59 +131,38 @@ export function Header({ onSearchClick, onNotificationsClick, onAIClick }: Heade
         </div>
       </div>
 
-      {/* Right: AI Copilot, Search, Notifications & School Identity */}
-      <div className="flex items-center gap-3 shrink-0">
-        {/* AI Copilot Direct Trigger */}
-        {onAIClick && (
-          <button
-            onClick={onAIClick}
-            className="flex items-center gap-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/30 px-3.5 h-10 rounded-xl transition-all cursor-pointer shadow-xs group"
-            title="Open VidyaMaxx AI Assistant (Shift+K)"
-          >
-            <Sparkles className="h-4 w-4 text-primary group-hover:scale-110 transition-transform animate-pulse" />
-            <span className="hidden sm:inline">AI Copilot</span>
-            <kbd className="inline-flex h-5 select-none items-center rounded border border-primary/30 bg-primary/15 px-1.5 font-mono text-[10px] font-bold text-primary">
-              ⇧K
-            </kbd>
-          </button>
-        )}
-
-        {/* Compact Search Trigger */}
+      {/* Right: Square Search, Notifications & School Identity */}
+      <div className="flex items-center gap-2.5 shrink-0">
+        {/* Square Search Button Beside Notifications */}
         <button
           onClick={onSearchClick}
-          className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border border-border px-3.5 h-10 rounded-xl transition-all outline-none cursor-pointer group"
-          title="Search students, classes, records... (⌘K)"
+          className="relative text-muted-foreground hover:text-foreground rounded-md hover:bg-muted border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
+          title="Search students, faculty, records... (⌘K / Ctrl+K)"
         >
-          <Search className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
-          <span className="hidden md:inline text-sm font-medium text-muted-foreground group-hover:text-foreground">
-            Search
-          </span>
-          <kbd className="inline-flex h-5 select-none items-center rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-            ⌘K
-          </kbd>
+          <Search className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>
 
         {/* Notifications */}
         <button
           onClick={onNotificationsClick}
-          className="relative text-muted-foreground hover:text-foreground rounded-xl hover:bg-muted border border-border transition-colors outline-none cursor-pointer h-10 w-10 flex items-center justify-center"
+          className="relative text-muted-foreground hover:text-foreground rounded-md hover:bg-muted border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs"
           title="Notifications"
         >
-          <Bell className="h-4.5 w-4.5" />
+          <Bell className="h-4 w-4" />
           {unreadCount > 0 && (
-            <span className="absolute top-2 right-2 h-2.5 w-2.5 bg-destructive rounded-full" />
+            <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-destructive rounded-full" />
           )}
         </button>
 
         {/* Divider */}
-        <div className="h-6 w-[1px] bg-border mx-0.5 hidden sm:block" />
+        <div className="h-5 w-[1px] bg-border mx-0.5 hidden sm:block" />
 
         {/* Dynamic School Logo & Name on Right */}
-        <div className="flex items-center gap-2.5 px-3 rounded-xl bg-muted/30 border border-border h-10 transition-all">
-          <div className="h-7 w-7 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
+        <div className="flex items-center gap-2 px-2.5 rounded-md bg-muted/30 border border-border h-9 transition-all shadow-xs">
+          <div className="h-6 w-6 rounded bg-muted flex items-center justify-center shrink-0 overflow-hidden">
             {renderSchoolEmblem()}
           </div>
-          <span className="text-sm font-bold text-foreground tracking-tight max-w-[150px] truncate" title={schoolProfile.name}>
+          <span className="text-xs sm:text-sm font-bold text-foreground tracking-tight max-w-[150px] truncate" title={schoolProfile.name}>
             {schoolProfile.name}
           </span>
         </div>

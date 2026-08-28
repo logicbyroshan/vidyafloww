@@ -20,11 +20,9 @@ import {
   BarChart3,
   ChevronLeft,
   ChevronRight,
-  Phone,
   Printer,
   MessageSquare,
   Edit3,
-  Bus,
   FileSpreadsheet,
   Archive,
   CheckCircle2,
@@ -33,13 +31,56 @@ import {
   Send,
   Award,
   FileCheck,
-  DollarSign,
   Check,
   Copy,
   Receipt,
   X,
+  GraduationCap,
+  Users,
+  Image as ImageIcon,
+  CreditCard,
+  Trash2,
+  Camera,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+
+export interface DossierFieldConfig {
+  key: string;
+  label: string;
+  category: 'personal' | 'family' | 'operations';
+  placeholder?: string;
+  isCustom?: boolean;
+  isVisible: boolean;
+  type?: 'text' | 'tel' | 'email' | 'date';
+}
+
+const defaultDossierFields: DossierFieldConfig[] = [
+  // Personal & Bio Identity
+  { key: 'name', label: 'Student Full Legal Name', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'admNo', label: 'Admission Number', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'roll', label: 'Roll Number', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'classSection', label: 'Class & Section', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'house', label: 'House Squad', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'bloodGroup', label: 'Blood Group', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'dob', label: 'Date of Birth', category: 'personal', isVisible: true, isCustom: false },
+  { key: 'aadhaarNo', label: 'Aadhaar / National ID No', category: 'personal', isVisible: true, isCustom: true },
+  { key: 'category', label: 'Category / Quota', category: 'personal', isVisible: true, isCustom: true },
+
+  // Family & Emergency Contacts
+  { key: 'guardian', label: 'Father / Primary Guardian Name', category: 'family', isVisible: true, isCustom: false },
+  { key: 'motherName', label: "Mother's Full Legal Name", category: 'family', isVisible: true, isCustom: false },
+  { key: 'phone', label: 'Primary Emergency Contact Number', category: 'family', isVisible: true, isCustom: false },
+  { key: 'email', label: 'Institutional Email Address', category: 'family', isVisible: true, isCustom: false },
+  { key: 'address', label: 'Residential Home Address', category: 'family', isVisible: true, isCustom: false },
+  { key: 'guardianOccupation', label: 'Guardian Occupation / Work', category: 'family', isVisible: true, isCustom: true },
+
+  // Operations, Transport & Health
+  { key: 'classTeacher', label: 'Assigned Class Teacher', category: 'operations', isVisible: true, isCustom: false },
+  { key: 'transport', label: 'Commute / Transport Route', category: 'operations', isVisible: true, isCustom: false },
+  { key: 'feeStatus', label: 'Fee Clearance Status', category: 'operations', isVisible: true, isCustom: false },
+  { key: 'medical', label: 'Medical Remarks & Health Notes', category: 'operations', isVisible: true, isCustom: false },
+  { key: 'busStop', label: 'Designated Bus Stop & Time', category: 'operations', isVisible: true, isCustom: true },
+];
 
 export const Route = createFileRoute('/students')({
   component: StudentsPage,
@@ -49,8 +90,54 @@ function StudentsPage() {
   const { activeSession } = useGlobalStore();
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
-  const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'credentials'>('overview');
+  const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'credentials' | 'fees'>('overview');
   const [copiedText, setCopiedText] = React.useState<string | null>(null);
+
+  // Dynamic Dossier Fields Configuration State
+  const [dossierFields, setDossierFields] = React.useState<DossierFieldConfig[]>(defaultDossierFields);
+  const [isFieldConfigOpen, setIsFieldConfigOpen] = React.useState<boolean>(false);
+  const [newFieldLabel, setNewFieldLabel] = React.useState<string>('');
+  const [newFieldCategory, setNewFieldCategory] = React.useState<'personal' | 'family' | 'operations'>('personal');
+
+  const handleToggleField = (key: string) => {
+    setDossierFields((prev) =>
+      prev.map((f) => (f.key === key ? { ...f, isVisible: !f.isVisible } : f))
+    );
+  };
+
+  const handleAddCustomField = () => {
+    if (!newFieldLabel.trim()) return;
+    const cleanKey = 'custom_' + newFieldLabel.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+    if (dossierFields.some((f) => f.key === cleanKey)) {
+      alert('A field with this name already exists.');
+      return;
+    }
+    const newField: DossierFieldConfig = {
+      key: cleanKey,
+      label: newFieldLabel.trim(),
+      category: newFieldCategory,
+      isVisible: true,
+      isCustom: true,
+    };
+    setDossierFields((prev) => [...prev, newField]);
+    setNewFieldLabel('');
+  };
+
+  const handleDeleteCustomField = (key: string) => {
+    setDossierFields((prev) => prev.filter((f) => f.key !== key));
+  };
+
+  const getFieldValue = (student: any, fieldKey: string) => {
+    if (!student) return '';
+    if (fieldKey === 'classSection') return `${student.class || ''} (Sec ${student.section || 'A'})`;
+    if (student[fieldKey] !== undefined && student[fieldKey] !== '') return student[fieldKey];
+    if (fieldKey === 'aadhaarNo') return student.aadhaarNo || '4928-1092-8841';
+    if (fieldKey === 'category') return student.category || 'General / Merit';
+    if (fieldKey === 'guardianOccupation') return student.guardianOccupation || 'Senior Software Engineer / Architect';
+    if (fieldKey === 'busStop') return student.busStop || 'Sector 14 Main Gate (07:15 AM)';
+    if (fieldKey === 'feeStatus') return 'Paid (No Dues Pending)';
+    return '-';
+  };
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -533,6 +620,24 @@ function StudentsPage() {
 
   const [isEditingStudent, setIsEditingStudent] = React.useState<boolean>(false);
   const [studentFormData, setStudentFormData] = React.useState<any>(null);
+  const avatarFileInputRef = React.useRef<HTMLInputElement | null>(null);
+
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          const resultStr = event.target.result as string;
+          setStudentFormData((prev: any) => ({
+            ...(prev || activeStudent || {}),
+            avatarUrl: resultStr,
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const activeStudent =
     selectedStudentIndex !== null && selectedStudentIndex >= 0 && selectedStudentIndex < currentEnrolledList.length
@@ -851,7 +956,7 @@ function StudentsPage() {
         <div className="flex items-center justify-center">
           <div
             onClick={() => openStudentDrawer(r)}
-            className="relative overflow-hidden rounded-lg border border-border/80 shadow-xs w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
+            className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
             style={{ aspectRatio: '19.5 / 25' }}
             title="Click to view 360° student profile"
           >
@@ -914,7 +1019,7 @@ function StudentsPage() {
       header: 'House',
       accessorKey: 'house',
       cell: (r: any) => (
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
           <span className={cn(
             "h-1.5 w-1.5 rounded-full shrink-0",
             r.house?.includes('Red') && "bg-red-400",
@@ -957,26 +1062,21 @@ function StudentsPage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col">
       {/* Main Clean Enrolled Students Master Table */}
       <VFDataTable
         columns={enrolledStudentColumns}
         data={currentEnrolledList}
         filterPlaceholder="Search by student name, roll number, or admission ID..."
         rightActions={
-          <>
-            <VFButton
-              variant="outline"
-              size="sm"
-              leftIcon={<Download className="h-4 w-4" />}
-              onClick={() => setIsExportModalOpen(true)}
-            >
-              Export Roster
-            </VFButton>
-            <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />}>
-              Add Student
-            </VFButton>
-          </>
+          <VFButton
+            variant="outline"
+            size="sm"
+            leftIcon={<Download className="h-4 w-4" />}
+            onClick={() => setIsExportModalOpen(true)}
+          >
+            Export Roster
+          </VFButton>
         }
       />
 
@@ -990,20 +1090,21 @@ function StudentsPage() {
         }}
         hideHeader={true}
         title={activeStudent ? activeStudent.name : 'Student Dossier'}
-        className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
+        className="w-[850px] min-w-[320px] sm:min-w-[850px] max-w-[95vw]"
+        bodyClassName="p-0 flex flex-col overflow-hidden"
         footerActions={
           <div className="flex items-center justify-between w-full gap-3 flex-wrap">
             {isEditingStudent ? (
               <>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-xs font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-lg border border-border">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold text-foreground bg-muted px-2.5 h-8 flex items-center rounded-md border border-border">
                     {studentFormData?.admNo || activeStudent?.admNo}
                   </span>
                   <span className="text-xs font-medium text-muted-foreground">
-                    Modifying Institutional Records
+                    Editing Student Records
                   </span>
                 </div>
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <VFButton
                     variant="outline"
                     size="sm"
@@ -1023,31 +1124,29 @@ function StudentsPage() {
               </>
             ) : (
               <>
-                {/* 1. Bottom Stepper */}
-                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-xl border border-border">
+                <div className="flex items-center gap-1 bg-muted/60 h-8 px-1.5 rounded-md border border-border">
                   <button
                     onClick={handlePrevStudent}
                     disabled={selectedStudentIndex === 0}
-                    className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+                    className="h-6 w-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
                     title="Previous Student (Keyboard: ←)"
                   >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-3.5 w-3.5" />
                   </button>
-                  <span className="text-xs font-mono font-bold px-3 text-foreground select-none">
+                  <span className="text-xs font-mono font-bold px-2 text-foreground select-none leading-none">
                     {selectedStudentIndex !== null ? selectedStudentIndex + 1 : 1} of {currentEnrolledList.length}
                   </span>
                   <button
                     onClick={handleNextStudent}
                     disabled={selectedStudentIndex === currentEnrolledList.length - 1}
-                    className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+                    className="h-6 w-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
                     title="Next Student (Keyboard: →)"
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
 
-                {/* 2. Action Buttons: Close on left, Edit Profile on right */}
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <VFButton
                     variant="outline"
                     size="sm"
@@ -1074,582 +1173,339 @@ function StudentsPage() {
         }
       >
         {activeStudent && (
-          <div className="space-y-6 animate-fade-in pb-4">
-            {/* 1. EDIT MODE: FULL STRUCTURED INSTITUTIONAL FORM */}
-            {isEditingStudent ? (
-              <div className="space-y-6 animate-fade-in">
-                {/* Header Banner */}
-                <div className="p-5 rounded-2xl bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="relative overflow-hidden rounded-xl border border-border shadow-xs w-16 h-[82px] bg-muted shrink-0"
-                      style={{ aspectRatio: '19.5 / 25' }}
+          <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-fade-in">
+            <div className="w-full bg-card/95 backdrop-blur-md border-b border-border shrink-0">
+              <div className="grid grid-cols-4 w-full">
+                {[
+                  { id: 'overview', label: 'Profile', icon: <UserCheck className="h-4 w-4" /> },
+                  { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
+                  { id: 'credentials', label: 'Certificates & ID Card', icon: <FileText className="h-4 w-4" /> },
+                  { id: 'fees', label: 'Fee & Charges', icon: <CreditCard className="h-4 w-4" /> },
+                ].map((tab) => {
+                  const isActive = drawerTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setDrawerTab(tab.id as any)}
+                      className={cn(
+                        "flex items-center justify-center gap-1.5 py-3 text-xs font-bold transition-all cursor-pointer outline-none select-none border-b-2",
+                        isActive
+                          ? "bg-primary/10 text-primary border-primary"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/40 border-transparent"
+                      )}
                     >
-                      <img
-                        src={studentFormData?.avatarUrl || activeStudent.avatarUrl}
-                        alt={studentFormData?.name || activeStudent.name}
-                        style={{ aspectRatio: '19.5 / 25' }}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-muted text-foreground border border-border">
-                          {studentFormData?.admNo || activeStudent.admNo}
-                        </span>
-                        <VFBadge variant="warning">Edit Mode Active</VFBadge>
-                      </div>
-                      <h3 className="text-xl font-bold text-foreground mt-1 tracking-tight">
-                        Editing {studentFormData?.name || activeStudent.name}'s Dossier
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="text-xs font-mono font-semibold text-muted-foreground">
-                    Academic Year {activeSession}
-                  </div>
-                </div>
-
-                {/* Section 1: Personal & Academic Identity */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                  <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                    <UserCheck className="h-4 w-4 text-muted-foreground" />
-                    <span>Personal & Academic Identity</span>
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="sm:col-span-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Student Full Legal Name *
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.name || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, name: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                        placeholder="e.g. Aditya Verma"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Roll Number
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.roll || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, roll: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                        placeholder="e.g. 101"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Class Enrollment
-                      </label>
-                      <select
-                        value={studentFormData?.class || 'Class 9'}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, class: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['Class 9', 'Class 10', 'Class 11-Sci', 'Class 11-Com', 'Class 12-Sci', 'Class 12-Com'].map((c) => (
-                          <option key={c} value={c}>{c}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Section
-                      </label>
-                      <select
-                        value={studentFormData?.section || 'A'}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, section: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['A', 'B', 'C', 'D'].map((s) => (
-                          <option key={s} value={s}>Section {s}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        House Assignment
-                      </label>
-                      <select
-                        value={studentFormData?.house || 'Red House'}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, house: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['Red House', 'Blue House', 'Green House', 'Yellow House'].map((h) => (
-                          <option key={h} value={h}>{h}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Blood Group
-                      </label>
-                      <select
-                        value={studentFormData?.bloodGroup || 'B+'}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, bloodGroup: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
-                          <option key={bg} value={bg}>{bg}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Enrollment Status
-                      </label>
-                      <select
-                        value={studentFormData?.status || 'Active'}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, status: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['Active', 'On Medical Leave', 'Suspended', 'Archived'].map((st) => (
-                          <option key={st} value={st}>{st}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Date of Birth
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.dob || '14 May 2011'}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, dob: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                        placeholder="DD Mon YYYY"
-                      />
-                    </div>
-
-                    <div className="sm:col-span-2 lg:col-span-3">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Biometric Photo URL (19.5 : 25 Aspect Ratio)
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.avatarUrl || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, avatarUrl: e.target.value })}
-                        className="w-full h-11 px-4 text-xs font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                        placeholder="https://images.unsplash.com/photo-..."
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section 2: Family & Contact Details */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                  <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>Family & Guardian Records</span>
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Father / Primary Guardian Name
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.guardian || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, guardian: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Mother's Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.motherName || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, motherName: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Primary Contact (WhatsApp) Phone
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.phone || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, phone: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono font-bold text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Student Institutional Email
-                      </label>
-                      <input
-                        type="email"
-                        value={studentFormData?.email || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, email: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Residential Address
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.address || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, address: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section 3: School Logistics & Medical Dossier */}
-                <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                  <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                    <Bus className="h-4 w-4 text-muted-foreground" />
-                    <span>Operations, Logistics & Medical Notes</span>
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Assigned Class Teacher
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.classTeacher || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, classTeacher: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Commute Route / Stop
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.transport || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, transport: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Medical & Allergy Remarks
-                      </label>
-                      <input
-                        type="text"
-                        value={studentFormData?.medical || ''}
-                        onChange={(e) => setStudentFormData({ ...studentFormData, medical: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-xl focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
+                      {tab.icon}
+                      <span className="hidden sm:inline">{tab.label}</span>
+                    </button>
+                  );
+                })}
               </div>
-            ) : (
-              /* 2. VIEW MODE: AIRY, EXPANSIVE & ELEGANT 360° DOSSIER */
-              <div className="space-y-6 animate-fade-in">
-                {/* Spacious Hero Banner Card */}
-                <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-md flex items-center gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
-                  {/* 19.5 : 25 Portrait with Active Status Dot */}
-                  <div className="relative shrink-0 mx-auto sm:mx-0">
-                    <div
-                      className="relative overflow-hidden rounded-2xl border border-border shadow-md w-28 h-[143.5px] bg-muted flex items-center justify-center"
-                      style={{ aspectRatio: '19.5 / 25' }}
-                    >
-                      <img
-                        src={activeStudent.avatarUrl}
-                        alt={activeStudent.name}
-                        style={{ aspectRatio: '19.5 / 25' }}
-                        className="w-full h-full object-cover"
-                        onError={(e: any) => {
-                          e.target.style.display = 'none';
-                          if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      <div
-                        style={{ aspectRatio: '19.5 / 25' }}
-                        className="w-full h-full bg-muted text-muted-foreground font-black text-2xl hidden items-center justify-center"
-                      >
-                        {activeStudent.name.split(' ').map((n: string) => n[0]).join('')}
-                      </div>
-                    </div>
-                    <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-card ring-2 ring-emerald-500/20" title="Active Enrollment" />
-                  </div>
+            </div>
 
-                  {/* Hero Information */}
-                  <div className="flex-1 min-w-0 space-y-3 text-center sm:text-left">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight truncate w-full sm:w-auto">
-                        {activeStudent.name}
-                      </h3>
-                      <VFBadge variant="success" className="px-3 py-1 text-xs font-bold mx-auto sm:mx-0">
-                        {activeStudent.status}
-                      </VFBadge>
-                    </div>
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              {drawerTab === 'overview' && (
+                <div className="animate-fade-in divide-y divide-border/40">
+                  <div>
+                    <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 px-4 py-3">
+                      <div className="relative shrink-0 mx-auto sm:mx-0">
+                        <input
+                          type="file"
+                          ref={avatarFileInputRef}
+                          onChange={handleAvatarFileChange}
+                          accept="image/*"
+                          className="hidden"
+                        />
+                        <div
+                          onClick={() => {
+                            if (isEditingStudent && avatarFileInputRef.current) {
+                              avatarFileInputRef.current.click();
+                            }
+                          }}
+                          className={cn(
+                            "relative overflow-hidden rounded-md border border-border/90 shadow-sm w-24 sm:w-28 bg-muted flex items-center justify-center transition-all group",
+                            isEditingStudent ? "cursor-pointer hover:ring-2 hover:ring-primary/60" : ""
+                          )}
+                          style={{ aspectRatio: '19.5 / 25' }}
+                        >
+                          <img
+                            src={isEditingStudent && studentFormData?.avatarUrl ? studentFormData.avatarUrl : activeStudent.avatarUrl}
+                            alt={isEditingStudent && studentFormData?.name ? studentFormData.name : activeStudent.name}
+                            style={{ aspectRatio: '19.5 / 25' }}
+                            className="w-full h-full object-cover"
+                            onError={(e: any) => {
+                              e.target.style.display = 'none';
+                              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                          <div
+                            style={{ aspectRatio: '19.5 / 25' }}
+                            className="w-full h-full bg-muted text-muted-foreground font-black text-2xl hidden items-center justify-center"
+                          >
+                            {(isEditingStudent && studentFormData?.name ? studentFormData.name : activeStudent.name).split(' ').map((n: string) => n[0]).join('')}
+                          </div>
 
-                    <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-mono flex-wrap justify-center sm:justify-start">
-                      <span className="font-bold text-foreground bg-muted px-2.5 py-0.5 rounded-md border border-border">{activeStudent.admNo}</span>
-                      <span>•</span>
-                      <span className="font-semibold text-foreground">Roll #{activeStudent.roll}</span>
-                      <span>•</span>
-                      <span className="text-foreground font-medium">{activeStudent.class} (Sec {activeStudent.section})</span>
-                    </div>
-
-                    {/* Badges Row */}
-                    <div className="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start pt-0.5">
-                      <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold bg-muted/60 text-foreground border border-border">
-                        <span className={cn(
-                          "h-2 w-2 rounded-full shrink-0",
-                          activeStudent.house?.includes('Red') && "bg-red-500",
-                          activeStudent.house?.includes('Blue') && "bg-blue-500",
-                          activeStudent.house?.includes('Green') && "bg-emerald-500",
-                          activeStudent.house?.includes('Yellow') && "bg-amber-500"
-                        )} />
-                        {activeStudent.house}
-                      </span>
-
-                      <span className="text-xs font-bold px-3 py-1 rounded-lg bg-muted/60 text-foreground border border-border">
-                        🩸 Blood Group: <span className="font-mono text-foreground font-extrabold">{activeStudent.bloodGroup || 'B+'}</span>
-                      </span>
-
-                      <span className="text-xs font-mono font-semibold px-3 py-1 rounded-lg bg-muted/60 text-muted-foreground border border-border">
-                        AY {activeSession}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sleek 3-Tab Segmented Pill Navigation */}
-                <div className="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-muted/50 border border-border">
-                  {[
-                    { id: 'overview', label: 'Profile & Bio', icon: <UserCheck className="h-4 w-4" /> },
-                    { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
-                    { id: 'credentials', label: 'Certificates & ID Card', icon: <FileText className="h-4 w-4" /> },
-                  ].map((tab) => {
-                    const isActive = drawerTab === tab.id;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setDrawerTab(tab.id as any)}
-                        className={cn(
-                          "flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl text-xs font-semibold transition-all cursor-pointer outline-none",
-                          isActive
-                            ? "bg-card text-foreground shadow-xs border border-border font-bold"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                          {isEditingStudent && (
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center gap-1 transition-opacity text-white">
+                              <Camera className="h-5 w-5 text-white" />
+                              <span className="text-[10px] font-bold tracking-tight">Upload</span>
+                            </div>
+                          )}
+                        </div>
+                        {isEditingStudent ? (
+                          <button
+                            type="button"
+                            onClick={() => avatarFileInputRef.current?.click()}
+                            className="absolute -bottom-1.5 -right-1.5 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer border-2 border-card"
+                            title="Change Student Photo"
+                          >
+                            <Camera className="h-3 w-3" />
+                          </button>
+                        ) : (
+                          <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-card ring-2 ring-emerald-500/20" title="Active Enrollment" />
                         )}
-                      >
-                        {tab.icon}
-                        <span>{tab.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                      </div>
 
-                {/* TAB 1: PROFILE & BIO */}
-                {drawerTab === 'overview' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* 4 Enclosed KPI Metric Tiles */}
-                    <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Attendance</span>
-                          <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeStudent.attendance}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">Consistent Regular</span>
-                        </div>
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">GPA Score</span>
-                          <span className="text-2xl font-black text-foreground mt-1 block">{activeStudent.gpa}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">4.0 Scale Standard</span>
-                        </div>
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Cohort Standing</span>
-                          <span className="text-2xl font-black text-foreground mt-1 block">{activeStudent.rank}</span>
-                          <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Top Tier Standing</span>
-                        </div>
-                        <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Fee Clearance</span>
-                          <span className="text-2xl font-black text-emerald-400 mt-1 block">Cleared</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">No Dues Pending</span>
-                        </div>
+                      <div className="flex-1 min-w-0 grid grid-cols-2 sm:grid-cols-3 gap-2 w-full">
+                        {dossierFields
+                          .filter((f) => f.category === 'personal' && f.isVisible)
+                          .map((f) => {
+                            const val = isEditingStudent && studentFormData
+                              ? (studentFormData[f.key] ?? '')
+                              : getFieldValue(activeStudent, f.key);
+                            return (
+                              <div key={f.key} className={f.key === 'name' ? 'col-span-2 sm:col-span-2' : ''}>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                                  {f.label}
+                                </label>
+                                <input
+                                  type="text"
+                                  readOnly={!isEditingStudent}
+                                  value={val}
+                                  onChange={(e) => {
+                                    if (isEditingStudent && studentFormData) {
+                                      setStudentFormData({ ...studentFormData, [f.key]: e.target.value });
+                                    }
+                                  }}
+                                  className={cn(
+                                    "w-full h-9 px-3 text-xs rounded-md outline-none transition-all",
+                                    isEditingStudent
+                                      ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                                      : "bg-muted/30 border border-border/70 text-foreground",
+                                    f.key === 'name' ? "font-bold text-foreground" : "font-semibold text-foreground",
+                                    f.key === 'admNo' || f.key === 'roll' || f.key === 'bloodGroup' || f.key === 'aadhaarNo' ? "font-mono" : ""
+                                  )}
+                                />
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Family & Contact Details */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                        <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span>Family & Contact Records</span>
-                      </h4>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">
-                            Father / Primary Guardian
-                          </span>
-                          <span className="text-base font-bold text-foreground block mt-1">{activeStudent.guardian}</span>
-                          <span className="text-xs text-muted-foreground mt-0.5 block">Authorized Pickup Contact</span>
+                  <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-4 py-3">
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Father / Primary Guardian Name</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.guardian ?? '') : (activeStudent.guardian ?? '')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, guardian: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Mother's Full Legal Name</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.motherName ?? '') : (activeStudent.motherName ?? '')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, motherName: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Primary Emergency Contact Number</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            readOnly={!isEditingStudent}
+                            value={isEditingStudent && studentFormData ? (studentFormData.phone ?? '') : (activeStudent.phone ?? '')}
+                            onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, phone: e.target.value })}
+                            className={cn(
+                              "flex-1 h-9 px-3 text-xs font-mono font-bold rounded-md outline-none transition-all",
+                              isEditingStudent
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                          {!isEditingStudent && (
+                            <>
+                              <button
+                                onClick={() => window.open(`https://wa.me/${activeStudent.phone.replace(/[^0-9]/g, '')}`, '_blank')}
+                                className="h-9 px-3 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors shrink-0"
+                              >
+                                <MessageSquare className="h-3.5 w-3.5" />
+                                <span>WhatsApp</span>
+                              </button>
+                              <button
+                                onClick={() => handleCopy(activeStudent.phone, 'phone')}
+                                className="h-9 px-2.5 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1 cursor-pointer transition-colors shrink-0"
+                              >
+                                {copiedText === 'phone' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
+                                <span>{copiedText === 'phone' ? 'Copied' : 'Copy'}</span>
+                              </button>
+                            </>
+                          )}
                         </div>
-
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">
-                            Mother's Full Name
-                          </span>
-                          <span className="text-base font-bold text-foreground block mt-1">{activeStudent.motherName}</span>
-                          <span className="text-xs text-muted-foreground mt-0.5 block">Secondary Guardian</span>
-                        </div>
-
-                        {/* Phone & Direct Action Box */}
-                        <div className="sm:col-span-2 p-4 rounded-xl bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div>
-                            <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Primary Contact Number</span>
-                            <span className="font-mono text-lg font-bold text-foreground mt-1 block">{activeStudent.phone}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => window.open(`https://wa.me/${activeStudent.phone.replace(/[^0-9]/g, '')}`, '_blank')}
-                              className="px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
-                            >
-                              <MessageSquare className="h-4 w-4" />
-                              <span>Message on WhatsApp</span>
-                            </button>
-                            <button
-                              onClick={() => handleCopy(activeStudent.phone, 'phone')}
-                              className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-                            >
-                              {copiedText === 'phone' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
-                              <span>{copiedText === 'phone' ? 'Copied' : 'Copy'}</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Email & Address */}
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Institutional Email</span>
-                          <div className="flex items-center justify-between gap-2 mt-1">
-                            <span className="font-mono text-sm font-semibold text-foreground truncate">{activeStudent.email}</span>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Institutional Email Address</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            readOnly={!isEditingStudent}
+                            value={isEditingStudent && studentFormData ? (studentFormData.email ?? '') : (activeStudent.email ?? '')}
+                            onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, email: e.target.value })}
+                            className={cn(
+                              "flex-1 h-9 px-3 text-xs font-mono font-semibold rounded-md outline-none truncate transition-all",
+                              isEditingStudent
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                          {!isEditingStudent && (
                             <button
                               onClick={() => handleCopy(activeStudent.email, 'email')}
-                              className="text-xs text-muted-foreground hover:text-foreground cursor-pointer shrink-0"
+                              className="h-9 px-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1 cursor-pointer transition-colors shrink-0"
                             >
-                              {copiedText === 'email' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+                              {copiedText === 'email' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
                             </button>
-                          </div>
-                        </div>
-
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Residential Address</span>
-                          <span className="text-sm font-semibold text-foreground mt-1 block truncate">{activeStudent.address}</span>
+                          )}
                         </div>
                       </div>
-                    </div>
-
-                    {/* School Logistics & Health */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                        <Bus className="h-4 w-4 text-muted-foreground" />
-                        <span>Operations, Logistics & Medical Records</span>
-                      </h4>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Class Teacher</span>
-                          <span className="text-base font-bold text-foreground mt-1 block">{activeStudent.classTeacher}</span>
-                        </div>
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Commute Route</span>
-                          <span className="text-base font-bold text-foreground mt-1 block">{activeStudent.transport}</span>
-                        </div>
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Medical Remarks</span>
-                          <span className="text-sm font-semibold text-muted-foreground mt-1 block">{activeStudent.medical}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Fee Ledger Summary */}
-                    <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/60">
-                        <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
-                          <DollarSign className="h-4 w-4 text-muted-foreground" />
-                          <span>Fee Ledger & Financial Standing</span>
-                        </h4>
-                        <span className="text-xs font-mono font-medium text-muted-foreground">AY {activeSession}</span>
-                      </div>
-
-                      <div className="flex items-center justify-between p-4 rounded-xl bg-muted/30 border border-border/60 text-xs flex-wrap gap-4">
-                        <div className="flex items-center gap-8 flex-wrap">
-                          <div>
-                            <span className="text-xs text-muted-foreground font-bold uppercase block">Annual Fee</span>
-                            <span className="font-mono font-black text-foreground text-base mt-0.5 block">₹ 78,000</span>
-                          </div>
-                          <div>
-                            <span className="text-xs text-muted-foreground font-bold uppercase block">Realized</span>
-                            <span className="font-mono font-black text-emerald-400 text-base mt-0.5 block">₹ 78,000</span>
-                          </div>
-                          <div>
-                            <span className="text-xs text-muted-foreground font-bold uppercase block">Balance Due</span>
-                            <span className="font-mono font-black text-foreground text-base mt-0.5 block">₹ 0.00</span>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => alert(`Downloading official fee receipt for ${activeStudent.name}`)}
-                          className="px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border text-xs font-bold text-foreground flex items-center gap-1.5 cursor-pointer transition-colors"
-                        >
-                          <Receipt className="h-4 w-4" />
-                          <span>Download Receipt</span>
-                        </button>
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Residential Home Address</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.address ?? '') : (activeStudent.address ?? '')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, address: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none truncate transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
                       </div>
                     </div>
                   </div>
-                )}
 
-                {/* TAB 2: ACADEMICS & EXAMS */}
-                {drawerTab === 'academics' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* Term Summary Row */}
-                    <div className="flex items-center justify-between p-5 rounded-2xl bg-card border border-border/80 shadow-xs flex-wrap gap-4">
+                  <div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-4 py-3">
                       <div>
-                        <h4 className="text-base font-bold text-foreground">Term 1 Assessment Report</h4>
-                        <span className="text-xs text-muted-foreground">CBSE Standard Curriculum · {activeSession}</span>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Assigned Class Teacher</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.classTeacher ?? '') : (activeStudent.classTeacher ?? '')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, classTeacher: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
                       </div>
-                      <div className="flex items-center gap-6 text-xs font-mono">
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Commute / Transport Route</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.transport ?? '') : (activeStudent.transport ?? '')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, transport: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Fee Clearance Status</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.feeStatus ?? 'Paid') : (activeStudent.feeStatus || 'Paid (No Dues Pending)')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, feeStatus: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-bold rounded-md outline-none transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-emerald-400"
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">Medical Remarks</label>
+                        <input
+                          type="text"
+                          readOnly={!isEditingStudent}
+                          value={isEditingStudent && studentFormData ? (studentFormData.medical ?? '') : (activeStudent.medical ?? '')}
+                          onChange={(e) => isEditingStudent && studentFormData && setStudentFormData({ ...studentFormData, medical: e.target.value })}
+                          className={cn(
+                            "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                            isEditingStudent
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground font-semibold shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+                {drawerTab === 'academics' && (
+                  <div className="animate-fade-in divide-y divide-border/40">
+                    <div className="flex items-center justify-between px-4 py-3 flex-wrap gap-3">
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-bold text-foreground">Term 1 Assessment Report</h4>
+                        <span className="text-[11px] text-muted-foreground">CBSE Standard Curriculum · {activeSession}</span>
+                      </div>
+                      <div className="flex items-center gap-4 text-xs font-mono">
                         <div className="text-right">
-                          <span className="text-muted-foreground text-xs font-bold uppercase block">Aggregate Score</span>
-                          <span className="font-black text-foreground text-lg">477 / 500 (95.4%)</span>
+                          <span className="text-muted-foreground text-[10px] font-bold uppercase block">Aggregate Score</span>
+                          <span className="font-black text-foreground text-base">477 / 500 (95.4%)</span>
                         </div>
                         <div className="text-right">
-                          <span className="text-muted-foreground text-xs font-bold uppercase block">Cohort Standing</span>
-                          <span className="font-black text-emerald-400 text-lg">#2 / 40 (A1)</span>
+                          <span className="text-muted-foreground text-[10px] font-bold uppercase block">Cohort Standing</span>
+                          <span className="font-black text-emerald-400 text-base">#2 / 40 (A1)</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Scorecard Table */}
-                    <div className="border border-border/80 rounded-2xl overflow-hidden bg-card shadow-xs">
-                      <table className="w-full text-sm">
+                    <div className="overflow-hidden">
+                      <table className="w-full text-xs">
                         <thead>
-                          <tr className="bg-muted/40 text-muted-foreground font-bold text-xs uppercase tracking-wider border-b border-border/60">
-                            <th className="py-3.5 px-4 text-left">Subject</th>
-                            <th className="py-3.5 px-4 text-center">Score</th>
-                            <th className="py-3.5 px-4 text-center">Grade</th>
-                            <th className="py-3.5 px-4 text-right">Status</th>
+                          <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
+                            <th className="py-2.5 px-3 text-left">Subject</th>
+                            <th className="py-2.5 px-3 text-center">Score</th>
+                            <th className="py-2.5 px-3 text-center">Grade</th>
+                            <th className="py-2.5 px-3 text-right">Status</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-border/40 font-mono">
@@ -1661,78 +1517,72 @@ function StudentsPage() {
                             { subject: 'Social Science [087]', score: '94/100', grade: 'A1' },
                           ]).map((scoreItem: any, idx: number) => (
                             <tr key={idx} className="hover:bg-muted/20 transition-colors">
-                              <td className="py-3.5 px-4 font-sans font-semibold text-foreground">{scoreItem.subject}</td>
-                              <td className="py-3.5 px-4 text-center font-bold text-foreground text-base">{scoreItem.score}</td>
-                              <td className="py-3.5 px-4 text-center">
-                                <span className="px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
+                              <td className="py-2.5 px-3 font-sans font-semibold text-foreground">{scoreItem.subject}</td>
+                              <td className="py-2.5 px-3 text-center font-bold text-foreground text-sm">{scoreItem.score}</td>
+                              <td className="py-2.5 px-3 text-center">
+                                <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">
                                   {scoreItem.grade}
                                 </span>
                               </td>
-                              <td className="py-3.5 px-4 text-right font-sans font-bold text-emerald-400">Passed</td>
+                              <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Passed</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
 
-                    {/* Teacher Remark and Navigation */}
-                    <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-xs space-y-2">
-                      <span className="text-xs uppercase font-bold text-muted-foreground tracking-wide block">Principal & Faculty Remark</span>
-                      <p className="text-foreground text-sm italic leading-relaxed">
+                    <div className="p-3 sm:p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs space-y-1.5">
+                      <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wide block">Principal & Faculty Remark</span>
+                      <p className="text-foreground text-xs italic leading-relaxed">
                         "Aditya consistently exhibits exceptional analytical thinking in STEM disciplines and commendable institutional leadership."
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-end pt-1">
+                    <div className="flex items-center justify-end pt-0.5">
                       <Link
                         to="/examinations"
                         className="text-xs font-bold text-foreground hover:underline inline-flex items-center gap-1.5"
                       >
                         <span>Open Comprehensive Examinations Module</span>
-                        <ArrowRight className="h-4 w-4" />
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
                     </div>
                   </div>
                 )}
 
-                {/* TAB 3: CERTIFICATES, TC & ID HUB (CR80 Standard 85 : 54 Ratio) */}
                 {drawerTab === 'credentials' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* 1. 🪪 Physical Card Preview (Exact 85:54 ratio) */}
-                    <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+                  <div className="animate-fade-in divide-y divide-border/40">
+                    <div className="px-4 py-3 space-y-3">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="text-sm font-bold text-foreground">Standard Student ID Card</h4>
-                          <span className="text-xs text-muted-foreground">Standard CR-80 physical card dimensions (85.6mm × 54mm)</span>
+                          <h4 className="text-xs sm:text-sm font-bold text-foreground">Standard Student ID Card</h4>
+                          <span className="text-[11px] text-muted-foreground">Standard CR-80 physical card dimensions (85.6mm × 54mm)</span>
                         </div>
-                        <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                           CR-80 (85 × 54 mm)
                         </span>
                       </div>
 
-                      {/* ID Card Wrapper with Exact 85:54 aspect ratio */}
-                      <div className="max-w-[360px] mx-auto w-full">
+                      <div className="max-w-[340px] mx-auto w-full">
                         <div
-                          className="w-full bg-linear-to-br from-card via-card to-muted rounded-2xl border border-border/90 shadow-lg p-4 flex flex-col justify-between select-none relative overflow-hidden"
+                          className="w-full bg-linear-to-br from-card via-card to-muted rounded-lg border border-border/90 shadow-lg p-3.5 flex flex-col justify-between select-none relative overflow-hidden"
                           style={{ aspectRatio: '85 / 54' }}
                         >
-                          {/* Card Top Brand Banner */}
-                          <div className="flex items-center justify-between border-b border-border/60 pb-2">
-                            <div className="flex items-center gap-2">
-                              <div className="h-5 w-5 rounded-full bg-foreground/10 flex items-center justify-center text-[10px] font-black text-foreground">
+                          <div className="flex items-center justify-between border-b border-border/60 pb-1.5">
+                            <div className="flex items-center gap-1.5">
+                              <div className="h-4 w-4 rounded-full bg-foreground/10 flex items-center justify-center text-[9px] font-black text-foreground">
                                 V
                               </div>
-                              <span className="font-extrabold text-xs text-foreground tracking-tight">VidyaMaxx Academy</span>
+                              <span className="font-extrabold text-[11px] text-foreground tracking-tight">VidyaMaxx Academy</span>
                             </div>
-                            <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">
+                            <span className="text-[9px] font-mono font-semibold px-1 py-0.2 rounded bg-muted border border-border text-muted-foreground">
                               2026–27
                             </span>
                           </div>
 
-                          {/* Card Body with 19.5 : 25 Portrait */}
-                          <div className="flex items-center gap-3.5 my-auto">
+                          <div className="flex items-center gap-3 my-auto">
                             <div
-                              className="w-16 h-[82px] rounded-lg border border-border/80 bg-muted overflow-hidden shrink-0 shadow-2xs"
+                              className="w-14 h-[72px] rounded-md border border-border/80 bg-muted overflow-hidden shrink-0 shadow-2xs"
                               style={{ aspectRatio: '19.5 / 25' }}
                             >
                               <img
@@ -1744,25 +1594,24 @@ function StudentsPage() {
                             </div>
 
                             <div className="flex-1 min-w-0 space-y-0.5 text-left">
-                              <h5 className="font-extrabold text-sm text-foreground truncate">{activeStudent.name}</h5>
-                              <p className="font-mono text-xs text-muted-foreground font-semibold">{activeStudent.admNo}</p>
-                              <p className="text-muted-foreground text-xs">
+                              <h5 className="font-extrabold text-xs text-foreground truncate">{activeStudent.name}</h5>
+                              <p className="font-mono text-[11px] text-muted-foreground font-semibold">{activeStudent.admNo}</p>
+                              <p className="text-muted-foreground text-[11px]">
                                 {activeStudent.class} (Sec {activeStudent.section}) · Roll #{activeStudent.roll}
                               </p>
-                              <div className="flex items-center gap-2 pt-0.5 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-2 pt-0.5 text-[10px] text-muted-foreground">
                                 <span>Blood: <strong className="text-foreground">{activeStudent.bloodGroup || 'B+'}</strong></span>
                                 <span>•</span>
                                 <span>{activeStudent.house}</span>
                               </div>
-                              <p className="text-[10px] text-muted-foreground font-mono truncate">
+                              <p className="text-[9px] text-muted-foreground font-mono truncate">
                                 Emergency: {activeStudent.phone}
                               </p>
                             </div>
                           </div>
 
-                          {/* Card Footer */}
-                          <div className="flex items-center justify-between border-t border-border/60 pt-1.5">
-                            <div className="flex items-center gap-0.5 h-3 opacity-60">
+                          <div className="flex items-center justify-between border-t border-border/60 pt-1">
+                            <div className="flex items-center gap-0.5 h-2.5 opacity-60">
                               <div className="h-full w-0.5 bg-foreground" />
                               <div className="h-full w-1 bg-foreground" />
                               <div className="h-full w-0.5 bg-foreground" />
@@ -1775,13 +1624,12 @@ function StudentsPage() {
                         </div>
                       </div>
 
-                      {/* ID Print Actions inside the Tab */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2.5">
                         <VFButton
                           size="sm"
                           variant="outline"
-                          className="flex-1"
-                          leftIcon={<Printer className="h-4 w-4" />}
+                          className="flex-1 text-xs"
+                          leftIcon={<Printer className="h-3.5 w-3.5" />}
                           onClick={() => openIdCardModal(activeStudent)}
                         >
                           Print ID Badge (85×54mm)
@@ -1789,8 +1637,8 @@ function StudentsPage() {
                         <VFButton
                           size="sm"
                           variant="outline"
-                          className="flex-1"
-                          leftIcon={<FileText className="h-4 w-4 text-muted-foreground" />}
+                          className="flex-1 text-xs"
+                          leftIcon={<FileText className="h-3.5 w-3.5 text-muted-foreground" />}
                           onClick={() => alert(`Generated print-ready 85×54mm PDF for ${activeStudent.name}`)}
                         >
                           Export PDF Preview
@@ -1798,27 +1646,25 @@ function StudentsPage() {
                       </div>
                     </div>
 
-                    {/* 2. 📜 Official Certificates & Transfer Clearance (TC) Hub */}
-                    <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/60">
-                        <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <div className="p-3.5 sm:p-4 rounded-lg bg-card border border-border/80 shadow-2xs space-y-3">
+                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
                           <Award className="h-4 w-4 text-muted-foreground" />
                           <span>Institutional Certificates & Transfer Clearance (TC)</span>
                         </h4>
-                        <span className="text-xs font-bold px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                           Active · Good Standing
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                        {/* Transfer Certificate (TC) */}
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/70 flex flex-col justify-between space-y-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
                           <div>
-                            <div className="flex items-center gap-2 text-foreground font-bold text-sm">
-                              <FileSpreadsheet className="h-4 w-4 text-muted-foreground" />
+                            <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                              <FileSpreadsheet className="h-3.5 w-3.5 text-muted-foreground" />
                               <span>Transfer Certificate (TC)</span>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
                               Official school leaving clearance certificate with verified dues clearance.
                             </p>
                           </div>
@@ -1826,21 +1672,20 @@ function StudentsPage() {
                             size="sm"
                             variant="outline"
                             className="w-full text-xs"
-                            leftIcon={<FileText className="h-4 w-4" />}
+                            leftIcon={<FileText className="h-3.5 w-3.5" />}
                             onClick={() => openCertificateModal('tc', activeStudent)}
                           >
                             Issue / Print TC
                           </VFButton>
                         </div>
 
-                        {/* Character Certificate */}
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/70 flex flex-col justify-between space-y-3">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
                           <div>
-                            <div className="flex items-center gap-2 text-foreground font-bold text-sm">
-                              <Award className="h-4 w-4 text-muted-foreground" />
+                            <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                              <Award className="h-3.5 w-3.5 text-muted-foreground" />
                               <span>Character Certificate</span>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
                               Certifies exemplary behavioral record, academic discipline, and conduct.
                             </p>
                           </div>
@@ -1848,29 +1693,28 @@ function StudentsPage() {
                             size="sm"
                             variant="outline"
                             className="w-full text-xs"
-                            leftIcon={<CheckCircle2 className="h-4 w-4" />}
+                            leftIcon={<CheckCircle2 className="h-3.5 w-3.5" />}
                             onClick={() => openCertificateModal('character', activeStudent)}
                           >
                             Character Certificate
                           </VFButton>
                         </div>
 
-                        {/* Bonafide Certificate */}
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/70 flex flex-col justify-between space-y-3">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
                           <div>
-                            <div className="flex items-center gap-2 text-foreground font-bold text-sm">
-                              <FileCheck className="h-4 w-4 text-muted-foreground" />
+                            <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                              <FileCheck className="h-3.5 w-3.5 text-muted-foreground" />
                               <span>Bonafide Certificate</span>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                              Proof of institutional enrollment for visa, passport, bus pass, or bank accounts.
+                            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+                              Proof of enrollment for visa, passport, bus pass, or bank accounts.
                             </p>
                           </div>
                           <VFButton
                             size="sm"
                             variant="outline"
                             className="w-full text-xs"
-                            leftIcon={<Download className="h-4 w-4" />}
+                            leftIcon={<Download className="h-3.5 w-3.5" />}
                             onClick={() => openCertificateModal('bonafide', activeStudent)}
                           >
                             Bonafide Certificate
@@ -1879,47 +1723,46 @@ function StudentsPage() {
                       </div>
                     </div>
 
-                    {/* 3. 📋 Official CBSE Board Examination Registry */}
-                    <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/60">
-                        <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <div className="p-3.5 sm:p-4 rounded-lg bg-card border border-border/80 shadow-2xs space-y-3">
+                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
                           <Send className="h-4 w-4 text-muted-foreground" />
                           <span>CBSE Board Examination & LOC Registry</span>
                         </h4>
-                        <span className="text-xs font-medium text-emerald-400">LOC Forwarded</span>
+                        <span className="text-[10px] font-medium text-emerald-400">LOC Forwarded</span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/70 space-y-1">
-                          <span className="text-xs text-muted-foreground uppercase font-bold block">Official Board Roll No</span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 space-y-1">
+                          <span className="text-[10px] text-muted-foreground uppercase font-bold block">Official Board Roll No</span>
                           <div className="flex items-center justify-between pt-0.5">
-                            <span className="font-mono text-sm font-bold text-foreground">{activeStudent.examRollNo || 'CBSE-2026-994812'}</span>
+                            <span className="font-mono text-xs font-bold text-foreground">{activeStudent.examRollNo || 'CBSE-2026-994812'}</span>
                             <button
                               onClick={() => handleCopy(activeStudent.examRollNo || 'CBSE-2026-994812', 'rollNo')}
                               className="text-xs text-muted-foreground hover:text-foreground cursor-pointer"
                             >
-                              {copiedText === 'rollNo' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+                              {copiedText === 'rollNo' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
                             </button>
                           </div>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-muted/30 border border-border/70 space-y-1">
-                          <span className="text-xs text-muted-foreground uppercase font-bold block">Center Code</span>
-                          <span className="font-mono text-sm font-bold text-foreground block pt-0.5">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</span>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 space-y-1">
+                          <span className="text-[10px] text-muted-foreground uppercase font-bold block">Center Code</span>
+                          <span className="font-mono text-xs font-bold text-foreground block pt-0.5">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</span>
                         </div>
 
-                        <div className="sm:col-span-2 p-4 rounded-xl bg-muted/30 border border-border/70 text-xs">
-                          <span className="text-xs text-muted-foreground uppercase font-bold block">Examination Center</span>
-                          <span className="text-sm font-semibold text-foreground mt-1 block">Govt Model Sr Sec School, Sector 4, Central Delhi</span>
+                        <div className="sm:col-span-2 p-3 rounded-md bg-muted/30 border border-border/70 text-xs">
+                          <span className="text-[10px] text-muted-foreground uppercase font-bold block">Examination Center</span>
+                          <span className="text-xs font-semibold text-foreground mt-0.5 block">Govt Model Sr Sec School, Sector 4, Central Delhi</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 pt-1">
+                      <div className="flex items-center gap-2.5 pt-0.5">
                         <VFButton
                           size="sm"
                           variant="outline"
-                          className="flex-1"
-                          leftIcon={<FileCheck className="h-4 w-4" />}
+                          className="flex-1 text-xs"
+                          leftIcon={<FileCheck className="h-3.5 w-3.5" />}
                           onClick={() => alert(`Opening official CBSE LOC Verification Dossier for ${activeStudent.name}`)}
                         >
                           View LOC Form
@@ -1927,8 +1770,8 @@ function StudentsPage() {
                         <VFButton
                           size="sm"
                           variant="outline"
-                          className="flex-1"
-                          leftIcon={<Award className="h-4 w-4" />}
+                          className="flex-1 text-xs"
+                          leftIcon={<Award className="h-3.5 w-3.5" />}
                           onClick={() => alert(`Downloading Board Admit Card for ${activeStudent.name}`)}
                         >
                           Download Admit Card
@@ -1937,13 +1780,141 @@ function StudentsPage() {
                     </div>
                   </div>
                 )}
-              </div>
-            )}
+
+                {drawerTab === 'fees' && (
+                  <div className="animate-fade-in divide-y divide-border/40">
+                    <div className="px-4 py-3">
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Annual Total Fee</span>
+                          <span className="text-xl font-black text-foreground mt-0.5 block font-mono">₹ 78,000</span>
+                          <span className="text-[10px] text-muted-foreground mt-0.5 block">AY {activeSession}</span>
+                        </div>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Realized / Paid</span>
+                          <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">₹ 78,000</span>
+                          <span className="text-[10px] text-emerald-400 mt-0.5 block font-semibold">100% Realized</span>
+                        </div>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Outstanding Balance</span>
+                          <span className="text-xl font-black text-foreground mt-0.5 block font-mono">₹ 0.00</span>
+                          <span className="text-[10px] text-muted-foreground mt-0.5 block">Zero Dues Pending</span>
+                        </div>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Ledger Standing</span>
+                          <span className="text-xl font-black text-emerald-400 mt-0.5 block">Cleared</span>
+                          <span className="text-[10px] text-emerald-400 mt-0.5 block font-semibold">Good Standing</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-4 py-3 space-y-2.5">
+                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
+                          <CreditCard className="h-4 w-4 text-muted-foreground" />
+                          <span>Institutional Fee Structure & Schedule</span>
+                        </h4>
+                        <span className="text-[10px] font-mono font-medium text-muted-foreground">CBSE Enrolled</span>
+                      </div>
+
+                      <div className="border border-border/70 rounded-md overflow-hidden bg-card text-xs">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
+                              <th className="py-2 px-3 text-left">Component Item</th>
+                              <th className="py-2 px-3 text-left">Frequency</th>
+                              <th className="py-2 px-3 text-right">Standard Fee</th>
+                              <th className="py-2 px-3 text-right">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-border/40 font-mono">
+                            {[
+                              { item: 'Tuition & Core Instruction Fee', freq: 'Annual / Quarterly', amt: '₹ 52,000', status: 'Paid' },
+                              { item: 'Science & Advanced Computing Lab', freq: 'Per Semester', amt: '₹ 12,000', status: 'Paid' },
+                              { item: 'Digital Library & Portal License', freq: 'Annual', amt: '₹ 4,000', status: 'Paid' },
+                              { item: 'Commute & Transport Route #4', freq: 'Quarterly', amt: '₹ 10,000', status: 'Paid' },
+                            ].map((row, idx) => (
+                              <tr key={idx} className="hover:bg-muted/20 transition-colors">
+                                <td className="py-2.5 px-3 font-sans font-semibold text-foreground">{row.item}</td>
+                                <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">{row.freq}</td>
+                                <td className="py-2.5 px-3 text-right font-bold text-foreground">{row.amt}</td>
+                                <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">{row.status}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div className="px-4 py-3 space-y-2.5">
+                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
+                          <Receipt className="h-4 w-4 text-muted-foreground" />
+                          <span>Installment Receipts & Transaction Ledger</span>
+                        </h4>
+                        <span className="text-[10px] font-mono text-emerald-400 font-bold">4 of 4 Quarters Paid</span>
+                      </div>
+
+                      <div className="space-y-2">
+                        {[
+                          { qtr: 'Quarter 1 (Apr – Jun 2026)', date: '10 Apr 2026', amt: '₹ 19,500', mode: 'Online NetBanking', receipt: 'REC-2026-0891' },
+                          { qtr: 'Quarter 2 (Jul – Sep 2026)', date: '08 Jul 2026', amt: '₹ 19,500', mode: 'UPI Gateway', receipt: 'REC-2026-2144' },
+                          { qtr: 'Quarter 3 (Oct – Dec 2026)', date: '05 Oct 2026', amt: '₹ 19,500', mode: 'Card POS', receipt: 'REC-2026-4401' },
+                          { qtr: 'Quarter 4 (Jan – Mar 2027)', date: '02 Jan 2027', amt: '₹ 19,500', mode: 'Bank Transfer', receipt: 'REC-2027-6612' },
+                        ].map((tx, idx) => (
+                          <div key={idx} className="p-2.5 rounded-md bg-muted/30 border border-border/70 flex items-center justify-between gap-3 flex-wrap text-xs">
+                            <div className="min-w-0">
+                              <span className="font-bold text-foreground block">{tx.qtr}</span>
+                              <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-mono mt-0.5">
+                                <span>{tx.receipt}</span>
+                                <span>•</span>
+                                <span>{tx.date}</span>
+                                <span>•</span>
+                                <span>{tx.mode}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="font-mono font-black text-foreground text-sm">{tx.amt}</span>
+                              <button
+                                onClick={() => alert(`Downloading fee receipt ${tx.receipt} for ${activeStudent.name}`)}
+                                className="h-7 px-2.5 rounded bg-muted hover:bg-muted/80 border border-border text-[11px] font-bold text-foreground flex items-center gap-1 cursor-pointer transition-colors"
+                              >
+                                <Receipt className="h-3 w-3" />
+                                <span>Receipt</span>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 py-3">
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 text-xs"
+                        leftIcon={<Download className="h-3.5 w-3.5" />}
+                        onClick={() => alert(`Generated Annual Fee Clearance Certificate for ${activeStudent.name}`)}
+                      >
+                        Fee Clearance Certificate
+                      </VFButton>
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 text-xs"
+                        leftIcon={<Printer className="h-3.5 w-3.5" />}
+                        onClick={() => alert(`Printing Consolidated Account Statement for ${activeStudent.name}`)}
+                      >
+                        Print Account Statement
+                      </VFButton>
+                    </div>
+                  </div>
+                )}
+            </div>
           </div>
         )}
       </VFDrawer>
 
-      {/* 📜 INSTITUTIONAL CERTIFICATES & TC MODAL */}
       <VFDialog
         isOpen={isCertificateModalOpen}
         onClose={() => setIsCertificateModalOpen(false)}
@@ -1980,8 +1951,7 @@ function StudentsPage() {
       >
         {certificateStudent && (
           <div className="p-2 space-y-4 text-xs">
-            {/* Certificate Form & Verification Preview */}
-            <div className="p-4 rounded-xl border border-border/80 bg-card space-y-3 font-sans">
+            <div className="p-4 rounded-md border border-border/80 bg-card space-y-3 font-sans">
               <div className="text-center border-b border-border/60 pb-3">
                 <h3 className="font-black text-sm uppercase tracking-wider text-foreground">
                   VidyaMaxx Senior Secondary Academy
@@ -2066,7 +2036,6 @@ function StudentsPage() {
         )}
       </VFDialog>
 
-      {/* 🪪 ID CARD BADGE PREVIEW & PRINT MODAL (Exact 85 : 54 Ratio) */}
       <VFDialog
         isOpen={isIdCardModalOpen}
         onClose={() => setIsIdCardModalOpen(false)}
@@ -2097,12 +2066,10 @@ function StudentsPage() {
       >
         {idCardStudent && (
           <div className="p-2 flex flex-col items-center justify-center space-y-3">
-            {/* Exact 85 : 54 Ratio CR80 Physical Card */}
             <div
-              className="w-full max-w-[425px] rounded-xl border border-border/80 bg-gradient-to-br from-card via-card to-muted/40 shadow-xl p-4 flex flex-col justify-between relative overflow-hidden"
+              className="w-full max-w-[425px] rounded-md border border-border/80 bg-gradient-to-br from-card via-card to-muted/40 shadow-xl p-4 flex flex-col justify-between relative overflow-hidden"
               style={{ aspectRatio: '85 / 54' }}
             >
-              {/* Header */}
               <div className="flex items-center justify-between border-b border-border/60 pb-1.5">
                 <div>
                   <h4 className="text-xs font-black uppercase tracking-wider text-foreground">
@@ -2115,9 +2082,7 @@ function StudentsPage() {
                 </span>
               </div>
 
-              {/* Body */}
               <div className="flex items-center gap-3.5 py-1.5">
-                {/* 19.5 : 25 Portrait */}
                 <div
                   className="relative overflow-hidden rounded-md border border-border shadow-2xs w-[72px] h-[92px] bg-muted shrink-0 flex items-center justify-center"
                   style={{ aspectRatio: '19.5 / 25' }}
@@ -2130,7 +2095,6 @@ function StudentsPage() {
                   />
                 </div>
 
-                {/* Details */}
                 <div className="flex-1 min-w-0 space-y-0.5 text-xs">
                   <h4 className="font-bold text-foreground text-sm truncate">{idCardStudent.name}</h4>
                   <p className="font-mono text-[11px] text-muted-foreground font-semibold">{idCardStudent.admNo}</p>
@@ -2148,7 +2112,6 @@ function StudentsPage() {
                 </div>
               </div>
 
-              {/* Barcode Footer */}
               <div className="flex items-center justify-between border-t border-border/60 pt-1 text-[9px] font-mono text-muted-foreground">
                 <div className="flex items-center gap-0.5 h-3.5 opacity-70">
                   <div className="h-full w-0.5 bg-foreground" />
@@ -2168,131 +2131,235 @@ function StudentsPage() {
         )}
       </VFDialog>
 
-      {/* 📦 ADVANCED EXPORT MODAL (XLSX, ZIP Photos in 19.5:25, and File Naming Templates) */}
       <VFDialog
         isOpen={isExportModalOpen}
         onClose={() => { if (!isExporting) setIsExportModalOpen(false); }}
-        title="Export Student Data & Media Package"
-        description={`Configure export format, spreadsheet columns, and 19.5 : 25 student photo naming for Session ${activeSession}`}
-        className="max-w-xl"
+        title="Export Student Directory & Media Package"
+        description={`Download structured student records, institutional spreadsheets, and high-resolution 19.5 : 25 photo archives for Academic Session ${activeSession}.`}
+        className="max-w-4xl w-full"
         footerActions={
-          <>
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => setIsExportModalOpen(false)}
-              disabled={isExporting}
-            >
-              Cancel
-            </VFButton>
-            <VFButton
-              size="sm"
-              leftIcon={isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-              onClick={handleExecuteExport}
-              disabled={isExporting}
-            >
-              {isExporting ? 'Generating...' : 'Start Export'}
-            </VFButton>
-          </>
+          <div className="flex items-center justify-between w-full">
+            <div className="text-xs text-muted-foreground font-semibold flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 inline-block" />
+              <span>{currentEnrolledList.length} Students Selected for Export</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <VFButton
+                variant="outline"
+                size="md"
+                onClick={() => setIsExportModalOpen(false)}
+                disabled={isExporting}
+              >
+                Cancel
+              </VFButton>
+              <VFButton
+                size="md"
+                leftIcon={isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                onClick={handleExecuteExport}
+                disabled={isExporting}
+                className="font-bold min-w-[160px]"
+              >
+                {isExporting
+                  ? 'Generating...'
+                  : exportFormat === 'bundle'
+                  ? 'Export Bundle (.zip)'
+                  : exportFormat === 'xlsx'
+                  ? 'Export Excel (.xlsx)'
+                  : 'Export Photos (.zip)'}
+              </VFButton>
+            </div>
+          </div>
         }
       >
-        <div className="space-y-4 pt-1">
-          {/* Step 1: Select Export Package Type */}
-          <div>
-            <label className="text-xs font-black uppercase tracking-wider text-muted-foreground block mb-2">
-              1. Choose Export Package
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {/* Option 1: Combined Bundle */}
-              <div
-                onClick={() => setExportFormat('bundle')}
-                className={cn(
-                  "p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between",
-                  exportFormat === 'bundle'
-                    ? "bg-primary/15 border-primary shadow-xs ring-1 ring-primary"
-                    : "bg-card border-border hover:bg-muted/40"
-                )}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <Archive className={cn("h-5 w-5", exportFormat === 'bundle' ? "text-primary" : "text-muted-foreground")} />
-                    {exportFormat === 'bundle' && <CheckCircle2 className="h-4 w-4 text-primary" />}
-                  </div>
-                  <h4 className="text-xs font-black text-foreground">Complete Bundle</h4>
-                  <p className="text-[11px] text-muted-foreground mt-1 leading-tight">
-                    Excel Roster + 19.5:25 Photos in ZIP
-                  </p>
-                </div>
-                <VFBadge variant="outline" className="mt-2 text-[10px] w-fit">Recommended</VFBadge>
+        <div className="space-y-5 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-lg bg-muted/40 border border-border/80 text-xs">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-md bg-blue-500/15 text-blue-400 flex items-center justify-center font-black shrink-0 border border-blue-500/30">
+                <GraduationCap className="h-4 w-4" />
               </div>
-
-              {/* Option 2: Excel Spreadsheet Only */}
-              <div
-                onClick={() => setExportFormat('xlsx')}
-                className={cn(
-                  "p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between",
-                  exportFormat === 'xlsx'
-                    ? "bg-primary/15 border-primary shadow-xs ring-1 ring-primary"
-                    : "bg-card border-border hover:bg-muted/40"
-                )}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <FileSpreadsheet className={cn("h-5 w-5", exportFormat === 'xlsx' ? "text-primary" : "text-muted-foreground")} />
-                    {exportFormat === 'xlsx' && <CheckCircle2 className="h-4 w-4 text-primary" />}
-                  </div>
-                  <h4 className="text-xs font-black text-foreground">Excel Sheet (.xlsx)</h4>
-                  <p className="text-[11px] text-muted-foreground mt-1 leading-tight">
-                    Formatted tables with photo filenames
-                  </p>
-                </div>
-                <span className="text-[10px] font-bold text-muted-foreground mt-2">Spreadsheet only</span>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">Session Context</p>
+                <p className="font-bold text-foreground truncate">{activeSession}</p>
               </div>
+            </div>
 
-              {/* Option 3: Photos ZIP Only */}
-              <div
-                onClick={() => setExportFormat('zip')}
-                className={cn(
-                  "p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between",
-                  exportFormat === 'zip'
-                    ? "bg-primary/15 border-primary shadow-xs ring-1 ring-primary"
-                    : "bg-card border-border hover:bg-muted/40"
-                )}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <Download className={cn("h-5 w-5", exportFormat === 'zip' ? "text-primary" : "text-muted-foreground")} />
-                    {exportFormat === 'zip' && <CheckCircle2 className="h-4 w-4 text-primary" />}
-                  </div>
-                  <h4 className="text-xs font-black text-foreground">Photos ZIP (.zip)</h4>
-                  <p className="text-[11px] text-muted-foreground mt-1 leading-tight">
-                    All images in exact 19.5:25 ratio
-                  </p>
-                </div>
-                <span className="text-[10px] font-bold text-muted-foreground mt-2">{currentEnrolledList.length} Photos</span>
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-md bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-black shrink-0 border border-emerald-500/30">
+                <Users className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">Total Population</p>
+                <p className="font-bold text-foreground truncate">{currentEnrolledList.length} Active Records</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-md bg-purple-500/15 text-purple-400 flex items-center justify-center font-black shrink-0 border border-purple-500/30">
+                <ImageIcon className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">Media Format</p>
+                <p className="font-bold text-foreground truncate">19.5 : 25 Portrait Aspect</p>
               </div>
             </div>
           </div>
 
-          {/* Step 2: Photo Naming Convention (Required for ZIP & DB Storage) */}
-          {(exportFormat === 'zip' || exportFormat === 'bundle') && (
-            <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                  <Settings className="h-3.5 w-3.5 text-primary" />
-                  2. Photo File Naming Template
-                </label>
-                <VFBadge variant="outline">Aspect 19.5 : 25</VFBadge>
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">1</span>
+                Choose Export Package
+              </label>
+              <span className="text-[11px] text-muted-foreground font-medium">Select desired data and media bundle format</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+              <div
+                onClick={() => setExportFormat('bundle')}
+                className={cn(
+                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  exportFormat === 'bundle'
+                    ? "bg-blue-500/10 border-blue-500/80 shadow-md ring-1 ring-blue-500/40"
+                    : "bg-[#09090b] border-border/80 hover:border-border hover:bg-muted/20"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={cn(
+                      "h-10 w-10 rounded-md flex items-center justify-center border transition-all",
+                      exportFormat === 'bundle'
+                        ? "bg-blue-500/20 text-blue-400 border-blue-500/40"
+                        : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      <Archive className="h-5 w-5" />
+                    </div>
+                    {exportFormat === 'bundle' ? (
+                      <CheckCircle2 className="h-5 w-5 text-blue-400 animate-in zoom-in-50" />
+                    ) : (
+                      <VFBadge variant="outline" className="text-[10px]">Popular</VFBadge>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-black text-foreground mb-1">Complete Bundle (.zip)</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Excel master spreadsheet + HD student portraits in standardized 19.5:25 ratio.
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-border/60 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-blue-400 font-bold">✓</span> Full demographic columns
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-blue-400 font-bold">✓</span> {currentEnrolledList.length} Photos packaged in ZIP
+                  </div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div
+                onClick={() => setExportFormat('xlsx')}
+                className={cn(
+                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  exportFormat === 'xlsx'
+                    ? "bg-emerald-500/10 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/40"
+                    : "bg-[#09090b] border-border/80 hover:border-border hover:bg-muted/20"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={cn(
+                      "h-10 w-10 rounded-md flex items-center justify-center border transition-all",
+                      exportFormat === 'xlsx'
+                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                        : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      <FileSpreadsheet className="h-5 w-5" />
+                    </div>
+                    {exportFormat === 'xlsx' ? (
+                      <CheckCircle2 className="h-5 w-5 text-emerald-400 animate-in zoom-in-50" />
+                    ) : (
+                      <VFBadge variant="outline" className="text-[10px]">Fast</VFBadge>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-black text-foreground mb-1">Excel Sheet (.xlsx)</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Formatted tables with admission IDs, contacts, academic records, and photo filenames.
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-border/60 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-emerald-400 font-bold">✓</span> Clean Excel workbook
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-emerald-400 font-bold">✓</span> Photo URLs & filenames linked
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setExportFormat('zip')}
+                className={cn(
+                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  exportFormat === 'zip'
+                    ? "bg-purple-500/10 border-purple-500/80 shadow-md ring-1 ring-purple-500/40"
+                    : "bg-[#09090b] border-border/80 hover:border-border hover:bg-muted/20"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={cn(
+                      "h-10 w-10 rounded-md flex items-center justify-center border transition-all",
+                      exportFormat === 'zip'
+                        ? "bg-purple-500/20 text-purple-400 border-purple-500/40"
+                        : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      <Download className="h-5 w-5" />
+                    </div>
+                    {exportFormat === 'zip' ? (
+                      <CheckCircle2 className="h-5 w-5 text-purple-400 animate-in zoom-in-50" />
+                    ) : (
+                      <VFBadge variant="outline" className="text-[10px]">Media Only</VFBadge>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-black text-foreground mb-1">Photos ZIP (.zip)</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Student portraits rendered in exact 19.5:25 ratio with standardized filenames.
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-border/60 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-purple-400 font-bold">✓</span> Standardized 19.5:25 aspect
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-purple-400 font-bold">✓</span> {currentEnrolledList.length} Images in archive
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {(exportFormat === 'zip' || exportFormat === 'bundle') && (
+            <div className="p-4 rounded-lg bg-[#09090b] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">2</span>
+                  Photo File Naming Template
+                </label>
+                <span className="text-xs font-bold text-primary flex items-center gap-1.5">
+                  <Settings className="h-3.5 w-3.5" />
+                  Aspect Ratio: 19.5 : 25
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <label
                   onClick={() => setNamingPattern('id-name')}
                   className={cn(
-                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
                     namingPattern === 'id-name'
-                      ? "bg-primary/10 border-primary text-foreground"
-                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
                   )}
                 >
                   <input
@@ -2300,18 +2367,21 @@ function StudentsPage() {
                     name="naming"
                     checked={namingPattern === 'id-name'}
                     onChange={() => setNamingPattern('id-name')}
-                    className="text-primary accent-primary"
+                    className="text-primary accent-primary h-4 w-4"
                   />
-                  <span>{`{Unique ID}-{Student Name}`}</span>
+                  <div>
+                    <span className="block font-mono text-xs">{`{Admission ID}-{Student Name}.jpg`}</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">E.g., ADM-2026-001-Aditya_Verma.jpg</span>
+                  </div>
                 </label>
 
                 <label
                   onClick={() => setNamingPattern('roll-name')}
                   className={cn(
-                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
                     namingPattern === 'roll-name'
-                      ? "bg-primary/10 border-primary text-foreground"
-                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
                   )}
                 >
                   <input
@@ -2319,18 +2389,21 @@ function StudentsPage() {
                     name="naming"
                     checked={namingPattern === 'roll-name'}
                     onChange={() => setNamingPattern('roll-name')}
-                    className="text-primary accent-primary"
+                    className="text-primary accent-primary h-4 w-4"
                   />
-                  <span>{`{Roll No}_{Student Name}`}</span>
+                  <div>
+                    <span className="block font-mono text-xs">{`{Roll No}_{Student Name}.jpg`}</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">E.g., 101_Aditya_Verma.jpg</span>
+                  </div>
                 </label>
 
                 <label
                   onClick={() => setNamingPattern('name-id')}
                   className={cn(
-                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
                     namingPattern === 'name-id'
-                      ? "bg-primary/10 border-primary text-foreground"
-                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
                   )}
                 >
                   <input
@@ -2338,18 +2411,21 @@ function StudentsPage() {
                     name="naming"
                     checked={namingPattern === 'name-id'}
                     onChange={() => setNamingPattern('name-id')}
-                    className="text-primary accent-primary"
+                    className="text-primary accent-primary h-4 w-4"
                   />
-                  <span>{`{Student Name}_{Unique ID}`}</span>
+                  <div>
+                    <span className="block font-mono text-xs">{`{Student Name}_{Admission ID}.jpg`}</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">E.g., Aditya_Verma_ADM-2026-001.jpg</span>
+                  </div>
                 </label>
 
                 <label
                   onClick={() => setNamingPattern('custom')}
                   className={cn(
-                    "flex items-center gap-2.5 p-2.5 rounded-lg border text-xs font-bold cursor-pointer transition-all",
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
                     namingPattern === 'custom'
-                      ? "bg-primary/10 border-primary text-foreground"
-                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
                   )}
                 >
                   <input
@@ -2357,20 +2433,22 @@ function StudentsPage() {
                     name="naming"
                     checked={namingPattern === 'custom'}
                     onChange={() => setNamingPattern('custom')}
-                    className="text-primary accent-primary"
+                    className="text-primary accent-primary h-4 w-4"
                   />
-                  <span>Custom Column Prefix</span>
+                  <div>
+                    <span className="block font-mono text-xs">Custom Column Prefix</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">Select custom unique identifier</span>
+                  </div>
                 </label>
               </div>
 
-              {/* Custom Unique Column Picker */}
               {namingPattern === 'custom' && (
-                <div className="flex items-center gap-2 pt-1">
-                  <span className="text-xs font-bold text-muted-foreground">Unique Column:</span>
+                <div className="flex items-center gap-3 p-2.5 rounded-md bg-muted/40 border border-border">
+                  <span className="text-xs font-bold text-foreground">Unique Column Identifier:</span>
                   <select
                     value={customColumnKey}
                     onChange={(e) => setCustomColumnKey(e.target.value)}
-                    className="bg-card border border-border text-xs font-bold text-foreground rounded-lg px-2.5 py-1.5 outline-none cursor-pointer"
+                    className="bg-card border border-border text-xs font-bold text-foreground rounded px-3 py-1.5 outline-none cursor-pointer focus:border-primary"
                   >
                     <option value="admNo">Admission No (Unique ID)</option>
                     <option value="roll">Roll Number</option>
@@ -2380,25 +2458,157 @@ function StudentsPage() {
                 </div>
               )}
 
-              {/* Live Filename Preview */}
-              <div className="p-2.5 rounded-lg bg-background/80 border border-border flex items-center justify-between text-xs">
-                <span className="font-bold text-muted-foreground">Output Filename Preview:</span>
-                <span className="font-mono font-bold text-primary truncate max-w-[280px]">
-                  {currentEnrolledList[0] ? getFormattedPhotoName(currentEnrolledList[0]) : 'ADM-2026-001-Aditya_Verma.jpg'}
-                </span>
+              <div className="p-3 rounded-md bg-[#121215] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-bold text-muted-foreground">Generated Output Sample:</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded border border-primary/30">
+                    {currentEnrolledList[0] ? getFormattedPhotoName(currentEnrolledList[0]) : 'ADM-2026-001-Aditya_Verma.jpg'}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground font-bold font-mono">390×500px</span>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Progress or Status message */}
           {isExporting && (
-            <div className="p-3 rounded-xl bg-primary/10 border border-primary/30 flex items-center gap-3 animate-pulse">
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-3.5 animate-pulse">
               <Loader2 className="h-5 w-5 text-primary animate-spin shrink-0" />
-              <p className="text-xs font-bold text-primary">{exportProgressText}</p>
+              <div>
+                <p className="text-sm font-black text-primary">{exportProgressText}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Please keep this window open while the archive is generated.</p>
+              </div>
             </div>
           )}
+        </div>
+      </VFDialog>
+
+      {/* ⚙️ CONFIGURE DOSSIER FIELDS MODAL */}
+      <VFDialog
+        isOpen={isFieldConfigOpen}
+        onClose={() => setIsFieldConfigOpen(false)}
+        title="Configure Dossier Profile Fields"
+        description="Customize, enable, disable, and add custom institutional fields for student dossiers."
+        className="max-w-2xl"
+        footerActions={
+          <VFButton size="sm" onClick={() => setIsFieldConfigOpen(false)}>
+            Done & Apply
+          </VFButton>
+        }
+      >
+        <div className="space-y-5 py-1">
+          {/* Add New Custom Field Box */}
+          <div className="p-4 rounded-lg bg-muted/40 border border-border/80 space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+              <Plus className="h-4 w-4 text-primary" />
+              <span>Add New Custom Field</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="sm:col-span-2">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                  Field Label
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Passport Number, Mother Tongue, Bus Stop"
+                  value={newFieldLabel}
+                  onChange={(e) => setNewFieldLabel(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleAddCustomField();
+                  }}
+                  className="w-full h-8.5 px-3 text-xs text-foreground bg-card border border-border rounded-md outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                  Section Category
+                </label>
+                <select
+                  value={newFieldCategory}
+                  onChange={(e) => setNewFieldCategory(e.target.value as any)}
+                  className="w-full h-8.5 px-2.5 text-xs text-foreground bg-card border border-border rounded-md outline-none cursor-pointer"
+                >
+                  <option value="personal">Personal Identity</option>
+                  <option value="family">Family & Contacts</option>
+                  <option value="operations">Operations & Transport</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <VFButton
+                size="sm"
+                variant="outline"
+                leftIcon={<Plus className="h-3.5 w-3.5" />}
+                onClick={handleAddCustomField}
+                disabled={!newFieldLabel.trim()}
+              >
+                Add Field
+              </VFButton>
+            </div>
+          </div>
+
+          {/* List of Fields grouped by category */}
+          {(['personal', 'family', 'operations'] as const).map((cat) => {
+            const catFields = dossierFields.filter((f) => f.category === cat);
+            const catTitle =
+              cat === 'personal'
+                ? 'Personal & Academic Identity'
+                : cat === 'family'
+                ? 'Family & Emergency Contacts'
+                : 'Operations, Transport & Medical';
+            return (
+              <div key={cat} className="space-y-2">
+                <h5 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  {catTitle} ({catFields.filter((f) => f.isVisible).length} / {catFields.length} Active)
+                </h5>
+                <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1">
+                  {catFields.map((field) => (
+                    <div
+                      key={field.key}
+                      className={cn(
+                        "flex items-center justify-between p-2.5 rounded-md border text-xs transition-colors",
+                        field.isVisible
+                          ? "bg-card border-border/80 text-foreground"
+                          : "bg-muted/20 border-border/40 text-muted-foreground"
+                      )}
+                    >
+                      <label className="flex items-center gap-2.5 cursor-pointer flex-1 select-none">
+                        <input
+                          type="checkbox"
+                          checked={field.isVisible}
+                          onChange={() => handleToggleField(field.key)}
+                          className="rounded border-border text-primary focus:ring-primary h-4 w-4 cursor-pointer"
+                        />
+                        <span className={cn("font-medium", field.isVisible ? "text-foreground font-semibold" : "line-through text-muted-foreground")}>
+                          {field.label}
+                        </span>
+                        {field.isCustom && (
+                          <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-primary/10 text-primary border border-primary/20">
+                            Custom
+                          </span>
+                        )}
+                      </label>
+                      {field.isCustom && (
+                        <button
+                          onClick={() => handleDeleteCustomField(field.key)}
+                          className="text-muted-foreground hover:text-red-400 p-1 rounded hover:bg-muted/60 transition-colors cursor-pointer"
+                          title="Delete Custom Field"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </VFDialog>
     </VFPageContainer>
   );
 }
+
+

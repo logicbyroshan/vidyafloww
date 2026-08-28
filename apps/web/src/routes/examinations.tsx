@@ -144,24 +144,24 @@ function ExaminationsPage() {
   const overviewContent = (
     <div className="space-y-6">
       {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Active Session</span>
             <span className="text-2xl font-black text-foreground mt-1 block">Term 1 Live</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">48 Papers Scheduled</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Enrolled Candidates</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">1,248 Students</span>
             <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">100% Admit Cards Issued</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Marks Entry Status</span>
             <span className="text-2xl font-black text-foreground mt-1 block">84.2%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Teacher Evaluation On Track</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Pass Benchmark</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">96.4%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Unit Test 1 Aggregated</span>
@@ -170,23 +170,23 @@ function ExaminationsPage() {
       </div>
 
       {/* Ranks & Scholars Podium */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+      <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
         <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-2 border-b border-border/60">
           <Award className="h-4 w-4 text-amber-400" />
           <span>Academic Scholars & Grade Toppers (Term Examination)</span>
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+          <div className="p-4 rounded-md bg-muted/30 border border-border/60">
             <span className="text-xs font-bold text-amber-400 uppercase tracking-wide block">🥇 Rank 1 Scholar</span>
             <span className="text-lg font-black text-foreground mt-1 block">Aditya Verma (95.4%)</span>
             <span className="text-xs text-muted-foreground mt-0.5 block">Class 9-A · Total: 477 / 500</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+          <div className="p-4 rounded-md bg-muted/30 border border-border/60">
             <span className="text-xs font-bold text-slate-300 uppercase tracking-wide block">🥈 Rank 2 Scholar</span>
             <span className="text-lg font-black text-foreground mt-1 block">Kavya Nair (93.6%)</span>
             <span className="text-xs text-muted-foreground mt-0.5 block">Class 11-Com · Total: 468 / 500</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/30 border border-border/60">
+          <div className="p-4 rounded-md bg-muted/30 border border-border/60">
             <span className="text-xs font-bold text-amber-600 uppercase tracking-wide block">🥉 Rank 3 Scholar</span>
             <span className="text-lg font-black text-foreground mt-1 block">Priya Sharma (93.4%)</span>
             <span className="text-xs text-muted-foreground mt-0.5 block">Class 9-A · Total: 467 / 500</span>
@@ -223,7 +223,7 @@ function ExaminationsPage() {
   // 2. Marks Entry Hub
   const marksContent = (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-lg border border-border/80 shadow-xs">
         <div>
           <h3 className="text-base font-bold text-foreground">Teacher Score Entry Console · Class 9-A (Term 1)</h3>
           <p className="text-xs text-muted-foreground">Auto calculates Total Score, Percentage %, and CBSE 9-Point Grade (A1 to E2)</p>
@@ -247,7 +247,7 @@ function ExaminationsPage() {
         </div>
       </div>
 
-      <div className="border border-border/80 rounded-2xl bg-card overflow-x-auto shadow-xs custom-scrollbar">
+      <div className="border border-border/80 rounded-lg bg-card overflow-x-auto shadow-xs custom-scrollbar">
         <table className="w-full text-left text-sm border-collapse">
           <thead>
             <tr className="border-b border-border bg-muted/60 text-xs font-black text-muted-foreground uppercase tracking-wider">
@@ -291,7 +291,7 @@ function ExaminationsPage() {
   // 3. Digital Report Card Hub
   const reportCardsContent = (
     <div className="space-y-6">
-      <div className="p-5 sm:p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-4">
+      <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/60">
           <div>
             <h3 className="text-base font-bold text-foreground">CBSE Digital Report Card Studio</h3>
@@ -317,7 +317,7 @@ function ExaminationsPage() {
         </div>
 
         {/* Printable Visual Report Card Frame */}
-        <div className="p-6 rounded-2xl bg-muted/20 border border-border/80 space-y-6 max-w-4xl mx-auto">
+        <div className="p-6 rounded-lg bg-muted/20 border border-border/80 space-y-6 max-w-4xl mx-auto">
           <div className="text-center space-y-1 pb-4 border-b border-border">
             <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Springfield International Academy</span>
             <h2 className="text-2xl font-black text-foreground tracking-tight">Official Academic Achievement Report</h2>
@@ -343,7 +343,7 @@ function ExaminationsPage() {
             </div>
           </div>
 
-          <div className="border border-border rounded-xl overflow-hidden bg-card">
+          <div className="border border-border rounded-md overflow-hidden bg-card">
             <table className="w-full text-left text-xs">
               <thead className="bg-muted text-muted-foreground font-black uppercase tracking-wider border-b border-border">
                 <tr>
@@ -380,9 +380,9 @@ function ExaminationsPage() {
   ];
 
   return (
-    <VFPageContainer className="p-4 sm:p-5 flex-1 flex flex-col min-h-0 space-y-4">
+    <VFPageContainer className="space-y-2.5 sm:space-y-3">
       {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-xl text-sm text-foreground flex items-center justify-between animate-fade-in">
+        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
             <span className="font-bold">{notice}</span>

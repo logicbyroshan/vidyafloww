@@ -124,24 +124,24 @@ function NoticesPage() {
       )}
 
       {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/90 shadow-xs">
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Active Circulars</span>
             <span className="text-2xl font-black text-foreground mt-1 block">42 Published</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">This Academic Year</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Broadcast Reach</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">1,372 Users</span>
             <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Parents, Staff & Students</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">SMS Gateway Status</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">99.8% Sent</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Twilio & Gupshup Live</span>
           </div>
-          <div className="p-4 rounded-xl bg-muted/40 border border-border/80">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Parent Read Rate</span>
             <span className="text-2xl font-black text-emerald-400 mt-1 block">94.2%</span>
             <span className="text-[11px] text-muted-foreground mt-0.5 block">Within 24 Hours</span>

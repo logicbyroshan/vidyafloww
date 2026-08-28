@@ -130,14 +130,17 @@ export function AppShell() {
 
   React.useEffect(() => {
     initTheme();
-    if (location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/forgot-password') {
+    // Only display the welcome notification immediately after an explicit user login
+    const justLoggedIn = sessionStorage.getItem('vidyamaxx_just_logged_in');
+    if (justLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/forgot-password') {
+      sessionStorage.removeItem('vidyamaxx_just_logged_in');
       const timer = setTimeout(() => {
         addNotification({
           title: 'Welcome to VidyaMaxx',
           description: 'Your enterprise school management platform is ready.',
           type: 'info',
         });
-      }, 2000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [location.pathname]);
@@ -185,9 +188,8 @@ export function AppShell() {
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}
-              onAIClick={() => setIsAIDrawerOpen(true)}
             />
-            <main ref={mainRef} className="flex-1 overflow-hidden min-w-0 bg-background relative flex flex-col">
+            <main ref={mainRef} className="flex-1 overflow-y-auto custom-scrollbar min-w-0 bg-background relative flex flex-col">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}
@@ -195,7 +197,7 @@ export function AppShell() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full flex-1 flex flex-col min-h-0 overflow-hidden"
+                  className="w-full flex-1 flex flex-col min-h-full"
                 >
                   <Outlet />
                 </motion.div>

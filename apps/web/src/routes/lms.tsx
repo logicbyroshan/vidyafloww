@@ -69,7 +69,7 @@ function OnlineClassesPage() {
   // ----------------------------------------------------
   const scheduleContent = (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-xl shadow-xs">
+      <div className="flex items-center justify-between bg-card border border-border p-3.5 rounded-md shadow-xs">
         <div>
           <h3 className="text-sm font-bold text-foreground">Virtual Class Timetable & Meeting Calendar</h3>
           <p className="text-xs text-muted-foreground">Daily schedule of live video lectures and interactive sessions.</p>
@@ -103,7 +103,7 @@ function OnlineClassesPage() {
   const liveClassesContent = (
     <div className="space-y-4">
       <VFCard title="Active Live Video Rooms & Breakout Sessions">
-        <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center justify-between text-xs">
+        <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-md flex items-center justify-between text-xs">
           <div>
             <span className="font-bold text-foreground">🔴 Class 10 Physics Optics Revision (LIVE NOW)</span>
             <p className="text-muted-foreground text-xs mt-0.5">Instructor: Dr. Sarah Connor · 38 Students Connected</p>

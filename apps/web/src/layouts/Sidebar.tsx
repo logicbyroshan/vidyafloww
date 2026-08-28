@@ -111,7 +111,7 @@ export function Sidebar() {
 
         <button
           onClick={toggleSidebar}
-          className="absolute -right-3.5 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-50 transition-all duration-200 cursor-pointer shadow-xs"
+          className="absolute -right-3.5 top-1/2 -translate-y-1/2 h-7 w-7 rounded-md bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-50 transition-all duration-200 cursor-pointer shadow-xs"
           title={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         >
           {sidebarExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -119,25 +119,17 @@ export function Sidebar() {
       </div>
 
       {/* Categorized Navigation List */}
-      <div className="flex-1 overflow-y-auto p-2.5 sidebar-left-scrollbar custom-scrollbar space-y-2.5">
+      <div className="flex-1 overflow-y-auto no-scrollbar p-2.5 space-y-2">
         {NAVIGATION_SECTIONS.map((section, secIdx) => (
-          <div
-            key={secIdx}
-            className={cn(
-              "space-y-1",
-              secIdx > 0 && "border-t border-border/70 pt-2.5 mt-2"
-            )}
-          >
+          <div key={secIdx} className="space-y-1">
+            {/* Full-Width Divider between sections */}
+            {secIdx > 0 && <div className="-mx-2.5 h-[1px] bg-border my-2" />}
+
             {section.title && sidebarExpanded && (
-              <div className="px-3 pt-0.5 pb-0.5">
+              <div className="px-2.5 pt-0.5 pb-0.5">
                 <span className="text-[10px] font-bold text-muted-foreground/80 uppercase tracking-wider">
                   {section.title}
                 </span>
-              </div>
-            )}
-            {section.title && !sidebarExpanded && (
-              <div className="flex justify-center my-1">
-                <div className="h-[1px] w-5 bg-border" />
               </div>
             )}
 
@@ -155,17 +147,17 @@ export function Sidebar() {
                     to={item.route}
                     className={cn(
                       'flex items-center transition-all duration-150 text-sm outline-none whitespace-nowrap font-medium',
-                      sidebarExpanded ? 'w-full h-10 px-3 py-2 rounded-xl' : 'w-10 h-10 mx-auto rounded-xl justify-center p-0',
+                      sidebarExpanded ? 'w-full h-9 px-2.5 py-1.5 rounded-md' : 'w-9 h-9 mx-auto rounded-md justify-center p-0',
                       isActive
-                        ? 'bg-muted text-foreground border border-border shadow-2xs font-semibold'
-                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground border border-transparent'
+                        ? 'bg-[#09090b] text-foreground border border-border font-bold shadow-xs'
+                        : 'text-muted-foreground hover:bg-[#0e0e11] hover:text-foreground border border-transparent'
                     )}
                     title={!sidebarExpanded ? item.label : undefined}
                   >
                     <Icon
                       className={cn(
                         'h-4.5 w-4.5 shrink-0 transition-colors',
-                        isActive ? 'text-foreground' : 'text-muted-foreground'
+                        isActive ? 'text-primary' : 'text-muted-foreground'
                       )}
                     />
                     <span
@@ -187,7 +179,7 @@ export function Sidebar() {
       {/* User Profile in Sidebar Bottom */}
       <div className="p-2.5 border-t border-border bg-card/60 shrink-0">
         <div className={cn('flex items-center w-full min-w-0', sidebarExpanded ? 'gap-2.5' : 'justify-center')}>
-          <VFAvatar fallback="Roshan Singh" size="sm" className="h-9 w-9 text-xs shrink-0 rounded-lg" />
+          <VFAvatar fallback="Roshan Singh" size="sm" className="h-8 w-8 text-xs shrink-0 rounded-md" />
           <div
             className={cn(
               'flex-1 min-w-0 transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap',
@@ -200,7 +192,7 @@ export function Sidebar() {
           <Link
             to="/login"
             className={cn(
-              'text-muted-foreground hover:text-destructive transition-all duration-200 p-2 rounded-lg hover:bg-muted shrink-0',
+              'text-muted-foreground hover:text-destructive transition-all duration-200 p-2 rounded-md hover:bg-muted shrink-0',
               sidebarExpanded ? 'opacity-100 ml-auto' : 'opacity-0 max-w-0 pointer-events-none hidden'
             )}
             title="Sign Out"
