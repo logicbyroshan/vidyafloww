@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import JSZip from 'jszip';
 import {
   VFPageContainer,
@@ -12,7 +12,6 @@ import {
 } from '@vidyamaxx/ui';
 import {
   UserCheck,
-  ArrowRight,
   Eye,
   Plus,
   Download,
@@ -41,6 +40,11 @@ import {
   CreditCard,
   Trash2,
   Camera,
+  QrCode,
+  CheckCheck,
+  TrendingUp,
+  BookOpen,
+  Quote,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -1479,434 +1483,542 @@ function StudentsPage() {
                 </div>
               )}
 
+                {/* TAB 2: ACADEMICS & EXAMS */}
                 {drawerTab === 'academics' && (
                   <div className="animate-fade-in divide-y divide-border/40">
-                    <div className="flex items-center justify-between px-4 py-3 flex-wrap gap-3">
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-bold text-foreground">Term 1 Assessment Report</h4>
-                        <span className="text-[11px] text-muted-foreground">CBSE Standard Curriculum · {activeSession}</span>
-                      </div>
-                      <div className="flex items-center gap-4 text-xs font-mono">
-                        <div className="text-right">
-                          <span className="text-muted-foreground text-[10px] font-bold uppercase block">Aggregate Score</span>
-                          <span className="font-black text-foreground text-base">477 / 500 (95.4%)</span>
+                    {/* KPI Score Overview Strip */}
+                    <div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-4 py-3">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Aggregate Score</span>
+                          <span className="text-xl font-black text-foreground mt-0.5 block font-mono">477 / 500</span>
+                          <span className="text-[10px] text-emerald-400 mt-0.5 font-bold flex items-center gap-1">
+                            <TrendingUp className="h-3 w-3" /> 95.4% (Grade A1)
+                          </span>
                         </div>
-                        <div className="text-right">
-                          <span className="text-muted-foreground text-[10px] font-bold uppercase block">Cohort Standing</span>
-                          <span className="font-black text-emerald-400 text-base">#2 / 40 (A1)</span>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Class Rank</span>
+                          <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">#2 of 40</span>
+                          <span className="text-[10px] text-muted-foreground mt-0.5 block">Top 5% Cohort</span>
+                        </div>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">GPA / CGPA</span>
+                          <span className="text-xl font-black text-foreground mt-0.5 block font-mono">{activeStudent.gpa || '3.92'}</span>
+                          <span className="text-[10px] text-muted-foreground mt-0.5 block">Scale 4.0</span>
+                        </div>
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Exam Attendance</span>
+                          <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">100%</span>
+                          <span className="text-[10px] text-emerald-400 mt-0.5 block font-medium">5 / 5 Subjects</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="overflow-hidden">
-                      <table className="w-full text-xs">
-                        <thead>
-                          <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
-                            <th className="py-2.5 px-3 text-left">Subject</th>
-                            <th className="py-2.5 px-3 text-center">Score</th>
-                            <th className="py-2.5 px-3 text-center">Grade</th>
-                            <th className="py-2.5 px-3 text-right">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border/40 font-mono">
-                          {(activeStudent.recentTestScores || [
-                            { subject: 'Mathematics [041]', score: '98/100', grade: 'A1' },
-                            { subject: 'Science [086]', score: '95/100', grade: 'A1' },
-                            { subject: 'English Core [301]', score: '92/100', grade: 'A1' },
-                            { subject: 'Computer Applications [165]', score: '99/100', grade: 'A1' },
-                            { subject: 'Social Science [087]', score: '94/100', grade: 'A1' },
-                          ]).map((scoreItem: any, idx: number) => (
-                            <tr key={idx} className="hover:bg-muted/20 transition-colors">
-                              <td className="py-2.5 px-3 font-sans font-semibold text-foreground">{scoreItem.subject}</td>
-                              <td className="py-2.5 px-3 text-center font-bold text-foreground text-sm">{scoreItem.score}</td>
-                              <td className="py-2.5 px-3 text-center">
-                                <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">
-                                  {scoreItem.grade}
-                                </span>
-                              </td>
-                              <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Passed</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="p-3 sm:p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs space-y-1.5">
-                      <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wide block">Principal & Faculty Remark</span>
-                      <p className="text-foreground text-xs italic leading-relaxed">
-                        "Aditya consistently exhibits exceptional analytical thinking in STEM disciplines and commendable institutional leadership."
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-end pt-0.5">
-                      <Link
-                        to="/examinations"
-                        className="text-xs font-bold text-foreground hover:underline inline-flex items-center gap-1.5"
-                      >
-                        <span>Open Comprehensive Examinations Module</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </Link>
-                    </div>
-                  </div>
-                )}
-
-                {drawerTab === 'credentials' && (
-                  <div className="animate-fade-in divide-y divide-border/40">
-                    <div className="px-4 py-3 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="text-xs sm:text-sm font-bold text-foreground">Standard Student ID Card</h4>
-                          <span className="text-[11px] text-muted-foreground">Standard CR-80 physical card dimensions (85.6mm × 54mm)</span>
+                    {/* Assessment Scorecard Table */}
+                    <div>
+                      <div className="px-4 py-3 space-y-2.5">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <div>
+                            <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
+                              <BookOpen className="h-4 w-4 text-muted-foreground" />
+                              <span>Term 1 Summative Assessment Scorecard</span>
+                            </h4>
+                            <span className="text-[11px] text-muted-foreground">CBSE Standard Curriculum · Session {activeSession}</span>
+                          </div>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                            Published & Verified
+                          </span>
                         </div>
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                          CR-80 (85 × 54 mm)
-                        </span>
-                      </div>
 
-                      <div className="max-w-[340px] mx-auto w-full">
-                        <div
-                          className="w-full bg-linear-to-br from-card via-card to-muted rounded-lg border border-border/90 shadow-lg p-3.5 flex flex-col justify-between select-none relative overflow-hidden"
-                          style={{ aspectRatio: '85 / 54' }}
+                        <div className="border border-border/70 rounded-md overflow-hidden bg-card text-xs shadow-2xs">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
+                                <th className="py-2.5 px-3 text-left">Subject & Code</th>
+                                <th className="py-2.5 px-3 text-center">Max</th>
+                                <th className="py-2.5 px-3 text-center">Obtained</th>
+                                <th className="py-2.5 px-3 text-center">Percent</th>
+                                <th className="py-2.5 px-3 text-center">Grade</th>
+                                <th className="py-2.5 px-3 text-right">Result</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-border/40 font-mono">
+                              {[
+                                { subject: 'Mathematics Core', code: '041', max: 100, score: 98, grade: 'A1', pct: '98%' },
+                                { subject: 'Computer Applications', code: '165', max: 100, score: 99, grade: 'A1', pct: '99%' },
+                                { subject: 'Science & Tech', code: '086', max: 100, score: 95, grade: 'A1', pct: '95%' },
+                                { subject: 'Social Science', code: '087', max: 100, score: 94, grade: 'A1', pct: '94%' },
+                                { subject: 'English Core', code: '301', max: 100, score: 92, grade: 'A1', pct: '92%' },
+                              ].map((row, idx) => (
+                                <tr key={idx} className="hover:bg-muted/20 transition-colors">
+                                  <td className="py-2.5 px-3 font-sans">
+                                    <span className="font-semibold text-foreground block">{row.subject}</span>
+                                    <span className="text-[10px] text-muted-foreground font-mono">CODE: {row.code}</span>
+                                  </td>
+                                  <td className="py-2.5 px-3 text-center text-muted-foreground">{row.max}</td>
+                                  <td className="py-2.5 px-3 text-center font-bold text-foreground text-sm">{row.score}</td>
+                                  <td className="py-2.5 px-3 text-center text-muted-foreground text-xs">{row.pct}</td>
+                                  <td className="py-2.5 px-3 text-center">
+                                    <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">
+                                      {row.grade}
+                                    </span>
+                                  </td>
+                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400 text-xs">
+                                    Passed
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Faculty Remark Card */}
+                    <div>
+                      <div className="px-4 py-3">
+                        <div className="p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wide flex items-center gap-1.5">
+                              <Quote className="h-3 w-3 text-primary" />
+                              <span>Principal & Class Mentor Evaluation</span>
+                            </span>
+                            <span className="text-[10px] text-muted-foreground font-medium">Verified by Academic Council</span>
+                          </div>
+                          <p className="text-foreground text-xs italic leading-relaxed">
+                            "Aditya consistently exhibits exceptional analytical thinking in STEM disciplines and commendable institutional leadership across all inter-school competitions."
+                          </p>
+                          <div className="pt-1 flex items-center justify-between text-[11px] text-muted-foreground border-t border-border/40 flex-wrap gap-2">
+                            <span>Evaluator: <strong>Dr. Rajesh Sharma (Head of Faculty)</strong></span>
+                            <span>Assessment: <strong>Exemplary (Grade A1)</strong></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tab Action Footer */}
+                    <div>
+                      <div className="px-4 py-3 flex items-center gap-2.5">
+                        <VFButton
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 text-xs"
+                          leftIcon={<Download className="h-3.5 w-3.5" />}
+                          onClick={() => alert(`Downloading Term 1 Report Card PDF for ${activeStudent.name}`)}
                         >
-                          <div className="flex items-center justify-between border-b border-border/60 pb-1.5">
-                            <div className="flex items-center gap-1.5">
-                              <div className="h-4 w-4 rounded-full bg-foreground/10 flex items-center justify-center text-[9px] font-black text-foreground">
-                                V
-                              </div>
-                              <span className="font-extrabold text-[11px] text-foreground tracking-tight">VidyaMaxx Academy</span>
-                            </div>
-                            <span className="text-[9px] font-mono font-semibold px-1 py-0.2 rounded bg-muted border border-border text-muted-foreground">
-                              2026–27
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-3 my-auto">
-                            <div
-                              className="w-14 h-[72px] rounded-md border border-border/80 bg-muted overflow-hidden shrink-0 shadow-2xs"
-                              style={{ aspectRatio: '19.5 / 25' }}
-                            >
-                              <img
-                                src={activeStudent.avatarUrl}
-                                alt={activeStudent.name}
-                                style={{ aspectRatio: '19.5 / 25' }}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-
-                            <div className="flex-1 min-w-0 space-y-0.5 text-left">
-                              <h5 className="font-extrabold text-xs text-foreground truncate">{activeStudent.name}</h5>
-                              <p className="font-mono text-[11px] text-muted-foreground font-semibold">{activeStudent.admNo}</p>
-                              <p className="text-muted-foreground text-[11px]">
-                                {activeStudent.class} (Sec {activeStudent.section}) · Roll #{activeStudent.roll}
-                              </p>
-                              <div className="flex items-center gap-2 pt-0.5 text-[10px] text-muted-foreground">
-                                <span>Blood: <strong className="text-foreground">{activeStudent.bloodGroup || 'B+'}</strong></span>
-                                <span>•</span>
-                                <span>{activeStudent.house}</span>
-                              </div>
-                              <p className="text-[9px] text-muted-foreground font-mono truncate">
-                                Emergency: {activeStudent.phone}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center justify-between border-t border-border/60 pt-1">
-                            <div className="flex items-center gap-0.5 h-2.5 opacity-60">
-                              <div className="h-full w-0.5 bg-foreground" />
-                              <div className="h-full w-1 bg-foreground" />
-                              <div className="h-full w-0.5 bg-foreground" />
-                              <div className="h-full w-1.5 bg-foreground" />
-                            </div>
-                            <span className="text-[9px] font-mono text-emerald-500 font-bold">
-                              {activeStudent.idCardStatus || 'ACTIVE'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2.5">
+                          Download Report Card (PDF)
+                        </VFButton>
                         <VFButton
                           size="sm"
                           variant="outline"
                           className="flex-1 text-xs"
                           leftIcon={<Printer className="h-3.5 w-3.5" />}
-                          onClick={() => openIdCardModal(activeStudent)}
+                          onClick={() => alert(`Printing official academic transcript for ${activeStudent.name}`)}
                         >
-                          Print ID Badge (85×54mm)
-                        </VFButton>
-                        <VFButton
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 text-xs"
-                          leftIcon={<FileText className="h-3.5 w-3.5 text-muted-foreground" />}
-                          onClick={() => alert(`Generated print-ready 85×54mm PDF for ${activeStudent.name}`)}
-                        >
-                          Export PDF Preview
-                        </VFButton>
-                      </div>
-                    </div>
-
-                    <div className="p-3.5 sm:p-4 rounded-lg bg-card border border-border/80 shadow-2xs space-y-3">
-                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
-                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
-                          <Award className="h-4 w-4 text-muted-foreground" />
-                          <span>Institutional Certificates & Transfer Clearance (TC)</span>
-                        </h4>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                          Active · Good Standing
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
-                          <div>
-                            <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
-                              <FileSpreadsheet className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span>Transfer Certificate (TC)</span>
-                            </div>
-                            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-                              Official school leaving clearance certificate with verified dues clearance.
-                            </p>
-                          </div>
-                          <VFButton
-                            size="sm"
-                            variant="outline"
-                            className="w-full text-xs"
-                            leftIcon={<FileText className="h-3.5 w-3.5" />}
-                            onClick={() => openCertificateModal('tc', activeStudent)}
-                          >
-                            Issue / Print TC
-                          </VFButton>
-                        </div>
-
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
-                          <div>
-                            <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
-                              <Award className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span>Character Certificate</span>
-                            </div>
-                            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-                              Certifies exemplary behavioral record, academic discipline, and conduct.
-                            </p>
-                          </div>
-                          <VFButton
-                            size="sm"
-                            variant="outline"
-                            className="w-full text-xs"
-                            leftIcon={<CheckCircle2 className="h-3.5 w-3.5" />}
-                            onClick={() => openCertificateModal('character', activeStudent)}
-                          >
-                            Character Certificate
-                          </VFButton>
-                        </div>
-
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between space-y-2.5">
-                          <div>
-                            <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
-                              <FileCheck className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span>Bonafide Certificate</span>
-                            </div>
-                            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-                              Proof of enrollment for visa, passport, bus pass, or bank accounts.
-                            </p>
-                          </div>
-                          <VFButton
-                            size="sm"
-                            variant="outline"
-                            className="w-full text-xs"
-                            leftIcon={<Download className="h-3.5 w-3.5" />}
-                            onClick={() => openCertificateModal('bonafide', activeStudent)}
-                          >
-                            Bonafide Certificate
-                          </VFButton>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-3.5 sm:p-4 rounded-lg bg-card border border-border/80 shadow-2xs space-y-3">
-                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
-                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
-                          <Send className="h-4 w-4 text-muted-foreground" />
-                          <span>CBSE Board Examination & LOC Registry</span>
-                        </h4>
-                        <span className="text-[10px] font-medium text-emerald-400">LOC Forwarded</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 space-y-1">
-                          <span className="text-[10px] text-muted-foreground uppercase font-bold block">Official Board Roll No</span>
-                          <div className="flex items-center justify-between pt-0.5">
-                            <span className="font-mono text-xs font-bold text-foreground">{activeStudent.examRollNo || 'CBSE-2026-994812'}</span>
-                            <button
-                              onClick={() => handleCopy(activeStudent.examRollNo || 'CBSE-2026-994812', 'rollNo')}
-                              className="text-xs text-muted-foreground hover:text-foreground cursor-pointer"
-                            >
-                              {copiedText === 'rollNo' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 space-y-1">
-                          <span className="text-[10px] text-muted-foreground uppercase font-bold block">Center Code</span>
-                          <span className="font-mono text-xs font-bold text-foreground block pt-0.5">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</span>
-                        </div>
-
-                        <div className="sm:col-span-2 p-3 rounded-md bg-muted/30 border border-border/70 text-xs">
-                          <span className="text-[10px] text-muted-foreground uppercase font-bold block">Examination Center</span>
-                          <span className="text-xs font-semibold text-foreground mt-0.5 block">Govt Model Sr Sec School, Sector 4, Central Delhi</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2.5 pt-0.5">
-                        <VFButton
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 text-xs"
-                          leftIcon={<FileCheck className="h-3.5 w-3.5" />}
-                          onClick={() => alert(`Opening official CBSE LOC Verification Dossier for ${activeStudent.name}`)}
-                        >
-                          View LOC Form
-                        </VFButton>
-                        <VFButton
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 text-xs"
-                          leftIcon={<Award className="h-3.5 w-3.5" />}
-                          onClick={() => alert(`Downloading Board Admit Card for ${activeStudent.name}`)}
-                        >
-                          Download Admit Card
+                          Print Official Transcript
                         </VFButton>
                       </div>
                     </div>
                   </div>
                 )}
 
+                {/* TAB 3: CERTIFICATES & ID CARD (BALANCED & PROPORTIONED) */}
+                {drawerTab === 'credentials' && (
+                  <div className="animate-fade-in divide-y divide-border/40">
+                    {/* Top Row: Balanced ID Card (Left) & Board Registry (Right) */}
+                    <div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-4 py-3">
+                        {/* 1. Student ID Badge Preview Card */}
+                        <div className="p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-3">
+                          <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                            <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
+                              <QrCode className="h-4 w-4 text-muted-foreground" />
+                              <span>Student ID Badge</span>
+                            </h4>
+                            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                              CR-80 (85×54mm)
+                            </span>
+                          </div>
+
+                          {/* Compact ID Card Preview */}
+                          <div className="w-full bg-gradient-to-br from-card via-card to-muted rounded-md border border-border/90 shadow-sm p-3 flex flex-col justify-between select-none relative overflow-hidden" style={{ aspectRatio: '85 / 54' }}>
+                            <div className="flex items-center justify-between border-b border-border/50 pb-1">
+                              <div className="flex items-center gap-1.5">
+                                <div className="h-3.5 w-3.5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[8px] font-black">
+                                  V
+                                </div>
+                                <span className="font-extrabold text-[10px] text-foreground tracking-tight">VidyaMaxx Academy</span>
+                              </div>
+                              <span className="text-[8px] font-mono font-bold px-1 rounded bg-muted border border-border text-muted-foreground">
+                                2026–27
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-2.5 my-auto">
+                              <div className="w-11 h-[56px] rounded border border-border/80 bg-muted overflow-hidden shrink-0 shadow-2xs" style={{ aspectRatio: '19.5 / 25' }}>
+                                <img
+                                  src={activeStudent.avatarUrl}
+                                  alt={activeStudent.name}
+                                  style={{ aspectRatio: '19.5 / 25' }}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0 space-y-0.5 text-left">
+                                <h5 className="font-extrabold text-[11px] text-foreground truncate">{activeStudent.name}</h5>
+                                <p className="font-mono text-[9px] text-muted-foreground font-semibold">{activeStudent.admNo}</p>
+                                <p className="text-muted-foreground text-[9px]">
+                                  {activeStudent.class} ({activeStudent.section}) · Roll #{activeStudent.roll}
+                                </p>
+                                <div className="flex items-center gap-1.5 text-[8px] text-muted-foreground font-mono">
+                                  <span>Blood: <strong className="text-foreground">{activeStudent.bloodGroup || 'B+'}</strong></span>
+                                  <span>•</span>
+                                  <span>{activeStudent.house}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between border-t border-border/50 pt-0.5">
+                              <div className="flex items-center gap-0.5 h-2 opacity-60">
+                                <div className="h-full w-0.5 bg-foreground" />
+                                <div className="h-full w-1 bg-foreground" />
+                                <div className="h-full w-0.5 bg-foreground" />
+                                <div className="h-full w-1 bg-foreground" />
+                              </div>
+                              <span className="text-[8px] font-mono text-emerald-400 font-bold">
+                                {activeStudent.idCardStatus || 'ACTIVE'}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 pt-1">
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 text-xs"
+                              leftIcon={<Printer className="h-3.5 w-3.5" />}
+                              onClick={() => openIdCardModal(activeStudent)}
+                            >
+                              Print ID Badge
+                            </VFButton>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 text-xs"
+                              leftIcon={<FileText className="h-3.5 w-3.5 text-muted-foreground" />}
+                              onClick={() => alert(`Generated print-ready 85×54mm PDF for ${activeStudent.name}`)}
+                            >
+                              PDF Preview
+                            </VFButton>
+                          </div>
+                        </div>
+
+                        {/* 2. Official CBSE Board & LOC Registry */}
+                        <div className="p-3.5 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-3">
+                          <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                            <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
+                              <Send className="h-4 w-4 text-muted-foreground" />
+                              <span>CBSE Board Examination Registry</span>
+                            </h4>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                              LOC Forwarded
+                            </span>
+                          </div>
+
+                          <div className="space-y-2 text-xs">
+                            <div className="p-2.5 rounded-md bg-muted/30 border border-border/70 flex items-center justify-between">
+                              <div>
+                                <span className="text-[9px] text-muted-foreground uppercase font-bold block">Board Roll No</span>
+                                <span className="font-mono text-xs font-bold text-foreground">{activeStudent.examRollNo || 'CBSE-2026-994812'}</span>
+                              </div>
+                              <button
+                                onClick={() => handleCopy(activeStudent.examRollNo || 'CBSE-2026-994812', 'rollNo')}
+                                className="h-7 px-2 rounded bg-muted hover:bg-muted/80 border border-border text-[11px] font-medium text-foreground flex items-center gap-1 cursor-pointer transition-colors"
+                              >
+                                {copiedText === 'rollNo' ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3 text-muted-foreground" />}
+                                <span>{copiedText === 'rollNo' ? 'Copied' : 'Copy'}</span>
+                              </button>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="p-2.5 rounded-md bg-muted/30 border border-border/70">
+                                <span className="text-[9px] text-muted-foreground uppercase font-bold block">Center Code</span>
+                                <span className="font-mono text-xs font-bold text-foreground">{activeStudent.centerCode || 'DEL-CENTRAL-401'}</span>
+                              </div>
+                              <div className="p-2.5 rounded-md bg-muted/30 border border-border/70">
+                                <span className="text-[9px] text-muted-foreground uppercase font-bold block">CBSE Affiliation</span>
+                                <span className="font-mono text-xs font-bold text-foreground">2130889</span>
+                              </div>
+                            </div>
+
+                            <div className="p-2.5 rounded-md bg-muted/30 border border-border/70">
+                              <span className="text-[9px] text-muted-foreground uppercase font-bold block">Exam Center Venue</span>
+                              <span className="text-[11px] font-semibold text-foreground truncate block mt-0.5">Govt Model Sr Sec School, Sector 4, New Delhi</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 pt-1">
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 text-xs"
+                              leftIcon={<FileCheck className="h-3.5 w-3.5" />}
+                              onClick={() => alert(`Opening official CBSE LOC Verification Dossier for ${activeStudent.name}`)}
+                            >
+                              View LOC Form
+                            </VFButton>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 text-xs"
+                              leftIcon={<Award className="h-3.5 w-3.5" />}
+                              onClick={() => alert(`Downloading Board Admit Card for ${activeStudent.name}`)}
+                            >
+                              Download Admit Card
+                            </VFButton>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Row: 3 Equal Institutional Certificates */}
+                    <div>
+                      <div className="px-4 py-3 space-y-2.5">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
+                            <Award className="h-4 w-4 text-muted-foreground" />
+                            <span>Institutional Certificates Hub</span>
+                          </h4>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                            Digital Seal & Verified
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          {/* 1. Transfer Certificate */}
+                          <div className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                                  <FileSpreadsheet className="h-4 w-4 text-primary" />
+                                  <span>Transfer Certificate</span>
+                                </div>
+                                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                  Clearance OK
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Official school leaving & migration certificate with verified accounts clearance.
+                              </p>
+                            </div>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="w-full text-xs"
+                              leftIcon={<FileText className="h-3.5 w-3.5" />}
+                              onClick={() => openCertificateModal('tc', activeStudent)}
+                            >
+                              Issue / Print TC
+                            </VFButton>
+                          </div>
+
+                          {/* 2. Character Certificate */}
+                          <div className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                                  <Award className="h-4 w-4 text-emerald-400" />
+                                  <span>Character Certificate</span>
+                                </div>
+                                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                  Exemplary
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Certifies exemplary moral conduct, behavioral discipline, and academic standing.
+                              </p>
+                            </div>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="w-full text-xs"
+                              leftIcon={<CheckCircle2 className="h-3.5 w-3.5" />}
+                              onClick={() => openCertificateModal('character', activeStudent)}
+                            >
+                              Character Certificate
+                            </VFButton>
+                          </div>
+
+                          {/* 3. Bonafide Certificate */}
+                          <div className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex flex-col justify-between space-y-2.5 hover:border-foreground/30 transition-colors">
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 text-foreground font-bold text-xs">
+                                  <FileCheck className="h-4 w-4 text-blue-400" />
+                                  <span>Bonafide Certificate</span>
+                                </div>
+                                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                  Instant
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Formal proof of active enrollment for passport, visa, bus pass, and bank records.
+                              </p>
+                            </div>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="w-full text-xs"
+                              leftIcon={<Download className="h-3.5 w-3.5" />}
+                              onClick={() => openCertificateModal('bonafide', activeStudent)}
+                            >
+                              Bonafide Certificate
+                            </VFButton>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 4: FEE & CHARGES (REFINED & BEST LOOKING) */}
                 {drawerTab === 'fees' && (
                   <div className="animate-fade-in divide-y divide-border/40">
-                    <div className="px-4 py-3">
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5">
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                    {/* KPI Metrics Strip */}
+                    <div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-4 py-3">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
                           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Annual Total Fee</span>
                           <span className="text-xl font-black text-foreground mt-0.5 block font-mono">₹ 78,000</span>
                           <span className="text-[10px] text-muted-foreground mt-0.5 block">AY {activeSession}</span>
                         </div>
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
                           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Realized / Paid</span>
                           <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">₹ 78,000</span>
-                          <span className="text-[10px] text-emerald-400 mt-0.5 block font-semibold">100% Realized</span>
+                          <span className="text-[10px] text-emerald-400 mt-0.5 font-bold flex items-center gap-1">
+                            <CheckCheck className="h-3 w-3" /> 100% Realized
+                          </span>
                         </div>
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
                           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Outstanding Balance</span>
                           <span className="text-xl font-black text-foreground mt-0.5 block font-mono">₹ 0.00</span>
                           <span className="text-[10px] text-muted-foreground mt-0.5 block">Zero Dues Pending</span>
                         </div>
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
                           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Ledger Standing</span>
                           <span className="text-xl font-black text-emerald-400 mt-0.5 block">Cleared</span>
-                          <span className="text-[10px] text-emerald-400 mt-0.5 block font-semibold">Good Standing</span>
+                          <span className="text-[10px] text-emerald-400 mt-0.5 font-semibold">Good Standing</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="px-4 py-3 space-y-2.5">
-                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
-                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
-                          <CreditCard className="h-4 w-4 text-muted-foreground" />
-                          <span>Institutional Fee Structure & Schedule</span>
-                        </h4>
-                        <span className="text-[10px] font-mono font-medium text-muted-foreground">CBSE Enrolled</span>
-                      </div>
+                    {/* Fee Component Breakdown */}
+                    <div>
+                      <div className="px-4 py-3 space-y-2.5">
+                        <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                          <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
+                            <CreditCard className="h-4 w-4 text-muted-foreground" />
+                            <span>Institutional Fee Structure & Schedule</span>
+                          </h4>
+                          <span className="text-[10px] font-mono font-medium text-muted-foreground">CBSE Enrolled</span>
+                        </div>
 
-                      <div className="border border-border/70 rounded-md overflow-hidden bg-card text-xs">
-                        <table className="w-full">
-                          <thead>
-                            <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
-                              <th className="py-2 px-3 text-left">Component Item</th>
-                              <th className="py-2 px-3 text-left">Frequency</th>
-                              <th className="py-2 px-3 text-right">Standard Fee</th>
-                              <th className="py-2 px-3 text-right">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-border/40 font-mono">
-                            {[
-                              { item: 'Tuition & Core Instruction Fee', freq: 'Annual / Quarterly', amt: '₹ 52,000', status: 'Paid' },
-                              { item: 'Science & Advanced Computing Lab', freq: 'Per Semester', amt: '₹ 12,000', status: 'Paid' },
-                              { item: 'Digital Library & Portal License', freq: 'Annual', amt: '₹ 4,000', status: 'Paid' },
-                              { item: 'Commute & Transport Route #4', freq: 'Quarterly', amt: '₹ 10,000', status: 'Paid' },
-                            ].map((row, idx) => (
-                              <tr key={idx} className="hover:bg-muted/20 transition-colors">
-                                <td className="py-2.5 px-3 font-sans font-semibold text-foreground">{row.item}</td>
-                                <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">{row.freq}</td>
-                                <td className="py-2.5 px-3 text-right font-bold text-foreground">{row.amt}</td>
-                                <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">{row.status}</td>
+                        <div className="border border-border/70 rounded-md overflow-hidden bg-card text-xs shadow-2xs">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
+                                <th className="py-2.5 px-3 text-left">Component Item</th>
+                                <th className="py-2.5 px-3 text-left">Frequency</th>
+                                <th className="py-2.5 px-3 text-right">Standard Fee</th>
+                                <th className="py-2.5 px-3 text-right">Status</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody className="divide-y divide-border/40 font-mono">
+                              {[
+                                { item: 'Tuition & Core Instruction Fee', freq: 'Annual / Quarterly', amt: '₹ 52,000', status: 'Paid' },
+                                { item: 'Science & Advanced Computing Lab', freq: 'Per Semester', amt: '₹ 12,000', status: 'Paid' },
+                                { item: 'Digital Library & Portal License', freq: 'Annual', amt: '₹ 4,000', status: 'Paid' },
+                                { item: 'Commute & Transport Route #4', freq: 'Quarterly', amt: '₹ 10,000', status: 'Paid' },
+                              ].map((row, idx) => (
+                                <tr key={idx} className="hover:bg-muted/20 transition-colors">
+                                  <td className="py-2.5 px-3 font-sans font-semibold text-foreground">{row.item}</td>
+                                  <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">{row.freq}</td>
+                                  <td className="py-2.5 px-3 text-right font-bold text-foreground">{row.amt}</td>
+                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">{row.status}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="px-4 py-3 space-y-2.5">
-                      <div className="flex items-center justify-between pb-2 border-b border-border/60">
-                        <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-2">
-                          <Receipt className="h-4 w-4 text-muted-foreground" />
-                          <span>Installment Receipts & Transaction Ledger</span>
-                        </h4>
-                        <span className="text-[10px] font-mono text-emerald-400 font-bold">4 of 4 Quarters Paid</span>
-                      </div>
+                    {/* Payment Installment History */}
+                    <div>
+                      <div className="px-4 py-3 space-y-2.5">
+                        <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                          <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
+                            <Receipt className="h-4 w-4 text-muted-foreground" />
+                            <span>Quarterly Installment Receipts & Transaction Ledger</span>
+                          </h4>
+                          <span className="text-[10px] font-mono text-emerald-400 font-bold">4 of 4 Quarters Paid</span>
+                        </div>
 
-                      <div className="space-y-2">
-                        {[
-                          { qtr: 'Quarter 1 (Apr – Jun 2026)', date: '10 Apr 2026', amt: '₹ 19,500', mode: 'Online NetBanking', receipt: 'REC-2026-0891' },
-                          { qtr: 'Quarter 2 (Jul – Sep 2026)', date: '08 Jul 2026', amt: '₹ 19,500', mode: 'UPI Gateway', receipt: 'REC-2026-2144' },
-                          { qtr: 'Quarter 3 (Oct – Dec 2026)', date: '05 Oct 2026', amt: '₹ 19,500', mode: 'Card POS', receipt: 'REC-2026-4401' },
-                          { qtr: 'Quarter 4 (Jan – Mar 2027)', date: '02 Jan 2027', amt: '₹ 19,500', mode: 'Bank Transfer', receipt: 'REC-2027-6612' },
-                        ].map((tx, idx) => (
-                          <div key={idx} className="p-2.5 rounded-md bg-muted/30 border border-border/70 flex items-center justify-between gap-3 flex-wrap text-xs">
-                            <div className="min-w-0">
-                              <span className="font-bold text-foreground block">{tx.qtr}</span>
-                              <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-mono mt-0.5">
-                                <span>{tx.receipt}</span>
-                                <span>•</span>
-                                <span>{tx.date}</span>
-                                <span>•</span>
-                                <span>{tx.mode}</span>
+                        <div className="space-y-2">
+                          {[
+                            { qtr: 'Quarter 1 (Apr – Jun 2026)', date: '10 Apr 2026', amt: '₹ 19,500', mode: 'Online NetBanking', receipt: 'REC-2026-0891' },
+                            { qtr: 'Quarter 2 (Jul – Sep 2026)', date: '08 Jul 2026', amt: '₹ 19,500', mode: 'UPI Gateway', receipt: 'REC-2026-2144' },
+                            { qtr: 'Quarter 3 (Oct – Dec 2026)', date: '05 Oct 2026', amt: '₹ 19,500', mode: 'Card POS', receipt: 'REC-2026-4401' },
+                            { qtr: 'Quarter 4 (Jan – Mar 2027)', date: '02 Jan 2027', amt: '₹ 19,500', mode: 'Bank Transfer', receipt: 'REC-2027-6612' },
+                          ].map((tx, idx) => (
+                            <div key={idx} className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex items-center justify-between gap-3 flex-wrap text-xs hover:border-foreground/30 transition-colors">
+                              <div className="min-w-0">
+                                <span className="font-bold text-foreground block">{tx.qtr}</span>
+                                <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-mono mt-0.5">
+                                  <span>{tx.receipt}</span>
+                                  <span>•</span>
+                                  <span>{tx.date}</span>
+                                  <span>•</span>
+                                  <span>{tx.mode}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className="font-mono font-black text-foreground text-sm">{tx.amt}</span>
+                                <button
+                                  onClick={() => alert(`Downloading fee receipt ${tx.receipt} for ${activeStudent.name}`)}
+                                  className="h-8 px-2.5 rounded-md bg-muted hover:bg-muted/80 border border-border text-xs font-bold text-foreground flex items-center gap-1.5 cursor-pointer transition-colors"
+                                >
+                                  <Receipt className="h-3.5 w-3.5 text-muted-foreground" />
+                                  <span>Receipt (PDF)</span>
+                                </button>
                               </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <span className="font-mono font-black text-foreground text-sm">{tx.amt}</span>
-                              <button
-                                onClick={() => alert(`Downloading fee receipt ${tx.receipt} for ${activeStudent.name}`)}
-                                className="h-7 px-2.5 rounded bg-muted hover:bg-muted/80 border border-border text-[11px] font-bold text-foreground flex items-center gap-1 cursor-pointer transition-colors"
-                              >
-                                <Receipt className="h-3 w-3" />
-                                <span>Receipt</span>
-                              </button>
-                            </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2.5 py-3">
-                      <VFButton
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 text-xs"
-                        leftIcon={<Download className="h-3.5 w-3.5" />}
-                        onClick={() => alert(`Generated Annual Fee Clearance Certificate for ${activeStudent.name}`)}
-                      >
-                        Fee Clearance Certificate
-                      </VFButton>
-                      <VFButton
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 text-xs"
-                        leftIcon={<Printer className="h-3.5 w-3.5" />}
-                        onClick={() => alert(`Printing Consolidated Account Statement for ${activeStudent.name}`)}
-                      >
-                        Print Account Statement
-                      </VFButton>
+                    {/* Consolidated Actions */}
+                    <div>
+                      <div className="px-4 py-3 flex items-center gap-2.5">
+                        <VFButton
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 text-xs"
+                          leftIcon={<Download className="h-3.5 w-3.5" />}
+                          onClick={() => alert(`Generated Annual Fee Clearance Certificate for ${activeStudent.name}`)}
+                        >
+                          Fee Clearance Certificate
+                        </VFButton>
+                        <VFButton
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 text-xs"
+                          leftIcon={<Printer className="h-3.5 w-3.5" />}
+                          onClick={() => alert(`Printing Consolidated Account Statement for ${activeStudent.name}`)}
+                        >
+                          Print Account Statement
+                        </VFButton>
+                      </div>
                     </div>
                   </div>
                 )}
