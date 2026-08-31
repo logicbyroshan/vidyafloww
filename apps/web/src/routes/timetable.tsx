@@ -493,7 +493,8 @@ function TimetablePage() {
         onClose={() => setIsConfigurePeriodsOpen(false)}
         title="Configure Daily Periods & Bell Schedule"
         description="Set period start and end times, adjust durations, and configure break intervals"
-        className="max-w-xl"
+        className="w-[660px] max-w-[95vw]"
+        bodyClassName="p-0 flex flex-col overflow-hidden"
         footerActions={
           <div className="flex items-center justify-between w-full">
             <VFButton
@@ -528,8 +529,8 @@ function TimetablePage() {
           </div>
         }
       >
-        <div className="p-4 sm:p-5 space-y-4">
-          <div className="p-3.5 rounded-lg bg-[#121214] border border-[#27272a] space-y-1">
+        <div className="flex-1 min-h-0 flex flex-col p-4 sm:p-5 space-y-3.5 overflow-hidden">
+          <div className="p-3.5 rounded-lg bg-[#121214] border border-[#27272a] space-y-1 shrink-0">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Standard Daily Session Structure
             </h4>
@@ -538,7 +539,7 @@ function TimetablePage() {
             </p>
           </div>
 
-          <div className="space-y-2.5 max-h-[480px] overflow-y-auto custom-scrollbar pr-1">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-2.5 pr-1">
             {periodConfig.map((p, idx) => (
               <div
                 key={p.id}
@@ -609,7 +610,7 @@ function TimetablePage() {
         onClose={() => setIsConfigureTimetableOpen(false)}
         title="Configure Academic Timetable"
         description="Set weekly operating days, assign class mentors, and manage timetable structure"
-        className="max-w-xl"
+        className="w-[660px] max-w-[95vw]"
         footerActions={
           <div className="flex items-center justify-between w-full">
             <VFButton
