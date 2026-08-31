@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Command } from 'cmdk';
+import { motion, AnimatePresence } from 'framer-motion';
 import { VFBadge } from '@vidyamaxx/ui';
 import { MODULE_REGISTRY } from '@vidyamaxx/constants';
 import {
@@ -19,6 +20,12 @@ import {
   Plus,
   ArrowRight,
   X,
+  CreditCard,
+  Bell,
+  SlidersHorizontal,
+  FileSpreadsheet,
+  Building,
+  School,
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -35,19 +42,28 @@ const ICON_MAP: Record<string, any> = {
   FolderGit2,
   Laptop,
   Settings,
+  CreditCard,
+  Bell,
+  SlidersHorizontal,
+  FileSpreadsheet,
+  Building,
+  School,
 };
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
+  const [activeCategory, setActiveCategory] = React.useState<'all' | 'modules' | 'actions'>('all');
 
   const commands = React.useMemo(() => {
     const moduleCommands = MODULE_REGISTRY.map((mod) => ({
       id: mod.id,
       icon: ICON_MAP[mod.iconName] || LayoutDashboard,
       label: `Go to ${mod.code}. ${mod.label}`,
+      sublabel: `Open ${mod.label} module`,
       route: mod.route,
-      category: 'Navigation',
+      category: 'modules' as const,
+      categoryLabel: 'Module',
       shortcut: `⌘${mod.code}`,
       onSelect: () => {
         navigate({ to: mod.route });
@@ -59,12 +75,70 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
       {
         id: 'act-new-admit',
         icon: Plus,
-        label: 'New Admission Application',
+        label: 'New Student Admission Application',
+        sublabel: 'Create a new applicant dossier',
         route: '/admissions',
-        category: 'Actions',
+        category: 'actions' as const,
+        categoryLabel: 'Action',
         shortcut: 'Shift+A',
         onSelect: () => {
           navigate({ to: '/admissions' });
+          onClose();
+        },
+      },
+      {
+        id: 'act-attendance-mark',
+        icon: CalendarCheck,
+        label: 'Mark Daily Student Attendance',
+        sublabel: 'Take roll call for classes today',
+        route: '/attendance',
+        category: 'actions' as const,
+        categoryLabel: 'Action',
+        shortcut: 'Shift+T',
+        onSelect: () => {
+          navigate({ to: '/attendance' });
+          onClose();
+        },
+      },
+      {
+        id: 'act-shortcuts',
+        icon: SlidersHorizontal,
+        label: 'Configure Quick Shortcuts',
+        sublabel: 'Customize institutional actions dashboard grid',
+        route: '/shortcuts',
+        category: 'actions' as const,
+        categoryLabel: 'Action',
+        shortcut: 'Shift+S',
+        onSelect: () => {
+          navigate({ to: '/shortcuts' });
+          onClose();
+        },
+      },
+      {
+        id: 'act-reports-compliance',
+        icon: FileSpreadsheet,
+        label: 'Generate Compliance & CBSE Reports',
+        sublabel: 'Download official rosters & audit summaries',
+        route: '/reports',
+        category: 'actions' as const,
+        categoryLabel: 'Action',
+        shortcut: 'Shift+R',
+        onSelect: () => {
+          navigate({ to: '/reports' });
+          onClose();
+        },
+      },
+      {
+        id: 'act-settings',
+        icon: Settings,
+        label: 'School Settings & Identity',
+        sublabel: 'Update school name, logo preset and branding',
+        route: '/settings',
+        category: 'actions' as const,
+        categoryLabel: 'Action',
+        shortcut: 'Shift+O',
+        onSelect: () => {
+          navigate({ to: '/settings' });
           onClose();
         },
       },
@@ -73,89 +147,175 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     return [...moduleCommands, ...actionCommands];
   }, [navigate, onClose]);
 
+  // Filter commands by active category tab
+  const filteredCommands = React.useMemo(() => {
+    if (activeCategory === 'all') return commands;
+    return commands.filter((c) => c.category === activeCategory);
+  }, [commands, activeCategory]);
+
+  // Lock body scrolling when search drawer is open
+  React.useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
+  // Close on Escape
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <Command.Dialog
-      open={isOpen}
-      onOpenChange={(open: boolean) => { if (!open) onClose(); }}
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] flex items-start justify-center p-4 md:p-6 pt-20 animate-fade-in"
-      label="Command Palette"
-    >
-      <div className="w-full max-w-2xl bg-card/95 backdrop-blur-2xl border border-border/80 rounded-2xl overflow-hidden shadow-2xl animate-scale-in flex flex-col divide-y divide-border/60">
-        {/* Top Search Input Bar */}
-        <div className="flex items-center px-4 py-3 bg-card">
-          <Search className="h-4 w-4 text-primary mr-3 shrink-0" />
-          <Command.Input
-            value={search}
-            onValueChange={setSearch}
-            className="flex-1 h-9 bg-transparent outline-none text-xs text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
-            placeholder="Type a command or search across all ERP modules..."
-            autoFocus
-          />
-        </div>
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex flex-col justify-start select-none">
+        {/* Frosted Dark Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+        />
 
-        {/* Command List Scroll View Powered by cmdk */}
-        <Command.List className="max-h-[380px] overflow-y-auto p-2 space-y-1 custom-scrollbar">
-          <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1">
-            <Search className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
-            <p className="font-semibold text-foreground">No matching commands found</p>
-            <p>Try searching for "Admissions", "Academics", "Timetable", or "Students"</p>
-          </Command.Empty>
+        {/* Top-Down Search Drawer Container (slides smoothly from top edge) */}
+        <motion.div
+          initial={{ y: -60, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -60, opacity: 0 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-50 w-full max-w-4xl mx-auto bg-[#101010] border-b border-x border-border/80 rounded-b-2xl shadow-2xl overflow-hidden flex flex-col"
+        >
+          <Command
+            className="w-full flex flex-col"
+            label="Top Search Drawer"
+          >
+            {/* Top Search Input Row */}
+            <div className="flex items-center gap-3 px-5 py-3.5 border-b border-border/70 bg-[#141414]">
+              <Search className="h-4.5 w-4.5 text-muted-foreground shrink-0" />
+              <Command.Input
+                value={search}
+                onValueChange={setSearch}
+                className="flex-1 h-9 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
+                placeholder="Search students, faculty, ERP modules, actions, shortcuts..."
+                autoFocus
+              />
 
-          <Command.Group heading="Main ERP Modules & Actions" className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest">
-            {commands.map((cmd) => {
-              const Icon = cmd.icon;
-              return (
-                <Command.Item
-                  key={cmd.id}
-                  value={`${cmd.label} ${cmd.category}`}
-                  onSelect={cmd.onSelect}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary data-[selected=true]:font-bold data-[selected=true]:border-primary/30 data-[selected=true]:shadow-xs text-foreground hover:bg-muted/50"
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch('')}
+                  className="text-xs text-muted-foreground hover:text-foreground px-1.5 py-0.5 rounded bg-muted/40 cursor-pointer"
                 >
-                  <div className="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 bg-muted text-muted-foreground group-data-[selected=true]:bg-primary group-data-[selected=true]:text-primary-foreground">
-                    <Icon className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="flex-1 truncate font-medium">{cmd.label}</span>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded border border-border/60">
-                      {cmd.shortcut}
-                    </span>
-                    <VFBadge variant="outline" className="text-xs px-2 py-0.5">
-                      {cmd.category}
-                    </VFBadge>
-                    <ArrowRight className="h-3.5 w-3.5 opacity-40 group-data-[selected=true]:opacity-100 group-data-[selected=true]:text-primary transition-all" />
-                  </div>
-                </Command.Item>
-              );
-            })}
-          </Command.Group>
-        </Command.List>
+                  Clear
+                </button>
+              )}
 
-        {/* Bottom Footer Bar with Shortcuts & Close Button */}
-        <div className="px-4 py-2.5 bg-muted/30 flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-xs font-bold text-foreground">↑↓</kbd> Navigate
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border font-mono text-xs font-bold text-foreground">↵</kbd> Select
-            </span>
-          </div>
+              {/* Category Quick Filter Chips */}
+              <div className="hidden sm:flex items-center gap-1.5 shrink-0 pl-2 border-l border-border/60">
+                {(['all', 'modules', 'actions'] as const).map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                      activeCategory === cat
+                        ? 'bg-[#222222] text-foreground border border-border shadow-xs'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a]'
+                    }`}
+                  >
+                    {cat === 'all' ? 'All' : cat === 'modules' ? 'Modules' : 'Actions'}
+                  </button>
+                ))}
+              </div>
 
-          <div className="flex items-center gap-2.5">
-            {/* Close Button in Bottom Footer */}
-            <button
-              onClick={onClose}
-              className="px-2.5 py-1 rounded-lg bg-muted hover:bg-destructive/15 text-muted-foreground hover:text-destructive border border-border hover:border-destructive/30 transition-all flex items-center gap-1 text-xs font-semibold cursor-pointer"
-              title="Close palette"
-            >
-              <X className="h-3.5 w-3.5" />
-              <span>Close</span>
-            </button>
-          </div>
-        </div>
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={onClose}
+                className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors shrink-0 ml-1 cursor-pointer"
+                title="Close search (Esc)"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Scrollable Command List */}
+            <Command.List className="max-h-[380px] overflow-y-auto p-3 space-y-1 custom-scrollbar">
+              <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1.5">
+                <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
+                <p className="font-bold text-foreground text-sm">No matching results found</p>
+                <p className="text-xs text-muted-foreground">Try searching for "Students", "Attendance", "Teachers", "Reports" or "Settings"</p>
+              </Command.Empty>
+
+              <Command.Group
+                heading={activeCategory === 'all' ? 'Quick Navigation & ERP Actions' : activeCategory === 'modules' ? 'ERP Modules' : 'Institutional Actions'}
+                className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-extrabold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest"
+              >
+                {filteredCommands.map((cmd) => {
+                  const Icon = cmd.icon;
+                  return (
+                    <Command.Item
+                      key={cmd.id}
+                      value={`${cmd.label} ${cmd.sublabel} ${cmd.category}`}
+                      onSelect={cmd.onSelect}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-[#1c1c1c] data-[selected=true]:border-border/80 data-[selected=true]:shadow-xs text-foreground hover:bg-[#181818]"
+                    >
+                      <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 bg-[#1c1c1c] border border-border/80 text-foreground">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-foreground truncate leading-tight">{cmd.label}</p>
+                        <p className="text-[11px] text-muted-foreground truncate">{cmd.sublabel}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-[11px] font-mono text-muted-foreground bg-[#141414] px-1.5 py-0.5 rounded border border-border/60">
+                          {cmd.shortcut}
+                        </span>
+                        <VFBadge variant="outline" className="text-[10px] font-semibold px-2 py-0.5 bg-[#141414]">
+                          {cmd.categoryLabel}
+                        </VFBadge>
+                        <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
+                      </div>
+                    </Command.Item>
+                  );
+                })}
+              </Command.Group>
+            </Command.List>
+
+            {/* Bottom Footer Bar with Shortcuts Info */}
+            <div className="px-5 py-2.5 bg-[#121212] border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5 text-[11px]">
+                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">↑↓</kbd> Navigate
+                </span>
+                <span className="flex items-center gap-1.5 text-[11px]">
+                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">↵</kbd> Open
+                </span>
+                <span className="flex items-center gap-1.5 text-[11px]">
+                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">Esc</kbd> Close Drawer
+                </span>
+              </div>
+
+              <span className="text-[11px] font-semibold text-muted-foreground hidden sm:inline">
+                Press <kbd className="px-1 py-0.2 bg-[#1c1c1c] border border-border rounded font-mono text-[10px] text-foreground">⌘K</kbd> anytime
+              </span>
+            </div>
+          </Command>
+        </motion.div>
       </div>
-    </Command.Dialog>
+    </AnimatePresence>
   );
 }

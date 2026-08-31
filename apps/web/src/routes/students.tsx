@@ -957,7 +957,7 @@ function StudentsPage() {
       header: 'Photo',
       accessorKey: 'photo',
       cell: (r: any) => (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-start">
           <div
             onClick={() => openStudentDrawer(r)}
             className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
@@ -2332,7 +2332,7 @@ function StudentsPage() {
                   "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'bundle'
                     ? "bg-blue-500/10 border-blue-500/80 shadow-md ring-1 ring-blue-500/40"
-                    : "bg-[#09090b] border-border/80 hover:border-border hover:bg-muted/20"
+                    : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
                 )}
               >
                 <div>
@@ -2373,7 +2373,7 @@ function StudentsPage() {
                   "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'xlsx'
                     ? "bg-emerald-500/10 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/40"
-                    : "bg-[#09090b] border-border/80 hover:border-border hover:bg-muted/20"
+                    : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
                 )}
               >
                 <div>
@@ -2414,7 +2414,7 @@ function StudentsPage() {
                   "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
                   exportFormat === 'zip'
                     ? "bg-purple-500/10 border-purple-500/80 shadow-md ring-1 ring-purple-500/40"
-                    : "bg-[#09090b] border-border/80 hover:border-border hover:bg-muted/20"
+                    : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
                 )}
               >
                 <div>
@@ -2452,7 +2452,7 @@ function StudentsPage() {
           </div>
 
           {(exportFormat === 'zip' || exportFormat === 'bundle') && (
-            <div className="p-4 rounded-lg bg-[#09090b] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div className="p-4 rounded-lg bg-[#1a1a24] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">2</span>
@@ -2555,22 +2555,22 @@ function StudentsPage() {
               </div>
 
               {namingPattern === 'custom' && (
-                <div className="flex items-center gap-3 p-2.5 rounded-md bg-muted/40 border border-border">
+                <div className="flex items-center gap-3 p-2.5 rounded-md bg-[#131317] border border-border">
                   <span className="text-xs font-bold text-foreground">Unique Column Identifier:</span>
                   <select
                     value={customColumnKey}
                     onChange={(e) => setCustomColumnKey(e.target.value)}
-                    className="bg-card border border-border text-xs font-bold text-foreground rounded px-3 py-1.5 outline-none cursor-pointer focus:border-primary"
+                    className="bg-[#1a1a24] border border-border text-xs font-bold text-foreground rounded px-3 py-1.5 outline-none cursor-pointer focus:border-primary"
                   >
-                    <option value="admNo">Admission No (Unique ID)</option>
-                    <option value="roll">Roll Number</option>
-                    <option value="phone">Guardian Phone</option>
-                    <option value="house">House Squad</option>
+                    <option value="fatherPhone">Father's Phone Number</option>
+                    <option value="category">Student Caste Category</option>
+                    <option value="address">Permanent City / Address</option>
+                    <option value="scholarStatus">Scholarship / RTE Status</option>
                   </select>
                 </div>
               )}
 
-              <div className="p-3 rounded-md bg-[#121215] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <div className="p-3 rounded-md bg-[#131317] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="font-bold text-muted-foreground">Generated Output Sample:</span>

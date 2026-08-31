@@ -12,28 +12,6 @@ export interface VFCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   accentColor?: 'blue' | 'emerald' | 'amber' | 'purple' | 'rose' | 'cyan' | 'indigo' | 'primary' | 'none';
 }
 
-const CARD_TOPBAR_STYLES: Record<string, string> = {
-  blue: "bg-gradient-to-r from-blue-500 via-sky-400 to-transparent",
-  emerald: "bg-gradient-to-r from-emerald-500 via-teal-400 to-transparent",
-  amber: "bg-gradient-to-r from-amber-500 via-orange-400 to-transparent",
-  purple: "bg-gradient-to-r from-purple-500 via-pink-400 to-transparent",
-  rose: "bg-gradient-to-r from-rose-500 via-red-400 to-transparent",
-  cyan: "bg-gradient-to-r from-cyan-500 via-blue-400 to-transparent",
-  indigo: "bg-gradient-to-r from-indigo-500 via-purple-400 to-transparent",
-  primary: "bg-gradient-to-r from-primary via-primary/80 to-transparent",
-};
-
-const CARD_HEADER_ACCENT_BG: Record<string, string> = {
-  blue: "bg-gradient-to-r from-blue-500/18 via-blue-500/6 to-transparent",
-  emerald: "bg-gradient-to-r from-emerald-500/18 via-emerald-500/6 to-transparent",
-  amber: "bg-gradient-to-r from-amber-500/18 via-amber-500/6 to-transparent",
-  purple: "bg-gradient-to-r from-purple-500/18 via-purple-500/6 to-transparent",
-  rose: "bg-gradient-to-r from-rose-500/18 via-rose-500/6 to-transparent",
-  cyan: "bg-gradient-to-r from-cyan-500/18 via-cyan-500/6 to-transparent",
-  indigo: "bg-gradient-to-r from-indigo-500/18 via-indigo-500/6 to-transparent",
-  primary: "bg-gradient-to-r from-primary/18 via-primary/6 to-transparent",
-};
-
 export function VFCard({
   title,
   description,
@@ -47,24 +25,18 @@ export function VFCard({
   accentColor,
   ...props
 }: VFCardProps) {
-  const topBarStyle = topBarClassName || (accentColor && accentColor !== 'none' ? CARD_TOPBAR_STYLES[accentColor] : null);
-  const headerBgStyle = headerBgClassName || (accentColor && accentColor !== 'none' ? CARD_HEADER_ACCENT_BG[accentColor] : null);
-
   return (
     <div
       className={cn(
-        "rounded-lg border border-border/80 bg-[#121215] text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col",
+        "rounded-lg border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col",
         className
       )}
       {...props}
     >
-      {topBarStyle && (
-        <div className={cn("absolute top-0 left-0 right-0 h-[3.5px] z-10", topBarStyle)} />
-      )}
       {(title || description || actions) && (
         <div className={cn(
           "flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-5 py-4 border-b border-border/80 shrink-0",
-          headerBgStyle,
+          headerBgClassName,
           headerClassName
         )}>
           <div>
@@ -75,7 +47,7 @@ export function VFCard({
         </div>
       )}
       {children && (
-        <div className={cn("p-4 sm:p-5 flex-1 min-h-0", bodyClassName)}>
+        <div className={cn("p-4 flex-1 min-h-0", bodyClassName)}>
           {children}
         </div>
       )}

@@ -1,26 +1,24 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { cn, VFAvatar } from '@vidyamaxx/ui';
-import { useGlobalStore } from '../stores/globalStore';
 import {
-  LayoutDashboard,
-  UserPlus,
-  GraduationCap,
-  School,
+  BarChart3,
+  Bell,
+  BookMarked,
   Calendar,
   CalendarCheck,
-  Users,
-  BookMarked,
   ClipboardList,
   CreditCard,
-  Bell,
   FileSpreadsheet,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
+  GraduationCap,
+  LayoutDashboard,
   LogOut,
   LucideIcon,
-  BarChart3,
+  School,
+  Settings,
+  UserPlus,
+  Users,
 } from 'lucide-react';
+import { useGlobalStore } from '../stores/globalStore';
 
 interface NavItem {
   id: string;
@@ -29,19 +27,17 @@ interface NavItem {
   icon: LucideIcon;
 }
 
-interface NavSection {
-  title?: string;
+interface NavGroup {
   items: NavItem[];
 }
 
-const NAVIGATION_SECTIONS: NavSection[] = [
+const NAVIGATION_GROUPS: NavGroup[] = [
   {
     items: [
       { id: 'dashboard', label: 'Dashboard', route: '/', icon: LayoutDashboard },
     ],
   },
   {
-    title: 'Management',
     items: [
       { id: 'students', label: 'Students', route: '/students', icon: GraduationCap },
       { id: 'admissions', label: 'Admissions', route: '/admissions', icon: UserPlus },
@@ -52,89 +48,101 @@ const NAVIGATION_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: 'Academics',
     items: [
       { id: 'homework', label: 'Homework', route: '/homework', icon: BookMarked },
       { id: 'examinations', label: 'Examinations', route: '/examinations', icon: ClipboardList },
     ],
   },
   {
-    title: 'Finance & Operations',
     items: [
       { id: 'statistics', label: 'Statistics', route: '/statistics', icon: BarChart3 },
-      { id: 'fees', label: 'Fees & Payments', route: '/fees', icon: CreditCard },
+      { id: 'fees', label: 'Payments', route: '/fees', icon: CreditCard },
       { id: 'notices', label: 'Notices', route: '/notices', icon: Bell },
       { id: 'reports', label: 'Reports', route: '/reports', icon: FileSpreadsheet },
     ],
   },
   {
-    title: 'General',
     items: [
       { id: 'settings', label: 'Settings', route: '/settings', icon: Settings },
     ],
   },
 ];
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SIDEBAR GEOMETRY (single source of truth)
+//
+//  Expanded width:    224px
+//  Collapsed width:    64px
+//  Icon size:          18px
+//
+//  Nav links are ALWAYS w-full, ALWAYS flex-row, NO Tailwind class switching.
+//  Only inline `style` values transition — this gives pure CSS interpolation
+//  which the browser renders at 60fps without any React re-render jank.
+//
+//  Collapsed paddingLeft = (64 - 18) / 2 = 23px  → icon perfectly centered
+//  Expanded  paddingLeft = 14px                   → icon left-aligned
+//
+//  The sidebar width transition is 300ms and so is the paddingLeft transition.
+//  Th// Collapsed icon center offset (px).
+// Nav container is px-3 (12px each side), so link width in collapsed = 64-24 = 40px.
+// To center an 18px icon: (40-18)/2 = 11px paddingLeft.
+const COLLAPSED_ICON_PL = 11;
+// Expanded left padding for left-aligned icon (link width = 214-24 = 190px)
+// Equal to paddingRight so the link box looks symmetric inside.
+// Matches implicit vertical padding: h-10 (40px) - icon (18px) / 2 = 11px.
+const EXPANDED_LINK_PL = 11;
+// Gap between icon and label in expanded mode
+const EXPANDED_ICON_GAP = 10;
+
 export function Sidebar() {
-  const { sidebarExpanded, toggleSidebar } = useGlobalStore();
+  const { sidebarExpanded } = useGlobalStore();
   const location = useLocation();
 
   return (
     <aside
       className={cn(
-        'flex flex-col h-full bg-card border-r border-border transition-all duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-visible',
-        sidebarExpanded ? 'w-56' : 'w-20'
+        'flex flex-col h-full bg-black border-r border-border transition-[width] duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-hidden',
+        sidebarExpanded ? 'w-[214px]' : 'w-[64px]'
       )}
     >
-      {/* Sidebar Header & Brand Logo — height is strictly h-[64px] to match Navbar perfectly */}
-      <div className="flex h-[64px] items-center px-4 border-b border-border relative shrink-0">
-        <div className={cn('flex items-center w-full min-w-0 overflow-hidden', !sidebarExpanded && 'justify-center')}>
-          <img
-            src="/logo.png"
-            alt="VidyaMaxx Logo"
-            className="h-9 w-9 object-contain shrink-0 drop-shadow-xs transition-all duration-300 ease-in-out"
-          />
-          <div
-            className={cn(
-              'flex flex-col min-w-0 transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap',
-              sidebarExpanded ? 'opacity-100 max-w-[160px] ml-3' : 'opacity-0 max-w-0 ml-0 pointer-events-none'
-            )}
-          >
-            <span className="text-xl font-black tracking-tight leading-none text-foreground">
-              Vidya<span className="text-primary">Maxx</span>
-            </span>
-            <span className="text-[10px] text-muted-foreground font-bold tracking-wider uppercase mt-1">
-              School Management
-            </span>
-          </div>
+      {/* ── HEADER ── 64px height, px-4 left padding, same as Navbar */}
+      <div className="flex h-[64px] items-center border-b border-border bg-black relative shrink-0 px-4">
+        {/* Logo: always visible at same left offset */}
+        <div className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center overflow-hidden">
+          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain" />
         </div>
 
-        <button
-          onClick={toggleSidebar}
-          className="absolute -right-3.5 top-1/2 -translate-y-1/2 h-7 w-7 rounded-md bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center z-50 transition-all duration-200 cursor-pointer shadow-xs"
-          title={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
+        {/* Brand text: CSS-only fade + collapse via inline style */}
+        <div
+          className="flex flex-col min-w-0 overflow-hidden whitespace-nowrap"
+          style={{
+            opacity: sidebarExpanded ? 1 : 0,
+            maxWidth: sidebarExpanded ? '160px' : '0px',
+            marginLeft: sidebarExpanded ? '12px' : '0px',
+            transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
+          }}
         >
-          {sidebarExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-        </button>
+          <span className="text-[17px] font-black tracking-tight leading-none text-foreground">
+            Vidya<span className="text-primary">Maxx</span>
+          </span>
+          <span className="text-[9px] text-muted-foreground font-bold tracking-wider uppercase mt-[3px]">
+            School Management
+          </span>
+        </div>
+
       </div>
 
-      {/* Categorized Navigation List */}
-      <div className="flex-1 overflow-y-auto no-scrollbar p-2.5 space-y-2">
-        {NAVIGATION_SECTIONS.map((section, secIdx) => (
-          <div key={secIdx} className="space-y-1">
-            {/* Full-Width Divider between sections */}
-            {secIdx > 0 && <div className="-mx-2.5 h-[1px] bg-border my-2" />}
-
-            {section.title && sidebarExpanded && (
-              <div className="px-2.5 pt-0.5 pb-0.5">
-                <span className="text-[10px] font-bold text-muted-foreground/80 uppercase tracking-wider">
-                  {section.title}
-                </span>
-              </div>
+      {/* ── NAV LIST ── px-3 outer padding for generous breathing room from sidebar walls, py-3 vertical */}
+      <div className="flex-1 overflow-y-auto no-scrollbar px-3 py-3">
+        {NAVIGATION_GROUPS.map((group, groupIdx) => (
+          <div key={groupIdx}>
+            {/* Full-bleed divider: -mx-3 cancels the px-3 container padding */}
+            {groupIdx > 0 && (
+              <div className="-mx-3 h-[1px] bg-border mt-3 mb-3" />
             )}
 
-            <div className="space-y-1">
-              {section.items.map((item) => {
+            <div className="flex flex-col gap-1.5">
+              {group.items.map((item) => {
                 const Icon = item.icon;
                 const isActive =
                   item.route === '/'
@@ -145,26 +153,39 @@ export function Sidebar() {
                   <Link
                     key={item.id}
                     to={item.route}
-                    className={cn(
-                      'flex items-center transition-all duration-150 text-sm outline-none whitespace-nowrap font-medium',
-                      sidebarExpanded ? 'w-full h-9 px-2.5 py-1.5 rounded-md' : 'w-9 h-9 mx-auto rounded-md justify-center p-0',
-                      isActive
-                        ? 'bg-[#09090b] text-foreground border border-border font-bold shadow-xs'
-                        : 'text-muted-foreground hover:bg-[#0e0e11] hover:text-foreground border border-transparent'
-                    )}
                     title={!sidebarExpanded ? item.label : undefined}
+                    className={cn(
+                      // Always full-width, always same height — NO class switching
+                      'flex items-center h-10 w-full rounded-lg border outline-none overflow-hidden',
+                      'transition-colors duration-150',
+                      isActive
+                        ? 'bg-[#1c1c1c] border-[#323232] text-foreground font-bold shadow-xs'
+                        : 'border-transparent text-muted-foreground hover:bg-[#141414] hover:text-foreground font-medium'
+                    )}
+                    style={{
+                      // paddingLeft transitions between centered (collapsed) and left-aligned (expanded)
+                      paddingLeft: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : `${COLLAPSED_ICON_PL}px`,
+                      paddingRight: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : '8px',
+                      transition: 'padding-left 300ms ease-in-out, background-color 150ms, border-color 150ms',
+                    }}
                   >
+                    {/* Icon: always visible, fixed size */}
                     <Icon
                       className={cn(
-                        'h-4.5 w-4.5 shrink-0 transition-colors',
-                        isActive ? 'text-primary' : 'text-muted-foreground'
+                        'shrink-0 h-[18px] w-[18px]',
+                        isActive ? 'text-foreground' : 'text-muted-foreground'
                       )}
                     />
+
+                    {/* Label: CSS fade + collapse — NO class switching */}
                     <span
-                      className={cn(
-                        'transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap leading-none',
-                        sidebarExpanded ? 'opacity-100 max-w-[150px] ml-3 font-semibold' : 'opacity-0 max-w-0 ml-0 pointer-events-none'
-                      )}
+                      className="text-sm whitespace-nowrap leading-none overflow-hidden font-[inherit]"
+                      style={{
+                        opacity: sidebarExpanded ? 1 : 0,
+                        maxWidth: sidebarExpanded ? '140px' : '0px',
+                        marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
+                        transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
+                      }}
                     >
                       {item.label}
                     </span>
@@ -176,29 +197,53 @@ export function Sidebar() {
         ))}
       </div>
 
-      {/* User Profile in Sidebar Bottom */}
-      <div className="p-2.5 border-t border-border bg-card/60 shrink-0">
-        <div className={cn('flex items-center w-full min-w-0', sidebarExpanded ? 'gap-2.5' : 'justify-center')}>
-          <VFAvatar fallback="Roshan Singh" size="sm" className="h-8 w-8 text-xs shrink-0 rounded-md" />
-          <div
-            className={cn(
-              'flex-1 min-w-0 transition-all duration-300 ease-in-out overflow-hidden whitespace-nowrap',
-              sidebarExpanded ? 'opacity-100 max-w-[120px] ml-2.5' : 'opacity-0 max-w-0 pointer-events-none hidden'
-            )}
-          >
-            <p className="text-sm font-bold text-foreground truncate leading-none">Roshan Singh</p>
-            <p className="text-xs text-muted-foreground font-semibold truncate mt-1">Super Admin</p>
+      {/* ── BOTTOM USER BAR ── px-3 py-3, mirrors nav container */}
+      <div className="border-t border-border bg-black shrink-0 px-3 py-3">
+        {/* Inner row uses same paddingLeft transition as nav links */}
+        <div
+          className="flex items-center h-10 w-full overflow-hidden"
+          style={{
+            paddingLeft: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : `${COLLAPSED_ICON_PL}px`,
+            paddingRight: '8px',
+            transition: 'padding-left 300ms ease-in-out',
+          }}
+        >
+          {/* Avatar: always visible, same size/offset as nav icons */}
+          <div className="h-8 w-8 min-w-[32px] max-w-[32px] shrink-0 flex items-center justify-center">
+            <VFAvatar fallback="Roshan Singh" size="sm" className="h-8 w-8 text-xs rounded-md" />
           </div>
-          <Link
-            to="/login"
-            className={cn(
-              'text-muted-foreground hover:text-destructive transition-all duration-200 p-2 rounded-md hover:bg-muted shrink-0',
-              sidebarExpanded ? 'opacity-100 ml-auto' : 'opacity-0 max-w-0 pointer-events-none hidden'
-            )}
-            title="Sign Out"
+
+          {/* User info: fades on collapse */}
+          <div
+            className="flex flex-col min-w-0 overflow-hidden whitespace-nowrap"
+            style={{
+              opacity: sidebarExpanded ? 1 : 0,
+              maxWidth: sidebarExpanded ? '120px' : '0px',
+              marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
+              transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
+            }}
           >
-            <LogOut className="h-4.5 w-4.5" />
-          </Link>
+            <p className="text-xs font-bold text-foreground truncate leading-none">Roshan Singh</p>
+            <p className="text-[10px] text-muted-foreground font-semibold truncate mt-[3px]">Super Admin</p>
+          </div>
+
+          {/* Sign-out: fades on collapse */}
+          <div
+            className="ml-auto overflow-hidden flex items-center"
+            style={{
+              opacity: sidebarExpanded ? 1 : 0,
+              maxWidth: sidebarExpanded ? '32px' : '0px',
+              transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out',
+            }}
+          >
+            <Link
+              to="/login"
+              title="Sign Out"
+              className="text-muted-foreground hover:text-destructive p-1.5 rounded-md hover:bg-muted transition-colors duration-200 shrink-0"
+            >
+              <LogOut className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </div>
     </aside>

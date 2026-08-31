@@ -6,17 +6,28 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
   const { notifications, markNotificationRead, markAllNotificationsRead, clearNotifications } =
     useGlobalStore();
 
-  const [drawerWidth, setDrawerWidth] = React.useState(440);
+  const [drawerWidth, setDrawerWidth] = React.useState(520);
   const [isDragging, setIsDragging] = React.useState(false);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  // Drag handler for resizing drawer up to 50vw
+  // Lock body scrolling when notification drawer is open
+  React.useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
+  // Drag handler for resizing drawer up to 60vw
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
-      const maxAllowed = window.innerWidth * 0.5; // Max 50vw
-      const minAllowed = 360;
+      const maxAllowed = window.innerWidth * 0.6; // Max 60vw
+      const minAllowed = 400;
       const newWidth = window.innerWidth - e.clientX;
       if (newWidth >= minAllowed && newWidth <= maxAllowed) {
         setDrawerWidth(newWidth);
@@ -43,10 +54,13 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-background/50 backdrop-blur-xs flex justify-end">
+    <div className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm flex justify-end animate-fade-in">
+      {/* Click outside backdrop to close */}
+      <div className="absolute inset-0 z-10" onClick={onClose} />
+
       <div
-        style={{ width: `${drawerWidth}px`, maxWidth: '50vw' }}
-        className="bg-card border-l border-border h-full flex flex-col shadow-2xl animate-slide-in-right relative select-none"
+        style={{ width: `${drawerWidth}px`, maxWidth: '60vw' }}
+        className="bg-card border-l border-border h-full flex flex-col shadow-2xl animate-slide-in-right relative select-none z-20"
       >
         {/* Left Edge Drag Resizer (Clean, no harsh highlights) */}
         <div

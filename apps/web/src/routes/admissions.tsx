@@ -11,7 +11,6 @@ import {
 } from '@vidyamaxx/ui';
 import {
   CheckCircle2,
-  Phone,
   Eye,
   Plus,
   Download,
@@ -22,16 +21,12 @@ import {
   Edit3,
   ChevronLeft,
   ChevronRight,
-  GraduationCap,
-  Award,
-  FileText,
   UserCheck,
   BarChart3,
   FileCheck,
   Printer,
-  Bus,
-  School,
   FileBadge2,
+  Camera,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -746,12 +741,53 @@ function AdmissionsPage() {
     }
   };
 
+  const avatarFileInputRef = React.useRef<HTMLInputElement>(null);
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && applicantFormData) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setApplicantFormData({
+          ...applicantFormData,
+          avatarUrl: reader.result as string,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isDrawerOpen) return;
+      if (e.key === 'ArrowLeft') handlePrevApplicant();
+      if (e.key === 'ArrowRight') handleNextApplicant();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isDrawerOpen, selectedApplicantIndex, applicantList.length]);
+
   const applicantColumns = [
+    {
+      header: 'Photo',
+      accessorKey: 'photo',
+      cell: (r: Applicant) => (
+        <div className="flex items-center justify-start">
+          <div
+            onClick={() => openApplicantDrawer(r)}
+            className="overflow-hidden rounded-md border border-border/80 shadow-xs w-11 h-[56px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
+            style={{ aspectRatio: '19.5 / 25' }}
+            title="Click to view 360° Candidate Dossier"
+          >
+            <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover" />
+          </div>
+        </div>
+      ),
+    },
     {
       header: 'Applicant ID',
       accessorKey: 'applicantId',
       cell: (r: Applicant) => (
-        <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border">
+        <span className="font-mono font-bold text-foreground bg-muted/60 px-2.5 py-1 rounded-md border border-border">
           {r.applicantId}
         </span>
       ),
@@ -760,24 +796,14 @@ function AdmissionsPage() {
       header: 'Candidate Name',
       accessorKey: 'name',
       cell: (r: Applicant) => (
-        <div className="flex items-center gap-3.5">
-          <div
+        <div>
+          <button
             onClick={() => openApplicantDrawer(r)}
-            className="overflow-hidden rounded-md border border-border shadow-xs w-11 h-[56px] bg-muted shrink-0 cursor-pointer hover:border-primary/50 transition-colors"
-            style={{ aspectRatio: '19.5 / 25' }}
-            title="Click to view 360° Candidate Dossier"
+            className="font-extrabold text-foreground text-sm leading-tight text-left hover:underline cursor-pointer tracking-tight block"
           >
-            <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover" />
-          </div>
-          <div>
-            <button
-              onClick={() => openApplicantDrawer(r)}
-              className="font-extrabold text-foreground text-sm leading-tight text-left hover:underline cursor-pointer tracking-tight"
-            >
-              {r.name}
-            </button>
-            <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.previousSchool}</p>
-          </div>
+            {r.name}
+          </button>
+          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.previousSchool}</p>
         </div>
       ),
     },
@@ -911,20 +937,20 @@ function AdmissionsPage() {
         hideHeader={true}
         title={activeApplicant ? activeApplicant.name : 'Candidate Dossier'}
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
-        bodyClassName="p-5 sm:p-6 space-y-4"
+        bodyClassName="p-0 flex flex-col flex-1 min-h-0 overflow-hidden"
         footerActions={
-          <div className="flex items-center justify-between w-full gap-3 flex-wrap">
+          <div className="flex items-center justify-between w-full gap-3 px-4 py-3 border-b border-border bg-card">
             {isEditingApplicant ? (
               <>
                 <div className="flex items-center gap-2.5">
-                  <span className="text-xs font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-lg border border-border">
+                  <span className="text-xs font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border">
                     {applicantFormData?.applicantId || activeApplicant?.applicantId}
                   </span>
                   <span className="text-xs font-medium text-muted-foreground">
                     Modifying Candidate Records
                   </span>
                 </div>
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <VFButton
                     variant="outline"
                     size="sm"
@@ -944,31 +970,29 @@ function AdmissionsPage() {
               </>
             ) : (
               <>
-                {/* 1. Bottom Stepper (< 1 of 25 >) */}
-                <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-md border border-border">
+                <div className="flex items-center gap-1 bg-muted/60 h-8 px-1.5 rounded-md border border-border">
                   <button
                     onClick={handlePrevApplicant}
                     disabled={selectedApplicantIndex === 0}
-                    className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
-                    title="Previous Candidate"
+                    className="h-6 w-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+                    title="Previous Candidate (Keyboard: ←)"
                   >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-3.5 w-3.5" />
                   </button>
-                  <span className="text-xs font-mono font-bold px-3 text-foreground select-none">
+                  <span className="text-xs font-mono font-bold px-2 text-foreground select-none leading-none">
                     {selectedApplicantIndex !== null ? selectedApplicantIndex + 1 : 1} of {applicantList.length}
                   </span>
                   <button
                     onClick={handleNextApplicant}
                     disabled={selectedApplicantIndex === applicantList.length - 1}
-                    className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
-                    title="Next Candidate"
+                    className="h-6 w-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted cursor-pointer transition-colors"
+                    title="Next Candidate (Keyboard: →)"
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
 
-                {/* 2. Action Buttons */}
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <VFButton
                     variant="outline"
                     size="sm"
@@ -1003,751 +1027,684 @@ function AdmissionsPage() {
         }
       >
         {activeApplicant && (
-          <div className="space-y-6 animate-fade-in pb-4">
-            {/* ═══════════════════════════════════════════════════════════════
-                1. EDIT MODE
-                ═══════════════════════════════════════════════════════════════ */}
-            {isEditingApplicant ? (
-              <div className="space-y-6 animate-fade-in">
-                {/* Edit Header Banner */}
-                <div className="p-5 rounded-lg bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="relative overflow-hidden rounded-md border border-border shadow-xs w-16 h-[82px] bg-muted shrink-0"
-                      style={{ aspectRatio: '19.5 / 25' }}
-                    >
-                      <img
-                        src={applicantFormData?.avatarUrl || activeApplicant.avatarUrl}
-                        alt={applicantFormData?.name || activeApplicant.name}
-                        style={{ aspectRatio: '19.5 / 25' }}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-md bg-muted text-foreground border border-border">
-                          {applicantFormData?.applicantId || activeApplicant.applicantId}
-                        </span>
-                        <VFBadge variant="warning">Edit Mode Active</VFBadge>
-                      </div>
-                      <h3 className="text-xl font-bold text-foreground mt-1 tracking-tight">
-                        Editing {applicantFormData?.name || activeApplicant.name}'s Application
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="text-xs font-mono font-semibold text-muted-foreground">
-                    Target Session: {activeSession}
-                  </div>
-                </div>
-
-                {/* Section 1: Candidate Identity */}
-                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                  <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                    <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                    <span>Candidate Identity & Applied Grade</span>
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="sm:col-span-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Candidate Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.name || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, name: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Applied Grade / Class
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.appliedGrade || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, appliedGrade: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Stream / Track Preference
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.streamPreference || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, streamPreference: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Date of Birth
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.dob || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, dob: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Blood Group
-                      </label>
-                      <select
-                        value={applicantFormData?.bloodGroup || 'B+'}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, bloodGroup: e.target.value })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
-                          <option key={bg} value={bg}>{bg}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Application Stage
-                      </label>
-                      <select
-                        value={applicantFormData?.stage || 'Submitted'}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, stage: e.target.value as any })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['Submitted', 'Screened', 'Interview', 'Approved'].map((s) => (
-                          <option key={s} value={s}>{s}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        OCR Doc Verification
-                      </label>
-                      <select
-                        value={applicantFormData?.ocrDocStatus || 'Pending'}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, ocrDocStatus: e.target.value as any })}
-                        className="w-full h-11 px-3.5 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      >
-                        {['Verified', 'Pending', 'Flagged'].map((s) => (
-                          <option key={s} value={s}>{s}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Quota Category
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.quotaCategory || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, quotaCategory: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div className="sm:col-span-2 lg:col-span-3">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Biometric Photo URL (19.5 : 25 Aspect Ratio)
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.avatarUrl || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, avatarUrl: e.target.value })}
-                        className="w-full h-11 px-4 text-xs font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section 2: Guardian & Contact */}
-                <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                  <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>Parent / Guardian & Contact Records</span>
-                  </h4>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Primary Guardian Name
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.guardianName || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, guardianName: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Mother's Full Name
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.motherName || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, motherName: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Contact Phone (WhatsApp)
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.phone || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, phone: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono font-bold text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Guardian Email
-                      </label>
-                      <input
-                        type="email"
-                        value={applicantFormData?.email || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, email: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-mono text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide block mb-1.5">
-                        Residential Address
-                      </label>
-                      <input
-                        type="text"
-                        value={applicantFormData?.address || ''}
-                        onChange={(e) => setApplicantFormData({ ...applicantFormData!, address: e.target.value })}
-                        className="w-full h-11 px-4 text-sm font-medium text-foreground bg-background border border-border rounded-md focus:border-foreground/80 focus:ring-1 focus:ring-foreground outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              /* ═══════════════════════════════════════════════════════════════
-                 2. VIEW MODE: AIRY, EXPANSIVE & ELEGANT 360° DOSSIER
-                 ═══════════════════════════════════════════════════════════════ */
-              <div className="space-y-6 animate-fade-in">
-                {/* Spacious Hero Banner Card */}
-                <div className="p-6 rounded-lg bg-card border border-border/80 shadow-md flex items-center gap-6 relative overflow-hidden flex-wrap sm:flex-nowrap">
-                  {/* 19.5 : 25 Portrait with Active Status Dot */}
-                  <div className="relative shrink-0 mx-auto sm:mx-0">
-                    <div
-                      className="relative overflow-hidden rounded-lg border border-border shadow-md w-28 h-[143.5px] bg-muted flex items-center justify-center"
-                      style={{ aspectRatio: '19.5 / 25' }}
-                    >
-                      <img
-                        src={activeApplicant.avatarUrl}
-                        alt={activeApplicant.name}
-                        style={{ aspectRatio: '19.5 / 25' }}
-                        className="w-full h-full object-cover"
-                        onError={(e: any) => {
-                          e.target.style.display = 'none';
-                          if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      <div
-                        style={{ aspectRatio: '19.5 / 25' }}
-                        className="w-full h-full bg-muted text-muted-foreground font-black text-2xl hidden items-center justify-center"
-                      >
-                        {activeApplicant.name.split(' ').map((n: string) => n[0]).join('')}
-                      </div>
-                    </div>
-                    <span
+          <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-fade-in">
+            {/* Tabs Header Bar */}
+            <div className="w-full bg-card/95 backdrop-blur-md border-b border-border shrink-0">
+              <div className="grid grid-cols-4 w-full">
+                {[
+                  { id: 'overview', label: 'Profile', icon: <UserCheck className="h-4 w-4" /> },
+                  { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
+                  { id: 'documents', label: 'Verification & Fit', icon: <FileCheck className="h-4 w-4" /> },
+                  { id: 'decisions', label: 'Offer & Decision', icon: <FileBadge2 className="h-4 w-4" /> },
+                ].map((tab) => {
+                  const isActive = drawerTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setDrawerTab(tab.id as any)}
                       className={cn(
-                        'absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-card ring-2',
-                        activeApplicant.stage === 'Approved'
-                          ? 'bg-emerald-500 ring-emerald-500/20'
-                          : activeApplicant.stage === 'Interview'
-                          ? 'bg-amber-500 ring-amber-500/20'
-                          : 'bg-blue-500 ring-blue-500/20'
+                        "flex items-center justify-center gap-1.5 py-3 text-xs font-bold transition-all cursor-pointer outline-none select-none border-b-2",
+                        isActive
+                          ? "bg-primary/10 text-primary border-primary"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/40 border-transparent"
                       )}
-                      title={`Stage: ${activeApplicant.stage}`}
+                    >
+                      {tab.icon}
+                      <span className="hidden sm:inline">{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Scrollable Tab Content View */}
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              {drawerTab === 'overview' && (
+                <div className="animate-fade-in divide-y divide-border/40">
+                  {/* Photo & Core Identity */}
+                  <div className="px-4 py-3">
+                    <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                      {/* 19.5:25 Photo Frame */}
+                      <div className="relative shrink-0 mx-auto sm:mx-0">
+                        <input
+                          type="file"
+                          ref={avatarFileInputRef}
+                          onChange={handleAvatarFileChange}
+                          accept="image/*"
+                          className="hidden"
+                        />
+                        <div
+                          onClick={() => {
+                            if (isEditingApplicant && avatarFileInputRef.current) {
+                              avatarFileInputRef.current.click();
+                            }
+                          }}
+                          className={cn(
+                            "relative overflow-hidden rounded-md border border-border/90 shadow-sm w-24 sm:w-28 bg-muted flex items-center justify-center transition-all group",
+                            isEditingApplicant ? "cursor-pointer hover:ring-2 hover:ring-primary/60" : ""
+                          )}
+                          style={{ aspectRatio: '19.5 / 25' }}
+                        >
+                          <img
+                            src={isEditingApplicant && applicantFormData?.avatarUrl ? applicantFormData.avatarUrl : activeApplicant.avatarUrl}
+                            alt={isEditingApplicant && applicantFormData?.name ? applicantFormData.name : activeApplicant.name}
+                            style={{ aspectRatio: '19.5 / 25' }}
+                            className="w-full h-full object-cover"
+                            onError={(e: any) => {
+                              e.target.style.display = 'none';
+                              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                          <div
+                            style={{ aspectRatio: '19.5 / 25' }}
+                            className="w-full h-full bg-muted text-muted-foreground font-black text-2xl hidden items-center justify-center"
+                          >
+                            {(isEditingApplicant && applicantFormData?.name ? applicantFormData.name : activeApplicant.name).split(' ').map((n: string) => n[0]).join('')}
+                          </div>
+
+                          {isEditingApplicant && (
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center gap-1 transition-opacity text-white">
+                              <Camera className="h-5 w-5 text-white" />
+                              <span className="text-[10px] font-bold tracking-tight">Upload</span>
+                            </div>
+                          )}
+                        </div>
+                        {isEditingApplicant ? (
+                          <button
+                            type="button"
+                            onClick={() => avatarFileInputRef.current?.click()}
+                            className="absolute -bottom-1.5 -right-1.5 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer border-2 border-card"
+                            title="Change Candidate Photo"
+                          >
+                            <Camera className="h-3 w-3" />
+                          </button>
+                        ) : (
+                          <span
+                            className={cn(
+                              "absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-card ring-2",
+                              activeApplicant.stage === 'Approved'
+                                ? "bg-emerald-500 ring-emerald-500/20"
+                                : activeApplicant.stage === 'Interview'
+                                ? "bg-amber-500 ring-amber-500/20"
+                                : "bg-blue-500 ring-blue-500/20"
+                            )}
+                            title={`Status: ${activeApplicant.stage}`}
+                          />
+                        )}
+                      </div>
+
+                      {/* Fields Grid */}
+                      <div className="flex-1 min-w-0 grid grid-cols-2 sm:grid-cols-3 gap-2 w-full">
+                        <div className="col-span-2 sm:col-span-2">
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Candidate Full Name
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={!isEditingApplicant}
+                            value={isEditingApplicant && applicantFormData ? applicantFormData.name : activeApplicant.name}
+                            onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, name: e.target.value })}
+                            className={cn(
+                              "w-full h-9 px-3 text-xs font-bold rounded-md outline-none transition-all",
+                              isEditingApplicant
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Applicant ID
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={true}
+                            value={activeApplicant.applicantId}
+                            className="w-full h-9 px-3 text-xs font-mono font-bold rounded-md outline-none bg-muted/30 border border-border/70 text-foreground"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Applied Grade
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={!isEditingApplicant}
+                            value={isEditingApplicant && applicantFormData ? applicantFormData.appliedGrade : activeApplicant.appliedGrade}
+                            onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, appliedGrade: e.target.value })}
+                            className={cn(
+                              "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                              isEditingApplicant
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Stream Preference
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={!isEditingApplicant}
+                            value={isEditingApplicant && applicantFormData ? applicantFormData.streamPreference : activeApplicant.streamPreference}
+                            onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, streamPreference: e.target.value })}
+                            className={cn(
+                              "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                              isEditingApplicant
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Date of Birth
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={!isEditingApplicant}
+                            value={isEditingApplicant && applicantFormData ? applicantFormData.dob : activeApplicant.dob}
+                            onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, dob: e.target.value })}
+                            className={cn(
+                              "w-full h-9 px-3 text-xs font-mono font-semibold rounded-md outline-none transition-all",
+                              isEditingApplicant
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Blood Group
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={!isEditingApplicant}
+                            value={isEditingApplicant && applicantFormData ? applicantFormData.bloodGroup : (activeApplicant.bloodGroup || 'B+')}
+                            onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, bloodGroup: e.target.value })}
+                            className={cn(
+                              "w-full h-9 px-3 text-xs font-mono font-semibold rounded-md outline-none transition-all",
+                              isEditingApplicant
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Quota Category
+                          </label>
+                          <input
+                            type="text"
+                            readOnly={!isEditingApplicant}
+                            value={isEditingApplicant && applicantFormData ? applicantFormData.quotaCategory : activeApplicant.quotaCategory}
+                            onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, quotaCategory: e.target.value })}
+                            className={cn(
+                              "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                              isEditingApplicant
+                                ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                                : "bg-muted/30 border border-border/70 text-foreground"
+                            )}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                            Intake Stage
+                          </label>
+                          {isEditingApplicant && applicantFormData ? (
+                            <select
+                              value={applicantFormData.stage}
+                              onChange={(e) => setApplicantFormData({ ...applicantFormData, stage: e.target.value as any })}
+                              className="w-full h-9 px-2 text-xs font-semibold rounded-md outline-none bg-background border border-border/90 text-foreground"
+                            >
+                              {['Submitted', 'Screened', 'Interview', 'Approved'].map((s) => (
+                                <option key={s} value={s}>{s}</option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type="text"
+                              readOnly={true}
+                              value={activeApplicant.stage}
+                              className="w-full h-9 px-3 text-xs font-semibold rounded-md outline-none bg-muted/30 border border-border/70 text-foreground"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Family & Guardian Information */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-4 py-3">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Father / Primary Guardian Name
+                      </label>
+                      <input
+                        type="text"
+                        readOnly={!isEditingApplicant}
+                        value={isEditingApplicant && applicantFormData ? applicantFormData.guardianName : activeApplicant.guardianName}
+                        onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, guardianName: e.target.value })}
+                        className={cn(
+                          "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                          isEditingApplicant
+                            ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                            : "bg-muted/30 border border-border/70 text-foreground"
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Mother's Full Legal Name
+                      </label>
+                      <input
+                        type="text"
+                        readOnly={!isEditingApplicant}
+                        value={isEditingApplicant && applicantFormData ? applicantFormData.motherName : activeApplicant.motherName}
+                        onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, motherName: e.target.value })}
+                        className={cn(
+                          "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                          isEditingApplicant
+                            ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                            : "bg-muted/30 border border-border/70 text-foreground"
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Primary Contact Phone
+                      </label>
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          type="text"
+                          readOnly={!isEditingApplicant}
+                          value={isEditingApplicant && applicantFormData ? applicantFormData.phone : activeApplicant.phone}
+                          onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, phone: e.target.value })}
+                          className={cn(
+                            "flex-1 h-9 px-3 text-xs font-mono font-bold rounded-md outline-none transition-all",
+                            isEditingApplicant
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
+                        {!isEditingApplicant && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() => window.open(`https://wa.me/${activeApplicant.phone.replace(/[^0-9]/g, '')}`, '_blank')}
+                              className="h-9 px-2.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                              title="WhatsApp Guardian"
+                            >
+                              <MessageSquare className="h-3.5 w-3.5" />
+                              <span className="hidden sm:inline">WhatsApp</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleCopy(activeApplicant.phone, 'phone')}
+                              className="h-9 px-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs flex items-center gap-1 cursor-pointer transition-colors"
+                              title="Copy Phone"
+                            >
+                              {copiedKey === 'phone' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Guardian Email Address
+                      </label>
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          type="text"
+                          readOnly={!isEditingApplicant}
+                          value={isEditingApplicant && applicantFormData ? applicantFormData.email : activeApplicant.email}
+                          onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, email: e.target.value })}
+                          className={cn(
+                            "flex-1 h-9 px-3 text-xs font-mono font-medium rounded-md outline-none transition-all",
+                            isEditingApplicant
+                              ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                              : "bg-muted/30 border border-border/70 text-foreground"
+                          )}
+                        />
+                        {!isEditingApplicant && (
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(activeApplicant.email, 'email')}
+                            className="h-9 px-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs flex items-center gap-1 cursor-pointer transition-colors"
+                            title="Copy Email"
+                          >
+                            {copiedKey === 'email' ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Prior Education & Commute */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 px-4 py-3">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Previous School / Institution
+                      </label>
+                      <input
+                        type="text"
+                        readOnly={!isEditingApplicant}
+                        value={isEditingApplicant && applicantFormData ? applicantFormData.previousSchool : activeApplicant.previousSchool}
+                        onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, previousSchool: e.target.value })}
+                        className={cn(
+                          "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                          isEditingApplicant
+                            ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                            : "bg-muted/30 border border-border/70 text-foreground"
+                        )}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Previous Academic Marks / Grade
+                      </label>
+                      <input
+                        type="text"
+                        readOnly={!isEditingApplicant}
+                        value={isEditingApplicant && applicantFormData ? applicantFormData.previousMarks : activeApplicant.previousMarks}
+                        onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, previousMarks: e.target.value })}
+                        className={cn(
+                          "w-full h-9 px-3 text-xs font-semibold rounded-md outline-none transition-all",
+                          isEditingApplicant
+                            ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                            : "bg-muted/30 border border-border/70 text-foreground"
+                        )}
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Full Residential Address
+                      </label>
+                      <input
+                        type="text"
+                        readOnly={!isEditingApplicant}
+                        value={isEditingApplicant && applicantFormData ? applicantFormData.address : activeApplicant.address}
+                        onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, address: e.target.value })}
+                        className={cn(
+                          "w-full h-9 px-3 text-xs font-medium rounded-md outline-none transition-all",
+                          isEditingApplicant
+                            ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                            : "bg-muted/30 border border-border/70 text-foreground"
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Notes / Remarks */}
+                  <div className="px-4 py-3">
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                      Admissions Notes & Verification Remarks
+                    </label>
+                    <input
+                      type="text"
+                      readOnly={!isEditingApplicant}
+                      value={isEditingApplicant && applicantFormData ? (applicantFormData.notes || '') : (activeApplicant.notes || 'Standard CBSE admissions intake dossier.')}
+                      onChange={(e) => isEditingApplicant && applicantFormData && setApplicantFormData({ ...applicantFormData, notes: e.target.value })}
+                      className={cn(
+                        "w-full h-9 px-3 text-xs font-medium rounded-md outline-none transition-all",
+                        isEditingApplicant
+                          ? "bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs"
+                          : "bg-muted/30 border border-border/70 text-foreground"
+                      )}
                     />
                   </div>
-
-                  {/* Hero Information */}
-                  <div className="flex-1 min-w-0 space-y-3 text-center sm:text-left">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight truncate w-full sm:w-auto">
-                        {activeApplicant.name}
-                      </h3>
-                      <VFBadge
-                        variant={activeApplicant.stage === 'Approved' ? 'success' : activeApplicant.stage === 'Interview' ? 'warning' : 'outline'}
-                        className="px-3 py-1 text-xs font-bold mx-auto sm:mx-0"
-                      >
-                        Stage: {activeApplicant.stage}
-                      </VFBadge>
-                    </div>
-
-                    <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-mono flex-wrap justify-center sm:justify-start">
-                      <span className="font-bold text-foreground bg-muted px-2.5 py-0.5 rounded-md border border-border">
-                        {activeApplicant.applicantId}
-                      </span>
-                      <span>•</span>
-                      <span className="font-semibold text-foreground">Target: {activeApplicant.appliedGrade}</span>
-                      <span>•</span>
-                      <span className="text-foreground font-medium">Prev: {activeApplicant.previousSchool}</span>
-                    </div>
-
-                    {/* Badges Row */}
-                    <div className="flex items-center gap-2.5 flex-wrap justify-center sm:justify-start pt-0.5">
-                      <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold bg-muted/60 text-foreground border border-border">
-                        <Award className="h-3.5 w-3.5 text-primary" />
-                        Prev: <span className="text-foreground font-bold">{activeApplicant.previousMarks}</span>
-                      </span>
-
-                      <span className="text-xs font-bold px-3 py-1 rounded-lg bg-muted/60 text-foreground border border-border">
-                        🩸 Blood Group: <span className="font-mono text-foreground font-extrabold">{activeApplicant.bloodGroup || 'B+'}</span>
-                      </span>
-
-                      <span className="text-xs font-mono font-semibold px-3 py-1 rounded-lg bg-muted/60 text-muted-foreground border border-border">
-                        Submitted: {activeApplicant.appliedDate}
-                      </span>
-                    </div>
-                  </div>
                 </div>
+              )}
 
-                {/* Sleek 4-Tab Segmented Pill Navigation */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1.5 rounded-lg bg-muted/50 border border-border">
-                  {[
-                    { id: 'overview', label: 'Candidate Profile & Bio', icon: <UserCheck className="h-4 w-4" /> },
-                    { id: 'academics', label: 'Academics & Entrance', icon: <BarChart3 className="h-4 w-4" /> },
-                    { id: 'documents', label: 'OCR & Verification', icon: <FileCheck className="h-4 w-4" /> },
-                    { id: 'decisions', label: 'Admissions Decision', icon: <FileBadge2 className="h-4 w-4" /> },
-                  ].map((tab) => {
-                    const isActive = drawerTab === tab.id;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setDrawerTab(tab.id as any)}
-                        className={cn(
-                          'flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-xs font-semibold transition-all cursor-pointer outline-none',
-                          isActive
-                            ? 'bg-card text-foreground shadow-xs border border-border font-bold'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
-                        )}
-                      >
-                        {tab.icon}
-                        <span className="truncate">{tab.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* ═══════════════════════════════════════════════════════════
-                    TAB 1: CANDIDATE PROFILE & BIO
-                    ═══════════════════════════════════════════════════════════ */}
-                {drawerTab === 'overview' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* 4 Enclosed Metric Tiles */}
-                    <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">AI Fit Score</span>
-                          <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeApplicant.fitScore}%</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">High Academic Aptitude</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Doc Verification</span>
-                          <span className="text-2xl font-black text-foreground mt-1 block">{activeApplicant.ocrDocStatus}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">OCR Match Verified</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Recommendation</span>
-                          <span className="text-lg font-black text-foreground mt-1 block truncate">{activeApplicant.recommendation}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">Automated Screening</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Admissions Quota</span>
-                          <span className="text-lg font-black text-primary mt-1 block truncate">{activeApplicant.quotaCategory}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">CBSE Criteria Met</span>
-                        </div>
+              {/* TAB 2: ACADEMICS & ENTRANCE */}
+              {drawerTab === 'academics' && (
+                <div className="animate-fade-in divide-y divide-border/40">
+                  {/* Entrance Exam Summary */}
+                  <div className="px-4 py-3">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
+                      Entrance & Aptitude Assessment Metrics
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Entrance Score</span>
+                        <span className="text-xl font-black text-foreground block mt-0.5">{activeApplicant.entranceScore}</span>
+                        <span className="text-[10px] text-emerald-400 font-semibold block mt-0.5">Top Tier Percentile</span>
+                      </div>
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Merit Rank</span>
+                        <span className="text-xl font-black text-foreground block mt-0.5">{activeApplicant.entranceRank}</span>
+                        <span className="text-[10px] text-muted-foreground block mt-0.5">Admissions Pool</span>
+                      </div>
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Prior Performance</span>
+                        <span className="text-xl font-black text-emerald-400 block mt-0.5">{activeApplicant.previousMarks}</span>
+                        <span className="text-[10px] text-muted-foreground block mt-0.5 truncate">{activeApplicant.previousSchool}</span>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Family & Contact Details */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                        <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span>Family & Guardian Contact Dossier</span>
-                      </h4>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">
-                            Father / Primary Guardian
-                          </span>
-                          <span className="text-base font-bold text-foreground block mt-1">
-                            {activeApplicant.guardianName} ({activeApplicant.guardianRelation})
-                          </span>
-                          <span className="text-xs text-muted-foreground mt-0.5 block">Authorized Pickup Contact</span>
+                  {/* Subject Scores Breakdown */}
+                  <div className="px-4 py-3">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
+                      Subject Scorecard & Transfer Breakdown
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {activeApplicant.subjectScores && activeApplicant.subjectScores.length > 0 ? (
+                        activeApplicant.subjectScores.map((sub, i) => (
+                          <div key={i} className="p-2.5 rounded-md bg-muted/30 border border-border/70 flex items-center justify-between">
+                            <div>
+                              <span className="font-bold text-foreground text-xs block">{sub.subject}</span>
+                              <span className="text-[11px] font-mono text-muted-foreground block">{sub.score}</span>
+                            </div>
+                            <VFBadge variant="success" className="font-mono text-[10px] font-bold">
+                              {sub.grade}
+                            </VFBadge>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-span-3 text-center py-4 text-xs text-muted-foreground">
+                          Scorecard verified from prior transfer records.
                         </div>
+                      )}
+                    </div>
+                  </div>
 
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">
-                            Mother's Full Name
-                          </span>
-                          <span className="text-base font-bold text-foreground block mt-1">{activeApplicant.motherName}</span>
-                          <span className="text-xs text-muted-foreground mt-0.5 block">Secondary Guardian</span>
-                        </div>
-
-                        {/* Phone & Direct Action Box */}
-                        <div className="sm:col-span-2 p-4 rounded-md bg-muted/30 border border-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  {/* Faculty Interview Evaluation */}
+                  {activeApplicant.interviewRecord && (
+                    <div className="px-4 py-3">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
+                        Faculty Interview & Evaluation Dossier
+                      </span>
+                      <div className="p-3.5 rounded-md bg-muted/30 border border-border/70 space-y-2">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
                           <div>
-                            <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Primary Contact Number</span>
-                            <span className="font-mono text-lg font-bold text-foreground mt-1 block">{activeApplicant.phone}</span>
+                            <span className="text-xs font-bold text-foreground block">{activeApplicant.interviewRecord.interviewer}</span>
+                            <span className="text-[10px] text-muted-foreground font-mono">Date: {activeApplicant.interviewRecord.date}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => window.open(`https://wa.me/${activeApplicant.phone.replace(/[^0-9]/g, '')}`, '_blank')}
-                              className="px-4 py-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
-                            >
-                              <MessageSquare className="h-4 w-4" />
-                              <span>WhatsApp Guardian</span>
-                            </button>
-                            <button
-                              onClick={() => handleCopy(activeApplicant.phone, 'phone')}
-                              className="px-3.5 py-2 rounded-md bg-muted hover:bg-muted/80 border border-border text-foreground text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
-                            >
-                              {copiedKey === 'phone' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
-                              <span>{copiedKey === 'phone' ? 'Copied' : 'Copy'}</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Email & Residential Address */}
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Guardian Email</span>
-                          <div className="flex items-center justify-between gap-2 mt-1">
-                            <span className="font-mono text-sm font-semibold text-foreground truncate">{activeApplicant.email}</span>
-                            <button
-                              onClick={() => handleCopy(activeApplicant.email, 'email')}
-                              className="text-xs text-muted-foreground hover:text-foreground cursor-pointer shrink-0"
-                            >
-                              {copiedKey === 'email' ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Residential Address</span>
-                          <span className="text-sm font-semibold text-foreground mt-1 block truncate">{activeApplicant.address}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* School Logistics, Commute & Stream Preference */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                        <Bus className="h-4 w-4 text-muted-foreground" />
-                        <span>Logistics, Track Preference & Health Status</span>
-                      </h4>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Applied Track / Stream</span>
-                          <span className="text-sm font-bold text-foreground mt-1 block">{activeApplicant.streamPreference}</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Transport Preference</span>
-                          <span className="text-sm font-bold text-foreground mt-1 block">{activeApplicant.transportPreference}</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Medical & Physical Fitness</span>
-                          <span className={cn('text-sm font-bold mt-1 block', activeApplicant.medicalClearance ? 'text-emerald-400' : 'text-amber-400')}>
-                            {activeApplicant.medicalClearance ? '✓ Cleared & Verified' : '⚠ Pending Doctor Certificate'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* ═══════════════════════════════════════════════════════════
-                    TAB 2: ACADEMICS & ENTRANCE EXAMINATION
-                    ═══════════════════════════════════════════════════════════ */}
-                {drawerTab === 'academics' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* Entrance Exam Standing */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/60">
-                        <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
-                          <Award className="h-4 w-4 text-primary" />
-                          <span>Admissions Entrance & Aptitude Assessment</span>
-                        </h4>
-                        <span className="text-xs font-mono font-semibold text-muted-foreground">Session {activeSession}</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Entrance Test Score</span>
-                          <span className="text-2xl font-black text-foreground mt-1 block">{activeApplicant.entranceScore}</span>
-                          <span className="text-[11px] text-emerald-400 font-semibold mt-0.5 block">Top Tier Percentile</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Entrance Merit Rank</span>
-                          <span className="text-2xl font-black text-foreground mt-1 block">{activeApplicant.entranceRank}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">General Admissions Pool</span>
-                        </div>
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Prior School Performance</span>
-                          <span className="text-2xl font-black text-emerald-400 mt-1 block">{activeApplicant.previousMarks}</span>
-                          <span className="text-[11px] text-muted-foreground mt-0.5 block">{activeApplicant.previousSchool}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Subject-Wise Prior Academic Scorecard */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                        <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                        <span>Prior Academic Scorecard & Subject Breakdown</span>
-                      </h4>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                        {activeApplicant.subjectScores && activeApplicant.subjectScores.length > 0 ? (
-                          activeApplicant.subjectScores.map((sub, i) => (
-                            <div key={i} className="p-3.5 rounded-md bg-muted/30 border border-border/60 flex items-center justify-between">
-                              <div>
-                                <span className="font-bold text-foreground text-sm block">{sub.subject}</span>
-                                <span className="text-xs font-mono text-muted-foreground mt-0.5 block">Score: {sub.score}</span>
-                              </div>
-                              <VFBadge variant="success" className="font-mono text-xs font-black">
-                                {sub.grade}
-                              </VFBadge>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="col-span-3 text-center py-6 text-sm text-muted-foreground">
-                            Subject scorecard verified from prior transfer records.
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Interview & Faculty Evaluation */}
-                    {activeApplicant.interviewRecord && (
-                      <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                        <div className="flex items-center justify-between pb-3 border-b border-border/60">
-                          <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
-                            <School className="h-4 w-4 text-muted-foreground" />
-                            <span>Faculty Interview & Admissions Panel Feedback</span>
-                          </h4>
-                          <span className="text-xs font-mono text-muted-foreground">{activeApplicant.interviewRecord.date}</span>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-1">
-                            <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Interviewer</span>
-                            <span className="text-sm font-bold text-foreground block">{activeApplicant.interviewRecord.interviewer}</span>
-                            <div className="flex items-center gap-2 pt-2">
-                              <span className="text-xs text-muted-foreground">Score:</span>
-                              <span className="text-sm font-mono font-black text-foreground">{activeApplicant.interviewRecord.score}</span>
-                            </div>
-                          </div>
-
-                          <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-1">
-                            <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Panel Recommendation</span>
-                            <span className="text-sm font-bold text-emerald-400 block">{activeApplicant.interviewRecord.recommendation}</span>
-                            <p className="text-xs text-muted-foreground pt-1 italic">"{activeApplicant.interviewRecord.remarks}"</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* ═══════════════════════════════════════════════════════════
-                    TAB 3: OCR & DOCUMENT VERIFICATION AUDIT
-                    ═══════════════════════════════════════════════════════════ */}
-                {drawerTab === 'documents' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* OCR Status Summary Banner */}
-                    <div className="p-5 rounded-lg bg-card border border-border shadow-xs flex items-center justify-between gap-4 flex-wrap">
-                      <div className="flex items-center gap-3.5">
-                        <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
-                          <FileCheck className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-extrabold text-foreground text-base">CBSE Document Verification Audit</h4>
-                            <VFBadge variant={activeApplicant.ocrDocStatus === 'Verified' ? 'success' : activeApplicant.ocrDocStatus === 'Flagged' ? 'danger' : 'warning'}>
-                              {activeApplicant.ocrDocStatus}
+                            <span className="text-xs font-mono font-bold text-foreground bg-muted px-2 py-0.5 rounded border border-border">
+                              Score: {activeApplicant.interviewRecord.score}
+                            </span>
+                            <VFBadge variant="success" className="text-[10px]">
+                              {activeApplicant.interviewRecord.recommendation}
                             </VFBadge>
                           </div>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            Automated OCR cross-referenced against prior school and municipal registries
-                          </p>
                         </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed pt-1 border-t border-border/50">
+                          {activeApplicant.interviewRecord.remarks}
+                        </p>
                       </div>
                     </div>
+                  )}
+                </div>
+              )}
 
-                    {/* Interactive Document Checklist */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-2 pb-3 border-b border-border/60">
-                        <FileText className="h-4 w-4 text-muted-foreground" />
-                        <span>Mandatory Document Clearance Matrix</span>
-                      </h4>
+              {/* TAB 3: VERIFICATION & COMPLIANCE */}
+              {drawerTab === 'documents' && (
+                <div className="animate-fade-in divide-y divide-border/40">
+                  {/* AI Fit Score Tiles */}
+                  <div className="px-4 py-3">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
+                      AI Institutional Fit Assessment
+                    </span>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">AI Fit Score</span>
+                        <span className="text-xl font-black text-emerald-400 block mt-0.5">{activeApplicant.fitScore}%</span>
+                      </div>
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Doc Clearance</span>
+                        <span className="text-sm font-bold text-foreground block mt-1">{activeApplicant.ocrDocStatus}</span>
+                      </div>
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Recommendation</span>
+                        <span className="text-xs font-bold text-foreground block mt-1 truncate">{activeApplicant.recommendation}</span>
+                      </div>
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Quota Allotment</span>
+                        <span className="text-xs font-bold text-primary block mt-1 truncate">{activeApplicant.quotaCategory}</span>
+                      </div>
+                    </div>
+                  </div>
 
-                      <div className="space-y-3">
-                        {[
-                          {
-                            title: 'Transfer Certificate (TC) from Prior School',
-                            desc: 'Official counter-signed TC with district education officer seal',
-                            status: activeApplicant.tcAvailable,
-                            statusText: activeApplicant.tcAvailable ? 'Verified & Scanned' : 'Pending Submission',
-                          },
-                          {
-                            title: 'Municipal Birth Certificate',
-                            desc: 'DOB cross-verified against applicant date of birth',
-                            status: activeApplicant.birthCertVerified,
-                            statusText: activeApplicant.birthCertVerified ? 'Verified (OCR Match 99.4%)' : 'Under Verification',
-                          },
-                          {
-                            title: 'Prior Year Report Cards & Marks Statement',
-                            desc: 'Official mark sheets for previous 2 academic terms',
-                            status: activeApplicant.marksheetVerified,
-                            statusText: activeApplicant.marksheetVerified ? 'Verified & Authenticated' : 'Missing Seal',
-                          },
-                          {
-                            title: 'Candidate & Guardian Aadhaar Card / ID Proof',
-                            desc: 'UIDAI biometric validation and address proof match',
-                            status: activeApplicant.aadhaarVerified,
-                            statusText: activeApplicant.aadhaarVerified ? 'Verified & Linked' : 'Pending Scan',
-                          },
-                          {
-                            title: 'Medical Fitness & Blood Group Certificate',
-                            desc: 'Doctor clearance for physical education and school sports',
-                            status: activeApplicant.medicalClearance,
-                            statusText: activeApplicant.medicalClearance ? 'Cleared' : 'Pending Medical Slip',
-                          },
-                        ].map((doc, idx) => (
-                          <div
-                            key={idx}
-                            className="p-4 rounded-md bg-muted/30 border border-border/60 flex items-center justify-between gap-4 flex-wrap"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div
-                                className={cn(
-                                  'h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-black',
-                                  doc.status ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
-                                )}
-                              >
-                                {doc.status ? '✓' : '!'}
-                              </div>
-                              <div>
-                                <p className="text-sm font-bold text-foreground">{doc.title}</p>
-                                <p className="text-xs text-muted-foreground">{doc.desc}</p>
-                              </div>
+                  {/* Mandatory Document Matrix */}
+                  <div className="px-4 py-3">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
+                      Mandatory Document Clearance Matrix
+                    </span>
+                    <div className="space-y-1.5">
+                      {[
+                        {
+                          title: 'Transfer Certificate (TC) from Prior School',
+                          desc: 'Official counter-signed TC with DEO seal',
+                          status: activeApplicant.tcAvailable,
+                          statusText: activeApplicant.tcAvailable ? 'Verified & Scanned' : 'Pending Submission',
+                        },
+                        {
+                          title: 'Municipal Birth Certificate',
+                          desc: 'DOB cross-verified against applicant record',
+                          status: activeApplicant.birthCertVerified,
+                          statusText: activeApplicant.birthCertVerified ? 'Verified (OCR Match 99.4%)' : 'Under Verification',
+                        },
+                        {
+                          title: 'Prior Year Report Cards & Marks Statement',
+                          desc: 'Official mark sheets for previous 2 academic terms',
+                          status: activeApplicant.marksheetVerified,
+                          statusText: activeApplicant.marksheetVerified ? 'Verified & Authenticated' : 'Missing Seal',
+                        },
+                        {
+                          title: 'Candidate & Guardian Aadhaar Card / ID Proof',
+                          desc: 'UIDAI biometric validation and address proof match',
+                          status: activeApplicant.aadhaarVerified,
+                          statusText: activeApplicant.aadhaarVerified ? 'Verified & Linked' : 'Pending Scan',
+                        },
+                        {
+                          title: 'Medical Fitness & Blood Group Certificate',
+                          desc: 'Doctor clearance for physical education and sports',
+                          status: activeApplicant.medicalClearance,
+                          statusText: activeApplicant.medicalClearance ? 'Cleared' : 'Pending Slip',
+                        },
+                      ].map((doc, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2.5 rounded-md bg-muted/30 border border-border/70 flex items-center justify-between gap-3"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div
+                              className={cn(
+                                "h-6 w-6 rounded flex items-center justify-center shrink-0 text-xs font-black",
+                                doc.status ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" : "bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                              )}
+                            >
+                              {doc.status ? '✓' : '!'}
                             </div>
-                            <VFBadge variant={doc.status ? 'success' : 'warning'}>
-                              {doc.statusText}
-                            </VFBadge>
+                            <div className="min-w-0">
+                              <p className="text-xs font-bold text-foreground truncate">{doc.title}</p>
+                              <p className="text-[10px] text-muted-foreground truncate">{doc.desc}</p>
+                            </div>
                           </div>
-                        ))}
-                      </div>
+                          <VFBadge variant={doc.status ? 'success' : 'warning'} className="text-[10px] shrink-0">
+                            {doc.statusText}
+                          </VFBadge>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                )}
+                </div>
+              )}
 
-                {/* ═══════════════════════════════════════════════════════════
-                    TAB 4: ADMISSIONS BOARD DECISION & OFFER LETTER
-                    ═══════════════════════════════════════════════════════════ */}
-                {drawerTab === 'decisions' && (
-                  <div className="space-y-6 animate-fade-in pt-1">
-                    {/* Decision Pipeline Status */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/60">
-                        <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
-                          <FileBadge2 className="h-4 w-4 text-primary" />
-                          <span>Admissions Committee Determination</span>
-                        </h4>
-                        <VFBadge variant={activeApplicant.stage === 'Approved' ? 'success' : 'outline'}>
-                          Stage: {activeApplicant.stage}
-                        </VFBadge>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-2">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Admission Status</span>
-                          <p className="text-xl font-black text-foreground">
-                            {activeApplicant.stage === 'Approved' ? 'Provisional Offer Issued' : 'Under Review & Screening'}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Target Academic Session: <span className="font-bold text-foreground">{activeSession}</span>
-                          </p>
-                        </div>
-
-                        <div className="p-4 rounded-md bg-muted/30 border border-border/60 space-y-2">
-                          <span className="text-xs text-muted-foreground font-bold uppercase tracking-wide block">Annual Tuition & Fees</span>
-                          <p className="text-xl font-black text-foreground">{activeApplicant.annualFee}</p>
-                          <p className="text-xs text-muted-foreground">
-                            Includes Composite Tuition, Labs & Activity Charges
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Official Offer Letter Preview & Print Action */}
-                    <div className="p-5 sm:p-6 rounded-lg bg-card border border-border/80 shadow-xs space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-border/60 flex-wrap gap-2">
-                        <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
-                          <Printer className="h-4 w-4 text-muted-foreground" />
-                          <span>Provisional Admission Offer Dossier</span>
-                        </h4>
-                        <div className="flex items-center gap-2">
-                          <VFButton
-                            size="sm"
-                            variant="outline"
-                            leftIcon={<Printer className="h-4 w-4" />}
-                            onClick={() => {
-                              setOfferApplicant(activeApplicant);
-                              setIsOfferModalOpen(true);
-                            }}
-                          >
-                            Preview & Print Offer Letter
-                          </VFButton>
-                        </div>
-                      </div>
-
-                      <div className="p-5 rounded-md bg-muted/20 border border-border/60 font-serif text-sm space-y-3 leading-relaxed text-foreground">
-                        <div className="flex items-center justify-between border-b border-border/50 pb-2 text-xs font-mono font-semibold text-muted-foreground">
-                          <span>Ref: VM/ADM/{activeSession.split('–')[0]}/{activeApplicant.applicantId}</span>
-                          <span>Date: {activeApplicant.appliedDate}</span>
-                        </div>
-                        <p>
-                          Dear <span className="font-bold text-foreground">{activeApplicant.guardianName}</span>,
+              {/* TAB 4: DECISION & OFFER */}
+              {drawerTab === 'decisions' && (
+                <div className="animate-fade-in divide-y divide-border/40">
+                  {/* Status & Fee Structure */}
+                  <div className="px-4 py-3">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
+                      Admissions Committee Determination
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Admission Status</span>
+                        <p className="text-base font-black text-foreground mt-0.5">
+                          {activeApplicant.stage === 'Approved' ? 'Provisional Offer Issued' : 'Under Review & Screening'}
                         </p>
-                        <p>
-                          We are pleased to inform you that following evaluation by the Admissions Committee,{' '}
-                          <span className="font-bold text-foreground">{activeApplicant.name}</span> has been granted{' '}
-                          <span className="font-bold text-emerald-400">Provisional Admission</span> into{' '}
-                          <span className="font-bold text-foreground">{activeApplicant.appliedGrade}</span> ({activeApplicant.streamPreference}) for Academic Session {activeSession}.
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          Target Session: <strong className="text-foreground">{activeSession}</strong>
                         </p>
-                        <p className="text-xs text-muted-foreground font-sans">
-                          To confirm enrollment, please finalize document verification and complete the initial term fee submission within 7 business days.
+                      </div>
+                      <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Annual Composite Tuition</span>
+                        <p className="text-base font-black text-foreground mt-0.5">{activeApplicant.annualFee}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          Includes Tuition, Labs & Activities
                         </p>
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
-            )}
+
+                  {/* Letterhead Preview */}
+                  <div className="px-4 py-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                        Provisional Admission Letterhead
+                      </span>
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        leftIcon={<Printer className="h-3.5 w-3.5" />}
+                        onClick={() => {
+                          setOfferApplicant(activeApplicant);
+                          setIsOfferModalOpen(true);
+                        }}
+                      >
+                        Print Offer Letter
+                      </VFButton>
+                    </div>
+                    <div className="p-4 rounded-md bg-muted/20 border border-border/70 font-serif text-xs space-y-2 leading-relaxed text-foreground">
+                      <div className="flex items-center justify-between border-b border-border/50 pb-1.5 text-[11px] font-mono text-muted-foreground">
+                        <span>Ref: VM/ADM/{activeSession.split('–')[0]}/{activeApplicant.applicantId}</span>
+                        <span>Date: {activeApplicant.appliedDate}</span>
+                      </div>
+                      <p>Dear <strong className="text-foreground">{activeApplicant.guardianName}</strong>,</p>
+                      <p>
+                        Following evaluation by the Admissions Committee, <strong className="text-foreground">{activeApplicant.name}</strong> has been granted <span className="font-bold text-emerald-400">Provisional Admission</span> into <strong className="text-foreground">{activeApplicant.appliedGrade}</strong> ({activeApplicant.streamPreference}) for Academic Session {activeSession}.
+                      </p>
+                      <p className="text-[11px] text-muted-foreground font-sans pt-1">
+                        To confirm enrollment, finalize document verification and complete initial term fee submission within 7 business days.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </VFDrawer>

@@ -64,8 +64,8 @@ export function VFStatCard({
   trend,
   trendLabel,
   isLoading = false,
-  accentColor = 'primary',
-  showTopBar = true,
+  accentColor = 'none',
+  showTopBar = false,
   className,
   ...props
 }: VFStatCardProps) {

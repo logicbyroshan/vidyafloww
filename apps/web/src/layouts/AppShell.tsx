@@ -103,9 +103,34 @@ function SmallScreenBlocker() {
   );
 }
 
+const ROUTE_PAGE_NAMES: Record<string, string> = {
+  '/': 'Dashboard',
+  '/students': 'Students',
+  '/admissions': 'Admissions',
+  '/attendance': 'Attendance',
+  '/academics': 'Academics',
+  '/timetable': 'Timetable',
+  '/staff': 'Teachers',
+  '/homework': 'Homework',
+  '/examinations': 'Examinations',
+  '/statistics': 'Statistics',
+  '/fees': 'Payments',
+  '/notices': 'Notices',
+  '/reports': 'Reports',
+  '/settings': 'Settings',
+  '/shortcuts': 'Quick Shortcuts',
+  '/license': 'License Details',
+  '/lms': 'E-Learning',
+  '/resources': 'Library',
+  '/portal': 'Parent Portal',
+  '/login': 'Login',
+  '/signup': 'Sign Up',
+  '/forgot-password': 'Forgot Password',
+};
+
 export function AppShell() {
   const location = useLocation();
-  const { addNotification } = useGlobalStore();
+  const { addNotification, schoolProfile } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const [isAIDrawerOpen, setIsAIDrawerOpen] = React.useState(false);
@@ -113,6 +138,13 @@ export function AppShell() {
   const [viewportWidth, setViewportWidth] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
+
+  // Dynamic Browser Tab Title: VidyaMaxx@{schoolProfile.name} - {pageName}
+  React.useEffect(() => {
+    const pageName = ROUTE_PAGE_NAMES[location.pathname] || 'Dashboard';
+    const schoolName = schoolProfile?.name || 'Springfield Academy';
+    document.title = `VidyaMaxx@${schoolName} - ${pageName}`;
+  }, [location.pathname, schoolProfile?.name]);
 
   // Scroll to top on route change
   React.useEffect(() => {
@@ -180,11 +212,11 @@ export function AppShell() {
   }
 
   return (
-    <div className="w-full bg-background min-h-screen">
-      <div className="max-w-[2000px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row">
-        <VFPage className="flex-row h-screen overflow-hidden w-full">
+    <div className="w-full bg-black min-h-screen">
+      <div className="max-w-[2000px] mx-auto min-w-[1000px] h-screen overflow-hidden flex flex-row bg-black">
+        <VFPage className="flex-row h-screen overflow-hidden w-full bg-black">
           <Sidebar />
-          <div className="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300 ease-in-out min-w-0">
+          <div className="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300 ease-in-out min-w-0 bg-background">
             <Header
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}

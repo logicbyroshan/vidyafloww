@@ -13,6 +13,7 @@ import { Route as TimetableRouteImport } from './routes/timetable'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as StaffRouteImport } from './routes/staff'
+import { Route as ShortcutsRouteImport } from './routes/shortcuts'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ReportsRouteImport } from './routes/reports'
@@ -20,6 +21,7 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as NoticesRouteImport } from './routes/notices'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
+import { Route as LicenseRouteImport } from './routes/license'
 import { Route as LearningRouteImport } from './routes/learning'
 import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
@@ -47,6 +49,11 @@ const StatisticsRoute = StatisticsRouteImport.update({
 const StaffRoute = StaffRouteImport.update({
   id: '/staff',
   path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShortcutsRoute = ShortcutsRouteImport.update({
+  id: '/shortcuts',
+  path: '/shortcuts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -82,6 +89,11 @@ const LoginRoute = LoginRouteImport.update({
 const LmsRoute = LmsRouteImport.update({
   id: '/lms',
   path: '/lms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LicenseRoute = LicenseRouteImport.update({
+  id: '/license',
+  path: '/license',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearningRoute = LearningRouteImport.update({
@@ -134,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
   '/learning': typeof LearningRoute
+  '/license': typeof LicenseRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -141,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
+  '/shortcuts': typeof ShortcutsRoute
   '/staff': typeof StaffRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
@@ -155,6 +169,7 @@ export interface FileRoutesByTo {
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
   '/learning': typeof LearningRoute
+  '/license': typeof LicenseRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -162,6 +177,7 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
+  '/shortcuts': typeof ShortcutsRoute
   '/staff': typeof StaffRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
@@ -177,6 +193,7 @@ export interface FileRoutesById {
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
   '/learning': typeof LearningRoute
+  '/license': typeof LicenseRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -184,6 +201,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
+  '/shortcuts': typeof ShortcutsRoute
   '/staff': typeof StaffRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
@@ -200,6 +218,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/homework'
     | '/learning'
+    | '/license'
     | '/lms'
     | '/login'
     | '/notices'
@@ -207,6 +226,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/resources'
     | '/settings'
+    | '/shortcuts'
     | '/staff'
     | '/statistics'
     | '/students'
@@ -221,6 +241,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/homework'
     | '/learning'
+    | '/license'
     | '/lms'
     | '/login'
     | '/notices'
@@ -228,6 +249,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/resources'
     | '/settings'
+    | '/shortcuts'
     | '/staff'
     | '/statistics'
     | '/students'
@@ -242,6 +264,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/homework'
     | '/learning'
+    | '/license'
     | '/lms'
     | '/login'
     | '/notices'
@@ -249,6 +272,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/resources'
     | '/settings'
+    | '/shortcuts'
     | '/staff'
     | '/statistics'
     | '/students'
@@ -264,6 +288,7 @@ export interface RootRouteChildren {
   FeesRoute: typeof FeesRoute
   HomeworkRoute: typeof HomeworkRoute
   LearningRoute: typeof LearningRoute
+  LicenseRoute: typeof LicenseRoute
   LmsRoute: typeof LmsRoute
   LoginRoute: typeof LoginRoute
   NoticesRoute: typeof NoticesRoute
@@ -271,6 +296,7 @@ export interface RootRouteChildren {
   ReportsRoute: typeof ReportsRoute
   ResourcesRoute: typeof ResourcesRoute
   SettingsRoute: typeof SettingsRoute
+  ShortcutsRoute: typeof ShortcutsRoute
   StaffRoute: typeof StaffRoute
   StatisticsRoute: typeof StatisticsRoute
   StudentsRoute: typeof StudentsRoute
@@ -305,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/staff'
       fullPath: '/staff'
       preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shortcuts': {
+      id: '/shortcuts'
+      path: '/shortcuts'
+      fullPath: '/shortcuts'
+      preLoaderRoute: typeof ShortcutsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -354,6 +387,13 @@ declare module '@tanstack/react-router' {
       path: '/lms'
       fullPath: '/lms'
       preLoaderRoute: typeof LmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/license': {
+      id: '/license'
+      path: '/license'
+      fullPath: '/license'
+      preLoaderRoute: typeof LicenseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learning': {
@@ -424,6 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeesRoute: FeesRoute,
   HomeworkRoute: HomeworkRoute,
   LearningRoute: LearningRoute,
+  LicenseRoute: LicenseRoute,
   LmsRoute: LmsRoute,
   LoginRoute: LoginRoute,
   NoticesRoute: NoticesRoute,
@@ -431,6 +472,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportsRoute: ReportsRoute,
   ResourcesRoute: ResourcesRoute,
   SettingsRoute: SettingsRoute,
+  ShortcutsRoute: ShortcutsRoute,
   StaffRoute: StaffRoute,
   StatisticsRoute: StatisticsRoute,
   StudentsRoute: StudentsRoute,

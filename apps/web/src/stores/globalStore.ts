@@ -24,6 +24,35 @@ export interface SchoolProfile {
   city: string;
 }
 
+export const DEFAULT_DASHBOARD_SHORTCUTS = [
+  'attendance',
+  'admissions',
+  'students',
+  'staff',
+  'timetable',
+  'fees',
+  'notices',
+  'homework',
+  'examinations',
+  'academics',
+  'reports',
+  'settings',
+];
+
+export const DEFAULT_DASHBOARD_SECTIONS = [
+  'teacher_attendance',
+  'quick_shortcuts',
+  'student_attendance',
+  'license_details',
+];
+
+export const DEFAULT_DASHBOARD_KPIS = [
+  'students',
+  'staff',
+  'attendance',
+  'admissions',
+];
+
 interface GlobalState {
   // Theme (always dark)
   theme: Theme;
@@ -45,6 +74,24 @@ interface GlobalState {
   // First-visit preloader flag
   hasSeenPreloader: boolean;
   setHasSeenPreloader: () => void;
+
+  // Dashboard Edit Mode & Layout Customization
+  isDashboardEditMode: boolean;
+  toggleDashboardEditMode: () => void;
+  setDashboardEditMode: (val: boolean) => void;
+
+  dashboardSectionOrder: string[];
+  setDashboardSectionOrder: (sections: string[]) => void;
+  resetDashboardSectionOrder: () => void;
+
+  dashboardKpiOrder: string[];
+  setDashboardKpiOrder: (kpis: string[]) => void;
+  resetDashboardKpiOrder: () => void;
+
+  // Dashboard Quick Action Shortcuts Configuration
+  dashboardShortcuts: string[];
+  setDashboardShortcuts: (shortcuts: string[]) => void;
+  resetDashboardShortcuts: () => void;
 
   // Notifications
   notifications: Notification[];
@@ -94,6 +141,24 @@ export const useGlobalStore = create<GlobalState>()(
       hasSeenPreloader: false,
       setHasSeenPreloader: () => set({ hasSeenPreloader: true }),
 
+      // Dashboard Customization state
+      isDashboardEditMode: false,
+      toggleDashboardEditMode: () => set((state) => ({ isDashboardEditMode: !state.isDashboardEditMode })),
+      setDashboardEditMode: (isDashboardEditMode) => set({ isDashboardEditMode }),
+
+      dashboardSectionOrder: DEFAULT_DASHBOARD_SECTIONS,
+      setDashboardSectionOrder: (dashboardSectionOrder) => set({ dashboardSectionOrder }),
+      resetDashboardSectionOrder: () => set({ dashboardSectionOrder: DEFAULT_DASHBOARD_SECTIONS }),
+
+      dashboardKpiOrder: DEFAULT_DASHBOARD_KPIS,
+      setDashboardKpiOrder: (dashboardKpiOrder) => set({ dashboardKpiOrder }),
+      resetDashboardKpiOrder: () => set({ dashboardKpiOrder: DEFAULT_DASHBOARD_KPIS }),
+
+      // Dashboard Quick Action Shortcuts
+      dashboardShortcuts: DEFAULT_DASHBOARD_SHORTCUTS,
+      setDashboardShortcuts: (dashboardShortcuts) => set({ dashboardShortcuts }),
+      resetDashboardShortcuts: () => set({ dashboardShortcuts: DEFAULT_DASHBOARD_SHORTCUTS }),
+
       // Notifications state
       notifications: [],
       addNotification: (notif) =>
@@ -130,6 +195,7 @@ export const useGlobalStore = create<GlobalState>()(
         schoolProfile: state.schoolProfile,
         sidebarExpanded: state.sidebarExpanded,
         hasSeenPreloader: state.hasSeenPreloader,
+        dashboardShortcuts: state.dashboardShortcuts,
       }),
     }
   )
