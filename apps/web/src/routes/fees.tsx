@@ -7,14 +7,13 @@ import {
   VFBadge,
   VFDrawer,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   CreditCard,
   Plus,
   Download,
   FileText,
   Send,
-  CheckCircle2,
   MessageSquare,
   Copy,
   Check,
@@ -72,7 +71,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Paid',
     paidDate: '10 Apr 2026',
     phone: '+91 98765 43210',
-    email: 'aditya.v@springfield.edu.in',
+    email: 'aditya.v@vidyafloww.edu.in',
   },
   {
     id: '2',
@@ -93,7 +92,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Paid',
     paidDate: '05 Jul 2026',
     phone: '+91 98123 45678',
-    email: 'priya.s@springfield.edu.in',
+    email: 'priya.s@vidyafloww.edu.in',
   },
   {
     id: '3',
@@ -114,7 +113,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Partial',
     paidDate: '15 Jul 2026',
     phone: '+91 97654 32109',
-    email: 'rahul.g@springfield.edu.in',
+    email: 'rahul.g@vidyafloww.edu.in',
   },
   {
     id: '4',
@@ -135,7 +134,7 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Paid',
     paidDate: '08 Jul 2026',
     phone: '+91 99887 76655',
-    email: 'kavya.n@springfield.edu.in',
+    email: 'kavya.n@vidyafloww.edu.in',
   },
   {
     id: '5',
@@ -156,12 +155,12 @@ const INITIAL_FEES: FeeRecord[] = [
     status: 'Overdue',
     paidDate: '—',
     phone: '+91 98234 56789',
-    email: 'ishaan.m@springfield.edu.in',
+    email: 'ishaan.m@vidyafloww.edu.in',
   },
 ];
 
 function FeesPage() {
-  const { activeSession } = useGlobalStore();
+  const { addNotification, activeSession } = useGlobalStore();
   const [feeList, setFeeList] = React.useState<FeeRecord[]>(INITIAL_FEES);
   const [selectedFeeIndex, setSelectedFeeIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -170,7 +169,6 @@ function FeesPage() {
   const [paymentMode, setPaymentMode] = React.useState<string>('UPI / Razorpay');
   const [paymentRef, setPaymentRef] = React.useState<string>('');
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
-  const [notice, setNotice] = React.useState<string | null>(null);
 
   const activeFee =
     selectedFeeIndex !== null && selectedFeeIndex >= 0 && selectedFeeIndex < feeList.length
@@ -217,7 +215,7 @@ function FeesPage() {
 
     setFeeList(updated);
     setIsRecordingPayment(false);
-    setNotice(`Payment of ₹${amount.toLocaleString('en-IN')} recorded for ${target.studentName}. Receipt updated!`);
+    addNotification({ title: 'Payment Recorded', description: `Payment of ₹${amount.toLocaleString('en-IN')} recorded for ${target.studentName}. Receipt updated!`, type: 'success' });
   };
 
   const handlePrevFee = () => {
@@ -305,20 +303,6 @@ function FeesPage() {
 
   return (
     <VFPageContainer className="space-y-2.5 sm:space-y-3">
-      {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
-            <span className="font-bold">{notice}</span>
-          </div>
-          <button
-            onClick={() => setNotice(null)}
-            className="text-muted-foreground hover:text-foreground text-xs font-black cursor-pointer px-2 py-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       {/* 4 Enclosed Top Metric KPI Cards */}
       <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">

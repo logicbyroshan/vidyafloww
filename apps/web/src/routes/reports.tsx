@@ -7,7 +7,7 @@ import {
   VFButton,
   VFTabs,
   VFBadge,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   FileSpreadsheet,
   BarChart3,
@@ -47,14 +47,18 @@ function ReportsPage() {
     {
       header: 'Report Code',
       accessorKey: 'code',
-      cell: (r: ReportTemplate) => <span className="font-mono font-bold text-primary text-base">{r.code}</span>,
+      cell: (r: ReportTemplate) => (
+        <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
+          {r.code}
+        </span>
+      ),
     },
     {
       header: 'Report Title',
       accessorKey: 'name',
       cell: (r: ReportTemplate) => (
         <div>
-          <p className="font-extrabold text-foreground text-base leading-tight">{r.name}</p>
+          <p className="font-extrabold text-foreground text-sm leading-tight">{r.name}</p>
           <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} Audit</p>
         </div>
       ),
@@ -67,12 +71,12 @@ function ReportsPage() {
     {
       header: 'Frequency',
       accessorKey: 'frequency',
-      cell: (r: ReportTemplate) => <span className="text-foreground font-bold text-base">{r.frequency}</span>,
+      cell: (r: ReportTemplate) => <span className="text-foreground font-bold text-xs">{r.frequency}</span>,
     },
     {
       header: 'Last Exported',
       accessorKey: 'lastGenerated',
-      cell: (r: ReportTemplate) => <span className="text-muted-foreground text-base font-semibold">{r.lastGenerated}</span>,
+      cell: (r: ReportTemplate) => <span className="text-muted-foreground text-xs font-semibold">{r.lastGenerated}</span>,
     },
     {
       header: 'Status',
@@ -97,64 +101,54 @@ function ReportsPage() {
 
   // 1. Report Center View
   const reportCenterContent = (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {downloadAlert && (
-        <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg text-base text-foreground flex items-center justify-between animate-fade-in">
+        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-primary shrink-0" />
+            <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
             <span className="font-bold">{downloadAlert}</span>
           </div>
           <button
             onClick={() => setDownloadAlert(null)}
-            className="text-muted-foreground hover:text-foreground text-sm font-black cursor-pointer px-2 py-1"
+            className="text-muted-foreground hover:text-foreground text-xs font-black cursor-pointer px-2 py-1"
           >
             ✕
           </button>
         </div>
       )}
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <VFStatCard
-          title="Audit Registers"
-          value="18 Ready"
-          icon={<FileSpreadsheet className="h-5 w-5" />}
-          trend="up"
-          trendLabel="1-Click Excel Export"
-          accentColor="cyan"
-        />
-        <VFStatCard
-          title="CBSE Compliance"
-          value="100% Ready"
-          icon={<ShieldCheck className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Board Standard 2026"
-          accentColor="emerald"
-        />
-        <VFStatCard
-          title="Attendance Accuracy"
-          value="99.8%"
-          icon={<TrendingUp className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Biometric Gate Linked"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title="Fee Reconciliations"
-          value="₹4.86 Cr"
-          icon={<BarChart3 className="h-5 w-5" />}
-          trend="up"
-          trendLabel="Quarter 2 Audited"
-          accentColor="amber"
-        />
+      {/* 4 Enclosed Top Metric KPI Cards */}
+      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Audit Registers</span>
+            <span className="text-2xl font-black text-foreground mt-1 block">18 Ready</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">1-Click Excel Export</span>
+          </div>
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">CBSE Compliance</span>
+            <span className="text-2xl font-black text-emerald-400 mt-1 block">100% Ready</span>
+            <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Board Standard 2026</span>
+          </div>
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Attendance Accuracy</span>
+            <span className="text-2xl font-black text-foreground mt-1 block">99.8%</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Biometric Linked</span>
+          </div>
+          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Fee Reconciliations</span>
+            <span className="text-2xl font-black text-foreground mt-1 block">₹4.86 Cr</span>
+            <span className="text-[11px] text-muted-foreground mt-0.5 block">Quarter 2 Audited</span>
+          </div>
+        </div>
       </div>
 
       {/* Main Reports Master Table */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-black text-foreground tracking-tight">Institutional Reports & Analytics Master</h2>
-            <p className="text-sm text-muted-foreground font-medium">Export official state board audits, academic performance summaries, and financial reports</p>
+            <h2 className="text-base font-black text-foreground tracking-tight">Institutional Reports & Analytics Master</h2>
+            <p className="text-xs text-muted-foreground font-medium">Export official state board audits, academic performance summaries, and financial reports</p>
           </div>
           <VFButton
             size="sm"

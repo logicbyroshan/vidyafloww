@@ -8,7 +8,7 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Building,
   ShieldCheck,
@@ -67,7 +67,7 @@ function SchoolAdministrationPage() {
   const handleSaveBranding = (e: React.FormEvent) => {
     e.preventDefault();
     updateSchoolProfile({
-      name: formData.name.trim() || 'Springfield Academy',
+      name: formData.name.trim() || 'VidyaFloww International Academy',
       shortCode: formData.shortCode.trim(),
       tagline: formData.tagline.trim(),
       affiliation: formData.affiliation.trim(),
@@ -209,7 +209,7 @@ function SchoolAdministrationPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Springfield Academy"
+                    placeholder="e.g. VidyaFloww International Academy"
                     className="w-full px-3.5 py-2.5 text-base border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-semibold h-11"
                   />
                 </div>

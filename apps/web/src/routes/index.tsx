@@ -7,14 +7,13 @@ import {
   VFCard,
   VFButton,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Users,
   GraduationCap,
   CalendarCheck,
   FileText,
   ShieldCheck,
-  CheckCircle2,
   BookOpen,
   CreditCard,
   Bell,
@@ -97,6 +96,7 @@ function DashboardPage() {
     dashboardSectionOrder,
     setDashboardSectionOrder,
     resetDashboardSectionOrder,
+    addNotification,
     dashboardKpiOrder,
     setDashboardKpiOrder,
     resetDashboardKpiOrder,
@@ -104,7 +104,7 @@ function DashboardPage() {
     setDashboardEditMode,
   } = useGlobalStore();
 
-  const [notice, setNotice] = React.useState<string | null>(null);
+  // (notice state removed — actions now use addNotification toast)
 
   // Active shortcut items
   const activeShortcuts = React.useMemo(() => {
@@ -436,7 +436,7 @@ function DashboardPage() {
                       size="sm"
                       variant="outline"
                       className="h-7 px-2.5 text-xs bg-[#141414] hover:bg-[#1f1f1f] border-border text-foreground font-semibold"
-                      onClick={() => setNotice(`Reassigned proxy for ${t.teacher}`)}
+                      onClick={() => addNotification({ title: 'Proxy Reassigned', description: `Proxy reassigned for ${t.teacher}.`, type: 'success' })}
                     >
                       Reassign
                     </VFButton>
@@ -496,7 +496,7 @@ function DashboardPage() {
                       "h-8 px-3 text-xs shrink-0 self-end sm:self-center",
                       s.severity !== 'danger' && "bg-[#141414] hover:bg-[#1f1f1f]"
                     )}
-                    onClick={() => setNotice(`Executed: ${s.action} for ${s.student}`)}
+                    onClick={() => addNotification({ title: 'Action Executed', description: `${s.action} for ${s.student}.`, type: 'info' })}
                   >
                     {s.action}
                   </VFButton>
@@ -653,12 +653,12 @@ function DashboardPage() {
                   </div>
                 </div>
 
-                {/* AI Compute Tokens */}
+                {/* Cloud Sync & Processing Tokens */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-xs font-bold">
                     <span className="flex items-center gap-1.5 text-foreground">
                       <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                      AI & OCR Compute Tokens
+                      Cloud Sync & Processing Tokens
                     </span>
                     <span className="font-mono text-xs text-emerald-400 font-bold">
                       412,500 <span className="text-muted-foreground font-normal">/ 500,000 (82.5%)</span>
@@ -700,7 +700,7 @@ function DashboardPage() {
               onClick={() => {
                 resetDashboardSectionOrder();
                 resetDashboardKpiOrder();
-                setNotice('Reset dashboard layout to default configuration.');
+                addNotification({ title: 'Dashboard Reset', description: 'Dashboard layout reset to default configuration.', type: 'info' });
               }}
               className="text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-1.5 px-2.5 py-1.5 rounded border border-border bg-[#121212] hover:bg-[#1a1a1a] transition-colors cursor-pointer"
             >
@@ -719,21 +719,6 @@ function DashboardPage() {
         </div>
       )}
 
-      {/* Dynamic Action Toast / Notice Banner */}
-      {notice && (
-        <div className="bg-primary/10 border border-primary/30 text-foreground px-4 py-3 rounded-md flex items-center justify-between text-sm shadow-xs animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
-            <span className="font-bold">{notice}</span>
-          </div>
-          <button
-            onClick={() => setNotice(null)}
-            className="text-muted-foreground hover:text-foreground text-xs font-black cursor-pointer px-2 py-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       {/* 1. Top Full-Width KPI Metric Hub — outer p-4, inner gap-4 (Level 1 → Level 2) */}
       <div className="rounded-lg border border-border/80 bg-card p-4 shadow-xs shrink-0 relative overflow-hidden">

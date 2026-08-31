@@ -26,7 +26,7 @@ import {
   Award,
   Calendar,
 } from 'lucide-react';
-import { cn } from '@vidyamaxx/ui';
+import { cn } from '@vidyafloww/ui';
 
 export const Route = createFileRoute('/login')({
   component: ProfessionalAuthPage,
@@ -103,7 +103,7 @@ function ProfessionalAuthPage() {
     }
 
     setIsLoading(false);
-    sessionStorage.setItem('vidyamaxx_just_logged_in', 'true');
+    sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
     navigate({ to: '/' });
   };
 
@@ -113,7 +113,7 @@ function ProfessionalAuthPage() {
     setStatusMessage({ type: 'success', text: 'Connecting to Google Workspace Single Sign-On (SSO)...' });
     await new Promise((r) => setTimeout(r, 800));
     setIsLoading(false);
-    sessionStorage.setItem('vidyamaxx_just_logged_in', 'true');
+    sessionStorage.setItem('vidyafloww_just_logged_in', 'true');
     navigate({ to: '/' });
   };
 
@@ -152,12 +152,12 @@ function ProfessionalAuthPage() {
         <div className="flex items-center gap-3">
           <img
             src="/logo.png"
-            alt="VidyaMaxx Logo"
+            alt="VidyaFloww Logo"
             className="h-8 w-8 object-contain shrink-0"
           />
           <div className="flex flex-col">
             <span className="text-xl font-black tracking-tight text-foreground leading-none">
-              Vidya<span className="text-primary">Maxx</span>
+              Vidya<span className="text-primary">Floww</span>
             </span>
             <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">
               Enterprise School Management
@@ -177,9 +177,9 @@ function ProfessionalAuthPage() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-10">
         <div className="w-full max-w-[490px]">
           {/* Main Card Container */}
-          <div className="rounded-3xl bg-card border border-border/90 shadow-xl p-7 sm:p-9 space-y-6 relative">
+          <div className="rounded-lg bg-card border border-border/90 shadow-xl p-7 sm:p-9 space-y-6 relative">
             {/* Top Subtle Amber Accent Line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-primary/80 rounded-t-3xl" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-primary/80 rounded-t-lg" />
 
             {/* Status Alert Toast */}
             {statusMessage && (
@@ -217,7 +217,7 @@ function ProfessionalAuthPage() {
                 >
                   <div className="text-center space-y-1.5">
                     <h2 className="text-2xl font-black text-foreground tracking-tight">
-                      Sign In to VidyaMaxx
+                      Sign In to VidyaFloww
                     </h2>
                     <p className="text-xs text-muted-foreground">
                       Access your unified institutional management portal
@@ -360,7 +360,7 @@ function ProfessionalAuthPage() {
                       ) : (
                         <>
                           <ShieldCheck className="h-4 w-4" />
-                          <span>Sign In to VidyaMaxx</span>
+                          <span>Sign In to VidyaFloww</span>
                           <ArrowRight className="h-4 w-4" />
                         </>
                       )}
@@ -632,7 +632,7 @@ function ProfessionalAuthPage() {
                           className="rounded border-border h-4 w-4 text-primary mt-0.5 cursor-pointer"
                         />
                         <span className="text-[11px] leading-tight">
-                          I agree to VidyaMaxx Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.
+                          I agree to VidyaFloww Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.
                         </span>
                       </label>
 
@@ -780,7 +780,7 @@ function ProfessionalAuthPage() {
                           <input
                             type="text"
                             required
-                            placeholder="admin@vidyamaxx.edu.in"
+                            placeholder="admin@vidyafloww.edu.in"
                             value={fpIdentifier}
                             onChange={(e) => setFpIdentifier(e.target.value)}
                             className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
@@ -1078,9 +1078,9 @@ function ProfessionalAuthPage() {
                         onClick={() => {
                           setRecoveredUsername({
                             name: 'Principal Office',
-                            username: 'admin@vidyamaxx.edu.in',
+                            username: 'admin@vidyafloww.edu.in',
                             role: 'School Administrator',
-                            campus: 'Springfield Academy, Delhi',
+                            campus: 'VidyaFloww International Academy, Delhi',
                           });
                           setFuStep(3);
                         }}

@@ -7,14 +7,14 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   Bell,
   Send,
-  CheckCircle2,
   Plus,
   Download,
 } from 'lucide-react';
+import { useGlobalStore } from '../stores/globalStore';
 
 export const Route = createFileRoute('/notices')({
   component: NoticesPage,
@@ -32,7 +32,7 @@ interface NoticeRecord {
 }
 
 function NoticesPage() {
-  const [noticeAlert, setNoticeAlert] = React.useState<string | null>(null);
+  const { addNotification } = useGlobalStore();
   const [showPublisher, setShowPublisher] = React.useState(false);
   const [newTitle, setNewTitle] = React.useState('');
   const [newContent, setNewContent] = React.useState('');
@@ -42,7 +42,7 @@ function NoticesPage() {
     { id: '1', circularNo: 'CIR-2026-042', title: 'Independence Day Celebrations & Dress Code', targetAudience: 'All School', category: 'Event', publishDate: '12 Aug 2026', deliveryStatus: '1,248 Delivered (100%)', status: 'Published' },
     { id: '2', circularNo: 'CIR-2026-041', title: 'Term 1 Parent-Teacher Meeting (PTM) Schedule', targetAudience: 'Parents', category: 'Academic', publishDate: '10 Aug 2026', deliveryStatus: '1,142 App / 106 SMS', status: 'Published' },
     { id: '3', circularNo: 'CIR-2026-040', title: 'CBSE Board Examination Registration Guidelines (Class 10 & 12)', targetAudience: 'Classes 9-12', category: 'Academic', publishDate: '08 Aug 2026', deliveryStatus: '620 Delivered', status: 'Published' },
-    { id: '4', circularNo: 'CIR-2026-039', title: 'Staff Faculty Development Workshop on AI in Pedagogy', targetAudience: 'Teachers', category: 'Administrative', publishDate: '05 Aug 2026', deliveryStatus: '124 Staff Notified', status: 'Published' },
+    { id: '4', circularNo: 'CIR-2026-039', title: 'Staff Faculty Development Workshop on Modern Pedagogy', targetAudience: 'Teachers', category: 'Administrative', publishDate: '05 Aug 2026', deliveryStatus: '124 Staff Notified', status: 'Published' },
   ]);
 
   const handlePublishNotice = (e: React.FormEvent) => {
@@ -64,21 +64,46 @@ function NoticesPage() {
     setNewTitle('');
     setNewContent('');
     setShowPublisher(false);
-    setNoticeAlert(`Notice "${newRecord.title}" published and dispatched to ${targetAudience}.`);
+    addNotification({ title: 'Notice Published', description: `"${newRecord.title}" dispatched to ${targetAudience}.`, type: 'success' });
+  };
+
+  const handleExportNotices = () => {
+    const headers = ['Circular No', 'Title', 'Target Audience', 'Category', 'Publish Date', 'Delivery Status', 'Status'];
+    const rows = noticeData.map((n) => [
+      n.circularNo,
+      `"${n.title}"`,
+      `"${n.targetAudience}"`,
+      `"${n.category}"`,
+      `"${n.publishDate}"`,
+      `"${n.deliveryStatus}"`,
+      n.status,
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const link = document.createElement('a');
+    link.setAttribute('href', encodeURI(csvContent));
+    link.setAttribute('download', `VidyaFloww_Circulars_Archive.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    addNotification({ title: 'Archive Exported', description: 'Circulars archive exported successfully as CSV.', type: 'success' });
   };
 
   const noticeColumns = [
     {
       header: 'Circular No',
       accessorKey: 'circularNo',
-      cell: (r: NoticeRecord) => <span className="font-mono font-bold text-primary text-base">{r.circularNo}</span>,
+      cell: (r: NoticeRecord) => (
+        <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
+          {r.circularNo}
+        </span>
+      ),
     },
     {
       header: 'Notice Title & Subject',
       accessorKey: 'title',
       cell: (r: NoticeRecord) => (
         <div>
-          <p className="font-extrabold text-foreground text-base leading-tight">{r.title}</p>
+          <p className="font-extrabold text-foreground text-sm leading-tight">{r.title}</p>
           <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} Circular</p>
         </div>
       ),
@@ -91,12 +116,12 @@ function NoticesPage() {
     {
       header: 'Date Published',
       accessorKey: 'publishDate',
-      cell: (r: NoticeRecord) => <span className="text-muted-foreground text-base font-semibold">{r.publishDate}</span>,
+      cell: (r: NoticeRecord) => <span className="text-foreground text-xs font-semibold">{r.publishDate}</span>,
     },
     {
       header: 'Delivery Broadcast',
       accessorKey: 'deliveryStatus',
-      cell: (r: NoticeRecord) => <span className="font-bold text-success text-base">{r.deliveryStatus}</span>,
+      cell: (r: NoticeRecord) => <span className="font-mono font-bold text-emerald-400 text-xs">{r.deliveryStatus}</span>,
     },
     {
       header: 'Status',
@@ -108,20 +133,6 @@ function NoticesPage() {
   // 1. Notice Board View
   const boardContent = (
     <div className="space-y-6">
-      {noticeAlert && (
-        <div className="p-4 bg-primary/10 border border-primary/20 rounded-lg text-base text-foreground flex items-center justify-between animate-fade-in">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-6 w-6 text-primary shrink-0" />
-            <span className="font-bold">{noticeAlert}</span>
-          </div>
-          <button
-            onClick={() => setNoticeAlert(null)}
-            className="text-muted-foreground hover:text-foreground text-sm font-black cursor-pointer px-2 py-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       {/* 4 Enclosed Top Metric KPI Cards */}
       <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
@@ -227,8 +238,13 @@ function NoticesPage() {
             <h2 className="text-lg font-black text-foreground tracking-tight">Institutional Notice Register</h2>
             <p className="text-sm text-muted-foreground font-medium">Broadcasted announcements, circular logs, and parent delivery status</p>
           </div>
-          <div className="flex items-center gap-2.5">
-            <VFButton variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+          <div className="flex items-center gap-2">
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<Download className="h-4 w-4" />}
+              onClick={handleExportNotices}
+            >
               Export Archive
             </VFButton>
             <VFButton size="sm" leftIcon={<Plus className="h-4 w-4" />} onClick={() => setShowPublisher(true)}>

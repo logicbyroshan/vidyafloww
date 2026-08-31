@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import JSZip from 'jszip';
 import {
   VFPageContainer,
   VFDataTable,
@@ -8,7 +9,7 @@ import {
   VFDrawer,
   VFDialog,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   CheckCircle2,
   Eye,
@@ -27,6 +28,18 @@ import {
   Printer,
   FileBadge2,
   Camera,
+  Users,
+  RotateCcw,
+  Sparkles,
+  Upload,
+  School,
+  CreditCard,
+  FileSpreadsheet,
+  Archive,
+  Loader2,
+  Settings,
+  GraduationCap,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -177,7 +190,7 @@ const INITIAL_APPLICANTS: Applicant[] = [
       interviewer: 'Prof. S. Ranganathan (Head of Science)',
       score: '8.8 / 10',
       date: '15 Aug 2026',
-      remarks: 'Strong interest in AI and competitive robotics. Approved for PCM Stream.',
+      remarks: 'Strong interest in Computer Science and competitive robotics. Approved for PCM Stream.',
       recommendation: 'Provisional Admission Cleared',
     },
   },
@@ -654,7 +667,7 @@ const INITIAL_APPLICANTS: Applicant[] = [
 ];
 
 function AdmissionsPage() {
-  const { activeSession } = useGlobalStore();
+  const { activeSession, addNotification } = useGlobalStore();
   const [applicantList, setApplicantList] = React.useState<Applicant[]>(INITIAL_APPLICANTS);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -662,7 +675,388 @@ function AdmissionsPage() {
   const [isEditingApplicant, setIsEditingApplicant] = React.useState<boolean>(false);
   const [applicantFormData, setApplicantFormData] = React.useState<Applicant | null>(null);
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
-  const [notice, setNotice] = React.useState<string | null>(null);
+
+  // Export Roster Modal State
+  const [isExportModalOpen, setIsExportModalOpen] = React.useState<boolean>(false);
+  const [exportFormat, setExportFormat] = React.useState<'xlsx' | 'zip' | 'bundle'>('bundle');
+  const [namingPattern, setNamingPattern] = React.useState<'id-name' | 'roll-name' | 'name-id' | 'custom'>('id-name');
+  const [customColumnKey, setCustomColumnKey] = React.useState<string>('phone');
+  const [isExporting, setIsExporting] = React.useState<boolean>(false);
+  const [exportProgressText, setExportProgressText] = React.useState<string>('');
+
+  // New Admission Drawer State
+  const [isNewAdmissionDrawerOpen, setIsNewAdmissionDrawerOpen] = React.useState<boolean>(false);
+  const [newAdmissionTab, setNewAdmissionTab] = React.useState<'bio' | 'guardian' | 'academic' | 'documents'>('bio');
+  const newAvatarFileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const initialNewApplicantForm = {
+    name: '',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+    appliedGrade: 'Class 9',
+    streamPreference: 'General Secondary (CBSE)',
+    dob: '2011-05-14',
+    bloodGroup: 'B+',
+    gender: 'Male',
+    quotaCategory: 'General Merit',
+    aadhaarNo: '4928-1092-8841',
+
+    guardianName: '',
+    guardianRelation: 'Father',
+    motherName: '',
+    phone: '',
+    altPhone: '',
+    email: '',
+    address: '',
+    city: 'New Delhi',
+    guardianOccupation: 'Senior Executive / Professional',
+
+    previousSchool: '',
+    previousMarks: '92.4% (Grade A1)',
+    entranceScore: '96 / 100',
+    entranceRank: 'Rank #5 of 340 Candidates',
+    mathsScore: '96',
+    scienceScore: '94',
+    englishScore: '92',
+    socialScore: '90',
+    computerScore: '98',
+
+    tcAvailable: true,
+    birthCertVerified: true,
+    marksheetVerified: true,
+    aadhaarVerified: true,
+    medicalClearance: true,
+    transportPreference: 'Bus Route 4 (Stop #12 - Sector 62)',
+    annualFee: '₹ 84,000',
+    stage: 'Screened' as 'Submitted' | 'Screened' | 'Interview' | 'Approved',
+    recommendation: 'Instant Admit' as 'Instant Admit' | 'Schedule Interview' | 'Needs Review' | 'Rejected',
+    notes: 'Exemplary academic record and high aptitude test scores.',
+  };
+
+  const [newApplicantForm, setNewApplicantForm] = React.useState(initialNewApplicantForm);
+
+  const handleOpenNewAdmissionDrawer = () => {
+    setNewApplicantForm(initialNewApplicantForm);
+    setNewAdmissionTab('bio');
+    setIsNewAdmissionDrawerOpen(true);
+  };
+
+  const handleCloseNewAdmissionDrawer = () => {
+    setIsNewAdmissionDrawerOpen(false);
+  };
+
+  const handleResetNewAdmissionForm = () => {
+    setNewApplicantForm(initialNewApplicantForm);
+    setNewAdmissionTab('bio');
+  };
+
+  const handleNewAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setNewApplicantForm((prev) => ({
+          ...prev,
+          avatarUrl: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmitNewAdmission = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!newApplicantForm.name.trim()) {
+      alert('Please enter candidate full legal name.');
+      setNewAdmissionTab('bio');
+      return;
+    }
+    if (!newApplicantForm.phone.trim()) {
+      alert('Please enter primary guardian contact number.');
+      setNewAdmissionTab('guardian');
+      return;
+    }
+
+    const nextIdNum = applicantList.length + 1;
+    const generatedAppId = `ADM-2026-${String(nextIdNum).padStart(3, '0')}`;
+    const fitCalc = Math.min(99, Math.max(75, Math.round(Number(newApplicantForm.entranceScore.split('/')[0] || 95))));
+
+    const newApplicantRecord: Applicant = {
+      id: String(Date.now()),
+      applicantId: generatedAppId,
+      name: newApplicantForm.name.trim(),
+      avatarUrl: newApplicantForm.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+      appliedGrade: newApplicantForm.appliedGrade,
+      streamPreference: newApplicantForm.streamPreference,
+      previousSchool: newApplicantForm.previousSchool.trim() || 'Modern Academy Public School',
+      previousMarks: newApplicantForm.previousMarks || '90.0% (Grade A1)',
+      guardianName: newApplicantForm.guardianName.trim() || 'Guardian / Parent',
+      guardianRelation: newApplicantForm.guardianRelation,
+      motherName: newApplicantForm.motherName.trim() || 'Mother',
+      phone: newApplicantForm.phone.trim(),
+      email: newApplicantForm.email.trim() || 'guardian@gmail.com',
+      address: newApplicantForm.address.trim() || 'Sector 14, New Delhi',
+      dob: newApplicantForm.dob || '14 May 2011',
+      bloodGroup: newApplicantForm.bloodGroup,
+      quotaCategory: newApplicantForm.quotaCategory,
+      transportPreference: newApplicantForm.transportPreference,
+      fitScore: fitCalc,
+      ocrDocStatus: newApplicantForm.birthCertVerified && newApplicantForm.marksheetVerified ? 'Verified' : 'Pending',
+      recommendation: newApplicantForm.recommendation,
+      stage: newApplicantForm.stage,
+      appliedDate: new Date().toISOString().split('T')[0],
+      tcAvailable: newApplicantForm.tcAvailable,
+      birthCertVerified: newApplicantForm.birthCertVerified,
+      marksheetVerified: newApplicantForm.marksheetVerified,
+      aadhaarVerified: newApplicantForm.aadhaarVerified,
+      medicalClearance: newApplicantForm.medicalClearance,
+      entranceScore: newApplicantForm.entranceScore,
+      entranceRank: newApplicantForm.entranceRank,
+      annualFee: newApplicantForm.annualFee,
+      notes: newApplicantForm.notes,
+      subjectScores: [
+        { subject: 'Mathematics', score: `${newApplicantForm.mathsScore}/100`, grade: Number(newApplicantForm.mathsScore) >= 90 ? 'A1' : 'A2' },
+        { subject: 'Science & Tech', score: `${newApplicantForm.scienceScore}/100`, grade: Number(newApplicantForm.scienceScore) >= 90 ? 'A1' : 'A2' },
+        { subject: 'English Core', score: `${newApplicantForm.englishScore}/100`, grade: Number(newApplicantForm.englishScore) >= 90 ? 'A1' : 'A2' },
+        { subject: 'Social Sciences', score: `${newApplicantForm.socialScore}/100`, grade: Number(newApplicantForm.socialScore) >= 90 ? 'A1' : 'A2' },
+        { subject: 'Computer Apps', score: `${newApplicantForm.computerScore}/100`, grade: Number(newApplicantForm.computerScore) >= 90 ? 'A1' : 'A2' },
+      ],
+      interviewRecord: {
+        interviewer: 'Admissions Evaluation Committee',
+        score: `${(fitCalc / 10).toFixed(1)} / 10`,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        remarks: newApplicantForm.notes || 'Strong foundational credentials. Recommended for enrolled cohort.',
+        recommendation: newApplicantForm.stage === 'Approved' ? 'Direct Merit Admission' : 'Provisional Candidate',
+      },
+    };
+
+    setApplicantList([newApplicantRecord, ...applicantList]);
+    setIsNewAdmissionDrawerOpen(false);
+    setSelectedApplicantIndex(0);
+    addNotification({ title: 'Candidate Registered', description: `${newApplicantRecord.name} successfully registered with Applicant ID ${newApplicantRecord.applicantId}.`, type: 'success' });
+
+    if (newApplicantRecord.stage === 'Approved') {
+      setOfferApplicant(newApplicantRecord);
+      setIsOfferModalOpen(true);
+    }
+  };
+
+  // Photo Naming Template Generator
+  const getFormattedPhotoName = (applicant: any) => {
+    const sanitize = (str: string) => String(str || '').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const cleanName = sanitize(applicant.name);
+    const cleanId = sanitize(applicant.applicantId);
+    switch (namingPattern) {
+      case 'id-name': return `${cleanId}-${cleanName}.jpg`;
+      case 'roll-name': return `${cleanName}.jpg`;
+      case 'name-id': return `${cleanName}_${cleanId}.jpg`;
+      case 'custom': {
+        const val = sanitize(applicant[customColumnKey] || 'record');
+        return `${val}-${cleanName}.jpg`;
+      }
+      default: return `${cleanId}-${cleanName}.jpg`;
+    }
+  };
+
+  // Canvas-based 19.5:25 Photo Blob
+  const createPhotoBlob = async (applicant: any): Promise<Blob> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 390;
+        canvas.height = 500;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => resolve(blob || new Blob([])), 'image/jpeg', 0.92);
+        } else { resolve(new Blob([])); }
+      };
+      img.onerror = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 390;
+        canvas.height = 500;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#1e293b';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#7c3aed';
+          ctx.beginPath();
+          ctx.arc(195, 200, 90, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 64px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const initials = applicant.name.split(' ').map((n: string) => n[0]).join('');
+          ctx.fillText(initials, 195, 200);
+          ctx.font = 'bold 24px sans-serif';
+          ctx.fillText(applicant.name, 195, 340);
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '20px monospace';
+          ctx.fillText(applicant.applicantId, 195, 380);
+          canvas.toBlob((blob) => resolve(blob || new Blob([])), 'image/jpeg', 0.92);
+        } else { resolve(new Blob([])); }
+      };
+      img.src = applicant.avatarUrl;
+    });
+  };
+
+  // Generate Excel Spreadsheet for Applicants
+  const generateXlsxSpreadsheet = (applicants: any[]) => {
+    let xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Header">
+   <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Size="11"/>
+   <Interior ss:Color="#7C3AED" ss:Pattern="Solid"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+  </Style>
+  <Style ss:ID="Data">
+   <Font ss:Size="10"/>
+   <Alignment ss:Vertical="Center"/>
+  </Style>
+  <Style ss:ID="Mono">
+   <Font ss:FontName="Courier New" ss:Bold="1" ss:Color="#0369A1" ss:Size="10"/>
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Admissions Roster ${activeSession}">
+  <Table ss:DefaultRowHeight="24">
+   <Column ss:Width="160"/>
+   <Column ss:Width="130"/>
+   <Column ss:Width="150"/>
+   <Column ss:Width="150"/>
+   <Column ss:Width="140"/>
+   <Column ss:Width="140"/>
+   <Column ss:Width="170"/>
+   <Column ss:Width="70"/>
+   <Column ss:Width="80"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="100"/>
+   <Row ss:Height="28">
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Photo Filename (19.5x25)</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Applicant ID</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Candidate Name</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Applied Grade</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Guardian Name</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Phone</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Email</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Merit Score</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Doc Status</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Stage</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Annual Fee</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">Applied Date</Data></Cell>
+   </Row>`;
+
+    applicants.forEach((a) => {
+      const photoName = getFormattedPhotoName(a);
+      xml += `
+   <Row>
+    <Cell ss:StyleID="Mono"><Data ss:Type="String">${photoName}</Data></Cell>
+    <Cell ss:StyleID="Mono"><Data ss:Type="String">${a.applicantId}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.name}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.appliedGrade}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.guardianName || ''}</Data></Cell>
+    <Cell ss:StyleID="Mono"><Data ss:Type="String">${a.phone || ''}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.email || ''}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.fitScore || 'N/A'}%</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.ocrDocStatus || 'Pending'}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.stage}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.annualFee || ''}</Data></Cell>
+    <Cell ss:StyleID="Data"><Data ss:Type="String">${a.appliedDate}</Data></Cell>
+   </Row>`;
+    });
+
+    xml += `
+  </Table>
+ </Worksheet>
+</Workbook>`;
+    return new Blob([xml], { type: 'application/vnd.ms-excel' });
+  };
+
+  // Main Export Handler
+  const handleExecuteExport = async () => {
+    setIsExporting(true);
+    setExportProgressText('Preparing applicant dossier & assets...');
+    try {
+      const targetList = applicantList;
+      if (exportFormat === 'xlsx') {
+        setExportProgressText('Generating formatted Excel spreadsheet...');
+        const blob = generateXlsxSpreadsheet(targetList);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VidyaFloww_Admissions_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}_Roster.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else if (exportFormat === 'zip') {
+        setExportProgressText(`Packaging ${targetList.length} applicant photos in 19.5:25 ratio...`);
+        const zip = new JSZip();
+        const photosFolder = zip.folder(`applicant_photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}`);
+        for (let i = 0; i < targetList.length; i++) {
+          const applicant = targetList[i];
+          setExportProgressText(`Packing photo ${i + 1} of ${targetList.length} (${applicant.name})...`);
+          const filename = getFormattedPhotoName(applicant);
+          const photoBlob = await createPhotoBlob(applicant);
+          photosFolder?.file(filename, photoBlob);
+        }
+        setExportProgressText('Compressing ZIP archive...');
+        const content = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VidyaFloww_Applicant_Photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } else if (exportFormat === 'bundle') {
+        setExportProgressText(`Building complete package (Excel + ${targetList.length} Photos in 19.5:25 ratio)...`);
+        const zip = new JSZip();
+        const xlsxBlob = generateXlsxSpreadsheet(targetList);
+        zip.file(`Admissions_Master_Roster_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.xlsx`, xlsxBlob);
+        const photosFolder = zip.folder('applicant_photos_19.5x25');
+        for (let i = 0; i < targetList.length; i++) {
+          const applicant = targetList[i];
+          setExportProgressText(`Processing photo ${i + 1} of ${targetList.length} (${applicant.name})...`);
+          const filename = getFormattedPhotoName(applicant);
+          const photoBlob = await createPhotoBlob(applicant);
+          photosFolder?.file(filename, photoBlob);
+        }
+        setExportProgressText('Finalizing bundled archive...');
+        const content = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `VidyaFloww_Complete_Admissions_Bundle_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+      setExportProgressText('Export completed successfully!');
+      setTimeout(() => {
+        setIsExporting(false);
+        setIsExportModalOpen(false);
+        setExportProgressText('');
+        addNotification({ title: 'Roster Exported', description: `Admissions candidate roster exported successfully as ${exportFormat === 'xlsx' ? 'Excel' : exportFormat === 'zip' ? 'Photos ZIP' : 'Complete Bundle'}.`, type: 'success' });
+      }, 800);
+    } catch (err) {
+      console.error('Export failed', err);
+      addNotification({ title: 'Export Failed', description: 'An error occurred while generating the export. Please try again.', type: 'error' });
+      setIsExporting(false);
+      setExportProgressText('');
+    }
+  };
 
   // Offer Letter Print Modal State
   const [isOfferModalOpen, setIsOfferModalOpen] = React.useState<boolean>(false);
@@ -707,7 +1101,7 @@ function AdmissionsPage() {
     setApplicantList(updated);
     setIsEditingApplicant(false);
     setApplicantFormData(null);
-    setNotice(`Updated candidate admissions dossier for ${applicantFormData.name}.`);
+    addNotification({ title: 'Dossier Updated', description: `Candidate admissions dossier for ${applicantFormData.name} has been saved.`, type: 'success' });
   };
 
   const handleApproveAdmit = (app: Applicant) => {
@@ -720,7 +1114,7 @@ function AdmissionsPage() {
       recommendation: 'Instant Admit',
     };
     setApplicantList(updated);
-    setNotice(`Provisional Admission Offer generated & approved for ${updated[idx].name}!`);
+    addNotification({ title: 'Admission Approved', description: `Provisional Admission Offer generated & approved for ${updated[idx].name}!`, type: 'success' });
     setOfferApplicant(updated[idx]);
     setIsOfferModalOpen(true);
   };
@@ -830,7 +1224,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'AI Fit Score',
+      header: 'Merit Score',
       accessorKey: 'fitScore',
       cell: (r: Applicant) => (
         <div className="flex items-center gap-2">
@@ -883,20 +1277,7 @@ function AdmissionsPage() {
 
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in shrink-0">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
-            <span className="font-bold">{notice}</span>
-          </div>
-          <button
-            onClick={() => setNotice(null)}
-            className="text-muted-foreground hover:text-foreground text-xs font-black cursor-pointer px-2 py-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
+
 
       {/* Main Candidate Table (Full Height Prominence) */}
       <VFDataTable
@@ -909,20 +1290,751 @@ function AdmissionsPage() {
               variant="outline"
               size="sm"
               leftIcon={<Download className="h-4 w-4" />}
-              onClick={() => alert('Exporting candidate admissions master list as CSV...')}
+              onClick={() => setIsExportModalOpen(true)}
             >
               Export Roster
             </VFButton>
             <VFButton
               size="sm"
               leftIcon={<Plus className="h-4 w-4" />}
-              onClick={() => alert('Opening new offline intake application form...')}
+              onClick={handleOpenNewAdmissionDrawer}
             >
-              New Application
+              New Admission
             </VFButton>
           </>
         }
       />
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          NEW CANDIDATE ADMISSION INTAKE DRAWER (IDENTICAL 360° PROFILE STYLE)
+          ═══════════════════════════════════════════════════════════════════════ */}
+      <VFDrawer
+        isOpen={isNewAdmissionDrawerOpen}
+        onClose={handleCloseNewAdmissionDrawer}
+        hideHeader={true}
+        title="New Candidate Admission Intake"
+        className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
+        bodyClassName="p-0 flex flex-col flex-1 min-h-0 overflow-hidden"
+        footerActions={
+          <div className="flex items-center justify-between w-full gap-3 px-4 py-3 border-b border-border bg-card">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xs font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border">
+                INTAKE-2026
+              </span>
+              <span className="text-xs font-medium text-muted-foreground hidden sm:inline">
+                New Student Admission Protocol · AY {activeSession}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <VFButton
+                variant="outline"
+                size="sm"
+                leftIcon={<RotateCcw className="h-4 w-4 text-muted-foreground" />}
+                onClick={handleResetNewAdmissionForm}
+              >
+                Reset
+              </VFButton>
+              <VFButton
+                variant="outline"
+                size="sm"
+                leftIcon={<X className="h-4 w-4 text-muted-foreground" />}
+                onClick={handleCloseNewAdmissionDrawer}
+              >
+                Cancel
+              </VFButton>
+              <VFButton
+                size="sm"
+                leftIcon={<CheckCircle2 className="h-4 w-4" />}
+                onClick={handleSubmitNewAdmission}
+              >
+                Submit & Enroll Candidate
+              </VFButton>
+            </div>
+          </div>
+        }
+      >
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-fade-in">
+          {/* Tabs Header Bar */}
+          <div className="w-full bg-card/95 backdrop-blur-md border-b border-border shrink-0">
+            <div className="grid grid-cols-4 w-full">
+              {[
+                { id: 'bio', label: 'Candidate Bio & Identity', icon: <UserCheck className="h-4 w-4" /> },
+                { id: 'guardian', label: 'Guardian & Contacts', icon: <Users className="h-4 w-4" /> },
+                { id: 'academic', label: 'Academic & Entrance', icon: <BarChart3 className="h-4 w-4" /> },
+                { id: 'documents', label: 'Verification & Transport', icon: <FileCheck className="h-4 w-4" /> },
+              ].map((tab) => {
+                const isActive = newAdmissionTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setNewAdmissionTab(tab.id as any)}
+                    className={cn(
+                      "flex items-center justify-center gap-1.5 py-3 text-xs font-bold transition-all cursor-pointer outline-none select-none border-b-2",
+                      isActive
+                        ? "bg-primary/10 text-primary border-primary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/40 border-transparent"
+                    )}
+                  >
+                    {tab.icon}
+                    <span className="hidden sm:inline">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Scrollable Form Body */}
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            {/* TAB 1: CANDIDATE BIO & IDENTITY */}
+            {newAdmissionTab === 'bio' && (
+              <div className="animate-fade-in divide-y divide-border/40">
+                <div className="px-4 py-4">
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
+                    {/* Photo Upload Box (19.5:25 Ratio) */}
+                    <div className="relative shrink-0 mx-auto sm:mx-0">
+                      <input
+                        type="file"
+                        ref={newAvatarFileInputRef}
+                        onChange={handleNewAvatarFileChange}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <div
+                        onClick={() => newAvatarFileInputRef.current?.click()}
+                        className="relative overflow-hidden rounded-md border border-border/90 shadow-sm w-28 sm:w-32 bg-muted flex items-center justify-center transition-all cursor-pointer hover:ring-2 hover:ring-primary/60 group"
+                        style={{ aspectRatio: '19.5 / 25' }}
+                        title="Click to upload candidate photograph"
+                      >
+                        {newApplicantForm.avatarUrl ? (
+                          <img
+                            src={newApplicantForm.avatarUrl}
+                            alt="Candidate Photograph Preview"
+                            style={{ aspectRatio: '19.5 / 25' }}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-muted text-muted-foreground font-black text-2xl flex items-center justify-center">
+                            {newApplicantForm.name ? newApplicantForm.name.slice(0, 2).toUpperCase() : 'VF'}
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center gap-1 transition-opacity text-white">
+                          <Camera className="h-5 w-5 text-white" />
+                          <span className="text-[10px] font-bold tracking-tight">Upload Photo</span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => newAvatarFileInputRef.current?.click()}
+                        className="absolute -bottom-1.5 -right-1.5 h-7 w-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer border-2 border-card"
+                        title="Upload Photo"
+                      >
+                        <Camera className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Bio Fields Grid */}
+                    <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
+                      <div className="sm:col-span-2">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Candidate Full Legal Name <span className="text-rose-400">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. Aryan Malhotra"
+                          value={newApplicantForm.name}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, name: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Date of Birth
+                        </label>
+                        <input
+                          type="date"
+                          value={newApplicantForm.dob}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, dob: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Gender
+                        </label>
+                        <select
+                          value={newApplicantForm.gender}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, gender: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Non-Binary">Non-Binary</option>
+                          <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Blood Group
+                        </label>
+                        <select
+                          value={newApplicantForm.bloodGroup}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, bloodGroup: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        >
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Aadhaar / National ID
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="4928-1092-8841"
+                          value={newApplicantForm.aadhaarNo}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, aadhaarNo: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold font-mono rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Quota / Category
+                        </label>
+                        <select
+                          value={newApplicantForm.quotaCategory}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, quotaCategory: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        >
+                          <option value="General Merit">General Merit</option>
+                          <option value="RTE 25% Quota">RTE 25% Quota</option>
+                          <option value="Management Quota">Management Quota</option>
+                          <option value="Sports Merit">Sports Merit</option>
+                          <option value="Sibling Quota">Sibling Quota</option>
+                          <option value="Staff Ward">Staff Ward</option>
+                          <option value="Armed Forces / Defence">Armed Forces / Defence</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Applied Grade / Class <span className="text-rose-400">*</span>
+                        </label>
+                        <select
+                          value={newApplicantForm.appliedGrade}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, appliedGrade: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        >
+                          <option value="Nursery">Nursery</option>
+                          <option value="Kindergarten (KG)">Kindergarten (KG)</option>
+                          <option value="Class 1">Class 1</option>
+                          <option value="Class 2">Class 2</option>
+                          <option value="Class 3">Class 3</option>
+                          <option value="Class 4">Class 4</option>
+                          <option value="Class 5">Class 5</option>
+                          <option value="Class 6">Class 6</option>
+                          <option value="Class 7">Class 7</option>
+                          <option value="Class 8">Class 8</option>
+                          <option value="Class 9">Class 9</option>
+                          <option value="Class 10">Class 10</option>
+                          <option value="Class 11-Sci">Class 11-Sci</option>
+                          <option value="Class 11-Comm">Class 11-Comm</option>
+                          <option value="Class 11-Hum">Class 11-Hum</option>
+                          <option value="Class 12-Sci">Class 12-Sci</option>
+                          <option value="Class 12-Comm">Class 12-Comm</option>
+                          <option value="Class 12-Hum">Class 12-Hum</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Stream / Wing Curriculum
+                        </label>
+                        <select
+                          value={newApplicantForm.streamPreference}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, streamPreference: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        >
+                          <option value="General Secondary (CBSE)">General Secondary (CBSE)</option>
+                          <option value="Physics, Chemistry, Maths & CS (PCM)">Physics, Chemistry, Maths & CS (PCM)</option>
+                          <option value="Physics, Chemistry, Biology & Biotech (PCB)">Physics, Chemistry, Biology & Biotech (PCB)</option>
+                          <option value="Commerce, Accounts & Applied Maths">Commerce, Accounts & Applied Maths</option>
+                          <option value="Humanities, Economics & Psychology">Humanities, Economics & Psychology</option>
+                          <option value="Middle Wing Foundation">Middle Wing Foundation</option>
+                          <option value="Primary Wing Foundation">Primary Wing Foundation</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-muted/20 flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground font-medium">Step 1 of 4: Candidate Bio Details</span>
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    rightIcon={<ChevronRight className="h-4 w-4" />}
+                    onClick={() => setNewAdmissionTab('guardian')}
+                  >
+                    Proceed to Guardian Contacts
+                  </VFButton>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: GUARDIAN & EMERGENCY CONTACTS */}
+            {newAdmissionTab === 'guardian' && (
+              <div className="animate-fade-in divide-y divide-border/40">
+                <div className="p-4 sm:p-5 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div className="sm:col-span-2">
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Father / Primary Guardian Full Name <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Vikram Malhotra"
+                        value={newApplicantForm.guardianName}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, guardianName: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Guardian Relationship
+                      </label>
+                      <select
+                        value={newApplicantForm.guardianRelation}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, guardianRelation: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      >
+                        <option value="Father">Father</option>
+                        <option value="Mother">Mother</option>
+                        <option value="Legal Guardian">Legal Guardian</option>
+                        <option value="Grandparent">Grandparent</option>
+                        <option value="Sibling / Relative">Sibling / Relative</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Mother's Full Legal Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Suman Malhotra"
+                        value={newApplicantForm.motherName}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, motherName: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Primary Emergency Contact Phone <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="+91 98765 43210"
+                        value={newApplicantForm.phone}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, phone: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold font-mono rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Alternate Emergency Phone
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+91 98123 45678"
+                        value={newApplicantForm.altPhone}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, altPhone: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold font-mono rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Guardian Institutional / Personal Email
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="vikram.malhotra@corp.in"
+                        value={newApplicantForm.email}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, email: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Guardian Occupation / Profession
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Senior Enterprise Architect"
+                        value={newApplicantForm.guardianOccupation}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, guardianOccupation: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2 lg:col-span-2">
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Residential Home Street Address
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Flat 402, Royal Palms, Sector 14"
+                        value={newApplicantForm.address}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, address: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        City / State / Pincode
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="New Delhi - 110075"
+                        value={newApplicantForm.city}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, city: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-muted/20 flex items-center justify-between">
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<ChevronLeft className="h-4 w-4" />}
+                    onClick={() => setNewAdmissionTab('bio')}
+                  >
+                    Back to Bio
+                  </VFButton>
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    rightIcon={<ChevronRight className="h-4 w-4" />}
+                    onClick={() => setNewAdmissionTab('academic')}
+                  >
+                    Proceed to Academic History
+                  </VFButton>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: ACADEMIC HISTORY & ENTRANCE ASSESSMENT */}
+            {newAdmissionTab === 'academic' && (
+              <div className="animate-fade-in divide-y divide-border/40">
+                <div className="p-4 sm:p-5 space-y-5">
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
+                      <School className="h-4 w-4 text-primary" />
+                      Previous Academic Background
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      <div className="sm:col-span-2">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Previous School / Institution Attended
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Delhi Public School, R.K. Puram"
+                          value={newApplicantForm.previousSchool}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, previousSchool: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Previous Aggregate % & Grade
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="92.4% (Grade A1)"
+                          value={newApplicantForm.previousMarks}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, previousMarks: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
+                      <BarChart3 className="h-4 w-4 text-primary" />
+                      Entrance Assessment & Olympiad Performance
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                      <div>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Entrance Assessment Score
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="96 / 100"
+                          value={newApplicantForm.entranceScore}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, entranceScore: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-black font-mono rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-emerald-400 shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                          Entrance Merit Standing / Cohort Rank
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Rank #5 of 340 Candidates"
+                          value={newApplicantForm.entranceRank}
+                          onChange={(e) => setNewApplicantForm({ ...newApplicantForm, entranceRank: e.target.value })}
+                          className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="p-3.5 rounded-lg border border-border/80 bg-muted/30 space-y-3">
+                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide block">
+                        Subject-Wise Entrance Marks Breakdown (0 to 100)
+                      </span>
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground block mb-1">Mathematics</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={newApplicantForm.mathsScore}
+                            onChange={(e) => setNewApplicantForm({ ...newApplicantForm, mathsScore: e.target.value })}
+                            className="w-full h-8 px-2.5 text-xs font-bold font-mono text-center rounded bg-background border border-border text-foreground"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground block mb-1">Science & Tech</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={newApplicantForm.scienceScore}
+                            onChange={(e) => setNewApplicantForm({ ...newApplicantForm, scienceScore: e.target.value })}
+                            className="w-full h-8 px-2.5 text-xs font-bold font-mono text-center rounded bg-background border border-border text-foreground"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground block mb-1">English Core</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={newApplicantForm.englishScore}
+                            onChange={(e) => setNewApplicantForm({ ...newApplicantForm, englishScore: e.target.value })}
+                            className="w-full h-8 px-2.5 text-xs font-bold font-mono text-center rounded bg-background border border-border text-foreground"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold text-muted-foreground block mb-1">Social Sciences</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={newApplicantForm.socialScore}
+                            onChange={(e) => setNewApplicantForm({ ...newApplicantForm, socialScore: e.target.value })}
+                            className="w-full h-8 px-2.5 text-xs font-bold font-mono text-center rounded bg-background border border-border text-foreground"
+                          />
+                        </div>
+                        <div className="col-span-2 sm:col-span-1">
+                          <label className="text-[10px] font-bold text-muted-foreground block mb-1">Computer Apps</label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={newApplicantForm.computerScore}
+                            onChange={(e) => setNewApplicantForm({ ...newApplicantForm, computerScore: e.target.value })}
+                            className="w-full h-8 px-2.5 text-xs font-bold font-mono text-center rounded bg-background border border-border text-foreground"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-muted/20 flex items-center justify-between">
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<ChevronLeft className="h-4 w-4" />}
+                    onClick={() => setNewAdmissionTab('guardian')}
+                  >
+                    Back to Guardian
+                  </VFButton>
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    rightIcon={<ChevronRight className="h-4 w-4" />}
+                    onClick={() => setNewAdmissionTab('documents')}
+                  >
+                    Proceed to Verification & Transport
+                  </VFButton>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: VERIFICATION, TRANSPORT & FINAL ENROLLMENT */}
+            {newAdmissionTab === 'documents' && (
+              <div className="animate-fade-in divide-y divide-border/40">
+                <div className="p-4 sm:p-5 space-y-5">
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
+                      <FileCheck className="h-4 w-4 text-primary" />
+                      Mandatory Document Verification Checklist
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {[
+                        { key: 'tcAvailable', label: 'Transfer Certificate (TC)', desc: 'Official stamped transfer certificate from previous recognized school' },
+                        { key: 'birthCertVerified', label: 'Municipal Birth Certificate', desc: 'Verified birth identity certificate issued by Municipal Corporation' },
+                        { key: 'marksheetVerified', label: 'Previous Academic Marksheet', desc: 'Grade progress report card and attested examination marksheet' },
+                        { key: 'aadhaarVerified', label: 'Aadhaar / National Identity', desc: 'National ID biometric card copy of candidate and primary guardian' },
+                        { key: 'medicalClearance', label: 'Medical Fitness Certificate', desc: 'Doctor fitness clearance, vaccination history & health declaration' },
+                      ].map((item) => {
+                        const checked = (newApplicantForm as any)[item.key];
+                        return (
+                          <div
+                            key={item.key}
+                            onClick={() => setNewApplicantForm({ ...newApplicantForm, [item.key]: !checked })}
+                            className={cn(
+                              "p-3 rounded-lg border transition-all cursor-pointer flex items-start gap-3 select-none",
+                              checked
+                                ? "bg-emerald-500/10 border-emerald-500/30 text-foreground"
+                                : "bg-card border-border/80 text-muted-foreground hover:bg-muted/40"
+                            )}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => {}}
+                              className="mt-0.5 rounded text-primary focus:ring-0 cursor-pointer"
+                            />
+                            <div className="flex-1">
+                              <span className="text-xs font-bold block">{item.label}</span>
+                              <span className="text-[10px] text-muted-foreground block mt-0.5 leading-tight">{item.desc}</span>
+                            </div>
+                            <VFBadge variant={checked ? 'success' : 'outline'} className="text-[10px] font-mono shrink-0">
+                              {checked ? 'Verified' : 'Pending'}
+                            </VFBadge>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Commute / Transport Preference
+                      </label>
+                      <select
+                        value={newApplicantForm.transportPreference}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, transportPreference: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      >
+                        <option value="Bus Route 4 (Stop #12 - Sector 62)">Bus Route 4 (Sector 62)</option>
+                        <option value="Bus Route 1 (Sector 14 Main Gate)">Bus Route 1 (Sector 14)</option>
+                        <option value="Bus Route 2 (Dwarka Expressway)">Bus Route 2 (Dwarka)</option>
+                        <option value="Bus Route 7 (Vasant Kunj Hub)">Bus Route 7 (Vasant Kunj)</option>
+                        <option value="Self Commute (Parent Drop / Walk)">Self Commute (Parent Drop)</option>
+                        <option value="Private Van Operator">Private Van Operator</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Annual Tuition Fee Allotment
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="₹ 84,000"
+                        value={newApplicantForm.annualFee}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, annualFee: e.target.value })}
+                        className="w-full h-9 px-3 text-xs font-bold font-mono rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                        Initial Admissions Pipeline Stage
+                      </label>
+                      <select
+                        value={newApplicantForm.stage}
+                        onChange={(e) => setNewApplicantForm({ ...newApplicantForm, stage: e.target.value as any })}
+                        className="w-full h-9 px-3 text-xs font-bold rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all"
+                      >
+                        <option value="Submitted">Submitted (Under Review)</option>
+                        <option value="Screened">Screened (Documents Verified)</option>
+                        <option value="Interview">Interview Scheduled</option>
+                        <option value="Approved">Approved (Direct Enrollment)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
+                      Admissions Committee & Interviewer Remarks
+                    </label>
+                    <textarea
+                      rows={2}
+                      placeholder="Enter verification notes, olympiad achievements, special accommodations, or cohort notes..."
+                      value={newApplicantForm.notes}
+                      onChange={(e) => setNewApplicantForm({ ...newApplicantForm, notes: e.target.value })}
+                      className="w-full p-2.5 text-xs font-medium rounded-md bg-background border border-border/90 hover:border-foreground/40 focus:border-primary focus:ring-2 focus:ring-primary/20 text-foreground shadow-2xs outline-none transition-all resize-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="p-4 bg-muted/20 flex items-center justify-between">
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<ChevronLeft className="h-4 w-4" />}
+                    onClick={() => setNewAdmissionTab('academic')}
+                  >
+                    Back to Academics
+                  </VFButton>
+                  <VFButton
+                    size="sm"
+                    leftIcon={<CheckCircle2 className="h-4 w-4" />}
+                    onClick={handleSubmitNewAdmission}
+                  >
+                    Submit & Enroll Candidate
+                  </VFButton>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </VFDrawer>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           360° ADMISSIONS APPLICANT DOSSIER & APPLICATION REVIEW DRAWER
@@ -1034,7 +2146,7 @@ function AdmissionsPage() {
                 {[
                   { id: 'overview', label: 'Profile', icon: <UserCheck className="h-4 w-4" /> },
                   { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
-                  { id: 'documents', label: 'Verification & Fit', icon: <FileCheck className="h-4 w-4" /> },
+                  { id: 'documents', label: 'Verification & Compliance', icon: <FileCheck className="h-4 w-4" /> },
                   { id: 'decisions', label: 'Offer & Decision', icon: <FileBadge2 className="h-4 w-4" /> },
                 ].map((tab) => {
                   const isActive = drawerTab === tab.id;
@@ -1551,14 +2663,14 @@ function AdmissionsPage() {
               {/* TAB 3: VERIFICATION & COMPLIANCE */}
               {drawerTab === 'documents' && (
                 <div className="animate-fade-in divide-y divide-border/40">
-                  {/* AI Fit Score Tiles */}
+                  {/* Merit Score Tiles */}
                   <div className="px-4 py-3">
                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-2">
-                      AI Institutional Fit Assessment
+                      Institutional Merit & Aptitude Assessment
                     </span>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       <div className="p-3 rounded-md bg-muted/30 border border-border/70">
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">AI Fit Score</span>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase block">Merit Score</span>
                         <span className="text-xl font-black text-emerald-400 block mt-0.5">{activeApplicant.fitScore}%</span>
                       </div>
                       <div className="p-3 rounded-md bg-muted/30 border border-border/70">
@@ -1593,7 +2705,7 @@ function AdmissionsPage() {
                           title: 'Municipal Birth Certificate',
                           desc: 'DOB cross-verified against applicant record',
                           status: activeApplicant.birthCertVerified,
-                          statusText: activeApplicant.birthCertVerified ? 'Verified (OCR Match 99.4%)' : 'Under Verification',
+                          statusText: activeApplicant.birthCertVerified ? 'Verified (Registry Match 99.4%)' : 'Under Verification',
                         },
                         {
                           title: 'Prior Year Report Cards & Marks Statement',
@@ -1740,13 +2852,13 @@ function AdmissionsPage() {
           <div className="space-y-5 p-4 rounded-md bg-card border border-border text-foreground font-serif text-sm">
             <div className="text-center pb-4 border-b border-border space-y-1">
               <h2 className="text-xl font-black tracking-tight text-foreground font-sans uppercase">
-                VidyaMaxx International Academy
+                VidyaFloww International Academy
               </h2>
               <p className="text-xs text-muted-foreground font-sans">
                 Affiliated to Central Board of Secondary Education (CBSE), New Delhi
               </p>
               <p className="text-xs font-mono text-muted-foreground font-sans">
-                Ref No: VM/ADM/{offerApplicant.applicantId} · Session {activeSession}
+                Ref No: VF/ADM/{offerApplicant.applicantId} · Session {activeSession}
               </p>
             </div>
 
@@ -1780,7 +2892,7 @@ function AdmissionsPage() {
                   <span>Applicant ID: <strong className="text-foreground">{offerApplicant.applicantId}</strong></span>
                   <span>Applied Grade: <strong className="text-foreground">{offerApplicant.appliedGrade}</strong></span>
                   <span>Annual Fee: <strong className="text-foreground">{offerApplicant.annualFee}</strong></span>
-                  <span>AI Fit Score: <strong className="text-emerald-400">{offerApplicant.fitScore}%</strong></span>
+                  <span>Merit Score: <strong className="text-emerald-400">{offerApplicant.fitScore}%</strong></span>
                   <span>Entrance Rank: <strong className="text-foreground">{offerApplicant.entranceRank}</strong></span>
                 </div>
               </div>
@@ -1803,6 +2915,326 @@ function AdmissionsPage() {
             </div>
           </div>
         )}
+      </VFDialog>
+
+      {/* 📦 EXPORT ADMISSIONS ROSTER MODAL */}
+      <VFDialog
+        isOpen={isExportModalOpen}
+        onClose={() => { if (!isExporting) setIsExportModalOpen(false); }}
+        title="Export Admissions Roster & Candidate Media"
+        description={`Download structured candidate records, institutional spreadsheets, and high-resolution 19.5 : 25 photo archives for Academic Session ${activeSession}.`}
+        className="max-w-4xl w-full"
+        footerActions={
+          <div className="flex items-center justify-between w-full">
+            <div className="text-xs text-muted-foreground font-semibold flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-violet-400 inline-block" />
+              <span>{applicantList.length} Candidates Selected for Export</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <VFButton
+                variant="outline"
+                size="md"
+                onClick={() => setIsExportModalOpen(false)}
+                disabled={isExporting}
+              >
+                Cancel
+              </VFButton>
+              <VFButton
+                size="md"
+                leftIcon={isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                onClick={handleExecuteExport}
+                disabled={isExporting}
+                className="font-bold min-w-[160px]"
+              >
+                {isExporting
+                  ? 'Generating...'
+                  : exportFormat === 'bundle'
+                  ? 'Export Bundle (.zip)'
+                  : exportFormat === 'xlsx'
+                  ? 'Export Excel (.xlsx)'
+                  : 'Export Photos (.zip)'}
+              </VFButton>
+            </div>
+          </div>
+        }
+      >
+        <div className="space-y-5 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-lg bg-muted/40 border border-border/80 text-xs">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-md bg-violet-500/15 text-violet-400 flex items-center justify-center font-black shrink-0 border border-violet-500/30">
+                <GraduationCap className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">Session Context</p>
+                <p className="font-bold text-foreground truncate">{activeSession}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-md bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-black shrink-0 border border-emerald-500/30">
+                <Users className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">Total Candidates</p>
+                <p className="font-bold text-foreground truncate">{applicantList.length} Records</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-md bg-purple-500/15 text-purple-400 flex items-center justify-center font-black shrink-0 border border-purple-500/30">
+                <ImageIcon className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">Media Format</p>
+                <p className="font-bold text-foreground truncate">19.5 : 25 Portrait Aspect</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">1</span>
+                Choose Export Package
+              </label>
+              <span className="text-[11px] text-muted-foreground font-medium">Select desired data and media bundle format</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+              <div
+                onClick={() => setExportFormat('bundle')}
+                className={cn(
+                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  exportFormat === 'bundle'
+                    ? "bg-blue-500/10 border-blue-500/80 shadow-md ring-1 ring-blue-500/40"
+                    : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={cn(
+                      "h-10 w-10 rounded-md flex items-center justify-center border transition-all",
+                      exportFormat === 'bundle' ? "bg-blue-500/20 text-blue-400 border-blue-500/40" : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      <Archive className="h-5 w-5" />
+                    </div>
+                    {exportFormat === 'bundle' ? (
+                      <CheckCircle2 className="h-5 w-5 text-blue-400 animate-in zoom-in-50" />
+                    ) : (
+                      <VFBadge variant="outline" className="text-[10px]">Popular</VFBadge>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-black text-foreground mb-1">Complete Bundle (.zip)</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Excel master spreadsheet + HD candidate portraits in standardized 19.5:25 ratio.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-border/60 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-blue-400 font-bold">✓</span> Full candidate columns
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-blue-400 font-bold">✓</span> {applicantList.length} Photos packaged in ZIP
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setExportFormat('xlsx')}
+                className={cn(
+                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  exportFormat === 'xlsx'
+                    ? "bg-emerald-500/10 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/40"
+                    : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={cn(
+                      "h-10 w-10 rounded-md flex items-center justify-center border transition-all",
+                      exportFormat === 'xlsx' ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40" : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      <FileSpreadsheet className="h-5 w-5" />
+                    </div>
+                    {exportFormat === 'xlsx' ? (
+                      <CheckCircle2 className="h-5 w-5 text-emerald-400 animate-in zoom-in-50" />
+                    ) : (
+                      <VFBadge variant="outline" className="text-[10px]">Fast</VFBadge>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-black text-foreground mb-1">Excel Sheet (.xlsx)</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Formatted tables with applicant IDs, contacts, merit scores, and photo filenames.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-border/60 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-emerald-400 font-bold">✓</span> Clean Excel workbook
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-emerald-400 font-bold">✓</span> Photo URLs & filenames linked
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setExportFormat('zip')}
+                className={cn(
+                  "p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative overflow-hidden group shadow-xs",
+                  exportFormat === 'zip'
+                    ? "bg-purple-500/10 border-purple-500/80 shadow-md ring-1 ring-purple-500/40"
+                    : "bg-[#1a1a24] border-border/80 hover:border-border hover:bg-[#20202d]"
+                )}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={cn(
+                      "h-10 w-10 rounded-md flex items-center justify-center border transition-all",
+                      exportFormat === 'zip' ? "bg-purple-500/20 text-purple-400 border-purple-500/40" : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      <Download className="h-5 w-5" />
+                    </div>
+                    {exportFormat === 'zip' ? (
+                      <CheckCircle2 className="h-5 w-5 text-purple-400 animate-in zoom-in-50" />
+                    ) : (
+                      <VFBadge variant="outline" className="text-[10px]">Media Only</VFBadge>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-black text-foreground mb-1">Photos ZIP (.zip)</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Candidate portraits rendered in exact 19.5:25 ratio with standardized filenames.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-border/60 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-purple-400 font-bold">✓</span> Standardized 19.5:25 aspect
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="text-purple-400 font-bold">✓</span> {applicantList.length} Images in archive
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {(exportFormat === 'zip' || exportFormat === 'bundle') && (
+            <div className="p-4 rounded-lg bg-[#1a1a24] border border-border/90 space-y-3.5 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-black uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <span className="h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-black">2</span>
+                  Photo File Naming Template
+                </label>
+                <span className="text-xs font-bold text-primary flex items-center gap-1.5">
+                  <Settings className="h-3.5 w-3.5" />
+                  Aspect Ratio: 19.5 : 25
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <label
+                  onClick={() => setNamingPattern('id-name')}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'id-name'
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  )}
+                >
+                  <input type="radio" name="adm-naming" checked={namingPattern === 'id-name'} onChange={() => setNamingPattern('id-name')} className="text-primary accent-primary h-4 w-4" />
+                  <div>
+                    <span className="block font-mono text-xs">{`{Applicant ID}-{Candidate Name}.jpg`}</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">E.g., APP-2026-001-Priya_Sharma.jpg</span>
+                  </div>
+                </label>
+
+                <label
+                  onClick={() => setNamingPattern('roll-name')}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'roll-name'
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  )}
+                >
+                  <input type="radio" name="adm-naming" checked={namingPattern === 'roll-name'} onChange={() => setNamingPattern('roll-name')} className="text-primary accent-primary h-4 w-4" />
+                  <div>
+                    <span className="block font-mono text-xs">{`{Candidate Name}.jpg`}</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">E.g., Priya_Sharma.jpg</span>
+                  </div>
+                </label>
+
+                <label
+                  onClick={() => setNamingPattern('name-id')}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'name-id'
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  )}
+                >
+                  <input type="radio" name="adm-naming" checked={namingPattern === 'name-id'} onChange={() => setNamingPattern('name-id')} className="text-primary accent-primary h-4 w-4" />
+                  <div>
+                    <span className="block font-mono text-xs">{`{Candidate Name}_{Applicant ID}.jpg`}</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">E.g., Priya_Sharma_APP-2026-001.jpg</span>
+                  </div>
+                </label>
+
+                <label
+                  onClick={() => setNamingPattern('custom')}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-md border text-xs font-bold cursor-pointer transition-all",
+                    namingPattern === 'custom'
+                      ? "bg-primary/10 border-primary text-foreground shadow-xs"
+                      : "bg-card border-border text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  )}
+                >
+                  <input type="radio" name="adm-naming" checked={namingPattern === 'custom'} onChange={() => setNamingPattern('custom')} className="text-primary accent-primary h-4 w-4" />
+                  <div>
+                    <span className="block font-mono text-xs">Custom Column Prefix</span>
+                    <span className="block text-[10px] text-muted-foreground font-normal mt-0.5">Select custom unique identifier</span>
+                  </div>
+                </label>
+              </div>
+
+              {namingPattern === 'custom' && (
+                <div className="flex items-center gap-3 p-2.5 rounded-md bg-[#131317] border border-border">
+                  <span className="text-xs font-bold text-foreground">Unique Column Identifier:</span>
+                  <select
+                    value={customColumnKey}
+                    onChange={(e) => setCustomColumnKey(e.target.value)}
+                    className="bg-[#1a1a24] border border-border text-xs font-bold text-foreground rounded px-3 py-1.5 outline-none cursor-pointer focus:border-primary"
+                  >
+                    <option value="phone">Phone Number</option>
+                    <option value="appliedGrade">Applied Grade</option>
+                    <option value="streamPreference">Stream Preference</option>
+                    <option value="stage">Application Stage</option>
+                  </select>
+                </div>
+              )}
+
+              <div className="p-3 rounded-md bg-[#131317] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-bold text-muted-foreground">Generated Output Sample:</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded border border-primary/30">
+                    {applicantList[0] ? getFormattedPhotoName(applicantList[0]) : 'APP-2026-001-Priya_Sharma.jpg'}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground font-bold font-mono">390×500px</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isExporting && (
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-3.5 animate-pulse">
+              <Loader2 className="h-5 w-5 text-primary animate-spin shrink-0" />
+              <div>
+                <p className="text-sm font-black text-primary">{exportProgressText}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Please keep this window open while the archive is generated.</p>
+              </div>
+            </div>
+          )}
+        </div>
       </VFDialog>
     </VFPageContainer>
   );

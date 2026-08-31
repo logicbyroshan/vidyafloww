@@ -9,8 +9,8 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
-} from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
+} from '@vidyafloww/ui';
+import { MODULE_REGISTRY } from '@vidyafloww/constants';
 import {
   Home,
   BookOpen,

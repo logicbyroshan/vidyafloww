@@ -9,7 +9,7 @@ import {
   VFDrawer,
   VFDialog,
   cn,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   UserCheck,
   Eye,
@@ -180,7 +180,7 @@ function StudentsPage() {
         guardian: 'Rajesh Verma',
         motherName: 'Sunita Verma',
         phone: '+91 98765 43210',
-        email: 'aditya.v@student.vidyamaxx.edu',
+        email: 'aditya.v@student.vidyafloww.edu',
         address: '402, Royal Greens, Sector 14, New Delhi',
         dob: '14 May 2011',
         bloodGroup: 'B+',
@@ -218,7 +218,7 @@ function StudentsPage() {
         guardian: 'Sunita Sharma',
         motherName: 'Sunita Sharma',
         phone: '+91 98123 45678',
-        email: 'priya.s@student.vidyamaxx.edu',
+        email: 'priya.s@student.vidyafloww.edu',
         address: '11-B, Pocket C, Vasant Kunj, New Delhi',
         dob: '22 Aug 2011',
         bloodGroup: 'O+',
@@ -256,7 +256,7 @@ function StudentsPage() {
         guardian: 'Vikram Gupta',
         motherName: 'Meenakshi Gupta',
         phone: '+91 97654 32109',
-        email: 'rahul.g@student.vidyamaxx.edu',
+        email: 'rahul.g@student.vidyafloww.edu',
         address: '88, Anand Lok, New Delhi',
         dob: '05 Jan 2011',
         bloodGroup: 'A+',
@@ -294,7 +294,7 @@ function StudentsPage() {
         guardian: 'Suresh Nair',
         motherName: 'Latha Nair',
         phone: '+91 99887 76655',
-        email: 'kavya.n@student.vidyamaxx.edu',
+        email: 'kavya.n@student.vidyafloww.edu',
         address: '304, Palm Grove, Dwarka Sector 6, New Delhi',
         dob: '19 Nov 2009',
         bloodGroup: 'AB+',
@@ -332,7 +332,7 @@ function StudentsPage() {
         guardian: 'Anil Malhotra',
         motherName: 'Kiran Malhotra',
         phone: '+91 98234 56789',
-        email: 'ishaan.m@student.vidyamaxx.edu',
+        email: 'ishaan.m@student.vidyafloww.edu',
         address: '52, Shivalik Enclave, New Delhi',
         dob: '02 Feb 2009',
         bloodGroup: 'O-',
@@ -370,7 +370,7 @@ function StudentsPage() {
         guardian: 'Mahesh Rao',
         motherName: 'Deepa Rao',
         phone: '+91 97711 22334',
-        email: 'sneha.r@student.vidyamaxx.edu',
+        email: 'sneha.r@student.vidyafloww.edu',
         address: 'B-14, Mayur Vihar Phase 1, New Delhi',
         dob: '12 Jul 2010',
         bloodGroup: 'B-',
@@ -408,7 +408,7 @@ function StudentsPage() {
         guardian: 'Deepak Mehta',
         motherName: 'Anju Mehta',
         phone: '+91 98345 67890',
-        email: 'vikram.m@student.vidyamaxx.edu',
+        email: 'vikram.m@student.vidyafloww.edu',
         address: '77, Greater Kailash 2, New Delhi',
         dob: '30 Sep 2008',
         bloodGroup: 'A-',
@@ -446,7 +446,7 @@ function StudentsPage() {
         guardian: 'Sanjay Deshmukh',
         motherName: 'Rekha Deshmukh',
         phone: '+91 98456 78901',
-        email: 'ananya.d@student.vidyamaxx.edu',
+        email: 'ananya.d@student.vidyafloww.edu',
         address: 'C-9, Hauz Khas Enclave, New Delhi',
         dob: '18 Dec 2008',
         bloodGroup: 'AB-',
@@ -486,7 +486,7 @@ function StudentsPage() {
         guardian: 'Arun Sen',
         motherName: 'Shalini Sen',
         phone: '+91 98111 22233',
-        email: 'rohan.s@student.vidyamaxx.edu',
+        email: 'rohan.s@student.vidyafloww.edu',
         address: '104, Golf Links, New Delhi',
         dob: '10 Mar 2010',
         bloodGroup: 'B+',
@@ -511,7 +511,7 @@ function StudentsPage() {
         guardian: 'Vikas Joshi',
         motherName: 'Geeta Joshi',
         phone: '+91 98222 33344',
-        email: 'tanvi.j@student.vidyamaxx.edu',
+        email: 'tanvi.j@student.vidyafloww.edu',
         address: '45, Defence Colony, New Delhi',
         dob: '25 Jun 2009',
         bloodGroup: 'O+',
@@ -536,7 +536,7 @@ function StudentsPage() {
         guardian: 'Rajesh Singhal',
         motherName: 'Poonam Singhal',
         phone: '+91 98333 44455',
-        email: 'karan.s@student.vidyamaxx.edu',
+        email: 'karan.s@student.vidyafloww.edu',
         address: '12, Sundar Nagar, New Delhi',
         dob: '14 Jan 2008',
         bloodGroup: 'A+',
@@ -563,7 +563,7 @@ function StudentsPage() {
         guardian: 'K. Iyer',
         motherName: 'Radha Iyer',
         phone: '+91 98444 55566',
-        email: 'meera.i@student.vidyamaxx.edu',
+        email: 'meera.i@student.vidyafloww.edu',
         address: '9, Chanakyapuri, New Delhi',
         dob: '08 Aug 2007',
         bloodGroup: 'B+',
@@ -588,7 +588,7 @@ function StudentsPage() {
         guardian: 'N. Chouhan',
         motherName: 'Suman Chouhan',
         phone: '+91 98555 66677',
-        email: 'devendra.c@student.vidyamaxx.edu',
+        email: 'devendra.c@student.vidyafloww.edu',
         address: '61, Civil Lines, New Delhi',
         dob: '11 Nov 2007',
         bloodGroup: 'O+',
@@ -880,7 +880,7 @@ function StudentsPage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaMaxx_Students_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}_Roster.xlsx`;
+        a.download = `VidyaFloww_Students_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}_Roster.xlsx`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -903,7 +903,7 @@ function StudentsPage() {
         const url = URL.createObjectURL(content);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaMaxx_Student_Photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        a.download = `VidyaFloww_Student_Photos_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -929,7 +929,7 @@ function StudentsPage() {
         const url = URL.createObjectURL(content);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaMaxx_Complete_Student_Bundle_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
+        a.download = `VidyaFloww_Complete_Student_Bundle_${activeSession.replace(/[^a-zA-Z0-9]/g, '_')}.zip`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1647,7 +1647,7 @@ function StudentsPage() {
                                 <div className="h-3.5 w-3.5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[8px] font-black">
                                   V
                                 </div>
-                                <span className="font-extrabold text-[10px] text-foreground tracking-tight">VidyaMaxx Academy</span>
+                                <span className="font-extrabold text-[10px] text-foreground tracking-tight">VidyaFloww Academy</span>
                               </div>
                               <span className="text-[8px] font-mono font-bold px-1 rounded bg-muted border border-border text-muted-foreground">
                                 2026–27
@@ -2066,7 +2066,7 @@ function StudentsPage() {
             <div className="p-4 rounded-md border border-border/80 bg-card space-y-3 font-sans">
               <div className="text-center border-b border-border/60 pb-3">
                 <h3 className="font-black text-sm uppercase tracking-wider text-foreground">
-                  VidyaMaxx Senior Secondary Academy
+                  VidyaFloww Senior Secondary Academy
                 </h3>
                 <p className="text-[10px] text-muted-foreground">CBSE Affiliation No: 2130889 · Sector 14, New Delhi</p>
                 <div className="inline-block mt-2 px-3 py-1 rounded bg-muted border border-border">
@@ -2185,7 +2185,7 @@ function StudentsPage() {
               <div className="flex items-center justify-between border-b border-border/60 pb-1.5">
                 <div>
                   <h4 className="text-xs font-black uppercase tracking-wider text-foreground">
-                    SPRINGFIELD ACADEMY
+                    VIDYAFLOWW INTERNATIONAL ACADEMY
                   </h4>
                   <p className="text-[9px] text-muted-foreground">CBSE Affiliated · AY {activeSession}</p>
                 </div>

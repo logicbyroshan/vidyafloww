@@ -5,7 +5,7 @@ import {
   VFCard,
   VFButton,
   VFBadge,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ShieldCheck,
   Key,
@@ -36,7 +36,7 @@ function LicenseManagementPage() {
   const [showKey, setShowKey] = React.useState(false);
   const [toast, setToast] = React.useState<string | null>(null);
 
-  const licenseKey = 'VMX-2026-SA98-CBSE-9481-DELHI';
+  const licenseKey = 'VFL-2026-SA98-CBSE-9481-DELHI';
 
   const handleCopyKey = () => {
     navigator.clipboard.writeText(licenseKey);
@@ -244,12 +244,12 @@ function LicenseManagementPage() {
             <p className="text-[11px] text-muted-foreground">DLT registered transactional gateway for OTPs and notifications.</p>
           </div>
 
-          {/* AI Compute Tokens */}
+          {/* Cloud Processing Tokens */}
           <div className="p-3.5 rounded-md bg-[#161616] border border-border space-y-2">
             <div className="flex items-center justify-between text-xs font-bold">
               <span className="flex items-center gap-2 text-foreground">
                 <Sparkles className="h-4 w-4 text-emerald-400" />
-                AI & OCR Compute Tokens
+                Cloud Processing & Sync Tokens
               </span>
               <span className="font-mono text-xs text-emerald-400 font-bold">
                 412,500 <span className="text-muted-foreground font-normal">/ 500,000 (82.5%)</span>
@@ -258,7 +258,7 @@ function LicenseManagementPage() {
             <div className="w-full h-2 rounded-full bg-[#262626] overflow-hidden">
               <div className="h-full rounded-full bg-emerald-400 transition-all duration-300" style={{ width: '82.5%' }} />
             </div>
-            <p className="text-[11px] text-muted-foreground">Document OCR scanning, homework grading AI, and student analytics.</p>
+            <p className="text-[11px] text-muted-foreground">Document indexing, automated report generation, and multi-campus synchronization.</p>
           </div>
 
           {/* Cloud Storage */}
@@ -294,7 +294,7 @@ function LicenseManagementPage() {
             <div>
               <span className="text-[10px] text-muted-foreground uppercase font-bold block">Enterprise License Key</span>
               <span className="text-sm font-mono font-black text-foreground">
-                {showKey ? licenseKey : 'VMX-••••-••••-CBSE-••••-DELHI'}
+                {showKey ? licenseKey : 'VFL-••••-••••-CBSE-••••-DELHI'}
               </span>
             </div>
           </div>

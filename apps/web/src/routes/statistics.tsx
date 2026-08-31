@@ -9,7 +9,7 @@ import {
   VFAreaChart,
   VFBarChart,
   VFPieChart,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   BarChart3,
   Users,

@@ -6,12 +6,11 @@ import {
   VFButton,
   VFBadge,
   VFTabs,
-} from '@vidyamaxx/ui';
+} from '@vidyafloww/ui';
 import {
   ClipboardList,
   FileText,
   Award,
-  CheckCircle2,
   Plus,
   Download,
   BarChart3,
@@ -65,10 +64,9 @@ const INITIAL_MARKS: MarksEntryRow[] = [
 ];
 
 function ExaminationsPage() {
-  const { activeSession } = useGlobalStore();
+  const { activeSession, schoolProfile, addNotification } = useGlobalStore();
   const [activeTab, setActiveTab] = React.useState<string>('overview');
   const [marksData] = React.useState<MarksEntryRow[]>(INITIAL_MARKS);
-  const [notice, setNotice] = React.useState<string | null>(null);
 
   const examColumns = [
     {
@@ -131,7 +129,7 @@ function ExaminationsPage() {
           leftIcon={<ClipboardList className="h-4 w-4" />}
           onClick={() => {
             setActiveTab('marks');
-            setNotice(`Loaded evaluation sheet for ${r.code}.`);
+            addNotification({ title: 'Evaluation Sheet Loaded', description: `Marks entry sheet for ${r.code} is ready.`, type: 'info' });
           }}
         >
           Enter Marks
@@ -240,7 +238,7 @@ function ExaminationsPage() {
           <VFButton
             size="sm"
             leftIcon={<Check className="h-4 w-4" />}
-            onClick={() => setNotice('Marks entries successfully saved and locked for verification.')}
+            onClick={() => addNotification({ title: 'Marks Saved', description: 'Marks entries saved and locked for verification.', type: 'success' })}
           >
             Save Marks Register
           </VFButton>
@@ -309,7 +307,7 @@ function ExaminationsPage() {
             <VFButton
               size="sm"
               leftIcon={<Download className="h-4 w-4" />}
-              onClick={() => setNotice('Downloaded bulk PDF report cards for Class 9-A.')}
+              onClick={() => addNotification({ title: 'Report Cards Exported', description: 'Bulk PDF report cards downloaded for Class 9-A.', type: 'success' })}
             >
               Bulk PDF Export
             </VFButton>
@@ -319,7 +317,7 @@ function ExaminationsPage() {
         {/* Printable Visual Report Card Frame */}
         <div className="p-6 rounded-lg bg-muted/20 border border-border/80 space-y-6 max-w-4xl mx-auto">
           <div className="text-center space-y-1 pb-4 border-b border-border">
-            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Springfield International Academy</span>
+            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">{schoolProfile.name || 'VidyaFloww International Academy'}</span>
             <h2 className="text-2xl font-black text-foreground tracking-tight">Official Academic Achievement Report</h2>
             <p className="text-xs font-mono text-muted-foreground">Session {activeSession} · Term 1 Mid-Year Examination</p>
           </div>
@@ -381,20 +379,6 @@ function ExaminationsPage() {
 
   return (
     <VFPageContainer className="space-y-2.5 sm:space-y-3">
-      {notice && (
-        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
-            <span className="font-bold">{notice}</span>
-          </div>
-          <button
-            onClick={() => setNotice(null)}
-            className="text-muted-foreground hover:text-foreground text-xs font-black cursor-pointer px-2 py-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       <VFTabs
         items={tabs}
