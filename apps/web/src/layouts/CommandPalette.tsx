@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Command } from 'cmdk';
 import { motion, AnimatePresence } from 'framer-motion';
-import { VFBadge } from '@vidyamaxx/ui';
-import { MODULE_REGISTRY } from '@vidyamaxx/constants';
+import { VFBadge } from '@vidyafloww/ui';
+import { MODULE_REGISTRY } from '@vidyafloww/constants';
 import {
   Search,
   LayoutDashboard,
@@ -196,7 +196,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -60, opacity: 0 }}
           transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-50 w-full max-w-4xl mx-auto bg-[#101010] border-b border-x border-border/80 rounded-b-2xl shadow-2xl overflow-hidden flex flex-col"
+          className="relative z-50 w-full max-w-4xl mx-auto bg-[#101010] border-b border-x border-border/80 rounded-b-lg shadow-2xl overflow-hidden flex flex-col"
         >
           <Command
             className="w-full flex flex-col"
@@ -245,7 +245,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors shrink-0 ml-1 cursor-pointer"
+                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors shrink-0 ml-1 cursor-pointer"
                 title="Close search (Esc)"
               >
                 <X className="h-4 w-4" />
@@ -271,9 +271,9 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                       key={cmd.id}
                       value={`${cmd.label} ${cmd.sublabel} ${cmd.category}`}
                       onSelect={cmd.onSelect}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-[#1c1c1c] data-[selected=true]:border-border/80 data-[selected=true]:shadow-xs text-foreground hover:bg-[#181818]"
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all outline-none text-xs text-left cursor-pointer border border-transparent data-[selected=true]:bg-[#1c1c1c] data-[selected=true]:border-border/80 data-[selected=true]:shadow-xs text-foreground hover:bg-[#181818]"
                     >
-                      <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0 bg-[#1c1c1c] border border-border/80 text-foreground">
+                      <div className="h-8 w-8 rounded-md flex items-center justify-center shrink-0 bg-[#1c1c1c] border border-border/80 text-foreground">
                         <Icon className="h-4 w-4" />
                       </div>
                       <div className="flex-1 min-w-0">

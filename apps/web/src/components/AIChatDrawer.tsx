@@ -15,7 +15,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import { VFBadge, VFButton, cn } from '@vidyamaxx/ui';
+import { VFBadge, VFButton, cn } from '@vidyafloww/ui';
 
 interface Message {
   id: string;
@@ -133,7 +133,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
     {
       id: 'welcome-1',
       sender: 'ai',
-      text: "Hello! I'm your **VidyaMaxx AI Copilot**. I have real-time contextual access to your institution's admissions, students, faculty timetables, fees, and examination telemetry. How can I assist you today?",
+      text: "Hello! I'm your **VidyaFloww AI Copilot**. I have real-time contextual access to your institution's admissions, students, faculty timetables, fees, and examination telemetry. How can I assist you today?",
       timestamp: 'Just now',
     },
   ]);
@@ -171,7 +171,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
 
     // Context response matching
     let responseText =
-      "I've processed your query against VidyaMaxx's institutional database. All system metrics indicate nominal operations. Let me know if you would like me to generate detailed reports or initiate automated workflows.";
+      "I've processed your query against VidyaFloww's institutional database. All system metrics indicate nominal operations. Let me know if you would like me to generate detailed reports or initiate automated workflows.";
 
     const lower = query.toLowerCase();
     if (lower.includes('proxy') || lower.includes('substitute') || lower.includes('sharma') || lower.includes('leave')) {
@@ -238,7 +238,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
             {/* Drawer Header */}
             <div className="h-[64px] px-5 border-b border-border bg-card flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shadow-xs">
+                <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/25 flex items-center justify-center text-primary shadow-xs">
                   <Sparkles className="h-5 w-5 animate-pulse" />
                 </div>
                 <div>
@@ -259,14 +259,14 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={handleClearHistory}
-                  className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+                  className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors cursor-pointer"
                   title="Clear Chat"
                 >
                   <RotateCcw className="h-4 w-4" />
                 </button>
                 <button
                   onClick={onClose}
-                  className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+                  className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors cursor-pointer"
                   title="Close (Esc)"
                 >
                   <X className="h-4 w-4" />
@@ -297,7 +297,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                   >
                     <div
                       className={cn(
-                        'h-8 w-8 rounded-xl flex items-center justify-center shrink-0 border mt-0.5 shadow-2xs',
+                        'h-8 w-8 rounded-md flex items-center justify-center shrink-0 border mt-0.5 shadow-2xs',
                         isAI
                           ? 'bg-primary/10 border-primary/20 text-primary'
                           : 'bg-muted border-border text-foreground'
@@ -309,10 +309,10 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                     <div className={cn('flex flex-col max-w-[85%]', isAI ? 'items-start' : 'items-end')}>
                       <div
                         className={cn(
-                          'p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap relative',
+                          'p-4 rounded-md text-sm leading-relaxed whitespace-pre-wrap relative',
                           isAI
-                            ? 'bg-card border border-border text-foreground shadow-2xs rounded-tl-sm'
-                            : 'bg-primary text-primary-foreground font-medium rounded-tr-sm shadow-xs'
+                            ? 'bg-card border border-border text-foreground shadow-2xs rounded-tl-xs'
+                            : 'bg-primary text-primary-foreground font-medium rounded-tr-xs shadow-xs'
                         )}
                       >
                         {msg.text}
@@ -320,11 +320,11 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                         {isAI && (
                           <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between">
                             <span className="text-[10px] text-muted-foreground font-semibold">
-                              VidyaMaxx Neural Model v2.4
+                              VidyaFloww Neural Model v2.4
                             </span>
                             <button
                               onClick={() => handleCopy(msg.id, msg.text)}
-                              className="text-[11px] font-bold text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors px-1.5 py-0.5 rounded hover:bg-muted"
+                              className="text-[11px] font-bold text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors px-1.5 py-0.5 rounded hover:bg-muted cursor-pointer"
                             >
                               {copiedId === msg.id ? (
                                 <>
@@ -351,10 +351,10 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
 
               {isTyping && (
                 <div className="flex gap-3 items-center text-muted-foreground text-xs font-semibold">
-                  <div className="h-8 w-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                  <div className="h-8 w-8 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                     <Sparkles className="h-4 w-4 animate-spin" />
                   </div>
-                  <div className="bg-card border border-border px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5">
+                  <div className="bg-card border border-border px-3.5 py-2.5 rounded-md flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0ms' }} />
                     <span className="h-2 w-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '150ms' }} />
                     <span className="h-2 w-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -382,7 +382,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                       key={idx}
                       onClick={() => handleSendMessage(p.prompt)}
                       disabled={isTyping}
-                      className="p-2.5 rounded-xl border border-border bg-muted/40 hover:bg-muted/90 text-left transition-all hover:border-primary/40 group flex flex-col justify-between"
+                      className="p-2.5 rounded-md border border-border bg-muted/40 hover:bg-muted/90 text-left transition-all hover:border-primary/40 group flex flex-col justify-between cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
                         <Icon className="h-3.5 w-3.5 text-primary shrink-0 group-hover:scale-110 transition-transform" />
@@ -412,8 +412,8 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                     type="text"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Ask VidyaMaxx AI anything about students, staff, timetable, fees..."
-                    className="w-full h-11 pl-4 pr-10 rounded-xl bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all"
+                    placeholder="Ask VidyaFloww AI anything about students, staff, timetable, fees..."
+                    className="w-full h-10 pl-4 pr-10 rounded-md bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary transition-all"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-muted-foreground text-xs font-bold pointer-events-none">
                     ↵
@@ -424,7 +424,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                   type="submit"
                   disabled={!inputText.trim() || isTyping}
                   size="md"
-                  className="h-11 px-4 rounded-xl shrink-0"
+                  className="h-10 px-4 rounded-md shrink-0"
                 >
                   <Send className="h-4 w-4" />
                 </VFButton>

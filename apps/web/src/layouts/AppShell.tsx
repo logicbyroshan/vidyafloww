@@ -6,9 +6,8 @@ import { Header } from './Header';
 import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
-import { AIChatDrawer } from '../components/AIChatDrawer';
 import { useGlobalStore, initTheme } from '../stores/globalStore';
-import { VFPage } from '@vidyamaxx/ui';
+import { VFPage } from '@vidyafloww/ui';
 import { Monitor, Smartphone, Laptop, ArrowRight } from 'lucide-react';
 
 function SmallScreenBlocker() {
@@ -30,10 +29,10 @@ function SmallScreenBlocker() {
       <div className="relative z-10 flex flex-col items-center max-w-md">
         {/* Icon stack */}
         <div className="relative mb-8">
-          <div className="w-20 h-20 rounded-2xl bg-card border border-border/80 flex items-center justify-center shadow-lg">
+          <div className="w-20 h-20 rounded-lg bg-card border border-border/80 flex items-center justify-center shadow-lg">
             <Monitor className="h-9 w-9 text-primary" />
           </div>
-          <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-destructive/15 border border-destructive/30 flex items-center justify-center">
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-md bg-destructive/15 border border-destructive/30 flex items-center justify-center">
             <Smartphone className="h-4 w-4 text-destructive" />
           </div>
         </div>
@@ -50,17 +49,17 @@ function SmallScreenBlocker() {
           Desktop Required
         </h1>
         <p className="text-base text-muted-foreground mt-3 leading-relaxed">
-          VidyaMaxx Command Portal is built exclusively for desktop screens. Your current viewport is too narrow to display it correctly.
+          VidyaFloww Command Portal is built exclusively for desktop screens. Your current viewport is too narrow to display it correctly.
         </p>
 
         {/* Requirement card */}
-        <div className="mt-8 w-full bg-card border border-border/70 rounded-xl overflow-hidden">
+        <div className="mt-8 w-full bg-card border border-border/70 rounded-lg overflow-hidden">
           <div className="px-5 py-3 border-b border-border/50 bg-muted/30">
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Minimum Requirements</p>
           </div>
           <div className="px-5 py-4 flex items-center gap-4">
             <div className="flex-1 flex items-center gap-3">
-              <div className="h-9 w-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+              <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                 <Laptop className="h-4 w-4 text-primary" />
               </div>
               <div className="text-left">
@@ -75,12 +74,12 @@ function SmallScreenBlocker() {
         </div>
 
         {/* Mobile app hint */}
-        <div className="mt-4 w-full bg-muted/40 border border-border/50 rounded-xl px-5 py-4 flex items-start gap-3 text-left">
+        <div className="mt-4 w-full bg-muted/40 border border-border/50 rounded-lg px-5 py-4 flex items-start gap-3 text-left">
           <Smartphone className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
           <div>
             <p className="text-sm font-semibold text-foreground">Need mobile access?</p>
             <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-              Download the VidyaMaxx Mobile App for iOS & Android — full feature parity for parents, students and teachers on the go.
+              Download the VidyaFloww Mobile App for iOS & Android — full feature parity for parents, students and teachers on the go.
             </p>
           </div>
         </div>
@@ -88,7 +87,7 @@ function SmallScreenBlocker() {
         {/* CTA */}
         <button
           onClick={() => window.location.reload()}
-          className="mt-6 flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold uppercase tracking-wide px-6 py-3 rounded-xl transition-all active:scale-95"
+          className="mt-6 flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-bold uppercase tracking-wide px-6 py-2.5 rounded-md transition-all active:scale-95 cursor-pointer"
         >
           Try Again
           <ArrowRight className="h-4 w-4" />
@@ -133,17 +132,16 @@ export function AppShell() {
   const { addNotification, schoolProfile } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
-  const [isAIDrawerOpen, setIsAIDrawerOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
   const [viewportWidth, setViewportWidth] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
 
-  // Dynamic Browser Tab Title: VidyaMaxx@{schoolProfile.name} - {pageName}
+  // Dynamic Browser Tab Title: VidyaFloww@{schoolProfile.name} - {pageName}
   React.useEffect(() => {
     const pageName = ROUTE_PAGE_NAMES[location.pathname] || 'Dashboard';
-    const schoolName = schoolProfile?.name || 'Springfield Academy';
-    document.title = `VidyaMaxx@${schoolName} - ${pageName}`;
+    const schoolName = schoolProfile?.name || 'VidyaFloww International Academy';
+    document.title = `VidyaFloww@${schoolName} - ${pageName}`;
   }, [location.pathname, schoolProfile?.name]);
 
   // Scroll to top on route change
@@ -163,12 +161,12 @@ export function AppShell() {
   React.useEffect(() => {
     initTheme();
     // Only display the welcome notification immediately after an explicit user login
-    const justLoggedIn = sessionStorage.getItem('vidyamaxx_just_logged_in');
+    const justLoggedIn = sessionStorage.getItem('vidyafloww_just_logged_in');
     if (justLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/forgot-password') {
-      sessionStorage.removeItem('vidyamaxx_just_logged_in');
+      sessionStorage.removeItem('vidyafloww_just_logged_in');
       const timer = setTimeout(() => {
         addNotification({
-          title: 'Welcome to VidyaMaxx',
+          title: 'Welcome to VidyaFloww',
           description: 'Your enterprise school management platform is ready.',
           type: 'info',
         });
@@ -180,14 +178,9 @@ export function AppShell() {
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ctrl+K / Cmd+K for Command Palette
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && !e.shiftKey) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsCommandPaletteOpen(true);
-      }
-      // Shift+K for VidyaMaxx AI Copilot Drawer
-      if (e.shiftKey && e.key.toLowerCase() === 'k' && !e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-        setIsAIDrawerOpen((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -243,10 +236,6 @@ export function AppShell() {
           <NotificationsPanel
             isOpen={isNotificationsOpen}
             onClose={() => setIsNotificationsOpen(false)}
-          />
-          <AIChatDrawer
-            isOpen={isAIDrawerOpen}
-            onClose={() => setIsAIDrawerOpen(false)}
           />
           <ToastContainer />
         </VFPage>

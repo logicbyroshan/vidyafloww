@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
-import { cn } from '@vidyamaxx/ui';
+import { cn } from '@vidyafloww/ui';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -23,6 +24,33 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   const [isSessionMenuOpen, setIsSessionMenuOpen] = React.useState(false);
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
   const unreadCount = notifications.filter((n) => !n.read).length;
+  const { location } = useRouterState();
+  const isOnDashboard = location.pathname === '/';
+
+  // Universal Live Date & Time Clock
+  const [currentDateTime, setCurrentDateTime] = React.useState(() => new Date());
+  React.useEffect(() => {
+    const timer = setInterval(() => setCurrentDateTime(new Date()), 30000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formattedDateStr = React.useMemo(() => {
+    // E.g. "Thu, 20 Aug 2026 • 08:30 AM"
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    };
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+    const datePart = currentDateTime.toLocaleDateString('en-US', options);
+    const timePart = currentDateTime.toLocaleTimeString('en-US', timeOptions);
+    return `${datePart} • ${timePart}`;
+  }, [currentDateTime]);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -166,22 +194,24 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
 
       {/* Right: Configure Dashboard Button, Search, Notifications & School Identity */}
       <div className="flex items-center gap-2.5 shrink-0">
-        {/* Configure Dashboard Button — White/neutral icon like other navbar buttons */}
-        <button
-          onClick={toggleDashboardEditMode}
-          className={cn(
-            "flex items-center gap-1.5 px-3 h-9 rounded-md text-xs font-bold transition-all cursor-pointer border shadow-xs outline-none",
-            isDashboardEditMode
-              ? "bg-[#1f1f1f] text-foreground border-primary/60 shadow-xs ring-1 ring-primary/40"
-              : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-foreground border-border"
-          )}
-          title={isDashboardEditMode ? "Exit Dashboard Configuration" : "Configure Dashboard & Rearrange Cards"}
-        >
-          <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-foreground" />
-          <span className="hidden sm:inline text-foreground font-semibold">
-            {isDashboardEditMode ? "Done Customizing" : "Configure Dashboard"}
-          </span>
-        </button>
+        {/* Configure Dashboard Button — only visible on the Dashboard page */}
+        {isOnDashboard && (
+          <button
+            onClick={toggleDashboardEditMode}
+            className={cn(
+              "flex items-center gap-1.5 px-3 h-9 rounded-md text-xs font-bold transition-all cursor-pointer border shadow-xs outline-none",
+              isDashboardEditMode
+                ? "bg-[#1f1f1f] text-foreground border-primary/60 shadow-xs ring-1 ring-primary/40"
+                : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-foreground border-border"
+            )}
+            title={isDashboardEditMode ? "Exit Dashboard Configuration" : "Configure Dashboard & Rearrange Cards"}
+          >
+            <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-foreground" />
+            <span className="hidden sm:inline text-foreground font-semibold">
+              {isDashboardEditMode ? "Done Customizing" : "Configure Dashboard"}
+            </span>
+          </button>
+        )}
 
         {/* Square Search Button Beside Notifications */}
         <button
@@ -203,6 +233,12 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-destructive rounded-full" />
           )}
         </button>
+
+        {/* Universal Live Date & Time Indicator */}
+        <div className="hidden md:flex items-center gap-2 px-3 h-9 rounded-md bg-[#0e0e0e] border border-border text-foreground font-mono text-xs font-bold shadow-xs select-none" title="Universal Academic System Date & Time">
+          <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
+          <span>{formattedDateStr}</span>
+        </div>
 
         {/* Divider */}
         <div className="h-5 w-[1px] bg-border mx-0.5 hidden sm:block" />

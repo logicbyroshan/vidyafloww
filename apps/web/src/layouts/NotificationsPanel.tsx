@@ -73,24 +73,24 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
         {/* Header */}
         <div className="h-16 px-5 border-b border-border flex items-center justify-between bg-card">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-md bg-primary/10 border border-primary/25 flex items-center justify-center">
               <Bell className="h-4.5 w-4.5 text-primary" />
             </div>
             <div>
               <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
                 Notifications
                 {unreadCount > 0 && (
-                  <span className="text-xs bg-primary text-primary-foreground font-bold px-1.5 py-0.2 rounded-full">
+                  <span className="text-[11px] font-mono bg-primary text-primary-foreground font-bold px-1.5 py-0.5 rounded">
                     {unreadCount}
                   </span>
                 )}
               </h3>
-              <p className="text-sm text-muted-foreground">Activity & system alerts</p>
+              <p className="text-xs text-muted-foreground">Activity & system alerts</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -101,13 +101,13 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
           <div className="px-5 py-2.5 border-b border-border/60 bg-muted/30 flex items-center justify-between text-xs">
             <button
               onClick={markAllNotificationsRead}
-              className="text-primary hover:underline font-semibold flex items-center gap-1 text-xs"
+              className="text-primary hover:underline font-semibold flex items-center gap-1 text-xs cursor-pointer"
             >
               <CheckCheck className="h-3.5 w-3.5" /> Mark all read
             </button>
             <button
               onClick={clearNotifications}
-              className="text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1 text-xs"
+              className="text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1 text-xs cursor-pointer"
             >
               <Trash2 className="h-3.5 w-3.5" /> Clear all
             </button>
@@ -118,31 +118,31 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
         <div className="flex-1 overflow-y-auto p-4 space-y-2.5 custom-scrollbar">
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground p-6 space-y-3">
-              <div className="h-12 w-12 rounded-2xl bg-muted border border-border flex items-center justify-center">
+              <div className="h-12 w-12 rounded-md bg-muted border border-border flex items-center justify-center">
                 <Bell className="h-6 w-6 text-muted-foreground/50" />
               </div>
               <div>
                 <p className="text-xs font-semibold text-foreground">All caught up!</p>
-                <p className="text-sm text-muted-foreground mt-1">No pending notifications at this moment.</p>
+                <p className="text-xs text-muted-foreground mt-1">No pending notifications at this moment.</p>
               </div>
             </div>
           ) : (
             notifications.map((notif) => {
               const icons = {
-                success: <CheckCircle2 className="h-4 w-4 text-success" />,
-                error: <AlertCircle className="h-4 w-4 text-destructive" />,
-                warning: <AlertCircle className="h-4 w-4 text-warning" />,
-                info: <Info className="h-4 w-4 text-info" />,
+                success: <CheckCircle2 className="h-4 w-4 text-emerald-400" />,
+                error: <AlertCircle className="h-4 w-4 text-rose-400" />,
+                warning: <AlertCircle className="h-4 w-4 text-amber-400" />,
+                info: <Info className="h-4 w-4 text-sky-400" />,
               };
 
               return (
                 <div
                   key={notif.id}
                   onClick={() => markNotificationRead(notif.id)}
-                  className={`p-3.5 rounded-xl border transition-all cursor-pointer flex gap-3.5 ${
+                  className={`p-3 rounded-md border transition-all cursor-pointer flex gap-3 ${
                     !notif.read
-                      ? 'bg-primary/5 border-primary/25 shadow-xs'
-                      : 'bg-card border-border hover:bg-muted/40'
+                      ? 'bg-card border-border shadow-xs hover:border-primary/40'
+                      : 'bg-muted/30 border-border/70 hover:bg-muted/60 opacity-80'
                   }`}
                 >
                   <div className="shrink-0 mt-0.5">{icons[notif.type]}</div>
@@ -151,14 +151,14 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
                       <p className={`text-xs ${!notif.read ? 'font-bold text-foreground' : 'font-medium text-foreground/80'}`}>
                         {notif.title}
                       </p>
-                      {!notif.read && <span className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1" />}
+                      {!notif.read && <span className="h-1.5 w-1.5 rounded-xs bg-primary shrink-0 mt-1" />}
                     </div>
                     {notif.description && (
                       <p className="text-xs text-muted-foreground leading-relaxed">
                         {notif.description}
                       </p>
                     )}
-                    <span className="text-xs text-muted-foreground/70 block pt-0.5">
+                    <span className="text-[11px] font-mono text-muted-foreground/70 block pt-0.5">
                       {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>

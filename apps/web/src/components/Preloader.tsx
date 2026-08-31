@@ -54,20 +54,20 @@ export function Preloader({ onDone }: { onDone: () => void }) {
       >
         {/* Icon */}
         <div className="relative">
-          <div className="h-20 w-20 rounded-2xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/30">
+          <div className="h-20 w-20 rounded-lg bg-primary flex items-center justify-center shadow-2xl shadow-primary/30">
             <span className="text-4xl font-black text-white">V</span>
           </div>
           {/* Pulsing ring */}
-          <div className="absolute inset-0 rounded-2xl border-2 border-primary/60 animate-ping" style={{ animationDuration: '1.5s' }} />
+          <div className="absolute inset-0 rounded-lg border-2 border-primary/60 animate-ping" style={{ animationDuration: '1.5s' }} />
         </div>
 
         {/* Brand name */}
         <div className="text-center">
           <h1 className="text-4xl font-black tracking-tight text-foreground">
-            Vidya<span className="text-primary">Maxx</span>
+            Vidya<span className="text-primary">Floww</span>
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground tracking-widest uppercase">
-            Enterprise School Management
+          <p className="mt-2 text-sm text-muted-foreground tracking-widest uppercase font-semibold">
+            School Management Platform
           </p>
         </div>
 

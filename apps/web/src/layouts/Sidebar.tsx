@@ -1,5 +1,5 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { cn, VFAvatar } from '@vidyamaxx/ui';
+import { cn, VFAvatar } from '@vidyafloww/ui';
 import {
   BarChart3,
   Bell,
@@ -42,13 +42,13 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'students', label: 'Students', route: '/students', icon: GraduationCap },
       { id: 'admissions', label: 'Admissions', route: '/admissions', icon: UserPlus },
       { id: 'attendance', label: 'Attendance', route: '/attendance', icon: CalendarCheck },
-      { id: 'academics', label: 'Academics', route: '/academics', icon: School },
       { id: 'timetable', label: 'Timetable', route: '/timetable', icon: Calendar },
       { id: 'staff', label: 'Teachers', route: '/staff', icon: Users },
     ],
   },
   {
     items: [
+      { id: 'academics', label: 'Academics', route: '/academics', icon: School },
       { id: 'homework', label: 'Homework', route: '/homework', icon: BookMarked },
       { id: 'examinations', label: 'Examinations', route: '/examinations', icon: ClipboardList },
     ],
@@ -109,7 +109,7 @@ export function Sidebar() {
       <div className="flex h-[64px] items-center border-b border-border bg-black relative shrink-0 px-4">
         {/* Logo: always visible at same left offset */}
         <div className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center overflow-hidden">
-          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain" />
+          <img src="/logo.png" alt="VidyaFloww Logo" className="h-8 w-8 object-contain" />
         </div>
 
         {/* Brand text: CSS-only fade + collapse via inline style */}
@@ -123,7 +123,7 @@ export function Sidebar() {
           }}
         >
           <span className="text-[17px] font-black tracking-tight leading-none text-foreground">
-            Vidya<span className="text-primary">Maxx</span>
+            Vidya<span className="text-primary">Floww</span>
           </span>
           <span className="text-[9px] text-muted-foreground font-bold tracking-wider uppercase mt-[3px]">
             School Management
@@ -156,7 +156,7 @@ export function Sidebar() {
                     title={!sidebarExpanded ? item.label : undefined}
                     className={cn(
                       // Always full-width, always same height — NO class switching
-                      'flex items-center h-10 w-full rounded-lg border outline-none overflow-hidden',
+                      'flex items-center h-10 w-full rounded-md border outline-none overflow-hidden',
                       'transition-colors duration-150',
                       isActive
                         ? 'bg-[#1c1c1c] border-[#323232] text-foreground font-bold shadow-xs'

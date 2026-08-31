@@ -22,7 +22,7 @@ export function ToastContainer() {
 
         toast.custom(
           () => (
-            <div className="w-full flex items-start gap-3 p-3.5 bg-card/95 backdrop-blur-md border border-border/80 shadow-xl rounded-xl text-xs">
+            <div className="w-full flex items-start gap-3 p-3.5 bg-card/95 backdrop-blur-md border border-border shadow-xl rounded-md text-xs">
               {iconMap[n.type as keyof typeof iconMap] || iconMap.info}
               <div className="flex-1 space-y-0.5 min-w-0">
                 <p className="font-bold text-foreground truncate">{n.title}</p>
