@@ -55,7 +55,7 @@ export function VFSearchBar({
 
   return (
     <div className={cn(
-      "relative flex items-center w-full max-w-sm rounded-lg border border-border bg-card hover:border-border/80 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-150",
+      "relative flex items-center w-full max-w-sm rounded-md border border-border bg-card hover:border-border/80 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all duration-150",
       className
     )}>
       <div className="absolute left-3 text-muted-foreground pointer-events-none">
@@ -69,7 +69,7 @@ export function VFSearchBar({
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full h-10 pl-9 pr-10 text-sm bg-transparent border-0 outline-none placeholder:text-muted-foreground text-foreground font-medium"
+        className="w-full h-9 pl-9 pr-10 text-sm bg-transparent border-0 outline-none placeholder:text-muted-foreground text-foreground font-medium"
         {...props}
       />
       <div className="absolute right-3 flex items-center gap-1">

@@ -18,12 +18,12 @@ import { cn } from './utils';
 function CustomTooltip({ active, payload, label }: any) {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card/95 border border-border/80 p-3 rounded-xl shadow-2xl backdrop-blur-md text-xs space-y-1.5 min-w-[140px]">
+      <div className="bg-card/95 border border-border/80 p-3 rounded-md shadow-2xl backdrop-blur-md text-xs space-y-1.5 min-w-[140px]">
         {label && <p className="font-bold text-foreground pb-1 border-b border-border/60 mb-1">{label}</p>}
         {payload.map((entry: any, index: number) => (
           <div key={`item-${index}`} className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: entry.color || entry.fill }} />
+              <span className="h-1.5 w-1.5 rounded-xs shrink-0" style={{ backgroundColor: entry.color || entry.fill }} />
               <span className="text-muted-foreground font-medium">{entry.name}:</span>
             </div>
             <span className="font-mono font-bold text-foreground">{entry.value}</span>

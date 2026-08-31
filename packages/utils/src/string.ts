@@ -1,5 +1,5 @@
 /**
- * @vidyamaxx/utils — String & Text Utilities
+ * @vidyafloww/utils — String & Text Utilities
  */
 
 /**

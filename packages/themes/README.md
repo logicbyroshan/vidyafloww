@@ -1,6 +1,6 @@
-﻿# @vidyamaxx/themes
+# @vidyafloww/themes
 
-Design tokens, color palettes, and theme definitions for the VidyaMaxx design system.
+Design tokens, color palettes, and theme definitions for the VidyaFloww design system.
 
 ## Status
 
@@ -9,6 +9,6 @@ Design tokens, color palettes, and theme definitions for the VidyaMaxx design sy
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/themes';
+import { ... } from '@vidyafloww/themes';
 ```
 

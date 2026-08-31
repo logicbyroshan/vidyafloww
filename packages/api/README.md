@@ -1,6 +1,6 @@
-﻿# @vidyamaxx/api
+# @vidyafloww/api
 
-HTTP client package — typed Axios wrapper for all VidyaMaxx backend endpoints.
+Typed HTTP client for the VidyaFloww backend API.
 
 ## Status
 
@@ -9,6 +9,6 @@ HTTP client package — typed Axios wrapper for all VidyaMaxx backend endpoints.
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/api';
+import { ... } from '@vidyafloww/api';
 ```
 

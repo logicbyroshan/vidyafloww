@@ -240,7 +240,7 @@ export function VFDrawer({
                         <DialogPrimitive.Close asChild>
                           <button
                             onClick={onClose}
-                            className="text-muted-foreground hover:text-foreground p-1.5 rounded-lg hover:bg-muted transition-colors outline-none cursor-pointer"
+                            className="text-muted-foreground hover:text-foreground p-1.5 rounded-md hover:bg-muted transition-colors outline-none cursor-pointer"
                             aria-label="Close drawer"
                           >
                             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

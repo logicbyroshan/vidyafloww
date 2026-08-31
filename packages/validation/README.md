@@ -1,4 +1,4 @@
-﻿# @vidyamaxx/validation
+# @vidyafloww/validation
 
 Shared Zod schemas for form validation across web, mobile, and desktop apps.
 
@@ -9,6 +9,6 @@ Shared Zod schemas for form validation across web, mobile, and desktop apps.
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/validation';
+import { ... } from '@vidyafloww/validation';
 ```
 

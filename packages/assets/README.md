@@ -1,4 +1,4 @@
-﻿# @vidyamaxx/assets
+# @vidyafloww/assets
 
 Shared static assets: logos, images, fonts, and other media.
 
@@ -9,6 +9,6 @@ Shared static assets: logos, images, fonts, and other media.
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/assets';
+import { ... } from '@vidyafloww/assets';
 ```
 

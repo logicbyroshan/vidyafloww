@@ -1,4 +1,4 @@
-﻿# @vidyamaxx/constants
+# @vidyafloww/constants
 
 Application-wide constants: routes, API endpoints, roles, and status codes.
 
@@ -9,6 +9,6 @@ Application-wide constants: routes, API endpoints, roles, and status codes.
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/constants';
+import { ... } from '@vidyafloww/constants';
 ```
 

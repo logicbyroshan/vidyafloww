@@ -337,7 +337,7 @@ export const VFDatePicker = React.forwardRef<HTMLDivElement, VFDatePickerProps>(
 
         {/* Custom Dark Calendar Popover Container with GAP (top-[calc(100%+6px)]) */}
         {isOpen && (
-          <div className="absolute top-[calc(100%+6px)] left-0 z-50 w-64 rounded-xl border border-border/80 bg-[#0e1017] p-3 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in">
+          <div className="absolute top-[calc(100%+6px)] left-0 z-50 w-64 rounded-md border border-border/80 bg-[#0e1017] p-3 shadow-xl shadow-black/80 backdrop-blur-lg animate-scale-in">
             {/* Month / Year Header Navigator */}
             <div className="flex items-center justify-between mb-2.5">
               <button

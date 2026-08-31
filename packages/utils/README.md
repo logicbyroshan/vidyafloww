@@ -1,4 +1,4 @@
-﻿# @vidyamaxx/utils
+# @vidyafloww/utils
 
 Shared utility functions for formatting, validation helpers, and common operations.
 
@@ -9,6 +9,6 @@ Shared utility functions for formatting, validation helpers, and common operatio
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/utils';
+import { ... } from '@vidyafloww/utils';
 ```
 

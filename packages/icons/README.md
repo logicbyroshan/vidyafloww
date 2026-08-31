@@ -1,4 +1,4 @@
-﻿# @vidyamaxx/icons
+# @vidyafloww/icons
 
 Icon library — curated SVG icons as React components.
 
@@ -9,6 +9,6 @@ Icon library — curated SVG icons as React components.
 ## Usage
 
 ```ts
-import { ... } from '@vidyamaxx/icons';
+import { ... } from '@vidyafloww/icons';
 ```
 

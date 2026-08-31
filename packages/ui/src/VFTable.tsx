@@ -61,6 +61,8 @@ export interface ColumnDef<T> {
   accessorKey: keyof T | string;
   cell?: (row: T) => React.ReactNode;
   sortable?: boolean;
+  className?: string;
+  headerClassName?: string;
 }
 
 export interface VFDataTableProps<T> {
@@ -82,6 +84,7 @@ export interface VFDataTableProps<T> {
   rightActions?: React.ReactNode;
   className?: string;
   tableClassName?: string;
+  showColumnToggle?: boolean;
 }
 
 export function VFDataTable<T extends Record<string, any>>({
@@ -97,6 +100,7 @@ export function VFDataTable<T extends Record<string, any>>({
   rightActions,
   className,
   tableClassName,
+  showColumnToggle = true,
 }: VFDataTableProps<T>) {
   const [sorting, setSorting] = React.useState<Array<{ id: string; desc: boolean }>>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -176,48 +180,50 @@ export function VFDataTable<T extends Record<string, any>>({
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search records..."}
-            className="w-full pl-10 pr-4 h-9 border border-border rounded bg-muted/40 hover:bg-muted/70 focus:bg-background text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+            className="w-full pl-10 pr-4 h-9 border border-border rounded-md bg-muted/40 hover:bg-muted/70 focus:bg-background text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
         {/* Right Controls: Column Visibility Selector + Action Buttons */}
         <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-auto">
           {/* Column Visibility Selector Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => setShowColumnDropdown(!showColumnDropdown)}
-              leftIcon={<SlidersHorizontal className="h-4 w-4 text-muted-foreground" />}
-            >
-              Columns ({activeColumns.length}/{columns.length})
-            </VFButton>
-            {showColumnDropdown && (
-              <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
-                <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
-                  Visible Columns
-                </span>
-                {columns.map((c) => {
-                  const key = String(c.accessorKey);
-                  const isChecked = visibleColumns.includes(key);
-                  return (
-                    <label
-                      key={key}
-                      className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => toggleColumn(key)}
-                        className="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5"
-                      />
-                      <span className="truncate">{c.header}</span>
-                    </label>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          {showColumnToggle && (
+            <div className="relative" ref={dropdownRef}>
+              <VFButton
+                variant="outline"
+                size="sm"
+                onClick={() => setShowColumnDropdown(!showColumnDropdown)}
+                leftIcon={<SlidersHorizontal className="h-4 w-4 text-muted-foreground" />}
+              >
+                Columns ({activeColumns.length}/{columns.length})
+              </VFButton>
+              {showColumnDropdown && (
+                <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-md shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
+                  <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
+                    Visible Columns
+                  </span>
+                  {columns.map((c) => {
+                    const key = String(c.accessorKey);
+                    const isChecked = visibleColumns.includes(key);
+                    return (
+                      <label
+                        key={key}
+                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded-md text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => toggleColumn(key)}
+                          className="rounded-xs border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                        />
+                        <span className="truncate">{c.header}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
 
           {rightActions}
         </div>
@@ -244,55 +250,59 @@ export function VFDataTable<T extends Record<string, any>>({
                   const key = String(col.accessorKey);
                   const sortStatus = sorting.find((s) => s.id === key);
                   const isSortable = col.sortable ?? true;
-                  return (
-                    <th
-                      key={key}
-                      className={cn(
-                        "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
-                        isSortable && "cursor-pointer hover:bg-muted/60 transition-colors"
-                      )}
-                      onClick={() => {
-                        if (!isSortable) return;
-                        const isAsc = sortStatus?.id === key && !sortStatus.desc;
-                        const nextSort = [{ id: key, desc: isAsc }];
-                        setSorting(nextSort);
-                        if (onSort) onSort(key, isAsc ? 'asc' : 'desc');
-                      }}
-                    >
-                      <div className="flex items-center gap-1.5">
-                        <span>{col.header}</span>
-                        {isSortable && (
-                          <span className="text-muted-foreground/80 font-mono text-[10px]">
-                            {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
-                          </span>
-                        )}
-                      </div>
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/80">
-              {processedData.map((row: any, rowIndex: number) => (
-                <tr
-                  key={row.id || rowIndex}
-                  className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
-                >
-                  {activeColumns.map((col) => {
-                    const key = String(col.accessorKey);
-                    const rawVal = row[key];
                     return (
-                      <td
+                      <th
                         key={key}
-                        className="px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold"
+                        className={cn(
+                          "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
+                          isSortable && "cursor-pointer hover:bg-muted/60 transition-colors",
+                          col.headerClassName
+                        )}
+                        onClick={() => {
+                          if (!isSortable) return;
+                          const isAsc = sortStatus?.id === key && !sortStatus.desc;
+                          const nextSort = [{ id: key, desc: isAsc }];
+                          setSorting(nextSort);
+                          if (onSort) onSort(key, isAsc ? 'asc' : 'desc');
+                        }}
                       >
-                        {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
-                      </td>
+                        <div className={cn("flex items-center gap-1.5", col.headerClassName?.includes('text-right') && "justify-end", col.headerClassName?.includes('text-center') && "justify-center")}>
+                          <span>{col.header}</span>
+                          {isSortable && (
+                            <span className="text-muted-foreground/80 font-mono text-[10px]">
+                              {sortStatus?.id === key ? (sortStatus.desc ? '↓' : '↑') : '↕'}
+                            </span>
+                          )}
+                        </div>
+                      </th>
                     );
                   })}
                 </tr>
-              ))}
-            </tbody>
+              </thead>
+              <tbody className="divide-y divide-border/80">
+                {processedData.map((row: any, rowIndex: number) => (
+                  <tr
+                    key={row.id || rowIndex}
+                    className="hover:bg-muted/30 transition-colors focus-within:bg-muted/30 outline-none"
+                  >
+                    {activeColumns.map((col) => {
+                      const key = String(col.accessorKey);
+                      const rawVal = row[key];
+                      return (
+                        <td
+                          key={key}
+                          className={cn(
+                            "px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold",
+                            col.className
+                          )}
+                        >
+                          {col.cell ? col.cell(row) : (rawVal !== undefined && rawVal !== null ? String(rawVal) : '—')}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
           </table>
         )}
       </div>
