@@ -929,157 +929,128 @@ function TimetablePage() {
       </VFDrawer>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          5. REASSIGN / EDIT PERIOD SLOT MODAL (CLICK TO EDIT SLOT)
+          5. REASSIGN / EDIT PERIOD SLOT MODAL (VFDialog)
           ═══════════════════════════════════════════════════════════════════════ */}
-      {editingSlot && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in"
-          onClick={() => setEditingSlot(null)}
-        >
-          <div
-            className="relative max-w-lg w-full bg-[#121214] border border-[#27272a] rounded-lg shadow-2xl overflow-hidden flex flex-col animate-scale-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="px-5 py-4 bg-[#18181b] border-b border-[#27272a] flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Pencil className="h-4 w-4 text-white" />
-                <div>
-                  <h3 className="text-sm font-bold text-white leading-tight">
-                    Edit Timetable Slot · {editingSlot.day} (Period {editingSlot.slotIndex + 1})
-                  </h3>
-                  <p className="text-xs text-zinc-400 font-medium mt-0.5">
-                    {selectedClass} · Assigned Lecture Period
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setEditingSlot(null)}
-                className="h-7 w-7 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center cursor-pointer transition-colors"
-              >
-                ✕
-              </button>
+      <VFDialog
+        isOpen={Boolean(editingSlot)}
+        onClose={() => setEditingSlot(null)}
+        title={editingSlot ? `Edit Timetable Slot · ${editingSlot.day} (Period ${editingSlot.slotIndex + 1})` : 'Edit Timetable Slot'}
+        description={`${selectedClass} · Assigned Lecture Period & Faculty Allocation`}
+        className="max-w-lg"
+        footerActions={
+          <div className="flex items-center justify-end gap-2 w-full">
+            <VFButton
+              size="sm"
+              variant="outline"
+              onClick={() => setEditingSlot(null)}
+            >
+              Cancel
+            </VFButton>
+            <VFButton
+              size="sm"
+              variant="outline"
+              className="bg-white text-black hover:bg-zinc-200 border-none font-bold shadow-xs"
+              leftIcon={<Check className="h-3.5 w-3.5 text-black" />}
+              onClick={handleSaveSlotEdit}
+            >
+              Save Changes
+            </VFButton>
+          </div>
+        }
+      >
+        {editingSlot && (
+          <div className="p-4 sm:p-5 space-y-4">
+            <div>
+              <VFSelect
+                label="Subject Name"
+                value={editingSlot.subject}
+                onChange={(e) =>
+                  setEditingSlot({ ...editingSlot, subject: String(e.target.value) })
+                }
+                options={[
+                  { label: 'Mathematics', value: 'Mathematics' },
+                  { label: 'Physics', value: 'Physics' },
+                  { label: 'Chemistry', value: 'Chemistry' },
+                  { label: 'Biology', value: 'Biology' },
+                  { label: 'English Literature', value: 'English Literature' },
+                  { label: 'Social Science', value: 'Social Science' },
+                  { label: 'Hindi Literature', value: 'Hindi Literature' },
+                  { label: 'Computer Science', value: 'Computer Science' },
+                  { label: 'Physical Education', value: 'Physical Education' },
+                  { label: 'Fine Arts', value: 'Fine Arts' },
+                  { label: 'Music & Drama', value: 'Music & Drama' },
+                  { label: 'Library & Reading', value: 'Library & Reading' },
+                  { label: 'Club Activity', value: 'Club Activity' },
+                  { label: 'Mentorship & House Meeting', value: 'Mentorship & House Meeting' },
+                ]}
+              />
             </div>
 
-            {/* Modal Body Form */}
-            <div className="p-5 space-y-4">
+            <div>
+              <VFSelect
+                label="Faculty Teacher Assigned"
+                value={editingSlot.teacher}
+                onChange={(e) =>
+                  setEditingSlot({ ...editingSlot, teacher: String(e.target.value) })
+                }
+                options={[
+                  { label: 'Mrs. Sunita Verma (Maths)', value: 'Mrs. Sunita Verma' },
+                  { label: 'Dr. Rajesh Sharma (Physics)', value: 'Dr. Rajesh Sharma' },
+                  { label: 'Ms. Ananya Gupta (English)', value: 'Ms. Ananya Gupta' },
+                  { label: 'Dr. Manoj Nair (Chemistry)', value: 'Dr. Manoj Nair' },
+                  { label: 'Mr. Rahul Kumar (Biology)', value: 'Mr. Rahul Kumar' },
+                  { label: 'Mr. Vivek Patel (Social Sci)', value: 'Mr. Vivek Patel' },
+                  { label: 'Mr. Subhash Das (Computer Sci)', value: 'Mr. Subhash Das' },
+                  { label: 'Coach Singh (Physical Ed)', value: 'Coach Singh' },
+                  { label: 'Mrs. Joshi (Library)', value: 'Mrs. Joshi' },
+                  { label: 'Mr. Mishra (Hindi)', value: 'Mr. Mishra' },
+                  { label: 'Ms. Roy (Fine Arts)', value: 'Ms. Roy' },
+                  { label: 'Mr. Ali (Music/Drama)', value: 'Mr. Ali' },
+                  { label: 'Faculty Squad (Co-Curricular)', value: 'Faculty Squad' },
+                ]}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3.5">
               <div>
                 <VFSelect
-                  label="Subject Name"
-                  value={editingSlot.subject}
+                  label="Room / Location"
+                  value={editingSlot.room}
                   onChange={(e) =>
-                    setEditingSlot({ ...editingSlot, subject: String(e.target.value) })
+                    setEditingSlot({ ...editingSlot, room: String(e.target.value) })
                   }
                   options={[
-                    { label: 'Mathematics', value: 'Mathematics' },
-                    { label: 'Physics', value: 'Physics' },
-                    { label: 'Chemistry', value: 'Chemistry' },
-                    { label: 'Biology', value: 'Biology' },
-                    { label: 'English Literature', value: 'English Literature' },
-                    { label: 'Social Science', value: 'Social Science' },
-                    { label: 'Hindi Literature', value: 'Hindi Literature' },
-                    { label: 'Computer Science', value: 'Computer Science' },
-                    { label: 'Physical Education', value: 'Physical Education' },
-                    { label: 'Fine Arts', value: 'Fine Arts' },
-                    { label: 'Music & Drama', value: 'Music & Drama' },
-                    { label: 'Library & Reading', value: 'Library & Reading' },
-                    { label: 'Club Activity', value: 'Club Activity' },
-                    { label: 'Mentorship & House Meeting', value: 'Mentorship & House Meeting' },
+                    { label: 'Room 101 (Home Room)', value: 'Room 101' },
+                    { label: 'Room 102', value: 'Room 102' },
+                    { label: 'Physics Lab 204', value: 'Lab 204' },
+                    { label: 'Chemistry Lab 102', value: 'Lab 102' },
+                    { label: 'Computer Lab 3', value: 'Lab 3' },
+                    { label: 'Central Library', value: 'Central Library' },
+                    { label: 'Fine Arts Studio 1', value: 'Studio 1' },
+                    { label: 'Sports Ground', value: 'Sports Ground' },
+                    { label: 'Auditorium', value: 'Auditorium' },
+                    { label: 'Main Campus', value: 'Main Campus' },
                   ]}
                 />
               </div>
 
               <div>
                 <VFSelect
-                  label="Faculty Teacher Assigned"
-                  value={editingSlot.teacher}
+                  label="Facility / Format"
+                  value={editingSlot.isLab ? 'lab' : 'theory'}
                   onChange={(e) =>
-                    setEditingSlot({ ...editingSlot, teacher: String(e.target.value) })
+                    setEditingSlot({ ...editingSlot, isLab: e.target.value === 'lab' })
                   }
                   options={[
-                    { label: 'Mrs. Sunita Verma (Maths)', value: 'Mrs. Sunita Verma' },
-                    { label: 'Dr. Rajesh Sharma (Physics)', value: 'Dr. Rajesh Sharma' },
-                    { label: 'Ms. Ananya Gupta (English)', value: 'Ms. Ananya Gupta' },
-                    { label: 'Dr. Manoj Nair (Chemistry)', value: 'Dr. Manoj Nair' },
-                    { label: 'Mr. Rahul Kumar (Biology)', value: 'Mr. Rahul Kumar' },
-                    { label: 'Mr. Vivek Patel (Social Sci)', value: 'Mr. Vivek Patel' },
-                    { label: 'Mr. Subhash Das (Computer Sci)', value: 'Mr. Subhash Das' },
-                    { label: 'Coach Singh (Physical Ed)', value: 'Coach Singh' },
-                    { label: 'Mrs. Joshi (Library)', value: 'Mrs. Joshi' },
-                    { label: 'Mr. Mishra (Hindi)', value: 'Mr. Mishra' },
-                    { label: 'Ms. Roy (Fine Arts)', value: 'Ms. Roy' },
-                    { label: 'Mr. Ali (Music/Drama)', value: 'Mr. Ali' },
-                    { label: 'Faculty Squad (Co-Curricular)', value: 'Faculty Squad' },
+                    { label: 'Classroom (Theory)', value: 'theory' },
+                    { label: 'Laboratory (Practical)', value: 'lab' },
                   ]}
                 />
               </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <VFSelect
-                    label="Room / Location"
-                    value={editingSlot.room}
-                    onChange={(e) =>
-                      setEditingSlot({ ...editingSlot, room: String(e.target.value) })
-                    }
-                    options={[
-                      { label: 'Room 101 (Home Room)', value: 'Room 101' },
-                      { label: 'Room 102', value: 'Room 102' },
-                      { label: 'Physics Lab 204', value: 'Lab 204' },
-                      { label: 'Chemistry Lab 102', value: 'Lab 102' },
-                      { label: 'Computer Lab 3', value: 'Lab 3' },
-                      { label: 'Central Library', value: 'Central Library' },
-                      { label: 'Fine Arts Studio 1', value: 'Studio 1' },
-                      { label: 'Sports Ground', value: 'Sports Ground' },
-                      { label: 'Auditorium', value: 'Auditorium' },
-                      { label: 'Main Campus', value: 'Main Campus' },
-                    ]}
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">
-                    Slot Facility Type
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setEditingSlot({ ...editingSlot, isLab: !editingSlot.isLab })
-                    }
-                    className={cn(
-                      'w-full h-9 px-3 rounded-md border text-xs font-bold transition-all cursor-pointer flex items-center justify-between',
-                      editingSlot.isLab
-                        ? 'bg-[#1c1c1f] text-white border-zinc-400'
-                        : 'bg-[#121214] text-zinc-400 border-[#27272a] hover:bg-[#18181b]'
-                    )}
-                  >
-                    <span>{editingSlot.isLab ? 'Laboratory / Practical' : 'Standard Classroom'}</span>
-                    <span className="text-xs font-mono">{editingSlot.isLab ? '✓ Lab' : 'Theory'}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="px-5 py-3.5 bg-[#18181b] border-t border-[#27272a] flex items-center justify-end gap-2">
-              <VFButton
-                size="sm"
-                variant="outline"
-                onClick={() => setEditingSlot(null)}
-              >
-                Cancel
-              </VFButton>
-              <VFButton
-                size="sm"
-                leftIcon={<Check className="h-3.5 w-3.5" />}
-                onClick={handleSaveSlotEdit}
-              >
-                Save Changes
-              </VFButton>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </VFDialog>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           6. FACULTY WORKLOAD & SUBSTITUTION MANAGEMENT DRAWER
