@@ -326,167 +326,165 @@ function TimetablePage() {
   };
 
   return (
-    <VFPageContainer>
-      <div className="space-y-3.5">
-        {/* ═══════════════════════════════════════════════════════════════════════
-            1. MASTER CLASS SCHEDULE TOOLBAR & SLEEK DARK GRID
-            ═══════════════════════════════════════════════════════════════════════ */}
-        <div className="space-y-3">
-          {/* Action Toolbar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#111113] p-3 rounded-lg border border-[#242428] shadow-xs">
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="w-56">
-                <VFSelect
-                  value={selectedClass}
-                  onChange={(e) => setSelectedClass(String(e.target.value))}
-                  options={[
-                    { label: 'Class 9 - Section A', value: 'Class 9-A' },
-                    { label: 'Class 10 - Section B', value: 'Class 10-B' },
-                    { label: 'Class 11 - Science', value: 'Class 11-Sci' },
-                    { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
-                  ]}
-                />
-              </div>
-              <div className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#161619] border border-[#2a2a30] text-xs">
-                <School className="h-4 w-4 text-zinc-400 shrink-0" />
-                <span className="font-medium text-zinc-400">Class Teacher:</span>
-                <span className="font-bold text-white">{classTeacher}</span>
-                <span className="text-zinc-400 font-mono">(Room 101)</span>
-              </div>
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+      {/* ═══════════════════════════════════════════════════════════════════════
+          1. MASTER CLASS SCHEDULE TOOLBAR & SLEEK DARK GRID (FULL HEIGHT)
+          ═══════════════════════════════════════════════════════════════════════ */}
+      <div className="flex-1 min-h-0 flex flex-col space-y-3">
+        {/* Action Toolbar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#111113] p-3 rounded-lg border border-[#242428] shadow-xs shrink-0">
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="w-56">
+              <VFSelect
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(String(e.target.value))}
+                options={[
+                  { label: 'Class 9 - Section A', value: 'Class 9-A' },
+                  { label: 'Class 10 - Section B', value: 'Class 10-B' },
+                  { label: 'Class 11 - Science', value: 'Class 11-Sci' },
+                  { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
+                ]}
+              />
             </div>
-
-            <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap">
-              <VFButton
-                variant="outline"
-                size="sm"
-                leftIcon={<Clock className="h-3.5 w-3.5 text-zinc-400" />}
-                onClick={() => setIsConfigurePeriodsOpen(true)}
-              >
-                Configure Periods
-              </VFButton>
-              <VFButton
-                variant="outline"
-                size="sm"
-                leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-zinc-400" />}
-                onClick={() => setIsConfigureTimetableOpen(true)}
-              >
-                Configure Timetable
-              </VFButton>
-              <VFButton
-                variant="outline"
-                size="sm"
-                leftIcon={<Users className="h-3.5 w-3.5 text-zinc-400" />}
-                onClick={() => setIsWorkloadDrawerOpen(true)}
-              >
-                Faculty Workload & Proxies
-                <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono font-bold bg-[#24242a] text-zinc-300 rounded">
-                  {substitutionsList.length}
-                </span>
-              </VFButton>
-              <VFButton
-                variant="outline"
-                size="sm"
-                leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
-                onClick={handleExportPDF}
-              >
-                Export PDF
-              </VFButton>
+            <div className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#161619] border border-[#2a2a30] text-xs">
+              <School className="h-4 w-4 text-zinc-400 shrink-0" />
+              <span className="font-medium text-zinc-400">Class Teacher:</span>
+              <span className="font-bold text-white">{classTeacher}</span>
+              <span className="text-zinc-400 font-mono">(Room 101)</span>
             </div>
           </div>
 
-          {/* Sleek Deep Dark Table Grid with Darker Tactile Cards */}
-          <div className="border border-[#24242a] rounded-lg bg-[#0b0b0d] overflow-x-auto custom-scrollbar shadow-sm">
-            <table className="w-full text-left min-w-[880px] border-collapse">
-              <thead>
-                <tr className="border-b border-[#24242a] bg-[#111114]">
-                  <th className="p-3.5 font-black text-xs text-zinc-400 uppercase tracking-wider w-36 bg-[#111114] border-r border-[#24242a] select-none">
-                    Day / Time
+          <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap">
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<Clock className="h-3.5 w-3.5 text-zinc-400" />}
+              onClick={() => setIsConfigurePeriodsOpen(true)}
+            >
+              Configure Periods
+            </VFButton>
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-zinc-400" />}
+              onClick={() => setIsConfigureTimetableOpen(true)}
+            >
+              Configure Timetable
+            </VFButton>
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<Users className="h-3.5 w-3.5 text-zinc-400" />}
+              onClick={() => setIsWorkloadDrawerOpen(true)}
+            >
+              Faculty Workload & Proxies
+              <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono font-bold bg-[#24242a] text-zinc-300 rounded">
+                {substitutionsList.length}
+              </span>
+            </VFButton>
+            <VFButton
+              variant="outline"
+              size="sm"
+              leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
+              onClick={handleExportPDF}
+            >
+              Export PDF
+            </VFButton>
+          </div>
+        </div>
+
+        {/* Sleek Deep Dark Table Grid with Full Viewport Height & Centered Content */}
+        <div className="flex-1 min-h-0 border border-[#24242a] rounded-lg bg-[#0b0b0d] overflow-auto custom-scrollbar shadow-sm flex flex-col">
+          <table className="w-full text-left min-w-[880px] border-collapse flex-1 h-full">
+            <thead className="shrink-0 sticky top-0 z-20">
+              <tr className="border-b border-[#24242a] bg-[#111114]">
+                <th className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider w-36 bg-[#111114] border-r border-[#24242a] select-none text-center align-middle">
+                  Day / Time
+                </th>
+                {classPeriods.map((p) => (
+                  <th
+                    key={p.id}
+                    className="p-3 font-bold text-xs text-zinc-300 whitespace-nowrap border-r last:border-r-0 border-[#24242a] select-none bg-[#111114]"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-white text-xs font-black uppercase tracking-wider">{p.name}</span>
+                        <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#161619] px-1.5 py-0.2 rounded border border-[#26262e]">
+                          {p.duration}
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-zinc-400 font-mono block font-medium">
+                        {p.start} – {p.end}
+                      </span>
+                    </div>
                   </th>
-                  {classPeriods.map((p) => (
-                    <th
-                      key={p.id}
-                      className="p-3.5 font-bold text-xs text-zinc-300 whitespace-nowrap text-left border-r last:border-r-0 border-[#24242a] select-none bg-[#111114]"
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1e1e22]">
+              {activeDays.map((day) => (
+                <tr key={day} className="hover:bg-white/[0.015] transition-colors" style={{ height: `calc(100% / ${activeDays.length})` }}>
+                  {/* Dark Solid Day Anchor Column - Centered */}
+                  <td className="p-3 font-bold text-white bg-[#0e0e11] whitespace-nowrap text-sm border-r border-[#24242a] select-none text-center align-middle w-36">
+                    <div className="flex flex-col items-center justify-center space-y-1.5">
+                      <span className="block text-xs font-black text-white uppercase tracking-wider">
+                        {day}
+                      </span>
+                      <span className="text-[10px] text-zinc-400 font-mono block font-semibold bg-[#161619] px-2 py-0.5 rounded border border-[#24242c]">
+                        {classPeriods.length} Periods
+                      </span>
+                    </div>
+                  </td>
+
+                  {/* Grid Cells with Dark Sleek Slot Cards - Stretched to Equal Row Height */}
+                  {(scheduleData[day] || []).slice(0, classPeriods.length).map((slot, idx) => (
+                    <td
+                      key={idx}
+                      className="p-2 border-r last:border-r-0 border-[#1e1e22] min-w-[155px] align-middle bg-[#0b0b0d] h-full"
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-white text-xs font-black uppercase tracking-wider">{p.name}</span>
-                          <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#161619] px-1.5 py-0.2 rounded border border-[#26262e]">
-                            {p.duration}
+                      {/* Dark Sleek Period Card Stretched Full Height */}
+                      <div
+                        onClick={() => handleOpenSlotEdit(day, idx, slot)}
+                        className="h-full min-h-[96px] p-3 rounded-md bg-[#131316] border border-[#24242a] flex flex-col justify-between space-y-2 transition-all group cursor-pointer relative shadow-xs select-none hover:bg-[#1a1a1f] hover:border-[#3e3e48] hover:shadow-md hover:-translate-y-0.5"
+                        title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
+                      >
+                        {/* Top Row: Primary Subject Title + Subtle Lab Tag */}
+                        <div className="flex items-start justify-between gap-1.5">
+                          <span className="font-bold text-white text-sm leading-snug tracking-tight line-clamp-1 group-hover:text-white transition-colors">
+                            {slot.subject}
+                          </span>
+                          {slot.isLab && (
+                            <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#181e28] border border-sky-800/40 text-sky-300 shrink-0">
+                              Lab
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Middle Row: Faculty Teacher Name */}
+                        <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                          <BookOpen className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
+                          <span className="font-medium truncate text-zinc-400 group-hover:text-zinc-300 transition-colors">
+                            {slot.teacher}
                           </span>
                         </div>
-                        <span className="text-[11px] text-zinc-400 font-mono block font-medium">
-                          {p.start} – {p.end}
-                        </span>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1e1e22]">
-                {activeDays.map((day) => (
-                  <tr key={day} className="hover:bg-white/[0.015] transition-colors">
-                    {/* Dark Solid Day Anchor Column */}
-                    <td className="p-4 font-bold text-white bg-[#0e0e11] whitespace-nowrap text-sm border-r border-[#24242a] select-none">
-                      <div className="space-y-1.5">
-                        <span className="block text-xs font-black text-white uppercase tracking-wider">
-                          {day}
-                        </span>
-                        <span className="text-[10px] text-zinc-400 font-mono block font-semibold bg-[#161619] px-2 py-0.5 rounded border border-[#24242c] w-fit">
-                          {classPeriods.length} Periods
-                        </span>
+
+                        {/* Bottom Row: Room Badge */}
+                        <div className="flex items-center justify-between pt-1.5 border-t border-[#1e1e24] text-xs">
+                          <span className="font-mono text-zinc-400 bg-[#0e0e11] px-2 py-0.5 rounded border border-[#222228] text-[11px] font-medium flex items-center gap-1 group-hover:text-zinc-300 transition-colors">
+                            <MapPin className="h-3 w-3 shrink-0 text-zinc-500" />
+                            {slot.room}
+                          </span>
+                          <span className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-white text-xs flex items-center gap-0.5 font-medium transition-opacity">
+                            <Pencil className="h-3 w-3" /> Edit
+                          </span>
+                        </div>
                       </div>
                     </td>
-
-                    {/* Grid Cells with Dark Sleek Slot Cards */}
-                    {(scheduleData[day] || []).slice(0, classPeriods.length).map((slot, idx) => (
-                      <td
-                        key={idx}
-                        className="p-2.5 border-r last:border-r-0 border-[#1e1e22] min-w-[155px] align-top bg-[#0b0b0d]"
-                      >
-                        {/* Dark Sleek Period Card with Refined Typography Hierarchy */}
-                        <div
-                          onClick={() => handleOpenSlotEdit(day, idx, slot)}
-                          className="p-3 rounded-md bg-[#131316] border border-[#24242a] space-y-2 transition-all group cursor-pointer relative shadow-xs select-none hover:bg-[#1a1a1f] hover:border-[#3e3e48] hover:shadow-md hover:-translate-y-0.5"
-                          title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
-                        >
-                          {/* Top Row: Primary Subject Title + Subtle Lab Tag */}
-                          <div className="flex items-start justify-between gap-1.5">
-                            <span className="font-bold text-white text-sm leading-snug tracking-tight line-clamp-1 group-hover:text-white transition-colors">
-                              {slot.subject}
-                            </span>
-                            {slot.isLab && (
-                              <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#181e28] border border-sky-800/40 text-sky-300 shrink-0">
-                                Lab
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Middle Row: Faculty Teacher Name (Secondary - softened neutral) */}
-                          <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                            <BookOpen className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
-                            <span className="font-medium truncate text-zinc-400 group-hover:text-zinc-300 transition-colors">
-                              {slot.teacher}
-                            </span>
-                          </div>
-
-                          {/* Bottom Row: Room Badge (Tertiary - muted monospace metadata) */}
-                          <div className="flex items-center justify-between pt-1.5 border-t border-[#1e1e24] text-xs">
-                            <span className="font-mono text-zinc-400 bg-[#0e0e11] px-2 py-0.5 rounded border border-[#222228] text-[11px] font-medium flex items-center gap-1 group-hover:text-zinc-300 transition-colors">
-                              <MapPin className="h-3 w-3 shrink-0 text-zinc-500" />
-                              {slot.room}
-                            </span>
-                            <span className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-white text-xs flex items-center gap-0.5 font-medium transition-opacity">
-                              <Pencil className="h-3 w-3" /> Edit
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
