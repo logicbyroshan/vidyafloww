@@ -30,7 +30,7 @@
 
 - [x] **Single Source Navigation Registry** (`MODULE_REGISTRY` in `packages/constants/src/navigation.ts` storing 24 main modules & submodules)
 - [x] **24 Main Business Modules Architecture** (`Dashboard`, `Admissions`, `Students`, `Academics`, `Timetable`, `Attendance`, `Examination`, `Fees`, `Finance`, `HR & Payroll`, `Library`, `Transport`, `Hostel`, `Inventory & Assets`, `Homework & Learning`, `Documents & Certificates`, `Communication`, `Events & Activities`, `Front Office & Enquiries`, `School Administration`, `Parent & Student Portal`, `Reports & Analytics`, `Security & Audit`, `System Administration`)
-- [x] **Global `VidyaMaxx AI` Assistant** (Prominent button in sidebar footer directly above user profile card, context-aware global AI Chat drawer `AIChatDrawer.tsx`, `Shift+K` shortcut)
+- [x] **Global `VidyaFloww AI` Assistant** (Prominent button in sidebar footer directly above user profile card, context-aware global AI Chat drawer `AIChatDrawer.tsx`, `Shift+K` shortcut)
 - [x] **Submodule Workspace Layout** (Sidebar renders main modules only, top `VFTabs` mounts submodules)
 - [x] **Framer Motion Revealing Transitions** (Staggered revealing fade & slide-up animation on route navigation & submodule tab switching)
 - [x] **Fail-Safe Dual-Engine Data Tables** (Combined TanStack Table v9 + fail-safe rendering engine ensuring 100% data visibility, search filtering, column toggles, and pagination)
@@ -105,7 +105,7 @@
 
 ## Phase 10 — AI & Enterprise
 
-- [x] Global `VidyaMaxx AI` Assistant
+- [x] Global `VidyaFloww AI` Assistant
 - [x] Dashboard BI Analytics & Operational Radar (`/`)
 - [ ] Multi-region deployment
 - [ ] Advanced audit logging & compliance exports

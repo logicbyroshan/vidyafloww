@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="./Vidy%20Max%20Banner.png" alt="VidyaMaxx School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
+  <img src="./Vidy%20Max%20Banner.png" alt="VidyaFloww School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
 </p>
 
 <div align="center">
 
-# VidyaMaxx — Enterprise School Management Platform
+# VidyaFloww — Enterprise School Management Platform
 
 **A unified, high-performance digital operating system engineered for K-12 schools, colleges, and multi-campus educational networks.**
 
@@ -20,9 +20,9 @@
 
 ---
 
-## 📖 About VidyaMaxx
+## 📖 About VidyaFloww
 
-**VidyaMaxx** is an institutional-grade, full-stack educational ERP and campus command portal. Designed specifically for school administrators, principals, and educators, VidyaMaxx eliminates administrative friction and replaces fragmented spreadsheets with an intuitive, clean, and blisteringly fast digital workspace.
+**VidyaFloww** is an institutional-grade, full-stack educational ERP and campus command portal. Designed specifically for school administrators, principals, and educators, VidyaFloww eliminates administrative friction and replaces fragmented spreadsheets with an intuitive, clean, and blisteringly fast digital workspace.
 
 ### 🎨 Institutional Design System Highlights (V1)
 - **High-Legibility Typography**: Solid 16px (`text-base`) foundation with high-contrast text and balanced metric indicators designed specifically for non-tech-friendly school personnel.
@@ -37,7 +37,7 @@
 
 ## 🏛️ Active V1 Application Modules
 
-VidyaMaxx is organized into clean, isolated modules mapped to distinct, type-safe routes:
+VidyaFloww is organized into clean, isolated modules mapped to distinct, type-safe routes:
 
 | # | Module | Route | Key Capabilities |
 |:---:|---|---|---|
@@ -60,7 +60,7 @@ VidyaMaxx is organized into clean, isolated modules mapped to distinct, type-saf
 ## 🛠️ Technology Stack & Monorepo Architecture
 
 ```text
-vidyamaxx/
+vidyafloww/
 ├── apps/
 │   ├── web/                   # React 19 + Vite + TanStack Router Web Portal
 │   │   ├── src/
@@ -70,7 +70,7 @@ vidyamaxx/
 │   │   │   └── styles/        # Tailwind design tokens & globals.css (16px base)
 │   └── backend/               # Django 5 REST API microservice
 ├── packages/
-│   ├── ui/                    # @vidyamaxx/ui design system primitives
+│   ├── ui/                    # @vidyafloww/ui design system primitives
 │   │   ├── VFStatCard.tsx     # Balanced metric card with indicator badges
 │   │   ├── VFCard.tsx         # Flat card with crisp rounded-lg borders
 │   │   ├── VFTabs.tsx         # Open tabs with animated bottom underline indicator
@@ -98,8 +98,8 @@ Ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/logicbyroshan/vidyamaxx-school-management.git
-cd vidyamaxx-school-management
+git clone https://github.com/logicbyroshan/vidyafloww-school-management.git
+cd vidyafloww-school-management
 ```
 
 ---
@@ -115,7 +115,7 @@ pnpm install
 ### Step 3: Start the Web Development Server
 
 ```bash
-pnpm --filter @vidyamaxx/web dev
+pnpm --filter @vidyafloww/web dev
 ```
 
 > The application will run at **`http://localhost:3000`** with Hot Module Replacement (HMR).
@@ -126,17 +126,17 @@ pnpm --filter @vidyamaxx/web dev
 
 ```bash
 # Validate type correctness across all packages
-pnpm --filter @vidyamaxx/web type-check
+pnpm --filter @vidyafloww/web type-check
 
 # Compile production bundle
-pnpm --filter @vidyamaxx/web build
+pnpm --filter @vidyafloww/web build
 ```
 
 ---
 
 ## 🔐 Authentication & API Documentation
 
-VidyaMaxx features a standalone, enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
+VidyaFloww features a standalone, enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
 
 - 📘 **Complete REST API Specification**: [`API_DOCUMENTATION.md`](./API_DOCUMENTATION.md)
   - **Endpoints Covered**:
@@ -154,5 +154,5 @@ VidyaMaxx features a standalone, enterprise authentication architecture adhering
 
 ## 📄 License
 
-Proprietary Software. All rights reserved &copy; 2026 **VidyaMaxx Team**.
+Proprietary Software. All rights reserved &copy; 2026 **VidyaFloww Team**.
 
