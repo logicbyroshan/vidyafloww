@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import JSZip from 'jszip';
 import {
   VFPageContainer,
   VFButton,
@@ -8,6 +9,7 @@ import {
   VFInput,
   VFBadge,
   VFDrawer,
+  VFDialog,
   cn,
 } from '@vidyafloww/ui';
 import {
@@ -38,6 +40,10 @@ import {
   CalendarDays,
   Activity,
   Sliders,
+  Archive,
+  Printer,
+  FileText,
+  Trash2,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -234,6 +240,12 @@ function TimetablePage() {
   const [facultyList] = React.useState<FacultyLoad[]>(INITIAL_FACULTY_LOAD);
   const [roomList] = React.useState<RoomLoad[]>(INITIAL_ROOM_LOAD);
 
+  // Export Suite State
+  const [isExportModalOpen, setIsExportModalOpen] = React.useState<boolean>(false);
+  const [exportFormat, setExportFormat] = React.useState<'bundle' | 'csv' | 'pdf'>('bundle');
+  const [isExporting, setIsExporting] = React.useState<boolean>(false);
+  const [exportProgressText, setExportProgressText] = React.useState<string>('');
+
   // New Proxy Form state
   const [isAssigningProxy, setIsAssigningProxy] = React.useState<boolean>(false);
   const [newAbsentTeacher, setNewAbsentTeacher] = React.useState<string>('Dr. Rajesh Sharma');
@@ -259,6 +271,19 @@ function TimetablePage() {
     : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
   const classPeriods = periodConfig.filter((p) => p.type === 'Class');
+
+  const handleClassChange = (newClass: string) => {
+    setSelectedClass(newClass);
+    if (newClass === 'Class 9-A') setClassTeacher('Mrs. Sunita Verma');
+    else if (newClass === 'Class 10-B') setClassTeacher('Dr. Rajesh Sharma');
+    else if (newClass === 'Class 11-Sci') setClassTeacher('Dr. Manoj Nair');
+    else if (newClass === 'Class 12-Com') setClassTeacher('Ms. Ananya Gupta');
+    addNotification({
+      title: 'Class Timetable Loaded',
+      description: `Viewing weekly academic schedule for ${newClass}.`,
+      type: 'info',
+    });
+  };
 
   const handleOpenSlotEdit = (day: string, slotIndex: number, slot: PeriodSlot) => {
     setEditingSlot({
@@ -317,12 +342,196 @@ function TimetablePage() {
     });
   };
 
-  const handleExportPDF = () => {
-    addNotification({
-      title: 'Exporting Timetable',
-      description: `Weekly Schedule PDF for ${selectedClass} is being compiled for download.`,
-      type: 'info',
-    });
+  const handleExecuteExport = async () => {
+    setIsExporting(true);
+    setExportProgressText('Preparing timetable dataset...');
+
+    try {
+      if (exportFormat === 'csv') {
+        setExportProgressText('Generating CSV matrix...');
+        const headers = ['Day', 'Period Slot', 'Timing', 'Subject', 'Teacher', 'Room', 'Type'];
+        const rows: string[][] = [];
+
+        activeDays.forEach((day) => {
+          (scheduleData[day] || []).slice(0, classPeriods.length).forEach((slot, idx) => {
+            const periodInfo = classPeriods[idx] || { name: `Period ${idx + 1}`, start: '', end: '' };
+            rows.push([
+              day,
+              periodInfo.name,
+              `${periodInfo.start} - ${periodInfo.end}`,
+              slot.subject,
+              slot.teacher,
+              slot.room,
+              slot.isLab ? 'Lab / Practical' : 'Theory',
+            ]);
+          });
+        });
+
+        const csvContent =
+          `"Academic Timetable Matrix - ${selectedClass}"\n` +
+          `"Class Teacher: ${classTeacher}","Academic Year: 2026-2027","Institution: VidyaFloww International Academy"\n\n` +
+          [headers.join(','), ...rows.map((r) => r.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Timetable_${selectedClass.replace(/\s+/g, '_')}_Matrix.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        addNotification({
+          title: 'Timetable CSV Exported',
+          description: `Spreadsheet schedule for ${selectedClass} successfully saved.`,
+          type: 'success',
+        });
+      } else if (exportFormat === 'pdf') {
+        setExportProgressText('Compiling printable schedule view...');
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <title>Timetable - ${selectedClass}</title>
+                <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 24px; color: #111; }
+                  .header { border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 18px; }
+                  .school-name { font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+                  .sub { font-size: 12px; color: #555; margin-top: 4px; }
+                  .meta-row { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 13px; font-weight: 600; }
+                  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                  th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; font-size: 11px; }
+                  th { background: #f4f4f5; font-weight: 800; text-transform: uppercase; font-size: 10px; }
+                  .subject { font-weight: bold; color: #000; font-size: 12px; }
+                  .teacher { color: #555; font-size: 10px; margin-top: 2px; }
+                  .room { color: #777; font-size: 9px; font-family: monospace; }
+                  .footer { margin-top: 30px; display: flex; justify-content: space-between; font-size: 11px; color: #555; }
+                  @media print { body { padding: 0; } }
+                </style>
+              </head>
+              <body>
+                <div class="header">
+                  <div class="school-name">VidyaFloww International Academy</div>
+                  <div class="sub">Official Academic Weekly Class Timetable · Session 2026–2027</div>
+                </div>
+                <div class="meta-row">
+                  <div><strong>Class Section:</strong> ${selectedClass}</div>
+                  <div><strong>Class Mentor:</strong> ${classTeacher} (Room 101)</div>
+                  <div><strong>Generated On:</strong> ${new Date().toLocaleDateString('en-GB')}</div>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width: 100px;">Day</th>
+                      ${classPeriods.map((p) => `<th>${p.name}<br/><span style="font-weight: normal; font-size: 9px;">${p.start} - ${p.end}</span></th>`).join('')}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${activeDays.map((day) => `
+                      <tr>
+                        <td style="font-weight: 800; background: #fafafa;">${day.toUpperCase()}</td>
+                        ${(scheduleData[day] || []).slice(0, classPeriods.length).map((slot) => `
+                          <td>
+                            <div class="subject">${slot.subject}</div>
+                            <div class="teacher">${slot.teacher}</div>
+                            <div class="room">${slot.room} ${slot.isLab ? '(Lab)' : ''}</div>
+                          </td>
+                        `).join('')}
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+                <div class="footer">
+                  <div>Academic Dean Signature: __________________</div>
+                  <div>Principal Signature: __________________</div>
+                  <div>School Seal</div>
+                </div>
+                <script>
+                  window.onload = function() {
+                    window.print();
+                  };
+                </script>
+              </body>
+            </html>
+          `);
+          printWindow.document.close();
+        }
+        addNotification({
+          title: 'Timetable Print View Ready',
+          description: `Formatted printable sheet compiled for ${selectedClass}.`,
+          type: 'success',
+        });
+      } else if (exportFormat === 'bundle') {
+        setExportProgressText('Building ZIP archive package with JSZip...');
+        const zip = new JSZip();
+
+        // 1. CSV
+        const headers = ['Day', 'Period Slot', 'Timing', 'Subject', 'Teacher', 'Room', 'Type'];
+        const rows: string[][] = [];
+        activeDays.forEach((day) => {
+          (scheduleData[day] || []).slice(0, classPeriods.length).forEach((slot, idx) => {
+            const periodInfo = classPeriods[idx] || { name: `Period ${idx + 1}`, start: '', end: '' };
+            rows.push([
+              day,
+              periodInfo.name,
+              `${periodInfo.start} - ${periodInfo.end}`,
+              slot.subject,
+              slot.teacher,
+              slot.room,
+              slot.isLab ? 'Lab / Practical' : 'Theory',
+            ]);
+          });
+        });
+        const csvContent =
+          `"Academic Timetable Matrix - ${selectedClass}"\n` +
+          `"Class Teacher: ${classTeacher}","Academic Year: 2026-2027"\n\n` +
+          [headers.join(','), ...rows.map((r) => r.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))].join('\n');
+        zip.file(`Timetable_${selectedClass.replace(/\s+/g, '_')}_Matrix.csv`, csvContent);
+
+        // 2. Schedule JSON
+        zip.file(`Class_Schedule_${selectedClass.replace(/\s+/g, '_')}.json`, JSON.stringify({
+          institution: 'VidyaFloww International Academy',
+          academicSession: '2026-2027',
+          classSection: selectedClass,
+          classTeacher,
+          workingDays: activeDays,
+          periods: periodConfig,
+          weeklyMatrix: scheduleData,
+          exportedAt: new Date().toISOString(),
+        }, null, 2));
+
+        // 3. Faculty & Room Allocations JSON
+        zip.file(`Faculty_Load_Quotas.json`, JSON.stringify(facultyList, null, 2));
+        zip.file(`Room_Utilization_Master.json`, JSON.stringify(roomList, null, 2));
+
+        const content = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Timetable_${selectedClass.replace(/\s+/g, '_')}_Archive.zip`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        addNotification({
+          title: 'Timetable ZIP Archive Downloaded',
+          description: `Full package containing CSV + JSON schedules for ${selectedClass} generated.`,
+          type: 'success',
+        });
+      }
+
+      setIsExportModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      addNotification({
+        title: 'Export Failed',
+        description: 'Unable to compile export archive. Please try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsExporting(false);
+      setExportProgressText('');
+    }
   };
 
   return (
@@ -337,7 +546,7 @@ function TimetablePage() {
             <div className="w-56">
               <VFSelect
                 value={selectedClass}
-                onChange={(e) => setSelectedClass(String(e.target.value))}
+                onChange={(e) => handleClassChange(String(e.target.value))}
                 options={[
                   { label: 'Class 9 - Section A', value: 'Class 9-A' },
                   { label: 'Class 10 - Section B', value: 'Class 10-B' },
@@ -386,9 +595,9 @@ function TimetablePage() {
               variant="outline"
               size="sm"
               leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
-              onClick={handleExportPDF}
+              onClick={() => setIsExportModalOpen(true)}
             >
-              Export PDF
+              Export Schedule
             </VFButton>
           </div>
         </div>
@@ -512,20 +721,29 @@ function TimetablePage() {
             >
               Reset to Defaults
             </VFButton>
-            <VFButton
-              size="sm"
-              leftIcon={<Check className="h-3.5 w-3.5" />}
-              onClick={() => {
-                setIsConfigurePeriodsOpen(false);
-                addNotification({
-                  title: 'Period Schedule Saved',
-                  description: 'Daily campus bell timings and period durations updated.',
-                  type: 'success',
-                });
-              }}
-            >
-              Save Period Schedule
-            </VFButton>
+            <div className="flex items-center gap-2">
+              <VFButton
+                variant="outline"
+                size="sm"
+                onClick={() => setIsConfigurePeriodsOpen(false)}
+              >
+                Cancel
+              </VFButton>
+              <VFButton
+                size="sm"
+                leftIcon={<Check className="h-3.5 w-3.5" />}
+                onClick={() => {
+                  setIsConfigurePeriodsOpen(false);
+                  addNotification({
+                    title: 'Period Schedule Saved',
+                    description: 'Daily campus bell timings and period durations updated.',
+                    type: 'success',
+                  });
+                }}
+              >
+                Save Period Schedule
+              </VFButton>
+            </div>
           </div>
         }
       >
@@ -1073,9 +1291,46 @@ function TimetablePage() {
                     </div>
 
                     <div className="shrink-0 flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-[#1c1c1f] border border-[#27272a] text-white">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nextStatus = sub.status === 'Assigned' ? 'Confirmed' : sub.status === 'Confirmed' ? 'Completed' : 'Assigned';
+                          setSubstitutionsList(substitutionsList.map((s) => s.id === sub.id ? { ...s, status: nextStatus } : s));
+                          addNotification({
+                            title: 'Proxy Status Updated',
+                            description: `${sub.proxyTeacher}'s duty status set to ${nextStatus}.`,
+                            type: 'info',
+                          });
+                        }}
+                        className={cn(
+                          'text-xs font-mono font-bold px-2.5 py-1 rounded border cursor-pointer transition-all flex items-center gap-1',
+                          sub.status === 'Confirmed'
+                            ? 'bg-[#181e28] text-sky-300 border-sky-800/40'
+                            : sub.status === 'Completed'
+                            ? 'bg-emerald-950/30 text-emerald-300 border-emerald-800/40'
+                            : 'bg-[#1c1c1f] text-zinc-300 border-[#27272a] hover:text-white'
+                        )}
+                        title="Click to toggle status (Assigned -> Confirmed -> Completed)"
+                      >
+                        <Check className="h-3 w-3" />
                         {sub.status}
-                      </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSubstitutionsList(substitutionsList.filter((s) => s.id !== sub.id));
+                          addNotification({
+                            title: 'Proxy Appointment Removed',
+                            description: `Substitute coverage record for ${sub.absentTeacher} dismissed.`,
+                            type: 'info',
+                          });
+                        }}
+                        className="h-7 w-7 rounded bg-[#161619] border border-[#27272a] hover:border-rose-900/60 hover:text-rose-400 text-zinc-500 flex items-center justify-center cursor-pointer transition-colors"
+                        title="Remove proxy appointment"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -1186,6 +1441,93 @@ function TimetablePage() {
           )}
         </div>
       </VFDrawer>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          6. MULTI-FORMAT EXPORT TIMETABLE MODAL
+          ═══════════════════════════════════════════════════════════════════════ */}
+      <VFDialog
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        title="Export Academic Timetable"
+        description={`Download weekly period schedules, matrix spreadsheets, and archive packages for ${selectedClass}`}
+        className="max-w-lg"
+        footerActions={
+          <div className="flex items-center justify-end gap-2 w-full">
+            <VFButton
+              variant="outline"
+              size="sm"
+              onClick={() => setIsExportModalOpen(false)}
+              disabled={isExporting}
+            >
+              Cancel
+            </VFButton>
+            <VFButton
+              size="sm"
+              leftIcon={<Download className="h-3.5 w-3.5" />}
+              onClick={handleExecuteExport}
+              disabled={isExporting}
+            >
+              {isExporting ? 'Exporting...' : 'Generate & Download'}
+            </VFButton>
+          </div>
+        }
+      >
+        <div className="p-4 sm:p-5 space-y-4">
+          <div className="grid grid-cols-3 gap-2.5">
+            <button
+              type="button"
+              onClick={() => setExportFormat('bundle')}
+              className={cn(
+                'p-3 rounded-md border text-center transition-all cursor-pointer space-y-1',
+                exportFormat === 'bundle'
+                  ? 'bg-[#18181c] border-zinc-400 text-white shadow-xs'
+                  : 'bg-[#121214] border-[#27272e] text-zinc-400 hover:bg-[#161619]'
+              )}
+            >
+              <Archive className="h-5 w-5 mx-auto text-zinc-300" />
+              <span className="text-xs font-bold block">Complete ZIP</span>
+              <span className="text-[10px] text-zinc-500 block">CSV + JSON</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setExportFormat('csv')}
+              className={cn(
+                'p-3 rounded-md border text-center transition-all cursor-pointer space-y-1',
+                exportFormat === 'csv'
+                  ? 'bg-[#18181c] border-zinc-400 text-white shadow-xs'
+                  : 'bg-[#121214] border-[#27272e] text-zinc-400 hover:bg-[#161619]'
+              )}
+            >
+              <FileSpreadsheet className="h-5 w-5 mx-auto text-zinc-300" />
+              <span className="text-xs font-bold block">Excel / CSV</span>
+              <span className="text-[10px] text-zinc-500 block">Spreadsheet</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setExportFormat('pdf')}
+              className={cn(
+                'p-3 rounded-md border text-center transition-all cursor-pointer space-y-1',
+                exportFormat === 'pdf'
+                  ? 'bg-[#18181c] border-zinc-400 text-white shadow-xs'
+                  : 'bg-[#121214] border-[#27272e] text-zinc-400 hover:bg-[#161619]'
+              )}
+            >
+              <Printer className="h-5 w-5 mx-auto text-zinc-300" />
+              <span className="text-xs font-bold block">Printable PDF</span>
+              <span className="text-[10px] text-zinc-500 block">Document</span>
+            </button>
+          </div>
+
+          {isExporting && (
+            <div className="p-3 rounded-md bg-[#161619] border border-[#27272e] text-xs font-mono text-zinc-300 flex items-center gap-2">
+              <span className="animate-spin text-white">⟳</span>
+              <span>{exportProgressText || 'Processing...'}</span>
+            </div>
+          )}
+        </div>
+      </VFDialog>
     </VFPageContainer>
   );
 }
