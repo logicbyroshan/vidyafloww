@@ -393,98 +393,95 @@ function TimetablePage() {
           </div>
         </div>
 
-        {/* Sleek Deep Dark Table Grid with Full Viewport Height & Centered Content */}
-        <div className="flex-1 min-h-0 border border-[#24242a] rounded-lg bg-[#0b0b0d] overflow-auto custom-scrollbar shadow-sm flex flex-col">
-          <table className="w-full text-left min-w-[880px] border-collapse flex-1 h-full">
-            <thead className="shrink-0 sticky top-0 z-20">
-              <tr className="border-b border-[#24242a] bg-[#111114]">
-                <th className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider w-36 bg-[#111114] border-r border-[#24242a] select-none text-center align-middle">
-                  Day / Time
-                </th>
-                {classPeriods.map((p) => (
-                  <th
-                    key={p.id}
-                    className="p-3 font-bold text-xs text-zinc-300 whitespace-nowrap border-r last:border-r-0 border-[#24242a] select-none bg-[#111114]"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-white text-xs font-black uppercase tracking-wider">{p.name}</span>
-                        <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#161619] px-1.5 py-0.2 rounded border border-[#26262e]">
-                          {p.duration}
+        {/* Sleek Deep Dark Grid with Mathematically Equal Height & Width Distribution */}
+        <div className="flex-1 min-h-0 border border-[#24242a] rounded-lg bg-[#0b0b0d] overflow-x-auto overflow-y-hidden custom-scrollbar shadow-sm flex flex-col min-w-[900px]">
+          {/* Header Row */}
+          <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#24242a] bg-[#111114] shrink-0">
+            <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#24242a] select-none flex items-center justify-center text-center">
+              Day / Time
+            </div>
+            {classPeriods.map((p) => (
+              <div
+                key={p.id}
+                className="p-3 font-bold text-xs text-zinc-300 border-r last:border-r-0 border-[#24242a] select-none flex flex-col justify-center space-y-1"
+              >
+                <div className="flex items-center justify-between gap-1">
+                  <span className="text-white text-xs font-black uppercase tracking-wider truncate">{p.name}</span>
+                  <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#161619] px-1.5 py-0.2 rounded border border-[#26262e] shrink-0">
+                    {p.duration}
+                  </span>
+                </div>
+                <span className="text-[11px] text-zinc-400 font-mono block font-medium">
+                  {p.start} – {p.end}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Body Rows with 100% Equal Height Distribution */}
+          <div className={cn(
+            'flex-1 min-h-0 grid divide-y divide-[#1e1e22]',
+            activeDays.length === 6 ? 'grid-rows-6' : 'grid-rows-5'
+          )}>
+            {activeDays.map((day) => (
+              <div
+                key={day}
+                className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] divide-x divide-[#1e1e22] h-full"
+              >
+                {/* Day Column - Centered */}
+                <div className="p-2 font-bold text-white bg-[#0e0e11] select-none flex flex-col items-center justify-center space-y-1 text-center">
+                  <span className="block text-xs font-black text-white uppercase tracking-wider">
+                    {day}
+                  </span>
+                  <span className="text-[10px] text-zinc-400 font-mono block font-semibold bg-[#161619] px-2 py-0.5 rounded border border-[#24242c]">
+                    {classPeriods.length} Periods
+                  </span>
+                </div>
+
+                {/* 7 Period Slots: EXACT EQUAL HEIGHT & WIDTH */}
+                {(scheduleData[day] || []).slice(0, classPeriods.length).map((slot, idx) => (
+                  <div key={idx} className="p-1.5 bg-[#0b0b0d] flex flex-col min-h-0 h-full">
+                    <div
+                      onClick={() => handleOpenSlotEdit(day, idx, slot)}
+                      className="h-full w-full p-2.5 rounded-md bg-[#131316] border border-[#24242a] flex flex-col justify-between space-y-1 transition-all group cursor-pointer shadow-xs select-none hover:bg-[#1a1a1f] hover:border-[#3e3e48] hover:shadow-md"
+                      title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
+                    >
+                      {/* Top Row: Subject & Lab */}
+                      <div className="flex items-start justify-between gap-1">
+                        <span className="font-bold text-white text-xs leading-snug tracking-tight truncate group-hover:text-white">
+                          {slot.subject}
+                        </span>
+                        {slot.isLab && (
+                          <span className="text-[9px] font-mono font-bold px-1 py-0.2 rounded bg-[#181e28] border border-sky-800/40 text-sky-300 shrink-0">
+                            Lab
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Middle Row: Teacher */}
+                      <div className="flex items-center gap-1 text-[11px] text-zinc-400">
+                        <BookOpen className="h-3 w-3 text-zinc-500 shrink-0" />
+                        <span className="font-medium truncate text-zinc-400 group-hover:text-zinc-300">
+                          {slot.teacher}
                         </span>
                       </div>
-                      <span className="text-[11px] text-zinc-400 font-mono block font-medium">
-                        {p.start} – {p.end}
-                      </span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#1e1e22]">
-              {activeDays.map((day) => (
-                <tr key={day} className="hover:bg-white/[0.015] transition-colors" style={{ height: `calc(100% / ${activeDays.length})` }}>
-                  {/* Dark Solid Day Anchor Column - Centered */}
-                  <td className="p-3 font-bold text-white bg-[#0e0e11] whitespace-nowrap text-sm border-r border-[#24242a] select-none text-center align-middle w-36">
-                    <div className="flex flex-col items-center justify-center space-y-1.5">
-                      <span className="block text-xs font-black text-white uppercase tracking-wider">
-                        {day}
-                      </span>
-                      <span className="text-[10px] text-zinc-400 font-mono block font-semibold bg-[#161619] px-2 py-0.5 rounded border border-[#24242c]">
-                        {classPeriods.length} Periods
-                      </span>
-                    </div>
-                  </td>
 
-                  {/* Grid Cells with Dark Sleek Slot Cards - Stretched to Equal Row Height */}
-                  {(scheduleData[day] || []).slice(0, classPeriods.length).map((slot, idx) => (
-                    <td
-                      key={idx}
-                      className="p-2 border-r last:border-r-0 border-[#1e1e22] min-w-[155px] align-middle bg-[#0b0b0d] h-full"
-                    >
-                      {/* Dark Sleek Period Card Stretched Full Height */}
-                      <div
-                        onClick={() => handleOpenSlotEdit(day, idx, slot)}
-                        className="h-full min-h-[96px] p-3 rounded-md bg-[#131316] border border-[#24242a] flex flex-col justify-between space-y-2 transition-all group cursor-pointer relative shadow-xs select-none hover:bg-[#1a1a1f] hover:border-[#3e3e48] hover:shadow-md hover:-translate-y-0.5"
-                        title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
-                      >
-                        {/* Top Row: Primary Subject Title + Subtle Lab Tag */}
-                        <div className="flex items-start justify-between gap-1.5">
-                          <span className="font-bold text-white text-sm leading-snug tracking-tight line-clamp-1 group-hover:text-white transition-colors">
-                            {slot.subject}
-                          </span>
-                          {slot.isLab && (
-                            <span className="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#181e28] border border-sky-800/40 text-sky-300 shrink-0">
-                              Lab
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Middle Row: Faculty Teacher Name */}
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                          <BookOpen className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
-                          <span className="font-medium truncate text-zinc-400 group-hover:text-zinc-300 transition-colors">
-                            {slot.teacher}
-                          </span>
-                        </div>
-
-                        {/* Bottom Row: Room Badge */}
-                        <div className="flex items-center justify-between pt-1.5 border-t border-[#1e1e24] text-xs">
-                          <span className="font-mono text-zinc-400 bg-[#0e0e11] px-2 py-0.5 rounded border border-[#222228] text-[11px] font-medium flex items-center gap-1 group-hover:text-zinc-300 transition-colors">
-                            <MapPin className="h-3 w-3 shrink-0 text-zinc-500" />
-                            {slot.room}
-                          </span>
-                          <span className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-white text-xs flex items-center gap-0.5 font-medium transition-opacity">
-                            <Pencil className="h-3 w-3" /> Edit
-                          </span>
-                        </div>
+                      {/* Bottom Row: Room & Edit trigger */}
+                      <div className="flex items-center justify-between pt-1 border-t border-[#1e1e24] text-[11px]">
+                        <span className="font-mono text-zinc-400 bg-[#0e0e11] px-1.5 py-0.2 rounded border border-[#222228] text-[10px] font-medium flex items-center gap-1 group-hover:text-zinc-300 truncate">
+                          <MapPin className="h-2.5 w-2.5 shrink-0 text-zinc-500" />
+                          {slot.room}
+                        </span>
+                        <span className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-white text-[10px] flex items-center gap-0.5 font-medium transition-opacity shrink-0">
+                          <Pencil className="h-2.5 w-2.5" /> Edit
+                        </span>
                       </div>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
