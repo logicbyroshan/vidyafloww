@@ -327,97 +327,9 @@ function TimetablePage() {
 
   return (
     <VFPageContainer>
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         {/* ═══════════════════════════════════════════════════════════════════════
-            1. DAILY CAMPUS BELL SCHEDULE & PERIOD SEQUENCE (PURE NEUTRAL DARK)
-            ═══════════════════════════════════════════════════════════════════════ */}
-        <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] shadow-sm space-y-3.5">
-          <div className="flex items-center justify-between flex-wrap gap-3 pb-3 border-b border-[#242428]">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-md bg-[#161619] border border-[#2a2a30] flex items-center justify-center text-white shadow-xs">
-                <Bell className="h-4.5 w-4.5 text-zinc-400" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider leading-tight">
-                    Daily Campus Bell Schedule & Period Sequence
-                  </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#161619] border border-[#2a2a30] font-bold text-zinc-400">
-                    {workingDaysMode === '6days' ? '6-Day Academic Week' : '5-Day Academic Week'}
-                  </span>
-                </div>
-                <p className="text-xs text-zinc-400 font-medium mt-0.5">
-                  Standard institutional bell rings, period durations, and structured break intervals
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#161619] border border-[#2a2a30] text-xs font-bold text-zinc-200">
-                <Clock className="h-3.5 w-3.5 text-zinc-400" />
-                Session: <span className="text-white font-mono">08:00 AM – 02:15 PM</span> <span className="text-zinc-500">(6h 15m)</span>
-              </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-[#161619] border border-[#2a2a30] text-zinc-300 text-xs font-bold">
-                <span className="text-white font-mono">{classPeriods.length}</span> Periods · <span className="text-white font-mono">2</span> Breaks
-              </span>
-              <VFButton
-                size="sm"
-                variant="outline"
-                leftIcon={<Clock className="h-3.5 w-3.5 text-zinc-400" />}
-                onClick={() => setIsConfigurePeriodsOpen(true)}
-              >
-                Configure Periods
-              </VFButton>
-            </div>
-          </div>
-
-          {/* 9-Slot Sleek Dark Bell Sequence Boxes */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5">
-            {periodConfig.map((p) => {
-              const isBreak = p.type === 'Break';
-              return (
-                <div
-                  key={p.id}
-                  className={cn(
-                    'p-2.5 rounded-md border text-left transition-all flex flex-col justify-between shadow-xs',
-                    isBreak
-                      ? 'bg-[#18181c] border-[#2e2e36] text-zinc-300'
-                      : 'bg-[#141417] border-[#24242a] text-zinc-300 hover:bg-[#1a1a1f] hover:border-[#383842]'
-                  )}
-                >
-                  <div className="flex items-center justify-between gap-1 mb-2">
-                    <span className="text-xs font-black tracking-tight text-white truncate">
-                      {p.name}
-                    </span>
-                    {isBreak ? (
-                      p.name.includes('Morning') ? (
-                        <Coffee className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                      ) : (
-                        <Utensils className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
-                      )
-                    ) : (
-                      <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#0e0e11] px-1.5 py-0.2 rounded border border-[#24242a]">
-                        {p.duration}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="space-y-0.5">
-                    <span className="font-mono text-sm font-black block leading-tight text-white">
-                      {p.start}
-                    </span>
-                    <span className="text-xs text-zinc-400 block font-mono">
-                      to {p.end}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ═══════════════════════════════════════════════════════════════════════
-            2. MASTER CLASS SCHEDULE TOOLBAR & SLEEK DARK GRID
+            1. MASTER CLASS SCHEDULE TOOLBAR & SLEEK DARK GRID
             ═══════════════════════════════════════════════════════════════════════ */}
         <div className="space-y-3">
           {/* Action Toolbar */}
@@ -447,6 +359,14 @@ function TimetablePage() {
               <VFButton
                 variant="outline"
                 size="sm"
+                leftIcon={<Clock className="h-3.5 w-3.5 text-zinc-400" />}
+                onClick={() => setIsConfigurePeriodsOpen(true)}
+              >
+                Configure Periods
+              </VFButton>
+              <VFButton
+                variant="outline"
+                size="sm"
                 leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-zinc-400" />}
                 onClick={() => setIsConfigureTimetableOpen(true)}
               >
@@ -456,17 +376,12 @@ function TimetablePage() {
                 variant="outline"
                 size="sm"
                 leftIcon={<Users className="h-3.5 w-3.5 text-zinc-400" />}
-                onClick={() => {
-                  setWorkloadDrawerTab('substitutions');
-                  setIsWorkloadDrawerOpen(true);
-                }}
+                onClick={() => setIsWorkloadDrawerOpen(true)}
               >
-                <span>Faculty Workload & Proxies</span>
-                {substitutionsList.length > 0 && (
-                  <span className="ml-1.5 px-1.5 py-0.2 rounded bg-[#161619] border border-[#2a2a30] text-white text-[11px] font-mono font-bold">
-                    {substitutionsList.length}
-                  </span>
-                )}
+                Faculty Workload & Proxies
+                <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono font-bold bg-[#24242a] text-zinc-300 rounded">
+                  {substitutionsList.length}
+                </span>
               </VFButton>
               <VFButton
                 variant="outline"
@@ -628,28 +543,62 @@ function TimetablePage() {
             </p>
           </div>
 
-          <div className="space-y-2.5 max-h-[420px] overflow-y-auto custom-scrollbar pr-1">
+          <div className="space-y-2.5 max-h-[480px] overflow-y-auto custom-scrollbar pr-1">
             {periodConfig.map((p, idx) => (
               <div
                 key={p.id}
-                className="p-3 rounded-md bg-[#121214] border border-[#27272a] shadow-xs flex items-center justify-between gap-3"
+                className="p-3 rounded-md bg-[#141417] border border-[#24242a] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="h-7 w-7 rounded bg-[#1c1c1f] border border-[#27272a] flex items-center justify-center font-mono text-xs font-bold text-white shrink-0">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <span className="h-7 w-7 rounded bg-[#161619] border border-[#27272e] flex items-center justify-center font-mono text-xs font-bold text-white shrink-0">
                     {idx + 1}
                   </span>
-                  <div>
-                    <p className="text-sm font-bold text-white leading-tight">{p.name}</p>
-                    <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                      {p.start} – {p.end} ({p.duration})
-                    </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
+                    <input
+                      type="text"
+                      value={p.name}
+                      onChange={(e) => {
+                        const updated = [...periodConfig];
+                        updated[idx] = { ...p, name: e.target.value };
+                        setPeriodConfig(updated);
+                      }}
+                      className="h-8 px-2.5 rounded bg-[#111113] border border-[#27272e] text-xs font-bold text-white outline-none focus:border-zinc-400"
+                    />
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="text"
+                        value={p.start}
+                        onChange={(e) => {
+                          const updated = [...periodConfig];
+                          updated[idx] = { ...p, start: e.target.value };
+                          setPeriodConfig(updated);
+                        }}
+                        className="h-8 px-2 rounded bg-[#111113] border border-[#27272e] text-xs font-mono text-zinc-200 outline-none w-20 text-center"
+                      />
+                      <span className="text-zinc-500 text-xs">to</span>
+                      <input
+                        type="text"
+                        value={p.end}
+                        onChange={(e) => {
+                          const updated = [...periodConfig];
+                          updated[idx] = { ...p, end: e.target.value };
+                          setPeriodConfig(updated);
+                        }}
+                        className="h-8 px-2 rounded bg-[#111113] border border-[#27272e] text-xs font-mono text-zinc-200 outline-none w-20 text-center"
+                      />
+                    </div>
+                    <div className="flex items-center gap-1.5 justify-end">
+                      <span className="text-[11px] font-mono text-zinc-400 bg-[#161619] px-2 py-1 rounded border border-[#27272e]">
+                        {p.duration}
+                      </span>
+                      <span className={cn(
+                        'text-[10px] font-bold px-2 py-1 rounded border uppercase tracking-wide',
+                        p.type === 'Break' ? 'bg-[#1e1e24] text-zinc-300 border-[#2e2e36]' : 'bg-[#141417] text-white border-[#27272e]'
+                      )}>
+                        {p.type}
+                      </span>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[#1c1c1f] border border-[#27272a] text-zinc-200">
-                    {p.type}
-                  </span>
                 </div>
               </div>
             ))}
