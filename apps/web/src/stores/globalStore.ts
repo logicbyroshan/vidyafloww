@@ -4,6 +4,8 @@ import { persist } from 'zustand/middleware';
 // Theme is permanently dark — no light/system mode
 export type Theme = 'dark';
 
+export type Language = 'en' | 'hi';
+
 export interface Notification {
   id: string;
   title: string;
@@ -57,6 +59,10 @@ interface GlobalState {
   // Theme (always dark)
   theme: Theme;
 
+  // Language / Locale
+  language: Language;
+  setLanguage: (lang: Language) => void;
+
   // School Identity & Branding
   schoolProfile: SchoolProfile;
   updateSchoolProfile: (profile: Partial<SchoolProfile>) => void;
@@ -107,6 +113,10 @@ export const useGlobalStore = create<GlobalState>()(
     (set) => ({
       // Always dark
       theme: 'dark',
+
+      // Language default — English
+      language: 'en',
+      setLanguage: (language) => set({ language }),
 
       // School Profile default
       schoolProfile: {
@@ -196,6 +206,7 @@ export const useGlobalStore = create<GlobalState>()(
         sidebarExpanded: state.sidebarExpanded,
         hasSeenPreloader: state.hasSeenPreloader,
         dashboardShortcuts: state.dashboardShortcuts,
+        language: state.language,
       }),
     }
   )
