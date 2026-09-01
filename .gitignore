@@ -50,6 +50,7 @@ out/
 .expo/
 .turbo/
 .cache/
+.tanstack/
 *.tsbuildinfo
 
 # ─── Electron Desktop Build Outputs ───────────────────────────────────────────

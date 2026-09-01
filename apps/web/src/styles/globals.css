@@ -61,6 +61,7 @@
   }
 
   html {
+    scrollbar-gutter: stable;
     /* Balanced modern typography sweet spot: comfortable readability, clean proportional metrics */
     font-size: clamp(15px, 0.8rem + 0.25vw, 16.5px);
   }
@@ -236,7 +237,9 @@
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 30s linear infinite;
+  flex-shrink: 0;
+  animation: marquee 45s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee:hover,

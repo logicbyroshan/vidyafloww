@@ -125,7 +125,7 @@ function ProfessionalAuthPage() {
   const isPassValid = hasMinLength && hasUppercase && hasNumber && hasSpecial;
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative flex flex-col justify-between overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-black text-foreground relative flex flex-col justify-between overflow-x-hidden selection:bg-primary/20 selection:text-primary">
       {/* ═══════════════════════════════════════════════════════════════════════
           SUBTLE ARCHITECTURAL BACKGROUND (MINIMAL MATTE FINISH)
           ═══════════════════════════════════════════════════════════════════════ */}
@@ -138,15 +138,15 @@ function ProfessionalAuthPage() {
             backgroundSize: '36px 36px',
           }}
         />
-        {/* Soft, low-intensity ambient backdrop */}
+        {/* Soft ambient orange glow */}
         <div
-          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[550px] h-[350px] rounded-full blur-[140px] opacity-10"
+          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[550px] h-[350px] rounded-2xl blur-[140px] opacity-10"
           style={{ background: 'radial-gradient(circle, #ea580c 0%, transparent 70%)' }}
         />
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          TOP HEADER: CLEAN BRAND LOGO & SESSION TAG
+          TOP HEADER: BRAND LOGO + BACK TO WEBSITE + ACADEMIC YEAR
           ═══════════════════════════════════════════════════════════════════════ */}
       <header className="relative z-10 w-full max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -165,21 +165,37 @@ function ProfessionalAuthPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-card border border-border text-xs font-mono font-medium text-muted-foreground shadow-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          <span>AY 2026–2027</span>
+        {/* Top Right Actions */}
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => {
+              if (window.history.length > 1) {
+                window.history.back();
+              } else {
+                navigate({ to: '/' });
+              }
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#141414] hover:bg-[#1f1f1f] border border-[#262626] text-xs font-semibold text-foreground transition-colors cursor-pointer"
+            title="Return to public website"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span>Back to Website</span>
+          </button>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#141414] border border-[#262626] text-xs font-mono font-medium text-muted-foreground shadow-xs">
+            <span className="h-1.5 w-1.5 rounded-xs bg-emerald-400" />
+            <span>AY 2026–2027</span>
+          </div>
         </div>
       </header>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          CENTER AUTH CARD: REFINED, SPACIOUS & PROFESSIONAL
+          CENTER AUTH CARD: REFINED, GENEROUS SPACING & NO FULL ROUNDED
           ═══════════════════════════════════════════════════════════════════════ */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-10">
         <div className="w-full max-w-[490px]">
           {/* Main Card Container */}
-          <div className="rounded-lg bg-card border border-border/90 shadow-xl p-7 sm:p-9 space-y-6 relative">
-            {/* Top Subtle Amber Accent Line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-primary/80 rounded-t-lg" />
+          <div className="rounded-xl bg-[#101010] border border-[#242424] shadow-2xl p-6 sm:p-8 space-y-5 relative">
 
             {/* Status Alert Toast */}
             {statusMessage && (
@@ -213,7 +229,7 @@ function ProfessionalAuthPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="space-y-6"
+                  className="space-y-5"
                 >
                   <div className="text-center space-y-1.5">
                     <h2 className="text-2xl font-black text-foreground tracking-tight">
@@ -229,7 +245,7 @@ function ProfessionalAuthPage() {
                     type="button"
                     onClick={handleGoogleSSO}
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-md bg-card hover:bg-muted/70 border border-border text-foreground font-semibold text-xs sm:text-sm shadow-xs transition-colors cursor-pointer"
+                    className="w-full flex items-center justify-center gap-3 px-4 py-2.5 rounded-md bg-[#141414] hover:bg-[#1a1a1a] border border-[#262626] text-foreground font-semibold text-xs sm:text-sm shadow-xs transition-colors cursor-pointer"
                   >
                     <svg
                       width="18"
@@ -259,19 +275,19 @@ function ProfessionalAuthPage() {
                   </button>
 
                   {/* Divider */}
-                  <div className="relative flex items-center justify-center">
+                  <div className="relative flex items-center justify-center my-1">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-border" />
+                      <div className="w-full border-t border-[#222222]" />
                     </div>
-                    <span className="relative px-3 bg-card text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
+                    <span className="relative px-3 bg-[#101010] text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
                       or with institutional credentials
                     </span>
                   </div>
 
-                  {/* Form */}
-                  <form onSubmit={handleLoginSubmit} className="space-y-4.5">
+                  {/* Form with Clean Gaps */}
+                  <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
                     {/* Identifier */}
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <label className="text-xs font-bold text-foreground" htmlFor="identifier">
                           Institutional Email or User ID
@@ -279,7 +295,7 @@ function ProfessionalAuthPage() {
                         <button
                           type="button"
                           onClick={() => setAuthMode('forgot-username')}
-                          className="text-[11px] font-medium text-primary hover:underline cursor-pointer"
+                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
                         >
                           Forgot ID?
                         </button>
@@ -293,13 +309,13 @@ function ProfessionalAuthPage() {
                           placeholder="name@school.edu.in or ADM-2026"
                           value={loginIdentifier}
                           onChange={(e) => setLoginIdentifier(e.target.value)}
-                          className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                          className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
                         />
                       </div>
                     </div>
 
                     {/* Password */}
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <label className="text-xs font-bold text-foreground" htmlFor="password">
                           Password
@@ -307,7 +323,7 @@ function ProfessionalAuthPage() {
                         <button
                           type="button"
                           onClick={() => setAuthMode('forgot-password')}
-                          className="text-[11px] font-medium text-primary hover:underline cursor-pointer"
+                          className="text-[11px] font-semibold text-primary hover:underline cursor-pointer"
                         >
                           Forgot Password?
                         </button>
@@ -321,7 +337,7 @@ function ProfessionalAuthPage() {
                           placeholder="••••••••"
                           value={loginPassword}
                           onChange={(e) => setLoginPassword(e.target.value)}
-                          className="w-full h-11 pl-10 pr-11 rounded-md bg-background border border-border text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                          className="w-full h-11 pl-10 pr-11 rounded-md bg-[#141414] border border-[#282828] text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
                         />
                         <button
                           type="button"
@@ -334,13 +350,13 @@ function ProfessionalAuthPage() {
                     </div>
 
                     {/* Remember me */}
-                    <div className="flex items-center justify-between pt-0.5">
-                      <label className="flex items-center gap-2 text-xs font-medium text-muted-foreground cursor-pointer select-none">
+                    <div className="flex items-center justify-between py-1">
+                      <label className="flex items-center gap-2.5 text-xs font-medium text-muted-foreground cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={rememberMe}
                           onChange={(e) => setRememberMe(e.target.checked)}
-                          className="rounded border-border h-4 w-4 text-primary focus:ring-primary/40 cursor-pointer"
+                          className="rounded-md border-border h-4 w-4 text-primary focus:ring-primary/40 cursor-pointer"
                         />
                         <span>Remember this trusted device</span>
                       </label>
@@ -368,7 +384,7 @@ function ProfessionalAuthPage() {
                   </form>
 
                   {/* Bottom Register Prompt */}
-                  <div className="text-center pt-3 border-t border-border/70 text-xs text-muted-foreground">
+                  <div className="text-center pt-3 border-t border-[#222222] text-xs text-muted-foreground">
                     New Institution or Campus?{' '}
                     <button
                       type="button"
@@ -394,7 +410,7 @@ function ProfessionalAuthPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="space-y-6"
+                  className="space-y-5"
                 >
                   <div className="flex items-center justify-between">
                     <button
@@ -405,7 +421,7 @@ function ProfessionalAuthPage() {
                       <ArrowLeft className="h-3.5 w-3.5" />
                       <span>Back to Sign In</span>
                     </button>
-                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg border border-primary/20">
+                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
                       Step {signupStep} of 4
                     </span>
                   </div>
@@ -425,17 +441,17 @@ function ProfessionalAuthPage() {
                     </p>
                   </div>
 
-                  {/* Step Progress Bar */}
-                  <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden flex gap-1">
-                    <div className={cn('h-full flex-1 rounded-full transition-all', signupStep >= 1 ? 'bg-primary' : 'bg-muted')} />
-                    <div className={cn('h-full flex-1 rounded-full transition-all', signupStep >= 2 ? 'bg-primary' : 'bg-muted')} />
-                    <div className={cn('h-full flex-1 rounded-full transition-all', signupStep >= 3 ? 'bg-primary' : 'bg-muted')} />
-                    <div className={cn('h-full flex-1 rounded-full transition-all', signupStep >= 4 ? 'bg-primary' : 'bg-muted')} />
+                  {/* Step Progress Bar with rounded-md */}
+                  <div className="h-1.5 w-full bg-[#181818] rounded-md overflow-hidden flex gap-1.5 border border-[#222222]">
+                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 1 ? 'bg-primary' : 'bg-[#181818]')} />
+                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 2 ? 'bg-primary' : 'bg-[#181818]')} />
+                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 3 ? 'bg-primary' : 'bg-[#181818]')} />
+                    <div className={cn('h-full flex-1 rounded-md transition-all', signupStep >= 4 ? 'bg-primary' : 'bg-[#181818]')} />
                   </div>
 
                   {/* Step 1: Role Selection */}
                   {signupStep === 1 && (
-                    <div className="space-y-3.5 animate-fade-in">
+                    <div className="space-y-4 animate-fade-in">
                       <div className="grid grid-cols-1 gap-2.5">
                         {[
                           { id: 'admin', title: 'School Administrator / Management', desc: 'Full institutional governance, financial oversight & reporting', icon: School },
@@ -452,16 +468,16 @@ function ProfessionalAuthPage() {
                               className={cn(
                                 'p-3.5 rounded-md border flex items-center gap-3.5 cursor-pointer transition-all',
                                 isSelected
-                                  ? 'bg-card border-primary ring-1 ring-primary shadow-xs'
-                                  : 'bg-muted/40 border-border hover:bg-muted/70'
+                                  ? 'bg-[#141414] border-primary ring-1 ring-primary shadow-xs'
+                                  : 'bg-[#141414] border-[#262626] hover:bg-[#1a1a1a] hover:border-[#383838]'
                               )}
                             >
                               <div
                                 className={cn(
-                                  'h-9 w-9 rounded-lg flex items-center justify-center shrink-0 border',
+                                  'h-9 w-9 rounded-md flex items-center justify-center shrink-0 border',
                                   isSelected
                                     ? 'bg-primary/10 text-primary border-primary/30'
-                                    : 'bg-card text-muted-foreground border-border'
+                                    : 'bg-[#181818] text-muted-foreground border-[#262626]'
                                 )}
                               >
                                 <Icon className="h-4.5 w-4.5" />
@@ -490,7 +506,7 @@ function ProfessionalAuthPage() {
                   {/* Step 2: Personal Details */}
                   {signupStep === 2 && (
                     <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Official Full Name *</label>
                         <input
                           type="text"
@@ -498,11 +514,11 @@ function ProfessionalAuthPage() {
                           placeholder="Dr. Rajesh Sharma"
                           value={signupName}
                           onChange={(e) => setSignupName(e.target.value)}
-                          className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                          className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                         />
                       </div>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Official Email Address *</label>
                         <input
                           type="email"
@@ -510,29 +526,29 @@ function ProfessionalAuthPage() {
                           placeholder="rajesh.s@school.edu.in"
                           value={signupEmail}
                           onChange={(e) => setSignupEmail(e.target.value)}
-                          className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                          className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           <label className="text-xs font-bold text-foreground">Mobile Phone</label>
                           <input
                             type="tel"
                             placeholder="+91 98765 43210"
                             value={signupPhone}
                             onChange={(e) => setSignupPhone(e.target.value)}
-                            className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground font-mono focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground font-mono focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           <label className="text-xs font-bold text-foreground">School Code / ID</label>
                           <input
                             type="text"
                             placeholder="CBSE-DEL-401"
                             value={signupSchoolCode}
                             onChange={(e) => setSignupSchoolCode(e.target.value)}
-                            className="w-full h-11 px-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground font-mono uppercase focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 px-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground font-mono uppercase focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
@@ -541,7 +557,7 @@ function ProfessionalAuthPage() {
                         <button
                           type="button"
                           onClick={() => setSignupStep(1)}
-                          className="w-1/3 h-11 rounded-md bg-card border border-border text-foreground font-bold text-xs hover:bg-muted cursor-pointer"
+                          className="w-1/3 h-11 rounded-md bg-[#141414] border border-[#262626] text-foreground font-bold text-xs hover:bg-[#1a1a1a] cursor-pointer"
                         >
                           Back
                         </button>
@@ -567,7 +583,7 @@ function ProfessionalAuthPage() {
                   {/* Step 3: Password & Terms */}
                   {signupStep === 3 && (
                     <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Create Password *</label>
                         <div className="relative">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -577,7 +593,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={signupPassword}
                             onChange={(e) => setSignupPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-11 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-11 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                           <button
                             type="button"
@@ -589,27 +605,27 @@ function ProfessionalAuthPage() {
                         </div>
 
                         {/* Interactive Criteria Check Grid */}
-                        <div className="grid grid-cols-2 gap-2 pt-1.5">
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasMinLength ? 'text-emerald-500' : 'text-muted-foreground')}>
+                        <div className="grid grid-cols-2 gap-2 pt-1">
+                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasMinLength ? 'text-emerald-400' : 'text-muted-foreground')}>
                             <CheckCircle2 className="h-3 w-3 shrink-0" />
                             <span>8+ Characters</span>
                           </div>
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasUppercase ? 'text-emerald-500' : 'text-muted-foreground')}>
+                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasUppercase ? 'text-emerald-400' : 'text-muted-foreground')}>
                             <CheckCircle2 className="h-3 w-3 shrink-0" />
                             <span>Uppercase Letter</span>
                           </div>
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasNumber ? 'text-emerald-500' : 'text-muted-foreground')}>
+                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasNumber ? 'text-emerald-400' : 'text-muted-foreground')}>
                             <CheckCircle2 className="h-3 w-3 shrink-0" />
                             <span>Number (0-9)</span>
                           </div>
-                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasSpecial ? 'text-emerald-500' : 'text-muted-foreground')}>
+                          <div className={cn('flex items-center gap-1.5 text-[11px] font-medium', hasSpecial ? 'text-emerald-400' : 'text-muted-foreground')}>
                             <CheckCircle2 className="h-3 w-3 shrink-0" />
                             <span>Symbol (!@#$)</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Confirm Password *</label>
                         <div className="relative">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -619,7 +635,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={signupConfirmPassword}
                             onChange={(e) => setSignupConfirmPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-xs sm:text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
@@ -629,7 +645,7 @@ function ProfessionalAuthPage() {
                           type="checkbox"
                           checked={agreedToTerms}
                           onChange={(e) => setAgreedToTerms(e.target.checked)}
-                          className="rounded border-border h-4 w-4 text-primary mt-0.5 cursor-pointer"
+                          className="rounded-md border-border h-4 w-4 text-primary mt-0.5 cursor-pointer"
                         />
                         <span className="text-[11px] leading-tight">
                           I agree to VidyaFloww Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.
@@ -640,7 +656,7 @@ function ProfessionalAuthPage() {
                         <button
                           type="button"
                           onClick={() => setSignupStep(2)}
-                          className="w-1/3 h-11 rounded-md bg-card border border-border text-foreground font-bold text-xs hover:bg-muted cursor-pointer"
+                          className="w-1/3 h-11 rounded-md bg-[#141414] border border-[#262626] text-foreground font-bold text-xs hover:bg-[#1a1a1a] cursor-pointer"
                         >
                           Back
                         </button>
@@ -669,8 +685,8 @@ function ProfessionalAuthPage() {
 
                   {/* Step 4: OTP Verification */}
                   {signupStep === 4 && (
-                    <div className="space-y-4.5 animate-fade-in">
-                      <div className="p-3.5 rounded-md bg-muted/40 border border-border text-center text-xs space-y-0.5">
+                    <div className="space-y-4 animate-fade-in">
+                      <div className="p-3.5 rounded-md bg-[#141414] border border-[#262626] text-center text-xs space-y-1">
                         <p className="text-muted-foreground">Verification code sent to:</p>
                         <p className="font-mono font-bold text-foreground">{signupEmail || 'admin@school.edu.in'}</p>
                       </div>
@@ -693,7 +709,7 @@ function ProfessionalAuthPage() {
                                 next?.focus();
                               }
                             }}
-                            className="w-12 h-13 rounded-md bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            className="w-12 h-13 rounded-md bg-[#141414] border border-[#282828] text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                           />
                         ))}
                       </div>
@@ -740,7 +756,7 @@ function ProfessionalAuthPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="space-y-6"
+                  className="space-y-5"
                 >
                   <div className="flex items-center justify-between">
                     <button
@@ -751,7 +767,7 @@ function ProfessionalAuthPage() {
                       <ArrowLeft className="h-3.5 w-3.5" />
                       <span>Back to Sign In</span>
                     </button>
-                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg border border-primary/20">
+                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
                       Recovery
                     </span>
                   </div>
@@ -773,7 +789,7 @@ function ProfessionalAuthPage() {
 
                   {fpStep === 1 && (
                     <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Registered Email or Phone</label>
                         <div className="relative">
                           <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -783,7 +799,7 @@ function ProfessionalAuthPage() {
                             placeholder="admin@vidyafloww.edu.in"
                             value={fpIdentifier}
                             onChange={(e) => setFpIdentifier(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
@@ -821,7 +837,7 @@ function ProfessionalAuthPage() {
                   )}
 
                   {fpStep === 2 && (
-                    <div className="space-y-4.5 animate-fade-in">
+                    <div className="space-y-4 animate-fade-in">
                       <div className="flex justify-between gap-2">
                         {fpOtp.map((digit, idx) => (
                           <input
@@ -840,7 +856,7 @@ function ProfessionalAuthPage() {
                                 next?.focus();
                               }
                             }}
-                            className="w-12 h-13 rounded-md bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            className="w-12 h-13 rounded-md bg-[#141414] border border-[#282828] text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                           />
                         ))}
                       </div>
@@ -858,7 +874,7 @@ function ProfessionalAuthPage() {
 
                   {fpStep === 3 && (
                     <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">New Password</label>
                         <div className="relative">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -868,12 +884,12 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={fpNewPassword}
                             onChange={(e) => setFpNewPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Confirm New Password</label>
                         <div className="relative">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -883,7 +899,7 @@ function ProfessionalAuthPage() {
                             placeholder="••••••••"
                             value={fpConfirmPassword}
                             onChange={(e) => setFpConfirmPassword(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
@@ -921,7 +937,7 @@ function ProfessionalAuthPage() {
 
                   {fpStep === 4 && (
                     <div className="space-y-5 text-center animate-fade-in py-2">
-                      <div className="h-12 w-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
+                      <div className="h-12 w-12 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
                         <CheckCircle2 className="h-6 w-6" />
                       </div>
                       <div className="space-y-1">
@@ -956,7 +972,7 @@ function ProfessionalAuthPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="space-y-6"
+                  className="space-y-5"
                 >
                   <div className="flex items-center justify-between">
                     <button
@@ -967,7 +983,7 @@ function ProfessionalAuthPage() {
                       <ArrowLeft className="h-3.5 w-3.5" />
                       <span>Back to Sign In</span>
                     </button>
-                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg border border-primary/20">
+                    <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
                       ID Lookup
                     </span>
                   </div>
@@ -987,7 +1003,7 @@ function ProfessionalAuthPage() {
 
                   {fuStep === 1 && (
                     <div className="space-y-4 animate-fade-in">
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Registered Mobile Number</label>
                         <div className="relative">
                           <Smartphone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -997,12 +1013,12 @@ function ProfessionalAuthPage() {
                             placeholder="+91 98765 43210"
                             value={fuPhone}
                             onChange={(e) => setFuPhone(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm font-mono text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm font-mono text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <label className="text-xs font-bold text-foreground">Date of Birth</label>
                         <div className="relative">
                           <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -1011,7 +1027,7 @@ function ProfessionalAuthPage() {
                             placeholder="14 May 2011"
                             value={fuDob}
                             onChange={(e) => setFuDob(e.target.value)}
-                            className="w-full h-11 pl-10 pr-4 rounded-md bg-background border border-border text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                            className="w-full h-11 pl-10 pr-4 rounded-md bg-[#141414] border border-[#282828] text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none"
                           />
                         </div>
                       </div>
@@ -1049,7 +1065,7 @@ function ProfessionalAuthPage() {
                   )}
 
                   {fuStep === 2 && (
-                    <div className="space-y-4.5 animate-fade-in">
+                    <div className="space-y-4 animate-fade-in">
                       <div className="flex justify-between gap-2">
                         {fuOtp.map((digit, idx) => (
                           <input
@@ -1068,7 +1084,7 @@ function ProfessionalAuthPage() {
                                 next?.focus();
                               }
                             }}
-                            className="w-12 h-13 rounded-md bg-background border border-border text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                            className="w-12 h-13 rounded-md bg-[#141414] border border-[#282828] text-center text-xl font-mono font-black text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                           />
                         ))}
                       </div>
@@ -1093,24 +1109,26 @@ function ProfessionalAuthPage() {
                   )}
 
                   {fuStep === 3 && recoveredUsername && (
-                    <div className="space-y-4.5 animate-fade-in">
-                      <div className="p-4.5 rounded-lg bg-background border border-border space-y-3.5 shadow-xs">
-                        <div className="flex items-center gap-3 pb-3 border-b border-border">
+                    <div className="space-y-4 animate-fade-in">
+                      <div className="p-4 rounded-md bg-[#141414] border border-[#262626] space-y-3 shadow-xs">
+                        <div className="flex items-center gap-3 pb-3 border-b border-[#222222]">
                           <div className="h-9 w-9 rounded-md bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0">
                             <UserCheck className="h-4.5 w-4.5" />
                           </div>
                           <div>
-                            <h4 className="text-sm font-bold text-foreground">{recoveredUsername.name}</h4>
+                            <p className="text-sm font-bold text-foreground">{recoveredUsername.name}</p>
                             <p className="text-[11px] text-muted-foreground">{recoveredUsername.role} · {recoveredUsername.campus}</p>
                           </div>
                         </div>
 
-                        <div className="p-3 rounded-md bg-muted/40 border border-border space-y-1">
-                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
-                            Your Institutional User ID:
-                          </span>
-                          <div className="flex items-center justify-between gap-2 pt-0.5">
-                            <span className="text-sm font-mono font-bold text-foreground">{recoveredUsername.username}</span>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                            Official Institutional ID
+                          </label>
+                          <div className="flex items-center justify-between p-2.5 rounded-md bg-black border border-[#242424]">
+                            <span className="font-mono font-black text-sm text-primary select-all">
+                              {recoveredUsername.username}
+                            </span>
                             <button
                               type="button"
                               onClick={() => {
@@ -1118,7 +1136,7 @@ function ProfessionalAuthPage() {
                                 setCopiedText(true);
                                 setTimeout(() => setCopiedText(false), 2000);
                               }}
-                              className="px-2.5 py-1 rounded-lg bg-card border border-border text-xs font-medium text-foreground hover:bg-muted flex items-center gap-1.5 cursor-pointer"
+                              className="text-xs font-semibold text-muted-foreground hover:text-foreground flex items-center gap-1 px-2 py-1 rounded-md bg-[#181818] border border-[#262626] transition-colors cursor-pointer"
                             >
                               {copiedText ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
                               <span>{copiedText ? 'Copied' : 'Copy'}</span>
@@ -1148,11 +1166,11 @@ function ProfessionalAuthPage() {
       </main>
 
       {/* ═══════════════════════════════════════════════════════════════════════
-          BOTTOM: SLEEK FLOATING SCHOOL LOGOS MARQUEE (SOFT VANISHING FADE)
+          BOTTOM: SLEEK FLOATING SCHOOL LOGOS MARQUEE (MATHEMATICALLY SEAMLESS)
           ═══════════════════════════════════════════════════════════════════════ */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pb-7 select-none space-y-2">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pb-7 select-none space-y-2.5">
         <div className="text-center">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/75">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/75 font-mono">
             Trusted by 150+ Leading Educational Campuses Across India
           </span>
         </div>
@@ -1161,23 +1179,29 @@ function ProfessionalAuthPage() {
         <div
           className="relative w-full overflow-hidden py-1 group cursor-pointer"
           style={{
-            maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
+            maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
           }}
         >
           {/* Subtle Left and Right Vignette Overlays for Extra Smoothness */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
-          <div className="animate-marquee flex gap-3 items-center group-hover:[animation-play-state:paused]">
-            {[...TRUSTED_INSTITUTIONS, ...TRUSTED_INSTITUTIONS, ...TRUSTED_INSTITUTIONS].map((inst, i) => {
+          {/* Single continuous track containing 2 identical sets (never overlaps, never empty) */}
+          <div className="animate-marquee flex gap-3 items-center group-hover:[animation-play-state:paused] pr-3">
+            {[
+              ...TRUSTED_INSTITUTIONS,
+              ...TRUSTED_INSTITUTIONS,
+              ...TRUSTED_INSTITUTIONS,
+              ...TRUSTED_INSTITUTIONS,
+            ].map((inst, i) => {
               const Icon = inst.icon;
               return (
                 <div
                   key={i}
-                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card border border-border/80 text-xs font-semibold text-foreground/90 shadow-xs hover:border-primary/60 hover:text-primary transition-colors whitespace-nowrap shrink-0 hover:scale-[1.03] cursor-pointer"
+                  className="flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#121212] border border-[#222222] text-xs font-semibold text-foreground/90 shadow-xs hover:border-primary/60 hover:text-primary transition-colors whitespace-nowrap shrink-0 hover:bg-[#181818] cursor-pointer"
                 >
-                  <div className="h-4 w-4 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                  <div className="h-4 w-4 rounded-md bg-primary/10 text-primary flex items-center justify-center shrink-0">
                     <Icon className="h-2.5 w-2.5" />
                   </div>
                   <span className="font-bold text-xs">{inst.name}</span>
