@@ -127,12 +127,14 @@ export interface VFSelectProps {
   placeholder?: string;
   onChange?: (e: { target: { value: string | number } }) => void;
   className?: string;
+  wrapperClassName?: string;
   id?: string;
   disabled?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
-  ({ className, label, description, error, required, options, value, defaultValue, placeholder = "Select...", onChange, disabled, id }, _ref) => {
+  ({ className, wrapperClassName, label, description, error, required, options, value, defaultValue, placeholder = "Select...", onChange, disabled, size = 'md', id }, _ref) => {
     const generatedId = React.useId();
     const selectId = id || generatedId;
     const [internalValue, setInternalValue] = React.useState<string>(
@@ -152,8 +154,10 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
       }
     };
 
+    const isInline = !label && !description && !error;
+
     return (
-      <div className="w-full relative">
+      <div className={cn(isInline ? "relative inline-flex items-center" : "w-full relative", wrapperClassName)}>
         {label && <VFFormLabel htmlFor={selectId} required={required}>{label}</VFFormLabel>}
         
         <SelectPrimitive.Root
@@ -165,7 +169,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <SelectPrimitive.Trigger
             id={selectId}
             className={cn(
-              "flex h-9 w-full items-center justify-between rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-muted data-[state=open]:border-primary/50",
+              "flex w-full items-center justify-between rounded-md border border-border bg-[#181818] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#222222] hover:border-zinc-500 data-[state=open]:border-emerald-500/50 shadow-xs",
+              size === 'sm' || isInline ? "h-8 px-2.5 text-xs rounded-md" : size === 'lg' ? "h-10 px-3.5 text-sm rounded-md" : "h-9 px-3 text-xs rounded-md",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
@@ -173,27 +178,27 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           >
             <SelectPrimitive.Value placeholder={placeholder} />
             <SelectPrimitive.Icon asChild>
-              <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5" />
+              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5" />
             </SelectPrimitive.Icon>
           </SelectPrimitive.Trigger>
 
           <SelectPrimitive.Portal>
             <SelectPrimitive.Content
-              className="z-50 min-w-[10rem] overflow-hidden rounded-lg border border-border bg-card p-1 shadow-xl animate-scale-in text-sm text-foreground"
+              className="z-50 min-w-[10rem] overflow-hidden rounded-md border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-xs text-foreground backdrop-blur-md"
               position="popper"
               sideOffset={4}
             >
-              <SelectPrimitive.Viewport className="p-0.5 max-h-52 overflow-y-auto custom-scrollbar">
+              <SelectPrimitive.Viewport className="p-0.5 max-h-56 overflow-y-auto custom-scrollbar">
                 {options.map((opt) => (
                   <SelectPrimitive.Item
                     key={String(opt.value)}
                     value={String(opt.value)}
                     disabled={opt.disabled}
-                    className="relative flex w-full select-none items-center justify-between rounded-md px-2.5 py-1.5 text-sm font-medium outline-none cursor-pointer data-[highlighted]:bg-muted/80 data-[highlighted]:text-foreground data-[state=checked]:bg-primary/15 data-[state=checked]:text-primary data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
+                    className="relative flex w-full select-none items-center justify-between rounded-sm px-2.5 py-1.5 text-xs font-medium outline-none cursor-pointer data-[highlighted]:bg-[#242424] data-[highlighted]:text-foreground data-[state=checked]:bg-emerald-500/15 data-[state=checked]:text-emerald-400 data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
                   >
                     <SelectPrimitive.ItemText>{opt.label}</SelectPrimitive.ItemText>
                     <SelectPrimitive.ItemIndicator>
-                      <Check className="h-3 w-3 text-primary shrink-0 ml-1.5" />
+                      <Check className="h-3 w-3 text-emerald-400 shrink-0 ml-1.5" />
                     </SelectPrimitive.ItemIndicator>
                   </SelectPrimitive.Item>
                 ))}

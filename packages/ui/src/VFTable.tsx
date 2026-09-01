@@ -174,13 +174,13 @@ export function VFDataTable<T extends Record<string, any>>({
       {/* Unified Table Header Command Toolbar */}
       <div className="p-3.5 sm:p-4 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
         <div className="relative max-w-md flex-1">
-          <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+          <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search records..."}
-            className="w-full pl-10 pr-4 h-9 border border-border rounded-md bg-muted/40 hover:bg-muted/70 focus:bg-background text-sm focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+            className="w-full pl-9 pr-3.5 h-8 border border-border rounded-md bg-muted/40 hover:bg-muted/70 focus:bg-background text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
