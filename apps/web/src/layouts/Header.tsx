@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { cn } from '@vidyafloww/ui';
@@ -30,26 +30,15 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   // Universal Live Date & Time Clock
   const [currentDateTime, setCurrentDateTime] = React.useState(() => new Date());
   React.useEffect(() => {
-    const timer = setInterval(() => setCurrentDateTime(new Date()), 30000);
+    const timer = setInterval(() => setCurrentDateTime(new Date()), 10000);
     return () => clearInterval(timer);
   }, []);
 
-  const formattedDateStr = React.useMemo(() => {
-    // E.g. "Thu, 20 Aug 2026 • 08:30 AM"
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    };
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    };
-    const datePart = currentDateTime.toLocaleDateString('en-US', options);
-    const timePart = currentDateTime.toLocaleTimeString('en-US', timeOptions);
-    return `${datePart} • ${timePart}`;
+  const { dateFormatted, timeFormatted, dayName } = React.useMemo(() => {
+    const day = currentDateTime.toLocaleDateString('en-US', { weekday: 'short' });
+    const date = currentDateTime.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+    const time = currentDateTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    return { dayName: day, dateFormatted: date, timeFormatted: time };
   }, [currentDateTime]);
 
   React.useEffect(() => {
@@ -235,9 +224,16 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         </button>
 
         {/* Universal Live Date & Time Indicator */}
-        <div className="hidden md:flex items-center gap-2 px-3 h-9 rounded-md bg-[#0e0e0e] border border-border text-foreground font-mono text-xs font-bold shadow-xs select-none" title="Universal Academic System Date & Time">
-          <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
-          <span>{formattedDateStr}</span>
+        <div className="hidden md:flex items-center gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] border border-border shadow-xs select-none" title="Universal Academic System Date & Time">
+          <div className="flex items-center gap-1.5 text-xs text-foreground font-semibold">
+            <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
+            <span className="font-bold text-foreground">{dayName}, {dateFormatted}</span>
+          </div>
+          <span className="h-3.5 w-[1px] bg-border shrink-0" />
+          <div className="flex items-center gap-1 font-mono text-[11px] font-bold text-zinc-300 bg-[#141414] px-1.5 py-0.5 rounded border border-[#242424]">
+            <Clock className="h-3 w-3 text-muted-foreground shrink-0" />
+            <span>{timeFormatted}</span>
+          </div>
         </div>
 
         {/* Divider */}

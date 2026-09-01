@@ -13,75 +13,67 @@ export function Preloader({ onDone }: { onDone: () => void }) {
       setHasSeenPreloader();
       onDone();
     }, 2800);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [onDone, setHasSeenPreloader]);
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background transition-opacity duration-500"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black transition-opacity duration-500 select-none"
       style={{ opacity: phase === 'out' ? 0 : 1, pointerEvents: phase === 'out' ? 'none' : 'all' }}
     >
-      {/* Animated background grid */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              'linear-gradient(hsl(var(--border)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
-      </div>
-
-      {/* Glow blob */}
+      {/* Soft minimal radial glow */}
       <div
-        className="absolute w-96 h-96 rounded-full pointer-events-none"
+        className="absolute w-[400px] h-[400px] rounded-full pointer-events-none blur-[120px] opacity-15"
         style={{
-          background: 'radial-gradient(circle, hsl(24 95% 53% / 0.18) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, #ea580c 0%, transparent 70%)',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
         }}
       />
 
-      {/* Logo + wordmark */}
+      {/* Clean minimal Logo + Wordmark */}
       <div
-        className="relative flex flex-col items-center gap-6 transition-all duration-700"
+        className="relative z-10 flex flex-col items-center gap-5 transition-all duration-700"
         style={{
           opacity: phase === 'in' ? 0 : 1,
-          transform: phase === 'in' ? 'translateY(16px)' : 'translateY(0)',
+          transform: phase === 'in' ? 'translateY(12px)' : 'translateY(0)',
         }}
       >
-        {/* Icon */}
-        <div className="relative">
-          <div className="h-20 w-20 rounded-lg bg-primary flex items-center justify-center shadow-2xl shadow-primary/30">
-            <span className="text-4xl font-black text-white">V</span>
-          </div>
-          {/* Pulsing ring */}
-          <div className="absolute inset-0 rounded-lg border-2 border-primary/60 animate-ping" style={{ animationDuration: '1.5s' }} />
+        {/* Brand Logo */}
+        <div className="relative flex items-center justify-center">
+          <img
+            src="/logo.png"
+            alt="VidyaFloww Logo"
+            className="h-16 w-16 object-contain drop-shadow-[0_0_20px_rgba(234,88,12,0.35)]"
+          />
         </div>
 
         {/* Brand name */}
-        <div className="text-center">
-          <h1 className="text-4xl font-black tracking-tight text-foreground">
+        <div className="text-center space-y-1">
+          <h1 className="text-3xl font-black tracking-tight text-white">
             Vidya<span className="text-primary">Floww</span>
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground tracking-widest uppercase font-semibold">
+          <p className="text-xs text-zinc-400 font-semibold tracking-widest uppercase font-mono">
             School Management Platform
           </p>
         </div>
 
-        {/* Progress bar */}
-        <div className="w-48 h-0.5 bg-muted rounded-full overflow-hidden mt-2">
+        {/* Minimal Progress Line */}
+        <div className="w-44 h-1 bg-[#181818] rounded-full overflow-hidden mt-1 border border-[#242424]">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-[1600ms] ease-out"
+            className="h-full bg-primary rounded-full transition-all duration-[1600ms] ease-out shadow-xs"
             style={{ width: phase === 'in' ? '0%' : phase === 'hold' ? '85%' : '100%' }}
           />
         </div>
 
         {/* Status text */}
-        <p className="text-xs text-muted-foreground animate-pulse">
-          {phase === 'in' ? 'Initializing...' : phase === 'hold' ? 'Loading modules...' : 'Ready'}
+        <p className="text-[11px] font-mono text-zinc-400">
+          {phase === 'in' ? 'Initializing system...' : phase === 'hold' ? 'Loading campus modules...' : 'Ready'}
         </p>
       </div>
     </div>

@@ -1,5 +1,6 @@
-import { Link, useLocation } from '@tanstack/react-router';
-import { cn, VFAvatar } from '@vidyafloww/ui';
+import * as React from 'react';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+import { cn, VFAvatar, VFDialog, VFButton } from '@vidyafloww/ui';
 import {
   BarChart3,
   Bell,
@@ -28,25 +29,30 @@ interface NavItem {
 }
 
 interface NavGroup {
+  id: string;
+  label?: string;
   items: NavItem[];
 }
 
 const NAVIGATION_GROUPS: NavGroup[] = [
   {
+    id: 'primary',
     items: [
       { id: 'dashboard', label: 'Dashboard', route: '/', icon: LayoutDashboard },
     ],
   },
   {
+    id: 'core',
     items: [
       { id: 'students', label: 'Students', route: '/students', icon: GraduationCap },
       { id: 'admissions', label: 'Admissions', route: '/admissions', icon: UserPlus },
       { id: 'attendance', label: 'Attendance', route: '/attendance', icon: CalendarCheck },
       { id: 'timetable', label: 'Timetable', route: '/timetable', icon: Calendar },
-      { id: 'staff', label: 'Teachers', route: '/staff', icon: Users },
+      { id: 'teachers', label: 'Teachers', route: '/teachers', icon: Users },
     ],
   },
   {
+    id: 'academics-group',
     items: [
       { id: 'academics', label: 'Academics', route: '/academics', icon: School },
       { id: 'homework', label: 'Homework', route: '/homework', icon: BookMarked },
@@ -54,49 +60,26 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: 'admin-group',
     items: [
       { id: 'statistics', label: 'Statistics', route: '/statistics', icon: BarChart3 },
-      { id: 'fees', label: 'Payments', route: '/fees', icon: CreditCard },
+      { id: 'payments', label: 'Payments', route: '/fees', icon: CreditCard },
       { id: 'notices', label: 'Notices', route: '/notices', icon: Bell },
       { id: 'reports', label: 'Reports', route: '/reports', icon: FileSpreadsheet },
-    ],
-  },
-  {
-    items: [
       { id: 'settings', label: 'Settings', route: '/settings', icon: Settings },
     ],
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SIDEBAR GEOMETRY (single source of truth)
-//
-//  Expanded width:    224px
-//  Collapsed width:    64px
-//  Icon size:          18px
-//
-//  Nav links are ALWAYS w-full, ALWAYS flex-row, NO Tailwind class switching.
-//  Only inline `style` values transition — this gives pure CSS interpolation
-//  which the browser renders at 60fps without any React re-render jank.
-//
-//  Collapsed paddingLeft = (64 - 18) / 2 = 23px  → icon perfectly centered
-//  Expanded  paddingLeft = 14px                   → icon left-aligned
-//
-//  The sidebar width transition is 300ms and so is the paddingLeft transition.
-//  Th// Collapsed icon center offset (px).
-// Nav container is px-3 (12px each side), so link width in collapsed = 64-24 = 40px.
-// To center an 18px icon: (40-18)/2 = 11px paddingLeft.
 const COLLAPSED_ICON_PL = 11;
-// Expanded left padding for left-aligned icon (link width = 214-24 = 190px)
-// Equal to paddingRight so the link box looks symmetric inside.
-// Matches implicit vertical padding: h-10 (40px) - icon (18px) / 2 = 11px.
 const EXPANDED_LINK_PL = 11;
-// Gap between icon and label in expanded mode
 const EXPANDED_ICON_GAP = 10;
 
 export function Sidebar() {
-  const { sidebarExpanded } = useGlobalStore();
+  const { sidebarExpanded, activeSession, addNotification } = useGlobalStore();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
 
   return (
     <aside
@@ -236,16 +219,63 @@ export function Sidebar() {
               transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out',
             }}
           >
-            <Link
-              to="/login"
-              title="Sign Out"
-              className="text-muted-foreground hover:text-destructive p-1.5 rounded-md hover:bg-muted transition-colors duration-200 shrink-0"
+            <button
+              type="button"
+              onClick={() => setIsLogoutModalOpen(true)}
+              title="Sign Out of VidyaFloww"
+              className="text-muted-foreground hover:text-rose-400 p-1.5 rounded-md hover:bg-[#1f1f1f] transition-colors duration-200 shrink-0 cursor-pointer"
             >
               <LogOut className="h-4 w-4" />
-            </Link>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Logout Confirmation Dialog */}
+      <VFDialog
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        title="Sign Out of VidyaFloww?"
+        description="Are you sure you want to end your current session? You can sign back in anytime with your institutional credentials."
+        className="max-w-md"
+        footerActions={
+          <div className="flex items-center justify-end gap-2.5 w-full">
+            <VFButton
+              variant="outline"
+              size="sm"
+              onClick={() => setIsLogoutModalOpen(false)}
+            >
+              Cancel
+            </VFButton>
+            <VFButton
+              variant="danger"
+              size="sm"
+              leftIcon={<LogOut className="h-3.5 w-3.5" />}
+              onClick={() => {
+                setIsLogoutModalOpen(false);
+                addNotification({
+                  title: 'Logged Out',
+                  description: 'You have been safely signed out of VidyaFloww.',
+                  type: 'info',
+                });
+                navigate({ to: '/login' });
+              }}
+            >
+              Sign Out
+            </VFButton>
+          </div>
+        }
+      >
+        <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex items-center gap-3">
+          <div className="h-10 w-10 rounded-md bg-rose-500/15 text-rose-400 border border-rose-500/30 flex items-center justify-center shrink-0">
+            <LogOut className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-sm font-bold text-foreground">Active Session: {activeSession}</p>
+            <p className="text-xs text-muted-foreground">Logged in as Roshan Singh (Super Admin)</p>
+          </div>
+        </div>
+      </VFDialog>
     </aside>
   );
 }

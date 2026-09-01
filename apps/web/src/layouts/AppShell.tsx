@@ -104,12 +104,13 @@ function SmallScreenBlocker() {
 
 const ROUTE_PAGE_NAMES: Record<string, string> = {
   '/': 'Dashboard',
+  '/dashboard': 'Dashboard',
   '/students': 'Students',
   '/admissions': 'Admissions',
   '/attendance': 'Attendance',
   '/academics': 'Academics',
   '/timetable': 'Timetable',
-  '/staff': 'Teachers',
+  '/teachers': 'Teachers',
   '/homework': 'Homework',
   '/examinations': 'Examinations',
   '/statistics': 'Statistics',
@@ -214,14 +215,14 @@ export function AppShell() {
               onSearchClick={() => setIsCommandPaletteOpen(true)}
               onNotificationsClick={() => setIsNotificationsOpen(true)}
             />
-            <main ref={mainRef} className="flex-1 overflow-y-auto custom-scrollbar min-w-0 bg-background relative flex flex-col">
+            <main ref={mainRef} className="flex-1 overflow-y-auto custom-scrollbar min-w-0 bg-background relative flex flex-col overflow-x-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
                   className="w-full flex-1 flex flex-col min-h-full"
                 >
                   <Outlet />

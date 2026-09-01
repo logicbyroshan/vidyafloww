@@ -224,9 +224,9 @@ export function VFDrawer({
 
                   {/* Visible Header (if not hidden) */}
                   {!hideHeader && (
-                    <div className="flex items-center justify-between p-5 sm:p-6 border-b border-border/40 shrink-0">
-                      <div className="space-y-1 min-w-0 flex-1 pr-3">
-                        <DialogPrimitive.Title className="text-lg font-bold text-foreground leading-none truncate">
+                    <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-card shrink-0">
+                      <div className="space-y-0.5 min-w-0 flex-1 pr-3">
+                        <DialogPrimitive.Title className="text-base font-black text-foreground leading-tight tracking-tight truncate">
                           {title}
                         </DialogPrimitive.Title>
                         {description && (
@@ -235,20 +235,11 @@ export function VFDrawer({
                           </DialogPrimitive.Description>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        {headerActions}
-                        <DialogPrimitive.Close asChild>
-                          <button
-                            onClick={onClose}
-                            className="text-muted-foreground hover:text-foreground p-1.5 rounded-md hover:bg-muted transition-colors outline-none cursor-pointer"
-                            aria-label="Close drawer"
-                          >
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          </button>
-                        </DialogPrimitive.Close>
-                      </div>
+                      {headerActions && (
+                        <div className="flex items-center gap-2 shrink-0">
+                          {headerActions}
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -259,7 +250,7 @@ export function VFDrawer({
 
                   {/* Footer */}
                   {footerActions && (
-                    <div className="flex items-center justify-end gap-2 p-4 sm:p-5 border-t border-border/40 bg-muted/20">
+                    <div className="flex items-center justify-between gap-3 px-4 py-2.5 sm:px-5 sm:py-2.5 border-t border-border bg-card shrink-0">
                       {footerActions}
                     </div>
                   )}
