@@ -17,7 +17,6 @@ import {
   MessageSquare,
   Copy,
   Check,
-  X,
   Printer,
   ChevronLeft,
   ChevronRight,
@@ -388,7 +387,6 @@ function FeesPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4" />}
                     onClick={() => setIsRecordingPayment(false)}
                   >
                     Cancel
@@ -427,18 +425,17 @@ function FeesPage() {
                   </button>
                 </div>
 
-                {/* 2. Action Buttons: Close on left, Action on right */}
+                {/* 2. Action Buttons: Cancel on left, Action on right */}
                 <div className="flex items-center gap-2.5">
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4 text-muted-foreground" />}
                     onClick={() => {
                       setIsRecordingPayment(false);
                       setIsDrawerOpen(false);
                     }}
                   >
-                    Close
+                    Cancel
                   </VFButton>
                   <VFButton
                     variant="outline"

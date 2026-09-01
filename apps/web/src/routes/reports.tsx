@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFStatCard,
   VFDataTable,
   VFButton,
   VFTabs,
@@ -10,11 +9,8 @@ import {
 } from '@vidyafloww/ui';
 import {
   FileSpreadsheet,
-  BarChart3,
-  ShieldCheck,
   Download,
   CheckCircle2,
-  TrendingUp,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/reports')({

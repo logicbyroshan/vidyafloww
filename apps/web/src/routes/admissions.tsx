@@ -18,7 +18,6 @@ import {
   MessageSquare,
   Copy,
   Check,
-  X,
   Edit3,
   ChevronLeft,
   ChevronRight,
@@ -30,10 +29,7 @@ import {
   Camera,
   Users,
   RotateCcw,
-  Sparkles,
-  Upload,
   School,
-  CreditCard,
   FileSpreadsheet,
   Archive,
   Loader2,
@@ -1168,8 +1164,7 @@ function AdmissionsPage() {
         <div className="flex items-center justify-start">
           <div
             onClick={() => openApplicantDrawer(r)}
-            className="overflow-hidden rounded-md border border-border/80 shadow-xs w-11 h-[56px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
-            style={{ aspectRatio: '19.5 / 25' }}
+            className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
             title="Click to view 360° Candidate Dossier"
           >
             <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover" />
@@ -1316,7 +1311,7 @@ function AdmissionsPage() {
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
         bodyClassName="p-0 flex flex-col flex-1 min-h-0 overflow-hidden"
         footerActions={
-          <div className="flex items-center justify-between w-full gap-3 px-4 py-3 border-b border-border bg-card">
+          <div className="flex items-center justify-between w-full gap-3">
             <div className="flex items-center gap-2.5">
               <span className="text-xs font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border">
                 INTAKE-2026
@@ -1337,7 +1332,6 @@ function AdmissionsPage() {
               <VFButton
                 variant="outline"
                 size="sm"
-                leftIcon={<X className="h-4 w-4 text-muted-foreground" />}
                 onClick={handleCloseNewAdmissionDrawer}
               >
                 Cancel
@@ -2051,7 +2045,7 @@ function AdmissionsPage() {
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
         bodyClassName="p-0 flex flex-col flex-1 min-h-0 overflow-hidden"
         footerActions={
-          <div className="flex items-center justify-between w-full gap-3 px-4 py-3 border-b border-border bg-card">
+          <div className="flex items-center justify-between w-full gap-3">
             {isEditingApplicant ? (
               <>
                 <div className="flex items-center gap-2.5">
@@ -2066,7 +2060,6 @@ function AdmissionsPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4" />}
                     onClick={handleCancelEdit}
                   >
                     Cancel
@@ -2108,14 +2101,13 @@ function AdmissionsPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4 text-muted-foreground" />}
                     onClick={() => {
                       setIsEditingApplicant(false);
                       setApplicantFormData(null);
                       setIsDrawerOpen(false);
                     }}
                   >
-                    Close
+                    Cancel
                   </VFButton>
                   <VFButton
                     variant="outline"

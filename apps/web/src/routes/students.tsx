@@ -33,7 +33,6 @@ import {
   Check,
   Copy,
   Receipt,
-  X,
   GraduationCap,
   Users,
   Image as ImageIcon,
@@ -960,14 +959,12 @@ function StudentsPage() {
         <div className="flex items-center justify-start">
           <div
             onClick={() => openStudentDrawer(r)}
-            className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-12 h-[61.5px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
-            style={{ aspectRatio: '19.5 / 25' }}
+            className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
             title="Click to view 360° student profile"
           >
             <img
               src={r.avatarUrl}
               alt={r.name}
-              style={{ aspectRatio: '19.5 / 25' }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               onError={(e: any) => {
                 e.target.style.display = 'none';
@@ -975,8 +972,7 @@ function StudentsPage() {
               }}
             />
             <div
-              style={{ aspectRatio: '19.5 / 25' }}
-              className="w-full h-full bg-muted text-muted-foreground font-black text-sm hidden items-center justify-center border border-border"
+              className="w-full h-full bg-muted text-muted-foreground font-black text-xs hidden items-center justify-center border border-border"
             >
               {r.name.split(' ').map((n: string) => n[0]).join('')}
             </div>
@@ -1112,7 +1108,6 @@ function StudentsPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4" />}
                     onClick={handleCancelEdit}
                   >
                     Cancel
@@ -1154,14 +1149,13 @@ function StudentsPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4 text-muted-foreground" />}
                     onClick={() => {
                       setIsEditingStudent(false);
                       setStudentFormData(null);
                       setIsDrawerOpen(false);
                     }}
                   >
-                    Close
+                    Cancel
                   </VFButton>
                   <VFButton
                     size="sm"

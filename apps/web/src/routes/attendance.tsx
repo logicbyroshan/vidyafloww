@@ -14,7 +14,6 @@ import {
 import {
   CheckSquare,
   Send,
-  Calendar,
   MessageSquare,
   UserCheck,
   UserX,
@@ -31,7 +30,6 @@ import {
   Paperclip,
   CheckCircle2,
   CalendarDays,
-  Phone,
   ExternalLink,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -185,8 +183,8 @@ function generateMonthCalendar(monthIndex: number, year: number, studentSeed: nu
 
     const rand = (d * 19 + studentSeed * 29 + monthIndex * 37) % 100;
     let status: DayStatus = 'Present';
-    let punchIn = '08:02 AM';
-    let punchOut = '02:30 PM';
+    let punchIn: string | undefined = '08:02 AM';
+    let punchOut: string | undefined = '02:30 PM';
     let note = 'Gate Punch Verified';
 
     if (rand < 4) {
@@ -816,20 +814,29 @@ function AttendancePage() {
     {
       header: 'Student Name & Admission ID',
       accessorKey: 'name',
-      headerClassName: 'w-[45%] min-w-[280px]',
-      className: 'w-[45%] min-w-[280px]',
+      headerClassName: 'w-[45%] min-w-[320px]',
+      className: 'w-[45%] min-w-[320px]',
       cell: (r: StudentAttendanceRecord) => (
-        <div>
-          <button
+        <div className="flex items-center gap-3">
+          <div
             onClick={() => openStudentDrawer(r)}
-            className="text-left font-extrabold text-foreground hover:text-primary transition-colors cursor-pointer text-sm leading-tight block truncate tracking-tight"
+            className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
+            title="Click to view Attendance & Leaves"
           >
-            {r.name}
-          </button>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium mt-1">
-            <span className="font-mono text-[11px] font-semibold text-foreground/80">{r.admNo}</span>
-            <span>•</span>
-            <span className="font-semibold text-foreground/70">{r.class}</span>
+            <img src={r.photoUrl} alt={r.name} className="w-full h-full object-cover" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <button
+              onClick={() => openStudentDrawer(r)}
+              className="text-left font-extrabold text-foreground hover:text-primary transition-colors cursor-pointer text-sm leading-tight block truncate tracking-tight"
+            >
+              {r.name}
+            </button>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium mt-1">
+              <span className="font-mono text-[11px] font-semibold text-foreground/80">{r.admNo}</span>
+              <span>•</span>
+              <span className="font-semibold text-foreground/70">{r.class}</span>
+            </div>
           </div>
         </div>
       ),
@@ -1056,10 +1063,9 @@ function AttendancePage() {
               <VFButton
                 variant="outline"
                 size="sm"
-                leftIcon={<X className="h-4 w-4 text-muted-foreground" />}
                 onClick={() => setIsDrawerOpen(false)}
               >
-                Close
+                Cancel
               </VFButton>
               <VFButton
                 variant="outline"
@@ -1700,13 +1706,6 @@ function AttendancePage() {
                   <ExternalLink className="h-3 w-3" />
                   <span>Open Full</span>
                 </a>
-                <button
-                  onClick={() => setPreviewingProof(null)}
-                  className="h-7 w-7 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center cursor-pointer transition-colors"
-                  title="Close Preview (Esc)"
-                >
-                  ✕
-                </button>
               </div>
             </div>
 

@@ -74,7 +74,7 @@ const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'attendance', label: 'Attendance', desc: 'Daily roll call & biometric logs', route: '/attendance', icon: CalendarCheck, category: 'Core' },
   { id: 'admissions', label: 'Admissions', desc: 'Intake pipeline & lead verification', route: '/admissions', icon: UserPlus, category: 'Core' },
   { id: 'students', label: 'Students', desc: '360° student directory & dossiers', route: '/students', icon: GraduationCap, category: 'Core' },
-  { id: 'staff', label: 'Teachers', desc: 'Faculty profiles & workload matrix', route: '/staff', icon: Users, category: 'Academic' },
+  { id: 'teachers', label: 'Teachers', desc: 'Faculty profiles & workload matrix', route: '/teachers', icon: Users, category: 'Academic' },
   { id: 'timetable', label: 'Timetable', desc: 'Class schedules & proxy assignment', route: '/timetable', icon: Calendar, category: 'Academic' },
   { id: 'fees', label: 'Payments', desc: 'Dues collection & digital receipts', route: '/fees', icon: CreditCard, category: 'Finance' },
   { id: 'notices', label: 'Notices', desc: 'Campus circulars & broadcasts', route: '/notices', icon: Bell, category: 'Communication' },
@@ -89,7 +89,7 @@ const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'portal', label: 'Parent Portal', desc: 'Guardian access & communications', route: '/portal', icon: Smartphone, category: 'Communication' },
 ];
 
-function DashboardPage() {
+export function DashboardPage() {
   const {
     schoolProfile,
     dashboardShortcuts,
@@ -158,10 +158,11 @@ function DashboardPage() {
     setDashboardKpiOrder(nextOrder);
   };
 
-  // Faculty absence roster items
+  // Faculty absence roster items with photo avatars
   const facultyAbsences = [
     {
       teacher: 'Dr. Rajesh Sharma',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
       dept: 'Physics · Senior HOD',
       reason: 'Medical Leave',
       proxy: 'Mr. Arvind Gupta',
@@ -169,6 +170,7 @@ function DashboardPage() {
     },
     {
       teacher: 'Ms. Pooja Rao',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80',
       dept: 'English Literature',
       reason: 'Casual Leave',
       proxy: 'Mrs. S. Joshi',
@@ -176,6 +178,7 @@ function DashboardPage() {
     },
     {
       teacher: 'Mr. Deepak Mishra',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
       dept: 'Hindi Department',
       reason: 'Board Seminar',
       proxy: 'Mr. R. Verma',
@@ -183,6 +186,7 @@ function DashboardPage() {
     },
     {
       teacher: 'Coach Vikram Singh',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
       dept: 'Physical Education',
       reason: 'Morning Duty',
       proxy: 'Sports Squad',
@@ -190,6 +194,7 @@ function DashboardPage() {
     },
     {
       teacher: 'Mrs. Ananya Sen',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
       dept: 'Mathematics · Dept Head',
       reason: 'Official Workshop',
       proxy: 'Mr. K. Nambiar',
@@ -197,10 +202,11 @@ function DashboardPage() {
     },
   ];
 
-  // Student exceptions items
+  // Student exceptions items with photo avatars
   const studentExceptions = [
     {
       student: 'Priya Patel',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&auto=format&fit=crop&q=80',
       class: 'Class 10-A · Roll #18',
       alert: '3rd Consecutive Absence (Uninformed)',
       severity: 'danger',
@@ -208,6 +214,7 @@ function DashboardPage() {
     },
     {
       student: 'Sneha Singh',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
       class: 'Class 11-Sci · Roll #04',
       alert: 'Bus Route 4 Delayed (09:15 AM Arrival)',
       severity: 'warning',
@@ -215,6 +222,7 @@ function DashboardPage() {
     },
     {
       student: 'Amit Patel',
+      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80',
       class: 'Class 8-A · Roll #29',
       alert: 'Uninformed Absenteeism (No Note)',
       severity: 'danger',
@@ -222,6 +230,7 @@ function DashboardPage() {
     },
     {
       student: 'Kavya Nair',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
       class: 'Class 11-Com · Roll #12',
       alert: 'Medical Leave (Aug 18 – Aug 19)',
       severity: 'neutral',
@@ -229,6 +238,7 @@ function DashboardPage() {
     },
     {
       student: 'Rohan Deshmukh',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
       class: 'Class 9-B · Roll #31',
       alert: 'Late Gate Entry (3rd time this week)',
       severity: 'warning',
@@ -247,9 +257,9 @@ function DashboardPage() {
         trend: 'up',
         trendLabel: '+12 this month',
       };
-    } else if (kpiId === 'staff') {
+    } else if (kpiId === 'staff' || kpiId === 'teachers') {
       kpiProps = {
-        title: 'Teaching Staff',
+        title: 'Teaching Faculty',
         value: '98.2%',
         icon: <GraduationCap className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
@@ -405,13 +415,15 @@ function DashboardPage() {
               {facultyAbsences.map((t, i) => (
                 <div
                   key={i}
-                  className="p-3.5 rounded-md border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-amber-500/40 transition-all flex items-center justify-between gap-3 shadow-xs"
+                  className="p-3 rounded-md border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-amber-500/40 transition-all flex items-center justify-between gap-3 shadow-xs"
                 >
-                  {/* Left: Avatar + Name + Leave Badge + Dept */}
+                  {/* Left: Photo Avatar + Name + Leave Badge + Dept */}
                   <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="h-9 w-9 rounded-md bg-amber-500/15 text-amber-400 font-black text-xs sm:text-sm flex items-center justify-center shrink-0 border border-amber-500/30">
-                      {t.teacher.split(' ').slice(0, 2).map((n) => n[0]).join('')}
-                    </div>
+                    <img
+                      src={t.avatar}
+                      alt={t.teacher}
+                      className="h-9 w-9 rounded-md object-cover shrink-0 border border-border/80 shadow-xs"
+                    />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <p className="text-xs sm:text-sm font-bold text-foreground truncate">{t.teacher}</p>
@@ -467,12 +479,14 @@ function DashboardPage() {
               {studentExceptions.map((s, i) => (
                 <div
                   key={i}
-                  className="p-3.5 rounded-md border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
+                  className="p-3 rounded-md border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-9 w-9 rounded-md bg-rose-500/15 text-rose-400 font-black text-xs sm:text-sm flex items-center justify-center shrink-0 border border-rose-500/30">
-                      {s.student.split(' ').slice(0, 2).map((n) => n[0]).join('')}
-                    </div>
+                    <img
+                      src={s.avatar}
+                      alt={s.student}
+                      className="h-9 w-9 rounded-md object-cover shrink-0 border border-border/80 shadow-xs"
+                    />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-xs sm:text-sm font-bold text-foreground truncate">{s.student}</p>
