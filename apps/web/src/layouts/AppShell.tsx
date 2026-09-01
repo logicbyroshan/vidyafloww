@@ -130,7 +130,7 @@ const ROUTE_PAGE_NAMES: Record<string, string> = {
 
 export function AppShell() {
   const location = useLocation();
-  const { addNotification, schoolProfile } = useGlobalStore();
+  const { addNotification, schoolProfile, language } = useGlobalStore();
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false);
   const mainRef = React.useRef<HTMLElement | null>(null);
@@ -158,6 +158,18 @@ export function AppShell() {
     window.addEventListener('resize', checkWidth);
     return () => window.removeEventListener('resize', checkWidth);
   }, []);
+
+  // Apply language class to <html> for font switching
+  React.useEffect(() => {
+    const html = document.documentElement;
+    if (language === 'hi') {
+      html.classList.add('lang-hi');
+      html.setAttribute('lang', 'hi');
+    } else {
+      html.classList.remove('lang-hi');
+      html.setAttribute('lang', 'en');
+    }
+  }, [language]);
 
   React.useEffect(() => {
     initTheme();

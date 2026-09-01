@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import { cn, VFAvatar, VFDialog, VFButton } from '@vidyafloww/ui';
 import {
+  Award,
   BarChart3,
   Bell,
   BookMarked,
@@ -18,19 +19,22 @@ import {
   Settings,
   UserPlus,
   Users,
+  Wallet,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
+import { TranslationKey } from '../lib/i18n';
 
 interface NavItem {
   id: string;
-  label: string;
+  labelKey: TranslationKey;
   route: string;
   icon: LucideIcon;
 }
 
 interface NavGroup {
   id: string;
-  label?: string;
+  labelKey?: TranslationKey;
   items: NavItem[];
 }
 
@@ -38,45 +42,53 @@ const NAVIGATION_GROUPS: NavGroup[] = [
   {
     id: 'primary',
     items: [
-      { id: 'dashboard', label: 'Dashboard', route: '/', icon: LayoutDashboard },
+      { id: 'dashboard', labelKey: 'nav.dashboard', route: '/', icon: LayoutDashboard },
     ],
   },
   {
     id: 'core',
     items: [
-      { id: 'students', label: 'Students', route: '/students', icon: GraduationCap },
-      { id: 'admissions', label: 'Admissions', route: '/admissions', icon: UserPlus },
-      { id: 'attendance', label: 'Attendance', route: '/attendance', icon: CalendarCheck },
-      { id: 'timetable', label: 'Timetable', route: '/timetable', icon: Calendar },
-      { id: 'teachers', label: 'Teachers', route: '/teachers', icon: Users },
+      { id: 'students', labelKey: 'nav.students', route: '/students', icon: GraduationCap },
+      { id: 'admissions', labelKey: 'nav.admissions', route: '/admissions', icon: UserPlus },
+      { id: 'attendance', labelKey: 'nav.attendance', route: '/attendance', icon: CalendarCheck },
+      { id: 'timetable', labelKey: 'nav.timetable', route: '/timetable', icon: Calendar },
+      { id: 'teachers', labelKey: 'nav.teachers', route: '/teachers', icon: Users },
     ],
   },
   {
     id: 'academics-group',
     items: [
-      { id: 'academics', label: 'Academics', route: '/academics', icon: School },
-      { id: 'homework', label: 'Homework', route: '/homework', icon: BookMarked },
-      { id: 'examinations', label: 'Examinations', route: '/examinations', icon: ClipboardList },
+      { id: 'academics', labelKey: 'nav.academics', route: '/academics', icon: School },
+      { id: 'homework', labelKey: 'nav.homework', route: '/homework', icon: BookMarked },
+      { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
+    ],
+  },
+  {
+    id: 'finance-group',
+    items: [
+      { id: 'fees', labelKey: 'nav.fees', route: '/fees', icon: CreditCard },
+      { id: 'salary', labelKey: 'nav.salary', route: '/salary', icon: Wallet },
+      { id: 'scholarships', labelKey: 'nav.scholarships', route: '/scholarships', icon: Award },
     ],
   },
   {
     id: 'admin-group',
     items: [
-      { id: 'statistics', label: 'Statistics', route: '/statistics', icon: BarChart3 },
-      { id: 'payments', label: 'Payments', route: '/fees', icon: CreditCard },
-      { id: 'notices', label: 'Notices', route: '/notices', icon: Bell },
-      { id: 'reports', label: 'Reports', route: '/reports', icon: FileSpreadsheet },
-      { id: 'settings', label: 'Settings', route: '/settings', icon: Settings },
+      { id: 'statistics', labelKey: 'nav.statistics', route: '/statistics', icon: BarChart3 },
+      { id: 'notices', labelKey: 'nav.notices', route: '/notices', icon: Bell },
+      { id: 'reports', labelKey: 'nav.reports', route: '/reports', icon: FileSpreadsheet },
+      { id: 'settings', labelKey: 'nav.settings', route: '/settings', icon: Settings },
     ],
   },
 ];
 
 const COLLAPSED_ICON_PL = 11;
-const EXPANDED_LINK_PL = 11;
+const EXPANDED_LINK_PL = 12;
 const EXPANDED_ICON_GAP = 10;
 
 export function Sidebar() {
   const { sidebarExpanded, activeSession, addNotification } = useGlobalStore();
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
@@ -85,17 +97,24 @@ export function Sidebar() {
     <aside
       className={cn(
         'flex flex-col h-full bg-black border-r border-border transition-[width] duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-hidden',
-        sidebarExpanded ? 'w-[214px]' : 'w-[64px]'
+        sidebarExpanded ? 'w-[224px]' : 'w-[68px]'
       )}
     >
-      {/* ── HEADER ── 64px height, px-4 left padding, same as Navbar */}
-      <div className="flex h-[64px] items-center border-b border-border bg-black relative shrink-0 px-4">
-        {/* Logo: always visible at same left offset */}
+      {/* ── HEADER ── 64px height, balanced padding matching logo center */}
+      <div
+        className="flex h-[64px] items-center border-b border-border bg-black relative shrink-0"
+        style={{
+          paddingLeft: sidebarExpanded ? '16px' : '18px',
+          paddingRight: sidebarExpanded ? '16px' : '18px',
+          transition: 'padding 300ms ease-in-out',
+        }}
+      >
+        {/* Logo: strictly centered when collapsed at x = 34px */}
         <div className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center overflow-hidden">
           <img src="/logo.png" alt="VidyaFloww Logo" className="h-8 w-8 object-contain" />
         </div>
 
-        {/* Brand text: CSS-only fade + collapse via inline style */}
+        {/* Brand text: CSS-only fade + collapse */}
         <div
           className="flex flex-col min-w-0 overflow-hidden whitespace-nowrap"
           style={{
@@ -109,24 +128,24 @@ export function Sidebar() {
             Vidya<span className="text-primary">Floww</span>
           </span>
           <span className="text-[9px] text-muted-foreground font-bold tracking-wider uppercase mt-[3px]">
-            School Management
+            {t('page.settings')} &amp; Management
           </span>
         </div>
-
       </div>
 
-      {/* ── NAV LIST ── px-3 outer padding for generous breathing room from sidebar walls, py-3 vertical */}
-      <div className="flex-1 overflow-y-auto no-scrollbar px-3 py-3">
+      {/* ── NAV LIST ── px-3.5 outer padding for balanced 68px geometry */}
+      <div className="flex-1 overflow-y-auto no-scrollbar px-3.5 py-3">
         {NAVIGATION_GROUPS.map((group, groupIdx) => (
           <div key={groupIdx}>
-            {/* Full-bleed divider: -mx-3 cancels the px-3 container padding */}
+            {/* Full-bleed divider: -mx-3.5 cancels the container padding */}
             {groupIdx > 0 && (
-              <div className="-mx-3 h-[1px] bg-border mt-3 mb-3" />
+              <div className="-mx-3.5 h-[1px] bg-border mt-3 mb-3" />
             )}
 
             <div className="flex flex-col gap-1.5">
               {group.items.map((item) => {
                 const Icon = item.icon;
+                const label = t(item.labelKey);
                 const isActive =
                   item.route === '/'
                     ? location.pathname === '/'
@@ -136,9 +155,8 @@ export function Sidebar() {
                   <Link
                     key={item.id}
                     to={item.route}
-                    title={!sidebarExpanded ? item.label : undefined}
+                    title={!sidebarExpanded ? label : undefined}
                     className={cn(
-                      // Always full-width, always same height — NO class switching
                       'flex items-center h-10 w-full rounded-md border outline-none overflow-hidden',
                       'transition-colors duration-150',
                       isActive
@@ -146,13 +164,13 @@ export function Sidebar() {
                         : 'border-transparent text-muted-foreground hover:bg-[#141414] hover:text-foreground font-medium'
                     )}
                     style={{
-                      // paddingLeft transitions between centered (collapsed) and left-aligned (expanded)
+                      // paddingLeft centers the 18px icon at x = 34px in collapsed 68px bar
                       paddingLeft: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : `${COLLAPSED_ICON_PL}px`,
-                      paddingRight: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : '8px',
-                      transition: 'padding-left 300ms ease-in-out, background-color 150ms, border-color 150ms',
+                      paddingRight: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : '11px',
+                      transition: 'padding 300ms ease-in-out, background-color 150ms, border-color 150ms',
                     }}
                   >
-                    {/* Icon: always visible, fixed size */}
+                    {/* Icon: always visible, fixed 18px */}
                     <Icon
                       className={cn(
                         'shrink-0 h-[18px] w-[18px]',
@@ -160,17 +178,17 @@ export function Sidebar() {
                       )}
                     />
 
-                    {/* Label: CSS fade + collapse — NO class switching */}
+                    {/* Label: CSS fade + collapse */}
                     <span
                       className="text-sm whitespace-nowrap leading-none overflow-hidden font-[inherit]"
                       style={{
                         opacity: sidebarExpanded ? 1 : 0,
-                        maxWidth: sidebarExpanded ? '140px' : '0px',
+                        maxWidth: sidebarExpanded ? '150px' : '0px',
                         marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
                         transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
                       }}
                     >
-                      {item.label}
+                      {label}
                     </span>
                   </Link>
                 );
@@ -180,20 +198,23 @@ export function Sidebar() {
         ))}
       </div>
 
-      {/* ── BOTTOM USER BAR ── px-3 py-3, mirrors nav container */}
-      <div className="border-t border-border bg-black shrink-0 px-3 py-3">
-        {/* Inner row uses same paddingLeft transition as nav links */}
+      {/* ── BOTTOM USER PROFILE CARD ── px-3.5 py-3, perfectly centered in collapsed mode */}
+      <div className="border-t border-border bg-black shrink-0 px-3.5 py-3">
         <div
-          className="flex items-center h-10 w-full overflow-hidden"
+          className="flex items-center h-10 w-full overflow-hidden rounded-md cursor-pointer hover:bg-[#141414] transition-colors"
+          onClick={() => {
+            if (!sidebarExpanded) setIsLogoutModalOpen(true);
+          }}
+          title={!sidebarExpanded ? 'Roshan Singh (Super Admin) - Click to Sign Out' : undefined}
           style={{
-            paddingLeft: sidebarExpanded ? `${EXPANDED_LINK_PL}px` : `${COLLAPSED_ICON_PL}px`,
-            paddingRight: '8px',
-            transition: 'padding-left 300ms ease-in-out',
+            paddingLeft: sidebarExpanded ? '4px' : '4px',
+            paddingRight: sidebarExpanded ? '8px' : '4px',
+            transition: 'padding 300ms ease-in-out',
           }}
         >
-          {/* Avatar: always visible, same size/offset as nav icons */}
+          {/* Avatar: strictly 32px, centered with 4px margin on each side when collapsed */}
           <div className="h-8 w-8 min-w-[32px] max-w-[32px] shrink-0 flex items-center justify-center">
-            <VFAvatar fallback="Roshan Singh" size="sm" className="h-8 w-8 text-xs rounded-md" />
+            <VFAvatar fallback="Roshan Singh" size="sm" className="h-8 w-8 text-xs font-bold rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30" />
           </div>
 
           {/* User info: fades on collapse */}
@@ -210,7 +231,7 @@ export function Sidebar() {
             <p className="text-[10px] text-muted-foreground font-semibold truncate mt-[3px]">Super Admin</p>
           </div>
 
-          {/* Sign-out: fades on collapse */}
+          {/* Sign-out button: visible when expanded */}
           <div
             className="ml-auto overflow-hidden flex items-center"
             style={{
@@ -221,7 +242,10 @@ export function Sidebar() {
           >
             <button
               type="button"
-              onClick={() => setIsLogoutModalOpen(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLogoutModalOpen(true);
+              }}
               title="Sign Out of VidyaFloww"
               className="text-muted-foreground hover:text-rose-400 p-1.5 rounded-md hover:bg-[#1f1f1f] transition-colors duration-200 shrink-0 cursor-pointer"
             >
@@ -235,8 +259,8 @@ export function Sidebar() {
       <VFDialog
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
-        title="Sign Out of VidyaFloww?"
-        description="Are you sure you want to end your current session? You can sign back in anytime with your institutional credentials."
+        title="Sign Out?"
+        description="End your current session? You can sign back in anytime with your institutional credentials."
         className="max-w-md"
         footerActions={
           <div className="flex items-center justify-end gap-2.5 w-full">
@@ -244,21 +268,23 @@ export function Sidebar() {
               variant="outline"
               size="sm"
               onClick={() => setIsLogoutModalOpen(false)}
+              className="rounded-md"
             >
-              Cancel
+              {t('action.cancel')}
             </VFButton>
             <VFButton
               variant="danger"
               size="sm"
               leftIcon={<LogOut className="h-3.5 w-3.5" />}
+              className="rounded-md font-bold"
               onClick={() => {
                 setIsLogoutModalOpen(false);
                 addNotification({
-                  title: 'Logged Out',
-                  description: 'You have been safely signed out of VidyaFloww.',
+                  title: 'Signed Out',
+                  description: 'Safely signed out of VidyaFloww.',
                   type: 'info',
                 });
-                navigate({ to: '/login' });
+                navigate({ to: '/' });
               }}
             >
               Sign Out
@@ -266,14 +292,9 @@ export function Sidebar() {
           </div>
         }
       >
-        <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex items-center gap-3">
-          <div className="h-10 w-10 rounded-md bg-rose-500/15 text-rose-400 border border-rose-500/30 flex items-center justify-center shrink-0">
-            <LogOut className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-sm font-bold text-foreground">Active Session: {activeSession}</p>
-            <p className="text-xs text-muted-foreground">Logged in as Roshan Singh (Super Admin)</p>
-          </div>
+        <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 text-xs text-muted-foreground space-y-1">
+          <p>User: <strong className="text-foreground">Roshan Singh</strong> (Super Admin)</p>
+          <p>Session: <strong className="text-emerald-400 font-mono">{activeSession}</strong></p>
         </div>
       </VFDialog>
     </aside>
