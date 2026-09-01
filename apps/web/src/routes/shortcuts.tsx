@@ -30,6 +30,7 @@ import {
   RotateCcw,
   Check,
   Plus,
+  Trash2,
   BarChart3,
 } from 'lucide-react';
 import { useGlobalStore, DEFAULT_DASHBOARD_SHORTCUTS } from '../stores/globalStore';
@@ -51,7 +52,7 @@ export const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'attendance', label: 'Attendance', desc: 'Daily roll call & biometric logs', route: '/attendance', icon: CalendarCheck, category: 'Core' },
   { id: 'admissions', label: 'Admissions', desc: 'Intake pipeline & lead verification', route: '/admissions', icon: UserPlus, category: 'Core' },
   { id: 'students', label: 'Students', desc: '360° student directory & dossiers', route: '/students', icon: GraduationCap, category: 'Core' },
-  { id: 'staff', label: 'Teachers', desc: 'Faculty profiles & workload matrix', route: '/staff', icon: Users, category: 'Academic' },
+  { id: 'teachers', label: 'Teachers', desc: 'Faculty profiles & workload matrix', route: '/teachers', icon: Users, category: 'Academic' },
   { id: 'timetable', label: 'Timetable', desc: 'Class schedules & proxy assignment', route: '/timetable', icon: Calendar, category: 'Academic' },
   { id: 'fees', label: 'Payments', desc: 'Dues collection & digital receipts', route: '/fees', icon: CreditCard, category: 'Finance' },
   { id: 'notices', label: 'Notices', desc: 'Campus circulars & broadcasts', route: '/notices', icon: Bell, category: 'Communication' },
@@ -66,24 +67,23 @@ export const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'portal', label: 'Parent Portal', desc: 'Guardian access & communications', route: '/portal', icon: Smartphone, category: 'Communication' },
 ];
 
+const MAX_SHORTCUTS = 12;
+
 function ShortcutsConfigPage() {
-  const { dashboardShortcuts, setDashboardShortcuts, resetDashboardShortcuts } = useGlobalStore();
+  const { dashboardShortcuts, setDashboardShortcuts, resetDashboardShortcuts, addNotification } = useGlobalStore();
 
   const [selectedIds, setSelectedIds] = React.useState<string[]>(
-    dashboardShortcuts && dashboardShortcuts.length > 0 ? dashboardShortcuts : DEFAULT_DASHBOARD_SHORTCUTS
+    dashboardShortcuts && dashboardShortcuts.length > 0 ? dashboardShortcuts.slice(0, MAX_SHORTCUTS) : DEFAULT_DASHBOARD_SHORTCUTS.slice(0, MAX_SHORTCUTS)
   );
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('All');
   const [saveToast, setSaveToast] = React.useState(false);
 
   // Sync state if store updates
   React.useEffect(() => {
     if (dashboardShortcuts && dashboardShortcuts.length > 0) {
-      setSelectedIds(dashboardShortcuts);
+      setSelectedIds(dashboardShortcuts.slice(0, MAX_SHORTCUTS));
     }
   }, [dashboardShortcuts]);
-
-  const categories = ['All', 'Core', 'Academic', 'Finance', 'Communication', 'Operations', 'System'];
 
   // Reordering handlers
   const handleMove = (index: number, direction: 'up' | 'down') => {
@@ -99,21 +99,39 @@ function ShortcutsConfigPage() {
     });
   };
 
-  const handleToggle = (id: string) => {
-    if (selectedIds.includes(id)) {
-      if (selectedIds.length <= 1) {
-        alert('You must keep at least 1 shortcut enabled on your dashboard.');
-        return;
-      }
-      setSelectedIds((prev) => prev.filter((item) => item !== id));
-    } else {
-      setSelectedIds((prev) => [...prev, id]);
+  const handleAdd = (id: string) => {
+    if (selectedIds.includes(id)) return;
+    if (selectedIds.length >= MAX_SHORTCUTS) {
+      addNotification({
+        title: 'Limit Reached',
+        description: `You can select a maximum of ${MAX_SHORTCUTS} shortcuts for the dashboard.`,
+        type: 'warning',
+      });
+      return;
     }
+    setSelectedIds((prev) => [...prev, id]);
+  };
+
+  const handleRemove = (id: string) => {
+    if (selectedIds.length <= 1) {
+      addNotification({
+        title: 'Minimum Required',
+        description: 'You must keep at least 1 quick action shortcut active.',
+        type: 'warning',
+      });
+      return;
+    }
+    setSelectedIds((prev) => prev.filter((item) => item !== id));
   };
 
   const handleSave = () => {
     setDashboardShortcuts(selectedIds);
     setSaveToast(true);
+    addNotification({
+      title: 'Quick Actions Saved',
+      description: `${selectedIds.length} shortcuts updated on your dashboard command center.`,
+      type: 'success',
+    });
     setTimeout(() => {
       setSaveToast(false);
     }, 3000);
@@ -121,30 +139,54 @@ function ShortcutsConfigPage() {
 
   const handleReset = () => {
     resetDashboardShortcuts();
-    setSelectedIds(DEFAULT_DASHBOARD_SHORTCUTS);
+    setSelectedIds(DEFAULT_DASHBOARD_SHORTCUTS.slice(0, MAX_SHORTCUTS));
     setSaveToast(true);
+    addNotification({
+      title: 'Defaults Restored',
+      description: 'Standard 12 quick action shortcuts reset to default order.',
+      type: 'info',
+    });
     setTimeout(() => {
       setSaveToast(false);
     }, 3000);
   };
 
-  // Filtered lists
+  // 1. Active items in sequence
   const activeShortcutObjects = selectedIds
     .map((id) => ALL_SHORTCUT_ACTIONS.find((a) => a.id === id))
     .filter((a): a is ShortcutAction => Boolean(a));
 
-  const filteredInactive = ALL_SHORTCUT_ACTIONS.filter((a) => {
-    const isInactive = !selectedIds.includes(a.id);
-    const matchesSearch = !searchQuery || a.label.toLowerCase().includes(searchQuery.toLowerCase()) || a.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || a.category === selectedCategory;
-    return isInactive && matchesSearch && matchesCategory;
-  });
+  // 2. All shortcuts sorted: active ones on top, inactive ones below
+  const sortedAllShortcuts = React.useMemo(() => {
+    return [...ALL_SHORTCUT_ACTIONS].sort((a, b) => {
+      const aActive = selectedIds.includes(a.id);
+      const bActive = selectedIds.includes(b.id);
+      if (aActive && !bActive) return -1;
+      if (!aActive && bActive) return 1;
+      if (aActive && bActive) {
+        return selectedIds.indexOf(a.id) - selectedIds.indexOf(b.id);
+      }
+      return 0;
+    });
+  }, [selectedIds]);
+
+  // Filtered list for left side
+  const filteredSortedShortcuts = React.useMemo(() => {
+    return sortedAllShortcuts.filter((a) => {
+      return (
+        !searchQuery ||
+        a.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+  }, [sortedAllShortcuts, searchQuery]);
 
   return (
-    <VFPageContainer className="space-y-4 max-w-7xl mx-auto py-2">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3.5 w-full">
       {/* Top Header & Navigation Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-lg border border-border/80 bg-card shadow-xs">
-        <div className="flex items-center gap-3.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-lg border border-border bg-[#101010] shadow-xs shrink-0">
+        <div className="flex items-center gap-3">
           <Link to="/">
             <VFButton
               size="sm"
@@ -157,13 +199,13 @@ function ShortcutsConfigPage() {
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-black text-foreground tracking-tight">Configure Quick Actions</h2>
+              <h2 className="text-base sm:text-lg font-black text-foreground tracking-tight">Configure Quick Actions</h2>
               <VFBadge variant="primary" className="text-xs font-bold font-mono">
-                {selectedIds.length} / {ALL_SHORTCUT_ACTIONS.length} Active
+                {selectedIds.length} / {MAX_SHORTCUTS} Active
               </VFBadge>
             </div>
             <p className="text-xs text-muted-foreground font-medium mt-0.5">
-              Customize module shortcuts and arrange display sequence for your command launchpad.
+              Select and arrange up to 12 quick action shortcuts for your institutional home launchpad.
             </p>
           </div>
         </div>
@@ -174,7 +216,7 @@ function ShortcutsConfigPage() {
             className="text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-1.5 px-3 py-2 rounded-md hover:bg-muted/40 transition-colors border border-transparent hover:border-border cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            Reset (12)
+            Reset Defaults (12)
           </button>
           <VFButton
             size="sm"
@@ -187,12 +229,12 @@ function ShortcutsConfigPage() {
         </div>
       </div>
 
-      {/* Save Notification Toast */}
+      {/* Save Notification Banner */}
       {saveToast && (
-        <div className="p-3.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="p-3 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-200 shrink-0">
           <div className="flex items-center gap-2">
             <Check className="h-4 w-4 shrink-0" />
-            <span>Dashboard shortcuts updated successfully! Changes are live on your home workspace.</span>
+            <span>Dashboard quick action shortcuts updated successfully! Changes are live on your home workspace.</span>
           </div>
           <Link to="/" className="underline text-emerald-300 hover:text-white font-black">
             Go to Dashboard →
@@ -200,191 +242,220 @@ function ShortcutsConfigPage() {
         </div>
       )}
 
-      {/* Main Grid: Left Reordering Manager + Right Live Visual Dashboard Preview */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+      {/* Main Full-Width Split Layout: Left Pool (All with Active sorted on top) + Right Dashboard Grid (12 Slots) */}
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         
-        {/* LEFT COLUMN: Active Shortcuts Reordering Studio (7 Cols) */}
-        <div className="lg:col-span-7 space-y-4">
+        {/* LEFT COLUMN: All Shortcuts Pool (Active on Top with Remove, Inactive below with Add) (6 Cols) */}
+        <div className="lg:col-span-6 flex flex-col min-h-0">
           <VFCard
-            title="Active Dashboard Shortcuts"
-            description="Drag or use arrow buttons to arrange position. Top items appear first in the launchpad."
-            actions={
-              <button
-                onClick={() => setSelectedIds(ALL_SHORTCUT_ACTIONS.map(a => a.id))}
-                className="text-xs font-bold text-primary hover:underline px-2 py-1"
-              >
-                Enable All ({ALL_SHORTCUT_ACTIONS.length})
-              </button>
-            }
-            bodyClassName="p-4 space-y-2.5 max-h-[580px] overflow-y-auto no-scrollbar"
-          >
-            {activeShortcutObjects.map((action, index) => {
-              const Icon = action.icon;
-              return (
-                <div
-                  key={action.id}
-                  className="p-3 rounded-md bg-[#161616] border border-border/90 hover:border-primary/60 flex items-center justify-between gap-3 transition-all shadow-xs group"
-                >
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    {/* Position Number Pill */}
-                    <span className="h-6 w-6 rounded bg-[#222222] border border-border text-xs font-mono font-black text-primary flex items-center justify-center shrink-0">
-                      {index + 1}
-                    </span>
-
-                    {/* Icon */}
-                    <div className="h-9 w-9 rounded-md bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0">
-                      <Icon className="h-4.5 w-4.5" />
-                    </div>
-
-                    {/* Info */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs sm:text-sm font-bold text-foreground truncate">{action.label}</p>
-                        <span className="text-[10px] font-mono text-muted-foreground uppercase px-1.5 py-0.2 rounded bg-[#202020] border border-border/80">
-                          {action.category}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground truncate mt-0.5">{action.desc}</p>
-                    </div>
-                  </div>
-
-                  {/* Reorder and Remove Action Controls */}
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <button
-                      onClick={() => handleMove(index, 'up')}
-                      disabled={index === 0}
-                      className={cn(
-                        "h-7 w-7 rounded border border-border bg-[#141414] flex items-center justify-center transition-colors shadow-xs",
-                        index === 0 ? "opacity-25 cursor-not-allowed text-muted-foreground" : "hover:bg-[#222222] hover:text-foreground cursor-pointer text-foreground"
-                      )}
-                      title="Move Up"
-                    >
-                      <ArrowUp className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      onClick={() => handleMove(index, 'down')}
-                      disabled={index === selectedIds.length - 1}
-                      className={cn(
-                        "h-7 w-7 rounded border border-border bg-[#141414] flex items-center justify-center transition-colors shadow-xs",
-                        index === selectedIds.length - 1 ? "opacity-25 cursor-not-allowed text-muted-foreground" : "hover:bg-[#222222] hover:text-foreground cursor-pointer text-foreground"
-                      )}
-                      title="Move Down"
-                    >
-                      <ArrowDown className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      onClick={() => handleToggle(action.id)}
-                      className="h-7 px-2 text-xs font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded border border-rose-500/30 transition-colors ml-1 cursor-pointer"
-                      title="Remove from Dashboard"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </VFCard>
-
-          {/* Inactive Shortcuts Available to Add */}
-          {filteredInactive.length > 0 && (
-            <VFCard
-              title="Available Inactive Modules"
-              description="Click to activate and add these modules to your dashboard shortcut grid."
-              bodyClassName="p-4 space-y-3"
-            >
-              {/* Filter controls */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 pb-1">
-                <div className="relative flex-1">
-                  <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search inactive modules..."
-                    className="w-full pl-8 pr-3 h-8 rounded-md bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary"
-                  />
-                </div>
-                <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={cn(
-                        "px-2.5 py-1 rounded text-[11px] font-semibold transition-colors cursor-pointer shrink-0",
-                        selectedCategory === cat
-                          ? "bg-primary text-primary-foreground font-bold"
-                          : "bg-[#161616] text-muted-foreground hover:text-foreground border border-border"
-                      )}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-extrabold text-foreground">Available Actions Pool</span>
+                <VFBadge variant="outline" className="text-[11px] font-mono font-bold bg-[#161616]">
+                  {filteredSortedShortcuts.length} Modules
+                </VFBadge>
               </div>
+            }
+            description="Active shortcuts appear at the top. Click Add or Remove to customize your launchpad."
+            className="h-full flex flex-col min-h-0 bg-[#0d0d0d] border-border/90"
+            bodyClassName="p-3.5 flex flex-col flex-1 min-h-0 space-y-3 overflow-hidden"
+          >
+            {/* Full Width Search Bar */}
+            <div className="relative shrink-0">
+              <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search action modules by title or keyword..."
+                className="w-full pl-8 pr-3 h-8.5 rounded-md bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
+              />
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {filteredInactive.map((action) => {
+            {/* Scrollable List of All Modules */}
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-2 pr-1">
+              {filteredSortedShortcuts.map((action) => {
+                const Icon = action.icon;
+                const isActive = selectedIds.includes(action.id);
+                const activeIndex = selectedIds.indexOf(action.id);
+
+                return (
+                  <div
+                    key={action.id}
+                    className={cn(
+                      "p-2.5 rounded-lg border transition-all flex items-center justify-between gap-3 shadow-xs",
+                      isActive
+                        ? "bg-[#141414] border-[#2c2c2c] hover:border-[#3a3a3a]"
+                        : "bg-[#0f0f0f] border-border/60 hover:border-border opacity-75 hover:opacity-100"
+                    )}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      {/* Status indicator or Position Tag */}
+                      {isActive ? (
+                        <span className="h-6 w-6 rounded bg-[#202020] border border-[#303030] text-[11px] font-mono font-black text-primary flex items-center justify-center shrink-0 shadow-2xs">
+                          {activeIndex + 1}
+                        </span>
+                      ) : (
+                        <span className="h-6 w-6 rounded bg-[#181818] border border-border text-[10px] font-mono text-muted-foreground flex items-center justify-center shrink-0">
+                          +
+                        </span>
+                      )}
+
+                      {/* Icon box (matching dashboard sleek colors) */}
+                      <div className={cn(
+                        "h-8 w-8 rounded-md flex items-center justify-center shrink-0 shadow-xs border",
+                        isActive
+                          ? "bg-[#1e1e1e] border-[#303030] text-foreground"
+                          : "bg-[#161616] border-border text-muted-foreground"
+                      )}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+
+                      {/* Info */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className={cn("text-xs font-bold truncate", isActive ? "text-foreground" : "text-muted-foreground")}>
+                            {action.label}
+                          </p>
+                          <span className="text-[9px] font-mono text-muted-foreground uppercase px-1.5 py-0.2 rounded bg-[#1c1c1c] border border-border/70">
+                            {action.category}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground truncate">{action.desc}</p>
+                      </div>
+                    </div>
+
+                    {/* Action Button: Remove if Active, Add if Inactive */}
+                    <div className="shrink-0 flex items-center gap-1.5">
+                      {isActive ? (
+                        <button
+                          onClick={() => handleRemove(action.id)}
+                          className="h-7 px-2.5 text-[11px] font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-md border border-rose-500/30 transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
+                          title="Remove from quick actions"
+                        >
+                          <Trash2 className="h-3 w-3" /> Remove
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleAdd(action.id)}
+                          disabled={selectedIds.length >= MAX_SHORTCUTS}
+                          className={cn(
+                            "h-7 px-2.5 text-[11px] font-bold rounded-md border flex items-center gap-1 transition-colors shadow-2xs",
+                            selectedIds.length >= MAX_SHORTCUTS
+                              ? "opacity-30 border-border text-muted-foreground cursor-not-allowed"
+                              : "text-primary hover:bg-primary/10 border-primary/40 cursor-pointer"
+                          )}
+                          title={selectedIds.length >= MAX_SHORTCUTS ? "Max 12 shortcuts reached" : "Add to quick actions"}
+                        >
+                          <Plus className="h-3 w-3" /> Add
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </VFCard>
+        </div>
+
+        {/* RIGHT COLUMN: Active Launchpad Preview (Max 12 Slots, Exact Dashboard Styling) (6 Cols) */}
+        <div className="lg:col-span-6 flex flex-col min-h-0">
+          <VFCard
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-extrabold text-foreground">Dashboard Quick Actions Launchpad</span>
+                <VFBadge variant="success" className="text-[11px] font-mono font-bold">
+                  {selectedIds.length} / {MAX_SHORTCUTS} Slots
+                </VFBadge>
+              </div>
+            }
+            description="Live preview of your 12-slot launchpad. Use the arrow controls or remove buttons to adjust."
+            className="h-full flex flex-col min-h-0 bg-[#0d0d0d] border-border/90"
+            bodyClassName="p-3.5 flex flex-col flex-1 min-h-0 space-y-3 overflow-hidden"
+          >
+            {/* 12-Slot Dashboard Grid Preview (4 cols on large screens, 3 cols on medium) */}
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-1">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                {/* Active items */}
+                {activeShortcutObjects.map((action, idx) => {
                   const Icon = action.icon;
                   return (
                     <div
                       key={action.id}
-                      className="p-3 rounded-md bg-[#121212] border border-border/70 hover:border-border flex items-center justify-between gap-3 transition-all"
+                      className="p-3 rounded-lg border border-border/80 bg-[#141414] hover:bg-[#1a1a1a] hover:border-[#383838] transition-all flex flex-col items-center justify-between text-center group shadow-xs select-none min-h-[108px] relative overflow-hidden"
                     >
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <div className="h-8 w-8 rounded-md bg-[#1a1a1a] text-muted-foreground border border-border/80 flex items-center justify-center shrink-0">
-                          <Icon className="h-4 w-4" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-xs font-bold text-foreground truncate">{action.label}</p>
-                          <p className="text-[10px] text-muted-foreground truncate">{action.desc}</p>
+                      {/* Top bar with sequence number & reorder controls */}
+                      <div className="w-full flex items-center justify-between text-[10px] text-muted-foreground mb-1">
+                        <span className="font-mono font-black text-primary px-1.5 py-0.2 rounded bg-[#1c1c1c] border border-[#2a2a2a]">
+                          #{idx + 1}
+                        </span>
+                        <div className="flex items-center gap-0.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                          <button
+                            type="button"
+                            onClick={() => handleMove(idx, 'up')}
+                            disabled={idx === 0}
+                            className={cn(
+                              "p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-[#242424] cursor-pointer",
+                              idx === 0 && "opacity-20 cursor-not-allowed"
+                            )}
+                            title="Move left/up"
+                          >
+                            <ArrowUp className="h-3 w-3" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleMove(idx, 'down')}
+                            disabled={idx === selectedIds.length - 1}
+                            className={cn(
+                              "p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-[#242424] cursor-pointer",
+                              idx === selectedIds.length - 1 && "opacity-20 cursor-not-allowed"
+                            )}
+                            title="Move right/down"
+                          >
+                            <ArrowDown className="h-3 w-3" />
+                          </button>
                         </div>
                       </div>
+
+                      {/* Icon container (matching dashboard styling) */}
+                      <div className="h-9 w-9 rounded-md flex items-center justify-center border border-border/80 bg-[#1e1e1e] text-foreground mb-1 group-hover:scale-105 group-hover:bg-[#282828] group-hover:border-[#3e3e3e] transition-all shrink-0 shadow-xs">
+                        <Icon className="h-4.5 w-4.5 text-foreground" />
+                      </div>
+
+                      {/* Label */}
+                      <p className="text-xs font-bold text-foreground group-hover:text-white transition-colors leading-snug w-full text-center truncate px-1">
+                        {action.label}
+                      </p>
+
+                      {/* Remove button */}
                       <button
-                        onClick={() => handleToggle(action.id)}
-                        className="h-7 px-2.5 text-xs font-bold text-primary hover:bg-primary/10 rounded border border-primary/40 flex items-center gap-1 cursor-pointer shrink-0 transition-colors"
+                        type="button"
+                        onClick={() => handleRemove(action.id)}
+                        className="mt-1 text-[10px] font-semibold text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
+                        title="Remove shortcut"
                       >
-                        <Plus className="h-3.5 w-3.5" /> Add
+                        Remove
                       </button>
                     </div>
                   );
                 })}
-              </div>
-            </VFCard>
-          )}
-        </div>
 
-        {/* RIGHT COLUMN: Live Real-Time Dashboard Preview (5 Cols) */}
-        <div className="lg:col-span-5 space-y-4 sticky top-4">
-          <VFCard
-            title="Live Launchpad Preview"
-            description="Real-time representation of how your shortcuts grid renders on the home dashboard."
-            actions={
-              <VFBadge variant="success" className="text-xs font-mono font-bold">
-                {activeShortcutObjects.length} Tiles
-              </VFBadge>
-            }
-            bodyClassName="p-4"
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[500px] overflow-y-auto no-scrollbar">
-              {activeShortcutObjects.map((action, idx) => {
-                const Icon = action.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-md border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-indigo-500/50 transition-all flex flex-col items-center justify-center text-center shadow-xs select-none min-h-[96px]"
-                  >
-                    <div className="h-9 w-9 rounded-md flex items-center justify-center border border-indigo-500/30 bg-indigo-500/15 text-indigo-400 mb-1.5 shadow-xs">
-                      <Icon className="h-4.5 w-4.5" />
+                {/* Available empty placeholder slots if < 12 */}
+                {Array.from({ length: Math.max(0, MAX_SHORTCUTS - activeShortcutObjects.length) }).map((_, emptyIdx) => {
+                  const slotNum = activeShortcutObjects.length + emptyIdx + 1;
+                  return (
+                    <div
+                      key={`empty-${emptyIdx}`}
+                      className="p-3 rounded-lg border border-dashed border-border/60 bg-[#0e0e0e]/50 flex flex-col items-center justify-center text-center select-none min-h-[108px] text-muted-foreground/60 space-y-1"
+                    >
+                      <div className="h-8 w-8 rounded-md border border-dashed border-border/60 flex items-center justify-center text-xs font-mono font-bold">
+                        {slotNum}
+                      </div>
+                      <span className="text-[10px] font-semibold">Available Slot</span>
                     </div>
-                    <p className="text-xs font-bold text-foreground truncate w-full px-1">
-                      {action.label}
-                    </p>
-                    <span className="text-[9px] text-muted-foreground font-mono mt-0.5 block truncate">
-                      #{idx + 1}
-                    </span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </VFCard>
         </div>

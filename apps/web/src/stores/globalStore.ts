@@ -28,7 +28,7 @@ export const DEFAULT_DASHBOARD_SHORTCUTS = [
   'attendance',
   'admissions',
   'students',
-  'staff',
+  'teachers',
   'timetable',
   'fees',
   'notices',
@@ -48,7 +48,7 @@ export const DEFAULT_DASHBOARD_SECTIONS = [
 
 export const DEFAULT_DASHBOARD_KPIS = [
   'students',
-  'staff',
+  'teachers',
   'attendance',
   'admissions',
 ];
