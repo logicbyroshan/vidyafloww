@@ -10,9 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimetableRouteImport } from './routes/timetable'
+import { Route as TeachersRouteImport } from './routes/teachers'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as StatisticsRouteImport } from './routes/statistics'
-import { Route as StaffRouteImport } from './routes/staff'
 import { Route as ShortcutsRouteImport } from './routes/shortcuts'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -26,6 +26,7 @@ import { Route as LearningRouteImport } from './routes/learning'
 import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AcademicsRouteImport } from './routes/academics'
@@ -36,6 +37,11 @@ const TimetableRoute = TimetableRouteImport.update({
   path: '/timetable',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TeachersRoute = TeachersRouteImport.update({
+  id: '/teachers',
+  path: '/teachers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudentsRoute = StudentsRouteImport.update({
   id: '/students',
   path: '/students',
@@ -44,11 +50,6 @@ const StudentsRoute = StudentsRouteImport.update({
 const StatisticsRoute = StatisticsRouteImport.update({
   id: '/statistics',
   path: '/statistics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StaffRoute = StaffRouteImport.update({
-  id: '/staff',
-  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShortcutsRoute = ShortcutsRouteImport.update({
@@ -116,6 +117,11 @@ const ExaminationsRoute = ExaminationsRouteImport.update({
   path: '/examinations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AttendanceRoute = AttendanceRouteImport.update({
   id: '/attendance',
   path: '/attendance',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
+  '/dashboard': typeof DashboardRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
@@ -155,9 +162,9 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
   '/shortcuts': typeof ShortcutsRoute
-  '/staff': typeof StaffRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
+  '/teachers': typeof TeachersRoute
   '/timetable': typeof TimetableRoute
 }
 export interface FileRoutesByTo {
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
+  '/dashboard': typeof DashboardRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
@@ -178,9 +186,9 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
   '/shortcuts': typeof ShortcutsRoute
-  '/staff': typeof StaffRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
+  '/teachers': typeof TeachersRoute
   '/timetable': typeof TimetableRoute
 }
 export interface FileRoutesById {
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
+  '/dashboard': typeof DashboardRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
@@ -202,9 +211,9 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/settings': typeof SettingsRoute
   '/shortcuts': typeof ShortcutsRoute
-  '/staff': typeof StaffRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
+  '/teachers': typeof TeachersRoute
   '/timetable': typeof TimetableRoute
 }
 export interface FileRouteTypes {
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/academics'
     | '/admissions'
     | '/attendance'
+    | '/dashboard'
     | '/examinations'
     | '/fees'
     | '/homework'
@@ -227,9 +237,9 @@ export interface FileRouteTypes {
     | '/resources'
     | '/settings'
     | '/shortcuts'
-    | '/staff'
     | '/statistics'
     | '/students'
+    | '/teachers'
     | '/timetable'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/academics'
     | '/admissions'
     | '/attendance'
+    | '/dashboard'
     | '/examinations'
     | '/fees'
     | '/homework'
@@ -250,9 +261,9 @@ export interface FileRouteTypes {
     | '/resources'
     | '/settings'
     | '/shortcuts'
-    | '/staff'
     | '/statistics'
     | '/students'
+    | '/teachers'
     | '/timetable'
   id:
     | '__root__'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/academics'
     | '/admissions'
     | '/attendance'
+    | '/dashboard'
     | '/examinations'
     | '/fees'
     | '/homework'
@@ -273,9 +285,9 @@ export interface FileRouteTypes {
     | '/resources'
     | '/settings'
     | '/shortcuts'
-    | '/staff'
     | '/statistics'
     | '/students'
+    | '/teachers'
     | '/timetable'
   fileRoutesById: FileRoutesById
 }
@@ -284,6 +296,7 @@ export interface RootRouteChildren {
   AcademicsRoute: typeof AcademicsRoute
   AdmissionsRoute: typeof AdmissionsRoute
   AttendanceRoute: typeof AttendanceRoute
+  DashboardRoute: typeof DashboardRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
   HomeworkRoute: typeof HomeworkRoute
@@ -297,9 +310,9 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   SettingsRoute: typeof SettingsRoute
   ShortcutsRoute: typeof ShortcutsRoute
-  StaffRoute: typeof StaffRoute
   StatisticsRoute: typeof StatisticsRoute
   StudentsRoute: typeof StudentsRoute
+  TeachersRoute: typeof TeachersRoute
   TimetableRoute: typeof TimetableRoute
 }
 
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       path: '/timetable'
       fullPath: '/timetable'
       preLoaderRoute: typeof TimetableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teachers': {
+      id: '/teachers'
+      path: '/teachers'
+      fullPath: '/teachers'
+      preLoaderRoute: typeof TeachersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/students': {
@@ -324,13 +344,6 @@ declare module '@tanstack/react-router' {
       path: '/statistics'
       fullPath: '/statistics'
       preLoaderRoute: typeof StatisticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/staff': {
-      id: '/staff'
-      path: '/staff'
-      fullPath: '/staff'
-      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shortcuts': {
@@ -424,6 +437,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExaminationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/attendance': {
       id: '/attendance'
       path: '/attendance'
@@ -460,6 +480,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcademicsRoute: AcademicsRoute,
   AdmissionsRoute: AdmissionsRoute,
   AttendanceRoute: AttendanceRoute,
+  DashboardRoute: DashboardRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
   HomeworkRoute: HomeworkRoute,
@@ -473,9 +494,9 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   SettingsRoute: SettingsRoute,
   ShortcutsRoute: ShortcutsRoute,
-  StaffRoute: StaffRoute,
   StatisticsRoute: StatisticsRoute,
   StudentsRoute: StudentsRoute,
+  TeachersRoute: TeachersRoute,
   TimetableRoute: TimetableRoute,
 }
 export const routeTree = rootRouteImport

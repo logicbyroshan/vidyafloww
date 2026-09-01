@@ -14,6 +14,7 @@ export const ROUTES = {
   RESET_PASSWORD: '/auth/reset-password',
 
   // Dashboard
+  HOME: '/',
   DASHBOARD: '/dashboard',
 
   // Students
@@ -27,17 +28,23 @@ export const ROUTES = {
 
   // Academics
   ACADEMICS: '/academics',
-  TIMETABLE: '/academics/timetable',
-  ATTENDANCE: '/academics/attendance',
-  EXAMINATIONS: '/academics/examinations',
+  TIMETABLE: '/timetable',
+  ATTENDANCE: '/attendance',
+  EXAMINATIONS: '/examinations',
+  HOMEWORK: '/homework',
+
+  // Teachers / Faculty
+  TEACHERS: '/teachers',
+  STAFF: '/teachers',
 
   // Finance
-  FINANCE: '/finance',
-  FEES: '/finance/fees',
+  FINANCE: '/fees',
+  FEES: '/fees',
 
-  // HR
-  HR: '/hr',
-  STAFF: '/hr/staff',
+  // Operations
+  NOTICES: '/notices',
+  REPORTS: '/reports',
+  STATISTICS: '/statistics',
 
   // Settings
   SETTINGS: '/settings',

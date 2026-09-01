@@ -10,59 +10,47 @@ import {
   VFDialog,
   VFInput,
   VFSelect,
+  VFStatCard,
   cn,
 } from '@vidyafloww/ui';
 import {
+  Users,
+  Sparkles,
   UserCheck,
   Plus,
   Download,
   Eye,
   BookOpen,
-  Phone,
   MessageSquare,
   Copy,
   Check,
-  X,
   Edit3,
   ChevronLeft,
   ChevronRight,
-  GraduationCap,
   FileSpreadsheet,
   Archive,
   Printer,
   QrCode,
   CreditCard,
-  Settings,
-  Trash2,
   Camera,
   Calendar,
   Clock,
-  Briefcase,
   Award,
   FileText,
-  DollarSign,
   Receipt,
-  UserX,
   School,
   ShieldCheck,
-  Activity,
-  Layers,
-  MapPin,
-  Mail,
   CheckCircle2,
-  Sparkles,
-  Search,
   Quote,
   CheckCheck,
   TrendingUp,
   FileCheck,
-  Send,
   CalendarCheck2,
   Fingerprint,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
-export const Route = createFileRoute('/staff')({
+export const Route = createFileRoute('/teachers')({
   component: StaffPage,
 });
 
@@ -906,7 +894,7 @@ function StaffPage() {
         <div className="flex items-center gap-3.5">
           <div
             onClick={(e) => openPhotoPreview(r, e)}
-            className="overflow-hidden rounded-md border border-[#27272e] shadow-xs w-10 h-[52px] bg-[#161619] shrink-0 cursor-pointer group relative hover:border-zinc-400 transition-colors"
+            className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-[#161616] shrink-0 cursor-pointer group relative hover:border-foreground/40 transition-colors"
             title="Click to view full photo"
           >
             <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
@@ -986,7 +974,7 @@ function StaffPage() {
       header: 'Status',
       accessorKey: 'status',
       cell: (r: StaffRecord) => (
-        <VFBadge variant={r.status === 'Active' ? 'success' : r.status === 'On Leave' ? 'warning' : 'neutral'}>
+        <VFBadge variant={r.status === 'Active' ? 'success' : r.status === 'On Leave' ? 'warning' : 'default'}>
           {r.status}
         </VFBadge>
       ),
@@ -1010,31 +998,39 @@ function StaffPage() {
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3.5">
       {/* 1. TOP METRIC KPI SUMMARY CARDS */}
-      <div className="p-4 rounded-lg bg-[#111113] border border-[#242428] shadow-sm">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-md bg-[#141417] border border-[#24242a]">
-            <span className="text-xs font-black text-zinc-400 uppercase tracking-wider block">Faculty Strength</span>
-            <span className="text-2xl font-black text-white mt-1 block font-mono">{staffList.length} Staff</span>
-            <span className="text-[11px] text-zinc-400 mt-0.5 block font-medium">94 Teaching · 30 Operations</span>
-          </div>
-          <div className="p-3.5 rounded-md bg-[#141417] border border-[#24242a]">
-            <span className="text-xs font-black text-zinc-400 uppercase tracking-wider block">Today's Present</span>
-            <span className="text-2xl font-black text-emerald-400 mt-1 block font-mono">
-              {staffList.filter((s) => s.status === 'Active').length} Present
-            </span>
-            <span className="text-[11px] text-emerald-400/90 mt-0.5 block font-semibold">96.8% Institutional Attendance</span>
-          </div>
-          <div className="p-3.5 rounded-md bg-[#141417] border border-[#24242a]">
-            <span className="text-xs font-black text-zinc-400 uppercase tracking-wider block">Average Load</span>
-            <span className="text-2xl font-black text-white mt-1 block font-mono">22.8 / Wk</span>
-            <span className="text-[11px] text-zinc-400 mt-0.5 block font-medium">Balanced Teaching Hours</span>
-          </div>
-          <div className="p-3.5 rounded-md bg-[#141417] border border-[#24242a]">
-            <span className="text-xs font-black text-zinc-400 uppercase tracking-wider block">Faculty Retention</span>
-            <span className="text-2xl font-black text-white mt-1 block font-mono">98.2%</span>
-            <span className="text-[11px] text-zinc-400 mt-0.5 block font-medium">Exemplary Satisfaction</span>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
+        <VFStatCard
+          title="Faculty Strength"
+          value={`${staffList.length} Teachers`}
+          description="94 Teaching · 30 Operations"
+          icon={<Users className="h-5 w-5" />}
+          trend="up"
+          trendLabel="Full Quota"
+        />
+        <VFStatCard
+          title="Today's Present"
+          value={`${staffList.filter((s) => s.status === 'Active').length} Present`}
+          description="Institutional Coverage"
+          icon={<UserCheck className="h-5 w-5" />}
+          trend="up"
+          trendLabel="96.8% Attendance"
+        />
+        <VFStatCard
+          title="Average Load"
+          value="22.8 / Wk"
+          description="Balanced Teaching Hours"
+          icon={<Clock className="h-5 w-5" />}
+          trend="neutral"
+          trendLabel="Optimal Load"
+        />
+        <VFStatCard
+          title="Faculty Retention"
+          value="98.2%"
+          description="Exemplary Satisfaction"
+          icon={<Sparkles className="h-5 w-5" />}
+          trend="up"
+          trendLabel="+2.4% vs last term"
+        />
       </div>
 
       {/* 2. MAIN STAFF DATA TABLE */}
@@ -1050,7 +1046,7 @@ function StaffPage() {
               leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => setIsExportModalOpen(true)}
             >
-              Export Roster
+              Export
             </VFButton>
             <VFButton
               size="sm"
@@ -1093,7 +1089,6 @@ function StaffPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4" />}
                     onClick={handleCancelEdit}
                   >
                     Cancel
@@ -1136,14 +1131,13 @@ function StaffPage() {
                   <VFButton
                     variant="outline"
                     size="sm"
-                    leftIcon={<X className="h-4 w-4 text-zinc-400" />}
                     onClick={() => {
                       setIsEditingStaff(false);
                       setStaffFormData(null);
                       setIsDrawerOpen(false);
                     }}
                   >
-                    Close
+                    Cancel
                   </VFButton>
                   <VFButton
                     size="sm"
