@@ -15,7 +15,6 @@ import {
   RefreshCw,
   Copy,
   Check,
-  HelpCircle,
   ShieldCheck,
   UserCheck,
   GraduationCap,
@@ -25,8 +24,11 @@ import {
   Building2,
   Award,
   Calendar,
+  Languages,
+  HelpCircle,
 } from 'lucide-react';
 import { cn } from '@vidyafloww/ui';
+import { useGlobalStore } from '../stores/globalStore';
 
 export const Route = createFileRoute('/login')({
   component: ProfessionalAuthPage,
@@ -51,6 +53,7 @@ const TRUSTED_INSTITUTIONS = [
 
 function ProfessionalAuthPage() {
   const navigate = useNavigate();
+  const { language, setLanguage } = useGlobalStore();
   const [authMode, setAuthMode] = React.useState<AuthMode>('login');
 
   // ─── LOGIN STATE ─────────────────────────────────────────────────────────────
@@ -167,6 +170,16 @@ function ProfessionalAuthPage() {
 
         {/* Top Right Actions */}
         <div className="flex items-center gap-2.5">
+          {/* Language Toggle: EN ↔ हि */}
+          <button
+            type="button"
+            onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#141414] hover:bg-[#1f1f1f] border border-[#262626] text-xs font-bold text-foreground transition-colors cursor-pointer"
+            title={language === 'en' ? 'Switch to Hindi (हिन्दी)' : 'Switch to English'}
+          >
+            <Languages className="h-3.5 w-3.5 text-primary" />
+            <span>{language === 'en' ? 'EN' : 'हि'}</span>
+          </button>
           <button
             type="button"
             onClick={() => {
@@ -180,7 +193,7 @@ function ProfessionalAuthPage() {
             title="Return to public website"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Back to Website</span>
+            <span>Back</span>
           </button>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#141414] border border-[#262626] text-xs font-mono font-medium text-muted-foreground shadow-xs">
             <span className="h-1.5 w-1.5 rounded-xs bg-emerald-400" />
