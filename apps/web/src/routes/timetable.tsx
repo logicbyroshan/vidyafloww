@@ -4,45 +4,30 @@ import JSZip from 'jszip';
 import {
   VFPageContainer,
   VFButton,
-  VFCard,
   VFSelect,
   VFInput,
-  VFBadge,
   VFDrawer,
   VFDialog,
   cn,
 } from '@vidyafloww/ui';
 import {
-  Calendar,
   Clock,
   Download,
   Users,
-  Bell,
   BookOpen,
   UserCheck,
-  AlertCircle,
   CheckCircle2,
   Plus,
   SlidersHorizontal,
-  Sparkles,
   School,
-  Layers,
   Check,
-  X,
-  Coffee,
-  Utensils,
   MapPin,
   UserX,
   FileSpreadsheet,
-  Settings,
   Pencil,
   RotateCcw,
-  CalendarDays,
-  Activity,
-  Sliders,
   Archive,
   Printer,
-  FileText,
   Trash2,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -76,7 +61,7 @@ interface ProxySubstitution {
   subject: string;
   room: string;
   reason: string;
-  status: 'Assigned' | 'Confirmed';
+  status: 'Assigned' | 'Confirmed' | 'Completed';
 }
 
 interface FacultyLoad {
@@ -109,6 +94,65 @@ const DEFAULT_PERIOD_CONFIG: PeriodTiming[] = [
   { id: '8', order: 8, name: 'Period 6', start: '12:45 PM', end: '01:30 PM', type: 'Class', duration: '45m' },
   { id: '9', order: 9, name: 'Period 7', start: '01:30 PM', end: '02:15 PM', type: 'Class', duration: '45m' },
 ];
+
+const DAY_THEMES: Record<string, { label: string; text: string; bg: string; border: string; bar: string; badgeBg: string }> = {
+  Monday: {
+    label: 'Monday',
+    text: 'text-sky-400',
+    bg: 'bg-sky-500/10',
+    border: 'border-sky-500/30',
+    bar: 'bg-sky-400',
+    badgeBg: 'bg-sky-500/15 text-sky-300 border-sky-500/30',
+  },
+  Tuesday: {
+    label: 'Tuesday',
+    text: 'text-emerald-400',
+    bg: 'bg-emerald-500/10',
+    border: 'border-emerald-500/30',
+    bar: 'bg-emerald-400',
+    badgeBg: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+  },
+  Wednesday: {
+    label: 'Wednesday',
+    text: 'text-amber-400',
+    bg: 'bg-amber-500/10',
+    border: 'border-amber-500/30',
+    bar: 'bg-amber-400',
+    badgeBg: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  },
+  Thursday: {
+    label: 'Thursday',
+    text: 'text-purple-400',
+    bg: 'bg-purple-500/10',
+    border: 'border-purple-500/30',
+    bar: 'bg-purple-400',
+    badgeBg: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
+  },
+  Friday: {
+    label: 'Friday',
+    text: 'text-rose-400',
+    bg: 'bg-rose-500/10',
+    border: 'border-rose-500/30',
+    bar: 'bg-rose-400',
+    badgeBg: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+  },
+  Saturday: {
+    label: 'Saturday',
+    text: 'text-cyan-400',
+    bg: 'bg-cyan-500/10',
+    border: 'border-cyan-500/30',
+    bar: 'bg-cyan-400',
+    badgeBg: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+  },
+  Sunday: {
+    label: 'Sunday',
+    text: 'text-lime-400',
+    bg: 'bg-lime-500/10',
+    border: 'border-lime-500/30',
+    bar: 'bg-lime-400',
+    badgeBg: 'bg-lime-500/15 text-lime-300 border-lime-500/30',
+  },
+};
 
 const INITIAL_SCHEDULE_DATA: Record<string, PeriodSlot[]> = {
   'Monday': [
@@ -541,7 +585,7 @@ function TimetablePage() {
           ═══════════════════════════════════════════════════════════════════════ */}
       <div className="flex-1 min-h-0 flex flex-col space-y-3">
         {/* Action Toolbar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#111113] p-3 rounded-lg border border-[#242428] shadow-xs shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#101010] p-3 rounded-lg border border-[#242424] shadow-xs shrink-0">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="w-56">
               <VFSelect
@@ -555,7 +599,7 @@ function TimetablePage() {
                 ]}
               />
             </div>
-            <div className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#161619] border border-[#2a2a30] text-xs">
+            <div className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#161616] border border-[#262626] text-xs">
               <School className="h-4 w-4 text-zinc-400 shrink-0" />
               <span className="font-medium text-zinc-400">Class Teacher:</span>
               <span className="font-bold text-white">{classTeacher}</span>
@@ -587,7 +631,7 @@ function TimetablePage() {
               onClick={() => setIsWorkloadDrawerOpen(true)}
             >
               Faculty Workload & Proxies
-              <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono font-bold bg-[#24242a] text-zinc-300 rounded">
+              <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono font-bold bg-[#242424] text-zinc-300 rounded">
                 {substitutionsList.length}
               </span>
             </VFButton>
@@ -603,20 +647,20 @@ function TimetablePage() {
         </div>
 
         {/* Sleek Deep Dark Grid with Mathematically Equal Height & Width Distribution */}
-        <div className="flex-1 min-h-0 border border-[#24242a] rounded-lg bg-[#0b0b0d] overflow-x-auto overflow-y-hidden custom-scrollbar shadow-sm flex flex-col min-w-[900px]">
+        <div className="flex-1 min-h-0 border border-[#242424] rounded-lg bg-[#0a0a0a] overflow-x-auto overflow-y-hidden custom-scrollbar shadow-sm flex flex-col min-w-[900px]">
           {/* Header Row */}
-          <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#24242a] bg-[#111114] shrink-0">
-            <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#24242a] select-none flex items-center justify-center text-center">
+          <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#242424] bg-[#121212] shrink-0">
+            <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#242424] select-none flex items-center justify-center text-center">
               Day / Time
             </div>
             {classPeriods.map((p) => (
               <div
                 key={p.id}
-                className="p-3 font-bold text-xs text-zinc-300 border-r last:border-r-0 border-[#24242a] select-none flex flex-col justify-center space-y-1"
+                className="p-3 font-bold text-xs text-zinc-300 border-r last:border-r-0 border-[#242424] select-none flex flex-col justify-center space-y-1"
               >
                 <div className="flex items-center justify-between gap-1">
                   <span className="text-white text-xs font-black uppercase tracking-wider truncate">{p.name}</span>
-                  <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#161619] px-1.5 py-0.2 rounded border border-[#26262e] shrink-0">
+                  <span className="text-[10px] font-mono font-bold text-zinc-400 bg-[#181818] px-1.5 py-0.2 rounded border border-[#2a2a2a] shrink-0">
                     {p.duration}
                   </span>
                 </div>
@@ -629,67 +673,70 @@ function TimetablePage() {
 
           {/* Body Rows with 100% Equal Height Distribution */}
           <div className={cn(
-            'flex-1 min-h-0 grid divide-y divide-[#1e1e22]',
+            'flex-1 min-h-0 grid divide-y divide-[#1c1c1c]',
             activeDays.length === 6 ? 'grid-rows-6' : 'grid-rows-5'
           )}>
-            {activeDays.map((day) => (
-              <div
-                key={day}
-                className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] divide-x divide-[#1e1e22] h-full"
-              >
-                {/* Day Column - Centered */}
-                <div className="p-2 font-bold text-white bg-[#0e0e11] select-none flex flex-col items-center justify-center space-y-1 text-center">
-                  <span className="block text-xs font-black text-white uppercase tracking-wider">
-                    {day}
-                  </span>
-                  <span className="text-[10px] text-zinc-400 font-mono block font-semibold bg-[#161619] px-2 py-0.5 rounded border border-[#24242c]">
-                    {classPeriods.length} Periods
-                  </span>
-                </div>
+            {activeDays.map((day) => {
+              const dayTheme = DAY_THEMES[day] || DAY_THEMES.Monday;
+              return (
+                <div
+                  key={day}
+                  className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] divide-x divide-[#1c1c1c] h-full"
+                >
+                  {/* Day Column - Distinct Vibrant Color Pill Badge */}
+                  <div className="p-2 font-bold bg-[#0d0d0d] select-none flex flex-col items-center justify-center space-y-1.5 text-center">
+                    <span className={cn("block text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-md border shadow-2xs", dayTheme.badgeBg)}>
+                      {day}
+                    </span>
+                    <span className="text-[10px] text-zinc-400 font-mono block font-bold bg-[#141414] px-2 py-0.5 rounded border border-[#242424]">
+                      {classPeriods.length} Periods
+                    </span>
+                  </div>
 
-                {/* 7 Period Slots: EXACT EQUAL HEIGHT & WIDTH */}
-                {(scheduleData[day] || []).slice(0, classPeriods.length).map((slot, idx) => (
-                  <div key={idx} className="p-1.5 bg-[#0b0b0d] flex flex-col min-h-0 h-full">
-                    <div
-                      onClick={() => handleOpenSlotEdit(day, idx, slot)}
-                      className="h-full w-full p-2.5 rounded-md bg-[#131316] border border-[#24242a] flex flex-col justify-between space-y-1 transition-all group cursor-pointer shadow-xs select-none hover:bg-[#1a1a1f] hover:border-[#3e3e48] hover:shadow-md"
-                      title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
-                    >
-                      {/* Top Row: Subject & Lab */}
-                      <div className="flex items-start justify-between gap-1">
-                        <span className="font-bold text-white text-xs leading-snug tracking-tight truncate group-hover:text-white">
-                          {slot.subject}
-                        </span>
-                        {slot.isLab && (
-                          <span className="text-[9px] font-mono font-bold px-1 py-0.2 rounded bg-[#181e28] border border-sky-800/40 text-sky-300 shrink-0">
-                            Lab
+                  {/* 7 Period Slots: EXACT EQUAL HEIGHT & WIDTH */}
+                  {(scheduleData[day] || []).slice(0, classPeriods.length).map((slot, idx) => (
+                    <div key={idx} className="p-1.5 bg-[#0a0a0a] flex flex-col min-h-0 h-full">
+                      <div
+                        onClick={() => handleOpenSlotEdit(day, idx, slot)}
+                        className="h-full w-full p-2.5 rounded-lg bg-[#141414] border border-[#242424] flex flex-col justify-between space-y-1.5 transition-all group cursor-pointer shadow-xs select-none hover:bg-[#1a1a1a] hover:border-[#383838] hover:shadow-md"
+                        title={`Click to edit or reassign ${slot.subject} (${slot.teacher})`}
+                      >
+                        {/* Top Row: Subject & Lab */}
+                        <div className="flex items-start justify-between gap-1.5">
+                          <span className="font-extrabold text-foreground text-[13px] leading-tight tracking-tight truncate group-hover:text-white">
+                            {slot.subject}
                           </span>
-                        )}
-                      </div>
+                          {slot.isLab && (
+                            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-300 shrink-0">
+                              Lab
+                            </span>
+                          )}
+                        </div>
 
-                      {/* Middle Row: Teacher */}
-                      <div className="flex items-center gap-1 text-[11px] text-zinc-400">
-                        <BookOpen className="h-3 w-3 text-zinc-500 shrink-0" />
-                        <span className="font-medium truncate text-zinc-400 group-hover:text-zinc-300">
-                          {slot.teacher}
-                        </span>
-                      </div>
+                        {/* Middle Row: Teacher */}
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+                          <BookOpen className="h-3.5 w-3.5 text-muted-foreground/70 shrink-0" />
+                          <span className="truncate group-hover:text-foreground font-semibold">
+                            {slot.teacher}
+                          </span>
+                        </div>
 
-                      {/* Bottom Row: Room & Edit trigger */}
-                      <div className="flex items-center justify-between pt-1 border-t border-[#1e1e24] text-[11px]">
-                        <span className="font-mono text-zinc-400 bg-[#0e0e11] px-1.5 py-0.2 rounded border border-[#222228] text-[10px] font-medium flex items-center gap-1 group-hover:text-zinc-300 truncate">
-                          <MapPin className="h-2.5 w-2.5 shrink-0 text-zinc-500" />
-                          {slot.room}
-                        </span>
-                        <span className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-white text-[10px] flex items-center gap-0.5 font-medium transition-opacity shrink-0">
-                          <Pencil className="h-2.5 w-2.5" /> Edit
-                        </span>
+                        {/* Bottom Row: Room Badge & Edit trigger */}
+                        <div className="flex items-center justify-between pt-1.5 border-t border-[#202020] text-xs">
+                          <span className="font-mono text-zinc-300 bg-[#1a1a1a] px-2.5 py-1 rounded-md border border-[#2a2a2a] text-[11px] font-semibold flex items-center gap-1.5 shadow-2xs group-hover:border-[#383838] truncate">
+                            <MapPin className="h-3 w-3 shrink-0 text-primary" />
+                            {slot.room}
+                          </span>
+                          <span className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground text-[11px] flex items-center gap-1 font-semibold transition-opacity shrink-0">
+                            <Pencil className="h-3 w-3" /> Edit
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ))}
+                  ))}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -857,7 +904,7 @@ function TimetablePage() {
       >
         <div className="p-4 sm:p-5 space-y-5">
           {/* Operating Working Days Option */}
-          <div className="p-4 rounded-lg bg-[#121214] border border-[#27272a] space-y-3">
+          <div className="p-4 rounded-lg bg-[#121212] border border-[#242424] space-y-3">
             <div>
               <h4 className="text-xs font-bold text-white uppercase tracking-wider">
                 Academic School Operating Week
@@ -874,13 +921,13 @@ function TimetablePage() {
                 className={cn(
                   'p-3.5 rounded-md border text-left transition-all cursor-pointer flex flex-col justify-between shadow-xs',
                   workingDaysMode === '5days'
-                    ? 'bg-[#1c1c1f] border-zinc-400 text-white ring-1 ring-zinc-400/50'
-                    : 'bg-[#121214] border-[#27272a] text-zinc-400 hover:bg-[#18181b]'
+                    ? 'bg-[#1c1c1c] border-primary text-white ring-1 ring-primary/40'
+                    : 'bg-[#141414] border-[#242424] text-zinc-400 hover:bg-[#181818]'
                 )}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-sm font-bold text-white">5-Day Week</span>
-                  {workingDaysMode === '5days' && <CheckCircle2 className="h-4 w-4 text-white" />}
+                  {workingDaysMode === '5days' && <CheckCircle2 className="h-4 w-4 text-primary" />}
                 </div>
                 <p className="text-xs text-zinc-400">Monday to Friday (Saturday Off)</p>
               </button>
@@ -891,13 +938,13 @@ function TimetablePage() {
                 className={cn(
                   'p-3.5 rounded-md border text-left transition-all cursor-pointer flex flex-col justify-between shadow-xs',
                   workingDaysMode === '6days'
-                    ? 'bg-[#1c1c1f] border-zinc-400 text-white ring-1 ring-zinc-400/50'
-                    : 'bg-[#121214] border-[#27272a] text-zinc-400 hover:bg-[#18181b]'
+                    ? 'bg-[#1c1c1c] border-primary text-white ring-1 ring-primary/40'
+                    : 'bg-[#141414] border-[#242424] text-zinc-400 hover:bg-[#181818]'
                 )}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-sm font-bold text-white">6-Day Week</span>
-                  {workingDaysMode === '6days' && <CheckCircle2 className="h-4 w-4 text-white" />}
+                  {workingDaysMode === '6days' && <CheckCircle2 className="h-4 w-4 text-primary" />}
                 </div>
                 <p className="text-xs text-zinc-400">Monday to Saturday (Full Session)</p>
               </button>
@@ -905,7 +952,7 @@ function TimetablePage() {
           </div>
 
           {/* Class Teacher & Section Settings */}
-          <div className="p-4 rounded-lg bg-[#121214] border border-[#27272a] space-y-3">
+          <div className="p-4 rounded-lg bg-[#121212] border border-[#242424] space-y-3">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Class Section & Mentor Assignment
             </h4>
@@ -1077,7 +1124,7 @@ function TimetablePage() {
                 setIsAssigningProxy(false);
               }}
             >
-              Close Drawer
+              Cancel
             </VFButton>
           </div>
         }
@@ -1154,12 +1201,6 @@ function TimetablePage() {
                         Appoint Substitute Proxy Teacher
                       </h4>
                     </div>
-                    <button
-                      onClick={() => setIsAssigningProxy(false)}
-                      className="text-xs text-zinc-400 hover:text-white cursor-pointer px-1 py-0.5 rounded hover:bg-white/10"
-                    >
-                      ✕
-                    </button>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1203,6 +1244,14 @@ function TimetablePage() {
                           { label: 'Period 6 (12:45 – 01:30 PM)', value: 'Period 6 (12:45 – 01:30 PM)' },
                           { label: 'Period 7 (01:30 – 02:15 PM)', value: 'Period 7 (01:30 – 02:15 PM)' },
                         ]}
+                      />
+                    </div>
+                    <div>
+                      <VFInput
+                        label="Subject / Topic"
+                        value={newProxySubject}
+                        onChange={(e) => setNewProxySubject(e.target.value)}
+                        placeholder="e.g. Mathematics or Physics Lab"
                       />
                     </div>
                     <div>
