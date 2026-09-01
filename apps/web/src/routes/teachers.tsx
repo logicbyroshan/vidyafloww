@@ -1070,7 +1070,7 @@ function StaffPage() {
           setIsDrawerOpen(false);
         }}
         hideHeader={true}
-        title={activeStaff ? activeStaff.name : 'Faculty Dossier'}
+        title={activeStaff ? activeStaff.name : 'Staff Profile'}
         className="w-[850px] min-w-[320px] sm:min-w-[850px] max-w-[95vw]"
         bodyClassName="p-0 flex flex-col overflow-hidden"
         footerActions={

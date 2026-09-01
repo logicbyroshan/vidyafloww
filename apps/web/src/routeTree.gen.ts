@@ -15,6 +15,9 @@ import { Route as StudentsRouteImport } from './routes/students'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as ShortcutsRouteImport } from './routes/shortcuts'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SecurityRouteImport } from './routes/security'
+import { Route as ScholarshipsRouteImport } from './routes/scholarships'
+import { Route as SalaryRouteImport } from './routes/salary'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PortalRouteImport } from './routes/portal'
@@ -27,6 +30,7 @@ import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AuditRouteImport } from './routes/audit'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AcademicsRouteImport } from './routes/academics'
@@ -60,6 +64,21 @@ const ShortcutsRoute = ShortcutsRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScholarshipsRoute = ScholarshipsRouteImport.update({
+  id: '/scholarships',
+  path: '/scholarships',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalaryRoute = SalaryRouteImport.update({
+  id: '/salary',
+  path: '/salary',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesRoute = ResourcesRouteImport.update({
@@ -122,6 +141,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuditRoute = AuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AttendanceRoute = AttendanceRouteImport.update({
   id: '/attendance',
   path: '/attendance',
@@ -148,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
+  '/audit': typeof AuditRoute
   '/dashboard': typeof DashboardRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -160,6 +185,9 @@ export interface FileRoutesByFullPath {
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
+  '/salary': typeof SalaryRoute
+  '/scholarships': typeof ScholarshipsRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/shortcuts': typeof ShortcutsRoute
   '/statistics': typeof StatisticsRoute
@@ -172,6 +200,7 @@ export interface FileRoutesByTo {
   '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
+  '/audit': typeof AuditRoute
   '/dashboard': typeof DashboardRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -184,6 +213,9 @@ export interface FileRoutesByTo {
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
+  '/salary': typeof SalaryRoute
+  '/scholarships': typeof ScholarshipsRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/shortcuts': typeof ShortcutsRoute
   '/statistics': typeof StatisticsRoute
@@ -197,6 +229,7 @@ export interface FileRoutesById {
   '/academics': typeof AcademicsRoute
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
+  '/audit': typeof AuditRoute
   '/dashboard': typeof DashboardRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -209,6 +242,9 @@ export interface FileRoutesById {
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
+  '/salary': typeof SalaryRoute
+  '/scholarships': typeof ScholarshipsRoute
+  '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/shortcuts': typeof ShortcutsRoute
   '/statistics': typeof StatisticsRoute
@@ -223,6 +259,7 @@ export interface FileRouteTypes {
     | '/academics'
     | '/admissions'
     | '/attendance'
+    | '/audit'
     | '/dashboard'
     | '/examinations'
     | '/fees'
@@ -235,6 +272,9 @@ export interface FileRouteTypes {
     | '/portal'
     | '/reports'
     | '/resources'
+    | '/salary'
+    | '/scholarships'
+    | '/security'
     | '/settings'
     | '/shortcuts'
     | '/statistics'
@@ -247,6 +287,7 @@ export interface FileRouteTypes {
     | '/academics'
     | '/admissions'
     | '/attendance'
+    | '/audit'
     | '/dashboard'
     | '/examinations'
     | '/fees'
@@ -259,6 +300,9 @@ export interface FileRouteTypes {
     | '/portal'
     | '/reports'
     | '/resources'
+    | '/salary'
+    | '/scholarships'
+    | '/security'
     | '/settings'
     | '/shortcuts'
     | '/statistics'
@@ -271,6 +315,7 @@ export interface FileRouteTypes {
     | '/academics'
     | '/admissions'
     | '/attendance'
+    | '/audit'
     | '/dashboard'
     | '/examinations'
     | '/fees'
@@ -283,6 +328,9 @@ export interface FileRouteTypes {
     | '/portal'
     | '/reports'
     | '/resources'
+    | '/salary'
+    | '/scholarships'
+    | '/security'
     | '/settings'
     | '/shortcuts'
     | '/statistics'
@@ -296,6 +344,7 @@ export interface RootRouteChildren {
   AcademicsRoute: typeof AcademicsRoute
   AdmissionsRoute: typeof AdmissionsRoute
   AttendanceRoute: typeof AttendanceRoute
+  AuditRoute: typeof AuditRoute
   DashboardRoute: typeof DashboardRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
@@ -308,6 +357,9 @@ export interface RootRouteChildren {
   PortalRoute: typeof PortalRoute
   ReportsRoute: typeof ReportsRoute
   ResourcesRoute: typeof ResourcesRoute
+  SalaryRoute: typeof SalaryRoute
+  ScholarshipsRoute: typeof ScholarshipsRoute
+  SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
   ShortcutsRoute: typeof ShortcutsRoute
   StatisticsRoute: typeof StatisticsRoute
@@ -358,6 +410,27 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scholarships': {
+      id: '/scholarships'
+      path: '/scholarships'
+      fullPath: '/scholarships'
+      preLoaderRoute: typeof ScholarshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/salary': {
+      id: '/salary'
+      path: '/salary'
+      fullPath: '/salary'
+      preLoaderRoute: typeof SalaryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources': {
@@ -444,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/audit': {
+      id: '/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/attendance': {
       id: '/attendance'
       path: '/attendance'
@@ -480,6 +560,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcademicsRoute: AcademicsRoute,
   AdmissionsRoute: AdmissionsRoute,
   AttendanceRoute: AttendanceRoute,
+  AuditRoute: AuditRoute,
   DashboardRoute: DashboardRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
@@ -492,6 +573,9 @@ const rootRouteChildren: RootRouteChildren = {
   PortalRoute: PortalRoute,
   ReportsRoute: ReportsRoute,
   ResourcesRoute: ResourcesRoute,
+  SalaryRoute: SalaryRoute,
+  ScholarshipsRoute: ScholarshipsRoute,
+  SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
   ShortcutsRoute: ShortcutsRoute,
   StatisticsRoute: StatisticsRoute,

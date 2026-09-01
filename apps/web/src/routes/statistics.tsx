@@ -35,7 +35,7 @@ export const Route = createFileRoute('/statistics')({
 });
 
 function StatisticsPage() {
-  const { activeSession } = useGlobalStore();
+  const { activeSession, addNotification } = useGlobalStore();
 
   // ─── TAB 1: DEMOGRAPHICS & POPULATION ───────────────────────────────────────
   const demographicsContent = (
@@ -674,32 +674,28 @@ function StatisticsPage() {
   ];
 
   return (
-    <VFPageContainer className="space-y-2.5 sm:space-y-3">
-      {/* Session Context Banner */}
-      <div className="p-3.5 sm:p-4 rounded-md bg-card border border-border flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-md bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
-            <BarChart3 className="h-5 w-5" />
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+      {/* 1. Header Toolbar Box */}
+      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-md bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
+            <BarChart3 className="h-4 w-4" />
           </div>
-          <div>
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <h2 className="text-base font-black text-foreground">
-                Institutional Statistics & Intelligence Hub
-              </h2>
-              <VFBadge variant="outline">Verified CBSE Analytics</VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Live multi-dimensional analytics for Session {activeSession}
-            </p>
-          </div>
+          <span className="text-base font-extrabold text-foreground tracking-tight">
+            Institutional Intelligence & Demographics
+          </span>
+          <VFBadge variant="success" className="text-[10px] font-bold font-mono">
+            Session {activeSession}
+          </VFBadge>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0 self-end md:self-auto">
+        <div className="flex items-center gap-2 shrink-0">
           <VFButton
             variant="outline"
             size="sm"
-            leftIcon={<Download className="h-4 w-4" />}
-            onClick={() => alert(`Exporting comprehensive Institutional Intelligence Dossier for Session ${activeSession}`)}
+            className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
+            leftIcon={<Download className="h-3.5 w-3.5" />}
+            onClick={() => addNotification({ title: 'Analytics Dossier Exported', description: `Exported Institutional Intelligence Report for Session ${activeSession}.`, type: 'success' })}
           >
             Export Comprehensive Report
           </VFButton>

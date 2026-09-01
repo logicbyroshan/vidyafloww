@@ -4,14 +4,18 @@ import {
   VFPageContainer,
   VFDataTable,
   VFButton,
-  VFTabs,
   VFBadge,
+  VFSelect,
+  VFDialog,
+  VFInput,
 } from '@vidyafloww/ui';
 import {
   FileSpreadsheet,
   Download,
-  CheckCircle2,
+  Plus,
+  Check,
 } from 'lucide-react';
+import { useGlobalStore } from '../stores/globalStore';
 
 export const Route = createFileRoute('/reports')({
   component: ReportsPage,
@@ -21,23 +25,72 @@ interface ReportTemplate {
   id: string;
   code: string;
   name: string;
-  category: 'Academics' | 'Attendance' | 'Finance' | 'Compliance';
+  category: 'Compliance' | 'Attendance' | 'Finance' | 'Academics';
   format: 'Excel (.xlsx)' | 'PDF (.pdf)' | 'Both';
   frequency: string;
   lastGenerated: string;
   status: 'Ready';
 }
 
-function ReportsPage() {
-  const [downloadAlert, setDownloadAlert] = React.useState<string | null>(null);
+const INITIAL_REPORTS: ReportTemplate[] = [
+  { id: '1', code: 'REP-CBSE-01', name: 'CBSE Annual Accreditation Compliance Report', category: 'Compliance', format: 'PDF (.pdf)', frequency: 'Annual Audit', lastGenerated: 'Today, 09:30 AM', status: 'Ready' },
+  { id: '2', code: 'REP-ATT-02', name: 'Monthly Student & Staff Attendance Audit Register', category: 'Attendance', format: 'Excel (.xlsx)', frequency: 'Monthly', lastGenerated: 'Today, 08:00 AM', status: 'Ready' },
+  { id: '3', code: 'REP-FEE-03', name: 'Quarterly Fee Collection & Defaulter Audit Report', category: 'Finance', format: 'Excel (.xlsx)', frequency: 'Quarterly', lastGenerated: 'Yesterday, 04:30 PM', status: 'Ready' },
+  { id: '4', code: 'REP-ACAD-04', name: 'Term 1 Grade Performance & GPA Analysis Master', category: 'Academics', format: 'Both', frequency: 'Term-wise', lastGenerated: '12 Aug 2026', status: 'Ready' },
+  { id: '5', code: 'REP-RTE-05', name: 'RTE 25% EWS Reservation Verification Report', category: 'Compliance', format: 'PDF (.pdf)', frequency: 'Session-wise', lastGenerated: '10 Aug 2026', status: 'Ready' },
+  { id: '6', code: 'REP-TC-06', name: 'Transfer Certificate (TC) Issuance Ledger & Log', category: 'Compliance', format: 'Excel (.xlsx)', frequency: 'Realtime', lastGenerated: '08 Aug 2026', status: 'Ready' },
+];
 
-  const reportList: ReportTemplate[] = [
-    { id: '1', code: 'REP-CBSE-01', name: 'CBSE Annual Accreditation Compliance Report', category: 'Compliance', format: 'PDF (.pdf)', frequency: 'Annual', lastGenerated: 'Today, 09:30 AM', status: 'Ready' },
-    { id: '2', code: 'REP-ATT-02', name: 'Monthly Student & Staff Attendance Audit Register', category: 'Attendance', format: 'Excel (.xlsx)', frequency: 'Monthly', lastGenerated: 'Today, 08:00 AM', status: 'Ready' },
-    { id: '3', code: 'REP-FEE-03', name: 'Quarterly Fee Collection & Defaulter Audit Report', category: 'Finance', format: 'Excel (.xlsx)', frequency: 'Quarterly', lastGenerated: 'Yesterday', status: 'Ready' },
-    { id: '4', code: 'REP-ACAD-04', name: 'Term 1 Grade Performance & GPA Analysis', category: 'Academics', format: 'Both', frequency: 'Term-wise', lastGenerated: '12 Aug 2026', status: 'Ready' },
-    { id: '5', code: 'REP-RTE-05', name: 'RTE 25% Reservation Verification Report', category: 'Compliance', format: 'PDF (.pdf)', frequency: 'Session-wise', lastGenerated: '10 Aug 2026', status: 'Ready' },
-  ];
+function ReportsPage() {
+  const { addNotification } = useGlobalStore();
+  const [reports, setReports] = React.useState<ReportTemplate[]>(INITIAL_REPORTS);
+  const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
+  const [isGenerateModalOpen, setIsGenerateModalOpen] = React.useState(false);
+
+  const [customReport, setCustomReport] = React.useState({
+    name: '',
+    category: 'Academics',
+    format: 'Excel (.xlsx)',
+    frequency: 'On-Demand',
+  });
+
+  const handleGenerateReport = (rName: string) => {
+    addNotification({
+      title: 'Report Generated & Exported',
+      description: `Successfully compiled "${rName}". Downloading file...`,
+      type: 'success',
+    });
+  };
+
+  const handleCreateCustomReport = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customReport.name) return;
+
+    const added: ReportTemplate = {
+      id: String(Date.now()),
+      code: `REP-CUST-0${reports.length + 1}`,
+      name: customReport.name,
+      category: customReport.category as any,
+      format: customReport.format as any,
+      frequency: customReport.frequency,
+      lastGenerated: 'Just Now',
+      status: 'Ready',
+    };
+
+    setReports([added, ...reports]);
+    setIsGenerateModalOpen(false);
+    setCustomReport({ name: '', category: 'Academics', format: 'Excel (.xlsx)', frequency: 'On-Demand' });
+    addNotification({
+      title: 'Custom Report Compiled',
+      description: `"${added.name}" added to reports repository.`,
+      type: 'success',
+    });
+  };
+
+  const filteredReports = React.useMemo(() => {
+    if (categoryFilter === 'All') return reports;
+    return reports.filter((r) => r.category === categoryFilter);
+  }, [reports, categoryFilter]);
 
   const reportColumns = [
     {
@@ -50,19 +103,23 @@ function ReportsPage() {
       ),
     },
     {
-      header: 'Report Title',
+      header: 'Report Title & Category',
       accessorKey: 'name',
       cell: (r: ReportTemplate) => (
         <div>
           <p className="font-extrabold text-foreground text-sm leading-tight">{r.name}</p>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} Audit</p>
+          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} Analytics</p>
         </div>
       ),
     },
     {
-      header: 'Export Format',
+      header: 'Format',
       accessorKey: 'format',
-      cell: (r: ReportTemplate) => <VFBadge variant="outline">{r.format}</VFBadge>,
+      cell: (r: ReportTemplate) => (
+        <VFBadge variant="outline" className="font-mono text-[11px]">
+          {r.format}
+        </VFBadge>
+      ),
     },
     {
       header: 'Frequency',
@@ -70,7 +127,7 @@ function ReportsPage() {
       cell: (r: ReportTemplate) => <span className="text-foreground font-bold text-xs">{r.frequency}</span>,
     },
     {
-      header: 'Last Exported',
+      header: 'Last Compiled',
       accessorKey: 'lastGenerated',
       cell: (r: ReportTemplate) => <span className="text-muted-foreground text-xs font-semibold">{r.lastGenerated}</span>,
     },
@@ -87,7 +144,7 @@ function ReportsPage() {
           size="sm"
           variant="outline"
           leftIcon={<Download className="h-3.5 w-3.5" />}
-          onClick={() => setDownloadAlert(`Generating and downloading ${r.name}...`)}
+          onClick={() => handleGenerateReport(r.name)}
         >
           Export Now
         </VFButton>
@@ -95,82 +152,128 @@ function ReportsPage() {
     },
   ];
 
-  // 1. Report Center View
-  const reportCenterContent = (
-    <div className="space-y-4 sm:space-y-6">
-      {downloadAlert && (
-        <div className="p-4 bg-muted/60 border border-border rounded-md text-sm text-foreground flex items-center justify-between animate-fade-in">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
-            <span className="font-bold">{downloadAlert}</span>
+  return (
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+      {/* 1. Header Toolbar Box */}
+      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-md bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+            <FileSpreadsheet className="h-4 w-4" />
           </div>
-          <button
-            onClick={() => setDownloadAlert(null)}
-            className="text-muted-foreground hover:text-foreground text-xs font-black cursor-pointer px-2 py-1"
-          >
-            ✕
-          </button>
+          <span className="text-base font-extrabold text-foreground tracking-tight">
+            Institutional Reports & Compliance Hub
+          </span>
+          <VFBadge variant="success" className="text-[10px] font-bold font-mono">
+            CBSE & State Aligned
+          </VFBadge>
         </div>
-      )}
 
-      {/* 4 Enclosed Top Metric KPI Cards */}
-      <div className="p-4 sm:p-5 rounded-lg bg-card border border-border/90 shadow-xs">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Audit Registers</span>
-            <span className="text-2xl font-black text-foreground mt-1 block">18 Ready</span>
-            <span className="text-[11px] text-muted-foreground mt-0.5 block">1-Click Excel Export</span>
-          </div>
-          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">CBSE Compliance</span>
-            <span className="text-2xl font-black text-emerald-400 mt-1 block">100% Ready</span>
-            <span className="text-[11px] text-emerald-400 mt-0.5 block font-semibold">Board Standard 2026</span>
-          </div>
-          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Attendance Accuracy</span>
-            <span className="text-2xl font-black text-foreground mt-1 block">99.8%</span>
-            <span className="text-[11px] text-muted-foreground mt-0.5 block">Biometric Linked</span>
-          </div>
-          <div className="p-4 rounded-md bg-muted/40 border border-border/80">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide block">Fee Reconciliations</span>
-            <span className="text-2xl font-black text-foreground mt-1 block">₹4.86 Cr</span>
-            <span className="text-[11px] text-muted-foreground mt-0.5 block">Quarter 2 Audited</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Reports Master Table */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 className="text-base font-black text-foreground tracking-tight">Institutional Reports & Analytics Master</h2>
-            <p className="text-xs text-muted-foreground font-medium">Export official state board audits, academic performance summaries, and financial reports</p>
-          </div>
+        <div className="flex items-center gap-2 shrink-0">
           <VFButton
             size="sm"
-            leftIcon={<Download className="h-4 w-4" />}
-            onClick={() => setDownloadAlert('Downloading complete school master audit bundle (ZIP)...')}
+            onClick={() => setIsGenerateModalOpen(true)}
+            className="h-9 px-3.5 text-xs font-bold shadow-xs"
+            leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            Export Full Audit Bundle
+            Generate Custom Report
           </VFButton>
         </div>
-
-        <VFDataTable
-          columns={reportColumns}
-          data={reportList}
-          filterPlaceholder="Search report templates by name, code, or category..."
-        />
       </div>
-    </div>
-  );
 
-  const tabs = [
-    { id: 'reports', label: 'Institutional Reports', icon: <FileSpreadsheet className="h-4 w-4" />, content: reportCenterContent },
-  ];
+      {/* 2. Global Dropdown Filters Bar */}
+      <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex items-center gap-3 flex-1 min-w-[280px]">
+          <span className="text-xs font-extrabold text-foreground uppercase tracking-wider whitespace-nowrap">
+            Filter Domain:
+          </span>
+          <div className="w-56">
+            <VFSelect
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(String(e.target.value))}
+              options={[
+                { label: 'All Report Categories', value: 'All' },
+                { label: 'Compliance & Legal', value: 'Compliance' },
+                { label: 'Attendance Audit', value: 'Attendance' },
+                { label: 'Finance & Accounts', value: 'Finance' },
+                { label: 'Academics & GPA', value: 'Academics' },
+              ]}
+              className="bg-[#1a1a1a] border-border h-9 text-xs"
+            />
+          </div>
+        </div>
 
-  return (
-    <VFPageContainer>
-      <VFTabs items={tabs} defaultTabId="reports" variant="top-bar" />
+        <span className="text-xs font-mono text-muted-foreground font-semibold">
+          {filteredReports.length} Reports Ready
+        </span>
+      </div>
+
+      {/* 3. Main Reports Table */}
+      <VFDataTable
+        columns={reportColumns}
+        data={filteredReports}
+        filterPlaceholder="Search reports by code, title, frequency, or compliance category..."
+      />
+
+      {/* Custom Report Builder Modal */}
+      <VFDialog
+        isOpen={isGenerateModalOpen}
+        onClose={() => setIsGenerateModalOpen(false)}
+        title="Generate Custom Analytical Report"
+        description="Select criteria, date range, and export format to compile an instant audit dossier."
+      >
+        <form onSubmit={handleCreateCustomReport} className="space-y-3.5 pt-1">
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-foreground">Report Name / Description *</label>
+            <VFInput
+              required
+              placeholder="e.g. Q2 Bus Fleet Route Utilization Audit"
+              value={customReport.name}
+              onChange={(e) => setCustomReport({ ...customReport, name: e.target.value })}
+              className="bg-[#1a1a1a] border-border h-9 text-xs"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-foreground">Category Domain</label>
+              <VFSelect
+                value={customReport.category}
+                onChange={(e) => setCustomReport({ ...customReport, category: String(e.target.value) })}
+                options={[
+                  { label: 'Academics & Performance', value: 'Academics' },
+                  { label: 'Compliance & Accreditation', value: 'Compliance' },
+                  { label: 'Attendance & Gate Logs', value: 'Attendance' },
+                  { label: 'Finance & Defaulters', value: 'Finance' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-9 text-xs"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-foreground">Export Format</label>
+              <VFSelect
+                value={customReport.format}
+                onChange={(e) => setCustomReport({ ...customReport, format: String(e.target.value) })}
+                options={[
+                  { label: 'Excel (.xlsx)', value: 'Excel (.xlsx)' },
+                  { label: 'PDF (.pdf)', value: 'PDF (.pdf)' },
+                  { label: 'Bundled (.zip)', value: 'Both' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-9 text-xs"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t border-border/50">
+            <VFButton type="button" variant="outline" size="sm" onClick={() => setIsGenerateModalOpen(false)}>
+              Cancel
+            </VFButton>
+            <VFButton type="submit" size="sm" leftIcon={<Check className="h-4 w-4" />}>
+              Compile & Export
+            </VFButton>
+          </div>
+        </form>
+      </VFDialog>
     </VFPageContainer>
   );
 }

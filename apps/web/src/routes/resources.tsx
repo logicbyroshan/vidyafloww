@@ -250,7 +250,33 @@ function ResourcesPage() {
   ];
 
   return (
-    <VFPageContainer>
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+      {/* 1. Header Toolbar Box */}
+      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-md bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+            <FolderGit className="h-4 w-4" />
+          </div>
+          <span className="text-base font-extrabold text-foreground tracking-tight">
+            Digital Learning Resources & E-Library
+          </span>
+          <VFBadge variant="success" className="text-[10px] font-bold font-mono">
+            Cloud Repository
+          </VFBadge>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <VFButton
+            size="sm"
+            className="h-9 px-3.5 text-xs font-bold shadow-xs"
+            leftIcon={<Plus className="h-3.5 w-3.5" />}
+            onClick={() => setActiveSubmodule('notes')}
+          >
+            Upload Resource
+          </VFButton>
+        </div>
+      </div>
+
       <VFTabs
         items={submoduleTabs}
         activeTabId={activeSubmodule}

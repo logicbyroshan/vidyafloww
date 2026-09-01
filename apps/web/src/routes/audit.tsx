@@ -1,0 +1,326 @@
+import * as React from 'react';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import {
+  VFPageContainer,
+  VFCard,
+  VFButton,
+  VFBadge,
+  VFSelect,
+  VFInput,
+  VFTable,
+  VFTableHead,
+  VFTableHeaderCell,
+  VFTableBody,
+  VFTableRow,
+  VFTableCell,
+} from '@vidyafloww/ui';
+import {
+  ArrowLeft,
+  Search,
+  Download,
+  Terminal,
+  SlidersHorizontal,
+  RotateCcw,
+} from 'lucide-react';
+import { useGlobalStore } from '../stores/globalStore';
+
+export const Route = createFileRoute('/audit')({
+  component: AuditLogPage,
+});
+
+interface AuditLogEntry {
+  id: string;
+  timestamp: string;
+  actor: string;
+  role: string;
+  action: string;
+  target: string;
+  category: 'Auth' | 'Students' | 'Exams' | 'Finance' | 'Settings' | 'Gate';
+  ip: string;
+  status: 'Success' | 'Warning' | 'Blocked';
+}
+
+const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
+  { id: 'EVT-9041', timestamp: '01 Sep 2026, 02:44:12 PM', actor: 'Roshan Singh (Super Admin)', role: 'Super Administrator', action: 'Modified School Identity & Branding', target: 'Settings > School Profile', category: 'Settings', ip: '103.21.244.18', status: 'Success' },
+  { id: 'EVT-9040', timestamp: '01 Sep 2026, 02:30:05 PM', actor: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Approved Class 10 Admission Dossier & Faculty Schedule', target: 'Student #STU-2026-042', category: 'Students', ip: '103.21.244.22', status: 'Success' },
+  { id: 'EVT-9039', timestamp: '01 Sep 2026, 01:15:42 PM', actor: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Assigned Proxy Teacher for Class 9 Physics Lab', target: 'Timetable > Proxy Matrix', category: 'Students', ip: '103.21.244.22', status: 'Success' },
+  { id: 'EVT-9038', timestamp: '01 Sep 2026, 11:45:18 AM', actor: 'Unknown Client (External IP)', role: 'Parent & Student Portal', action: 'Failed 2FA Login Attempt (Invalid OTP)', target: 'Auth / Gateway', category: 'Auth', ip: '49.207.192.8', status: 'Blocked' },
+  { id: 'EVT-9037', timestamp: '01 Sep 2026, 10:20:33 AM', actor: 'Mr. Arvind Gupta', role: 'Accountant / Bursar', action: 'Generated Monthly Fee Reconciliation', target: 'Finance > Term 1 Dues', category: 'Finance', ip: '103.21.244.30', status: 'Success' },
+  { id: 'EVT-9036', timestamp: '01 Sep 2026, 09:05:10 AM', actor: 'Biometric Gateway Sync', role: 'Super Administrator', action: 'Turnstile Terminal Handshake Synchronized', target: 'Gate 1 & Gate 2 Turnstiles', category: 'Gate', ip: '192.168.1.101', status: 'Success' },
+  { id: 'EVT-9035', timestamp: '01 Sep 2026, 08:30:19 AM', actor: 'Mrs. S. Joshi', role: 'Front Office / Registrar', action: 'Issued Transfer Certificate #TC-882', target: 'Student Registry', category: 'Students', ip: '103.21.244.41', status: 'Success' },
+  { id: 'EVT-9034', timestamp: '01 Sep 2026, 08:02:44 AM', actor: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Reviewed & Approved Class 11 Term Marksheets', target: 'Examinations > Class 11-Sci', category: 'Exams', ip: '103.21.244.22', status: 'Success' },
+  { id: 'EVT-9033', timestamp: '01 Sep 2026, 07:45:00 AM', actor: 'System Automated Daemon', role: 'Super Administrator', action: 'Created AES-256 Cloud Backup Snapshot', target: 'AWS S3 Mumbai Archive', category: 'Settings', ip: '127.0.0.1', status: 'Success' },
+];
+
+const ROLE_OPTIONS = [
+  { label: 'All Roles', value: 'All' },
+  { label: 'Super Administrator', value: 'Super Administrator' },
+  { label: 'School Principal', value: 'School Principal' },
+  { label: 'Front Office / Registrar', value: 'Front Office / Registrar' },
+  { label: 'Accountant / Bursar', value: 'Accountant / Bursar' },
+  { label: 'Parent & Student Portal', value: 'Parent & Student Portal' },
+];
+
+const CATEGORY_OPTIONS = [
+  { label: 'All Categories', value: 'All' },
+  { label: 'Authentication & Access', value: 'Auth' },
+  { label: 'Admissions & Students', value: 'Students' },
+  { label: 'Exams & Grades', value: 'Exams' },
+  { label: 'Finance & Fees', value: 'Finance' },
+  { label: 'Settings & Branding', value: 'Settings' },
+  { label: 'Gate Biometrics', value: 'Gate' },
+];
+
+const STATUS_OPTIONS = [
+  { label: 'All Statuses', value: 'All' },
+  { label: 'Success (200 OK)', value: 'Success' },
+  { label: 'Blocked (403 Forbidden)', value: 'Blocked' },
+  { label: 'Warning (400 Alert)', value: 'Warning' },
+];
+
+function AuditLogPage() {
+  const { addNotification } = useGlobalStore();
+
+  // Filters State
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [selectedRoleFilter, setSelectedRoleFilter] = React.useState<string>('All');
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = React.useState<string>('All');
+  const [selectedStatusFilter, setSelectedStatusFilter] = React.useState<string>('All');
+
+  // Live stream log state
+  const [liveStreamLogs, setLiveStreamLogs] = React.useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
+
+  // Live simulation for table events
+  React.useEffect(() => {
+    const mockActors = [
+      { name: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Viewed Faculty Workload Matrix', target: 'Teachers > Schedule', category: 'Students' as const, ip: '103.21.244.22', status: 'Success' as const },
+      { name: 'Biometric Turnstile #1', role: 'Super Administrator', action: 'Student Gate Tap (ADM-2026-081)', target: 'Main Gate Terminal', category: 'Gate' as const, ip: '192.168.1.101', status: 'Success' as const },
+      { name: 'Dr. Rajesh Sharma', role: 'School Principal', action: 'Signed off Class 10 Midterm Exam Schedule', target: 'Examinations > Class 10', category: 'Exams' as const, ip: '103.21.244.22', status: 'Success' as const },
+      { name: 'Gateway Webhook', role: 'Super Administrator', action: 'WhatsApp Broadcast Receipt Delivered', target: 'Gupshup Gateway DLT', category: 'Settings' as const, ip: '103.21.244.18', status: 'Success' as const },
+      { name: 'Mrs. S. Joshi', role: 'Front Office / Registrar', action: 'Registered New Admission Candidate #ADM-2026-118', target: 'Admissions Pipeline', category: 'Students' as const, ip: '103.21.244.41', status: 'Success' as const },
+      { name: 'Mr. Arvind Gupta', role: 'Accountant / Bursar', action: 'Recorded Term 1 Fee Receipt #REC-9824', target: 'Fees > Payment Ledger', category: 'Finance' as const, ip: '103.21.244.30', status: 'Success' as const },
+    ];
+
+    const interval = setInterval(() => {
+      const randomEntry = mockActors[Math.floor(Math.random() * mockActors.length)];
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      const dateStr = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      const newLog: AuditLogEntry = {
+        id: `EVT-${Math.floor(9042 + Math.random() * 1000)}`,
+        timestamp: `${dateStr}, ${timeStr}`,
+        actor: randomEntry.name,
+        role: randomEntry.role,
+        action: randomEntry.action,
+        target: randomEntry.target,
+        category: randomEntry.category,
+        ip: randomEntry.ip,
+        status: randomEntry.status,
+      };
+
+      setLiveStreamLogs((prev) => [newLog, ...prev.slice(0, 50)]);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleExportAuditLogs = () => {
+    addNotification({
+      title: 'Audit Log Exported',
+      description: 'Exported tamper-proof ISO/IEC 27001 audit report as CSV.',
+      type: 'success',
+    });
+  };
+
+  const handleResetFilters = () => {
+    setSelectedRoleFilter('All');
+    setSelectedCategoryFilter('All');
+    setSelectedStatusFilter('All');
+    setSearchQuery('');
+  };
+
+  const hasActiveFilters = selectedRoleFilter !== 'All' || selectedCategoryFilter !== 'All' || selectedStatusFilter !== 'All' || Boolean(searchQuery);
+
+  const filteredLogs = React.useMemo(() => {
+    return liveStreamLogs.filter((log) => {
+      const matchesSearch =
+        log.actor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.action.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        log.ip.includes(searchQuery);
+
+      const matchesRole = selectedRoleFilter === 'All' || log.role.toLowerCase().includes(selectedRoleFilter.toLowerCase());
+      const matchesCategory = selectedCategoryFilter === 'All' || log.category === selectedCategoryFilter;
+      const matchesStatus = selectedStatusFilter === 'All' || log.status === selectedStatusFilter;
+
+      return matchesSearch && matchesRole && matchesCategory && matchesStatus;
+    });
+  }, [liveStreamLogs, searchQuery, selectedRoleFilter, selectedCategoryFilter, selectedStatusFilter]);
+
+  return (
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+      {/* 1. Header Toolbar Box (Consistent with Students & Timetable Pages) */}
+      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex items-center gap-3">
+          <Link to="/settings">
+            <VFButton
+              size="sm"
+              variant="outline"
+              className="h-9 w-9 p-0 aspect-square bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
+              title="Back to Settings"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </VFButton>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <div className="h-7 w-7 rounded-md bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/30">
+              <Terminal className="h-4 w-4" />
+            </div>
+            <span className="text-base font-extrabold text-foreground tracking-tight">
+              Cryptographic Audit Trail & Logs
+            </span>
+            <VFBadge variant="success" className="text-[10px] font-bold font-mono">
+              Live Stream Active
+            </VFBadge>
+          </div>
+        </div>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          <Link to="/security">
+            <VFButton
+              size="sm"
+              variant="outline"
+              className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
+              leftIcon={<SlidersHorizontal className="h-3.5 w-3.5" />}
+            >
+              Configure Matrix
+            </VFButton>
+          </Link>
+
+          <VFButton
+            size="sm"
+            variant="outline"
+            onClick={handleExportAuditLogs}
+            className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
+            leftIcon={<Download className="h-3.5 w-3.5" />}
+          >
+            Export CSV
+          </VFButton>
+        </div>
+      </div>
+
+      {/* 2. Interactive Global Search & VFSelect Dropdown Filters Bar */}
+      <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+          {/* Global VFInput Search */}
+          <div className="flex-1 min-w-[220px]">
+            <VFInput
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search logs by actor, action, target, IP, or event ID..."
+              leftIcon={<Search className="h-4 w-4" />}
+              className="bg-[#1a1a1a] border-border h-9 text-xs"
+            />
+          </div>
+
+          {/* Global VFSelect Role Filter */}
+          <div className="w-48 shrink-0">
+            <VFSelect
+              value={selectedRoleFilter}
+              onChange={(e) => setSelectedRoleFilter(String(e.target.value))}
+              options={ROLE_OPTIONS}
+              className="bg-[#1a1a1a] border-border h-9 text-xs"
+            />
+          </div>
+
+          {/* Global VFSelect Category Filter */}
+          <div className="w-48 shrink-0">
+            <VFSelect
+              value={selectedCategoryFilter}
+              onChange={(e) => setSelectedCategoryFilter(String(e.target.value))}
+              options={CATEGORY_OPTIONS}
+              className="bg-[#1a1a1a] border-border h-9 text-xs"
+            />
+          </div>
+
+          {/* Global VFSelect Status Filter */}
+          <div className="w-44 shrink-0">
+            <VFSelect
+              value={selectedStatusFilter}
+              onChange={(e) => setSelectedStatusFilter(String(e.target.value))}
+              options={STATUS_OPTIONS}
+              className="bg-[#1a1a1a] border-border h-9 text-xs"
+            />
+          </div>
+        </div>
+
+        {hasActiveFilters && (
+          <VFButton
+            size="sm"
+            variant="outline"
+            onClick={handleResetFilters}
+            className="h-9 px-3 text-xs bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground shrink-0"
+            leftIcon={<RotateCcw className="h-3 w-3" />}
+          >
+            Reset Filters
+          </VFButton>
+        )}
+      </div>
+
+      {/* 3. Global VFTable Live Audit Logs */}
+      <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 overflow-hidden flex-1 flex flex-col">
+        <VFTable className="rounded-none border-0 h-full">
+          <VFTableHead className="bg-[#1a1a1a]">
+            <VFTableRow>
+              <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">Event ID</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Timestamp</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Actor Details</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Role Tier</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Action Performed</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Target Scope</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground font-mono">Client IP</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground text-right">Status</VFTableHeaderCell>
+            </VFTableRow>
+          </VFTableHead>
+          <VFTableBody>
+            {filteredLogs.length > 0 ? (
+              filteredLogs.map((log) => (
+                <VFTableRow key={log.id} className="hover:bg-[#1a1a1a]/70">
+                  <VFTableCell className="py-3 px-4 font-mono font-bold text-primary text-xs">{log.id}</VFTableCell>
+                  <VFTableCell className="py-3 px-3 text-muted-foreground whitespace-nowrap text-xs">{log.timestamp}</VFTableCell>
+                  <VFTableCell className="py-3 px-3 font-bold text-foreground text-xs">{log.actor}</VFTableCell>
+                  <VFTableCell className="py-3 px-3">
+                    <VFBadge variant="outline" className="text-[10px] font-bold">
+                      {log.role}
+                    </VFBadge>
+                  </VFTableCell>
+                  <VFTableCell className="py-3 px-3 font-semibold text-foreground text-xs">{log.action}</VFTableCell>
+                  <VFTableCell className="py-3 px-3 text-muted-foreground text-xs">{log.target}</VFTableCell>
+                  <VFTableCell className="py-3 px-3 font-mono text-[11px] text-foreground">{log.ip}</VFTableCell>
+                  <VFTableCell className="py-3 px-4 text-right">
+                    <VFBadge
+                      variant={log.status === 'Success' ? 'success' : log.status === 'Blocked' ? 'danger' : 'warning'}
+                      className="text-[10px] font-bold"
+                    >
+                      {log.status}
+                    </VFBadge>
+                  </VFTableCell>
+                </VFTableRow>
+              ))
+            ) : (
+              <VFTableRow>
+                <VFTableCell colSpan={8} className="text-center py-12 text-muted-foreground font-semibold">
+                  No security audit events matching current filter criteria.
+                </VFTableCell>
+              </VFTableRow>
+            )}
+          </VFTableBody>
+        </VFTable>
+      </VFCard>
+    </VFPageContainer>
+  );
+}

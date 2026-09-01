@@ -2041,7 +2041,7 @@ function AdmissionsPage() {
           setIsDrawerOpen(false);
         }}
         hideHeader={true}
-        title={activeApplicant ? activeApplicant.name : 'Candidate Dossier'}
+        title={activeApplicant ? activeApplicant.name : 'Applicant Profile'}
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl"
         bodyClassName="p-0 flex flex-col flex-1 min-h-0 overflow-hidden"
         footerActions={
