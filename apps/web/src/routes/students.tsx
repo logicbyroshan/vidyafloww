@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import JSZip from 'jszip';
 import {
   VFPageContainer,
@@ -8,6 +8,7 @@ import {
   VFDataTable,
   VFDrawer,
   VFDialog,
+  VFSelect,
   cn,
 } from '@vidyafloww/ui';
 import {
@@ -44,6 +45,10 @@ import {
   TrendingUp,
   BookOpen,
   Quote,
+  ShieldCheck,
+  Clock,
+  ExternalLink,
+  Calendar,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 
@@ -85,15 +90,489 @@ const defaultDossierFields: DossierFieldConfig[] = [
   { key: 'busStop', label: 'Designated Bus Stop & Time', category: 'operations', isVisible: true, isCustom: true },
 ];
 
+// Active scholarship grants lookup by admission number
+export const ACTIVE_STUDENT_SCHOLARSHIPS: Record<string, {
+  schemeName: string;
+  category: string;
+  waiverPercentage: number;
+  waiverAmount: number;
+  fundingAgency: string;
+  disbursalMode: string;
+  sanctionRef: string;
+  sanctionDate: string;
+  status: string;
+  notes: string;
+}> = {
+  'ADM-2026-001': {
+    schemeName: 'National Means-cum-Merit Scholarship (NSP Scheme)',
+    category: 'Govt RTE / NSP',
+    waiverPercentage: 50,
+    waiverAmount: 21000,
+    fundingAgency: 'Ministry of Education (Govt. of India)',
+    disbursalMode: 'Direct Govt DBT Credit',
+    sanctionRef: 'NSP-2026-HR-991823',
+    sanctionDate: '15 Apr 2026',
+    status: 'Active Disbursed',
+    notes: 'Govt central portal DBT scholarship reimbursed directly to institution nodal account.',
+  },
+  'ADM-2026-002': {
+    schemeName: 'Institutional Academic Board Merit Excellence (100% Free-ship)',
+    category: 'Academic Merit',
+    waiverPercentage: 100,
+    waiverAmount: 42000,
+    fundingAgency: 'VidyaFloww Education Foundation Endowment',
+    disbursalMode: 'School Trust Endowment',
+    sanctionRef: 'VFEF-MERIT-2026-01',
+    sanctionDate: '01 Apr 2026',
+    status: 'Active Disbursed',
+    notes: 'Awarded for scoring 99.4% in CBSE Class 8 State Examinations. 100% tuition waived.',
+  },
+};
+
+export const AVAILABLE_SCHOLARSHIP_SCHEMES = [
+  {
+    id: 'merit-100',
+    name: 'Academic Board Merit Excellence Grant',
+    category: 'Academic Merit',
+    benefit: '100% Tuition Waiver (₹42,000 / AY)',
+    fundingAgency: 'VidyaFloww Foundation Trust',
+    eligibilityCriteria: 'CBSE / State aggregate >= 95% or GPA >= 3.90',
+    checkEligibility: (student: any) => {
+      const gpa = parseFloat(student?.gpa || '0');
+      if (gpa >= 3.90) {
+        return { isEligible: true, statusText: 'Eligible to Apply', reason: `Qualified with GPA ${student?.gpa || '3.90'} (>= 3.90 threshold)` };
+      }
+      return { isEligible: false, statusText: 'Not Eligible', reason: `Requires >= 95% aggregate or 3.90+ GPA (Student GPA: ${student?.gpa || 'N/A'})` };
+    },
+  },
+  {
+    id: 'nsp-govt',
+    name: 'National Means-cum-Merit Scholarship (Govt. NSP)',
+    category: 'Govt RTE / NSP',
+    benefit: '50% Tuition Waiver (₹21,000 / AY)',
+    fundingAgency: 'Ministry of Education (Govt. of India)',
+    eligibilityCriteria: 'Family annual income < ₹2.5 LPA + State Domicile',
+    checkEligibility: (_student: any) => {
+      return { isEligible: true, statusText: 'Eligible to Apply', reason: 'Open for all income-eligible students with domicile proof' };
+    },
+  },
+  {
+    id: 'sports-talent',
+    name: 'National & State Sports Talent Concession',
+    category: 'Sports Talent',
+    benefit: '75% Tuition Waiver (₹36,000 / AY)',
+    fundingAgency: 'Sports Authority of India (SAI) & CSR Grant',
+    eligibilityCriteria: 'State / National sports tournament medal certificate',
+    checkEligibility: (student: any) => {
+      if (student?.house === 'Red House' && (student?.name?.includes('Kavya') || student?.name?.includes('Ishaan'))) {
+        return { isEligible: true, statusText: 'Eligible to Apply', reason: 'State athletics championship certificate on file' };
+      }
+      return { isEligible: false, statusText: 'Not Eligible', reason: 'No state-level sports participation certificate on student record' };
+    },
+  },
+  {
+    id: 'sibling-relief',
+    name: 'Sibling & Staff Ward Fee Concession',
+    category: 'Sibling / Staff',
+    benefit: '25% Tuition Waiver (₹10,500 / AY)',
+    fundingAgency: 'Institutional Welfare Quota',
+    eligibilityCriteria: 'Real brother/sister actively enrolled in current session',
+    checkEligibility: (_student: any) => {
+      return { isEligible: true, isPendingCheck: true, statusText: 'Verification Pending', reason: 'Submit sibling admission number for enrollment matching' };
+    },
+  },
+  {
+    id: 'ews-aid',
+    name: 'EWS & Disadvantaged Group Financial Aid',
+    category: 'EWS Aid',
+    benefit: '50% Tuition Waiver (₹21,000 / AY)',
+    fundingAgency: 'State Directorate of Education',
+    eligibilityCriteria: 'Govt issued BPL / EWS Certificate with income proof',
+    checkEligibility: (_student: any) => {
+      return { isEligible: true, statusText: 'Eligible to Apply', reason: 'Open with valid Tehsildar EWS / BPL certificate' };
+    },
+  },
+];
+
+export const STUDENT_COMPLIANCE_DOCUMENTS = [
+  { id: 'doc-income', name: 'Parent Income Certificate (Revenue Dept)', docType: 'Mandatory for Govt Grants', defaultStatus: 'Verified', date: '10 Apr 2026' },
+  { id: 'doc-marksheet', name: 'Previous Year Official CBSE Marksheet', docType: 'Academic Verification', defaultStatus: 'Verified', date: '12 May 2026' },
+  { id: 'doc-aadhaar', name: 'Student & Guardian Aadhaar Identity Proof', docType: 'Identity KYC', defaultStatus: 'Verified', date: '14 May 2026' },
+  { id: 'doc-domicile', name: 'State Domicile / Residence Certificate', docType: 'Regional Verification', defaultStatus: 'Pending Verification', date: 'Submitted' },
+  { id: 'doc-ews', name: 'EWS / BPL Category Certificate', docType: 'Category Proof', defaultStatus: 'Not Submitted', date: '—' },
+  { id: 'doc-sports', name: 'State / National Sports Tournament Certificate', docType: 'Special Quota', defaultStatus: 'Not Submitted', date: '—' },
+];
+
+export interface StudentFeeLedgerItem {
+  paymentPlan: 'Annual Full Upfront' | 'Monthly Installments';
+  installmentDueDay: number;
+  nextDueDate: string;
+  baseTuition: number;
+  labTechFee: number;
+  transportFee: number;
+  libraryFee: number;
+  grossFee: number;
+  scholarshipRelief: number;
+  netAssessedFee: number;
+  paidAmount: number;
+  dueAmount: number;
+  status: 'Cleared' | 'Pending' | 'Overdue';
+  monthlyFee: number;
+  monthsPaidCount: number;
+  totalMonthsCount: number;
+  installments: Array<{
+    month: string;
+    amount: number;
+    dueDate: string;
+    isPaid: boolean;
+    receiptNo?: string;
+    paidDate?: string;
+  }>;
+  recentReceipts: Array<{
+    receiptNo: string;
+    period: string;
+    date: string;
+    mode: string;
+    amount: number;
+    cashier: string;
+  }>;
+}
+
+export const STUDENT_FEES_MAP: Record<string, StudentFeeLedgerItem> = {
+  'ADM-2026-001': {
+    paymentPlan: 'Annual Full Upfront',
+    installmentDueDay: 10,
+    nextDueDate: 'Annual Cleared (AY 2026–2027)',
+    baseTuition: 42000,
+    labTechFee: 5000,
+    transportFee: 4500,
+    libraryFee: 2500,
+    grossFee: 54000,
+    scholarshipRelief: 21000,
+    netAssessedFee: 33000,
+    paidAmount: 33000,
+    dueAmount: 0,
+    status: 'Cleared',
+    monthlyFee: 2750,
+    monthsPaidCount: 12,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 2750, dueDate: '10 Apr 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'May 2026', amount: 2750, dueDate: '10 May 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Jun 2026', amount: 2750, dueDate: '10 Jun 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Jul 2026', amount: 2750, dueDate: '10 Jul 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Aug 2026', amount: 2750, dueDate: '10 Aug 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Sep 2026', amount: 2750, dueDate: '10 Sep 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Oct 2026', amount: 2750, dueDate: '10 Oct 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Nov 2026', amount: 2750, dueDate: '10 Nov 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Dec 2026', amount: 2750, dueDate: '10 Dec 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Jan 2027', amount: 2750, dueDate: '10 Jan 2027', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Feb 2027', amount: 2750, dueDate: '10 Feb 2027', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+      { month: 'Mar 2027', amount: 2750, dueDate: '10 Mar 2027', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-8801' },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-8801', period: 'Full AY 2026–2027 (Annual Full)', date: '10 Jul 2026, 11:30 AM', mode: 'UPI / QR Code (Verified)', amount: 33000, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-002': {
+    paymentPlan: 'Monthly Installments',
+    installmentDueDay: 10,
+    nextDueDate: '10 Oct 2026',
+    baseTuition: 42000,
+    labTechFee: 5000,
+    transportFee: 4500,
+    libraryFee: 2500,
+    grossFee: 54000,
+    scholarshipRelief: 42000,
+    netAssessedFee: 12000,
+    paidAmount: 6000,
+    dueAmount: 6000,
+    status: 'Pending',
+    monthlyFee: 1000,
+    monthsPaidCount: 6,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 1000, dueDate: '10 Apr 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-0842' },
+      { month: 'May 2026', amount: 1000, dueDate: '10 May 2026', isPaid: true, paidDate: '10 May 2026', receiptNo: 'REC-2026-1402' },
+      { month: 'Jun 2026', amount: 1000, dueDate: '10 Jun 2026', isPaid: true, paidDate: '10 Jun 2026', receiptNo: 'REC-2026-2104' },
+      { month: 'Jul 2026', amount: 1000, dueDate: '10 Jul 2026', isPaid: true, paidDate: '09 Jul 2026', receiptNo: 'REC-2026-3101' },
+      { month: 'Aug 2026', amount: 1000, dueDate: '10 Aug 2026', isPaid: true, paidDate: '08 Aug 2026', receiptNo: 'REC-2026-4402' },
+      { month: 'Sep 2026', amount: 1000, dueDate: '10 Sep 2026', isPaid: true, paidDate: '10 Sep 2026', receiptNo: 'REC-2026-5501' },
+      { month: 'Oct 2026', amount: 1000, dueDate: '10 Oct 2026', isPaid: false },
+      { month: 'Nov 2026', amount: 1000, dueDate: '10 Nov 2026', isPaid: false },
+      { month: 'Dec 2026', amount: 1000, dueDate: '10 Dec 2026', isPaid: false },
+      { month: 'Jan 2027', amount: 1000, dueDate: '10 Jan 2027', isPaid: false },
+      { month: 'Feb 2027', amount: 1000, dueDate: '10 Feb 2027', isPaid: false },
+      { month: 'Mar 2027', amount: 1000, dueDate: '10 Mar 2027', isPaid: false },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-5501', period: 'September 2026 Installment', date: '10 Sep 2026, 09:45 AM', mode: 'NetBanking (NEFT)', amount: 1000, cashier: 'Mr. Arvind Gupta' },
+      { receiptNo: 'REC-2026-4402', period: 'August 2026 Installment', date: '08 Aug 2026, 11:20 AM', mode: 'UPI Gateway', amount: 1000, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-003': {
+    paymentPlan: 'Monthly Installments',
+    installmentDueDay: 5,
+    nextDueDate: '05 Jul 2026 (Overdue)',
+    baseTuition: 42000,
+    labTechFee: 5000,
+    transportFee: 4500,
+    libraryFee: 2500,
+    grossFee: 54000,
+    scholarshipRelief: 0,
+    netAssessedFee: 54000,
+    paidAmount: 13500,
+    dueAmount: 40500,
+    status: 'Overdue',
+    monthlyFee: 4500,
+    monthsPaidCount: 3,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 4500, dueDate: '05 Apr 2026', isPaid: true, paidDate: '05 Apr 2026', receiptNo: 'REC-2026-1102' },
+      { month: 'May 2026', amount: 4500, dueDate: '05 May 2026', isPaid: true, paidDate: '05 May 2026', receiptNo: 'REC-2026-1891' },
+      { month: 'Jun 2026', amount: 4500, dueDate: '05 Jun 2026', isPaid: true, paidDate: '04 Jun 2026', receiptNo: 'REC-2026-2901' },
+      { month: 'Jul 2026', amount: 4500, dueDate: '05 Jul 2026', isPaid: false },
+      { month: 'Aug 2026', amount: 4500, dueDate: '05 Aug 2026', isPaid: false },
+      { month: 'Sep 2026', amount: 4500, dueDate: '05 Sep 2026', isPaid: false },
+      { month: 'Oct 2026', amount: 4500, dueDate: '05 Oct 2026', isPaid: false },
+      { month: 'Nov 2026', amount: 4500, dueDate: '05 Nov 2026', isPaid: false },
+      { month: 'Dec 2026', amount: 4500, dueDate: '05 Dec 2026', isPaid: false },
+      { month: 'Jan 2027', amount: 4500, dueDate: '05 Jan 2027', isPaid: false },
+      { month: 'Feb 2027', amount: 4500, dueDate: '05 Feb 2027', isPaid: false },
+      { month: 'Mar 2027', amount: 4500, dueDate: '05 Mar 2027', isPaid: false },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-2901', period: 'June 2026 Installment', date: '04 Jun 2026, 02:15 PM', mode: 'Cash at Counter', amount: 4500, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-004': {
+    paymentPlan: 'Monthly Installments',
+    installmentDueDay: 12,
+    nextDueDate: '12 Jan 2027',
+    baseTuition: 48000,
+    labTechFee: 6000,
+    transportFee: 0,
+    libraryFee: 2500,
+    grossFee: 56500,
+    scholarshipRelief: 0,
+    netAssessedFee: 56500,
+    paidAmount: 42375,
+    dueAmount: 14125,
+    status: 'Pending',
+    monthlyFee: 4708,
+    monthsPaidCount: 9,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 4708, dueDate: '12 Apr 2026', isPaid: true, paidDate: '12 Apr 2026', receiptNo: 'REC-2026-019' },
+      { month: 'May 2026', amount: 4708, dueDate: '12 May 2026', isPaid: true, paidDate: '12 May 2026', receiptNo: 'REC-2026-088' },
+      { month: 'Jun 2026', amount: 4708, dueDate: '12 Jun 2026', isPaid: true, paidDate: '12 Jun 2026', receiptNo: 'REC-2026-155' },
+      { month: 'Jul 2026', amount: 4708, dueDate: '12 Jul 2026', isPaid: true, paidDate: '11 Jul 2026', receiptNo: 'REC-2026-241' },
+      { month: 'Aug 2026', amount: 4708, dueDate: '12 Aug 2026', isPaid: true, paidDate: '12 Aug 2026', receiptNo: 'REC-2026-319' },
+      { month: 'Sep 2026', amount: 4708, dueDate: '12 Sep 2026', isPaid: true, paidDate: '10 Sep 2026', receiptNo: 'REC-2026-402' },
+      { month: 'Oct 2026', amount: 4708, dueDate: '12 Oct 2026', isPaid: true, paidDate: '12 Oct 2026', receiptNo: 'REC-2026-512' },
+      { month: 'Nov 2026', amount: 4708, dueDate: '12 Nov 2026', isPaid: true, paidDate: '11 Nov 2026', receiptNo: 'REC-2026-618' },
+      { month: 'Dec 2026', amount: 4708, dueDate: '12 Dec 2026', isPaid: true, paidDate: '12 Dec 2026', receiptNo: 'REC-2026-729' },
+      { month: 'Jan 2027', amount: 4708, dueDate: '12 Jan 2027', isPaid: false },
+      { month: 'Feb 2027', amount: 4708, dueDate: '12 Feb 2027', isPaid: false },
+      { month: 'Mar 2027', amount: 4708, dueDate: '12 Mar 2027', isPaid: false },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-729', period: 'December 2026 Installment', date: '12 Dec 2026, 10:30 AM', mode: 'Card POS Swipe', amount: 4708, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-005': {
+    paymentPlan: 'Monthly Installments',
+    installmentDueDay: 8,
+    nextDueDate: '08 May 2026',
+    baseTuition: 52000,
+    labTechFee: 0,
+    transportFee: 0,
+    libraryFee: 0,
+    grossFee: 52000,
+    scholarshipRelief: 0,
+    netAssessedFee: 52000,
+    paidAmount: 4333,
+    dueAmount: 47667,
+    status: 'Pending',
+    monthlyFee: 4333,
+    monthsPaidCount: 1,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 4333, dueDate: '08 Apr 2026', isPaid: true, paidDate: '08 Apr 2026', receiptNo: 'REC-2026-091' },
+      { month: 'May 2026', amount: 4333, dueDate: '08 May 2026', isPaid: false },
+      { month: 'Jun 2026', amount: 4333, dueDate: '08 Jun 2026', isPaid: false },
+      { month: 'Jul 2026', amount: 4333, dueDate: '08 Jul 2026', isPaid: false },
+      { month: 'Aug 2026', amount: 4333, dueDate: '08 Aug 2026', isPaid: false },
+      { month: 'Sep 2026', amount: 4333, dueDate: '08 Sep 2026', isPaid: false },
+      { month: 'Oct 2026', amount: 4333, dueDate: '08 Oct 2026', isPaid: false },
+      { month: 'Nov 2026', amount: 4333, dueDate: '08 Nov 2026', isPaid: false },
+      { month: 'Dec 2026', amount: 4333, dueDate: '08 Dec 2026', isPaid: false },
+      { month: 'Jan 2027', amount: 4333, dueDate: '08 Jan 2027', isPaid: false },
+      { month: 'Feb 2027', amount: 4333, dueDate: '08 Feb 2027', isPaid: false },
+      { month: 'Mar 2027', amount: 4333, dueDate: '08 Mar 2027', isPaid: false },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-091', period: 'April 2026 Installment', date: '08 Apr 2026, 09:15 AM', mode: 'Online NetBanking', amount: 4333, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-006': {
+    paymentPlan: 'Monthly Installments',
+    installmentDueDay: 10,
+    nextDueDate: '10 Oct 2026',
+    baseTuition: 45600,
+    labTechFee: 0,
+    transportFee: 0,
+    libraryFee: 0,
+    grossFee: 45600,
+    scholarshipRelief: 0,
+    netAssessedFee: 45600,
+    paidAmount: 22800,
+    dueAmount: 22800,
+    status: 'Pending',
+    monthlyFee: 3800,
+    monthsPaidCount: 6,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 3800, dueDate: '10 Apr 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-118' },
+      { month: 'May 2026', amount: 3800, dueDate: '10 May 2026', isPaid: true, paidDate: '10 May 2026', receiptNo: 'REC-2026-192' },
+      { month: 'Jun 2026', amount: 3800, dueDate: '10 Jun 2026', isPaid: true, paidDate: '10 Jun 2026', receiptNo: 'REC-2026-281' },
+      { month: 'Jul 2026', amount: 3800, dueDate: '10 Jul 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-377' },
+      { month: 'Aug 2026', amount: 3800, dueDate: '10 Aug 2026', isPaid: true, paidDate: '09 Aug 2026', receiptNo: 'REC-2026-465' },
+      { month: 'Sep 2026', amount: 3800, dueDate: '10 Sep 2026', isPaid: true, paidDate: '10 Sep 2026', receiptNo: 'REC-2026-559' },
+      { month: 'Oct 2026', amount: 3800, dueDate: '10 Oct 2026', isPaid: false },
+      { month: 'Nov 2026', amount: 3800, dueDate: '10 Nov 2026', isPaid: false },
+      { month: 'Dec 2026', amount: 3800, dueDate: '10 Dec 2026', isPaid: false },
+      { month: 'Jan 2027', amount: 3800, dueDate: '10 Jan 2027', isPaid: false },
+      { month: 'Feb 2027', amount: 3800, dueDate: '10 Feb 2027', isPaid: false },
+      { month: 'Mar 2027', amount: 3800, dueDate: '10 Mar 2027', isPaid: false },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-559', period: 'September 2026 Installment', date: '10 Sep 2026, 04:30 PM', mode: 'UPI Gateway', amount: 3800, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-007': {
+    paymentPlan: 'Annual Full Upfront',
+    installmentDueDay: 10,
+    nextDueDate: 'Annual Cleared (AY 2026–2027)',
+    baseTuition: 52000,
+    labTechFee: 0,
+    transportFee: 0,
+    libraryFee: 0,
+    grossFee: 52000,
+    scholarshipRelief: 0,
+    netAssessedFee: 52000,
+    paidAmount: 52000,
+    dueAmount: 0,
+    status: 'Cleared',
+    monthlyFee: 4333,
+    monthsPaidCount: 12,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 4333, dueDate: '10 Apr 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'May 2026', amount: 4333, dueDate: '10 May 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Jun 2026', amount: 4333, dueDate: '10 Jun 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Jul 2026', amount: 4333, dueDate: '10 Jul 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Aug 2026', amount: 4333, dueDate: '10 Aug 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Sep 2026', amount: 4333, dueDate: '10 Sep 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Oct 2026', amount: 4333, dueDate: '10 Oct 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Nov 2026', amount: 4333, dueDate: '10 Nov 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Dec 2026', amount: 4333, dueDate: '10 Dec 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Jan 2027', amount: 4333, dueDate: '10 Jan 2027', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Feb 2027', amount: 4333, dueDate: '10 Feb 2027', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+      { month: 'Mar 2027', amount: 4333, dueDate: '10 Mar 2027', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-007A' },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-007A', period: 'Full Annual Fee', date: '10 Apr 2026, 11:00 AM', mode: 'Bank Transfer (NEFT)', amount: 52000, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+  'ADM-2026-008': {
+    paymentPlan: 'Annual Full Upfront',
+    installmentDueDay: 15,
+    nextDueDate: 'Annual Cleared (AY 2026–2027)',
+    baseTuition: 42000,
+    labTechFee: 0,
+    transportFee: 0,
+    libraryFee: 0,
+    grossFee: 42000,
+    scholarshipRelief: 0,
+    netAssessedFee: 42000,
+    paidAmount: 42000,
+    dueAmount: 0,
+    status: 'Cleared',
+    monthlyFee: 3500,
+    monthsPaidCount: 12,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 3500, dueDate: '15 Apr 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'May 2026', amount: 3500, dueDate: '15 May 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Jun 2026', amount: 3500, dueDate: '15 Jun 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Jul 2026', amount: 3500, dueDate: '15 Jul 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Aug 2026', amount: 3500, dueDate: '15 Aug 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Sep 2026', amount: 3500, dueDate: '15 Sep 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Oct 2026', amount: 3500, dueDate: '15 Oct 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Nov 2026', amount: 3500, dueDate: '15 Nov 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Dec 2026', amount: 3500, dueDate: '15 Dec 2026', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Jan 2027', amount: 3500, dueDate: '15 Jan 2027', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Feb 2027', amount: 3500, dueDate: '15 Feb 2027', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+      { month: 'Mar 2027', amount: 3500, dueDate: '15 Mar 2027', isPaid: true, paidDate: '15 Apr 2026', receiptNo: 'REC-2026-2109' },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-2109', period: 'Full Annual Fee', date: '15 Apr 2026, 10:00 AM', mode: 'Bank Transfer (NEFT)', amount: 42000, cashier: 'Mr. Arvind Gupta' },
+    ],
+  },
+};
+
+export const getStudentFeeDetails = (student: any): StudentFeeLedgerItem => {
+  if (student?.admNo && STUDENT_FEES_MAP[student.admNo]) {
+    return STUDENT_FEES_MAP[student.admNo];
+  }
+  return {
+    paymentPlan: 'Monthly Installments',
+    installmentDueDay: 10,
+    nextDueDate: '10 Oct 2026',
+    baseTuition: 42000,
+    labTechFee: 5000,
+    transportFee: 4500,
+    libraryFee: 2500,
+    grossFee: 54000,
+    scholarshipRelief: 0,
+    netAssessedFee: 54000,
+    paidAmount: 27000,
+    dueAmount: 27000,
+    status: 'Pending',
+    monthlyFee: 4500,
+    monthsPaidCount: 6,
+    totalMonthsCount: 12,
+    installments: [
+      { month: 'Apr 2026', amount: 4500, dueDate: '10 Apr 2026', isPaid: true, paidDate: '10 Apr 2026', receiptNo: 'REC-2026-101' },
+      { month: 'May 2026', amount: 4500, dueDate: '10 May 2026', isPaid: true, paidDate: '10 May 2026', receiptNo: 'REC-2026-202' },
+      { month: 'Jun 2026', amount: 4500, dueDate: '10 Jun 2026', isPaid: true, paidDate: '10 Jun 2026', receiptNo: 'REC-2026-303' },
+      { month: 'Jul 2026', amount: 4500, dueDate: '10 Jul 2026', isPaid: true, paidDate: '10 Jul 2026', receiptNo: 'REC-2026-404' },
+      { month: 'Aug 2026', amount: 4500, dueDate: '10 Aug 2026', isPaid: true, paidDate: '10 Aug 2026', receiptNo: 'REC-2026-505' },
+      { month: 'Sep 2026', amount: 4500, dueDate: '10 Sep 2026', isPaid: true, paidDate: '10 Sep 2026', receiptNo: 'REC-2026-606' },
+      { month: 'Oct 2026', amount: 4500, dueDate: '10 Oct 2026', isPaid: false },
+      { month: 'Nov 2026', amount: 4500, dueDate: '10 Nov 2026', isPaid: false },
+      { month: 'Dec 2026', amount: 4500, dueDate: '10 Dec 2026', isPaid: false },
+      { month: 'Jan 2027', amount: 4500, dueDate: '10 Jan 2027', isPaid: false },
+      { month: 'Feb 2027', amount: 4500, dueDate: '10 Feb 2027', isPaid: false },
+      { month: 'Mar 2027', amount: 4500, dueDate: '10 Mar 2027', isPaid: false },
+    ],
+    recentReceipts: [
+      { receiptNo: 'REC-2026-606', period: 'September 2026 Installment', date: '10 Sep 2026, 11:00 AM', mode: 'UPI Gateway', amount: 4500, cashier: 'Mr. Arvind Gupta' },
+    ],
+  };
+};
+
 export const Route = createFileRoute('/students')({
   component: StudentsPage,
 });
 
 function StudentsPage() {
-  const { activeSession } = useGlobalStore();
+  const navigate = useNavigate();
+  const { activeSession, addNotification } = useGlobalStore();
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
-  const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'credentials' | 'fees'>('overview');
+  const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'credentials' | 'fees' | 'scholarship'>('overview');
   const [copiedText, setCopiedText] = React.useState<string | null>(null);
 
   // Dynamic Dossier Fields Configuration State
@@ -608,6 +1087,38 @@ function StudentsPage() {
   const [enrolledStudentsMap, setEnrolledStudentsMap] = React.useState<Record<string, any[]>>(allStudentsBySession);
   const currentEnrolledList = enrolledStudentsMap[activeSession] || enrolledStudentsMap['2026–2027'] || [];
 
+  // URL Deep-linking Handler (e.g. /students?student=ADM-2026-001&tab=scholarship)
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const studentQuery = urlParams.get('student') || urlParams.get('search') || urlParams.get('name');
+    const requestedTab = urlParams.get('tab');
+
+    if (studentQuery && currentEnrolledList.length > 0) {
+      const q = studentQuery.toLowerCase().trim();
+      const matchedIdx = currentEnrolledList.findIndex(
+        (s) =>
+          s.admNo?.toLowerCase() === q ||
+          s.admNo?.replace('-00', '-084').toLowerCase() === q ||
+          s.admNo?.replace('-084', '-00').toLowerCase() === q ||
+          s.name?.toLowerCase().includes(q)
+      );
+
+      if (matchedIdx >= 0) {
+        setSelectedStudentIndex(matchedIdx);
+        if (requestedTab) {
+          const tabLower = requestedTab.toLowerCase();
+          if (tabLower.startsWith('scholarship')) setDrawerTab('scholarship');
+          else if (tabLower.startsWith('fee')) setDrawerTab('fees');
+          else if (tabLower.startsWith('academic')) setDrawerTab('academics');
+          else if (tabLower.startsWith('cred') || tabLower.startsWith('cert') || tabLower.startsWith('id')) setDrawerTab('credentials');
+          else if (tabLower.startsWith('over')) setDrawerTab('overview');
+        }
+        setIsDrawerOpen(true);
+      }
+    }
+  }, [currentEnrolledList]);
+
   // Certificate Modal State (TC, Character, Bonafide)
   const [isCertificateModalOpen, setIsCertificateModalOpen] = React.useState<boolean>(false);
   const [certificateType, setCertificateType] = React.useState<'tc' | 'character' | 'bonafide'>('tc');
@@ -1089,7 +1600,7 @@ function StudentsPage() {
           setIsDrawerOpen(false);
         }}
         hideHeader={true}
-        title={activeStudent ? activeStudent.name : 'Student Dossier'}
+        title={activeStudent ? activeStudent.name : 'Student Profile'}
         className="w-[850px] min-w-[320px] sm:min-w-[850px] max-w-[95vw]"
         bodyClassName="p-0 flex flex-col overflow-hidden"
         footerActions={
@@ -1173,12 +1684,13 @@ function StudentsPage() {
         {activeStudent && (
           <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-fade-in">
             <div className="w-full bg-card/95 backdrop-blur-md border-b border-border shrink-0">
-              <div className="grid grid-cols-4 w-full">
+              <div className="grid grid-cols-5 w-full">
                 {[
                   { id: 'overview', label: 'Profile', icon: <UserCheck className="h-4 w-4" /> },
-                  { id: 'academics', label: 'Academics & Exams', icon: <BarChart3 className="h-4 w-4" /> },
-                  { id: 'credentials', label: 'Certificates & ID Card', icon: <FileText className="h-4 w-4" /> },
-                  { id: 'fees', label: 'Fee & Charges', icon: <CreditCard className="h-4 w-4" /> },
+                  { id: 'academics', label: 'Academics', icon: <BarChart3 className="h-4 w-4" /> },
+                  { id: 'credentials', label: 'ID & Certs', icon: <FileText className="h-4 w-4" /> },
+                  { id: 'fees', label: 'Fees', icon: <CreditCard className="h-4 w-4" /> },
+                  { id: 'scholarship', label: 'Scholarships', icon: <Award className="h-4 w-4" /> },
                 ].map((tab) => {
                   const isActive = drawerTab === tab.id;
                   return (
@@ -1874,101 +2386,280 @@ function StudentsPage() {
                   </div>
                 )}
 
-                {/* TAB 4: FEE & CHARGES (REFINED & BEST LOOKING) */}
-                {drawerTab === 'fees' && (
-                  <div className="animate-fade-in divide-y divide-border/40">
-                    {/* KPI Metrics Strip */}
-                    <div>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-4 py-3">
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
-                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Annual Total Fee</span>
-                          <span className="text-xl font-black text-foreground mt-0.5 block font-mono">₹ 78,000</span>
-                          <span className="text-[10px] text-muted-foreground mt-0.5 block">AY {activeSession}</span>
+                {/* TAB 4: FEE & CHARGES (ENHANCED PREVIEW & DIRECT REDIRECT) */}
+                {drawerTab === 'fees' && (() => {
+                  const feeData = getStudentFeeDetails(activeStudent);
+                  const isFullyPaid = feeData.dueAmount === 0;
+
+                  return (
+                    <div className="animate-fade-in divide-y divide-border/40 text-xs">
+                      {/* 1. Header with Direct Deep-Link Action Button */}
+                      <div className="px-4 py-3 bg-muted/20 flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-2.5">
+                          <div className="h-8 w-8 rounded-md bg-primary/10 text-primary flex items-center justify-center border border-primary/20 shrink-0">
+                            <CreditCard className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <h4 className="font-extrabold text-foreground text-sm">Fee Ledger & Payment Profile</h4>
+                            <p className="text-[11px] text-muted-foreground">Session {activeSession} · {activeStudent.name} ({activeStudent.admNo})</p>
+                          </div>
                         </div>
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
-                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Realized / Paid</span>
-                          <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">₹ 78,000</span>
-                          <span className="text-[10px] text-emerald-400 mt-0.5 font-bold flex items-center gap-1">
-                            <CheckCheck className="h-3 w-3" /> 100% Realized
-                          </span>
-                        </div>
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
-                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Outstanding Balance</span>
-                          <span className="text-xl font-black text-foreground mt-0.5 block font-mono">₹ 0.00</span>
-                          <span className="text-[10px] text-muted-foreground mt-0.5 block">Zero Dues Pending</span>
-                        </div>
-                        <div className="p-3 rounded-md bg-muted/30 border border-border/70 flex flex-col justify-between">
-                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Ledger Standing</span>
-                          <span className="text-xl font-black text-emerald-400 mt-0.5 block">Cleared</span>
-                          <span className="text-[10px] text-emerald-400 mt-0.5 font-semibold">Good Standing</span>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <VFButton
+                            size="sm"
+                            className="h-8 px-3 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs flex items-center gap-1.5"
+                            onClick={() => {
+                              navigate({ to: '/fees' });
+                              window.location.href = `/fees?student=${encodeURIComponent(activeStudent.admNo)}`;
+                            }}
+                          >
+                            <span>Open in Fees Module</span>
+                            <ExternalLink className="h-3.5 w-3.5" />
+                          </VFButton>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Fee Component Breakdown */}
-                    <div>
-                      <div className="px-4 py-3 space-y-2.5">
+                      {/* 2. Key Financial KPI Metrics Strip */}
+                      <div className="p-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                          <div className="p-3 rounded-md bg-[#161616] border border-border/80 flex flex-col justify-between shadow-2xs">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Gross Assessed Fee</span>
+                            <span className="text-xl font-black text-foreground mt-0.5 block font-mono">
+                              ₹{feeData.grossFee.toLocaleString('en-IN')}
+                            </span>
+                            <span className="text-[10px] text-muted-foreground mt-0.5 block">Standard Fee AY {activeSession}</span>
+                          </div>
+
+                          <div className="p-3 rounded-md bg-[#161616] border border-border/80 flex flex-col justify-between shadow-2xs">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Scholarship Relief</span>
+                            <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">
+                              {feeData.scholarshipRelief > 0 ? `- ₹${feeData.scholarshipRelief.toLocaleString('en-IN')}` : '₹ 0.00'}
+                            </span>
+                            <span className="text-[10px] text-emerald-400 mt-0.5 font-semibold block">
+                              {feeData.scholarshipRelief > 0 ? 'Sanctioned Grant Waiver' : 'No Concession Applied'}
+                            </span>
+                          </div>
+
+                          <div className="p-3 rounded-md bg-[#161616] border border-border/80 flex flex-col justify-between shadow-2xs">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Realized / Paid</span>
+                            <span className="text-xl font-black text-emerald-400 mt-0.5 block font-mono">
+                              ₹{feeData.paidAmount.toLocaleString('en-IN')}
+                            </span>
+                            <span className="text-[10px] text-emerald-400 mt-0.5 font-bold flex items-center gap-1">
+                              <CheckCheck className="h-3 w-3" />
+                              {Math.round((feeData.paidAmount / feeData.netAssessedFee) * 100)}% Realized
+                            </span>
+                          </div>
+
+                          <div className="p-3 rounded-md bg-[#161616] border border-border/80 flex flex-col justify-between shadow-2xs">
+                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block">Outstanding Due</span>
+                            <span className={cn(
+                              "text-xl font-black mt-0.5 block font-mono",
+                              isFullyPaid ? "text-foreground" : "text-amber-400"
+                            )}>
+                              ₹{feeData.dueAmount.toLocaleString('en-IN')}
+                            </span>
+                            <span className={cn(
+                              "text-[10px] mt-0.5 font-bold",
+                              isFullyPaid ? "text-emerald-400" : "text-amber-400"
+                            )}>
+                              {isFullyPaid ? 'Zero Dues Pending' : `${feeData.status} Balance`}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 3. Payment Plan & Due Cycle Summary Card */}
+                      <div className="px-4 py-3">
+                        <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-extrabold text-foreground text-xs uppercase tracking-wider">Payment Schedule:</span>
+                              <VFBadge variant="primary" className="text-[10px] font-bold rounded-md">
+                                {feeData.paymentPlan}
+                              </VFBadge>
+                              {feeData.paymentPlan === 'Monthly Installments' && (
+                                <span className="text-[11px] font-mono text-zinc-400">
+                                  (Due on {feeData.installmentDueDay}th of each month · ₹{feeData.monthlyFee.toLocaleString('en-IN')}/mo)
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
+                              <Calendar className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                              <span>Next Billing Due Date: <strong className="text-foreground">{feeData.nextDueDate}</strong></span>
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            {!isFullyPaid && (
+                              <VFButton
+                                size="sm"
+                                variant="outline"
+                                className="h-7 text-xs font-bold rounded-md"
+                                leftIcon={<Send className="h-3 w-3 text-amber-400" />}
+                                onClick={() => addNotification({
+                                  title: 'Payment Reminder Dispatched',
+                                  description: `SMS & WhatsApp fee reminder sent to guardian of ${activeStudent.name}.`,
+                                  type: 'success',
+                                })}
+                              >
+                                Send Due Reminder
+                              </VFButton>
+                            )}
+                            <VFButton
+                              size="sm"
+                              className="h-7 px-3 text-xs font-bold rounded-md"
+                              onClick={() => {
+                                window.location.href = `/fees?student=${encodeURIComponent(activeStudent.admNo)}`;
+                              }}
+                            >
+                              {isFullyPaid ? 'View In Fees' : 'Collect Fee ↗'}
+                            </VFButton>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 4. 12-Month Installment Cycle Visual Progress Tracker */}
+                      <div className="p-4 space-y-2.5">
                         <div className="flex items-center justify-between pb-1 border-b border-border/60">
-                          <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
-                            <CreditCard className="h-4 w-4 text-muted-foreground" />
-                            <span>Institutional Fee Structure & Schedule</span>
+                          <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                            <Clock className="h-4 w-4 text-primary" />
+                            <span>12-Month Installment Cycle Track (AY {activeSession})</span>
                           </h4>
-                          <span className="text-[10px] font-mono font-medium text-muted-foreground">CBSE Enrolled</span>
+                          <span className="text-[10px] font-mono font-bold text-emerald-400">
+                            {feeData.monthsPaidCount} of {feeData.totalMonthsCount} Months Paid
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                          {feeData.installments.map((inst, idx) => (
+                            <div
+                              key={idx}
+                              className={cn(
+                                "p-2 rounded-md border text-center transition-all flex flex-col justify-between",
+                                inst.isPaid
+                                  ? "bg-emerald-950/20 border-emerald-500/40 text-emerald-300"
+                                  : idx === feeData.monthsPaidCount
+                                  ? "bg-amber-950/25 border-amber-500/50 text-amber-300"
+                                  : "bg-[#141414] border-border/60 text-zinc-500 opacity-70"
+                              )}
+                            >
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="font-bold text-[11px] truncate">{inst.month.split(' ')[0]}</span>
+                                {inst.isPaid ? (
+                                  <Check className="h-3 w-3 text-emerald-400 shrink-0" />
+                                ) : idx === feeData.monthsPaidCount ? (
+                                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0 animate-pulse" />
+                                ) : null}
+                              </div>
+                              <span className="font-mono text-[10px] font-semibold mt-1 block">
+                                ₹{inst.amount.toLocaleString('en-IN')}
+                              </span>
+                              <span className="text-[9px] font-bold uppercase mt-0.5 block truncate">
+                                {inst.isPaid ? 'Paid' : idx === feeData.monthsPaidCount ? 'Current Due' : 'Upcoming'}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* 5. Fee Component Breakdown Table */}
+                      <div className="p-4 space-y-2.5">
+                        <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                          <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                            <CreditCard className="h-4 w-4 text-primary" />
+                            <span>Institutional Fee Breakdown & Structure</span>
+                          </h4>
+                          <span className="text-[10px] font-mono text-muted-foreground">CBSE Enrolled</span>
                         </div>
 
                         <div className="border border-border/70 rounded-md overflow-hidden bg-card text-xs shadow-2xs">
                           <table className="w-full">
                             <thead>
                               <tr className="bg-muted/40 text-muted-foreground font-bold text-[10px] uppercase tracking-wider border-b border-border/60">
-                                <th className="py-2.5 px-3 text-left">Component Item</th>
-                                <th className="py-2.5 px-3 text-left">Frequency</th>
-                                <th className="py-2.5 px-3 text-right">Standard Fee</th>
+                                <th className="py-2.5 px-3 text-left">Fee Head / Component</th>
+                                <th className="py-2.5 px-3 text-left">Billing Frequency</th>
+                                <th className="py-2.5 px-3 text-right">Assessed Amount</th>
                                 <th className="py-2.5 px-3 text-right">Status</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-border/40 font-mono">
-                              {[
-                                { item: 'Tuition & Core Instruction Fee', freq: 'Annual / Quarterly', amt: '₹ 52,000', status: 'Paid' },
-                                { item: 'Science & Advanced Computing Lab', freq: 'Per Semester', amt: '₹ 12,000', status: 'Paid' },
-                                { item: 'Digital Library & Portal License', freq: 'Annual', amt: '₹ 4,000', status: 'Paid' },
-                                { item: 'Commute & Transport Route #4', freq: 'Quarterly', amt: '₹ 10,000', status: 'Paid' },
-                              ].map((row, idx) => (
-                                <tr key={idx} className="hover:bg-muted/20 transition-colors">
-                                  <td className="py-2.5 px-3 font-sans font-semibold text-foreground">{row.item}</td>
-                                  <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">{row.freq}</td>
-                                  <td className="py-2.5 px-3 text-right font-bold text-foreground">{row.amt}</td>
-                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">{row.status}</td>
+                              <tr className="hover:bg-muted/20 transition-colors">
+                                <td className="py-2.5 px-3 font-sans font-semibold text-foreground">Base Academic Tuition Fee</td>
+                                <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">{feeData.paymentPlan}</td>
+                                <td className="py-2.5 px-3 text-right font-bold text-foreground">₹{feeData.baseTuition.toLocaleString('en-IN')}</td>
+                                <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Assessed</td>
+                              </tr>
+                              {feeData.labTechFee > 0 && (
+                                <tr className="hover:bg-muted/20 transition-colors">
+                                  <td className="py-2.5 px-3 font-sans font-semibold text-foreground">Science & Computing Labs</td>
+                                  <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">Annual</td>
+                                  <td className="py-2.5 px-3 text-right font-bold text-foreground">₹{feeData.labTechFee.toLocaleString('en-IN')}</td>
+                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Assessed</td>
                                 </tr>
-                              ))}
+                              )}
+                              {feeData.transportFee > 0 && (
+                                <tr className="hover:bg-muted/20 transition-colors">
+                                  <td className="py-2.5 px-3 font-sans font-semibold text-foreground">Transport Commute (Bus Route)</td>
+                                  <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">Quarterly Cycle</td>
+                                  <td className="py-2.5 px-3 text-right font-bold text-foreground">₹{feeData.transportFee.toLocaleString('en-IN')}</td>
+                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Assessed</td>
+                                </tr>
+                              )}
+                              {feeData.libraryFee > 0 && (
+                                <tr className="hover:bg-muted/20 transition-colors">
+                                  <td className="py-2.5 px-3 font-sans font-semibold text-foreground">Digital Library & Portals</td>
+                                  <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">Annual</td>
+                                  <td className="py-2.5 px-3 text-right font-bold text-foreground">₹{feeData.libraryFee.toLocaleString('en-IN')}</td>
+                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Assessed</td>
+                                </tr>
+                              )}
+                              {feeData.scholarshipRelief > 0 && (
+                                <tr className="bg-emerald-950/20 text-emerald-300 font-semibold">
+                                  <td className="py-2.5 px-3 font-sans">Less: Active Scholarship / Fee Concession</td>
+                                  <td className="py-2.5 px-3 font-sans text-[11px]">Annual Deduction</td>
+                                  <td className="py-2.5 px-3 text-right font-bold text-emerald-400">- ₹{feeData.scholarshipRelief.toLocaleString('en-IN')}</td>
+                                  <td className="py-2.5 px-3 text-right font-sans font-bold text-emerald-400">Waiver Applied</td>
+                                </tr>
+                              )}
+                              <tr className="bg-muted/30 font-bold border-t border-border/80">
+                                <td className="py-2.5 px-3 font-sans text-foreground">Net Assessed Annual Payable</td>
+                                <td className="py-2.5 px-3 font-sans text-muted-foreground text-[11px]">AY {activeSession}</td>
+                                <td className="py-2.5 px-3 text-right text-foreground font-black text-sm">₹{feeData.netAssessedFee.toLocaleString('en-IN')}</td>
+                                <td className="py-2.5 px-3 text-right font-sans">
+                                  <VFBadge variant={isFullyPaid ? 'success' : 'warning'} className="text-[10px] rounded-md">
+                                    {feeData.status}
+                                  </VFBadge>
+                                </td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Payment Installment History */}
-                    <div>
-                      <div className="px-4 py-3 space-y-2.5">
+                      {/* 6. Recent Payment Receipts Ledger */}
+                      <div className="p-4 space-y-2.5">
                         <div className="flex items-center justify-between pb-1 border-b border-border/60">
-                          <h4 className="text-xs sm:text-sm font-bold text-foreground flex items-center gap-1.5">
-                            <Receipt className="h-4 w-4 text-muted-foreground" />
-                            <span>Quarterly Installment Receipts & Transaction Ledger</span>
+                          <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                            <Receipt className="h-4 w-4 text-primary" />
+                            <span>Recent Payment Receipts & Transactions</span>
                           </h4>
-                          <span className="text-[10px] font-mono text-emerald-400 font-bold">4 of 4 Quarters Paid</span>
+                          <span className="text-[10px] font-mono text-muted-foreground">
+                            {feeData.recentReceipts.length} Recorded
+                          </span>
                         </div>
 
                         <div className="space-y-2">
-                          {[
-                            { qtr: 'Quarter 1 (Apr – Jun 2026)', date: '10 Apr 2026', amt: '₹ 19,500', mode: 'Online NetBanking', receipt: 'REC-2026-0891' },
-                            { qtr: 'Quarter 2 (Jul – Sep 2026)', date: '08 Jul 2026', amt: '₹ 19,500', mode: 'UPI Gateway', receipt: 'REC-2026-2144' },
-                            { qtr: 'Quarter 3 (Oct – Dec 2026)', date: '05 Oct 2026', amt: '₹ 19,500', mode: 'Card POS', receipt: 'REC-2026-4401' },
-                            { qtr: 'Quarter 4 (Jan – Mar 2027)', date: '02 Jan 2027', amt: '₹ 19,500', mode: 'Bank Transfer', receipt: 'REC-2027-6612' },
-                          ].map((tx, idx) => (
-                            <div key={idx} className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex items-center justify-between gap-3 flex-wrap text-xs hover:border-foreground/30 transition-colors">
+                          {feeData.recentReceipts.map((tx, idx) => (
+                            <div
+                              key={idx}
+                              className="p-3 rounded-lg bg-card border border-border/80 shadow-2xs flex items-center justify-between gap-3 flex-wrap text-xs hover:border-zinc-600 transition-colors"
+                            >
                               <div className="min-w-0">
-                                <span className="font-bold text-foreground block">{tx.qtr}</span>
+                                <span className="font-bold text-foreground block">{tx.period}</span>
                                 <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-mono mt-0.5">
-                                  <span>{tx.receipt}</span>
+                                  <span className="text-primary font-semibold">{tx.receiptNo}</span>
                                   <span>•</span>
                                   <span>{tx.date}</span>
                                   <span>•</span>
@@ -1976,46 +2667,265 @@ function StudentsPage() {
                                 </div>
                               </div>
                               <div className="flex items-center gap-3">
-                                <span className="font-mono font-black text-foreground text-sm">{tx.amt}</span>
-                                <button
-                                  onClick={() => alert(`Downloading fee receipt ${tx.receipt} for ${activeStudent.name}`)}
-                                  className="h-8 px-2.5 rounded-md bg-muted hover:bg-muted/80 border border-border text-xs font-bold text-foreground flex items-center gap-1.5 cursor-pointer transition-colors"
+                                <span className="font-mono font-black text-emerald-400 text-sm">
+                                  ₹{tx.amount.toLocaleString('en-IN')}
+                                </span>
+                                <VFButton
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 px-2.5 text-[11px] font-bold rounded-md"
+                                  leftIcon={<Receipt className="h-3 w-3" />}
+                                  onClick={() => addNotification({
+                                    title: 'Receipt Downloaded',
+                                    description: `Downloaded receipt #${tx.receiptNo} for ${activeStudent.name}.`,
+                                    type: 'info',
+                                  })}
                                 >
-                                  <Receipt className="h-3.5 w-3.5 text-muted-foreground" />
-                                  <span>Receipt (PDF)</span>
-                                </button>
+                                  Receipt (PDF)
+                                </VFButton>
                               </div>
                             </div>
                           ))}
                         </div>
                       </div>
-                    </div>
 
-                    {/* Consolidated Actions */}
-                    <div>
-                      <div className="px-4 py-3 flex items-center gap-2.5">
+                      {/* 7. Consolidated Bottom Actions */}
+                      <div className="px-4 py-3 bg-muted/10 flex items-center gap-2.5 flex-wrap">
+                        <VFButton
+                          size="sm"
+                          className="flex-1 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+                          leftIcon={<ExternalLink className="h-3.5 w-3.5" />}
+                          onClick={() => {
+                            window.location.href = `/fees?student=${encodeURIComponent(activeStudent.admNo)}`;
+                          }}
+                        >
+                          Manage in Fees Module
+                        </VFButton>
                         <VFButton
                           size="sm"
                           variant="outline"
-                          className="flex-1 text-xs"
+                          className="flex-1 text-xs font-bold rounded-md"
                           leftIcon={<Download className="h-3.5 w-3.5" />}
-                          onClick={() => alert(`Generated Annual Fee Clearance Certificate for ${activeStudent.name}`)}
+                          onClick={() => addNotification({
+                            title: 'Certificate Generated',
+                            description: `Annual Fee Clearance Certificate generated for ${activeStudent.name}.`,
+                            type: 'success',
+                          })}
                         >
                           Fee Clearance Certificate
                         </VFButton>
                         <VFButton
                           size="sm"
                           variant="outline"
-                          className="flex-1 text-xs"
+                          className="flex-1 text-xs font-bold rounded-md"
                           leftIcon={<Printer className="h-3.5 w-3.5" />}
-                          onClick={() => alert(`Printing Consolidated Account Statement for ${activeStudent.name}`)}
+                          onClick={() => addNotification({
+                            title: 'Account Statement Printed',
+                            description: `Consolidated statement printed for ${activeStudent.name}.`,
+                            type: 'info',
+                          })}
                         >
-                          Print Account Statement
+                          Print Statement
                         </VFButton>
                       </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
+
+                {/* TAB 5: SCHOLARSHIPS & AID */}
+                {drawerTab === 'scholarship' && (() => {
+                  const activeScholarship = ACTIVE_STUDENT_SCHOLARSHIPS[activeStudent.admNo];
+
+                  return (
+                    <div className="animate-fade-in divide-y divide-border/40 text-xs">
+                      {/* 1. Grant Summary Header */}
+                      <div className="px-4 py-3 bg-muted/20 flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <div className={cn(
+                            "h-8 w-8 rounded-md flex items-center justify-center border shrink-0",
+                            activeScholarship ? "bg-amber-500/15 text-amber-400 border-amber-500/30" : "bg-muted/40 text-muted-foreground border-border"
+                          )}>
+                            <Award className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-foreground text-sm">Scholarship & Fee Relief Records</h4>
+                            <p className="text-[11px] text-muted-foreground">Session {activeSession} · {activeStudent.name} ({activeStudent.admNo})</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          {activeScholarship ? (
+                            <VFBadge variant="success" className="text-xs font-bold rounded-md">
+                              Active Fee Concession
+                            </VFBadge>
+                          ) : (
+                            <VFBadge variant="outline" className="text-xs font-bold rounded-md text-zinc-400 border-zinc-700 bg-[#161616]">
+                              No Active Scholarship
+                            </VFBadge>
+                          )}
+                          <VFButton
+                            size="sm"
+                            className="h-8 px-3 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs flex items-center gap-1.5"
+                            onClick={() => {
+                              navigate({ to: '/scholarships' });
+                              window.location.href = `/scholarships?student=${encodeURIComponent(activeStudent.admNo)}&name=${encodeURIComponent(activeStudent.name)}${activeScholarship ? '' : '&apply=true'}`;
+                            }}
+                          >
+                            <span>{activeScholarship ? 'Open in Scholarships' : 'Apply in Scholarships'}</span>
+                            <ExternalLink className="h-3.5 w-3.5" />
+                          </VFButton>
+                        </div>
+                      </div>
+
+                      {/* 2. If Active Grant: Sanction Order Details ONLY (No other schemes shown) */}
+                      {activeScholarship ? (
+                        <div className="p-4 space-y-3">
+                          <div className="p-4 rounded-md bg-card border border-border/80 space-y-2.5 shadow-2xs">
+                            <div className="flex items-center justify-between pb-2 border-b border-border/50">
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Sanctioned Scheme</span>
+                                <h4 className="text-sm font-extrabold text-foreground mt-0.5">
+                                  {activeScholarship.schemeName}
+                                </h4>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-base font-black text-emerald-400 font-mono block">{activeScholarship.waiverPercentage}% Tuition Waiver</span>
+                                <span className="text-[10px] text-muted-foreground font-semibold">₹{activeScholarship.waiverAmount.toLocaleString('en-IN')} / AY Saved</span>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-[11px]">
+                              <div>
+                                <span className="text-muted-foreground block text-[10px]">Funding Agency:</span>
+                                <span className="font-semibold text-foreground">{activeScholarship.fundingAgency}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground block text-[10px]">Disbursal Mode:</span>
+                                <span className="font-mono text-foreground font-medium">{activeScholarship.disbursalMode}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground block text-[10px]">Sanction Ref ID:</span>
+                                <span className="font-mono font-bold text-primary">{activeScholarship.sanctionRef}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground block text-[10px]">Sanction Date:</span>
+                                <span className="font-medium text-foreground">{activeScholarship.sanctionDate}</span>
+                              </div>
+                            </div>
+
+                            <div className="p-2.5 rounded bg-muted/40 border border-border/60 text-[11px] text-muted-foreground">
+                              <span className="font-bold text-foreground">Verification Note: </span>
+                              {activeScholarship.notes}
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase block">Total Assessed Fee</span>
+                              <span className="text-lg font-black text-foreground font-mono mt-0.5 block">₹ 42,000</span>
+                            </div>
+                            <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase block">Scholarship Relief</span>
+                              <span className="text-lg font-black text-emerald-400 font-mono mt-0.5 block">- ₹{activeScholarship.waiverAmount.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div className="p-3 rounded-md bg-muted/30 border border-border/70">
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase block">Net Due by Guardian</span>
+                              <span className="text-lg font-black text-foreground font-mono mt-0.5 block">₹{(42000 - activeScholarship.waiverAmount).toLocaleString('en-IN')}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2 pt-1 flex-wrap">
+                            <VFButton
+                              size="sm"
+                              className="flex-1 text-xs font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+                              leftIcon={<ExternalLink className="h-3.5 w-3.5" />}
+                              onClick={() => {
+                                navigate({ to: '/scholarships' });
+                                window.location.href = `/scholarships?student=${encodeURIComponent(activeStudent.admNo)}`;
+                              }}
+                            >
+                              Manage in Scholarships Module
+                            </VFButton>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 text-xs font-bold rounded-md"
+                              leftIcon={<Download className="h-3.5 w-3.5" />}
+                              onClick={() => addNotification({ title: 'Sanction Order Downloaded', description: `Sanction certificate downloaded for ${activeStudent.name}.`, type: 'info' })}
+                            >
+                              Sanction Order (PDF)
+                            </VFButton>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="flex-1 text-xs font-bold rounded-md"
+                              leftIcon={<FileCheck className="h-3.5 w-3.5" />}
+                              onClick={() => addNotification({ title: 'Renewal Verified', description: `Scholarship renewal verified on NSP portal.`, type: 'success' })}
+                            >
+                              Verify Status
+                            </VFButton>
+                          </div>
+                        </div>
+                      ) : (
+                        /* 3. If No Active Grant: Available Schemes & Eligibility with Direct Apply into Scholarships Module */
+                        <div className="p-4 space-y-2.5">
+                          <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                            <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider flex items-center gap-1.5">
+                              <ShieldCheck className="h-4 w-4 text-primary" />
+                              <span>Scholarship Schemes & Eligibility</span>
+                            </h4>
+                            <span className="text-[10px] text-muted-foreground font-mono">Limit: 1 per student</span>
+                          </div>
+
+                          <div className="space-y-1.5">
+                            {AVAILABLE_SCHOLARSHIP_SCHEMES.map((scheme) => {
+                              const eligibility = scheme.checkEligibility(activeStudent);
+
+                              return (
+                                <div
+                                  key={scheme.id}
+                                  className="p-2.5 rounded-md bg-[#161616] border border-border/70 flex items-center justify-between gap-3 transition-colors hover:border-zinc-700"
+                                >
+                                  <div className="min-w-0 flex items-center gap-2">
+                                    <span className="font-bold text-foreground truncate text-xs">{scheme.name}</span>
+                                    <span className="text-[11px] font-mono font-semibold text-emerald-400 shrink-0">
+                                      {scheme.benefit.split('(')[1] ? `(${scheme.benefit.split('(')[1]}` : `(${scheme.benefit})`}
+                                    </span>
+                                  </div>
+
+                                  <div className="flex items-center gap-2 shrink-0">
+                                    {eligibility.isEligible ? (
+                                      <>
+                                        <VFBadge variant="primary" className="text-[10px] font-bold rounded-md">
+                                          Eligible
+                                        </VFBadge>
+                                        <VFButton
+                                          size="sm"
+                                          className="h-6 px-2.5 text-[10px] font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1"
+                                          onClick={() => {
+                                            navigate({ to: '/scholarships' });
+                                            window.location.href = `/scholarships?student=${encodeURIComponent(activeStudent.admNo)}&scheme=${encodeURIComponent(scheme.id)}&apply=true`;
+                                          }}
+                                        >
+                                          <span>Apply</span>
+                                          <ExternalLink className="h-3 w-3" />
+                                        </VFButton>
+                                      </>
+                                    ) : (
+                                      <VFBadge variant="danger" className="text-[10px] font-bold rounded-md">
+                                        Not Eligible
+                                      </VFBadge>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
             </div>
           </div>
         )}
@@ -2107,17 +3017,19 @@ function StudentsPage() {
                 <div className="pt-2 border-t border-border/60 space-y-2">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="text-[10px] text-muted-foreground uppercase block font-bold">TC Reason</label>
-                      <select
+                      <label className="text-[10px] text-muted-foreground uppercase block font-bold mb-0.5">TC Reason</label>
+                      <VFSelect
                         value={tcReason}
-                        onChange={(e) => setTcReason(e.target.value)}
-                        className="w-full bg-muted border border-border rounded-md px-2 py-1 text-xs text-foreground mt-0.5 outline-none"
-                      >
-                        <option value="Parent Relocation">Parent Relocation</option>
-                        <option value="Higher Studies">Higher Studies</option>
-                        <option value="Board Stream Change">Board Stream Change</option>
-                        <option value="Personal Reasons">Personal Reasons</option>
-                      </select>
+                        onChange={(e) => setTcReason(String(e.target.value))}
+                        options={[
+                          { value: 'Parent Relocation', label: 'Parent Relocation' },
+                          { value: 'Higher Studies', label: 'Higher Studies' },
+                          { value: 'Board Stream Change', label: 'Board Stream Change' },
+                          { value: 'Personal Reasons', label: 'Personal Reasons' },
+                        ]}
+                        size="sm"
+                        className="w-full bg-muted/60 border-border rounded-md text-xs"
+                      />
                     </div>
                     <div>
                       <label className="text-[10px] text-muted-foreground uppercase block font-bold">Destination School</label>
@@ -2551,16 +3463,18 @@ function StudentsPage() {
               {namingPattern === 'custom' && (
                 <div className="flex items-center gap-3 p-2.5 rounded-md bg-[#131317] border border-border">
                   <span className="text-xs font-bold text-foreground">Unique Column Identifier:</span>
-                  <select
+                  <VFSelect
                     value={customColumnKey}
-                    onChange={(e) => setCustomColumnKey(e.target.value)}
-                    className="bg-[#1a1a24] border border-border text-xs font-bold text-foreground rounded px-3 py-1.5 outline-none cursor-pointer focus:border-primary"
-                  >
-                    <option value="fatherPhone">Father's Phone Number</option>
-                    <option value="category">Student Caste Category</option>
-                    <option value="address">Permanent City / Address</option>
-                    <option value="scholarStatus">Scholarship / RTE Status</option>
-                  </select>
+                    onChange={(e) => setCustomColumnKey(String(e.target.value))}
+                    options={[
+                      { value: 'fatherPhone', label: "Father's Phone Number" },
+                      { value: 'category', label: 'Student Caste Category' },
+                      { value: 'address', label: 'Permanent City / Address' },
+                      { value: 'scholarStatus', label: 'Scholarship / RTE Status' },
+                    ]}
+                    size="sm"
+                    className="w-56 bg-[#1a1a24] border-border text-xs font-bold text-foreground rounded-md"
+                  />
                 </div>
               )}
 
@@ -2591,12 +3505,12 @@ function StudentsPage() {
         </div>
       </VFDialog>
 
-      {/* ⚙️ CONFIGURE DOSSIER FIELDS MODAL */}
+      {/* ⚙️ CONFIGURE PROFILE FIELDS MODAL */}
       <VFDialog
         isOpen={isFieldConfigOpen}
         onClose={() => setIsFieldConfigOpen(false)}
-        title="Configure Dossier Profile Fields"
-        description="Customize, enable, disable, and add custom institutional fields for student dossiers."
+        title="Configure Student Profile Fields"
+        description="Customize, enable, disable, and add custom fields for student profiles."
         className="max-w-2xl"
         footerActions={
           <VFButton size="sm" onClick={() => setIsFieldConfigOpen(false)}>
@@ -2631,15 +3545,17 @@ function StudentsPage() {
                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide block mb-1">
                   Section Category
                 </label>
-                <select
+                <VFSelect
                   value={newFieldCategory}
-                  onChange={(e) => setNewFieldCategory(e.target.value as any)}
-                  className="w-full h-8.5 px-2.5 text-xs text-foreground bg-card border border-border rounded-md outline-none cursor-pointer"
-                >
-                  <option value="personal">Personal Identity</option>
-                  <option value="family">Family & Contacts</option>
-                  <option value="operations">Operations & Transport</option>
-                </select>
+                  onChange={(e) => setNewFieldCategory(String(e.target.value) as any)}
+                  options={[
+                    { value: 'personal', label: 'Personal Identity' },
+                    { value: 'family', label: 'Family & Contacts' },
+                    { value: 'operations', label: 'Operations & Transport' },
+                  ]}
+                  size="sm"
+                  className="w-full bg-card border border-border rounded-md text-xs"
+                />
               </div>
             </div>
             <div className="flex justify-end">
