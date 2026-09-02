@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@vidyafloww/ui';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/login')({
   component: ProfessionalAuthPage,
@@ -54,6 +55,7 @@ const TRUSTED_INSTITUTIONS = [
 function ProfessionalAuthPage() {
   const navigate = useNavigate();
   const { language, setLanguage } = useGlobalStore();
+  const { t } = useTranslation();
   const [authMode, setAuthMode] = React.useState<AuthMode>('login');
 
   // ─── LOGIN STATE ─────────────────────────────────────────────────────────────
@@ -246,10 +248,10 @@ function ProfessionalAuthPage() {
                 >
                   <div className="text-center space-y-1.5">
                     <h2 className="text-2xl font-black text-foreground tracking-tight">
-                      Sign In to VidyaFloww
+                      {t('auth.signInTitle')}
                     </h2>
                     <p className="text-xs text-muted-foreground">
-                      Access your unified institutional management portal
+                      {t('auth.signInSubtitle')}
                     </p>
                   </div>
 
