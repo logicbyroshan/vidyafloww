@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 import { cn } from '@vidyafloww/ui';
 
 interface HeaderProps {
@@ -21,6 +22,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
     sidebarExpanded,
     toggleSidebar,
   } = useGlobalStore();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const [isSessionMenuOpen, setIsSessionMenuOpen] = React.useState(false);
   const sessionMenuRef = React.useRef<HTMLDivElement>(null);
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -35,11 +38,12 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
   }, []);
 
   const { dateFormatted, timeFormatted, dayName } = React.useMemo(() => {
-    const day = currentDateTime.toLocaleDateString('en-US', { weekday: 'short' });
-    const date = currentDateTime.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+    const locale = isHindi ? 'hi-IN' : 'en-US';
+    const day = currentDateTime.toLocaleDateString(locale, { weekday: 'short' });
+    const date = currentDateTime.toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' });
     const time = currentDateTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     return { dayName: day, dateFormatted: date, timeFormatted: time };
-  }, [currentDateTime]);
+  }, [currentDateTime, isHindi]);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -110,18 +114,18 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           <button
             onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
             className="flex items-center gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group"
-            title="Switch Academic Session"
+            title={isHindi ? "शैक्षणिक सत्र बदलें" : "Switch Academic Session"}
           >
             <Calendar className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
             <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
-              <span>Session:</span>
+              <span>{t('dashboard.session')}:</span>
               <span className="text-sm font-bold text-foreground font-mono">
                 {activeSession}
               </span>
             </div>
             {activeSession === '2026–2027' && (
               <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                Active
+                {t('status.active')}
               </span>
             )}
             <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 ml-0.5", isSessionMenuOpen && "rotate-180")} />
@@ -132,7 +136,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             <div className="absolute left-0 mt-2 w-64 rounded-lg border border-border bg-[#0e0e0e] shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
               <div className="px-2.5 py-1.5 border-b border-border/60 mb-1">
                 <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
-                  Select Academic Session
+                  {isHindi ? 'शैक्षणिक सत्र चुनें' : 'Select Academic Session'}
                 </span>
               </div>
               {academicSessions.map((session) => {
@@ -165,11 +169,11 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                     <div>
                       {isActiveAY ? (
                         <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                          Active AY
+                          {t('status.active')}
                         </span>
                       ) : (
                         <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border">
-                          Archived
+                          {isHindi ? 'अभिलेखागार' : 'Archived'}
                         </span>
                       )}
                     </div>
@@ -193,11 +197,11 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                 ? "bg-[#1f1f1f] text-foreground border-primary/60 shadow-xs ring-1 ring-primary/40"
                 : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-foreground border-border"
             )}
-            title={isDashboardEditMode ? "Exit Dashboard Configuration" : "Configure Dashboard & Rearrange Cards"}
+            title={isDashboardEditMode ? (isHindi ? "कस्टमाइज़ेशन से बाहर निकलें" : "Exit Dashboard Configuration") : (isHindi ? "डैशबोर्ड कॉन्फ़िगर करें" : "Configure Dashboard & Rearrange Cards")}
           >
             <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-foreground" />
             <span className="hidden sm:inline text-foreground font-semibold">
-              {isDashboardEditMode ? "Done Customizing" : "Configure Dashboard"}
+              {isDashboardEditMode ? (isHindi ? "पूर्ण" : "Done Customizing") : (isHindi ? "डैशबोर्ड बदलें" : "Configure Dashboard")}
             </span>
           </button>
         )}
@@ -206,7 +210,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         <button
           onClick={onSearchClick}
           className="relative text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
-          title="Search students, faculty, records... (⌘K / Ctrl+K)"
+          title={isHindi ? "खोजें... (Ctrl+K)" : "Search students, faculty, records... (⌘K / Ctrl+K)"}
         >
           <Search className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>

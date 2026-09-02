@@ -70,6 +70,17 @@ export const translations = {
   'action.proceed':       { en: 'Proceed',           hi: 'आगे बढ़ें' },
   'action.done':          { en: 'Done',              hi: 'हो गया' },
   'action.continue':      { en: 'Continue',          hi: 'जारी रखें' },
+  'action.payNow':        { en: 'Pay Now',           hi: 'अभी भुगतान करें' },
+  'action.approve':       { en: 'Approve',           hi: 'स्वीकृत करें' },
+  'action.reject':        { en: 'Reject',            hi: 'अस्वीकृत करें' },
+  'action.generate':      { en: 'Generate',          hi: 'तैयार करें' },
+  'action.award':         { en: 'Award',             hi: 'प्रदान करें' },
+  'action.enroll':        { en: 'Enroll',            hi: 'नामांकन करें' },
+  'action.recordPayment': { en: 'Record Payment',    hi: 'भुगतान दर्ज करें' },
+  'action.markPresent':   { en: 'Mark Present',      hi: 'उपस्थित दर्ज करें' },
+  'action.markAbsent':    { en: 'Mark Absent',       hi: 'अनुपस्थित दर्ज करें' },
+  'action.all':           { en: 'All',               hi: 'सभी' },
+  'action.admit':         { en: 'Admit',             hi: 'प्रवेश दें' },
 
   // ─── STATUS BADGES ────────────────────────────────────────────────────────
   'status.active':        { en: 'Active',            hi: 'सक्रिय' },
@@ -176,6 +187,15 @@ export const translations = {
   'col.room':             { en: 'Room',              hi: 'कक्ष' },
   'col.period':           { en: 'Period',            hi: 'पीरियड' },
   'col.teacher':          { en: 'Teacher',           hi: 'शिक्षक' },
+  'col.studentName':      { en: 'Student',           hi: 'छात्र' },
+  'col.roll':             { en: 'Roll No.',          hi: 'रोल नं.' },
+  'col.house':            { en: 'House',             hi: 'हाउस' },
+  'col.address':          { en: 'Address',           hi: 'पता' },
+  'col.bloodGroup':       { en: 'Blood Group',       hi: 'रक्त समूह' },
+  'col.profile':          { en: 'Profile',           hi: 'प्रोफाइल' },
+  'col.gpa':              { en: 'GPA',               hi: 'जीपीए' },
+  'col.transport':        { en: 'Transport',         hi: 'परिवहन' },
+  'col.paymentPlan':      { en: 'Payment Plan',      hi: 'भुगतान योजना' },
 
   // ─── FORM LABELS ──────────────────────────────────────────────────────────
   'form.fullName':        { en: 'Full Name',         hi: 'पूरा नाम' },
@@ -356,6 +376,16 @@ export const translations = {
   'fees.noFees':          { en: 'No fee records',    hi: 'कोई शुल्क रिकॉर्ड नहीं' },
   'fees.overdueSince':    { en: 'Overdue since',     hi: 'बकाया तब से' },
   'fees.feeType':         { en: 'Fee Type',          hi: 'शुल्क प्रकार' },
+  'fees.total':           { en: 'Total Assessed',    hi: 'कुल निर्धारित' },
+  'fees.paid':            { en: 'Paid to Date',      hi: 'भुगतान की गई' },
+  'fees.nextDue':         { en: 'Next Due',          hi: 'अगली देय तिथि' },
+  'fees.paymentPlan':     { en: 'Payment Plan',      hi: 'भुगतान योजना' },
+  'fees.annual':          { en: 'Annual',            hi: 'वार्षिक' },
+  'fees.history':         { en: 'Payment History',   hi: 'भुगतान इतिहास' },
+  'fees.structure':       { en: 'Fee Structure',     hi: 'शुल्क संरचना' },
+  'fees.scholarship':     { en: 'Scholarship',       hi: 'छात्रवृत्ति' },
+  'fees.lab':             { en: 'Lab Fee',           hi: 'लैब शुल्क' },
+  'fees.library':         { en: 'Library Fee',       hi: 'पुस्तकालय शुल्क' },
 
   // ─── ATTENDANCE ───────────────────────────────────────────────────────────
   'attendance.title':     { en: 'Attendance',        hi: 'उपस्थिति' },
@@ -438,6 +468,7 @@ export const translations = {
   // ─── EXAMINATIONS ─────────────────────────────────────────────────────────
   'exam.title':           { en: 'Examinations',      hi: 'परीक्षाएं' },
   'exam.subtitle':        { en: 'Manage exams, schedules and results', hi: 'परीक्षाएं, समय-सारणी और परिणाम प्रबंधित करें' },
+  'exam.schedule':        { en: 'Exam Schedule',     hi: 'परीक्षा समय-सारणी' },
   'exam.addExam':         { en: 'Add Exam',          hi: 'परीक्षा जोड़ें' },
   'exam.examName':        { en: 'Exam Name',         hi: 'परीक्षा नाम' },
   'exam.maxMarks':        { en: 'Max Marks',         hi: 'अधिकतम अंक' },
