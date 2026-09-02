@@ -31,6 +31,7 @@ import {
   Edit3,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/license')({
   component: LicenseManagementPage,
@@ -88,6 +89,8 @@ const ENTERPRISE_FEATURES = [
 
 function LicenseManagementPage() {
   const { schoolProfile, addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('nav.license') + ' \u2013 VidyaFloww'; }, [t]);
   const [copied, setCopied] = React.useState(false);
   const [showKey, setShowKey] = React.useState(false);
   const [isUpdateCardModalOpen, setIsUpdateCardModalOpen] = React.useState(false);

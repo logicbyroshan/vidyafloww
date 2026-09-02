@@ -55,6 +55,7 @@ import {
   DEFAULT_DASHBOARD_SECTIONS,
   DEFAULT_DASHBOARD_KPIS,
 } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/')({
   component: DashboardPage,
@@ -103,6 +104,8 @@ export function DashboardPage() {
     isDashboardEditMode,
     setDashboardEditMode,
   } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.dashboard') + ' \u2013 VidyaFloww'; }, [t]);
 
   // (notice state removed — actions now use addNotification toast)
 

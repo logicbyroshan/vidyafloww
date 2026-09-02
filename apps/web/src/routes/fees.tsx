@@ -39,6 +39,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/fees')({
   component: FeesPage,
@@ -459,6 +460,8 @@ type PaymentFilterType = 'all' | 'due' | 'cleared' | 'overdue';
 
 function FeesPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.fees') + ' \u2013 VidyaFloww'; }, [t]);
   const [feeList, setFeeList] = React.useState<FeeRecord[]>(INITIAL_FEES);
   const [selectedFeeIndex, setSelectedFeeIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);

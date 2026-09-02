@@ -38,6 +38,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/admissions')({
   component: AdmissionsPage,
@@ -664,6 +665,8 @@ const INITIAL_APPLICANTS: Applicant[] = [
 
 function AdmissionsPage() {
   const { activeSession, addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.admissions') + ' \u2013 VidyaFloww'; }, [t]);
   const [applicantList, setApplicantList] = React.useState<Applicant[]>(INITIAL_APPLICANTS);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);

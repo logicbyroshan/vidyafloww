@@ -32,6 +32,7 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/salary')({
   component: SalaryPage,
@@ -414,6 +415,8 @@ const INITIAL_SALARY_DATA: StaffSalaryRecord[] = [
 
 function SalaryPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.salary') + ' \u2013 VidyaFloww'; }, [t]);
   const [salaries, setSalaries] = React.useState<StaffSalaryRecord[]>(INITIAL_SALARY_DATA);
   const [statusFilter, setStatusFilter] = React.useState<string>('all');
   const [selectedRecordIndex, setSelectedRecordIndex] = React.useState<number | null>(null);

@@ -20,6 +20,7 @@ import {
   Check,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/academics')({
   component: AcademicsPage,
@@ -48,6 +49,8 @@ const INITIAL_SUBJECTS: SubjectRecord[] = [
 
 function AcademicsPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.academics') + ' \u2013 VidyaFloww'; }, [t]);
   const [activeView, setActiveView] = React.useState<'subjects' | 'classes' | 'calendar'>('subjects');
   const [subjects, setSubjects] = React.useState<SubjectRecord[]>(INITIAL_SUBJECTS);
   const [departmentFilter, setDepartmentFilter] = React.useState<string>('All');

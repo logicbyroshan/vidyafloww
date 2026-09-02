@@ -20,6 +20,7 @@ import {
   Terminal,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/security')({
   component: SecurityManagementPage,
@@ -47,6 +48,8 @@ const DEFAULT_PERMISSIONS: RolePermission[] = [
 
 function SecurityManagementPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.security') + ' \u2013 VidyaFloww'; }, [t]);
 
   // Permission Matrix State
   const [permissions, setPermissions] = React.useState<RolePermission[]>(DEFAULT_PERMISSIONS);

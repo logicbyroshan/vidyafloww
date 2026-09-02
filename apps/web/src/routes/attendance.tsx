@@ -33,6 +33,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/attendance')({
   component: AttendancePage,
@@ -586,6 +587,8 @@ const INITIAL_ROSTER: StudentAttendanceRecord[] = [
 
 function AttendancePage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.attendance') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 8-A');
   const [selectedDate] = React.useState<string>('2026-08-20');
   const [studentRoster, setStudentRoster] = React.useState<StudentAttendanceRecord[]>(INITIAL_ROSTER);

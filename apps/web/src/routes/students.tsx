@@ -51,6 +51,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export interface DossierFieldConfig {
   key: string;
@@ -570,6 +571,8 @@ export const Route = createFileRoute('/students')({
 function StudentsPage() {
   const navigate = useNavigate();
   const { activeSession, addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.students') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [drawerTab, setDrawerTab] = React.useState<'overview' | 'academics' | 'credentials' | 'fees' | 'scholarship'>('overview');

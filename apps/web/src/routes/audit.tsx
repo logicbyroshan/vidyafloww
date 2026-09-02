@@ -23,6 +23,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/audit')({
   component: AuditLogPage,
@@ -80,6 +81,8 @@ const STATUS_OPTIONS = [
 
 function AuditLogPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.audit') + ' \u2013 VidyaFloww'; }, [t]);
 
   // Filters State
   const [searchQuery, setSearchQuery] = React.useState('');

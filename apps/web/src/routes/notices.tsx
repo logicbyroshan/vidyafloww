@@ -18,6 +18,7 @@ import {
   Eye,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/notices')({
   component: NoticesPage,
@@ -45,6 +46,8 @@ const INITIAL_NOTICES: NoticeRecord[] = [
 
 function NoticesPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.notices') + ' \u2013 VidyaFloww'; }, [t]);
   const [notices, setNotices] = React.useState<NoticeRecord[]>(INITIAL_NOTICES);
   const [audienceFilter, setAudienceFilter] = React.useState<string>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');

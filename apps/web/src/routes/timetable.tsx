@@ -31,6 +31,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/timetable')({
   component: TimetablePage,
@@ -265,6 +266,8 @@ const INITIAL_ROOM_LOAD: RoomLoad[] = [
 
 function TimetablePage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.timetable') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 9-A');
   const [classTeacher, setClassTeacher] = React.useState<string>('Mrs. Sunita Verma');
   

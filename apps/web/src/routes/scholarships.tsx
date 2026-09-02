@@ -30,6 +30,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/scholarships')({
   component: ScholarshipsPage,
@@ -372,6 +373,8 @@ const INITIAL_SCHOLARSHIPS: ScholarshipRecord[] = [
 function ScholarshipsPage() {
   const navigate = useNavigate();
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.scholarships') + ' \u2013 VidyaFloww'; }, [t]);
   const [scholarships, setScholarships] = React.useState<ScholarshipRecord[]>(INITIAL_SCHOLARSHIPS);
   const [categoryFilter, setCategoryFilter] = React.useState<string>('all');
   const [selectedRecordIndex, setSelectedRecordIndex] = React.useState<number | null>(null);

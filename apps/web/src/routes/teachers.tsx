@@ -49,6 +49,7 @@ import {
   Fingerprint,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/teachers')({
   component: StaffPage,
@@ -559,6 +560,8 @@ const INITIAL_STAFF: StaffRecord[] = [
 
 function StaffPage() {
   const { activeSession, addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.teachers') + ' \u2013 VidyaFloww'; }, [t]);
   const [staffList, setStaffList] = React.useState<StaffRecord[]>(INITIAL_STAFF);
   const [selectedStaffIndex, setSelectedStaffIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);

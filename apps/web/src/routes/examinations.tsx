@@ -25,6 +25,7 @@ import {
   Award,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/examinations')({
   component: ExaminationsPage,
@@ -72,6 +73,8 @@ const INITIAL_STUDENT_MARKS: StudentMarkRow[] = [
 
 function ExaminationsPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.examinations') + ' \u2013 VidyaFloww'; }, [t]);
   const [activeView, setActiveView] = React.useState<'schedule' | 'marks'>('schedule');
   const [exams, setExams] = React.useState<ExamRecord[]>(INITIAL_EXAMS);
   const [marksData, setMarksData] = React.useState<StudentMarkRow[]>(INITIAL_STUDENT_MARKS);

@@ -18,6 +18,7 @@ import {
   Eye,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/homework')({
   component: HomeworkPage,
@@ -46,6 +47,8 @@ const INITIAL_HOMEWORK: HomeworkRecord[] = [
 
 function HomeworkPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.homework') + ' \u2013 VidyaFloww'; }, [t]);
   const [homeworkList, setHomeworkList] = React.useState<HomeworkRecord[]>(INITIAL_HOMEWORK);
   const [classFilter, setClassFilter] = React.useState<string>('All');
   const [statusFilter, setStatusFilter] = React.useState<string>('All');

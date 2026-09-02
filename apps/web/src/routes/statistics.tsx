@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
@@ -29,6 +30,7 @@ import {
   Layers,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/statistics')({
   component: StatisticsPage,
@@ -36,6 +38,8 @@ export const Route = createFileRoute('/statistics')({
 
 function StatisticsPage() {
   const { activeSession, addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  useEffect(() => { document.title = t('page.statistics') + ' – VidyaFloww'; }, [t]);
 
   // ─── TAB 1: DEMOGRAPHICS & POPULATION ───────────────────────────────────────
   const demographicsContent = (

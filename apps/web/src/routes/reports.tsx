@@ -16,6 +16,7 @@ import {
   Check,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/reports')({
   component: ReportsPage,
@@ -43,6 +44,8 @@ const INITIAL_REPORTS: ReportTemplate[] = [
 
 function ReportsPage() {
   const { addNotification } = useGlobalStore();
+  const { t } = useTranslation();
+  React.useEffect(() => { document.title = t('page.reports') + ' \u2013 VidyaFloww'; }, [t]);
   const [reports, setReports] = React.useState<ReportTemplate[]>(INITIAL_REPORTS);
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
   const [isGenerateModalOpen, setIsGenerateModalOpen] = React.useState(false);
