@@ -115,7 +115,7 @@ function SecurityManagementPage() {
               <Shield className="h-4 w-4" />
             </div>
             <span className="text-base font-extrabold text-foreground tracking-tight">
-              Role-Based Access Control & Permission Matrix
+              {t('page.security')}
             </span>
             <VFBadge variant="success" className="text-[10px] font-bold font-mono">
               ISO 27001
@@ -132,7 +132,7 @@ function SecurityManagementPage() {
               className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
               leftIcon={<Terminal className="h-3.5 w-3.5 text-primary" />}
             >
-              Live Audit Logs
+              {t('nav.audit')}
             </VFButton>
           </Link>
 
@@ -150,7 +150,7 @@ function SecurityManagementPage() {
             className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-muted-foreground hover:text-foreground"
             leftIcon={<RotateCcw className="h-3.5 w-3.5" />}
           >
-            Reset Matrix
+            {t('action.reset')}
           </VFButton>
 
           <VFButton
@@ -159,7 +159,7 @@ function SecurityManagementPage() {
             className="h-9 px-4 text-xs font-bold shadow-xs"
             leftIcon={<Save className="h-4 w-4" />}
           >
-            Save Changes
+            {t('action.saveChanges')}
           </VFButton>
         </div>
       </div>

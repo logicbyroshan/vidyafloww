@@ -146,7 +146,7 @@ function AcademicsPage() {
       cell: (r: SubjectRecord) => <span className="font-mono font-bold text-primary text-xs">{r.weeklyPeriods} Periods/wk</span>,
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: SubjectRecord) => <VFBadge variant="success">{r.status}</VFBadge>,
     },
@@ -162,7 +162,7 @@ function AcademicsPage() {
               <School className="h-4 w-4" />
             </div>
             <span className="text-base font-extrabold text-foreground tracking-tight">
-              Academic Curriculum & Structure
+              {t('page.academics')}
             </span>
             <VFBadge variant="success" className="text-[10px] font-bold font-mono">
               2026–2027
@@ -183,7 +183,7 @@ function AcademicsPage() {
               }`}
             >
               <BookOpen className="h-3 w-3" />
-              Subjects Catalog
+              {t('col.subject')}
             </button>
             <button
               type="button"
@@ -195,7 +195,7 @@ function AcademicsPage() {
               }`}
             >
               <Grid className="h-3 w-3" />
-              Class Allocations
+              {t('col.class')}
             </button>
             <button
               type="button"
@@ -207,7 +207,7 @@ function AcademicsPage() {
               }`}
             >
               <Calendar className="h-3 w-3" />
-              Calendar & Streams
+              {t('timetable.title')}
             </button>
           </div>
         </div>
@@ -221,7 +221,7 @@ function AcademicsPage() {
             className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
             leftIcon={<Download className="h-3.5 w-3.5" />}
           >
-            Export Catalog
+            {t('action.export')}
           </VFButton>
           <VFButton
             size="sm"
@@ -229,7 +229,7 @@ function AcademicsPage() {
             className="h-9 px-3.5 text-xs font-bold shadow-xs"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            Add Subject
+            {t('action.add') + ' ' + t('col.subject')}
           </VFButton>
         </div>
       </div>

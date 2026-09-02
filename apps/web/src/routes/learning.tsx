@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { useTranslation } from '../hooks/useTranslation';
 import {
   VFPageContainer,
   VFStatCard,
@@ -23,6 +24,7 @@ export const Route = createFileRoute('/learning')({
 });
 
 function LearningPage() {
+  const { t } = useTranslation();
   const [lessonTopic, setLessonTopic] = React.useState('');
   const [generatedPlan, setGeneratedPlan] = React.useState<string | null>(null);
 
@@ -61,7 +63,7 @@ function LearningPage() {
       cell: (r: any) => <span className="font-extrabold text-foreground text-base">{r.class} - {r.section}</span>,
     },
     {
-      header: 'Subject',
+      header: t('col.subject'),
       accessorKey: 'subject',
       cell: (r: any) => <span className="font-bold text-foreground text-base">{r.subject}</span>,
     },
@@ -76,7 +78,7 @@ function LearningPage() {
       cell: (r: any) => <span className="font-black text-success text-base">{r.avgAtt}</span>,
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge>,
     },
@@ -200,7 +202,7 @@ function LearningPage() {
             <BookOpen className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Teacher Workspace & Pedagogy Planner
+            {t('nav.teachers')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
             NEP 2020 Aligned

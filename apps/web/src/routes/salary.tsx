@@ -694,7 +694,7 @@ function SalaryPage() {
       ),
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: StaffSalaryRecord) => (
         <VFBadge variant={r.status === 'Disbursed' ? 'success' : 'warning'} className="rounded-md">
@@ -703,7 +703,7 @@ function SalaryPage() {
       ),
     },
     {
-      header: 'Action',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: StaffSalaryRecord) => (
         <div className="flex items-center gap-1.5">
@@ -749,17 +749,17 @@ function SalaryPage() {
       <VFDataTable
         columns={columns}
         data={filteredSalaries}
-        filterPlaceholder="Search by staff name, employee ID, or role..."
+        filterPlaceholder={t('form.searchTeachers')}
         rightActions={
           <div className="flex items-center gap-2">
             <VFSelect
               value={statusFilter}
               onChange={(e) => setStatusFilter(String(e.target.value))}
               options={[
-                { value: 'all', label: `All Staff (${salaries.length})` },
-                { value: 'Disbursed', label: `Paid (${disbursedCount})` },
-                { value: 'Pending Disbursal', label: `Unpaid (${pendingCount})` },
-                { value: 'Teaching Faculty', label: 'Teachers' },
+                { value: 'all', label: `${t('action.all')} (${salaries.length})` },
+                { value: 'Disbursed', label: `${t('status.paid')} (${disbursedCount})` },
+                { value: 'Pending Disbursal', label: `${t('status.pending')} (${pendingCount})` },
+                { value: 'Teaching Faculty', label: t('nav.teachers') },
                 { value: 'Administration', label: 'Admin Office' },
               ]}
               className="w-44 text-xs bg-[#181818] border-border rounded-md"
@@ -771,7 +771,7 @@ function SalaryPage() {
               leftIcon={<Bell className="h-4 w-4 text-emerald-400" />}
               onClick={() => setIsAlertModalOpen(true)}
             >
-              Send Slips
+              {t('action.sendReminder')}
             </VFButton>
             <VFButton
               variant="outline"
@@ -779,14 +779,14 @@ function SalaryPage() {
               leftIcon={<Download className="h-4 w-4" />}
               onClick={() => addNotification({ title: 'Exporting Payroll', description: 'Monthly payroll register exported as CSV.', type: 'success' })}
             >
-              Export CSV
+              {t('action.export')}
             </VFButton>
             <VFButton
               size="sm"
               leftIcon={<Plus className="h-4 w-4" />}
               onClick={() => setIsProcessModalOpen(true)}
             >
-              Pay All Staff
+              {t('action.recordPayment')}
             </VFButton>
           </div>
         }

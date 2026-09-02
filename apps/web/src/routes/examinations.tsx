@@ -171,7 +171,7 @@ function ExaminationsPage() {
       ),
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: ExamRecord) => (
         <VFBadge
@@ -190,7 +190,7 @@ function ExaminationsPage() {
       ),
     },
     {
-      header: 'Action',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: () => (
         <VFButton
@@ -215,7 +215,7 @@ function ExaminationsPage() {
               <ClipboardList className="h-4 w-4" />
             </div>
             <span className="text-base font-extrabold text-foreground tracking-tight">
-              Examinations & Grade Moderation
+              {t('page.examinations')}
             </span>
             <VFBadge variant="success" className="text-[10px] font-bold font-mono">
               Term 1 Active
@@ -235,7 +235,7 @@ function ExaminationsPage() {
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              Exam Master Schedule
+              {t('exam.schedule')}
             </button>
             <button
               type="button"
@@ -247,7 +247,7 @@ function ExaminationsPage() {
               }`}
             >
               <Award className="h-3 w-3 text-primary" />
-              Marks Entry Register
+              {t('exam.results')}
             </button>
           </div>
         </div>
@@ -261,7 +261,7 @@ function ExaminationsPage() {
             className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
             leftIcon={<Download className="h-3.5 w-3.5" />}
           >
-            Export Marksheet
+            {t('action.export')}
           </VFButton>
           <VFButton
             size="sm"
@@ -269,7 +269,7 @@ function ExaminationsPage() {
             className="h-9 px-3.5 text-xs font-bold shadow-xs"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            Schedule Exam
+            {t('action.add') + ' ' + t('nav.examinations')}
           </VFButton>
         </div>
       </div>
@@ -321,7 +321,7 @@ function ExaminationsPage() {
               <VFTableHead className="bg-[#1a1a1a]">
                 <VFTableRow>
                   <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">Roll No</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Student Name</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{t('col.studentName')}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">Maths (100)</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">Science (100)</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">English (100)</VFTableHeaderCell>

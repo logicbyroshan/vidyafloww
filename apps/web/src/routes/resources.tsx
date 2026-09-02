@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { useTranslation } from '../hooks/useTranslation';
 import {
   VFPageContainer,
   VFStatCard,
@@ -31,6 +32,7 @@ export const Route = createFileRoute('/resources')({
 });
 
 function ResourcesPage() {
+  const { t } = useTranslation();
   const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
   const resourceData = [
@@ -43,10 +45,10 @@ function ResourcesPage() {
     { header: 'Resource Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
     { header: 'Resource Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
     { header: 'Content Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
-    { header: 'Subject', accessorKey: 'subject' },
+    { header: t('col.subject'), accessorKey: 'subject' },
     { header: 'Target Grade', accessorKey: 'class' },
     { header: 'Downloads / Views', accessorKey: 'downloads', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.downloads}</span> },
-    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
+    { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
   // ----------------------------------------------------
@@ -258,7 +260,7 @@ function ResourcesPage() {
             <FolderGit className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Digital Learning Resources & E-Library
+            {t('nav.resources')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
             Cloud Repository

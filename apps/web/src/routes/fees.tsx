@@ -803,7 +803,7 @@ function FeesPage() {
       ),
     },
     {
-      header: 'Total Assessed',
+      header: t('fees.total'),
       accessorKey: 'totalFee',
       cell: (r: FeeRecord) => (
         <span className="font-mono font-bold text-foreground text-xs">
@@ -812,7 +812,7 @@ function FeesPage() {
       ),
     },
     {
-      header: 'Paid to Date',
+      header: t('fees.paid'),
       accessorKey: 'paidAmount',
       cell: (r: FeeRecord) => (
         <span className="font-mono font-semibold text-emerald-400 text-xs">
@@ -835,7 +835,7 @@ function FeesPage() {
       ),
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: FeeRecord) => (
         <VFBadge
@@ -847,7 +847,7 @@ function FeesPage() {
       ),
     },
     {
-      header: 'Action',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: FeeRecord) => (
         <div className="flex items-center gap-1.5">
@@ -858,7 +858,7 @@ function FeesPage() {
               leftIcon={<CreditCard className="h-3.5 w-3.5" />}
               onClick={() => openStudentFeeDrawer(r, 'pay')}
             >
-              Pay Now
+              {t('action.payNow')}
             </VFButton>
           ) : (
             <VFButton
@@ -868,7 +868,7 @@ function FeesPage() {
               leftIcon={<Receipt className="h-3.5 w-3.5" />}
               onClick={() => openStudentFeeDrawer(r, 'history')}
             >
-              Receipts
+              {t('col.receipt')}
             </VFButton>
           )}
 
@@ -904,10 +904,10 @@ function FeesPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(String(e.target.value) as any)}
               options={[
-                { value: 'all', label: `All Records (${feeList.length})` },
-                { value: 'due', label: `Pending Dues (${dueCount})` },
-                { value: 'cleared', label: `Cleared (${clearedCount})` },
-                { value: 'overdue', label: `Overdue (${overdueCount})` },
+                { value: 'all', label: `${t('action.all')} (${feeList.length})` },
+                { value: 'due', label: `${t('status.due')} (${dueCount})` },
+                { value: 'cleared', label: `${t('status.paid')} (${clearedCount})` },
+                { value: 'overdue', label: `${t('status.overdue')} (${overdueCount})` },
               ]}
               className="w-44 text-xs bg-[#181818] border-border rounded-md"
             />
@@ -918,7 +918,7 @@ function FeesPage() {
               leftIcon={<Bell className="h-4 w-4 text-emerald-400" />}
               onClick={() => setIsReminderModalOpen(true)}
             >
-              Send Due Reminders ({dueCount})
+              {t('action.sendReminder')} ({dueCount})
             </VFButton>
             <VFButton
               variant="outline"
@@ -926,7 +926,7 @@ function FeesPage() {
               leftIcon={<Download className="h-4 w-4" />}
               onClick={() => addNotification({ title: 'Exporting Fees', description: 'Student fee ledger exported as CSV.', type: 'success' })}
             >
-              Export CSV
+              {t('action.export')}
             </VFButton>
           </div>
         }

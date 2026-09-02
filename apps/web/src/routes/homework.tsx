@@ -166,7 +166,7 @@ function HomeworkPage() {
       },
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: HomeworkRecord) => (
         <VFBadge variant={r.status === 'Published' ? 'success' : r.status === 'Draft' ? 'warning' : 'outline'}>
@@ -175,7 +175,7 @@ function HomeworkPage() {
       ),
     },
     {
-      header: 'Actions',
+      header: t('col.action'),
       accessorKey: 'actions',
       cell: (r: HomeworkRecord) => (
         <VFButton
@@ -199,7 +199,7 @@ function HomeworkPage() {
             <BookMarked className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Homework & Assignment Register
+            {t('page.homework')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
             Term 1 Active
@@ -222,7 +222,7 @@ function HomeworkPage() {
             className="h-9 px-3.5 text-xs font-bold shadow-xs"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            Create Assignment
+            {t('action.add') + ' ' + t('nav.homework')}
           </VFButton>
         </div>
       </div>
@@ -236,7 +236,7 @@ function HomeworkPage() {
               value={classFilter}
               onChange={(e) => setClassFilter(String(e.target.value))}
               options={[
-                { label: 'All Classes', value: 'All' },
+                { label: t('form.allClasses'), value: 'All' },
                 { label: 'Class 9-A', value: 'Class 9-A' },
                 { label: 'Class 10-A', value: 'Class 10-A' },
                 { label: 'Class 10-B', value: 'Class 10-B' },
@@ -253,10 +253,10 @@ function HomeworkPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(String(e.target.value))}
               options={[
-                { label: 'All Statuses', value: 'All' },
-                { label: 'Published', value: 'Published' },
-                { label: 'Draft', value: 'Draft' },
-                { label: 'Closed', value: 'Closed' },
+                { label: t('form.allStatuses'), value: 'All' },
+                { label: t('status.published'), value: 'Published' },
+                { label: t('status.draft'), value: 'Draft' },
+                { label: t('status.closed'), value: 'Closed' },
               ]}
               className="bg-[#1a1a1a] border-border h-9 text-xs"
             />

@@ -183,7 +183,7 @@ function AuditLogPage() {
               <Terminal className="h-4 w-4" />
             </div>
             <span className="text-base font-extrabold text-foreground tracking-tight">
-              Cryptographic Audit Trail & Logs
+              {t('page.audit')}
             </span>
             <VFBadge variant="success" className="text-[10px] font-bold font-mono">
               Live Stream Active
@@ -200,7 +200,7 @@ function AuditLogPage() {
               className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
               leftIcon={<SlidersHorizontal className="h-3.5 w-3.5" />}
             >
-              Configure Matrix
+              {t('nav.security')}
             </VFButton>
           </Link>
 
@@ -211,7 +211,7 @@ function AuditLogPage() {
             className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
             leftIcon={<Download className="h-3.5 w-3.5" />}
           >
-            Export CSV
+            {t('action.export')}
           </VFButton>
         </div>
       </div>

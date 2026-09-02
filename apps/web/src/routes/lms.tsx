@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { useTranslation } from '../hooks/useTranslation';
 import {
   VFPageContainer,
   VFStatCard,
@@ -32,6 +33,7 @@ export const Route = createFileRoute('/lms')({
 });
 
 function OnlineClassesPage() {
+  const { t } = useTranslation();
   const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
   const classData = [
@@ -47,7 +49,7 @@ function OnlineClassesPage() {
     { header: 'Scheduled Time', accessorKey: 'time' },
     { header: 'Platform / Type', accessorKey: 'platform', cell: (r: any) => <VFBadge variant="outline">{r.platform}</VFBadge> },
     { header: 'Attendees', accessorKey: 'attendees', cell: (r: any) => `${r.attendees} Students` },
-    { header: 'Status', accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'Live Now' ? 'danger' : r.status === 'Upcoming' ? 'primary' : 'success'}>{r.status}</VFBadge> },
+    { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'Live Now' ? 'danger' : r.status === 'Upcoming' ? 'primary' : 'success'}>{r.status}</VFBadge> },
   ];
 
   // ----------------------------------------------------
@@ -247,7 +249,7 @@ function OnlineClassesPage() {
             <Video className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Virtual Learning & Online Classes Hub
+            {t('nav.lms')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
             WebRTC Live

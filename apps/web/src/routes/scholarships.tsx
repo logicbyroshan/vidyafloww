@@ -573,7 +573,7 @@ function ScholarshipsPage() {
       ),
     },
     {
-      header: 'Class',
+      header: t('col.class'),
       accessorKey: 'class',
       cell: (r: ScholarshipRecord) => (
         <VFBadge variant="outline" className="text-[11px] font-mono font-bold rounded-md bg-[#181818] border-border">
@@ -623,7 +623,7 @@ function ScholarshipsPage() {
       ),
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: ScholarshipRecord) => (
         <VFBadge variant={r.status === 'Active Disbursed' ? 'success' : 'warning'} className="rounded-md">
@@ -632,7 +632,7 @@ function ScholarshipsPage() {
       ),
     },
     {
-      header: 'Action',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: ScholarshipRecord) => (
         <VFButton
@@ -642,7 +642,7 @@ function ScholarshipsPage() {
           leftIcon={<Award className="h-3.5 w-3.5 text-amber-400" />}
           onClick={() => openDossier(r)}
         >
-          View Details
+          {t('action.view')}
         </VFButton>
       ),
     },
@@ -654,14 +654,14 @@ function ScholarshipsPage() {
       <VFDataTable
         columns={columns}
         data={filteredScholarships}
-        filterPlaceholder="Search by student name, scheme, or sanction number..."
+        filterPlaceholder={t('scholarship.findStudent')}
         rightActions={
           <div className="flex items-center gap-2">
             <VFSelect
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[
-                { value: 'all', label: `All Schemes (${scholarships.length})` },
+                { value: 'all', label: `${t('action.all')} (${scholarships.length})` },
                 { value: 'Govt RTE / NSP', label: `Govt RTE / NSP (${scholarships.filter((s) => s.category === 'Govt RTE / NSP').length})` },
                 { value: 'Academic Merit', label: `Academic Merit (${scholarships.filter((s) => s.category === 'Academic Merit').length})` },
                 { value: 'Sports Talent', label: `Sports Quota (${scholarships.filter((s) => s.category === 'Sports Talent').length})` },
@@ -675,7 +675,7 @@ function ScholarshipsPage() {
               leftIcon={<Download className="h-4 w-4" />}
               onClick={() => addNotification({ title: 'Exporting Grants', description: 'Scholarship grant directory exported as CSV.', type: 'success' })}
             >
-              Export CSV
+              {t('action.export')}
             </VFButton>
             <VFButton
               size="sm"
@@ -683,7 +683,7 @@ function ScholarshipsPage() {
               leftIcon={<Plus className="h-4 w-4" />}
               onClick={() => setIsAddDrawerOpen(true)}
             >
-              Add Scholarship
+              {t('action.add') + ' ' + t('nav.scholarships')}
             </VFButton>
           </div>
         }
@@ -696,7 +696,7 @@ function ScholarshipsPage() {
         isOpen={isAddDrawerOpen}
         onClose={() => setIsAddDrawerOpen(false)}
         hideHeader={true}
-        title="Award & Sanction Scholarship Scheme"
+        title="{t('page.scholarships')}"
         className="w-[960px] max-w-[96vw] sm:max-w-4xl lg:max-w-5xl rounded-none sm:rounded-l-md"
         bodyClassName="p-0 flex flex-col h-full bg-[#111111]"
         footerActions={
@@ -732,7 +732,7 @@ function ScholarshipsPage() {
               </div>
               <div>
                 <h3 className="text-base font-extrabold text-foreground tracking-tight">
-                  Award & Sanction Scholarship Scheme
+                  {t('page.scholarships')}
                 </h3>
                 <p className="text-xs text-muted-foreground">
                   Sanction government DBT grants, academic free-ships, or institutional parent relief.

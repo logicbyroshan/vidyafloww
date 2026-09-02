@@ -1336,8 +1336,8 @@ function StudentsPage() {
    <Column ss:Width="220"/>
    <Row ss:Height="28">
     <Cell ss:StyleID="Header"><Data ss:Type="String">Photo Filename (19.5x25)</Data></Cell>
-    <Cell ss:StyleID="Header"><Data ss:Type="String">Admission No</Data></Cell>
-    <Cell ss:StyleID="Header"><Data ss:Type="String">Student Name</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">{t('col.admNo')}</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">{t('col.studentName')}</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Class</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Section</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Roll No</Data></Cell>
@@ -1345,7 +1345,7 @@ function StudentsPage() {
     <Cell ss:StyleID="Header"><Data ss:Type="String">Guardian Name</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Guardian Phone</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Student Email</Data></Cell>
-    <Cell ss:StyleID="Header"><Data ss:Type="String">Attendance</Data></Cell>
+    <Cell ss:StyleID="Header"><Data ss:Type="String">{t('tabs.attendance')}</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">GPA</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Blood Group</Data></Cell>
     <Cell ss:StyleID="Header"><Data ss:Type="String">Residential Address</Data></Cell>
@@ -1495,7 +1495,7 @@ function StudentsPage() {
       ),
     },
     {
-      header: 'Admission No',
+      header: t('col.admNo'),
       accessorKey: 'admNo',
       cell: (r: any) => (
         <span className="font-mono font-semibold text-foreground/90 text-sm">
@@ -1504,7 +1504,7 @@ function StudentsPage() {
       ),
     },
     {
-      header: 'Student Name',
+      header: t('col.studentName'),
       accessorKey: 'name',
       cell: (r: any) => (
         <button
@@ -1516,7 +1516,7 @@ function StudentsPage() {
       ),
     },
     {
-      header: 'Class & Section',
+      header: t('col.class'),
       accessorKey: 'class',
       cell: (r: any) => (
         <span className="font-medium text-foreground text-sm">
@@ -1525,12 +1525,12 @@ function StudentsPage() {
       ),
     },
     {
-      header: 'Roll No',
+      header: t('col.roll'),
       accessorKey: 'roll',
       cell: (r: any) => <span className="font-mono text-muted-foreground text-sm">{r.roll}</span>,
     },
     {
-      header: 'House',
+      header: t('col.house'),
       accessorKey: 'house',
       cell: (r: any) => (
         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold bg-muted/60 text-muted-foreground border border-border">
@@ -1551,7 +1551,7 @@ function StudentsPage() {
       cell: (r: any) => <span className="text-muted-foreground font-mono text-sm">{r.phone}</span>,
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: any) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : 'outline'}>
@@ -1560,7 +1560,7 @@ function StudentsPage() {
       ),
     },
     {
-      header: 'Actions',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: any) => (
         <VFButton
@@ -1569,7 +1569,7 @@ function StudentsPage() {
           leftIcon={<Eye className="h-3.5 w-3.5" />}
           onClick={() => openStudentDrawer(r)}
         >
-          View Profile
+          {t('action.view') + ' ' + t('col.profile')}
         </VFButton>
       ),
     },
@@ -1581,7 +1581,7 @@ function StudentsPage() {
       <VFDataTable
         columns={enrolledStudentColumns}
         data={currentEnrolledList}
-        filterPlaceholder="Search by student name, roll number, or admission ID..."
+        filterPlaceholder={t('form.searchStudents')}
         rightActions={
           <VFButton
             variant="outline"
@@ -1589,7 +1589,7 @@ function StudentsPage() {
             leftIcon={<Download className="h-4 w-4" />}
             onClick={() => setIsExportModalOpen(true)}
           >
-            Export Roster
+            {t('action.export')}
           </VFButton>
         }
       />
@@ -1624,14 +1624,14 @@ function StudentsPage() {
                     size="sm"
                     onClick={handleCancelEdit}
                   >
-                    Cancel
+                    {t('action.cancel')}
                   </VFButton>
                   <VFButton
                     size="sm"
                     leftIcon={<Check className="h-4 w-4" />}
                     onClick={handleSaveStudent}
                   >
-                    Save Changes
+                    {t('action.saveChanges')}
                   </VFButton>
                 </div>
               </>
@@ -2989,7 +2989,7 @@ function StudentsPage() {
 
               <div className="grid grid-cols-2 gap-3 py-1">
                 <div>
-                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Student Name</span>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">{t('col.studentName')}</span>
                   <span className="font-bold text-foreground text-xs">{certificateStudent.name}</span>
                 </div>
                 <div>
@@ -2997,7 +2997,7 @@ function StudentsPage() {
                   <span className="font-mono font-bold text-foreground text-xs">{certificateStudent.admNo}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">Class & Section</span>
+                  <span className="text-[10px] text-muted-foreground uppercase block font-bold">{t('col.class')}</span>
                   <span className="font-semibold text-foreground text-xs">{certificateStudent.class} (Sec {certificateStudent.section})</span>
                 </div>
                 <div>

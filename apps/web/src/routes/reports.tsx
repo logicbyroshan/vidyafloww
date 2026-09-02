@@ -135,12 +135,12 @@ function ReportsPage() {
       cell: (r: ReportTemplate) => <span className="text-muted-foreground text-xs font-semibold">{r.lastGenerated}</span>,
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: ReportTemplate) => <VFBadge variant="success">{r.status}</VFBadge>,
     },
     {
-      header: 'Action',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: ReportTemplate) => (
         <VFButton
@@ -164,7 +164,7 @@ function ReportsPage() {
             <FileSpreadsheet className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Institutional Reports & Compliance Hub
+            {t('page.reports')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
             CBSE & State Aligned
@@ -178,7 +178,7 @@ function ReportsPage() {
             className="h-9 px-3.5 text-xs font-bold shadow-xs"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            Generate Custom Report
+            {t('action.generate')}
           </VFButton>
         </div>
       </div>
@@ -187,7 +187,7 @@ function ReportsPage() {
       <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
         <div className="flex items-center gap-3 flex-1 min-w-[280px]">
           <span className="text-xs font-extrabold text-foreground uppercase tracking-wider whitespace-nowrap">
-            Filter Domain:
+            {t('action.filter')}:
           </span>
           <div className="w-56">
             <VFSelect
@@ -214,7 +214,7 @@ function ReportsPage() {
       <VFDataTable
         columns={reportColumns}
         data={filteredReports}
-        filterPlaceholder="Search reports by code, title, frequency, or compliance category..."
+        filterPlaceholder={t('form.searchFees')}
       />
 
       {/* Custom Report Builder Modal */}

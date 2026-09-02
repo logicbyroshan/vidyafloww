@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { useTranslation } from '../hooks/useTranslation';
 import {
   VFPageContainer,
   VFSection,
@@ -49,6 +50,7 @@ interface HomeworkRecord {
 }
 
 function ParentStudentPortalPage() {
+  const { t } = useTranslation();
   const portalModule = MODULE_REGISTRY.find((m) => m.id === 'portal');
 
   const childrenData: ChildRecord[] = [
@@ -197,12 +199,12 @@ function ParentStudentPortalPage() {
 
       <VFDataTable
         columns={[
-          { header: 'Subject', accessorKey: 'subject', cell: (r: HomeworkRecord) => <span className="font-bold text-foreground">{r.subject}</span> },
+          { header: t('col.subject'), accessorKey: 'subject', cell: (r: HomeworkRecord) => <span className="font-bold text-foreground">{r.subject}</span> },
           { header: 'Homework / Assignment Title', accessorKey: 'title' },
           { header: 'Teacher', accessorKey: 'teacher' },
           { header: 'Due Date', accessorKey: 'dueDate', cell: (r: HomeworkRecord) => <span className="font-mono text-warning font-semibold">{r.dueDate}</span> },
           {
-            header: 'Status',
+            header: t('col.status'),
             accessorKey: 'status',
             cell: (r: HomeworkRecord) => (
               <VFBadge variant={r.status === 'Submitted' ? 'success' : 'warning'}>

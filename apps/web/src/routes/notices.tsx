@@ -156,12 +156,12 @@ function NoticesPage() {
       ),
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: NoticeRecord) => <VFBadge variant="success">{r.status}</VFBadge>,
     },
     {
-      header: 'Actions',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: NoticeRecord) => (
         <VFButton
@@ -185,7 +185,7 @@ function NoticesPage() {
             <Bell className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Circulars & Broadcast Hub
+            {t('page.notices')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
             SMS & App Live
@@ -200,7 +200,7 @@ function NoticesPage() {
             className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
             leftIcon={<Download className="h-3.5 w-3.5" />}
           >
-            Export Archive
+            {t('action.export')}
           </VFButton>
           <VFButton
             size="sm"
@@ -208,7 +208,7 @@ function NoticesPage() {
             className="h-9 px-3.5 text-xs font-bold shadow-xs"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            Publish Notice
+            {t('action.add') + ' ' + t('nav.notices')}
           </VFButton>
         </div>
       </div>

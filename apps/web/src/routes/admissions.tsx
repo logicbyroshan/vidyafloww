@@ -1258,7 +1258,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Action',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: Applicant) => (
         <VFButton
@@ -1281,7 +1281,7 @@ function AdmissionsPage() {
       <VFDataTable
         columns={applicantColumns}
         data={applicantList}
-        filterPlaceholder="Search candidates by name, applicant ID, or school..."
+        filterPlaceholder={t('form.searchStudents')}
         rightActions={
           <>
             <VFButton
@@ -1290,14 +1290,14 @@ function AdmissionsPage() {
               leftIcon={<Download className="h-4 w-4" />}
               onClick={() => setIsExportModalOpen(true)}
             >
-              Export Roster
+              {t('action.export')}
             </VFButton>
             <VFButton
               size="sm"
               leftIcon={<Plus className="h-4 w-4" />}
               onClick={handleOpenNewAdmissionDrawer}
             >
-              New Admission
+              {t('action.add') + ' ' + t('page.admissions')}
             </VFButton>
           </>
         }

@@ -604,7 +604,7 @@ function TimetablePage() {
             </div>
             <div className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#161616] border border-[#262626] text-xs">
               <School className="h-4 w-4 text-zinc-400 shrink-0" />
-              <span className="font-medium text-zinc-400">Class Teacher:</span>
+              <span className="font-medium text-zinc-400">{t('teachers.classTeacher')}:</span>
               <span className="font-bold text-white">{classTeacher}</span>
               <span className="text-zinc-400 font-mono">(Room 101)</span>
             </div>
@@ -617,7 +617,7 @@ function TimetablePage() {
               leftIcon={<Clock className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => setIsConfigurePeriodsOpen(true)}
             >
-              Configure Periods
+              {t('action.edit') + ' ' + t('timetable.period')}
             </VFButton>
             <VFButton
               variant="outline"
@@ -625,7 +625,7 @@ function TimetablePage() {
               leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => setIsConfigureTimetableOpen(true)}
             >
-              Configure Timetable
+              {t('action.edit') + ' ' + t('nav.timetable')}
             </VFButton>
             <VFButton
               variant="outline"
@@ -633,7 +633,7 @@ function TimetablePage() {
               leftIcon={<Users className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => setIsWorkloadDrawerOpen(true)}
             >
-              Faculty Workload & Proxies
+              {t('nav.teachers')}
               <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono font-bold bg-[#242424] text-zinc-300 rounded">
                 {substitutionsList.length}
               </span>
@@ -644,7 +644,7 @@ function TimetablePage() {
               leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => setIsExportModalOpen(true)}
             >
-              Export Schedule
+              {t('action.export')}
             </VFButton>
           </div>
         </div>
@@ -689,10 +689,10 @@ function TimetablePage() {
                   {/* Day Column - Distinct Vibrant Color Pill Badge */}
                   <div className="p-2 font-bold bg-[#0d0d0d] select-none flex flex-col items-center justify-center space-y-1.5 text-center">
                     <span className={cn("block text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-md border shadow-2xs", dayTheme.badgeBg)}>
-                      {day}
+                      {t(('timetable.' + day.toLowerCase()) as any) || day}
                     </span>
                     <span className="text-[10px] text-zinc-400 font-mono block font-bold bg-[#141414] px-2 py-0.5 rounded border border-[#242424]">
-                      {classPeriods.length} Periods
+                      {classPeriods.length} {t('timetable.period')}
                     </span>
                   </div>
 

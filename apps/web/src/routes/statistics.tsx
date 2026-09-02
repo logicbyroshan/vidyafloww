@@ -47,7 +47,7 @@ function StatisticsPage() {
       {/* Primary Demographic KPI Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
-          title="Total Student Population"
+          title={t('students.totalStudents')}
           value={activeSession === '2026–2027' ? '1,248' : '1,180'}
           icon={<Users className="h-5 w-5" />}
           trend="up"
@@ -55,15 +55,15 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title="Student-Teacher Ratio"
+          title={t('teachers.totalStaff') + ' Ratio'}
           value="18 : 1"
           icon={<School className="h-5 w-5" />}
           trend="neutral"
-          trendLabel="CBSE Standard Compliant"
+          trendLabel="CBSE Standard"
           accentColor="blue"
         />
         <VFStatCard
-          title="Active Class Divisions"
+          title={t('ui.class') + ' Divisions'}
           value="16 Sections"
           icon={<Layers className="h-5 w-5" />}
           trend="neutral"
@@ -71,17 +71,17 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title="Gender Parity Index"
+          title={t('ui.boys') + ' / ' + t('ui.girls') + ' Ratio'}
           value="0.95"
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
-          trendLabel="Balanced Cohort"
+          trendLabel={t('status.active')}
           accentColor="blue"
         />
       </div>
 
       {/* Student Enrollment by Wing Pie Chart & Metric Tiles */}
-      <VFCard title="Student Enrollment by School Wing" description="Class tier strength distribution across 1,248 pupils">
+      <VFCard title={t('students.totalStudents') + ' by Wing'} description="Class tier strength distribution across 1,248 pupils">
         <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
           <div className="shrink-0" style={{ width: 180, height: 180 }}>
             <VFPieChart
@@ -120,9 +120,9 @@ function StatisticsPage() {
       {/* Demographic Matrix 3-Card Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Gender Distribution */}
-        <VFCard title="Gender Distribution" description="Current student population balance">
+        <VFCard title={t('col.gender') + ' Distribution'} description="Current student population balance">
           <div className="space-y-3 mt-1">
-            <p className="text-2xl font-black text-foreground">640 Boys / 608 Girls</p>
+            <p className="text-2xl font-black text-foreground">640 {t('ui.boys')} / 608 {t('ui.girls')}</p>
             <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex">
               <div className="h-full bg-blue-500 w-[51.2%]" title="Boys: 51.2%" />
               <div className="h-full bg-pink-500 w-[48.8%]" title="Girls: 48.8%" />
@@ -130,18 +130,18 @@ function StatisticsPage() {
             <div className="flex items-center justify-between text-xs font-bold text-muted-foreground pt-1">
               <span className="flex items-center gap-1.5 text-blue-400">
                 <span className="h-2 w-2 rounded-full bg-blue-500" />
-                51.2% Boys (640)
+                51.2% {t('ui.boys')} (640)
               </span>
               <span className="flex items-center gap-1.5 text-pink-400">
                 <span className="h-2 w-2 rounded-full bg-pink-500" />
-                48.8% Girls (608)
+                48.8% {t('ui.girls')} (608)
               </span>
             </div>
           </div>
         </VFCard>
 
         {/* Quota & Reserved Seats */}
-        <VFCard title="Quota & Reserved Seats" description="Compliance with RTE standards">
+        <VFCard title={t('form.category') + ' & Reserved Seats'} description="Compliance with RTE standards">
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">186 Students</p>
             <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
@@ -177,7 +177,7 @@ function StatisticsPage() {
       </div>
 
       {/* Class-Wise Enrollment Breakdown */}
-      <VFCard title="Class-Wise Enrollment Breakdown" description="Distribution across academic wings and sections">
+      <VFCard title={t('ui.class') + '-Wise Enrollment'} description="Distribution across academic wings and sections">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-base pt-1">
           {[
             { grade: 'Class 9', total: '320 Students', sections: '4 Sections', standing: '96.2% Attendance', ratio: '80 / Section' },
@@ -208,7 +208,7 @@ function StatisticsPage() {
       {/* Primary Academic KPI Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
-          title="Overall Board Pass Rate"
+          title={t('exam.annual') + ' Board Pass Rate'}
           value="98.6%"
           icon={<Award className="h-5 w-5" />}
           trend="up"
@@ -242,7 +242,7 @@ function StatisticsPage() {
       </div>
 
       {/* Academic Grade Tier Distribution Pie Chart */}
-      <VFCard title="Academic Grade Performance Tier" description="Term 1 evaluation marks distribution across 1,248 students">
+      <VFCard title={t('col.grade') + ' Performance'} description="Term 1 evaluation marks distribution across 1,248 students">
         <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
           <div className="shrink-0" style={{ width: 180, height: 180 }}>
             <VFPieChart
@@ -337,7 +337,7 @@ function StatisticsPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
-          title="Daily Attendance Average"
+          title={t('attendance.title') + ' Average'}
           value="96.9%"
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
@@ -345,7 +345,7 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title="Faculty Attendance"
+          title={t('nav.teachers') + ' ' + t('attendance.title')}
           value="98.4%"
           icon={<Users className="h-5 w-5" />}
           trend="up"
@@ -371,7 +371,7 @@ function StatisticsPage() {
       </div>
 
       {/* Attendance & Student Intake Trends Area Chart */}
-      <VFCard title="Attendance & Intake Trends" description="Monthly comparison for Academic Year 2026-2027">
+      <VFCard title={t('attendance.title') + ' & Intake Trends'} description="Monthly comparison for Academic Year 2026-2027">
         <div className="h-64 mt-2">
           <VFAreaChart
             data={[
@@ -392,7 +392,7 @@ function StatisticsPage() {
       </VFCard>
 
       {/* Attendance Health Risk Segments */}
-      <VFCard title="Attendance Health & Risk Segments" description="Biometric gate audit classification across 1,248 students">
+      <VFCard title={t('attendance.title') + ' Risk Segments'} description="Biometric gate audit classification across 1,248 students">
         <div className="grid grid-cols-3 gap-3 pt-1">
           {[
             { label: 'Regular Attendance', subtitle: 'Above 90%', count: '1,120', pct: '89.7%', tag: 'Healthy', badgeVariant: 'success' as const },
@@ -458,7 +458,7 @@ function StatisticsPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
-          title="Total TC Issued"
+          title={t('col.receipt') + ' Issued'}
           value="142"
           icon={<FileCheck2 className="h-5 w-5" />}
           trend="up"
@@ -540,7 +540,7 @@ function StatisticsPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         <VFStatCard
-          title="Total Fee Collection"
+          title={t('fees.totalCollected')}
           value="₹ 4.86 Cr"
           icon={<CreditCard className="h-5 w-5" />}
           trend="up"
@@ -556,7 +556,7 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title="Outstanding Dues"
+          title={t('fees.balance')}
           value="₹ 9.2 Lakh"
           icon={<Clock className="h-5 w-5" />}
           trend="down"
@@ -564,7 +564,7 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title="Scholarships & Concessions"
+          title={t('page.scholarships') + ' & Concessions'}
           value="₹ 18.4 Lakh"
           icon={<Award className="h-5 w-5" />}
           trend="neutral"
@@ -574,7 +574,7 @@ function StatisticsPage() {
       </div>
 
       {/* Fee Collection Status vs Target Bar Chart */}
-      <VFCard title="Fee Collection Status vs Target" description="Quarterly breakdown in ₹ Lakhs (Collected vs Projected)">
+      <VFCard title={t('fees.title') + ' vs Target'} description="Quarterly breakdown in ₹ Lakhs (Collected vs Projected)">
         <div className="h-64 mt-2">
           <VFBarChart
             data={[
@@ -628,7 +628,7 @@ function StatisticsPage() {
               </div>
               <p className="text-xl font-black text-foreground">{f.collected}</p>
               <div className="flex items-center justify-between text-xs font-bold text-muted-foreground pt-1 border-t border-border/50">
-                <span>Dues Pending:</span>
+                <span>{t('fees.totalDue')}:</span>
                 <span className="text-amber-400 font-bold">{f.dues}</span>
               </div>
             </div>
@@ -642,21 +642,21 @@ function StatisticsPage() {
   const tabs = [
     {
       id: 'demographics',
-      label: 'Demographics & Enrollment',
+      label: t('students.totalStudents') + ' & Enrollment',
       icon: <Users className="h-5 w-5" />,
       badge: '1,248 Students',
       content: demographicsContent,
     },
     {
       id: 'academics',
-      label: 'Academic & Exam Stats',
+      label: t('page.examinations') + ' Stats',
       icon: <GraduationCap className="h-5 w-5" />,
       badge: '98.6% Pass',
       content: academicsContent,
     },
     {
       id: 'attendance',
-      label: 'Attendance & Operations',
+      label: t('attendance.title') + ' & Operations',
       icon: <CalendarCheck className="h-5 w-5" />,
       badge: '96.9% Avg',
       content: attendanceContent,
@@ -670,7 +670,7 @@ function StatisticsPage() {
     },
     {
       id: 'finance',
-      label: 'Finance & Fee Analytics',
+      label: t('fees.title') + ' Analytics',
       icon: <CreditCard className="h-5 w-5" />,
       badge: '98.1% Paid',
       content: financeContent,
@@ -686,10 +686,10 @@ function StatisticsPage() {
             <BarChart3 className="h-4 w-4" />
           </div>
           <span className="text-base font-extrabold text-foreground tracking-tight">
-            Institutional Intelligence & Demographics
+            {t('page.statistics')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-            Session {activeSession}
+            {t('ui.session').split(' ')[0] + ' ' + activeSession}
           </VFBadge>
         </div>
 
@@ -699,9 +699,9 @@ function StatisticsPage() {
             size="sm"
             className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
             leftIcon={<Download className="h-3.5 w-3.5" />}
-            onClick={() => addNotification({ title: 'Analytics Dossier Exported', description: `Exported Institutional Intelligence Report for Session ${activeSession}.`, type: 'success' })}
+            onClick={() => addNotification({ title: t('action.export'), description: `Exported Institutional Intelligence Report for Session ${activeSession}.`, type: 'success' })}
           >
-            Export Comprehensive Report
+            {t('action.export')}
           </VFButton>
         </div>
       </div>

@@ -802,7 +802,7 @@ function AttendancePage() {
       ),
     },
     {
-      header: 'Roll No',
+      header: t('col.roll'),
       accessorKey: 'rollNo',
       headerClassName: 'w-24 text-center',
       className: 'w-24 text-center px-3',
@@ -845,7 +845,7 @@ function AttendancePage() {
       ),
     },
     {
-      header: "Today's Attendance Status",
+      header: t('attendance.todayStatus'),
       accessorKey: 'status',
       headerClassName: 'w-[40%] min-w-[380px]',
       className: 'w-[40%] min-w-[380px]',
@@ -864,7 +864,7 @@ function AttendancePage() {
             title="Mark Present"
           >
             <Check className={cn('h-3.5 w-3.5', r.status === 'Present' ? 'text-white stroke-[3]' : 'text-emerald-500/70')} />
-            <span>Present</span>
+            <span>{t('attendance.present')}</span>
           </button>
 
           {/* 2. Absent */}
@@ -880,7 +880,7 @@ function AttendancePage() {
             title="Mark Absent"
           >
             <X className={cn('h-3.5 w-3.5', r.status === 'Absent' ? 'text-white stroke-[3]' : 'text-rose-500/70')} />
-            <span>Absent</span>
+            <span>{t('attendance.absent')}</span>
           </button>
 
           {/* 3. Late */}
@@ -896,7 +896,7 @@ function AttendancePage() {
             title="Mark Late Arrival"
           >
             <Clock className={cn('h-3.5 w-3.5', r.status === 'Late' ? 'text-black stroke-[2.5]' : 'text-amber-500/70')} />
-            <span>Late</span>
+            <span>{t('attendance.late')}</span>
           </button>
 
           {/* 4. Leave */}
@@ -912,13 +912,13 @@ function AttendancePage() {
             title="Mark On Leave"
           >
             <FileText className={cn('h-3.5 w-3.5', r.status === 'Leave' ? 'text-white stroke-[2.5]' : 'text-indigo-400/70')} />
-            <span>Leave</span>
+            <span>{t('status.exempted')}</span>
           </button>
         </div>
       ),
     },
     {
-      header: 'Actions',
+      header: t('col.action'),
       accessorKey: 'action',
       headerClassName: 'w-44 text-right',
       className: 'w-44 text-right px-4',
@@ -931,7 +931,7 @@ function AttendancePage() {
             leftIcon={<Eye className="h-3.5 w-3.5" />}
             onClick={() => openStudentDrawer(r)}
           >
-            Attendance & Leaves
+            {t('attendance.title')}
           </VFButton>
         </div>
       ),
@@ -1003,7 +1003,7 @@ function AttendancePage() {
               onClick={handleMarkAllPresent}
               leftIcon={<CheckSquare className="h-3.5 w-3.5 text-emerald-400" />}
             >
-              Mark All Present
+              {t('attendance.markAll')}
             </VFButton>
             <VFButton
               size="sm"
@@ -1016,7 +1016,7 @@ function AttendancePage() {
                 })
               }
             >
-              Notify Absentees
+              {t('action.sendReminder')}
             </VFButton>
           </div>
         }
@@ -1068,7 +1068,7 @@ function AttendancePage() {
                 size="sm"
                 onClick={() => setIsDrawerOpen(false)}
               >
-                Cancel
+                {t('action.cancel')}
               </VFButton>
               <VFButton
                 variant="outline"
@@ -1076,7 +1076,7 @@ function AttendancePage() {
                 leftIcon={<Printer className="h-4 w-4" />}
                 onClick={() => window.print()}
               >
-                Print Attendance Card
+                {t('action.print')}
               </VFButton>
             </div>
           </div>
@@ -1231,7 +1231,7 @@ function AttendancePage() {
                 )}
               >
                 <CalendarDays className="h-3.5 w-3.5" />
-                <span>Monthly Attendance Matrix</span>
+                <span>{t('attendance.monthly')}</span>
               </button>
               <button
                 onClick={() => setDrawerActiveTab('leaves')}
@@ -1521,10 +1521,10 @@ function AttendancePage() {
 
                     <div className="flex justify-end gap-2 pt-1">
                       <VFButton size="sm" variant="outline" onClick={() => setIsApplyingNewLeave(false)}>
-                        Cancel
+                        {t('action.cancel')}
                       </VFButton>
                       <VFButton size="sm" leftIcon={<Check className="h-3.5 w-3.5" />} onClick={handleGrantNewLeave}>
-                        Sanction Leave
+                        {t('action.confirm')}
                       </VFButton>
                     </div>
                   </div>
@@ -1653,7 +1653,7 @@ function AttendancePage() {
                                 className="h-8 px-3 rounded-md bg-muted hover:bg-rose-500/20 text-muted-foreground hover:text-rose-400 border border-border hover:border-rose-500/40 text-xs font-bold flex items-center gap-1 transition-all cursor-pointer"
                               >
                                 <X className="h-3.5 w-3.5" />
-                                <span>Reject</span>
+                                <span>{t('action.reject')}</span>
                               </button>
                             </>
                           ) : (

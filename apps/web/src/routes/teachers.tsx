@@ -915,7 +915,7 @@ function StaffPage() {
       ),
     },
     {
-      header: 'Department',
+      header: t('col.department'),
       accessorKey: 'department',
       cell: (r: StaffRecord) => <span className="text-zinc-300 font-bold text-xs">{r.department}</span>,
     },
@@ -965,7 +965,7 @@ function StaffPage() {
       ),
     },
     {
-      header: 'Attendance',
+      header: t('col.attendance'),
       accessorKey: 'attendance',
       cell: (r: StaffRecord) => (
         <span className="font-mono font-bold text-emerald-400 text-xs bg-emerald-950/30 border border-emerald-800/40 px-2 py-0.5 rounded">
@@ -974,7 +974,7 @@ function StaffPage() {
       ),
     },
     {
-      header: 'Status',
+      header: t('col.status'),
       accessorKey: 'status',
       cell: (r: StaffRecord) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : r.status === 'On Leave' ? 'warning' : 'default'}>
@@ -983,7 +983,7 @@ function StaffPage() {
       ),
     },
     {
-      header: 'Actions',
+      header: t('col.action'),
       accessorKey: 'action',
       cell: (r: StaffRecord) => (
         <VFButton
@@ -1040,7 +1040,7 @@ function StaffPage() {
       <VFDataTable
         columns={staffColumns}
         data={staffList}
-        filterPlaceholder="Search faculty by name, staff ID, department, or subject..."
+        filterPlaceholder={t('form.searchTeachers')}
         rightActions={
           <>
             <VFButton
@@ -1049,14 +1049,14 @@ function StaffPage() {
               leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => setIsExportModalOpen(true)}
             >
-              Export
+              {t('action.export')}
             </VFButton>
             <VFButton
               size="sm"
               leftIcon={<Plus className="h-3.5 w-3.5" />}
               onClick={() => setIsAddStaffDrawerOpen(true)}
             >
-              Add Staff Member
+              {t('action.add') + ' ' + t('nav.teachers')}
             </VFButton>
           </>
         }
@@ -1489,7 +1489,7 @@ function StaffPage() {
                             <tr className="bg-[#141417] text-zinc-400 font-bold text-[10px] uppercase tracking-wider border-b border-[#242428]">
                               <th className="py-2.5 px-3 text-left">Day</th>
                               <th className="py-2.5 px-3 text-left">Period Slot</th>
-                              <th className="py-2.5 px-3 text-left">Class & Section</th>
+                              <th className="py-2.5 px-3 text-left">{t('col.class')}</th>
                               <th className="py-2.5 px-3 text-left">Subject</th>
                               <th className="py-2.5 px-3 text-right">Room / Lab</th>
                             </tr>

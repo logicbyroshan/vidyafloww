@@ -254,7 +254,7 @@ export function DashboardPage() {
     let kpiProps: any = {};
     if (kpiId === 'students') {
       kpiProps = {
-        title: 'Total Students',
+        title: t('dashboard.totalStudents'),
         value: '2,451',
         icon: <Users className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
@@ -262,7 +262,7 @@ export function DashboardPage() {
       };
     } else if (kpiId === 'staff' || kpiId === 'teachers') {
       kpiProps = {
-        title: 'Teaching Faculty',
+        title: t('dashboard.totalTeachers'),
         value: '98.2%',
         icon: <GraduationCap className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
@@ -270,7 +270,7 @@ export function DashboardPage() {
       };
     } else if (kpiId === 'attendance') {
       kpiProps = {
-        title: "Today's Attendance",
+        title: t('dashboard.todayAttendance'),
         value: '94.5%',
         icon: <CalendarCheck className="h-5.5 w-5.5 text-foreground" />,
         trend: 'up',
@@ -278,7 +278,7 @@ export function DashboardPage() {
       };
     } else if (kpiId === 'admissions') {
       kpiProps = {
-        title: 'Pending Admissions',
+        title: t('dashboard.newAdmissions'),
         value: '28',
         icon: <FileText className="h-5.5 w-5.5 text-foreground" />,
         trend: 'neutral',
@@ -406,7 +406,7 @@ export function DashboardPage() {
       return (
         <div key="teacher_attendance" {...sectionWrapperProps}>
           <VFCard
-            title="Teacher Attendance"
+            title={t('attendance.teacherTab')}
             description="4 Absent Today · 100% Substitute Coverage"
             className="h-[460px]"
             bodyClassName="p-4"
@@ -415,7 +415,7 @@ export function DashboardPage() {
             }
           >
             <div className="h-full overflow-y-auto no-scrollbar space-y-3">
-              {facultyAbsences.map((t, i) => (
+              {facultyAbsences.map((faculty, i) => (
                 <div
                   key={i}
                   className="p-3 rounded-md border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-amber-500/40 transition-all flex items-center justify-between gap-3 shadow-xs"
@@ -423,18 +423,18 @@ export function DashboardPage() {
                   {/* Left: Photo Avatar + Name + Leave Badge + Dept */}
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <img
-                      src={t.avatar}
-                      alt={t.teacher}
+                      src={faculty.avatar}
+                      alt={faculty.teacher}
                       className="h-9 w-9 rounded-md object-cover shrink-0 border border-border/80 shadow-xs"
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-xs sm:text-sm font-bold text-foreground truncate">{t.teacher}</p>
+                        <p className="text-xs sm:text-sm font-bold text-foreground truncate">{faculty.teacher}</p>
                         <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30 shrink-0">
-                          {t.reason}
+                          {faculty.reason}
                         </span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground font-medium truncate mt-0.5">{t.dept}</p>
+                      <p className="text-[11px] text-muted-foreground font-medium truncate mt-0.5">{faculty.dept}</p>
                     </div>
                   </div>
 
@@ -443,17 +443,17 @@ export function DashboardPage() {
                     <div className="text-right">
                       <p className="text-xs font-bold text-emerald-400 flex items-center justify-end gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
-                        {t.proxy}
+                        {faculty.proxy}
                       </p>
-                      <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{t.slot}</p>
+                      <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{faculty.slot}</p>
                     </div>
                     <VFButton
                       size="sm"
                       variant="outline"
                       className="h-7 px-2.5 text-xs bg-[#141414] hover:bg-[#1f1f1f] border-border text-foreground font-semibold"
-                      onClick={() => addNotification({ title: 'Proxy Reassigned', description: `Proxy reassigned for ${t.teacher}.`, type: 'success' })}
+                      onClick={() => addNotification({ title: 'Proxy Reassigned', description: `Proxy reassigned for ${faculty.teacher}.`, type: 'success' })}
                     >
-                      Reassign
+                      {t('action.edit')}
                     </VFButton>
                   </div>
                 </div>
@@ -470,7 +470,7 @@ export function DashboardPage() {
       return (
         <div key="student_attendance" {...sectionWrapperProps}>
           <VFCard
-            title="Student Attendance"
+            title={t('attendance.studentTab')}
             description="68 Pupils Absent Today · 94.5% Net Attendance"
             className="h-[460px]"
             bodyClassName="p-4"
@@ -531,7 +531,7 @@ export function DashboardPage() {
       return (
         <div key="quick_shortcuts" {...sectionWrapperProps}>
           <VFCard
-            title="Quick Shortcuts"
+            title={t('dashboard.shortcuts')}
             description={`${activeShortcuts.length} of ${ALL_SHORTCUT_ACTIONS.length} Shortcuts Active`}
             className="h-[460px]"
             bodyClassName="p-4"
@@ -543,7 +543,7 @@ export function DashboardPage() {
                   className="h-8 px-2.5 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs"
                   leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />}
                 >
-                  Configure
+                  {t('action.edit')}
                 </VFButton>
               </Link>
             }
@@ -561,7 +561,7 @@ export function DashboardPage() {
                       <Icon className="h-4.5 w-4.5 text-foreground" />
                     </div>
                     <p className="text-xs sm:text-sm font-bold text-foreground group-hover/shortcut:text-white transition-colors leading-snug w-full text-center truncate px-1">
-                      {action.label}
+                      {t(('nav.' + action.id) as any) || action.label}
                     </p>
                   </Link>
                 );
@@ -583,8 +583,8 @@ export function DashboardPage() {
                 <div className="h-6 w-6 rounded bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
                   <ShieldCheck className="h-3.5 w-3.5" />
                 </div>
-                <span className="text-base font-extrabold text-foreground truncate">License Details</span>
-                <VFBadge variant="success" className="text-[10px] font-bold py-0 px-1.5 h-4.5">Active</VFBadge>
+                <span className="text-base font-extrabold text-foreground truncate">{t('nav.license')}</span>
+                <VFBadge variant="success" className="text-[10px] font-bold py-0 px-1.5 h-4.5">{t('status.active')}</VFBadge>
               </div>
             }
             description={`${schoolProfile.name} · ${schoolProfile.affiliation}`}
@@ -598,7 +598,7 @@ export function DashboardPage() {
                   className="h-8 px-3 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] border-border cursor-pointer"
                   leftIcon={<Key className="h-3.5 w-3.5" />}
                 >
-                  Manage
+                  {t('action.edit')}
                 </VFButton>
               </Link>
             }
