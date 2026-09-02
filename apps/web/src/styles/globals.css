@@ -7,8 +7,12 @@
 
 @layer base {
   :root {
-    /* ─── Font Token ─────────────────────────────────────────────── */
-    --ui-font: 'Sofia Sans', system-ui, -apple-system, sans-serif;
+    /* ─── Font Token ───────────────────────────────────────────────
+       Sofia Sans comes FIRST so all English letters, numbers, and data
+       are rendered in Sofia Sans. Baloo 2 comes next as fallback for
+       Devanagari (Hindi) glyphs.
+    ─────────────────────────────────────────────────────────────── */
+    --ui-font: 'Sofia Sans', 'Baloo 2', system-ui, -apple-system, sans-serif;
     --ui-line-height: 1.5;
     --ui-letter-spacing: 0.015em;
 
@@ -74,7 +78,7 @@
      Baloo 2 covers both Devanagari and Latin scripts natively.
   ─────────────────────────────────────────────────────────────────────────── */
   html.lang-hi {
-    --ui-font: 'Baloo 2', system-ui, -apple-system, sans-serif;
+    --ui-font: 'Sofia Sans', 'Baloo 2', system-ui, -apple-system, sans-serif;
     --ui-line-height: 1.6;
     --ui-letter-spacing: 0.01em;
   }

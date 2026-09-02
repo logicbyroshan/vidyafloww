@@ -99,10 +99,11 @@ export function Sidebar() {
 
   return (
     <aside
-      className={cn(
-        'flex flex-col h-full bg-black border-r border-border transition-[width] duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-hidden',
-        sidebarExpanded ? `w-[${expandedWidth}px]` : 'w-[68px]'
-      )}
+      className="flex flex-col h-full bg-black border-r border-border transition-[width] duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-hidden"
+      style={{
+        width: sidebarExpanded ? `${expandedWidth}px` : '68px',
+        minWidth: sidebarExpanded ? `${expandedWidth}px` : '68px',
+      }}
     >
       {/* ── HEADER ── 64px height, balanced padding matching logo center */}
       <div
@@ -187,7 +188,7 @@ export function Sidebar() {
                       className="text-sm leading-snug overflow-hidden font-[inherit] whitespace-nowrap"
                       style={{
                         opacity: sidebarExpanded ? 1 : 0,
-                        maxWidth: sidebarExpanded ? (isHindi ? '175px' : '150px') : '0px',
+                        maxWidth: sidebarExpanded ? (isHindi ? '190px' : '155px') : '0px',
                         marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
                         transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
                       }}
@@ -263,8 +264,8 @@ export function Sidebar() {
       <VFDialog
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
-        title="Sign Out?"
-        description="End your current session? You can sign back in anytime with your institutional credentials."
+        title={t('action.signOut') + '?'}
+        description={isHindi ? 'वर्तमान सत्र समाप्त करें? आप अपने क्रेडेंशियल्स के साथ कभी भी वापस साइन इन कर सकते हैं।' : 'End your current session? You can sign back in anytime with your institutional credentials.'}
         className="max-w-md"
         footerActions={
           <div className="flex items-center justify-end gap-2.5 w-full">
@@ -284,14 +285,14 @@ export function Sidebar() {
               onClick={() => {
                 setIsLogoutModalOpen(false);
                 addNotification({
-                  title: 'Signed Out',
-                  description: 'Safely signed out of VidyaFloww.',
+                  title: isHindi ? 'साइन आउट किया गया' : 'Signed Out',
+                  description: isHindi ? 'विद्याफ़्लो से सुरक्षित रूप से साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
                   type: 'info',
                 });
                 navigate({ to: '/' });
               }}
             >
-              Sign Out
+              {t('action.signOut')}
             </VFButton>
           </div>
         }
