@@ -88,16 +88,20 @@ const EXPANDED_ICON_GAP = 10;
 
 export function Sidebar() {
   const { sidebarExpanded, activeSession, addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const location = useLocation();
   const navigate = useNavigate();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
+
+  // Sidebar expands slightly in Hindi to accommodate longer Devanagari labels
+  const expandedWidth = isHindi ? 246 : 224;
 
   return (
     <aside
       className={cn(
         'flex flex-col h-full bg-black border-r border-border transition-[width] duration-300 ease-in-out relative z-40 shrink-0 select-none overflow-hidden',
-        sidebarExpanded ? 'w-[224px]' : 'w-[68px]'
+        sidebarExpanded ? `w-[${expandedWidth}px]` : 'w-[68px]'
       )}
     >
       {/* ── HEADER ── 64px height, balanced padding matching logo center */}
@@ -178,12 +182,12 @@ export function Sidebar() {
                       )}
                     />
 
-                    {/* Label: CSS fade + collapse */}
+                    {/* Label: CSS fade + collapse — no whitespace-nowrap so Hindi renders cleanly */}
                     <span
-                      className="text-sm whitespace-nowrap leading-none overflow-hidden font-[inherit]"
+                      className="text-sm leading-snug overflow-hidden font-[inherit] whitespace-nowrap"
                       style={{
                         opacity: sidebarExpanded ? 1 : 0,
-                        maxWidth: sidebarExpanded ? '150px' : '0px',
+                        maxWidth: sidebarExpanded ? (isHindi ? '175px' : '150px') : '0px',
                         marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
                         transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
                       }}
