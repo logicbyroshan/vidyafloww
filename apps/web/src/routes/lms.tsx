@@ -33,7 +33,8 @@ export const Route = createFileRoute('/lms')({
 });
 
 function OnlineClassesPage() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
   const classData = [
@@ -43,12 +44,12 @@ function OnlineClassesPage() {
   ];
 
   const classColumns = [
-    { header: 'Class Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
-    { header: 'Session Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
-    { header: 'Instructor', accessorKey: 'host' },
-    { header: 'Scheduled Time', accessorKey: 'time' },
-    { header: 'Platform / Type', accessorKey: 'platform', cell: (r: any) => <VFBadge variant="outline">{r.platform}</VFBadge> },
-    { header: 'Attendees', accessorKey: 'attendees', cell: (r: any) => `${r.attendees} Students` },
+    { header: isHindi ? 'क्लास कोड' : 'Class Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: isHindi ? 'सत्र शीर्षक' : 'Session Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
+    { header: isHindi ? 'शिक्षक' : 'Instructor', accessorKey: 'host' },
+    { header: isHindi ? 'शेड्यूल्ड समय' : 'Scheduled Time', accessorKey: 'time' },
+    { header: isHindi ? 'प्लेटफ़ॉर्म / प्रकार' : 'Platform / Type', accessorKey: 'platform', cell: (r: any) => <VFBadge variant="outline">{r.platform}</VFBadge> },
+    { header: isHindi ? 'उपस्थित छात्र' : 'Attendees', accessorKey: 'attendees', cell: (r: any) => `${r.attendees} Students` },
     { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'Live Now' ? 'danger' : r.status === 'Upcoming' ? 'primary' : 'success'}>{r.status}</VFBadge> },
   ];
 
@@ -225,19 +226,19 @@ function OnlineClassesPage() {
   // ALL 13 SUBMODULE TABS MAPPED
   // ----------------------------------------------------
   const submoduleTabs = [
-    { id: 'dashboard', label: 'Online Class Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
-    { id: 'schedule', label: 'Class Schedule', icon: <Calendar className="h-3.5 w-3.5" />, content: scheduleContent },
-    { id: 'create-class', label: 'Create Online Class', icon: <Plus className="h-3.5 w-3.5" />, content: createClassContent },
-    { id: 'live-classes', label: 'Live Classes', icon: <Video className="h-3.5 w-3.5 text-rose-500" />, content: liveClassesContent },
-    { id: 'meeting-management', label: 'Meeting Management', icon: <Users className="h-3.5 w-3.5" />, content: meetingManagementContent },
-    { id: 'attendance', label: 'Online Attendance', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: attendanceContent },
-    { id: 'class-materials', label: 'Class Materials', icon: <Download className="h-3.5 w-3.5" />, content: classMaterialsContent },
-    { id: 'content-sharing', label: 'Screen/Content Sharing', icon: <Share2 className="h-3.5 w-3.5" />, content: contentSharingContent },
-    { id: 'recordings', label: 'Recordings', icon: <PlayCircle className="h-3.5 w-3.5" />, content: recordingsContent },
-    { id: 'recorded-classes', label: 'Recorded Classes', icon: <PlayCircle className="h-3.5 w-3.5" />, content: recordedClassesContent },
-    { id: 'history', label: 'Online Class History', icon: <History className="h-3.5 w-3.5" />, content: historyContent },
-    { id: 'reports', label: 'Online Class Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
-    { id: 'settings', label: 'Online Class Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+    { id: 'dashboard', label: isHindi ? 'ऑनलाइन क्लास डैशबोर्ड' : 'Online Class Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'schedule', label: isHindi ? 'क्लास टाइमटेबल' : 'Class Schedule', icon: <Calendar className="h-3.5 w-3.5" />, content: scheduleContent },
+    { id: 'create-class', label: isHindi ? 'ऑनलाइन क्लास बनाएं' : 'Create Online Class', icon: <Plus className="h-3.5 w-3.5" />, content: createClassContent },
+    { id: 'live-classes', label: isHindi ? 'लाइव क्लासेज' : 'Live Classes', icon: <Video className="h-3.5 w-3.5 text-rose-500" />, content: liveClassesContent },
+    { id: 'meeting-management', label: isHindi ? 'मीटिंग मैनेजमेंट' : 'Meeting Management', icon: <Users className="h-3.5 w-3.5" />, content: meetingManagementContent },
+    { id: 'attendance', label: isHindi ? 'ऑनलाइन उपस्थिति' : 'Online Attendance', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: attendanceContent },
+    { id: 'class-materials', label: isHindi ? 'क्लास स्टडी मटेरियल' : 'Class Materials', icon: <Download className="h-3.5 w-3.5" />, content: classMaterialsContent },
+    { id: 'content-sharing', label: isHindi ? 'स्क्रीन / कंटेंट शेयरिंग' : 'Screen/Content Sharing', icon: <Share2 className="h-3.5 w-3.5" />, content: contentSharingContent },
+    { id: 'recordings', label: isHindi ? 'रिकॉर्डिंग्स' : 'Recordings', icon: <PlayCircle className="h-3.5 w-3.5" />, content: recordingsContent },
+    { id: 'recorded-classes', label: isHindi ? 'रिकॉर्डेड क्लासेज' : 'Recorded Classes', icon: <PlayCircle className="h-3.5 w-3.5" />, content: recordedClassesContent },
+    { id: 'history', label: isHindi ? 'ऑनलाइन क्लास हिस्ट्री' : 'Online Class History', icon: <History className="h-3.5 w-3.5" />, content: historyContent },
+    { id: 'reports', label: isHindi ? 'ऑनलाइन क्लास रिपोर्ट्स' : 'Online Class Reports', icon: <Download className="h-3.5 w-3.5" />, content: reportsContent },
+    { id: 'settings', label: isHindi ? 'ऑनलाइन क्लास सेटिंग्स' : 'Online Class Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
   ];
 
   return (
@@ -263,7 +264,7 @@ function OnlineClassesPage() {
             leftIcon={<Plus className="h-3.5 w-3.5" />}
             onClick={() => setActiveSubmodule('create-class')}
           >
-            Launch Class
+            {isHindi ? 'क्लास शुरू करें' : 'Launch Class'}
           </VFButton>
         </div>
       </div>

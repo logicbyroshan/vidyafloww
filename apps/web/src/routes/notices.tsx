@@ -46,7 +46,8 @@ const INITIAL_NOTICES: NoticeRecord[] = [
 
 function NoticesPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.notices') + ' \u2013 VidyaFloww'; }, [t]);
   const [notices, setNotices] = React.useState<NoticeRecord[]>(INITIAL_NOTICES);
   const [audienceFilter, setAudienceFilter] = React.useState<string>('All');
@@ -90,7 +91,7 @@ function NoticesPage() {
       status: 'Published',
     });
     addNotification({
-      title: 'Circular Dispatched',
+      title: isHindi ? 'सर्कुलर जारी किया गया' : 'Circular Dispatched',
       description: `"${added.title}" broadcasted to ${added.targetAudience} via App & SMS.`,
       type: 'success',
     });
@@ -98,7 +99,7 @@ function NoticesPage() {
 
   const handleExportArchive = () => {
     addNotification({
-      title: 'Circulars Archive Exported',
+      title: isHindi ? 'सर्कुलर आर्काइव एक्सपोर्ट किया गया' : 'Circulars Archive Exported',
       description: 'Exported notice history and recipient read receipts as CSV.',
       type: 'success',
     });
@@ -114,7 +115,7 @@ function NoticesPage() {
 
   const noticeColumns = [
     {
-      header: 'Circular No',
+      header: isHindi ? 'सर्कुलर नं.' : 'Circular No',
       accessorKey: 'circularNo',
       cell: (r: NoticeRecord) => (
         <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
@@ -123,17 +124,17 @@ function NoticesPage() {
       ),
     },
     {
-      header: 'Notice Title & Category',
+      header: isHindi ? 'नोटिस शीर्षक व श्रेणी' : 'Notice Title & Category',
       accessorKey: 'title',
       cell: (r: NoticeRecord) => (
         <div>
           <p className="font-extrabold text-foreground text-sm leading-tight">{r.title}</p>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} Announcement</p>
+          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} {isHindi ? 'सूचना' : 'Announcement'}</p>
         </div>
       ),
     },
     {
-      header: 'Target Audience',
+      header: isHindi ? 'लक्षित वर्ग' : 'Target Audience',
       accessorKey: 'targetAudience',
       cell: (r: NoticeRecord) => (
         <VFBadge variant="outline" className="font-bold">
@@ -142,12 +143,12 @@ function NoticesPage() {
       ),
     },
     {
-      header: 'Date Published',
+      header: isHindi ? 'प्रकाशन तिथि' : 'Date Published',
       accessorKey: 'publishDate',
       cell: (r: NoticeRecord) => <span className="text-muted-foreground text-xs font-semibold">{r.publishDate}</span>,
     },
     {
-      header: 'Delivery Telemetry',
+      header: isHindi ? 'डिलीवरी स्थिति' : 'Delivery Telemetry',
       accessorKey: 'deliveryStatus',
       cell: (r: NoticeRecord) => (
         <span className="text-xs font-mono font-bold text-emerald-400">
@@ -158,7 +159,7 @@ function NoticesPage() {
     {
       header: t('col.status'),
       accessorKey: 'status',
-      cell: (r: NoticeRecord) => <VFBadge variant="success">{r.status}</VFBadge>,
+      cell: (r: NoticeRecord) => <VFBadge variant="success">{isHindi ? 'प्रकाशित' : r.status}</VFBadge>,
     },
     {
       header: t('col.action'),
@@ -170,7 +171,7 @@ function NoticesPage() {
           leftIcon={<Eye className="h-3.5 w-3.5" />}
           onClick={() => setSelectedNotice(r)}
         >
-          View Notice
+          {isHindi ? 'नोटिस देखें' : 'View Notice'}
         </VFButton>
       ),
     },
@@ -188,7 +189,7 @@ function NoticesPage() {
             {t('page.notices')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-            SMS & App Live
+            {isHindi ? 'SMS व ऐप लाइव' : 'SMS & App Live'}
           </VFBadge>
         </div>
 
@@ -222,11 +223,11 @@ function NoticesPage() {
               value={audienceFilter}
               onChange={(e) => setAudienceFilter(String(e.target.value))}
               options={[
-                { label: 'All Audiences', value: 'All' },
-                { label: 'All School', value: 'All School' },
-                { label: 'Parents Only', value: 'Parents' },
-                { label: 'Teachers Only', value: 'Teachers' },
-                { label: 'Classes 9-12', value: 'Classes 9-12' },
+                { label: isHindi ? 'सभी दर्शक' : 'All Audiences', value: 'All' },
+                { label: isHindi ? 'पूरा स्कूल' : 'All School', value: 'All School' },
+                { label: isHindi ? 'केवल अभिभावक' : 'Parents Only', value: 'Parents' },
+                { label: isHindi ? 'केवल शिक्षक' : 'Teachers Only', value: 'Teachers' },
+                { label: isHindi ? 'कक्षा 9-12' : 'Classes 9-12', value: 'Classes 9-12' },
               ]}
               className="bg-[#1a1a1a] border-border h-9 text-xs"
             />
@@ -238,11 +239,11 @@ function NoticesPage() {
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[
-                { label: 'All Categories', value: 'All' },
-                { label: 'Academic Announcements', value: 'Academic' },
-                { label: 'Events & Functions', value: 'Event' },
-                { label: 'Holidays & Closures', value: 'Holiday' },
-                { label: 'Administrative Policies', value: 'Administrative' },
+                { label: isHindi ? 'सभी श्रेणियां' : 'All Categories', value: 'All' },
+                { label: isHindi ? 'शैक्षणिक घोषणाएं' : 'Academic Announcements', value: 'Academic' },
+                { label: isHindi ? 'कार्यक्रम व उत्सव' : 'Events & Functions', value: 'Event' },
+                { label: isHindi ? 'छुट्टियां व अवकाश' : 'Holidays & Closures', value: 'Holiday' },
+                { label: isHindi ? 'प्रशासनिक नीतियां' : 'Administrative Policies', value: 'Administrative' },
               ]}
               className="bg-[#1a1a1a] border-border h-9 text-xs"
             />
@@ -250,7 +251,7 @@ function NoticesPage() {
         </div>
 
         <span className="text-xs font-mono text-muted-foreground font-semibold">
-          {filteredNotices.length} Broadcasts Recorded
+          {filteredNotices.length} {isHindi ? 'नोटिस रिकॉर्डेड' : 'Broadcasts Recorded'}
         </span>
       </div>
 

@@ -587,7 +587,8 @@ const INITIAL_ROSTER: StudentAttendanceRecord[] = [
 
 function AttendancePage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.attendance') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 8-A');
   const [selectedDate] = React.useState<string>('2026-08-20');
@@ -770,7 +771,7 @@ function AttendancePage() {
   // Clean, perfectly proportioned table columns with standardized h-8 heights & rounded-md tokens
   const attendanceColumns = [
     {
-      header: 'Photo',
+      header: isHindi ? 'फोटो' : 'Photo',
       accessorKey: 'photo',
       headerClassName: 'w-16 text-center',
       className: 'w-16 text-center px-3',
@@ -780,7 +781,7 @@ function AttendancePage() {
           <div
             className="h-9 w-7.5 rounded overflow-hidden bg-muted border border-border shrink-0 shadow-2xs group cursor-pointer"
             onClick={() => openStudentDrawer(r)}
-            title="View Student Attendance Dossier"
+            title={isHindi ? "छात्र उपस्थिति प्रोफाइल देखें" : "View Student Attendance Dossier"}
           >
             {r.photoUrl ? (
               <img
@@ -815,7 +816,7 @@ function AttendancePage() {
       ),
     },
     {
-      header: 'Student Name & Admission ID',
+      header: isHindi ? 'छात्र का नाम व एडमिशन नं.' : 'Student Name & Admission ID',
       accessorKey: 'name',
       headerClassName: 'w-[45%] min-w-[320px]',
       className: 'w-[45%] min-w-[320px]',
@@ -824,7 +825,7 @@ function AttendancePage() {
           <div
             onClick={() => openStudentDrawer(r)}
             className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
-            title="Click to view Attendance & Leaves"
+            title={isHindi ? "उपस्थिति व छुट्टियां देखें" : "Click to view Attendance & Leaves"}
           >
             <img src={r.photoUrl} alt={r.name} className="w-full h-full object-cover" />
           </div>
@@ -931,7 +932,7 @@ function AttendancePage() {
             leftIcon={<Eye className="h-3.5 w-3.5" />}
             onClick={() => openStudentDrawer(r)}
           >
-            {t('attendance.title')}
+            {isHindi ? 'उपस्थिति देखें' : t('attendance.title')}
           </VFButton>
         </div>
       ),
@@ -943,7 +944,7 @@ function AttendancePage() {
       {/* 4 Actionable Attendance KPI Stat Cards (Fixed Top) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
         <VFStatCard
-          title="Attendance Rate"
+          title={isHindi ? 'उपस्थिति दर' : 'Attendance Rate'}
           value={`${attendanceRate}%`}
           description={`${presentCount} of ${studentRoster.length} Students Present`}
           icon={<UserCheck className="h-5 w-5" />}
@@ -951,7 +952,7 @@ function AttendancePage() {
           trendLabel="+1.8% vs last week"
         />
         <VFStatCard
-          title="Absentees"
+          title={isHindi ? 'अनुपस्थित छात्र' : 'Absentees'}
           value={`${absentCount} Absent`}
           description={absentCount > 0 ? `${absentCount} Pending Parent Alert` : 'All Present'}
           icon={<UserX className="h-5 w-5" />}
@@ -959,7 +960,7 @@ function AttendancePage() {
           trendLabel={absentCount > 0 ? `${absentCount} Absent` : 'Zero Absentees'}
         />
         <VFStatCard
-          title="Late Arrivals"
+          title={isHindi ? 'देर से आने वाले' : 'Late Arrivals'}
           value={`${lateCount} Late`}
           description="Recorded today"
           icon={<Clock className="h-5 w-5" />}
@@ -967,7 +968,7 @@ function AttendancePage() {
           trendLabel="Bus Route 4"
         />
         <VFStatCard
-          title="Approved Leaves"
+          title={isHindi ? 'स्वीकृत छुट्टियां' : 'Approved Leaves'}
           value={`${leaveCount} On Leave`}
           description={pendingLeaves > 0 ? `${pendingLeaves} Pending Review` : 'All Applications Reviewed'}
           icon={<FileCheck className="h-5 w-5" />}

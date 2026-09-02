@@ -266,7 +266,8 @@ const INITIAL_ROOM_LOAD: RoomLoad[] = [
 
 function TimetablePage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.timetable') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 9-A');
   const [classTeacher, setClassTeacher] = React.useState<string>('Mrs. Sunita Verma');
@@ -654,7 +655,7 @@ function TimetablePage() {
           {/* Header Row */}
           <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#242424] bg-[#121212] shrink-0">
             <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#242424] select-none flex items-center justify-center text-center">
-              Day / Time
+              {isHindi ? 'दिन / समय' : 'Day / Time'}
             </div>
             {classPeriods.map((p) => (
               <div
@@ -731,7 +732,7 @@ function TimetablePage() {
                             {slot.room}
                           </span>
                           <span className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground text-[11px] flex items-center gap-1 font-semibold transition-opacity shrink-0">
-                            <Pencil className="h-3 w-3" /> Edit
+                            <Pencil className="h-3 w-3" /> {t('action.edit')}
                           </span>
                         </div>
                       </div>

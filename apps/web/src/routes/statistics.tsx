@@ -38,7 +38,8 @@ export const Route = createFileRoute('/statistics')({
 
 function StatisticsPage() {
   const { activeSession, addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   useEffect(() => { document.title = t('page.statistics') + ' – VidyaFloww'; }, [t]);
 
   // ─── TAB 1: DEMOGRAPHICS & POPULATION ───────────────────────────────────────
@@ -55,7 +56,7 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title={t('teachers.totalStaff') + ' Ratio'}
+          title={isHindi ? 'शिक्षक-छात्र अनुपात' : (t('teachers.totalStaff') + ' Ratio')}
           value="18 : 1"
           icon={<School className="h-5 w-5" />}
           trend="neutral"
@@ -63,7 +64,7 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title={t('ui.class') + ' Divisions'}
+          title={isHindi ? 'कक्षा डिवीजन' : (t('ui.class') + ' Divisions')}
           value="16 Sections"
           icon={<Layers className="h-5 w-5" />}
           trend="neutral"
@@ -71,7 +72,7 @@ function StatisticsPage() {
           accentColor="blue"
         />
         <VFStatCard
-          title={t('ui.boys') + ' / ' + t('ui.girls') + ' Ratio'}
+          title={isHindi ? 'छात्र / छात्रा अनुपात' : (t('ui.boys') + ' / ' + t('ui.girls') + ' Ratio')}
           value="0.95"
           icon={<UserCheck className="h-5 w-5" />}
           trend="up"
@@ -81,7 +82,10 @@ function StatisticsPage() {
       </div>
 
       {/* Student Enrollment by Wing Pie Chart & Metric Tiles */}
-      <VFCard title={t('students.totalStudents') + ' by Wing'} description="Class tier strength distribution across 1,248 pupils">
+      <VFCard
+        title={isHindi ? 'विंग अनुसार कुल छात्र' : (t('students.totalStudents') + ' by Wing')}
+        description={isHindi ? '1,248 विद्यार्थियों का विंग अनुसार वितरण' : 'Class tier strength distribution across 1,248 pupils'}
+      >
         <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
           <div className="shrink-0" style={{ width: 180, height: 180 }}>
             <VFPieChart
@@ -96,10 +100,10 @@ function StatisticsPage() {
           </div>
           <div className="grid grid-cols-2 gap-3 w-full flex-1">
             {[
-              { title: 'Primary Wing', grade: 'Grades 1 – 5', count: '430', pct: '34.5%', dot: 'bg-blue-500' },
-              { title: 'Middle School', grade: 'Grades 6 – 8', count: '374', pct: '30.0%', dot: 'bg-blue-400' },
-              { title: 'High School', grade: 'Grades 9 – 10', count: '250', pct: '20.0%', dot: 'bg-blue-300' },
-              { title: 'Senior Secondary', grade: 'Grades 11 – 12', count: '194', pct: '15.5%', dot: 'bg-blue-200' },
+              { title: isHindi ? 'प्राइमरी विंग' : 'Primary Wing', grade: 'Grades 1 – 5', count: '430', pct: '34.5%', dot: 'bg-blue-500' },
+              { title: isHindi ? 'मिडिल स्कूल' : 'Middle School', grade: 'Grades 6 – 8', count: '374', pct: '30.0%', dot: 'bg-blue-400' },
+              { title: isHindi ? 'हाई स्कूल' : 'High School', grade: 'Grades 9 – 10', count: '250', pct: '20.0%', dot: 'bg-blue-300' },
+              { title: isHindi ? 'सीनियर सेकेंडरी' : 'Senior Secondary', grade: 'Grades 11 – 12', count: '194', pct: '15.5%', dot: 'bg-blue-200' },
             ].map((item, idx) => (
               <div key={idx} className="p-3 rounded-md border border-border/80 bg-card/60 space-y-1">
                 <div className="flex items-center gap-1.5">
@@ -120,7 +124,10 @@ function StatisticsPage() {
       {/* Demographic Matrix 3-Card Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Gender Distribution */}
-        <VFCard title={t('col.gender') + ' Distribution'} description="Current student population balance">
+        <VFCard
+          title={isHindi ? 'लिंग अनुसार वितरण' : (t('col.gender') + ' Distribution')}
+          description={isHindi ? 'वर्तमान छात्र जनसंख्या संतुलन' : 'Current student population balance'}
+        >
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">640 {t('ui.boys')} / 608 {t('ui.girls')}</p>
             <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex">
@@ -141,7 +148,10 @@ function StatisticsPage() {
         </VFCard>
 
         {/* Quota & Reserved Seats */}
-        <VFCard title={t('form.category') + ' & Reserved Seats'} description="Compliance with RTE standards">
+        <VFCard
+          title={isHindi ? 'कोटा व आरक्षित सीटें' : (t('form.category') + ' & Reserved Seats')}
+          description={isHindi ? 'RTE मानकों का अनुपालन' : 'Compliance with RTE standards'}
+        >
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">186 Students</p>
             <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
@@ -149,13 +159,16 @@ function StatisticsPage() {
             </div>
             <div className="flex items-center justify-between text-xs font-bold pt-1">
               <span className="text-emerald-400">15% RTE Quota</span>
-              <span className="text-muted-foreground">100% Fully Compliant</span>
+              <span className="text-muted-foreground">{isHindi ? '100% पूर्णतः अनुपालन' : '100% Fully Compliant'}</span>
             </div>
           </div>
         </VFCard>
 
         {/* House Allocations */}
-        <VFCard title="House Squad Allocations" description="Four competitive student squad balance">
+        <VFCard
+          title={isHindi ? 'हाउस स्क्वाड आवंटन' : 'House Squad Allocations'}
+          description={isHindi ? 'चार प्रतिस्पर्धी छात्र स्क्वाड संतुलन' : 'Four competitive student squad balance'}
+        >
           <div className="space-y-3 mt-1">
             <p className="text-2xl font-black text-foreground">4 Houses</p>
             <div className="grid grid-cols-2 gap-2">
@@ -177,7 +190,10 @@ function StatisticsPage() {
       </div>
 
       {/* Class-Wise Enrollment Breakdown */}
-      <VFCard title={t('ui.class') + '-Wise Enrollment'} description="Distribution across academic wings and sections">
+      <VFCard
+        title={isHindi ? 'कक्षावार नामांकन' : (t('ui.class') + '-Wise Enrollment')}
+        description={isHindi ? 'एकेडमिक विंग्स व सेक्शन्स में वितरण' : 'Distribution across academic wings and sections'}
+      >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-base pt-1">
           {[
             { grade: 'Class 9', total: '320 Students', sections: '4 Sections', standing: '96.2% Attendance', ratio: '80 / Section' },
@@ -642,35 +658,35 @@ function StatisticsPage() {
   const tabs = [
     {
       id: 'demographics',
-      label: t('students.totalStudents') + ' & Enrollment',
+      label: isHindi ? 'छात्र व नामांकन' : (t('students.totalStudents') + ' & Enrollment'),
       icon: <Users className="h-5 w-5" />,
-      badge: '1,248 Students',
+      badge: isHindi ? '1,248 छात्र' : '1,248 Students',
       content: demographicsContent,
     },
     {
       id: 'academics',
-      label: t('page.examinations') + ' Stats',
+      label: isHindi ? 'परीक्षा आंकड़े' : (t('page.examinations') + ' Stats'),
       icon: <GraduationCap className="h-5 w-5" />,
       badge: '98.6% Pass',
       content: academicsContent,
     },
     {
       id: 'attendance',
-      label: t('attendance.title') + ' & Operations',
+      label: isHindi ? 'उपस्थिति व संचालन' : (t('attendance.title') + ' & Operations'),
       icon: <CalendarCheck className="h-5 w-5" />,
       badge: '96.9% Avg',
       content: attendanceContent,
     },
     {
       id: 'transfers',
-      label: 'TC, Migration & Alumni',
+      label: isHindi ? 'टीसी, माइग्रेशन व एलुमनाई' : 'TC, Migration & Alumni',
       icon: <FileCheck2 className="h-5 w-5" />,
       badge: '142 TC',
       content: transfersContent,
     },
     {
       id: 'finance',
-      label: t('fees.title') + ' Analytics',
+      label: isHindi ? 'फीस एनालिटिक्स' : (t('fees.title') + ' Analytics'),
       icon: <CreditCard className="h-5 w-5" />,
       badge: '98.1% Paid',
       content: financeContent,

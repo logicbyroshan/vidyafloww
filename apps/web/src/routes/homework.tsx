@@ -47,7 +47,8 @@ const INITIAL_HOMEWORK: HomeworkRecord[] = [
 
 function HomeworkPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.homework') + ' \u2013 VidyaFloww'; }, [t]);
   const [homeworkList, setHomeworkList] = React.useState<HomeworkRecord[]>(INITIAL_HOMEWORK);
   const [classFilter, setClassFilter] = React.useState<string>('All');
@@ -95,7 +96,7 @@ function HomeworkPage() {
       status: 'Published',
     });
     addNotification({
-      title: 'Assignment Dispatched',
+      title: isHindi ? 'असाइनमेंट जारी किया गया' : 'Assignment Dispatched',
       description: `"${added.title}" assigned to ${added.class}. Notifications sent.`,
       type: 'success',
     });
@@ -103,7 +104,7 @@ function HomeworkPage() {
 
   const handleExportRoster = () => {
     addNotification({
-      title: 'Homework Exported',
+      title: isHindi ? 'होमवर्क एक्सपोर्ट किया गया' : 'Homework Exported',
       description: 'Exported homework assignment roster and submission log as CSV.',
       type: 'success',
     });
@@ -119,7 +120,7 @@ function HomeworkPage() {
 
   const homeworkColumns = [
     {
-      header: 'Code',
+      header: isHindi ? 'कोड' : 'Code',
       accessorKey: 'code',
       cell: (r: HomeworkRecord) => (
         <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
@@ -128,7 +129,7 @@ function HomeworkPage() {
       ),
     },
     {
-      header: 'Assignment Title & Subject',
+      header: isHindi ? 'असाइनमेंट शीर्षक व विषय' : 'Assignment Title & Subject',
       accessorKey: 'title',
       cell: (r: HomeworkRecord) => (
         <div>
@@ -138,17 +139,17 @@ function HomeworkPage() {
       ),
     },
     {
-      header: 'Assigned Class',
+      header: isHindi ? 'कक्षा' : 'Assigned Class',
       accessorKey: 'class',
       cell: (r: HomeworkRecord) => <span className="font-bold text-foreground text-xs">{r.class}</span>,
     },
     {
-      header: 'Due Deadline',
+      header: isHindi ? 'अंतिम तिथि' : 'Due Deadline',
       accessorKey: 'dueDate',
       cell: (r: HomeworkRecord) => <span className="text-muted-foreground text-xs font-semibold">{r.dueDate}</span>,
     },
     {
-      header: 'Turned In Ratio',
+      header: isHindi ? 'सबमिशन अनुपात' : 'Turned In Ratio',
       accessorKey: 'submitted',
       cell: (r: HomeworkRecord) => {
         const pct = Math.round((r.submitted / r.totalStudents) * 100);
@@ -170,7 +171,7 @@ function HomeworkPage() {
       accessorKey: 'status',
       cell: (r: HomeworkRecord) => (
         <VFBadge variant={r.status === 'Published' ? 'success' : r.status === 'Draft' ? 'warning' : 'outline'}>
-          {r.status}
+          {r.status === 'Published' ? (isHindi ? 'प्रकाशित' : r.status) : r.status === 'Draft' ? (isHindi ? 'ड्राफ्ट' : r.status) : (isHindi ? 'समाप्त' : r.status)}
         </VFBadge>
       ),
     },
@@ -184,7 +185,7 @@ function HomeworkPage() {
           leftIcon={<Eye className="h-3.5 w-3.5" />}
           onClick={() => setSelectedHomework(r)}
         >
-          Submissions
+          {isHindi ? 'सबमिशन देखें' : 'Submissions'}
         </VFButton>
       ),
     },
@@ -202,7 +203,7 @@ function HomeworkPage() {
             {t('page.homework')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-            Term 1 Active
+            {isHindi ? 'टर्म 1 एक्टिव' : 'Term 1 Active'}
           </VFBadge>
         </div>
 
@@ -214,7 +215,7 @@ function HomeworkPage() {
             className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
             leftIcon={<Download className="h-3.5 w-3.5" />}
           >
-            Export Archive
+            {isHindi ? 'आर्काइव एक्सपोर्ट करें' : 'Export Archive'}
           </VFButton>
           <VFButton
             size="sm"

@@ -571,7 +571,8 @@ export const Route = createFileRoute('/students')({
 function StudentsPage() {
   const navigate = useNavigate();
   const { activeSession, addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.students') + ' \u2013 VidyaFloww'; }, [t]);
   const [selectedStudentIndex, setSelectedStudentIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -1467,14 +1468,14 @@ function StudentsPage() {
   // Main Students Master Table Columns
   const enrolledStudentColumns = [
     {
-      header: 'Photo',
+      header: isHindi ? 'फोटो' : 'Photo',
       accessorKey: 'photo',
       cell: (r: any) => (
         <div className="flex items-center justify-start">
           <div
             onClick={() => openStudentDrawer(r)}
             className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
-            title="Click to view 360° student profile"
+            title={isHindi ? "360° छात्र प्रोफाइल देखें" : "Click to view 360° student profile"}
           >
             <img
               src={r.avatarUrl}
@@ -1546,7 +1547,7 @@ function StudentsPage() {
       ),
     },
     {
-      header: 'Guardian Phone',
+      header: isHindi ? 'अभिभावक फोन' : 'Guardian Phone',
       accessorKey: 'phone',
       cell: (r: any) => <span className="text-muted-foreground font-mono text-sm">{r.phone}</span>,
     },
@@ -1555,7 +1556,7 @@ function StudentsPage() {
       accessorKey: 'status',
       cell: (r: any) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : 'outline'}>
-          {r.status}
+          {r.status === 'Active' ? (isHindi ? 'सक्रिय' : r.status) : r.status}
         </VFBadge>
       ),
     },

@@ -81,7 +81,8 @@ const STATUS_OPTIONS = [
 
 function AuditLogPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.audit') + ' \u2013 VidyaFloww'; }, [t]);
 
   // Filters State
@@ -224,7 +225,7 @@ function AuditLogPage() {
             <VFInput
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search logs by actor, action, target, IP, or event ID..."
+              placeholder={isHindi ? "एक्टर, एक्शन, टारगेट, आईपी या इवेंट आईडी से खोजें..." : "Search logs by actor, action, target, IP, or event ID..."}
               leftIcon={<Search className="h-4 w-4" />}
               className="bg-[#1a1a1a] border-border h-9 text-xs"
             />
@@ -269,7 +270,7 @@ function AuditLogPage() {
             className="h-9 px-3 text-xs bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground shrink-0"
             leftIcon={<RotateCcw className="h-3 w-3" />}
           >
-            Reset Filters
+            {isHindi ? 'फ़िल्टर रीसेट करें' : 'Reset Filters'}
           </VFButton>
         )}
       </div>
@@ -279,14 +280,14 @@ function AuditLogPage() {
         <VFTable className="rounded-none border-0 h-full">
           <VFTableHead className="bg-[#1a1a1a]">
             <VFTableRow>
-              <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">Event ID</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Timestamp</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Actor Details</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Role Tier</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Action Performed</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">Target Scope</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground font-mono">Client IP</VFTableHeaderCell>
-              <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground text-right">Status</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">{isHindi ? 'इवेंट आईडी' : 'Event ID'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'समय व तारीख' : 'Timestamp'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'उपयोगकर्ता' : 'Actor Details'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'रोल' : 'Role Tier'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'कार्रवाई' : 'Action Performed'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'टारगेट मॉड्यूल' : 'Target Scope'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground font-mono">{isHindi ? 'क्लाइंट आईपी' : 'Client IP'}</VFTableHeaderCell>
+              <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground text-right">{t('col.status')}</VFTableHeaderCell>
             </VFTableRow>
           </VFTableHead>
           <VFTableBody>
@@ -309,7 +310,7 @@ function AuditLogPage() {
                       variant={log.status === 'Success' ? 'success' : log.status === 'Blocked' ? 'danger' : 'warning'}
                       className="text-[10px] font-bold"
                     >
-                      {log.status}
+                      {log.status === 'Success' ? (isHindi ? 'सफल' : 'Success') : log.status === 'Blocked' ? (isHindi ? 'ब्लॉक' : 'Blocked') : log.status}
                     </VFBadge>
                   </VFTableCell>
                 </VFTableRow>
@@ -317,7 +318,7 @@ function AuditLogPage() {
             ) : (
               <VFTableRow>
                 <VFTableCell colSpan={8} className="text-center py-12 text-muted-foreground font-semibold">
-                  No security audit events matching current filter criteria.
+                  {isHindi ? 'वर्तमान फ़िल्टर से मेल खाता कोई सुरक्षा ऑडिट इवेंट नहीं मिला।' : 'No security audit events matching current filter criteria.'}
                 </VFTableCell>
               </VFTableRow>
             )}

@@ -49,7 +49,8 @@ const INITIAL_SUBJECTS: SubjectRecord[] = [
 
 function AcademicsPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.academics') + ' \u2013 VidyaFloww'; }, [t]);
   const [activeView, setActiveView] = React.useState<'subjects' | 'classes' | 'calendar'>('subjects');
   const [subjects, setSubjects] = React.useState<SubjectRecord[]>(INITIAL_SUBJECTS);
@@ -91,7 +92,7 @@ function AcademicsPage() {
       status: 'Active',
     });
     addNotification({
-      title: 'Subject Added',
+      title: isHindi ? 'विषय जोड़ा गया' : 'Subject Added',
       description: `Course "${added.name}" [${added.code}] registered in the academic catalog.`,
       type: 'success',
     });
@@ -99,7 +100,7 @@ function AcademicsPage() {
 
   const handleExportCatalog = () => {
     addNotification({
-      title: 'Academic Catalog Exported',
+      title: isHindi ? 'अकादमिक कैटलॉग एक्सपोर्ट किया गया' : 'Academic Catalog Exported',
       description: 'Exported CBSE academic subject master roster as CSV.',
       type: 'success',
     });
@@ -112,7 +113,7 @@ function AcademicsPage() {
 
   const subjectColumns = [
     {
-      header: 'Subject Code',
+      header: isHindi ? 'विषय कोड' : 'Subject Code',
       accessorKey: 'code',
       cell: (r: SubjectRecord) => (
         <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
@@ -121,7 +122,7 @@ function AcademicsPage() {
       ),
     },
     {
-      header: 'Subject Name & Title',
+      header: isHindi ? 'विषय नाम व शीर्षक' : 'Subject Name & Title',
       accessorKey: 'name',
       cell: (r: SubjectRecord) => (
         <div>
@@ -131,24 +132,24 @@ function AcademicsPage() {
       ),
     },
     {
-      header: 'Curriculum Tier',
+      header: isHindi ? 'पाठ्यक्रम प्रकार' : 'Curriculum Tier',
       accessorKey: 'type',
       cell: (r: SubjectRecord) => <VFBadge variant="outline">{r.type}</VFBadge>,
     },
     {
-      header: 'Assigned Grades',
+      header: isHindi ? 'संबंधित कक्षाएं' : 'Assigned Grades',
       accessorKey: 'classes',
       cell: (r: SubjectRecord) => <span className="text-foreground text-xs font-semibold">{r.classes}</span>,
     },
     {
-      header: 'Weekly Periods',
+      header: isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods',
       accessorKey: 'weeklyPeriods',
-      cell: (r: SubjectRecord) => <span className="font-mono font-bold text-primary text-xs">{r.weeklyPeriods} Periods/wk</span>,
+      cell: (r: SubjectRecord) => <span className="font-mono font-bold text-primary text-xs">{r.weeklyPeriods} {isHindi ? 'पीरियड्स/सप्ताह' : 'Periods/wk'}</span>,
     },
     {
       header: t('col.status'),
       accessorKey: 'status',
-      cell: (r: SubjectRecord) => <VFBadge variant="success">{r.status}</VFBadge>,
+      cell: (r: SubjectRecord) => <VFBadge variant="success">{isHindi ? 'एक्टिव' : r.status}</VFBadge>,
     },
   ];
 
@@ -241,18 +242,18 @@ function AcademicsPage() {
           <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex items-center justify-between gap-3 shrink-0 shadow-xs">
             <div className="flex items-center gap-3 flex-1">
               <span className="text-xs font-extrabold text-foreground uppercase tracking-wider whitespace-nowrap">
-                Filter Department:
+                {isHindi ? 'विभाग चुनें:' : 'Filter Department:'}
               </span>
               <div className="w-64">
                 <VFSelect
                   value={departmentFilter}
                   onChange={(e) => setDepartmentFilter(String(e.target.value))}
                   options={[
-                    { label: 'All Departments', value: 'All' },
-                    { label: 'Science & Mathematics', value: 'Science & Mathematics' },
-                    { label: 'Humanities & Languages', value: 'Humanities & Languages' },
-                    { label: 'Commerce & Economics', value: 'Commerce & Economics' },
-                    { label: 'Technology & CS', value: 'Technology & CS' },
+                    { label: isHindi ? 'सभी विभाग' : 'All Departments', value: 'All' },
+                    { label: isHindi ? 'विज्ञान व गणित' : 'Science & Mathematics', value: 'Science & Mathematics' },
+                    { label: isHindi ? 'मानविकी व भाषाएं' : 'Humanities & Languages', value: 'Humanities & Languages' },
+                    { label: isHindi ? 'कॉमर्स व अर्थशास्त्र' : 'Commerce & Economics', value: 'Commerce & Economics' },
+                    { label: isHindi ? 'तकनीक व कंप्यूटर' : 'Technology & CS', value: 'Technology & CS' },
                   ]}
                   className="bg-[#1a1a1a] border-border h-9 text-xs"
                 />
@@ -260,7 +261,7 @@ function AcademicsPage() {
             </div>
 
             <span className="text-xs font-mono text-muted-foreground font-semibold">
-              {filteredSubjects.length} Courses Listed
+              {filteredSubjects.length} {isHindi ? 'विषय सूचीबद्ध' : 'Courses Listed'}
             </span>
           </div>
 

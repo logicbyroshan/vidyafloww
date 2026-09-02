@@ -24,7 +24,8 @@ export const Route = createFileRoute('/learning')({
 });
 
 function LearningPage() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const [lessonTopic, setLessonTopic] = React.useState('');
   const [generatedPlan, setGeneratedPlan] = React.useState<string | null>(null);
 
@@ -53,12 +54,12 @@ function LearningPage() {
 
   const classColumns = [
     {
-      header: 'Class Code',
+      header: isHindi ? 'क्लास कोड' : 'Class Code',
       accessorKey: 'code',
       cell: (r: any) => <span className="font-mono font-bold text-primary text-base">{r.code}</span>,
     },
     {
-      header: 'Grade & Section',
+      header: isHindi ? 'कक्षा व सेक्शन' : 'Grade & Section',
       accessorKey: 'class',
       cell: (r: any) => <span className="font-extrabold text-foreground text-base">{r.class} - {r.section}</span>,
     },
@@ -68,19 +69,19 @@ function LearningPage() {
       cell: (r: any) => <span className="font-bold text-foreground text-base">{r.subject}</span>,
     },
     {
-      header: 'Students',
+      header: isHindi ? 'छात्र' : 'Students',
       accessorKey: 'totalStudents',
-      cell: (r: any) => <span className="font-black text-foreground text-base">{r.totalStudents} Students</span>,
+      cell: (r: any) => <span className="font-black text-foreground text-base">{r.totalStudents} {isHindi ? 'छात्र' : 'Students'}</span>,
     },
     {
-      header: 'Avg Attendance',
+      header: isHindi ? 'औसत उपस्थिति' : 'Avg Attendance',
       accessorKey: 'avgAtt',
       cell: (r: any) => <span className="font-black text-success text-base">{r.avgAtt}</span>,
     },
     {
       header: t('col.status'),
       accessorKey: 'status',
-      cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge>,
+      cell: (r: any) => <VFBadge variant="success">{r.status === 'Active' ? (isHindi ? 'सक्रिय' : r.status) : r.status}</VFBadge>,
     },
   ];
 
@@ -89,28 +90,28 @@ function LearningPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <VFStatCard
-          title="Assigned Classes"
+          title={isHindi ? 'असाइंड कक्षाएं' : 'Assigned Classes'}
           value="4 Sections"
           icon={<Users className="h-5 w-5" />}
           trend="up"
-          trendLabel="156 Total Students"
+          trendLabel={isHindi ? 'कुल 156 छात्र' : '156 Total Students'}
         />
         <VFStatCard
-          title="Weekly Periods"
+          title={isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods'}
           value="24 Periods"
           icon={<Clock className="h-5 w-5" />}
           trend="neutral"
           trendLabel="45-min slots"
         />
         <VFStatCard
-          title="Syllabus Pacing"
+          title={isHindi ? 'सिलेबस गति' : 'Syllabus Pacing'}
           value="68.4%"
           icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
-          trendLabel="Ahead of schedule"
+          trendLabel={isHindi ? 'शेड्यूल से आगे' : 'Ahead of schedule'}
         />
         <VFStatCard
-          title="Average Class GPA"
+          title={isHindi ? 'औसत क्लास GPA' : 'Average Class GPA'}
           value="3.84 / 4.0"
           icon={<Award className="h-5 w-5" />}
           trend="up"
@@ -120,13 +121,17 @@ function LearningPage() {
 
       <div className="space-y-4">
         <div>
-          <h2 className="text-lg font-black text-foreground tracking-tight">Teacher Assigned Classes</h2>
-          <p className="text-sm text-muted-foreground font-medium">Active sections and student attendance tracking</p>
+          <h2 className="text-lg font-black text-foreground tracking-tight">
+            {isHindi ? 'शिक्षक को असाइंड कक्षाएं' : 'Teacher Assigned Classes'}
+          </h2>
+          <p className="text-sm text-muted-foreground font-medium">
+            {isHindi ? 'सक्रिय सेक्शन्स व छात्र उपस्थिति ट्रैकिंग' : 'Active sections and student attendance tracking'}
+          </p>
         </div>
         <VFDataTable
           columns={classColumns}
           data={classData}
-          filterPlaceholder="Search class or subject..."
+          filterPlaceholder={isHindi ? 'कक्षा या विषय खोजें...' : 'Search class or subject...'}
         />
       </div>
     </div>
@@ -135,18 +140,21 @@ function LearningPage() {
   // 2. Lesson Planner View
   const plannerContent = (
     <div className="space-y-6">
-      <VFCard title="Interactive Lesson Plan Generator" description="Create structured 45-minute lesson timelines in seconds">
+      <VFCard
+        title={isHindi ? 'इंटरैक्टिव पाठ योजना जनरेटर' : 'Interactive Lesson Plan Generator'}
+        description={isHindi ? 'सेकंडों में 45 मिनट की संरचित पाठ योजना बनाएं' : 'Create structured 45-minute lesson timelines in seconds'}
+      >
         <form onSubmit={handleGenerateLessonPlan} className="space-y-4 mt-1">
           <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="text"
               value={lessonTopic}
               onChange={(e) => setLessonTopic(e.target.value)}
-              placeholder="Enter topic name (e.g. Electromagnetic Induction, Quadratic Equations)..."
+              placeholder={isHindi ? 'विषय का नाम दर्ज करें (उदा. विद्युत प्रेरण, द्विघात समीकरण)...' : 'Enter topic name (e.g. Electromagnetic Induction, Quadratic Equations)...'}
               className="flex-1 px-4 py-2.5 text-base border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 font-medium h-11"
             />
             <VFButton type="submit" size="sm" leftIcon={<Sparkles className="h-4 w-4" />}>
-              Generate Plan
+              {isHindi ? 'योजना बनाएं' : 'Generate Plan'}
             </VFButton>
           </div>
 
@@ -165,12 +173,15 @@ function LearningPage() {
   // 3. Syllabus Tracker View
   const syllabusContent = (
     <div className="space-y-6">
-      <VFCard title="Curriculum Syllabus Pacing" description="Term-wise chapter completion status">
+      <VFCard
+        title={isHindi ? 'पाठ्यक्रम सिलेबस प्रगति' : 'Curriculum Syllabus Pacing'}
+        description={isHindi ? 'टर्म अनुसार अध्याय पूर्ण स्थिति' : 'Term-wise chapter completion status'}
+      >
         <div className="space-y-4 mt-1">
           {[
-            { subject: 'Class 9 Mathematics', chapters: '9 of 14 Chapters Completed', progress: 64 },
-            { subject: 'Class 10 Physics', chapters: '11 of 15 Chapters Completed', progress: 73 },
-            { subject: 'Class 11 Advanced Physics', chapters: '8 of 12 Chapters Completed', progress: 66 },
+            { subject: 'Class 9 Mathematics', chapters: isHindi ? '14 में से 9 अध्याय पूरे' : '9 of 14 Chapters Completed', progress: 64 },
+            { subject: 'Class 10 Physics', chapters: isHindi ? '15 में से 11 अध्याय पूरे' : '11 of 15 Chapters Completed', progress: 73 },
+            { subject: 'Class 11 Advanced Physics', chapters: isHindi ? '12 में से 8 अध्याय पूरे' : '8 of 12 Chapters Completed', progress: 66 },
           ].map((s, i) => (
             <div key={i} className="space-y-1.5 text-base">
               <div className="flex justify-between font-bold">
@@ -188,9 +199,9 @@ function LearningPage() {
   );
 
   const tabs = [
-    { id: 'classes', label: 'My Classes & Dashboard', icon: <Users className="h-4 w-4" />, content: classesContent },
-    { id: 'planner', label: 'Lesson Planner', icon: <Sparkles className="h-4 w-4" />, content: plannerContent },
-    { id: 'syllabus', label: 'Syllabus Tracker', icon: <BookOpen className="h-4 w-4" />, content: syllabusContent },
+    { id: 'classes', label: isHindi ? 'मेरी कक्षाएं व डैशबोर्ड' : 'My Classes & Dashboard', icon: <Users className="h-4 w-4" />, content: classesContent },
+    { id: 'planner', label: isHindi ? 'लेसन प्लानर' : 'Lesson Planner', icon: <Sparkles className="h-4 w-4" />, content: plannerContent },
+    { id: 'syllabus', label: isHindi ? 'सिलेबस ट्रैकर' : 'Syllabus Tracker', icon: <BookOpen className="h-4 w-4" />, content: syllabusContent },
   ];
 
   return (
@@ -205,7 +216,7 @@ function LearningPage() {
             {t('nav.teachers')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-            NEP 2020 Aligned
+            {isHindi ? 'NEP 2020 संरेखित' : 'NEP 2020 Aligned'}
           </VFBadge>
         </div>
 
@@ -216,7 +227,7 @@ function LearningPage() {
             leftIcon={<Sparkles className="h-3.5 w-3.5" />}
             onClick={() => setGeneratedPlan('Auto-generating interactive lesson plan...')}
           >
-            AI Lesson Plan
+            {isHindi ? 'AI पाठ योजना' : 'AI Lesson Plan'}
           </VFButton>
         </div>
       </div>

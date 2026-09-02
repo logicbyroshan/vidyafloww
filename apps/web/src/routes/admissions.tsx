@@ -665,7 +665,8 @@ const INITIAL_APPLICANTS: Applicant[] = [
 
 function AdmissionsPage() {
   const { activeSession, addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.admissions') + ' \u2013 VidyaFloww'; }, [t]);
   const [applicantList, setApplicantList] = React.useState<Applicant[]>(INITIAL_APPLICANTS);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = React.useState<number | null>(null);
@@ -1161,14 +1162,14 @@ function AdmissionsPage() {
 
   const applicantColumns = [
     {
-      header: 'Photo',
+      header: isHindi ? 'फोटो' : 'Photo',
       accessorKey: 'photo',
       cell: (r: Applicant) => (
         <div className="flex items-center justify-start">
           <div
             onClick={() => openApplicantDrawer(r)}
             className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
-            title="Click to view 360° Candidate Dossier"
+            title={isHindi ? "उम्मीदवार प्रोफाइल देखें" : "Click to view 360° Candidate Dossier"}
           >
             <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover" />
           </div>
@@ -1176,7 +1177,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Applicant ID',
+      header: isHindi ? 'आवेदन आईडी' : 'Applicant ID',
       accessorKey: 'applicantId',
       cell: (r: Applicant) => (
         <span className="font-mono font-bold text-foreground bg-muted/60 px-2.5 py-1 rounded-md border border-border">
@@ -1185,7 +1186,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Candidate Name',
+      header: isHindi ? 'उम्मीदवार का नाम' : 'Candidate Name',
       accessorKey: 'name',
       cell: (r: Applicant) => (
         <div>
@@ -1200,7 +1201,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Applied Grade',
+      header: isHindi ? 'कक्षा' : 'Applied Grade',
       accessorKey: 'appliedGrade',
       cell: (r: Applicant) => (
         <div>
@@ -1212,7 +1213,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Guardian / Contact',
+      header: isHindi ? 'अभिभावक / संपर्क' : 'Guardian / Contact',
       accessorKey: 'phone',
       cell: (r: Applicant) => (
         <div>
@@ -1222,7 +1223,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Merit Score',
+      header: isHindi ? 'मेरिट स्कोर' : 'Merit Score',
       accessorKey: 'fitScore',
       cell: (r: Applicant) => (
         <div className="flex items-center gap-2">
@@ -1240,20 +1241,20 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: 'Doc Verification',
+      header: isHindi ? 'दस्तावेज़ सत्यापन' : 'Doc Verification',
       accessorKey: 'ocrDocStatus',
       cell: (r: Applicant) => (
         <VFBadge variant={r.ocrDocStatus === 'Verified' ? 'success' : r.ocrDocStatus === 'Flagged' ? 'danger' : 'warning'}>
-          {r.ocrDocStatus}
+          {r.ocrDocStatus === 'Verified' ? (isHindi ? 'वेरिफाइड' : 'Verified') : r.ocrDocStatus === 'Flagged' ? (isHindi ? 'फ्लैग्ड' : 'Flagged') : (isHindi ? 'पेंडिंग' : 'Pending')}
         </VFBadge>
       ),
     },
     {
-      header: 'Stage',
+      header: isHindi ? 'चरण' : 'Stage',
       accessorKey: 'stage',
       cell: (r: Applicant) => (
         <VFBadge variant={r.stage === 'Approved' ? 'success' : r.stage === 'Interview' ? 'warning' : 'outline'}>
-          {r.stage}
+          {r.stage === 'Approved' ? (isHindi ? 'एप्रूव्ड' : 'Approved') : r.stage === 'Interview' ? (isHindi ? 'इंटरव्यू' : 'Interview') : (isHindi ? 'जमा हुआ' : r.stage)}
         </VFBadge>
       ),
     },
@@ -1267,7 +1268,7 @@ function AdmissionsPage() {
           leftIcon={<Eye className="h-4 w-4" />}
           onClick={() => openApplicantDrawer(r)}
         >
-          Review Application
+          {isHindi ? 'आवेदन जांचें' : 'Review Application'}
         </VFButton>
       ),
     },

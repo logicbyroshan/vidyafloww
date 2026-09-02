@@ -415,7 +415,8 @@ const INITIAL_SALARY_DATA: StaffSalaryRecord[] = [
 
 function SalaryPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.salary') + ' \u2013 VidyaFloww'; }, [t]);
   const [salaries, setSalaries] = React.useState<StaffSalaryRecord[]>(INITIAL_SALARY_DATA);
   const [statusFilter, setStatusFilter] = React.useState<string>('all');
@@ -625,7 +626,7 @@ function SalaryPage() {
   // Clean, uncluttered columns with simple terms
   const columns = [
     {
-      header: 'Staff & Role',
+      header: isHindi ? 'स्टाफ व पद' : 'Staff & Role',
       accessorKey: 'staffName',
       cell: (r: StaffSalaryRecord) => (
         <div className="flex items-center gap-3">
@@ -646,7 +647,7 @@ function SalaryPage() {
       ),
     },
     {
-      header: 'Pay Cycle',
+      header: isHindi ? 'पे साइकिल' : 'Pay Cycle',
       accessorKey: 'paySchedule',
       cell: (r: StaffSalaryRecord) => (
         <div className="space-y-0.5">
@@ -654,13 +655,13 @@ function SalaryPage() {
             <span className="font-bold text-foreground">{r.paySchedule}</span>
           </div>
           <p className="text-[10px] text-muted-foreground font-mono">
-            Next: <span className="text-zinc-300 font-semibold">{r.nextPayDate}</span>
+            {isHindi ? 'अगली:' : 'Next:'} <span className="text-zinc-300 font-semibold">{r.nextPayDate}</span>
           </p>
         </div>
       ),
     },
     {
-      header: 'Base Pay',
+      header: isHindi ? 'मूल वेतन' : 'Base Pay',
       accessorKey: 'basicPay',
       cell: (r: StaffSalaryRecord) => (
         <span className="font-mono font-bold text-foreground text-xs">
@@ -669,7 +670,7 @@ function SalaryPage() {
       ),
     },
     {
-      header: 'Allowances',
+      header: isHindi ? 'भत्ते' : 'Allowances',
       accessorKey: 'allowances',
       cell: (r: StaffSalaryRecord) => (
         <span className="font-mono font-semibold text-emerald-400 text-xs">
@@ -678,7 +679,7 @@ function SalaryPage() {
       ),
     },
     {
-      header: 'Net Salary',
+      header: isHindi ? 'नेट सैलरी' : 'Net Salary',
       accessorKey: 'netSalary',
       cell: (r: StaffSalaryRecord) => (
         <div className="flex items-center gap-2">
@@ -687,7 +688,7 @@ function SalaryPage() {
           </span>
           {r.advanceSalary && r.advanceSalary.remainingBalance > 0 && (
             <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30" title="Active Advance Loan">
-              Adv: ₹{r.advanceSalary.remainingBalance.toLocaleString('en-IN')}
+              {isHindi ? 'अग्रिम:' : 'Adv:'} ₹{r.advanceSalary.remainingBalance.toLocaleString('en-IN')}
             </span>
           )}
         </div>
@@ -698,7 +699,7 @@ function SalaryPage() {
       accessorKey: 'status',
       cell: (r: StaffSalaryRecord) => (
         <VFBadge variant={r.status === 'Disbursed' ? 'success' : 'warning'} className="rounded-md">
-          {r.status}
+          {r.status === 'Disbursed' ? (isHindi ? 'वितरित' : 'Disbursed') : (isHindi ? 'लंबित' : r.status)}
         </VFBadge>
       ),
     },
@@ -714,7 +715,7 @@ function SalaryPage() {
               leftIcon={<CreditCard className="h-3.5 w-3.5" />}
               onClick={() => openSlipDrawer(r, 'pay')}
             >
-              Pay Now
+              {t('action.payNow')}
             </VFButton>
           ) : (
             <VFButton
@@ -724,14 +725,14 @@ function SalaryPage() {
               leftIcon={<Receipt className="h-3.5 w-3.5 text-zinc-400" />}
               onClick={() => openSlipDrawer(r, 'history')}
             >
-              Slips ({r.history.length})
+              {isHindi ? 'स्लिप्स' : 'Slips'} ({r.history.length})
             </VFButton>
           )}
           <button
             type="button"
-            title="Send WhatsApp Disbursal Intimation"
+            title={isHindi ? "व्हाट्सएप वेतन सूचना भेजें" : "Send WhatsApp Disbursal Intimation"}
             onClick={() => handleSendIndividualAlert(r)}
-            className="h-8 w-8 rounded-md bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors"
+            className="h-8 w-8 rounded-md bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors cursor-pointer"
           >
             <Send className="h-3.5 w-3.5" />
           </button>

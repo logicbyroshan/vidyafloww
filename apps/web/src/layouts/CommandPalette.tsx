@@ -28,6 +28,7 @@ import {
   School,
 } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from '../hooks/useTranslation';
 
 const ICON_MAP: Record<string, any> = {
   LayoutDashboard,
@@ -52,6 +53,8 @@ const ICON_MAP: Record<string, any> = {
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const navigate = useNavigate();
+  const { lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const [search, setSearch] = React.useState('');
   const [activeCategory, setActiveCategory] = React.useState<'all' | 'modules' | 'actions'>('all');
 
@@ -209,7 +212,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                 value={search}
                 onValueChange={setSearch}
                 className="flex-1 h-9 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
-                placeholder="Search students, faculty, ERP modules, actions, shortcuts..."
+                placeholder={isHindi ? "छात्र, शिक्षक, ERP मॉड्यूल, कार्य या शॉर्टकट खोजें..." : "Search students, faculty, ERP modules, actions, shortcuts..."}
                 autoFocus
               />
 
@@ -219,7 +222,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                   onClick={() => setSearch('')}
                   className="text-xs text-muted-foreground hover:text-foreground px-1.5 py-0.5 rounded bg-muted/40 cursor-pointer"
                 >
-                  Clear
+                  {isHindi ? 'हटाएं' : 'Clear'}
                 </button>
               )}
 
@@ -236,7 +239,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                         : 'text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a]'
                     }`}
                   >
-                    {cat === 'all' ? 'All' : cat === 'modules' ? 'Modules' : 'Actions'}
+                    {cat === 'all' ? (isHindi ? 'सभी' : 'All') : cat === 'modules' ? (isHindi ? 'मॉड्यूल' : 'Modules') : (isHindi ? 'एक्शन' : 'Actions')}
                   </button>
                 ))}
               </div>
@@ -246,7 +249,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                 type="button"
                 onClick={onClose}
                 className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors shrink-0 ml-1 cursor-pointer"
-                title="Close search (Esc)"
+                title={isHindi ? "बंद करें (Esc)" : "Close search (Esc)"}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -256,12 +259,12 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             <Command.List className="max-h-[380px] overflow-y-auto p-3 space-y-1 custom-scrollbar">
               <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1.5">
                 <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-                <p className="font-bold text-foreground text-sm">No matching results found</p>
-                <p className="text-xs text-muted-foreground">Try searching for "Students", "Attendance", "Teachers", "Reports" or "Settings"</p>
+                <p className="font-bold text-foreground text-sm">{isHindi ? "कोई परिणाम नहीं मिला" : "No matching results found"}</p>
+                <p className="text-xs text-muted-foreground">{isHindi ? "छात्र, उपस्थिति, शिक्षक, रिपोर्ट या सेटिंग्स खोज कर देखें" : 'Try searching for "Students", "Attendance", "Teachers", "Reports" or "Settings"'}</p>
               </Command.Empty>
 
               <Command.Group
-                heading={activeCategory === 'all' ? 'Quick Navigation & ERP Actions' : activeCategory === 'modules' ? 'ERP Modules' : 'Institutional Actions'}
+                heading={activeCategory === 'all' ? (isHindi ? 'त्वरित नेविगेशन व कार्य' : 'Quick Navigation & ERP Actions') : activeCategory === 'modules' ? (isHindi ? 'ERP मॉड्यूल' : 'ERP Modules') : (isHindi ? 'संस्थागत कार्य' : 'Institutional Actions')}
                 className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-extrabold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest"
               >
                 {filteredCommands.map((cmd) => {
@@ -299,18 +302,18 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             <div className="px-5 py-2.5 bg-[#121212] border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1.5 text-[11px]">
-                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">↑↓</kbd> Navigate
+                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">↑↓</kbd> {isHindi ? 'नेविगेट' : 'Navigate'}
                 </span>
                 <span className="flex items-center gap-1.5 text-[11px]">
-                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">↵</kbd> Open
+                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">↵</kbd> {isHindi ? 'खोलें' : 'Open'}
                 </span>
                 <span className="flex items-center gap-1.5 text-[11px]">
-                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">Esc</kbd> Close Drawer
+                  <kbd className="px-1.5 py-0.5 rounded bg-[#1c1c1c] border border-border font-mono text-[10px] font-bold text-foreground">Esc</kbd> {isHindi ? 'बंद करें' : 'Close Drawer'}
                 </span>
               </div>
 
               <span className="text-[11px] font-semibold text-muted-foreground hidden sm:inline">
-                Press <kbd className="px-1 py-0.2 bg-[#1c1c1c] border border-border rounded font-mono text-[10px] text-foreground">⌘K</kbd> anytime
+                {isHindi ? 'कभी भी ' : 'Press '}<kbd className="px-1 py-0.2 bg-[#1c1c1c] border border-border rounded font-mono text-[10px] text-foreground">Ctrl+K</kbd>{isHindi ? ' दबाएं' : ' anytime'}
               </span>
             </div>
           </Command>

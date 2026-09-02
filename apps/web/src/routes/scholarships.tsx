@@ -373,7 +373,8 @@ const INITIAL_SCHOLARSHIPS: ScholarshipRecord[] = [
 function ScholarshipsPage() {
   const navigate = useNavigate();
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.scholarships') + ' \u2013 VidyaFloww'; }, [t]);
   const [scholarships, setScholarships] = React.useState<ScholarshipRecord[]>(INITIAL_SCHOLARSHIPS);
   const [categoryFilter, setCategoryFilter] = React.useState<string>('all');
@@ -556,7 +557,7 @@ function ScholarshipsPage() {
 
   const columns = [
     {
-      header: 'Student & Adm No',
+      header: isHindi ? 'छात्र व एडमिशन नं.' : 'Student & Adm No',
       accessorKey: 'studentName',
       cell: (r: ScholarshipRecord) => (
         <div className="flex items-center gap-3">
@@ -582,7 +583,7 @@ function ScholarshipsPage() {
       ),
     },
     {
-      header: 'Sanctioned Scheme & Category',
+      header: isHindi ? 'मंजूर योजना व श्रेणी' : 'Sanctioned Scheme & Category',
       accessorKey: 'schemeName',
       cell: (r: ScholarshipRecord) => (
         <div className="max-w-[280px]">
@@ -599,19 +600,19 @@ function ScholarshipsPage() {
       ),
     },
     {
-      header: 'Waiver Concession',
+      header: isHindi ? 'फीस छूट' : 'Waiver Concession',
       accessorKey: 'waiverAmount',
       cell: (r: ScholarshipRecord) => (
         <div>
           <span className="font-mono font-black text-emerald-400 text-xs block">
             ₹{r.waiverAmount.toLocaleString('en-IN')} / AY
           </span>
-          <span className="text-[10px] text-zinc-400 font-semibold">{r.waiverPercentage}% Tuition Waiver</span>
+          <span className="text-[10px] text-zinc-400 font-semibold">{r.waiverPercentage}% {isHindi ? 'ट्यूशन फीस छूट' : 'Tuition Waiver'}</span>
         </div>
       ),
     },
     {
-      header: 'Funded By',
+      header: isHindi ? 'फंडिंग संस्था' : 'Funded By',
       accessorKey: 'disbursalMode',
       cell: (r: ScholarshipRecord) => (
         <div>
@@ -627,7 +628,7 @@ function ScholarshipsPage() {
       accessorKey: 'status',
       cell: (r: ScholarshipRecord) => (
         <VFBadge variant={r.status === 'Active Disbursed' ? 'success' : 'warning'} className="rounded-md">
-          {r.status}
+          {r.status === 'Active Disbursed' ? (isHindi ? 'सक्रिय वितरित' : r.status) : r.status === 'Govt Verified' ? (isHindi ? 'सरकार द्वारा सत्यापित' : r.status) : (isHindi ? 'नवीनीकरण लंबित' : r.status)}
         </VFBadge>
       ),
     },

@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 import { Bell, CheckCircle2, AlertCircle, Info, Trash2, X, CheckCheck } from 'lucide-react';
 
 export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { notifications, markNotificationRead, markAllNotificationsRead, clearNotifications } =
     useGlobalStore();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
 
   const [drawerWidth, setDrawerWidth] = React.useState(520);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -78,14 +81,16 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
             </div>
             <div>
               <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-                Notifications
+                {t('notif.title')}
                 {unreadCount > 0 && (
                   <span className="text-[11px] font-mono bg-primary text-primary-foreground font-bold px-1.5 py-0.5 rounded">
                     {unreadCount}
                   </span>
                 )}
               </h3>
-              <p className="text-xs text-muted-foreground">Activity & system alerts</p>
+              <p className="text-xs text-muted-foreground">
+                {isHindi ? 'गतिविधि व सिस्टम अलर्ट' : 'Activity & system alerts'}
+              </p>
             </div>
           </div>
           <button
@@ -103,13 +108,13 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
               onClick={markAllNotificationsRead}
               className="text-primary hover:underline font-semibold flex items-center gap-1 text-xs cursor-pointer"
             >
-              <CheckCheck className="h-3.5 w-3.5" /> Mark all read
+              <CheckCheck className="h-3.5 w-3.5" /> {isHindi ? 'सभी पढ़ा हुआ मार्क करें' : 'Mark all read'}
             </button>
             <button
               onClick={clearNotifications}
               className="text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1 text-xs cursor-pointer"
             >
-              <Trash2 className="h-3.5 w-3.5" /> Clear all
+              <Trash2 className="h-3.5 w-3.5" /> {isHindi ? 'सभी हटाएं' : 'Clear all'}
             </button>
           </div>
         )}
@@ -122,8 +127,12 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
                 <Bell className="h-6 w-6 text-muted-foreground/50" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-foreground">All caught up!</p>
-                <p className="text-xs text-muted-foreground mt-1">No pending notifications at this moment.</p>
+                <p className="text-xs font-semibold text-foreground">
+                  {isHindi ? 'सब अप-टू-डेट है!' : 'All caught up!'}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {isHindi ? 'इस समय कोई नया नोटिफिकेशन नहीं है।' : 'No pending notifications at this moment.'}
+                </p>
               </div>
             </div>
           ) : (

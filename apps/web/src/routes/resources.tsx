@@ -32,7 +32,8 @@ export const Route = createFileRoute('/resources')({
 });
 
 function ResourcesPage() {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const [activeSubmodule, setActiveSubmodule] = React.useState<string>('dashboard');
 
   const resourceData = [
@@ -42,12 +43,12 @@ function ResourcesPage() {
   ];
 
   const resourceColumns = [
-    { header: 'Resource Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
-    { header: 'Resource Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
-    { header: 'Content Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
+    { header: isHindi ? 'रिसोर्स कोड' : 'Resource Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
+    { header: isHindi ? 'रिसोर्स शीर्षक' : 'Resource Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
+    { header: isHindi ? 'कंटेंट प्रकार' : 'Content Type', accessorKey: 'type', cell: (r: any) => <VFBadge variant="outline">{r.type}</VFBadge> },
     { header: t('col.subject'), accessorKey: 'subject' },
-    { header: 'Target Grade', accessorKey: 'class' },
-    { header: 'Downloads / Views', accessorKey: 'downloads', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.downloads}</span> },
+    { header: isHindi ? 'कक्षा' : 'Target Grade', accessorKey: 'class' },
+    { header: isHindi ? 'डाउनलोड्स / व्यूज' : 'Downloads / Views', accessorKey: 'downloads', cell: (r: any) => <span className="font-mono font-bold text-emerald-500">{r.downloads}</span> },
     { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant="success">{r.status}</VFBadge> },
   ];
 
@@ -234,21 +235,21 @@ function ResourcesPage() {
   // ALL 15 SUBMODULE TABS MAPPED
   // ----------------------------------------------------
   const submoduleTabs = [
-    { id: 'dashboard', label: 'Learning Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
-    { id: 'notes', label: 'Notes', icon: <FileText className="h-3.5 w-3.5" />, content: notesContent },
-    { id: 'study-materials', label: 'Study Materials', icon: <BookOpen className="h-3.5 w-3.5" />, content: studyMaterialsContent },
-    { id: 'pdfs-documents', label: 'PDFs & Documents', icon: <FileText className="h-3.5 w-3.5" />, content: pdfsDocumentsContent },
-    { id: 'videos', label: 'Videos', icon: <Video className="h-3.5 w-3.5" />, content: videosContent },
-    { id: 'ebooks', label: 'E-books', icon: <BookOpen className="h-3.5 w-3.5" />, content: ebooksContent },
-    { id: 'external-links', label: 'External Links', icon: <Link className="h-3.5 w-3.5" />, content: externalLinksContent },
-    { id: 'subject-resources', label: 'Subject Resources', icon: <Layers className="h-3.5 w-3.5" />, content: subjectResourcesContent },
-    { id: 'chapter-resources', label: 'Chapter Resources', icon: <FolderGit className="h-3.5 w-3.5" />, content: chapterResourcesContent },
-    { id: 'teacher-resources', label: 'Teacher Resources', icon: <Users className="h-3.5 w-3.5" />, content: teacherResourcesContent },
-    { id: 'shared-resources', label: 'Shared Resources', icon: <Users className="h-3.5 w-3.5" />, content: sharedResourcesContent },
-    { id: 'collections', label: 'Learning Collections', icon: <Layers className="h-3.5 w-3.5" />, content: collectionsContent },
-    { id: 'access', label: 'Resource Access', icon: <Lock className="h-3.5 w-3.5" />, content: accessContent },
-    { id: 'analytics', label: 'Resource Analytics', icon: <BarChart3 className="h-3.5 w-3.5" />, content: analyticsContent },
-    { id: 'settings', label: 'Learning Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
+    { id: 'dashboard', label: isHindi ? 'लर्निंग डैशबोर्ड' : 'Learning Dashboard', icon: <BarChart3 className="h-3.5 w-3.5" />, content: dashboardContent },
+    { id: 'notes', label: isHindi ? 'नोट्स' : 'Notes', icon: <FileText className="h-3.5 w-3.5" />, content: notesContent },
+    { id: 'study-materials', label: isHindi ? 'स्टडी मटेरियल' : 'Study Materials', icon: <BookOpen className="h-3.5 w-3.5" />, content: studyMaterialsContent },
+    { id: 'pdfs-documents', label: isHindi ? 'PDFs व दस्तावेज़' : 'PDFs & Documents', icon: <FileText className="h-3.5 w-3.5" />, content: pdfsDocumentsContent },
+    { id: 'videos', label: isHindi ? 'वीडियोज' : 'Videos', icon: <Video className="h-3.5 w-3.5" />, content: videosContent },
+    { id: 'ebooks', label: isHindi ? 'ई-बुक्स' : 'E-books', icon: <BookOpen className="h-3.5 w-3.5" />, content: ebooksContent },
+    { id: 'external-links', label: isHindi ? 'एक्सटर्नल लिंक्स' : 'External Links', icon: <Link className="h-3.5 w-3.5" />, content: externalLinksContent },
+    { id: 'subject-resources', label: isHindi ? 'विषय संसाधन' : 'Subject Resources', icon: <Layers className="h-3.5 w-3.5" />, content: subjectResourcesContent },
+    { id: 'chapter-resources', label: isHindi ? 'अध्याय संसाधन' : 'Chapter Resources', icon: <FolderGit className="h-3.5 w-3.5" />, content: chapterResourcesContent },
+    { id: 'teacher-resources', label: isHindi ? 'शिक्षक संसाधन' : 'Teacher Resources', icon: <Users className="h-3.5 w-3.5" />, content: teacherResourcesContent },
+    { id: 'shared-resources', label: isHindi ? 'शेयर्ड संसाधन' : 'Shared Resources', icon: <Users className="h-3.5 w-3.5" />, content: sharedResourcesContent },
+    { id: 'collections', label: isHindi ? 'लर्निंग कलेक्शंस' : 'Learning Collections', icon: <Layers className="h-3.5 w-3.5" />, content: collectionsContent },
+    { id: 'access', label: isHindi ? 'रिसोर्स एक्सेस' : 'Resource Access', icon: <Lock className="h-3.5 w-3.5" />, content: accessContent },
+    { id: 'analytics', label: isHindi ? 'रिसोर्स एनालिटिक्स' : 'Resource Analytics', icon: <BarChart3 className="h-3.5 w-3.5" />, content: analyticsContent },
+    { id: 'settings', label: isHindi ? 'लर्निंग सेटिंग्स' : 'Learning Settings', icon: <SlidersHorizontal className="h-3.5 w-3.5" />, content: settingsContent },
   ];
 
   return (
@@ -274,7 +275,7 @@ function ResourcesPage() {
             leftIcon={<Plus className="h-3.5 w-3.5" />}
             onClick={() => setActiveSubmodule('notes')}
           >
-            Upload Resource
+            {isHindi ? 'रिसोर्स अपलोड करें' : 'Upload Resource'}
           </VFButton>
         </div>
       </div>

@@ -73,7 +73,8 @@ const INITIAL_STUDENT_MARKS: StudentMarkRow[] = [
 
 function ExaminationsPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.examinations') + ' \u2013 VidyaFloww'; }, [t]);
   const [activeView, setActiveView] = React.useState<'schedule' | 'marks'>('schedule');
   const [exams, setExams] = React.useState<ExamRecord[]>(INITIAL_EXAMS);
@@ -111,7 +112,7 @@ function ExaminationsPage() {
     setExams([...exams, added]);
     setIsScheduleModalOpen(false);
     addNotification({
-      title: 'Exam Scheduled',
+      title: isHindi ? 'परीक्षा शेड्यूल की गई' : 'Exam Scheduled',
       description: `"${added.title}" [${added.code}] dates published to academic calendar.`,
       type: 'success',
     });
@@ -119,15 +120,15 @@ function ExaminationsPage() {
 
   const handleExportMarksheet = () => {
     addNotification({
-      title: 'Marksheet Exported',
-      description: `Exported ${selectedClass} midterm master marks register as Excel file.`,
+      title: isHindi ? 'मार्कशीट एक्सपोर्ट की गई' : 'Marksheet Register Exported',
+      description: `Exported ${selectedClass} official marks ledger as Excel document.`,
       type: 'success',
     });
   };
 
   const examColumns = [
     {
-      header: 'Exam Code',
+      header: isHindi ? 'परीक्षा कोड' : 'Exam Code',
       accessorKey: 'code',
       cell: (r: ExamRecord) => (
         <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
@@ -136,7 +137,7 @@ function ExaminationsPage() {
       ),
     },
     {
-      header: 'Examination Title & Target',
+      header: isHindi ? 'परीक्षा शीर्षक व कक्षा' : 'Examination Title & Target',
       accessorKey: 'title',
       cell: (r: ExamRecord) => (
         <div>
@@ -146,22 +147,22 @@ function ExaminationsPage() {
       ),
     },
     {
-      header: 'Session',
+      header: isHindi ? 'सत्र' : 'Session',
       accessorKey: 'session',
       cell: (r: ExamRecord) => <span className="font-mono text-foreground font-bold text-xs">{r.session}</span>,
     },
     {
-      header: 'Exam Schedule Dates',
+      header: isHindi ? 'परीक्षा तिथियां' : 'Exam Schedule Dates',
       accessorKey: 'dates',
       cell: (r: ExamRecord) => <span className="text-muted-foreground text-xs font-semibold">{r.dates}</span>,
     },
     {
-      header: 'Evaluation Progress',
+      header: isHindi ? 'मूल्यांकन प्रगति' : 'Evaluation Progress',
       accessorKey: 'marksEnteredPct',
       cell: (r: ExamRecord) => (
         <div className="space-y-1">
           <div className="flex justify-between text-xs font-mono font-bold">
-            <span className="text-foreground">{r.totalCandidates} Candidates</span>
+            <span className="text-foreground">{r.totalCandidates} {isHindi ? 'छात्र' : 'Candidates'}</span>
             <span className="text-emerald-400">{r.marksEnteredPct}%</span>
           </div>
           <div className="w-24 h-1.5 rounded-full bg-[#1a1a1a] overflow-hidden border border-border/60">
@@ -185,7 +186,7 @@ function ExaminationsPage() {
               : 'outline'
           }
         >
-          {r.status}
+          {r.status === 'Active Live' ? (isHindi ? 'लाइव जारी' : r.status) : r.status === 'Evaluation' ? (isHindi ? 'मूल्यांकन' : r.status) : r.status === 'Published' ? (isHindi ? 'प्रकाशित' : r.status) : (isHindi ? 'शेड्यूल्ड' : r.status)}
         </VFBadge>
       ),
     },
@@ -199,7 +200,7 @@ function ExaminationsPage() {
           leftIcon={<FileCheck className="h-3.5 w-3.5" />}
           onClick={() => setActiveView('marks')}
         >
-          Enter Marks
+          {isHindi ? 'अंक दर्ज करें' : 'Enter Marks'}
         </VFButton>
       ),
     },
@@ -310,7 +311,7 @@ function ExaminationsPage() {
 
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20">
-                CBSE Standard 500-Mark Matrix
+                {isHindi ? 'CBSE मानक 500-अंक प्रणाली' : 'CBSE Standard 500-Mark Matrix'}
               </span>
             </div>
           </div>
@@ -320,16 +321,16 @@ function ExaminationsPage() {
             <VFTable className="rounded-none border-0">
               <VFTableHead className="bg-[#1a1a1a]">
                 <VFTableRow>
-                  <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">Roll No</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">{t('col.rollNo')}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground">{t('col.studentName')}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">Maths (100)</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">Science (100)</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">English (100)</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">Social (100)</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">Hindi (100)</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center font-mono">Total</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center font-mono">Pct %</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground text-right">Grade</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'गणित (100)' : 'Maths (100)'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'विज्ञान (100)' : 'Science (100)'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'अंग्रेजी (100)' : 'English (100)'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'सामाजिक विज्ञान (100)' : 'Social (100)'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'हिंदी (100)' : 'Hindi (100)'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'कुल योग' : 'Total'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'प्रतिशत %' : 'Pct %'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground text-right">{isHindi ? 'ग्रेड' : 'Grade'}</VFTableHeaderCell>
                 </VFTableRow>
               </VFTableHead>
               <VFTableBody>

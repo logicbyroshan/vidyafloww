@@ -89,7 +89,8 @@ const ENTERPRISE_FEATURES = [
 
 function LicenseManagementPage() {
   const { schoolProfile, addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('nav.license') + ' \u2013 VidyaFloww'; }, [t]);
   const [copied, setCopied] = React.useState(false);
   const [showKey, setShowKey] = React.useState(false);
@@ -147,18 +148,22 @@ function LicenseManagementPage() {
               className="h-9 px-3 bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs"
               leftIcon={<ArrowLeft className="h-4 w-4" />}
             >
-              Dashboard
+              {t('nav.dashboard')}
             </VFButton>
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-black text-foreground tracking-tight">Institutional License & Billing</h2>
+              <h2 className="text-lg font-black text-foreground tracking-tight">
+                {isHindi ? 'संस्थागत लाइसेंस व बिलिंग' : 'Institutional License & Billing'}
+              </h2>
               <VFBadge variant="success" className="text-xs font-bold font-mono">
-                Enterprise Active
+                {isHindi ? 'एंटरप्राइज एक्टिव' : 'Enterprise Active'}
               </VFBadge>
             </div>
             <p className="text-xs text-muted-foreground font-medium mt-0.5">
-              School subscription tier, payment methods, invoice history, token balances, and security keys.
+              {isHindi
+                ? 'स्कूल सब्सक्रिप्शन प्लान, पेमेंट के तरीके, इनवॉइस हिस्ट्री, टोकन बैलेंस और सिक्योरिटी कीज।'
+                : 'School subscription tier, payment methods, invoice history, token balances, and security keys.'}
             </p>
           </div>
         </div>
@@ -171,7 +176,7 @@ function LicenseManagementPage() {
             leftIcon={<Download className="h-4 w-4" />}
             onClick={handleDownloadCertificate}
           >
-            Entitlement Certificate
+            {isHindi ? 'लाइसेंस सर्टिफिकेट' : 'Entitlement Certificate'}
           </VFButton>
           <VFButton
             size="sm"
@@ -179,7 +184,7 @@ function LicenseManagementPage() {
             leftIcon={<RefreshCw className="h-4 w-4" />}
             onClick={handleSyncQuotas}
           >
-            Sync Quotas
+            {isHindi ? 'कोटा सिंक करें' : 'Sync Quotas'}
           </VFButton>
         </div>
       </div>
@@ -191,9 +196,9 @@ function LicenseManagementPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Card 1: Subscription Tier & Validity */}
           <VFCard
-            title="Subscription & Validity"
-            description="Active institutional enterprise entitlement."
-            actions={<VFBadge variant="success" className="text-xs font-bold">225 Days Left</VFBadge>}
+            title={isHindi ? 'सब्सक्रिप्शन व वैधता' : 'Subscription & Validity'}
+            description={isHindi ? 'सक्रिय संस्थागत एंटरप्राइज सदस्यता।' : 'Active institutional enterprise entitlement.'}
+            actions={<VFBadge variant="success" className="text-xs font-bold">{isHindi ? '225 दिन शेष' : '225 Days Left'}</VFBadge>}
             className="bg-[#0d0d0d] border-border/90"
             bodyClassName="p-4 space-y-3"
           >
@@ -209,11 +214,15 @@ function LicenseManagementPage() {
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Renewal Date</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'नवीनीकरण तिथि' : 'Renewal Date'}
+                </span>
                 <span className="text-xs font-black text-foreground font-mono">March 31, 2027</span>
               </div>
               <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Plan Rate</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'प्लान दर' : 'Plan Rate'}
+                </span>
                 <span className="text-xs font-black text-emerald-400 font-mono">₹ 2,40,000 / Yr</span>
               </div>
             </div>
@@ -221,15 +230,17 @@ function LicenseManagementPage() {
 
           {/* Card 2: Student & Staff Capacity */}
           <VFCard
-            title="Licensed Seat Capacity"
-            description="Active student & faculty user allocations."
-            actions={<VFBadge variant="primary" className="text-xs font-bold font-mono">50% Enrolled</VFBadge>}
+            title={isHindi ? 'लाइसेंस्ड सीट क्षमता' : 'Licensed Seat Capacity'}
+            description={isHindi ? 'सक्रिय छात्र व शिक्षक सीट आवंटन।' : 'Active student & faculty user allocations.'}
+            actions={<VFBadge variant="primary" className="text-xs font-bold font-mono">{isHindi ? '50% नामांकित' : '50% Enrolled'}</VFBadge>}
             className="bg-[#0d0d0d] border-border/90"
             bodyClassName="p-4 space-y-3"
           >
             <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex items-center justify-between">
               <div>
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Student Dossiers</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'छात्र प्रोफाइल' : 'Student Dossiers'}
+                </span>
                 <p className="text-xl font-black text-foreground font-mono">
                   1,248 <span className="text-xs text-muted-foreground font-normal">/ 2,500 Max</span>
                 </p>
@@ -241,11 +252,15 @@ function LicenseManagementPage() {
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Teacher Seats</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'शिक्षक सीटें' : 'Teacher Seats'}
+                </span>
                 <span className="text-xs font-black text-foreground font-mono">94 / 150</span>
               </div>
               <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Admin Roles</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'एडमिन रोल्स' : 'Admin Roles'}
+                </span>
                 <span className="text-xs font-black text-foreground font-mono">8 / 15</span>
               </div>
             </div>
@@ -253,9 +268,9 @@ function LicenseManagementPage() {
 
           {/* Card 3: Security & Encryption Standard */}
           <VFCard
-            title="Security & Cloud Vault"
-            description="Institutional data integrity & compliance."
-            actions={<VFBadge variant="success" className="text-xs font-bold">Online</VFBadge>}
+            title={isHindi ? 'सुरक्षा व क्लाउड वॉल्ट' : 'Security & Cloud Vault'}
+            description={isHindi ? 'संस्थागत डेटा सुरक्षा व कंप्लायंस।' : 'Institutional data integrity & compliance.'}
+            actions={<VFBadge variant="success" className="text-xs font-bold">{isHindi ? 'ऑनलाइन' : 'Online'}</VFBadge>}
             className="bg-[#0d0d0d] border-border/90"
             bodyClassName="p-4 space-y-3"
           >
@@ -271,11 +286,15 @@ function LicenseManagementPage() {
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Cloud Backup</span>
-                <span className="text-xs font-bold text-emerald-400">Daily Automated</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'क्लाउड बैकअप' : 'Cloud Backup'}
+                </span>
+                <span className="text-xs font-bold text-emerald-400">{isHindi ? 'दैनिक स्वचालित' : 'Daily Automated'}</span>
               </div>
               <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Data Center</span>
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'डेटा सेंटर' : 'Data Center'}
+                </span>
                 <span className="text-xs font-mono font-bold text-foreground">ap-south-1 (Mumbai)</span>
               </div>
             </div>
@@ -458,13 +477,13 @@ function LicenseManagementPage() {
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-[#242424] bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                  <th className="py-3 px-4">Invoice #</th>
-                  <th className="py-3 px-4">Date</th>
-                  <th className="py-3 px-4">Description</th>
-                  <th className="py-3 px-4">Amount</th>
-                  <th className="py-3 px-4">Payment Method</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
+                  <th className="py-3 px-4">{t('col.date')}</th>
+                  <th className="py-3 px-4">{t('col.description')}</th>
+                  <th className="py-3 px-4">{t('col.amount')}</th>
+                  <th className="py-3 px-4">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
+                  <th className="py-3 px-4">{t('col.status')}</th>
+                  <th className="py-3 px-4 text-right">{t('col.action')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1c1c1c] text-foreground font-medium">

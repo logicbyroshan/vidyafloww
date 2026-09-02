@@ -44,7 +44,8 @@ const INITIAL_REPORTS: ReportTemplate[] = [
 
 function ReportsPage() {
   const { addNotification } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.reports') + ' \u2013 VidyaFloww'; }, [t]);
   const [reports, setReports] = React.useState<ReportTemplate[]>(INITIAL_REPORTS);
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
@@ -59,7 +60,7 @@ function ReportsPage() {
 
   const handleGenerateReport = (rName: string) => {
     addNotification({
-      title: 'Report Generated & Exported',
+      title: isHindi ? 'रिपोर्ट तैयार व एक्सपोर्ट की गई' : 'Report Generated & Exported',
       description: `Successfully compiled "${rName}". Downloading file...`,
       type: 'success',
     });
@@ -84,7 +85,7 @@ function ReportsPage() {
     setIsGenerateModalOpen(false);
     setCustomReport({ name: '', category: 'Academics', format: 'Excel (.xlsx)', frequency: 'On-Demand' });
     addNotification({
-      title: 'Custom Report Compiled',
+      title: isHindi ? 'कस्टम रिपोर्ट तैयार की गई' : 'Custom Report Compiled',
       description: `"${added.name}" added to reports repository.`,
       type: 'success',
     });
@@ -97,7 +98,7 @@ function ReportsPage() {
 
   const reportColumns = [
     {
-      header: 'Report Code',
+      header: isHindi ? 'रिपोर्ट कोड' : 'Report Code',
       accessorKey: 'code',
       cell: (r: ReportTemplate) => (
         <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
@@ -106,17 +107,17 @@ function ReportsPage() {
       ),
     },
     {
-      header: 'Report Title & Category',
+      header: isHindi ? 'रिपोर्ट शीर्षक व श्रेणी' : 'Report Title & Category',
       accessorKey: 'name',
       cell: (r: ReportTemplate) => (
         <div>
           <p className="font-extrabold text-foreground text-sm leading-tight">{r.name}</p>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} Analytics</p>
+          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} {isHindi ? 'एनालिटिक्स' : 'Analytics'}</p>
         </div>
       ),
     },
     {
-      header: 'Format',
+      header: isHindi ? 'फॉर्मेट' : 'Format',
       accessorKey: 'format',
       cell: (r: ReportTemplate) => (
         <VFBadge variant="outline" className="font-mono text-[11px]">
@@ -125,19 +126,19 @@ function ReportsPage() {
       ),
     },
     {
-      header: 'Frequency',
+      header: isHindi ? 'आवृत्ति' : 'Frequency',
       accessorKey: 'frequency',
       cell: (r: ReportTemplate) => <span className="text-foreground font-bold text-xs">{r.frequency}</span>,
     },
     {
-      header: 'Last Compiled',
+      header: isHindi ? 'अंतिम तैयार' : 'Last Compiled',
       accessorKey: 'lastGenerated',
       cell: (r: ReportTemplate) => <span className="text-muted-foreground text-xs font-semibold">{r.lastGenerated}</span>,
     },
     {
       header: t('col.status'),
       accessorKey: 'status',
-      cell: (r: ReportTemplate) => <VFBadge variant="success">{r.status}</VFBadge>,
+      cell: (r: ReportTemplate) => <VFBadge variant="success">{isHindi ? 'तैयार' : r.status}</VFBadge>,
     },
     {
       header: t('col.action'),
@@ -149,7 +150,7 @@ function ReportsPage() {
           leftIcon={<Download className="h-3.5 w-3.5" />}
           onClick={() => handleGenerateReport(r.name)}
         >
-          Export Now
+          {isHindi ? 'एक्सपोर्ट करें' : 'Export Now'}
         </VFButton>
       ),
     },
@@ -167,7 +168,7 @@ function ReportsPage() {
             {t('page.reports')}
           </span>
           <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-            CBSE & State Aligned
+            {isHindi ? 'CBSE व राज्य बोर्ड संरेखित' : 'CBSE & State Aligned'}
           </VFBadge>
         </div>
 
@@ -194,11 +195,11 @@ function ReportsPage() {
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[
-                { label: 'All Report Categories', value: 'All' },
-                { label: 'Compliance & Legal', value: 'Compliance' },
-                { label: 'Attendance Audit', value: 'Attendance' },
-                { label: 'Finance & Accounts', value: 'Finance' },
-                { label: 'Academics & GPA', value: 'Academics' },
+                { label: isHindi ? 'सभी रिपोर्ट श्रेणियां' : 'All Report Categories', value: 'All' },
+                { label: isHindi ? 'कंप्लायंस व कानूनी' : 'Compliance & Legal', value: 'Compliance' },
+                { label: isHindi ? 'उपस्थिति ऑडिट' : 'Attendance Audit', value: 'Attendance' },
+                { label: isHindi ? 'फाइनेंस व एकाउंट्स' : 'Finance & Accounts', value: 'Finance' },
+                { label: isHindi ? 'एकेडमिक्स व GPA' : 'Academics & GPA', value: 'Academics' },
               ]}
               className="bg-[#1a1a1a] border-border h-9 text-xs"
             />
@@ -206,7 +207,7 @@ function ReportsPage() {
         </div>
 
         <span className="text-xs font-mono text-muted-foreground font-semibold">
-          {filteredReports.length} Reports Ready
+          {filteredReports.length} {isHindi ? 'रिपोर्ट्स तैयार' : 'Reports Ready'}
         </span>
       </div>
 

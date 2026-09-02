@@ -104,7 +104,8 @@ export function DashboardPage() {
     isDashboardEditMode,
     setDashboardEditMode,
   } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi';
   React.useEffect(() => { document.title = t('page.dashboard') + ' \u2013 VidyaFloww'; }, [t]);
 
   // (notice state removed — actions now use addNotification toast)
@@ -407,11 +408,11 @@ export function DashboardPage() {
         <div key="teacher_attendance" {...sectionWrapperProps}>
           <VFCard
             title={t('attendance.teacherTab')}
-            description="4 Absent Today · 100% Substitute Coverage"
+            description={isHindi ? "4 आज अनुपस्थित · 100% सब्स्टीट्यूट कवर" : "4 Absent Today · 100% Substitute Coverage"}
             className="h-[460px]"
             bodyClassName="p-4"
             actions={
-              <VFBadge variant="warning" className="text-xs font-bold">{facultyAbsences.length} Records</VFBadge>
+              <VFBadge variant="warning" className="text-xs font-bold">{facultyAbsences.length} {isHindi ? 'रिकॉर्ड' : 'Records'}</VFBadge>
             }
           >
             <div className="h-full overflow-y-auto no-scrollbar space-y-3">
@@ -471,11 +472,11 @@ export function DashboardPage() {
         <div key="student_attendance" {...sectionWrapperProps}>
           <VFCard
             title={t('attendance.studentTab')}
-            description="68 Pupils Absent Today · 94.5% Net Attendance"
+            description={isHindi ? "68 छात्र आज अनुपस्थित · 94.5% शुद्ध उपस्थिति" : "68 Pupils Absent Today · 94.5% Net Attendance"}
             className="h-[460px]"
             bodyClassName="p-4"
             actions={
-              <VFBadge variant="danger" className="text-xs font-bold">{studentExceptions.length} Alerts</VFBadge>
+              <VFBadge variant="danger" className="text-xs font-bold">{studentExceptions.length} {isHindi ? 'अलर्ट्स' : 'Alerts'}</VFBadge>
             }
           >
             <div className="h-full overflow-y-auto no-scrollbar space-y-3">
@@ -532,7 +533,7 @@ export function DashboardPage() {
         <div key="quick_shortcuts" {...sectionWrapperProps}>
           <VFCard
             title={t('dashboard.shortcuts')}
-            description={`${activeShortcuts.length} of ${ALL_SHORTCUT_ACTIONS.length} Shortcuts Active`}
+            description={isHindi ? `${activeShortcuts.length} / ${ALL_SHORTCUT_ACTIONS.length} शॉर्टकट सक्रिय` : `${activeShortcuts.length} of ${ALL_SHORTCUT_ACTIONS.length} Shortcuts Active`}
             className="h-[460px]"
             bodyClassName="p-4"
             actions={
@@ -659,7 +660,7 @@ export function DashboardPage() {
                   <div className="flex items-center justify-between text-xs font-bold">
                     <span className="flex items-center gap-1.5 text-foreground">
                       <Smartphone className="h-3.5 w-3.5 text-emerald-400" />
-                      SMS Gateway Dispatches
+                      {isHindi ? 'SMS गेटवे डिस्पैच' : 'SMS Gateway Dispatches'}
                     </span>
                     <span className="font-mono text-xs text-emerald-400 font-bold">
                       24,200 <span className="text-muted-foreground font-normal">/ 30,000 (80.6%)</span>
@@ -675,7 +676,7 @@ export function DashboardPage() {
                   <div className="flex items-center justify-between text-xs font-bold">
                     <span className="flex items-center gap-1.5 text-foreground">
                       <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                      Cloud Sync & Processing Tokens
+                      {isHindi ? 'क्लाउड सिंक व प्रोसेसिंग टोकन' : 'Cloud Sync & Processing Tokens'}
                     </span>
                     <span className="font-mono text-xs text-emerald-400 font-bold">
                       412,500 <span className="text-muted-foreground font-normal">/ 500,000 (82.5%)</span>
@@ -706,9 +707,11 @@ export function DashboardPage() {
               <LayoutGrid className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-bold text-foreground">Dashboard Customization Mode Active</p>
+              <p className="text-xs sm:text-sm font-bold text-foreground">
+                {isHindi ? 'डैशबोर्ड कस्टमाइजेशन मोड सक्रिय' : 'Dashboard Customization Mode Active'}
+              </p>
               <p className="text-[11px] text-muted-foreground">
-                Use the corner arrow controls on any KPI card or section card to rearrange their position.
+                {isHindi ? 'कार्ड की स्थिति बदलने के लिए कोने के ड्रैग कंट्रोल का उपयोग करें।' : 'Use the corner arrow controls on any KPI card or section card to rearrange their position.'}
               </p>
             </div>
           </div>
@@ -717,12 +720,12 @@ export function DashboardPage() {
               onClick={() => {
                 resetDashboardSectionOrder();
                 resetDashboardKpiOrder();
-                addNotification({ title: 'Dashboard Reset', description: 'Dashboard layout reset to default configuration.', type: 'info' });
+                addNotification({ title: isHindi ? 'डैशबोर्ड रीसेट' : 'Dashboard Reset', description: isHindi ? 'डैशबोर्ड डिफ़ॉल्ट लेआउट पर रीसेट किया गया।' : 'Dashboard layout reset to default configuration.', type: 'info' });
               }}
               className="text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-1.5 px-2.5 py-1.5 rounded border border-border bg-[#121212] hover:bg-[#1a1a1a] transition-colors cursor-pointer"
             >
               <RotateCcw className="h-3.5 w-3.5" />
-              Reset Layout
+              {isHindi ? 'लेआउट रीसेट करें' : 'Reset Layout'}
             </button>
             <VFButton
               size="sm"
@@ -730,7 +733,7 @@ export function DashboardPage() {
               className="h-8 px-3.5 text-xs font-bold"
               leftIcon={<Check className="h-3.5 w-3.5" />}
             >
-              Done Customizing
+              {isHindi ? 'पूरा हुआ' : 'Done Customizing'}
             </VFButton>
           </div>
         </div>

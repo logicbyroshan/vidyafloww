@@ -61,6 +61,10 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        sans: ['Sofia Sans', 'Baloo 2', 'system-ui', '-apple-system', 'sans-serif'],
+        heading: ['Sofia Sans', 'Baloo 2', 'system-ui', '-apple-system', 'sans-serif'],
+      },
     },
   },
   plugins: [],

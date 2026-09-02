@@ -96,7 +96,8 @@ function SchoolAdministrationPage() {
     language,
     setLanguage,
   } = useGlobalStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const isHindi = lang === 'hi' || language === 'hi';
 
   // Branding Edit Mode state
   const [isEditingBranding, setIsEditingBranding] = React.useState(false);
@@ -332,10 +333,10 @@ function SchoolAdministrationPage() {
               <div className="h-6 w-6 rounded bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
                 <Building2 className="h-3.5 w-3.5" />
               </div>
-              <span>School Identity & Official Logo Studio</span>
+              <span>{isHindi ? 'स्कूल पहचान व आधिकारिक लोगो स्टूडियो' : 'School Identity & Official Logo Studio'}</span>
             </div>
           }
-          description="Institution legal name, official crest emblem, board affiliation code, and live header badge."
+          description={isHindi ? 'संस्थान का कानूनी नाम, आधिकारिक प्रतीक चिह्न, बोर्ड संबद्धता कोड और लाइव हेडर बैज।' : 'Institution legal name, official crest emblem, board affiliation code, and live header badge.'}
           actions={
             isEditingBranding ? (
               <div className="flex items-center gap-2">
@@ -347,7 +348,7 @@ function SchoolAdministrationPage() {
                   className="h-8 px-3 text-xs bg-[#141414] hover:bg-[#222222] border-border text-foreground"
                   leftIcon={<X className="h-3.5 w-3.5" />}
                 >
-                  Cancel
+                  {t('action.cancel')}
                 </VFButton>
                 <VFButton
                   type="button"
@@ -356,13 +357,13 @@ function SchoolAdministrationPage() {
                   className="h-8 px-3.5 text-xs font-bold shadow-xs"
                   leftIcon={<Check className="h-3.5 w-3.5" />}
                 >
-                  Save Changes
+                  {t('action.saveChanges')}
                 </VFButton>
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <VFBadge variant="success" className="text-[11px] font-bold font-mono hidden sm:inline-flex">
-                  Live Across Portal
+                  {isHindi ? 'पोर्टल पर लाइव' : 'Live Across Portal'}
                 </VFBadge>
                 <VFButton
                   type="button"
@@ -372,7 +373,7 @@ function SchoolAdministrationPage() {
                   className="h-8 px-3 text-xs font-bold bg-[#141414] hover:bg-[#222222] border-border text-foreground shadow-xs"
                   leftIcon={<Edit2 className="h-3.5 w-3.5 text-primary" />}
                 >
-                  Edit School Identity
+                  {isHindi ? 'स्कूल पहचान एडिट करें' : 'Edit School Identity'}
                 </VFButton>
               </div>
             )
@@ -669,10 +670,10 @@ function SchoolAdministrationPage() {
               <div className="h-6 w-6 rounded bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
                 <Building className="h-3.5 w-3.5" />
               </div>
-              <span>Campus Branch Master Directory</span>
+              <span>{isHindi ? 'कैंपस शाखा मास्टर डायरेक्टरी' : 'Campus Branch Master Directory'}</span>
             </div>
           }
-          description="Manage multi-campus locations, accreditation codes, student strength, and branch leadership."
+          description={isHindi ? 'मल्टी-कैंपस शाखाएं, मान्यता कोड, छात्र संख्या और शाखा प्रमुख प्रबंधित करें।' : 'Manage multi-campus locations, accreditation codes, student strength, and branch leadership.'}
           actions={
             <VFButton
               size="sm"
@@ -693,7 +694,7 @@ function SchoolAdministrationPage() {
                 setIsAddCampusModalOpen(true);
               }}
             >
-              Add Campus Branch
+              {isHindi ? 'कैंपस शाखा जोड़ें' : 'Add Campus Branch'}
             </VFButton>
           }
           className="bg-[#141414] border-border/80"
@@ -812,10 +813,10 @@ function SchoolAdministrationPage() {
               <div className="h-6 w-6 rounded bg-cyan-500/15 text-cyan-400 flex items-center justify-center shrink-0 border border-cyan-500/30">
                 <Server className="h-3.5 w-3.5" />
               </div>
-              <span>System Infrastructure & Gate Biometrics</span>
+              <span>{isHindi ? 'सिस्टम इन्फ्रास्ट्रक्चर व गेट बायोमेट्रिक्स' : 'System Infrastructure & Gate Biometrics'}</span>
             </div>
           }
-          description="Campus hardware turnstiles, SMS/WhatsApp delivery gateways, and automated cloud backups."
+          description={isHindi ? 'कैंपस हार्डवेयर टर्नस्टाइल्स, एसएमएस/व्हाट्सएप डिलीवरी गेटवे और स्वचालित क्लाउड बैकअप।' : 'Campus hardware turnstiles, SMS/WhatsApp delivery gateways, and automated cloud backups.'}
           actions={
             <VFButton
               size="sm"
@@ -824,7 +825,7 @@ function SchoolAdministrationPage() {
               className="h-8 px-3 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border shadow-xs"
               leftIcon={<RefreshCw className="h-3.5 w-3.5 text-foreground" />}
             >
-              Run Diagnostics
+              {isHindi ? 'डायग्नोस्टिक्स चलाएं' : 'Run Diagnostics'}
             </VFButton>
           }
           className="bg-[#141414] border-border/80"
@@ -945,10 +946,10 @@ function SchoolAdministrationPage() {
               <div className="h-6 w-6 rounded bg-rose-500/15 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/30">
                 <Lock className="h-3.5 w-3.5" />
               </div>
-              <span>Role-Based Access Control (RBAC) & Governance</span>
+              <span>{isHindi ? 'रोल-आधारित एक्सेस कंट्रोल (RBAC) व गवर्नेंस' : 'Role-Based Access Control (RBAC) & Governance'}</span>
             </div>
           }
-          description="Institutional authorization tiers, two-factor authentication rules, and security enforcement policies."
+          description={isHindi ? 'संस्थागत प्राधिकरण स्तर, टू-फैक्टर प्रमाणीकरण नियम और सुरक्षा नीतियां।' : 'Institutional authorization tiers, two-factor authentication rules, and security enforcement policies.'}
           actions={
             <div className="flex items-center gap-2">
               <Link to="/audit">
@@ -958,7 +959,7 @@ function SchoolAdministrationPage() {
                   className="h-8 px-3 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border shadow-xs"
                   leftIcon={<Terminal className="h-3.5 w-3.5 text-primary" />}
                 >
-                  Live Audit Logs
+                  {isHindi ? 'लाइव ऑडिट लॉग्स' : 'Live Audit Logs'}
                 </VFButton>
               </Link>
               <Link to="/security">
@@ -968,7 +969,7 @@ function SchoolAdministrationPage() {
                   className="h-8 px-3 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border shadow-xs"
                   leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />}
                 >
-                  Configure Matrix
+                  {isHindi ? 'मैट्रिक्स कॉन्फ़िगर करें' : 'Configure Matrix'}
                 </VFButton>
               </Link>
             </div>
