@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./Vidy%20Max%20Banner.png" alt="VidyaFloww School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
+  <img src="./screenshots/Vidy%20Max%20Banner.png" alt="VidyaFloww School Management Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);" />
 </p>
 
 <div align="center">
