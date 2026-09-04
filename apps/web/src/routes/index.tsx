@@ -3,7 +3,6 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFStatCard,
-  VFBadge,
   VFCard,
   VFButton,
   cn,
@@ -239,11 +238,11 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
 // Clean, prominent 3D Icon Component — authentic transparent renders from 3dicons.co without any background or glow
 function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative flex items-center justify-center shrink-0 w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18">
+    <div className="relative flex items-center justify-center shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13">
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-contain transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1.5 group-hover/shortcut:scale-105 pointer-events-none select-none"
+        className="w-full h-full object-contain transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
         loading="lazy"
       />
     </div>
@@ -568,11 +567,20 @@ export function DashboardPage() {
         <div key="student_attendance" {...getSectionWrapperProps("flex-1 h-full min-h-0 flex flex-col")}>
           <VFCard
             title={t('attendance.studentTab')}
-            description={isHindi ? "68 छात्र आज अनुपस्थित · 94.5% शुद्ध उपस्थिति" : "68 Pupils Absent Today · 94.5% Net Attendance"}
+            headerClassName="py-2.5 px-3.5 sm:px-4"
             className="flex-1 h-full min-h-0 rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col"
-            bodyClassName="p-4 flex-1 min-h-0 flex flex-col"
+            bodyClassName="p-3.5 sm:p-4 flex-1 min-h-0 flex flex-col"
             actions={
-              <VFBadge variant="danger" className="text-xs font-bold rounded-[3px]">{studentExceptions.length} {isHindi ? 'अलर्ट्स' : 'Alerts'}</VFBadge>
+              <Link to="/attendance">
+                <VFButton
+                  size="sm"
+                  variant="outline"
+                  className="h-8 px-2.5 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs rounded-[4px]"
+                  leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />}
+                >
+                  {isHindi ? 'सभी देखें' : 'View All'}
+                </VFButton>
+              </Link>
             }
           >
             <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-2.5 pr-1">
@@ -678,22 +686,13 @@ export function DashboardPage() {
       {/* 2 + 3. Main Content: Quick Actions (60%) + Student Attendance (40%) */}
       <div className="flex flex-col lg:flex-row gap-4 items-stretch">
 
-        {/* LEFT: Quick Actions Hub — 60% width, 4 × 5 = 20 square box modules */}
+        {/* LEFT: Quick Actions Hub — 60% width, 5 × 4 = 20 square box modules */}
         <div className="w-full lg:w-[60%] flex-[60] min-w-0">
           <VFCard
-            title={
-              <div className="flex items-center gap-2">
-                <span className="text-base font-extrabold text-foreground">
-                  {isHindi ? 'त्वरित प्रबंधन कार्य (Quick Actions)' : 'Quick Management Actions'}
-                </span>
-                <VFBadge variant="outline" className="text-[10px] font-mono font-bold py-0 px-2 h-5 rounded-[3px]">
-                  20 Modules (4 × 5)
-                </VFBadge>
-              </div>
-            }
-            description={isHindi ? '20 प्रमुख प्रशासनिक एवं शैक्षणिक कार्यप्रणाली' : '20 Fixed Core Operational & Academic Management Modules'}
+            title={isHindi ? 'त्वरित प्रबंधन कार्य (Quick Actions)' : 'Quick Management Actions'}
+            headerClassName="py-2.5 px-3.5 sm:px-4"
             className="border-border/80 bg-card shadow-xs rounded-[4px]"
-            bodyClassName="p-3 sm:p-3.5"
+            bodyClassName="p-2.5 sm:p-3"
             actions={
               <Link to="/shortcuts">
                 <VFButton
@@ -707,21 +706,21 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="grid grid-cols-4 gap-2.5">
+            <div className="grid grid-cols-5 gap-2 sm:gap-2.5">
               {FIXED_20_SHORTCUTS.map((action) => (
                 <Link
                   key={action.id}
                   to={action.route}
-                  className="aspect-square p-2.5 sm:p-3 rounded-[4px] border border-border/75 bg-[#141414] hover:bg-[#1c1c1c] hover:border-primary/50 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
+                  className="aspect-square p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#141414] hover:bg-[#1c1c1c] hover:border-primary/50 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <div className="flex-1 flex items-center justify-center w-full my-auto">
                     <ThreeDIcon src={action.iconSrc} alt={action.label} />
                   </div>
                   <div className="w-full pt-1">
-                    <p className="text-xs sm:text-sm font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-1">
+                    <p className="text-[11.5px] sm:text-xs font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-0.5">
                       {isHindi ? action.hindiLabel : action.label}
                     </p>
-                    <p className="text-[11px] text-muted-foreground font-medium mt-0.5 truncate px-1">
+                    <p className="text-[10px] text-muted-foreground font-medium mt-0.5 truncate px-0.5">
                       {isHindi ? action.hindiDesc : action.desc}
                     </p>
                   </div>
