@@ -17,7 +17,7 @@
   * Radix UI primitives (`dialog`, `popover`, `select`, `tabs`, `tooltip`).
   * Framer Motion 12.x/13.x (page transitions, drawers, springs) + Lenis (smooth scrolling).
   * Lucide React icons + Sonner toast notifications.
-  * Dual-font typography: **Sofia Sans** (Latin/numbers with fluid CSS clamp) + **Baloo 2** (Devanagari/Hindi).
+  * Typography: **Mukta** (contemporary humanist sans supporting Latin and Devanagari natively).
 * **Backend API (`apps/backend`)**:
   * Python 3.11+ / 3.13, Django 5.2.x, Django REST Framework (DRF).
   * Django Channels (WebSockets), Celery (async task processing), Redis (cache/MQ), PostgreSQL / SQLite.
@@ -72,7 +72,7 @@
    * The top Navbar (`Header.tsx`) and Sidebar brand header (`Sidebar.tsx`) are strictly locked to `h-[72px]`.
 3. **Bilingual Localization (i18n)**:
    * All user-facing UI labels must use the `useTranslation` hook (`en` / `hi`).
-   * Typography cascades: Sofia Sans for Latin letters and tabular numbers; Baloo 2 for Devanagari script.
+   * Typography: Mukta for both Latin letters/numbers and Devanagari script.
 4. **Single-Level Divided Hierarchy**:
    * Avoid deep nested card boxes; prefer flat, border-divided lists (`divide-y divide-border`) on `VFCard`.
 5. **Zero Secrets & Credentials (NEVER PUSH ID/PASS)**:
@@ -106,3 +106,11 @@ pnpm type-check
 * **Client/Server Coupling**: The web portal currently relies on client-side state and mock collections. Integration with the Django REST API via `@vidyafloww/api` is pending backend domain model implementation.
 * **Tenant Middleware**: Multi-tenancy database isolation middleware (`TenantMiddleware`) is planned in design documentation but not yet active in Django middleware pipelines.
 * **Authentication**: Web has complete UI forms (`/login`), but live JWT session exchange with the backend is not yet plugged into production storage.
+
+---
+
+## 8. UI Aesthetics & Geometric Rules
+
+* **Strict Sharp Border Radius**: Never use excessive or bubbly border radii (strictly avoid `rounded-xl`, `rounded-2xl`, `rounded-3xl`, and bubbly pills). Use crisp, sharp geometry (`rounded-sm` / `rounded-[4px]`, max `rounded-md` / 6px) across cards, modal containers, buttons, and module items.
+* **3D Icons**: Use authentic 3D icon assets (e.g. from 3dicons.co) rather than glowing neon ring hacks or flat tiny SVGs inside bloated circles.
+* **No Unwanted Glow Blobs**: Avoid heavy neon blur shadows or glowing rings around icons. Ensure clean, elegant, professional presentation.

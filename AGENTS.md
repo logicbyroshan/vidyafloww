@@ -12,6 +12,7 @@ Permanent operating rules and execution guidelines for AI coding agents working 
 4. **Follow Architecture & Conventions**: Adhere strictly to the monorepo layering, established patterns, and design system tokens described in `.agent/CONTEXT.md`.
 5. **No Unjustified Dependencies**: Use existing workspace packages (`@vidyafloww/ui`, `@vidyafloww/utils`, etc.) and installed libraries. Do not add external npm or pip packages without clear justification.
 6. **Zero Secrets & Credentials (NEVER PUSH ID/PASS)**: Absolutely NEVER create, commit, push, log, or expose user IDs, usernames, passwords, API tokens, session credentials, private keys, or `.env` files to the repository under any circumstances. Always verify that test fixtures and mock states use generic, non-sensitive placeholders.
+7. **Strict Sharp Border Radius Rule**: NEVER use large, bubbly, or excessive border radius (avoid `rounded-xl`, `rounded-2xl`, `rounded-3xl`, or bubbly circular buttons). Maintain sharp, crisp, clean geometric corners with minimal radius (`rounded-sm`, `rounded-[4px]`, or at most `rounded-md` / 4px-6px). We strictly favor crisp, sharp borders across cards, buttons, dialogs, and modules.
 
 ---
 
@@ -35,7 +36,7 @@ To maintain high context quality and prevent token waste:
   * Use `@vidyafloww/ui` primitives (`VFCard`, `VFTable`, `VFButton`, `VFBadge`, `VFStatCard`, `VFTabs`) rather than creating bespoke HTML duplicates.
   * Maintain desktop layout requirements (`≥ 1000px` viewport minimum; preserve `SmallScreenBlocker`).
   * Preserve the unified `72px` header height lock across `Header.tsx` and `Sidebar.tsx`.
-  * Support bilingual i18n keys via `useTranslation` for user-visible UI text; respect the dual-font cascade (Sofia Sans for Latin/data, Baloo 2 for Devanagari).
+  * Support bilingual i18n keys via `useTranslation` for user-visible UI text; unified bilingual font: Mukta (contemporary humanist sans covering Latin and Devanagari).
 * **Backend (`apps/backend`)**:
   * Adhere to the Django layered service pattern: `Views` (thin HTTP) → `Serializers` (validation) → `Selectors` (reads) / `Services` (writes) → `Models` (persistence) → `Tasks` (Celery).
   * Maintain multi-tenancy isolation via organization foreign keys.
