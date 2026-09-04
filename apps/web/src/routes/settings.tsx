@@ -29,8 +29,6 @@ import {
   SlidersHorizontal,
   Terminal,
   MapPin,
-  Languages,
-  Globe,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -94,7 +92,6 @@ function SchoolAdministrationPage() {
     updateSchoolProfile,
     addNotification,
     language,
-    setLanguage,
   } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi' || language === 'hi';
@@ -1298,120 +1295,6 @@ function SchoolAdministrationPage() {
           )}
         </div>
       </VFDialog>
-
-      {/* SECTION 4: Language & Regional Settings */}
-      <VFCard
-        title={
-          <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded bg-violet-500/15 text-violet-400 flex items-center justify-center shrink-0 border border-violet-500/30">
-              <Languages className="h-3.5 w-3.5" />
-            </div>
-            <span>{t('settings.languageRegional')}</span>
-          </div>
-        }
-        description="Switch platform language between English and Hindi (हिन्दी). Font and all UI labels change instantly."
-        className="bg-[#141414] border-border/80"
-        bodyClassName="p-5"
-      >
-        <div className="space-y-4">
-          {/* Language Radio Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* English */}
-            <div
-              onClick={() => {
-                setLanguage('en');
-                addNotification({ title: 'Language Changed', description: 'Platform language set to English.', type: 'success' });
-              }}
-              className={`p-4 rounded-md border cursor-pointer transition-all ${
-                language === 'en'
-                  ? 'bg-primary/10 border-primary ring-1 ring-primary/30 shadow-xs'
-                  : 'bg-[#1a1a1a] border-border/70 hover:border-zinc-500'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">🇺🇸</span>
-                  <div>
-                    <p className="font-extrabold text-foreground text-sm">English</p>
-                    <p className="text-[10px] text-muted-foreground font-semibold">Latin Script — Sofia Sans font</p>
-                  </div>
-                </div>
-                {language === 'en' && (
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground font-mono mt-1">
-                Students · Teachers · Attendance · Fees
-              </p>
-              <p className="text-[10px] text-muted-foreground mt-1 italic">
-                All UI labels in English.
-              </p>
-            </div>
-
-            {/* Hindi */}
-            <div
-              onClick={() => {
-                setLanguage('hi');
-                addNotification({ title: 'भाषा बदली गई', description: 'प्लेटफ़ॉर्म भाषा हिन्दी पर सेट की गई।', type: 'success' });
-              }}
-              className={`p-4 rounded-md border cursor-pointer transition-all ${
-                language === 'hi'
-                  ? 'bg-primary/10 border-primary ring-1 ring-primary/30 shadow-xs'
-                  : 'bg-[#1a1a1a] border-border/70 hover:border-zinc-500'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">🇮🇳</span>
-                  <div>
-                    <p className="font-extrabold text-foreground text-sm">हिन्दी</p>
-                    <p className="text-[10px] text-muted-foreground font-semibold">Devanagari Script — Baloo 2 font</p>
-                  </div>
-                </div>
-                {language === 'hi' && (
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                छात्र · शिक्षक · उपस्थिति · शुल्क
-              </p>
-              <p className="text-[10px] text-muted-foreground mt-1 italic">
-                सभी UI लेबल हिन्दी में दिखेंगे।
-              </p>
-            </div>
-          </div>
-
-          {/* Live Preview */}
-          <div className="p-3.5 rounded-md bg-[#1a1a1a] border border-border/70 space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-              <Globe className="h-3 w-3" />
-              {t('lang.preview')}
-            </span>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-              {[
-                { key: 'nav.students', label: t('nav.students') },
-                { key: 'nav.teachers', label: t('nav.teachers') },
-                { key: 'nav.fees', label: t('nav.fees') },
-                { key: 'nav.attendance', label: t('nav.attendance') },
-                { key: 'action.save', label: t('action.save') },
-                { key: 'action.edit', label: t('action.edit') },
-                { key: 'status.active', label: t('status.active') },
-                { key: 'status.paid', label: t('status.paid') },
-              ].map((item) => (
-                <div key={item.key} className="px-2 py-1.5 rounded bg-[#111111] border border-border/50 text-center">
-                  <span className="font-bold text-foreground">{item.label}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-[10px] text-muted-foreground pt-1">
-              Font: <strong className="text-foreground">{language === 'hi' ? 'Baloo 2 (Devanagari)' : 'Sofia Sans (Latin)'}</strong>
-              &nbsp;·&nbsp;
-              Language: <strong className="text-foreground">{language === 'hi' ? 'हिन्दी' : 'English'}</strong>
-            </p>
-          </div>
-        </div>
-      </VFCard>
-
     </VFPageContainer>
   );
 }

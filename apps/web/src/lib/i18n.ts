@@ -20,6 +20,7 @@ export const translations = {
   'nav.examinations':     { en: 'Examinations',      hi: 'परीक्षाएं' },
   'nav.academics':        { en: 'Academics',         hi: 'एकेडमिक्स' },
   'nav.homework':         { en: 'Homework',          hi: 'होमवर्क' },
+  'nav.elibrary':         { en: 'E-Library',         hi: 'ई-लाइब्रेरी' },
   'nav.notices':          { en: 'Notices',           hi: 'नोटिस व सर्कुलर' },
   'nav.scholarships':     { en: 'Scholarships',      hi: 'स्कॉलरशिप' },
   'nav.reports':          { en: 'Reports',           hi: 'रिपोर्ट्स' },
@@ -136,6 +137,7 @@ export const translations = {
   'page.statistics':      { en: 'Statistics',        hi: 'आंकड़े व स्टेट्स' },
   'page.lms':             { en: 'E-Learning',        hi: 'ई-लर्निंग' },
   'page.library':         { en: 'Library',           hi: 'लाइब्रेरी' },
+  'page.elibrary':        { en: 'E-Library',         hi: 'ई-लाइब्रेरी' },
 
   // ─── TABLE COLUMNS ────────────────────────────────────────────────────────
   'col.name':             { en: 'Name',              hi: 'नाम' },
@@ -576,6 +578,30 @@ export const translations = {
   'lang.hindi':           { en: 'Hindi',             hi: 'हिन्दी' },
   'lang.chooseLang':      { en: 'Choose Language',   hi: 'भाषा चुनें' },
   'lang.preview':         { en: 'Live Preview',      hi: 'लाइव पूर्वावलोकन' },
+
+  // ─── ACADEMICS ────────────────────────────────────────────────────────────
+  'academics.title':          { en: 'Academics',             hi: 'अकादमिक्स' },
+  'academics.class':          { en: 'Class',                 hi: 'कक्षा' },
+  'academics.selectClass':    { en: 'Select Class',         hi: 'कक्षा चुनें' },
+  'academics.subjects':       { en: 'Subjects & Curriculum', hi: 'विषय एवं पाठ्यक्रम' },
+  'academics.books':          { en: 'Prescribed Books',      hi: 'निर्धारित पुस्तकें' },
+  'academics.booksToRead':    { en: 'Books to Read',         hi: 'पठन हेतु पुस्तकें' },
+  'academics.overview':       { en: 'Class Overview',        hi: 'कक्षा विवरण' },
+  'academics.addSubject':     { en: 'Add Subject / Book',    hi: 'विषय / पुस्तक जोड़ें' },
+  'academics.exportSyllabus': { en: 'Export Syllabus & Booklist', hi: 'पाठ्यक्रम व पुस्तक सूची एक्सपोर्ट करें' },
+  'academics.textbook':       { en: 'Main Textbook',         hi: 'मुख्य पाठ्यपुस्तक' },
+  'academics.supplementary':  { en: 'Supplementary Reader',  hi: 'पूरक पुस्तक' },
+  'academics.labManual':      { en: 'Lab Manual',            hi: 'प्रयोगशाला मैनुअल' },
+  'academics.exemplar':       { en: 'Exemplar / Reference',  hi: 'अभ्यास व संदर्भ' },
+  'academics.workbook':       { en: 'Workbook',              hi: 'अभ्यास पुस्तिका' },
+  'academics.publisher':      { en: 'Publisher',             hi: 'प्रकाशक' },
+  'academics.mandatory':      { en: 'Compulsory',            hi: 'अनिवार्य' },
+  'academics.recommended':    { en: 'Recommended',           hi: 'अनुशंसित' },
+  'academics.theoryMarks':    { en: 'Theory Marks',          hi: 'सैद्धांतिक अंक' },
+  'academics.internalMarks':  { en: 'Internal/Practical',    hi: 'आंतरिक/प्रायोगिक' },
+  'academics.weeklyPeriods':  { en: 'Weekly Periods',        hi: 'साप्ताहिक पीरियड्स' },
+  'academics.mentor':         { en: 'Class Mentor',          hi: 'कक्षा अध्यापक' },
+  'academics.totalBooks':     { en: 'Prescribed Books',      hi: 'निर्धारित पुस्तकें' },
 
   // ─── COMMON UI ────────────────────────────────────────────────────────────
   'ui.loading':           { en: 'Loading...',        hi: 'लोड हो रहा है...' },

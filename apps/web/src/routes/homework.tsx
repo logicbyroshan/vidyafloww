@@ -194,16 +194,14 @@ function HomeworkPage() {
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
       {/* 1. Header Toolbar Box */}
-      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded-md bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
-            <BookMarked className="h-4 w-4" />
+          <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
+            <BookMarked className="h-3.5 w-3.5 text-blue-400" />
+            <span className="font-bold text-foreground">{isHindi ? 'टर्म 1 सक्रिय' : 'Term 1 Active'}</span>
           </div>
-          <span className="text-base font-extrabold text-foreground tracking-tight">
-            {t('page.homework')}
-          </span>
-          <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-            {isHindi ? 'टर्म 1 एक्टिव' : 'Term 1 Active'}
+          <VFBadge variant="outline" className="text-xs font-bold font-mono">
+            {homeworkList.length} {isHindi ? 'असाइनमेंट' : 'Assignments'}
           </VFBadge>
         </div>
 

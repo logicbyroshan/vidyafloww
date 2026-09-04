@@ -29,6 +29,7 @@ import { Route as LearningRouteImport } from './routes/learning'
 import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
+import { Route as ElibraryRouteImport } from './routes/elibrary'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as AttendanceRouteImport } from './routes/attendance'
@@ -136,6 +137,11 @@ const ExaminationsRoute = ExaminationsRouteImport.update({
   path: '/examinations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ElibraryRoute = ElibraryRouteImport.update({
+  id: '/elibrary',
+  path: '/elibrary',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/attendance': typeof AttendanceRoute
   '/audit': typeof AuditRoute
   '/dashboard': typeof DashboardRoute
+  '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/attendance': typeof AttendanceRoute
   '/audit': typeof AuditRoute
   '/dashboard': typeof DashboardRoute
+  '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
@@ -231,6 +239,7 @@ export interface FileRoutesById {
   '/attendance': typeof AttendanceRoute
   '/audit': typeof AuditRoute
   '/dashboard': typeof DashboardRoute
+  '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
@@ -261,6 +270,7 @@ export interface FileRouteTypes {
     | '/attendance'
     | '/audit'
     | '/dashboard'
+    | '/elibrary'
     | '/examinations'
     | '/fees'
     | '/homework'
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/attendance'
     | '/audit'
     | '/dashboard'
+    | '/elibrary'
     | '/examinations'
     | '/fees'
     | '/homework'
@@ -317,6 +328,7 @@ export interface FileRouteTypes {
     | '/attendance'
     | '/audit'
     | '/dashboard'
+    | '/elibrary'
     | '/examinations'
     | '/fees'
     | '/homework'
@@ -346,6 +358,7 @@ export interface RootRouteChildren {
   AttendanceRoute: typeof AttendanceRoute
   AuditRoute: typeof AuditRoute
   DashboardRoute: typeof DashboardRoute
+  ElibraryRoute: typeof ElibraryRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
   HomeworkRoute: typeof HomeworkRoute
@@ -510,6 +523,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExaminationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/elibrary': {
+      id: '/elibrary'
+      path: '/elibrary'
+      fullPath: '/elibrary'
+      preLoaderRoute: typeof ElibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -562,6 +582,7 @@ const rootRouteChildren: RootRouteChildren = {
   AttendanceRoute: AttendanceRoute,
   AuditRoute: AuditRoute,
   DashboardRoute: DashboardRoute,
+  ElibraryRoute: ElibraryRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
   HomeworkRoute: HomeworkRoute,

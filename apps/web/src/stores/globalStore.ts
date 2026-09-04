@@ -42,7 +42,6 @@ export const DEFAULT_DASHBOARD_SHORTCUTS = [
 ];
 
 export const DEFAULT_DASHBOARD_SECTIONS = [
-  'teacher_attendance',
   'quick_shortcuts',
   'student_attendance',
   'license_details',

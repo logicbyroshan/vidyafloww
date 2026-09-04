@@ -180,13 +180,11 @@ function AuditLogPage() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-md bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/30">
-              <Terminal className="h-4 w-4" />
+            <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
+              <Terminal className="h-3.5 w-3.5 text-purple-400" />
+              <span className="font-bold text-foreground">{isHindi ? 'ऑडिट लॉग' : 'Live Audit Telemetry'}</span>
             </div>
-            <span className="text-base font-extrabold text-foreground tracking-tight">
-              {t('page.audit')}
-            </span>
-            <VFBadge variant="success" className="text-[10px] font-bold font-mono">
+            <VFBadge variant="success" className="text-xs font-bold font-mono">
               Live Stream Active
             </VFBadge>
           </div>
