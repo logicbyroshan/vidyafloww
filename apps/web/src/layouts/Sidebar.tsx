@@ -13,6 +13,7 @@ import {
   FileSpreadsheet,
   GraduationCap,
   LayoutDashboard,
+  Library,
   LogOut,
   LucideIcon,
   School,
@@ -60,6 +61,7 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     items: [
       { id: 'academics', labelKey: 'nav.academics', route: '/academics', icon: School },
       { id: 'homework', labelKey: 'nav.homework', route: '/homework', icon: BookMarked },
+      { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
       { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
     ],
   },
@@ -94,8 +96,8 @@ export function Sidebar() {
   const navigate = useNavigate();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
 
-  // Sidebar expands slightly in Hindi to accommodate longer Devanagari labels
-  const expandedWidth = isHindi ? 246 : 224;
+  // Unified fixed expanded width ensuring both English and Devanagari Hindi labels fit comfortably with ample breathing room and never shift or resize layout on language toggle
+  const expandedWidth = 240;
 
   return (
     <aside
@@ -183,12 +185,12 @@ export function Sidebar() {
                       )}
                     />
 
-                    {/* Label: CSS fade + collapse — no whitespace-nowrap so Hindi renders cleanly */}
+                    {/* Label: CSS fade + collapse — ample 165px maxWidth fits both English & Devanagari without touching edge */}
                     <span
                       className="text-sm leading-snug overflow-hidden font-[inherit] whitespace-nowrap"
                       style={{
                         opacity: sidebarExpanded ? 1 : 0,
-                        maxWidth: sidebarExpanded ? (isHindi ? '190px' : '155px') : '0px',
+                        maxWidth: sidebarExpanded ? '165px' : '0px',
                         marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
                         transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
                       }}

@@ -62,8 +62,8 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Sofia Sans', 'Baloo 2', 'system-ui', '-apple-system', 'sans-serif'],
-        heading: ['Sofia Sans', 'Baloo 2', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Mukta', 'system-ui', '-apple-system', 'sans-serif'],
+        heading: ['Mukta', 'system-ui', '-apple-system', 'sans-serif'],
       },
     },
   },

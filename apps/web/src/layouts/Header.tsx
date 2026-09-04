@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calendar, Clock, ChevronDown, Check, LayoutGrid, PanelLeftClose, PanelLeftOpen, Languages } from 'lucide-react';
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -21,6 +21,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
     toggleDashboardEditMode,
     sidebarExpanded,
     toggleSidebar,
+    setLanguage,
+    addNotification,
   } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
@@ -113,7 +115,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         <div className="relative" ref={sessionMenuRef}>
           <button
             onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
-            className="flex items-center gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group"
+            className="flex items-center justify-between gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group min-w-[215px]"
             title={isHindi ? "शैक्षणिक सत्र बदलें" : "Switch Academic Session"}
           >
             <Calendar className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -192,7 +194,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           <button
             onClick={toggleDashboardEditMode}
             className={cn(
-              "flex items-center gap-1.5 px-3 h-9 rounded-md text-xs font-bold transition-all cursor-pointer border shadow-xs outline-none",
+              "flex items-center justify-center gap-1.5 px-3 h-9 rounded-md text-xs font-bold transition-all cursor-pointer border shadow-xs outline-none min-w-[155px]",
               isDashboardEditMode
                 ? "bg-[#1f1f1f] text-foreground border-primary/60 shadow-xs ring-1 ring-primary/40"
                 : "bg-[#0e0e0e] hover:bg-[#161616] text-muted-foreground hover:text-foreground border-border"
@@ -215,6 +217,24 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           <Search className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>
 
+        {/* Language Switch Button — Compact icon-only button before notifications */}
+        <button
+          onClick={() => {
+            const nextLang = isHindi ? 'en' : 'hi';
+            setLanguage(nextLang);
+            addNotification({
+              title: nextLang === 'hi' ? 'भाषा बदली गई' : 'Language Changed',
+              description: nextLang === 'hi' ? 'प्लेटफ़ॉर्म भाषा हिन्दी (Mukta) पर सेट की गई।' : 'Platform language set to English (Mukta).',
+              type: 'info',
+            });
+          }}
+          className="relative text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
+          title={isHindi ? "Switch to English" : "Switch to हिन्दी"}
+          aria-label={isHindi ? "Switch to English" : "Switch to Hindi"}
+        >
+          <Languages className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+        </button>
+
         {/* Notifications */}
         <button
           onClick={onNotificationsClick}
@@ -228,7 +248,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         </button>
 
         {/* Universal Live Date & Time Indicator */}
-        <div className="hidden md:flex items-center gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] border border-border shadow-xs select-none" title="Universal Academic System Date & Time">
+        <div className="hidden md:flex items-center justify-between gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] border border-border shadow-xs select-none min-w-[230px]" title="Universal Academic System Date & Time">
           <div className="flex items-center gap-1.5 text-xs text-foreground font-semibold">
             <Calendar className="h-3.5 w-3.5 text-primary shrink-0" />
             <span className="font-bold text-foreground">{dayName}, {dateFormatted}</span>
