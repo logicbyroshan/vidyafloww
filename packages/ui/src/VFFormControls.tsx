@@ -53,7 +53,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "flex h-8 w-full rounded-md border border-border/60 bg-muted/40 px-3 py-1 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
+              "flex h-8 w-full rounded-[4px] border border-border/60 bg-muted/40 px-3 py-1 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
               leftIcon && "pl-9",
               rightIcon && "pr-9",
               error && "border-destructive focus-visible:ring-destructive",
@@ -95,7 +95,7 @@ export const VFTextarea = React.forwardRef<HTMLTextAreaElement, VFTextareaProps>
           id={inputId}
           ref={ref}
           className={cn(
-            "flex min-h-[56px] w-full rounded-md border border-border/60 bg-muted/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
+            "flex min-h-[56px] w-full rounded-[4px] border border-border/60 bg-muted/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
             error && "border-destructive focus-visible:ring-destructive",
             className
           )}
@@ -169,8 +169,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <SelectPrimitive.Trigger
             id={selectId}
             className={cn(
-              "flex w-full items-center justify-between rounded-md border border-border bg-[#181818] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#222222] hover:border-zinc-500 data-[state=open]:border-emerald-500/50 shadow-xs",
-              size === 'sm' || isInline ? "h-8 px-2.5 text-xs rounded-md" : size === 'lg' ? "h-10 px-3.5 text-sm rounded-md" : "h-9 px-3 text-xs rounded-md",
+              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#181818] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#222222] hover:border-zinc-500 data-[state=open]:border-emerald-500/50 shadow-xs",
+              size === 'sm' || isInline ? "h-8 px-2.5 text-xs rounded-[4px]" : size === 'lg' ? "h-10 px-3.5 text-sm rounded-[4px]" : "h-9 px-3 text-xs rounded-[4px]",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
@@ -184,7 +184,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
 
           <SelectPrimitive.Portal>
             <SelectPrimitive.Content
-              className="z-50 min-w-[10rem] overflow-hidden rounded-md border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-xs text-foreground backdrop-blur-md"
+              className="z-50 min-w-[10rem] overflow-hidden rounded-[4px] border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-xs text-foreground backdrop-blur-md"
               position="popper"
               sideOffset={4}
             >
@@ -194,7 +194,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
                     key={String(opt.value)}
                     value={String(opt.value)}
                     disabled={opt.disabled}
-                    className="relative flex w-full select-none items-center justify-between rounded-sm px-2.5 py-1.5 text-xs font-medium outline-none cursor-pointer data-[highlighted]:bg-[#242424] data-[highlighted]:text-foreground data-[state=checked]:bg-emerald-500/15 data-[state=checked]:text-emerald-400 data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
+                    className="relative flex w-full select-none items-center justify-between rounded-[3px] px-2.5 py-1 text-xs font-medium outline-none cursor-pointer data-[highlighted]:bg-[#242424] data-[highlighted]:text-foreground data-[state=checked]:bg-emerald-500/15 data-[state=checked]:text-emerald-400 data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
                   >
                     <SelectPrimitive.ItemText>{opt.label}</SelectPrimitive.ItemText>
                     <SelectPrimitive.ItemIndicator>

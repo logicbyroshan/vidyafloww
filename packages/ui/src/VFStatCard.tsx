@@ -75,7 +75,7 @@ export function VFStatCard({
   return (
     <div
       className={cn(
-        "rounded-lg border bg-card p-3 sm:p-3.5 text-card-foreground flex flex-col justify-center relative overflow-hidden transition-all duration-200 group min-w-0 shadow-xs",
+        "rounded-[4px] border bg-card p-3 sm:p-3.5 text-card-foreground flex flex-col justify-center relative overflow-hidden transition-all duration-200 group min-w-0 shadow-xs",
         accent ? accent.card : "border-border hover:border-primary/40",
         className
       )}
@@ -94,7 +94,7 @@ export function VFStatCard({
             </span>
           )}
           {isLoading ? (
-            <div className="h-8 w-24 bg-muted animate-pulse rounded-md mt-1" />
+            <div className="h-8 w-24 bg-muted animate-pulse rounded-[4px] mt-1" />
           ) : (
             <div className="text-2xl sm:text-[26px] font-black tracking-tight text-foreground leading-tight truncate">
               {value}
@@ -105,7 +105,7 @@ export function VFStatCard({
         {icon && (
           <div
             className={cn(
-              "h-11 w-11 rounded-md flex items-center justify-center shrink-0 transition-all duration-200 shadow-xs group-hover:scale-105",
+              "h-11 w-11 rounded-[4px] flex items-center justify-center shrink-0 transition-all duration-200 shadow-xs group-hover:scale-105",
               accent ? accent.icon : "bg-blue-500/15 text-blue-400 border border-blue-500/30"
             )}
           >

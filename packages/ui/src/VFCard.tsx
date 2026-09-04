@@ -28,7 +28,7 @@ export function VFCard({
   return (
     <div
       className={cn(
-        "rounded-lg border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col",
+        "rounded-[4px] border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col",
         className
       )}
       {...props}

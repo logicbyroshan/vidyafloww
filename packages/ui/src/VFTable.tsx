@@ -8,7 +8,7 @@ import { VFButton } from './VFButton';
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-lg bg-card custom-scrollbar">
+    <div className="w-full overflow-x-auto border border-border rounded-[4px] bg-card custom-scrollbar">
       <table className={cn("w-full border-collapse text-left text-sm", className)} {...props} />
     </div>
   );
@@ -170,7 +170,7 @@ export function VFDataTable<T extends Record<string, any>>({
   const activeColumns = columns.filter((col) => visibleColumns.includes(String(col.accessorKey)));
 
   return (
-    <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-lg shadow-xs overflow-hidden", className)}>
+    <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-[4px] shadow-xs overflow-hidden", className)}>
       {/* Unified Table Header Command Toolbar */}
       <div className="p-3.5 sm:p-4 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
         <div className="relative max-w-md flex-1">
@@ -180,7 +180,7 @@ export function VFDataTable<T extends Record<string, any>>({
             value={globalFilter}
             onChange={handleFilterChange}
             placeholder={filterPlaceholder || "Search records..."}
-            className="w-full pl-9 pr-3.5 h-8 border border-border rounded-md bg-muted/40 hover:bg-muted/70 focus:bg-background text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+            className="w-full pl-9 pr-3.5 h-8 border border-border rounded-[4px] bg-muted/40 hover:bg-muted/70 focus:bg-background text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
           />
         </div>
 
@@ -198,7 +198,7 @@ export function VFDataTable<T extends Record<string, any>>({
                 Columns ({activeColumns.length}/{columns.length})
               </VFButton>
               {showColumnDropdown && (
-                <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-md shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
+                <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-[4px] shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
                   <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
                     Visible Columns
                   </span>
@@ -208,7 +208,7 @@ export function VFDataTable<T extends Record<string, any>>({
                     return (
                       <label
                         key={key}
-                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded-md text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
+                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded-[3px] text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
                       >
                         <input
                           type="checkbox"

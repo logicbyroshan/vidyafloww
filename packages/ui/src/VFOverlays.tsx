@@ -51,7 +51,7 @@ export function VFDialog({
                   exit={{ opacity: 0, scale: 0.95, y: 4 }}
                   transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
                   className={cn(
-                    "pointer-events-auto w-full max-w-lg bg-card border border-border/70 rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[88vh] outline-none",
+                    "pointer-events-auto w-full max-w-lg bg-card border border-border/70 rounded-[4px] shadow-xl overflow-hidden flex flex-col max-h-[88vh] outline-none",
                     className
                   )}
                 >
@@ -73,7 +73,7 @@ export function VFDialog({
                       <DialogPrimitive.Close asChild>
                         <button
                           onClick={onClose}
-                          className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition-colors outline-none"
+                          className="text-muted-foreground hover:text-foreground p-1 rounded-[4px] hover:bg-muted transition-colors outline-none"
                           aria-label="Close dialog"
                         >
                           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
