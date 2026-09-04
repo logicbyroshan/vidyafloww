@@ -13,13 +13,6 @@ import {
   GraduationCap,
   CalendarCheck,
   FileText,
-  ShieldCheck,
-  Key,
-  Server,
-  MessageSquare,
-  Smartphone,
-  Sparkles,
-  Activity,
   SlidersHorizontal,
   RotateCcw,
   Check,
@@ -246,11 +239,11 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
 // Clean, prominent 3D Icon Component — authentic transparent renders from 3dicons.co without any background or glow
 function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative flex items-center justify-center shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13">
+    <div className="relative flex items-center justify-center shrink-0 w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18">
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-contain transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
+        className="w-full h-full object-contain transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1.5 group-hover/shortcut:scale-105 pointer-events-none select-none"
         loading="lazy"
       />
     </div>
@@ -259,7 +252,6 @@ function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
 
 export function DashboardPage() {
   const {
-    schoolProfile,
     dashboardSectionOrder,
     setDashboardSectionOrder,
     resetDashboardSectionOrder,
@@ -383,6 +375,38 @@ export function DashboardPage() {
       alert: 'Unexcused Absence (2nd Day)',
       severity: 'danger',
       action: 'SMS Broadcast',
+    },
+    {
+      student: 'Aditya Verma',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 10-A · Roll #09',
+      alert: 'Unexcused Half-Day Departure',
+      severity: 'danger',
+      action: 'Parent Alerted',
+    },
+    {
+      student: 'Rhea Chawla',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 12-Com · Roll #17',
+      alert: 'Medical Certificate Verification Pending',
+      severity: 'warning',
+      action: 'Request Slip',
+    },
+    {
+      student: 'Tanvi Mehta',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 9-A · Roll #11',
+      alert: 'Repeated Bus Route 2 Delay (09:20 AM)',
+      severity: 'warning',
+      action: 'Driver Alerted',
+    },
+    {
+      student: 'Arjun Rao',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 8-B · Roll #24',
+      alert: '4th Consecutive Unreported Absence',
+      severity: 'danger',
+      action: 'Send SMS',
     },
   ];
 
@@ -541,7 +565,7 @@ export function DashboardPage() {
     // 1. Student Attendance Exceptions Section — expands and gains height based on available vertical space
     if (sectionId === 'student_attendance') {
       return (
-        <div key="student_attendance" {...getSectionWrapperProps("flex-1 min-h-0 flex flex-col")}>
+        <div key="student_attendance" {...getSectionWrapperProps("flex-1 h-full min-h-0 flex flex-col")}>
           <VFCard
             title={t('attendance.studentTab')}
             description={isHindi ? "68 छात्र आज अनुपस्थित · 94.5% शुद्ध उपस्थिति" : "68 Pupils Absent Today · 94.5% Net Attendance"}
@@ -592,126 +616,6 @@ export function DashboardPage() {
                   </VFButton>
                 </div>
               ))}
-            </div>
-          </VFCard>
-          {cornerHandle}
-        </div>
-      );
-    }
-
-    // 2. License Details & Quotas Section — cleanly anchored at the bottom of the right column
-    if (sectionId === 'license_details') {
-      return (
-        <div key="license_details" {...getSectionWrapperProps("shrink-0")}>
-          <VFCard
-            title={
-              <div className="flex items-center gap-2">
-                <div className="h-6 w-6 rounded-[4px] bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                </div>
-                <span className="text-base font-extrabold text-foreground truncate">{t('nav.license')}</span>
-                <VFBadge variant="success" className="text-[10px] font-bold py-0 px-1.5 h-4.5 rounded-[3px]">{t('status.active')}</VFBadge>
-              </div>
-            }
-            description={`${schoolProfile.name} · ${schoolProfile.affiliation}`}
-            className="rounded-[4px] border-border/80 bg-card shadow-xs shrink-0"
-            bodyClassName="p-4 flex flex-col gap-3 min-h-0 shrink-0"
-            actions={
-              <Link to="/license">
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  className="h-8 px-3 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] border-border cursor-pointer rounded-[4px]"
-                  leftIcon={<Key className="h-3.5 w-3.5" />}
-                >
-                  {t('action.edit')}
-                </VFButton>
-              </Link>
-            }
-          >
-            <div className="grid grid-cols-3 gap-3 shrink-0">
-              <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-center shadow-xs hover:bg-[#222222] hover:border-emerald-500/30 transition-all">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Validity</span>
-                <p className="text-base sm:text-lg font-black text-emerald-400 whitespace-nowrap mt-0.5">225 Days</p>
-                <p className="text-[11px] text-muted-foreground font-semibold">Mar 2027</p>
-              </div>
-
-              <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-center shadow-xs hover:bg-[#222222] hover:border-emerald-500/30 transition-all">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Capacity</span>
-                <p className="text-base sm:text-lg font-black text-foreground whitespace-nowrap mt-0.5">1,248</p>
-                <p className="text-[11px] text-emerald-400 font-bold">50% Enrolled</p>
-              </div>
-
-              <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-center shadow-xs hover:bg-[#222222] hover:border-emerald-500/30 transition-all">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Security</span>
-                <p className="text-base sm:text-lg font-black text-foreground whitespace-nowrap mt-0.5">AES-256</p>
-                <p className="text-[11px] text-emerald-400 font-bold flex items-center justify-center gap-1">
-                  <Server className="h-3 w-3" /> Online
-                </p>
-              </div>
-            </div>
-
-            {/* Monthly Gateway & Token Quotas */}
-            <div className="flex-1 min-h-0 p-3.5 rounded-[4px] bg-[#1a1a1a] border border-border/80 shadow-xs flex flex-col justify-between">
-              <div className="flex items-center justify-between pb-2 border-b border-border/50 shrink-0">
-                <span className="text-foreground text-xs uppercase tracking-wider font-extrabold flex items-center gap-2">
-                  <Activity className="h-3.5 w-3.5 text-emerald-400" />
-                  Monthly Quotas & Gateway Balances
-                </span>
-                <span className="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded-[3px] border border-emerald-500/20">
-                  Resets Sep 1
-                </span>
-              </div>
-
-              <div className="flex-1 flex flex-col justify-around py-1 space-y-3">
-                {/* WhatsApp Messages */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="flex items-center gap-1.5 text-foreground">
-                      <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
-                      WhatsApp Broadcast Messages
-                    </span>
-                    <span className="font-mono text-xs text-emerald-400 font-bold">
-                      8,450 <span className="text-muted-foreground font-normal">/ 10,000 (84.5%)</span>
-                    </span>
-                  </div>
-                  <div className="w-full h-1.5 rounded-full bg-[#262626] overflow-hidden">
-                    <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-300" style={{ width: '84.5%' }} />
-                  </div>
-                </div>
-
-                {/* SMS Messages */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="flex items-center gap-1.5 text-foreground">
-                      <Smartphone className="h-3.5 w-3.5 text-emerald-400" />
-                      {isHindi ? 'SMS गेटवे डिस्पैच' : 'SMS Gateway Dispatches'}
-                    </span>
-                    <span className="font-mono text-xs text-emerald-400 font-bold">
-                      24,200 <span className="text-muted-foreground font-normal">/ 30,000 (80.6%)</span>
-                    </span>
-                  </div>
-                  <div className="w-full h-1.5 rounded-full bg-[#262626] overflow-hidden">
-                    <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-300" style={{ width: '80.6%' }} />
-                  </div>
-                </div>
-
-                {/* Cloud Sync & Processing Tokens */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="flex items-center gap-1.5 text-foreground">
-                      <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                      {isHindi ? 'क्लाउड सिंक व प्रोसेसिंग टोकन' : 'Cloud Sync & Processing Tokens'}
-                    </span>
-                    <span className="font-mono text-xs text-emerald-400 font-bold">
-                      412,500 <span className="text-muted-foreground font-normal">/ 500,000 (82.5%)</span>
-                    </span>
-                  </div>
-                  <div className="w-full h-1.5 rounded-full bg-[#262626] overflow-hidden">
-                    <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-300" style={{ width: '82.5%' }} />
-                  </div>
-                </div>
-              </div>
             </div>
           </VFCard>
           {cornerHandle}
@@ -771,11 +675,11 @@ export function DashboardPage() {
         </div>
       </div>
 
-      {/* 2 + 3. Main Content: Quick Actions (60%) + Right Column (40%) */}
+      {/* 2 + 3. Main Content: Quick Actions (60%) + Student Attendance (40%) */}
       <div className="flex flex-col lg:flex-row gap-4 items-stretch">
 
-        {/* LEFT: Quick Actions Hub — 60% width, 4 × 5 = 20 fixed modules */}
-        <div className="w-full lg:w-[60%] flex-[60] min-w-0 flex flex-col">
+        {/* LEFT: Quick Actions Hub — 60% width, 4 × 5 = 20 square box modules */}
+        <div className="w-full lg:w-[60%] flex-[60] min-w-0">
           <VFCard
             title={
               <div className="flex items-center gap-2">
@@ -788,8 +692,8 @@ export function DashboardPage() {
               </div>
             }
             description={isHindi ? '20 प्रमुख प्रशासनिक एवं शैक्षणिक कार्यप्रणाली' : '20 Fixed Core Operational & Academic Management Modules'}
-            className="flex-1 h-full border-border/80 bg-card shadow-xs rounded-[4px]"
-            bodyClassName="p-3 sm:p-3.5 flex-1 flex flex-col justify-between"
+            className="border-border/80 bg-card shadow-xs rounded-[4px]"
+            bodyClassName="p-3 sm:p-3.5"
             actions={
               <Link to="/shortcuts">
                 <VFButton
@@ -808,16 +712,16 @@ export function DashboardPage() {
                 <Link
                   key={action.id}
                   to={action.route}
-                  className="p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#141414] hover:bg-[#1c1c1c] hover:border-primary/50 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md min-h-[114px] sm:min-h-[122px] cursor-pointer"
+                  className="aspect-square p-2.5 sm:p-3 rounded-[4px] border border-border/75 bg-[#141414] hover:bg-[#1c1c1c] hover:border-primary/50 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <div className="flex-1 flex items-center justify-center w-full my-auto">
                     <ThreeDIcon src={action.iconSrc} alt={action.label} />
                   </div>
                   <div className="w-full pt-1">
-                    <p className="text-xs sm:text-[13px] font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-1">
+                    <p className="text-xs sm:text-sm font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-1">
                       {isHindi ? action.hindiLabel : action.label}
                     </p>
-                    <p className="text-[10.5px] text-muted-foreground font-medium mt-0.5 truncate px-1">
+                    <p className="text-[11px] text-muted-foreground font-medium mt-0.5 truncate px-1">
                       {isHindi ? action.hindiDesc : action.desc}
                     </p>
                   </div>
@@ -827,10 +731,9 @@ export function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT: Student Attendance (expands to fill height) + License (fixed at bottom) — 40% width */}
-        <div className="w-full lg:w-[40%] flex-[40] min-w-0 flex flex-col gap-4">
+        {/* RIGHT: Student Attendance — 40% width, expands to match Quick Actions height */}
+        <div className="w-full lg:w-[40%] flex-[40] min-w-0 flex flex-col self-stretch">
           {renderSectionCard('student_attendance', 0)}
-          {renderSectionCard('license_details', 1)}
         </div>
 
       </div>
