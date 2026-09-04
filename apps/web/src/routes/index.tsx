@@ -49,9 +49,10 @@ export interface ShortcutAction {
   hindiDesc: string;
   route: string;
   iconSrc: string;
+  glowColor: string;
 }
 
-// 20 Fixed Modules organized in a strict 4 × 5 grid layout with authentic transparent 3D icons from 3dicons.co
+// 20 Fixed Modules organized in a strict 5 × 4 grid layout with authentic transparent 3D icons from 3dicons.co
 const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'students',
@@ -61,6 +62,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'दस्तावेज व प्रोफाइल',
     route: '/students',
     iconSrc: '/icons/3d/students.png?v=5',
+    glowColor: 'rgba(217, 119, 6, 0.20)',
   },
   {
     id: 'admissions',
@@ -70,6 +72,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'प्रवेश व सत्यापन',
     route: '/admissions',
     iconSrc: '/icons/3d/admissions.png?v=5',
+    glowColor: 'rgba(225, 29, 72, 0.20)',
   },
   {
     id: 'attendance',
@@ -79,6 +82,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'बायोमेट्रिक व रजिस्टर',
     route: '/attendance',
     iconSrc: '/icons/3d/attendance.png?v=5',
+    glowColor: 'rgba(239, 68, 68, 0.20)',
   },
   {
     id: 'fees',
@@ -88,6 +92,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'शुल्क व रसीदें',
     route: '/fees',
     iconSrc: '/icons/3d/fees.png?v=5',
+    glowColor: 'rgba(190, 24, 93, 0.20)',
   },
   {
     id: 'teachers',
@@ -97,6 +102,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'कार्यभार व रोस्टर',
     route: '/teachers',
     iconSrc: '/icons/3d/teachers.png?v=5',
+    glowColor: 'rgba(219, 39, 119, 0.20)',
   },
   {
     id: 'timetable',
@@ -106,6 +112,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'पीरियड्स व रूटीन',
     route: '/timetable',
     iconSrc: '/icons/3d/timetable.png?v=5',
+    glowColor: 'rgba(234, 88, 12, 0.20)',
   },
   {
     id: 'academics',
@@ -115,6 +122,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'कक्षा पाठ्यक्रम',
     route: '/academics',
     iconSrc: '/icons/3d/academics.png?v=5',
+    glowColor: 'rgba(59, 130, 246, 0.20)',
   },
   {
     id: 'homework',
@@ -124,6 +132,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'असाइनमेंट व जांच',
     route: '/homework',
     iconSrc: '/icons/3d/homework.png?v=5',
+    glowColor: 'rgba(217, 119, 6, 0.20)',
   },
   {
     id: 'elibrary',
@@ -133,6 +142,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'डिजिटल पाठ्यपुस्तकें',
     route: '/elibrary',
     iconSrc: '/icons/3d/elibrary.png?v=5',
+    glowColor: 'rgba(147, 51, 234, 0.20)',
   },
   {
     id: 'examinations',
@@ -142,6 +152,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'मार्कशीट व परिणाम',
     route: '/examinations',
     iconSrc: '/icons/3d/examinations.png?v=5',
+    glowColor: 'rgba(225, 29, 72, 0.20)',
   },
   {
     id: 'notices',
@@ -151,6 +162,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'घोषणाएं व संदेश',
     route: '/notices',
     iconSrc: '/icons/3d/notices.png?v=5',
+    glowColor: 'rgba(234, 88, 12, 0.20)',
   },
   {
     id: 'salary',
@@ -160,6 +172,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'पेरोल व वेतन पर्ची',
     route: '/salary',
     iconSrc: '/icons/3d/salary.png?v=5',
+    glowColor: 'rgba(180, 83, 9, 0.20)',
   },
   {
     id: 'scholarships',
@@ -169,6 +182,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'फीस छूट व अनुदान',
     route: '/scholarships',
     iconSrc: '/icons/3d/scholarships.png?v=5',
+    glowColor: 'rgba(202, 138, 4, 0.20)',
   },
   {
     id: 'reports',
@@ -178,6 +192,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'विश्लेषण व ऑडिट',
     route: '/reports',
     iconSrc: '/icons/3d/reports.png?v=5',
+    glowColor: 'rgba(225, 29, 72, 0.20)',
   },
   {
     id: 'settings',
@@ -187,6 +202,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'सत्र व विन्यास',
     route: '/settings',
     iconSrc: '/icons/3d/settings.png?v=5',
+    glowColor: 'rgba(244, 63, 94, 0.20)',
   },
   {
     id: 'statistics',
@@ -196,6 +212,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'रिपोर्ट व विश्लेषण',
     route: '/statistics',
     iconSrc: '/icons/3d/statistics.png?v=5',
+    glowColor: 'rgba(168, 85, 247, 0.20)',
   },
   {
     id: 'audit',
@@ -205,6 +222,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'गतिविधि इतिहास',
     route: '/audit',
     iconSrc: '/icons/3d/audit.png?v=5',
+    glowColor: 'rgba(99, 102, 241, 0.20)',
   },
   {
     id: 'security',
@@ -214,6 +232,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'पहुंच व अनुमतियां',
     route: '/security',
     iconSrc: '/icons/3d/security.png?v=5',
+    glowColor: 'rgba(16, 185, 129, 0.20)',
   },
   {
     id: 'portal',
@@ -223,6 +242,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'अभिभावक पहुंच',
     route: '/portal',
     iconSrc: '/icons/3d/portal.png?v=5',
+    glowColor: 'rgba(6, 182, 212, 0.20)',
   },
   {
     id: 'resources',
@@ -232,17 +252,18 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'शिक्षण सामग्री',
     route: '/resources',
     iconSrc: '/icons/3d/resources.png?v=5',
+    glowColor: 'rgba(217, 119, 6, 0.20)',
   },
 ];
 
-// Clean, prominent 3D Icon Component — authentic transparent renders from 3dicons.co without any background or glow
+// Clean, prominent 3D Icon Component with authentic transparent renders from 3dicons.co
 function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative flex items-center justify-center shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13">
+    <div className="relative flex items-center justify-center shrink-0 w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px]">
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-contain transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
+        className="w-full h-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)] transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
         loading="lazy"
       />
     </div>
@@ -561,7 +582,7 @@ export function DashboardPage() {
       },
     });
 
-    // 1. Student Attendance Exceptions Section — expands and gains height based on available vertical space
+    // 1. Student Attendance Exceptions Section — strictly matches Quick Actions height with internal custom scrollbar
     if (sectionId === 'student_attendance') {
       return (
         <div key="student_attendance" {...getSectionWrapperProps("flex-1 h-full min-h-0 flex flex-col")}>
@@ -583,7 +604,7 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-2.5 pr-1">
+            <div className="flex-1 min-h-0 max-h-[420px] lg:max-h-none overflow-y-auto custom-scrollbar space-y-2.5 pr-1">
               {studentExceptions.map((s, i) => (
                 <div
                   key={i}
@@ -686,7 +707,7 @@ export function DashboardPage() {
       {/* 2 + 3. Main Content: Quick Actions (60%) + Student Attendance (40%) */}
       <div className="flex flex-col lg:flex-row gap-4 items-stretch">
 
-        {/* LEFT: Quick Actions Hub — 60% width, 5 × 4 = 20 square box modules */}
+        {/* LEFT: Quick Actions Hub — 60% width, 5 × 4 = 20 square box modules (sole height driver) */}
         <div className="w-full lg:w-[60%] flex-[60] min-w-0">
           <VFCard
             title={isHindi ? 'त्वरित प्रबंधन कार्य (Quick Actions)' : 'Quick Management Actions'}
@@ -711,12 +732,23 @@ export function DashboardPage() {
                 <Link
                   key={action.id}
                   to={action.route}
-                  className="aspect-square p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#141414] hover:bg-[#1c1c1c] hover:border-primary/50 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
+                  className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#171717] hover:border-border transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
                 >
-                  <div className="flex-1 flex items-center justify-center w-full my-auto">
+                  {/* Subtle dark ambient glow inside card matching icon's color */}
+                  <div
+                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-70 group-hover/shortcut:opacity-100"
+                    style={{
+                      background: `radial-gradient(circle at 50% 36%, ${action.glowColor} 0%, rgba(18, 18, 18, 0) 72%)`,
+                    }}
+                  />
+
+                  {/* Relative container for Icon so it floats above the ambient glow */}
+                  <div className="relative z-1 flex-1 flex items-center justify-center w-full my-auto">
                     <ThreeDIcon src={action.iconSrc} alt={action.label} />
                   </div>
-                  <div className="w-full pt-1">
+
+                  {/* Text footer */}
+                  <div className="relative z-1 w-full pt-1">
                     <p className="text-[11.5px] sm:text-xs font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-0.5">
                       {isHindi ? action.hindiLabel : action.label}
                     </p>
@@ -730,9 +762,11 @@ export function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT: Student Attendance — 40% width, expands to match Quick Actions height */}
-        <div className="w-full lg:w-[40%] flex-[40] min-w-0 flex flex-col self-stretch">
-          {renderSectionCard('student_attendance', 0)}
+        {/* RIGHT: Student Attendance — 40% width, height strictly matches Quick Actions */}
+        <div className="w-full lg:w-[40%] flex-[40] min-w-0 relative">
+          <div className="lg:absolute lg:inset-0 flex flex-col">
+            {renderSectionCard('student_attendance', 0)}
+          </div>
         </div>
 
       </div>
