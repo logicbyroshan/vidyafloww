@@ -8,12 +8,12 @@ import {
   VFInput,
   VFSelect,
   VFDrawer,
+  VFCard,
   cn,
 } from '@vidyafloww/ui';
 import {
   BookOpen,
   Search,
-  Book,
   Plus,
   Lock,
   ShieldAlert,
@@ -584,84 +584,89 @@ export function ELibraryPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* 1. Unified Header Bar: Search, Filters, Inline Stats & Add Book Action */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-2 shrink-0 shadow-xs">
-        {/* Left: Search & Filter Controls with compact gap */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          {/* Search Box */}
-          <div className="relative w-52 sm:w-60">
-            <Search className="h-3.5 w-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <VFInput
-              placeholder={isHindi ? 'पुस्तक, विषय, कोड खोजें...' : 'Search books, subjects, code...'}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
-            />
+    <VFPageContainer className="space-y-4">
+      {/* Universal Big Box Container for E-Library Catalog — No internal scrollbar */}
+      <VFCard
+        title={
+          <div className="flex items-center gap-2.5">
+            <BookOpen className="h-4.5 w-4.5 text-teal-400 shrink-0" />
+            <span className="text-base font-extrabold text-foreground tracking-tight">
+              {isHindi ? 'डिजिटल ई-लाइब्रेरी कैटलॉग' : 'Digital E-Library Catalog'}
+            </span>
+            <VFBadge variant="outline" className="text-xs font-mono font-bold bg-[#1a1a1a] border-border text-foreground">
+              {catalog.length} {isHindi ? 'पुस्तकें' : 'Volumes'}
+            </VFBadge>
           </div>
+        }
+        description={
+          isHindi
+            ? 'पाठ्यपुस्तकें, संदर्भ ग्रंथ व डिजिटल अध्ययन सामग्री (संरक्षित पठन मोड)'
+            : 'Curated digital textbooks, NCERT exemplars & reference volumes in DRM study mode'
+        }
+        headerClassName="py-3 px-4 sm:px-5"
+        className="rounded-[4px] border-border/80 bg-card shadow-xs"
+        bodyClassName="p-4 sm:p-5 space-y-4"
+        actions={
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Search Box */}
+            <div className="relative w-48 sm:w-56">
+              <Search className="h-3.5 w-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <VFInput
+                placeholder={isHindi ? 'पुस्तक, विषय, कोड खोजें...' : 'Search books, subjects, code...'}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+              />
+            </div>
 
-          {/* Grade Filter */}
-          <div className="w-28 sm:w-32">
-            <VFSelect
-              value={selectedGrade}
-              onChange={(e) => setSelectedGrade(String(e.target.value))}
-              options={[
-                { label: isHindi ? 'सभी कक्षाएं' : 'All Classes', value: 'All' },
-                { label: 'Class 10', value: 'Class 10' },
-                { label: 'Class 12', value: 'Class 12' },
-                { label: 'Class 11', value: 'Class 11' },
-                { label: 'Class 9', value: 'Class 9' },
-                { label: 'Class 8', value: 'Class 8' },
-                { label: 'Class 6', value: 'Class 6' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
-            />
+            {/* Grade Filter */}
+            <div className="w-28 sm:w-32">
+              <VFSelect
+                value={selectedGrade}
+                onChange={(e) => setSelectedGrade(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी कक्षाएं' : 'All Classes', value: 'All' },
+                  { label: 'Class 10', value: 'Class 10' },
+                  { label: 'Class 12', value: 'Class 12' },
+                  { label: 'Class 11', value: 'Class 11' },
+                  { label: 'Class 9', value: 'Class 9' },
+                  { label: 'Class 8', value: 'Class 8' },
+                  { label: 'Class 6', value: 'Class 6' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
+              />
+            </div>
+
+            {/* Publisher Filter */}
+            <div className="w-32 sm:w-36">
+              <VFSelect
+                value={selectedPublisher}
+                onChange={(e) => setSelectedPublisher(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी प्रकाशक' : 'All Publishers', value: 'All' },
+                  { label: 'NCERT', value: 'NCERT' },
+                  { label: 'CBSE Curriculum', value: 'CBSE Curriculum' },
+                  { label: 'Dhanpat Rai & Co.', value: 'Dhanpat Rai & Co.' },
+                  { label: 'Sultan Chand & Sons', value: 'Sultan Chand & Sons' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
+              />
+            </div>
+
+            {/* Add New Book Button (Opens Drawer) */}
+            <VFButton
+              size="sm"
+              onClick={() => setIsAddBookDrawerOpen(true)}
+              className="h-8 px-3 text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] cursor-pointer"
+              leftIcon={<Plus className="h-3.5 w-3.5" />}
+            >
+              {isHindi ? 'नई पुस्तक जोड़ें' : 'Add New Book'}
+            </VFButton>
           </div>
-
-          {/* Publisher Filter */}
-          <div className="w-32 sm:w-36">
-            <VFSelect
-              value={selectedPublisher}
-              onChange={(e) => setSelectedPublisher(String(e.target.value))}
-              options={[
-                { label: isHindi ? 'सभी प्रकाशक' : 'All Publishers', value: 'All' },
-                { label: 'NCERT', value: 'NCERT' },
-                { label: 'CBSE Curriculum', value: 'CBSE Curriculum' },
-                { label: 'Dhanpat Rai & Co.', value: 'Dhanpat Rai & Co.' },
-                { label: 'Sultan Chand & Sons', value: 'Sultan Chand & Sons' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
-            />
-          </div>
-        </div>
-
-        {/* Right: Total Volumes Counter & Add Book Action */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Total Volumes Stat */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-            <Book className="h-3.5 w-3.5 text-teal-400" />
-            <span className="text-muted-foreground">{isHindi ? 'कुल:' : 'Total:'}</span>
-            <span className="font-extrabold text-foreground">{catalog.length}</span>
-            <span className="text-xs text-muted-foreground uppercase">{isHindi ? 'पुस्तकें' : 'Books'}</span>
-          </div>
-
-          <div className="h-4 w-[1px] bg-border/80 hidden sm:block" />
-
-          {/* Add New Book Button (Opens Drawer) */}
-          <VFButton
-            size="sm"
-            onClick={() => setIsAddBookDrawerOpen(true)}
-            className="h-8 px-3 text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] cursor-pointer"
-            leftIcon={<Plus className="h-3.5 w-3.5" />}
-          >
-            {isHindi ? 'नई पुस्तक जोड़ें' : 'Add New Book'}
-          </VFButton>
-        </div>
-      </div>
-
-      {/* 2. Catalog Grid: Cards with Book Covers */}
-      <div className="flex-1 min-h-0 overflow-y-auto pr-0.5 custom-scrollbar">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 pb-4">
+        }
+      >
+        {/* Catalog Grid inside Unified Big Box Container — Naturally flows with main page scroll */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5">
           {filteredCatalog.map((item) => (
             <div
               key={item.id}
@@ -753,7 +758,7 @@ export function ELibraryPage() {
             </p>
           </div>
         )}
-      </div>
+      </VFCard>
 
       {/* 4. Native Study Room (Full Screen Protected Reader View rendered via Portal) */}
       {activeStudyBook && typeof document !== 'undefined' && createPortal(

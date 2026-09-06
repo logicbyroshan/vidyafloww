@@ -446,7 +446,7 @@ function ExaminationsPage() {
   const currentScheme = marksSchemes[selectedSchemeClass] || marksSchemes['class-10'];
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+    <VFPageContainer className="space-y-4">
       {/* 1. Header Action Toolbar (No redundant page title) */}
       <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 shrink-0 shadow-xs">
         {/* Left: Session Badge & 3 Main View Switchers */}
@@ -637,7 +637,7 @@ function ExaminationsPage() {
           </div>
 
           {/* Official Date Sheet — Card Grid Layout */}
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-0.5">
+          <div>
             <div className="space-y-2.5 pb-4">
               {activeExam.timetable.map((paper, idx) => {
                 const statusColor =
@@ -745,7 +745,7 @@ function ExaminationsPage() {
           VIEW 2: CLASS-WISE MARKS SCHEME & WEIGHTAGES CONFIGURATOR
           ══════════════════════════════════════════════════════════════════════ */}
       {activeView === 'scheme' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3 overflow-y-auto custom-scrollbar pr-0.5">
+        <div className="space-y-3">
           {/* Class Switcher Strip */}
           <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0">
             <div className="flex items-center gap-3">
@@ -1036,7 +1036,7 @@ function ExaminationsPage() {
           </div>
 
           {/* Marks Table */}
-          <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0" bodyClassName="p-0 overflow-y-auto custom-scrollbar">
+          <VFCard className="bg-[#141414] border-border/80" bodyClassName="p-0">
             <VFTable className="rounded-none border-0 text-xs">
               <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
                 <VFTableRow>

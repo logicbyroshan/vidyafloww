@@ -137,7 +137,7 @@ function LicenseManagementPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4 w-full">
+    <VFPageContainer className="space-y-4 w-full">
       {/* 1. TOP STATUS & NAVIGATION BAR */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 rounded-lg border border-border bg-[#101010] shadow-xs shrink-0">
         <div className="flex items-center gap-3.5">
@@ -189,8 +189,8 @@ function LicenseManagementPage() {
         </div>
       </div>
 
-      {/* Scrollable Main Content Container */}
-      <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-4 pr-1">
+      {/* Main Content Container — Natural flow matching page scroll */}
+      <div className="space-y-4">
         
         {/* 2. TOP OVERVIEW KPI CARDS (Subscription, Capacity, Security) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

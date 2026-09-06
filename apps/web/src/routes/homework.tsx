@@ -391,7 +391,7 @@ function HomeworkPage() {
               </VFBadge>
             </div>
 
-            <div className="space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
+            <div className="space-y-2">
               {[
                 { roll: '101', name: 'Aditya Verma', status: 'Turned In', time: 'Yesterday, 04:20 PM', file: 'Aditya_Math_HW.pdf' },
                 { roll: '102', name: 'Priya Sharma', status: 'Turned In', time: 'Yesterday, 07:15 PM', file: 'Priya_Math_HW.pdf' },

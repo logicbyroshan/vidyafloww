@@ -582,15 +582,15 @@ export function DashboardPage() {
       },
     });
 
-    // 1. Student Attendance Exceptions Section — strictly matches Quick Actions height with internal custom scrollbar
+    // 1. Student Attendance Exceptions Section — clean natural list without internal scrollbar
     if (sectionId === 'student_attendance') {
       return (
-        <div key="student_attendance" {...getSectionWrapperProps("flex-1 h-full min-h-0 flex flex-col")}>
+        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col")}>
           <VFCard
             title={t('attendance.studentTab')}
             headerClassName="py-2.5 px-3.5 sm:px-4"
-            className="flex-1 h-full min-h-0 rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col"
-            bodyClassName="p-3.5 sm:p-4 flex-1 min-h-0 flex flex-col"
+            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col"
+            bodyClassName="p-3.5 sm:p-4 flex flex-col"
             actions={
               <Link to="/attendance">
                 <VFButton
@@ -604,8 +604,8 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="flex-1 min-h-0 max-h-[420px] lg:max-h-none overflow-y-auto custom-scrollbar space-y-2.5 pr-1">
-              {studentExceptions.map((s, i) => (
+            <div className="space-y-2.5">
+              {studentExceptions.slice(0, 6).map((s, i) => (
                 <div
                   key={i}
                   className="p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-xs shrink-0"
@@ -770,11 +770,9 @@ export function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT: Student Attendance — 40% width, height strictly matches Quick Actions */}
-        <div className="w-full lg:w-[40%] flex-[40] min-w-0 relative">
-          <div className="lg:absolute lg:inset-0 flex flex-col">
-            {renderSectionCard('student_attendance', 0)}
-          </div>
+        {/* RIGHT: Student Attendance — 40% width, natural flow matching page scroll */}
+        <div className="w-full lg:w-[40%] flex-[40] min-w-0 flex flex-col">
+          {renderSectionCard('student_attendance', 0)}
         </div>
 
       </div>

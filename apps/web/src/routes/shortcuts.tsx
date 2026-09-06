@@ -183,7 +183,7 @@ function ShortcutsConfigPage() {
   }, [sortedAllShortcuts, searchQuery]);
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3.5 w-full">
+    <VFPageContainer className="space-y-4 w-full">
       {/* Top Header & Navigation Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-lg border border-border bg-[#101010] shadow-xs shrink-0">
         <div className="flex items-center gap-3">
@@ -247,7 +247,7 @@ function ShortcutsConfigPage() {
       )}
 
       {/* Main Full-Width Split Layout: Left Pool (All with Active sorted on top) + Right Dashboard Grid (12 Slots) */}
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
         {/* LEFT COLUMN: All Shortcuts Pool (Active on Top with Remove, Inactive below with Add) (6 Cols) */}
         <div className="lg:col-span-6 flex flex-col min-h-0">
@@ -282,8 +282,8 @@ function ShortcutsConfigPage() {
               />
             </div>
 
-            {/* Scrollable List of All Modules */}
-            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-2 pr-1">
+            {/* List of All Modules — Natural page flow */}
+            <div className="space-y-2">
               {filteredSortedShortcuts.map((action) => {
                 const Icon = action.icon;
                 const isActive = selectedIds.includes(action.id);
@@ -390,7 +390,7 @@ function ShortcutsConfigPage() {
             bodyClassName="p-3.5 flex flex-col flex-1 min-h-0 space-y-3 overflow-hidden"
           >
             {/* 12-Slot Dashboard Grid Preview (4 cols on large screens, 3 cols on medium) */}
-            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-1">
+            <div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                 {/* Active items */}
                 {activeShortcutObjects.map((action, idx) => {
