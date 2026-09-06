@@ -724,7 +724,7 @@ function ScholarshipsPage() {
           </div>
         }
       >
-        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto custom-scrollbar p-5 space-y-5">
+        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto no-scrollbar p-5 space-y-5">
           {/* Header Banner */}
           <div className="p-4 rounded-md bg-[#141414] border border-border/80 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -1108,7 +1108,7 @@ function ScholarshipsPage() {
         }
       >
         {activeRecord && (
-          <div className="flex-1 flex flex-col min-h-0 overflow-y-auto custom-scrollbar p-5 space-y-4">
+          <div className="flex-1 flex flex-col min-h-0 overflow-y-auto no-scrollbar p-5 space-y-4">
             {/* Header Identity Banner */}
             <div className="p-4 rounded-md bg-[#141414] border border-border/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1 min-w-0">

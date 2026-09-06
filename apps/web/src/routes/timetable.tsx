@@ -651,7 +651,7 @@ function TimetablePage() {
         </div>
 
         {/* Sleek Deep Dark Grid with Mathematically Equal Height & Width Distribution */}
-        <div className="flex-1 min-h-0 border border-[#242424] rounded-lg bg-[#0a0a0a] overflow-x-auto overflow-y-hidden custom-scrollbar shadow-sm flex flex-col min-w-[900px]">
+        <div className="flex-1 min-h-0 border border-[#242424] rounded-lg bg-[#0a0a0a] overflow-x-auto overflow-y-hidden no-scrollbar shadow-sm flex flex-col min-w-[900px]">
           {/* Header Row */}
           <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#242424] bg-[#121212] shrink-0">
             <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#242424] select-none flex items-center justify-center text-center">
@@ -808,7 +808,7 @@ function TimetablePage() {
             </p>
           </div>
 
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-2.5 pr-1">
+          <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-2.5 pr-1">
             {periodConfig.map((p, idx) => (
               <div
                 key={p.id}

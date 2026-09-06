@@ -188,7 +188,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
               position="popper"
               sideOffset={4}
             >
-              <SelectPrimitive.Viewport className="p-0.5 max-h-56 overflow-y-auto custom-scrollbar">
+              <SelectPrimitive.Viewport className="p-0.5 max-h-56 overflow-y-auto no-scrollbar">
                 {options.map((opt) => (
                   <SelectPrimitive.Item
                     key={String(opt.value)}

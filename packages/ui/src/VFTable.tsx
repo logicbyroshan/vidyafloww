@@ -8,7 +8,7 @@ import { VFButton } from './VFButton';
 // Base semantic table wrappers
 export function VFTable({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto border border-border rounded-[4px] bg-card custom-scrollbar">
+    <div className="w-full overflow-x-auto border border-border rounded-[4px] bg-card no-scrollbar">
       <table className={cn("w-full border-collapse text-left text-sm", className)} {...props} />
     </div>
   );
@@ -230,7 +230,7 @@ export function VFDataTable<T extends Record<string, any>>({
       </div>
 
       {/* Main Scrollable Table Area */}
-      <div className="flex-1 overflow-auto custom-scrollbar w-full relative min-h-0 bg-card">
+      <div className="flex-1 overflow-auto no-scrollbar w-full relative min-h-0 bg-card">
         {isLoading ? (
           <div className="p-6">
             <VFLoadingTable rows={6} cols={activeColumns.length} />

@@ -287,7 +287,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
             </div>
 
             {/* Chat Messages Body */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar bg-background/50">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 no-scrollbar bg-background/50">
               {messages.map((msg) => {
                 const isAI = msg.sender === 'ai';
                 return (

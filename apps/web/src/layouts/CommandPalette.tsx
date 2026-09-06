@@ -256,7 +256,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             </div>
 
             {/* Scrollable Command List */}
-            <Command.List className="max-h-[380px] overflow-y-auto p-3 space-y-1 custom-scrollbar">
+            <Command.List className="max-h-[380px] overflow-y-auto p-3 space-y-1 no-scrollbar">
               <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1.5">
                 <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
                 <p className="font-bold text-foreground text-sm">{isHindi ? "कोई परिणाम नहीं मिला" : "No matching results found"}</p>

@@ -1232,7 +1232,7 @@ function ExaminationsPage() {
           </div>
 
           {/* Form Content */}
-          <div className="flex-1 min-h-0 overflow-y-auto p-5 space-y-4 custom-scrollbar text-xs">
+          <div className="flex-1 min-h-0 overflow-y-auto p-5 space-y-4 no-scrollbar text-xs">
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">{isHindi ? 'परीक्षा शीर्षक' : 'Examination Title'}</label>
               <VFInput

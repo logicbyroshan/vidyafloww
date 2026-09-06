@@ -584,8 +584,8 @@ export function ELibraryPage() {
   };
 
   return (
-    <VFPageContainer className="space-y-4">
-      {/* Universal Big Box Container for E-Library Catalog — No internal scrollbar */}
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+      {/* Universal Big Box Container for E-Library Catalog — Fixed Header & Container, Only Book Cards Scroll */}
       <VFCard
         title={
           <div className="flex items-center gap-2.5">
@@ -603,9 +603,9 @@ export function ELibraryPage() {
             ? 'पाठ्यपुस्तकें, संदर्भ ग्रंथ व डिजिटल अध्ययन सामग्री (संरक्षित पठन मोड)'
             : 'Curated digital textbooks, NCERT exemplars & reference volumes in DRM study mode'
         }
-        headerClassName="py-3 px-4 sm:px-5"
-        className="rounded-[4px] border-border/80 bg-card shadow-xs"
-        bodyClassName="p-4 sm:p-5 space-y-4"
+        headerClassName="py-3 px-4 sm:px-5 shrink-0 bg-card border-b border-border/80"
+        className="w-full flex-1 flex flex-col min-h-0 rounded-[4px] border-border/80 bg-card shadow-xs overflow-hidden"
+        bodyClassName="p-4 sm:p-5 flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-4"
         actions={
           <div className="flex flex-wrap items-center gap-2">
             {/* Search Box */}
@@ -876,7 +876,7 @@ export function ELibraryPage() {
                 </span>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+              <div className="flex-1 overflow-y-auto p-2 space-y-1 no-scrollbar">
                 {activeStudyBook.chapters.map((chap, i) => (
                   <button
                     key={i}
@@ -1236,7 +1236,7 @@ export function ELibraryPage() {
           </div>
 
           {/* Scrollable Form Body */}
-          <div className="flex-1 min-h-0 overflow-y-auto p-5 space-y-4 custom-scrollbar text-xs">
+          <div className="flex-1 min-h-0 overflow-y-auto p-5 space-y-4 no-scrollbar text-xs">
             {/* 1. PDF File Upload & Selection Box */}
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-foreground flex items-center justify-between">
@@ -1502,7 +1502,7 @@ export function ELibraryPage() {
                 placeholder="Chapter 1: Units & Dimensions&#10;Chapter 2: Kinematics&#10;Chapter 3: Laws of Motion"
                 value={newChaptersText}
                 onChange={(e) => setNewChaptersText(e.target.value)}
-                className="w-full rounded-[4px] bg-[#1a1a1a] border border-border p-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary custom-scrollbar"
+                className="w-full rounded-[4px] bg-[#1a1a1a] border border-border p-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary no-scrollbar"
               />
             </div>
 

@@ -1060,7 +1060,7 @@ function SalaryPage() {
         }
       >
         {activeRecord && (
-          <div className="flex-1 flex flex-col min-h-0 overflow-y-auto custom-scrollbar">
+          <div className="flex-1 flex flex-col min-h-0 overflow-y-auto no-scrollbar">
             {/* 1. Header Identity Banner with Optimized Layout & Structured Info Grid */}
             <div className="p-4 bg-[#141414] border-b border-border/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shrink-0">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1 min-w-0">

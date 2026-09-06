@@ -473,7 +473,7 @@ function LicenseManagementPage() {
           className="bg-[#0d0d0d] border-border/90"
           bodyClassName="p-0 overflow-hidden"
         >
-          <div className="overflow-x-auto custom-scrollbar">
+          <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-[#242424] bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">

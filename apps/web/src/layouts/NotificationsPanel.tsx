@@ -120,7 +120,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
         )}
 
         {/* Notification List */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-2.5 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 space-y-2.5 no-scrollbar">
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground p-6 space-y-3">
               <div className="h-12 w-12 rounded-md bg-muted border border-border flex items-center justify-center">
