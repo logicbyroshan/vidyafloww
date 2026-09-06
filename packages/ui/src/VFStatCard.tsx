@@ -56,6 +56,18 @@ const ACCENT_STYLES: Record<string, { card: string; topBar: string; icon: string
   },
 };
 
+const ACCENT_GLOW_COLORS: Record<string, string> = {
+  blue: 'rgba(59, 130, 246, 0.04)',
+  emerald: 'rgba(16, 185, 129, 0.04)',
+  amber: 'rgba(245, 158, 11, 0.04)',
+  purple: 'rgba(168, 85, 247, 0.04)',
+  rose: 'rgba(244, 63, 94, 0.04)',
+  cyan: 'rgba(6, 182, 212, 0.04)',
+  indigo: 'rgba(99, 102, 241, 0.04)',
+  primary: 'rgba(234, 88, 12, 0.035)',
+  none: 'rgba(234, 88, 12, 0.025)',
+};
+
 export function VFStatCard({
   title,
   value,
@@ -71,6 +83,7 @@ export function VFStatCard({
 }: VFStatCardProps) {
   const displayLabel = trendLabel || description;
   const accent = accentColor !== 'none' && accentColor ? (ACCENT_STYLES[accentColor] || ACCENT_STYLES.primary) : null;
+  const glowColor = (accentColor && ACCENT_GLOW_COLORS[accentColor]) || 'rgba(234, 88, 12, 0.025)';
 
   return (
     <div
@@ -81,12 +94,21 @@ export function VFStatCard({
       )}
       {...props}
     >
+      {/* Subtle ambient stat card glow */}
+      <div
+        className="pointer-events-none absolute inset-0 transition-opacity duration-300 opacity-50 group-hover:opacity-90 z-0"
+        style={{
+          background: `radial-gradient(ellipse 75% 45% at 50% 0%, ${glowColor} 0%, transparent 100%)`,
+        }}
+        aria-hidden="true"
+      />
+
       {accent && showTopBar && (
-        <div className={cn("absolute top-0 left-0 right-0 h-[3.5px]", accent.topBar)} />
+        <div className={cn("absolute top-0 left-0 right-0 h-[3.5px] z-1", accent.topBar)} />
       )}
       
       {/* Top / Main Section: Left has Title & Value, Right has Large Icon Badge */}
-      <div className={cn("flex items-center justify-between gap-3 min-w-0", displayLabel ? "mb-2.5" : "my-auto")}>
+      <div className={cn("relative z-1 flex items-center justify-between gap-3 min-w-0", displayLabel ? "mb-2.5" : "my-auto")}>
         <div className="flex flex-col gap-0.5 min-w-0 flex-1">
           {title && (
             <span className="text-xs font-bold text-muted-foreground tracking-normal truncate" title={title}>
@@ -116,7 +138,7 @@ export function VFStatCard({
 
       {/* Bottom Section: Trend Badge & Subtitle */}
       {!isLoading && displayLabel && (
-        <div className="flex items-center gap-2 flex-wrap min-w-0 text-xs mt-auto">
+        <div className="relative z-1 flex items-center gap-2 flex-wrap min-w-0 text-xs mt-auto">
           {trend && (
             <span
               className={cn(

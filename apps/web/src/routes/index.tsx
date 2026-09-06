@@ -62,7 +62,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'दस्तावेज व प्रोफाइल',
     route: '/students',
     iconSrc: '/icons/3d/students.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.20)',
+    glowColor: 'rgba(217, 119, 6, 0.06)',
   },
   {
     id: 'admissions',
@@ -72,7 +72,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'प्रवेश व सत्यापन',
     route: '/admissions',
     iconSrc: '/icons/3d/admissions.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.20)',
+    glowColor: 'rgba(225, 29, 72, 0.06)',
   },
   {
     id: 'attendance',
@@ -82,7 +82,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'बायोमेट्रिक व रजिस्टर',
     route: '/attendance',
     iconSrc: '/icons/3d/attendance.png?v=5',
-    glowColor: 'rgba(239, 68, 68, 0.20)',
+    glowColor: 'rgba(239, 68, 68, 0.06)',
   },
   {
     id: 'fees',
@@ -92,7 +92,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'शुल्क व रसीदें',
     route: '/fees',
     iconSrc: '/icons/3d/fees.png?v=5',
-    glowColor: 'rgba(190, 24, 93, 0.20)',
+    glowColor: 'rgba(190, 24, 93, 0.06)',
   },
   {
     id: 'teachers',
@@ -102,7 +102,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'कार्यभार व रोस्टर',
     route: '/teachers',
     iconSrc: '/icons/3d/teachers.png?v=5',
-    glowColor: 'rgba(219, 39, 119, 0.20)',
+    glowColor: 'rgba(219, 39, 119, 0.06)',
   },
   {
     id: 'timetable',
@@ -112,7 +112,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'पीरियड्स व रूटीन',
     route: '/timetable',
     iconSrc: '/icons/3d/timetable.png?v=5',
-    glowColor: 'rgba(234, 88, 12, 0.20)',
+    glowColor: 'rgba(234, 88, 12, 0.06)',
   },
   {
     id: 'academics',
@@ -122,7 +122,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'कक्षा पाठ्यक्रम',
     route: '/academics',
     iconSrc: '/icons/3d/academics.png?v=5',
-    glowColor: 'rgba(59, 130, 246, 0.20)',
+    glowColor: 'rgba(59, 130, 246, 0.06)',
   },
   {
     id: 'homework',
@@ -132,7 +132,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'असाइनमेंट व जांच',
     route: '/homework',
     iconSrc: '/icons/3d/homework.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.20)',
+    glowColor: 'rgba(217, 119, 6, 0.06)',
   },
   {
     id: 'elibrary',
@@ -142,7 +142,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'डिजिटल पाठ्यपुस्तकें',
     route: '/elibrary',
     iconSrc: '/icons/3d/elibrary.png?v=5',
-    glowColor: 'rgba(147, 51, 234, 0.20)',
+    glowColor: 'rgba(147, 51, 234, 0.06)',
   },
   {
     id: 'examinations',
@@ -152,7 +152,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'मार्कशीट व परिणाम',
     route: '/examinations',
     iconSrc: '/icons/3d/examinations.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.20)',
+    glowColor: 'rgba(225, 29, 72, 0.06)',
   },
   {
     id: 'notices',
@@ -162,7 +162,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'घोषणाएं व संदेश',
     route: '/notices',
     iconSrc: '/icons/3d/notices.png?v=5',
-    glowColor: 'rgba(234, 88, 12, 0.20)',
+    glowColor: 'rgba(234, 88, 12, 0.06)',
   },
   {
     id: 'salary',
@@ -172,7 +172,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'पेरोल व वेतन पर्ची',
     route: '/salary',
     iconSrc: '/icons/3d/salary.png?v=5',
-    glowColor: 'rgba(180, 83, 9, 0.20)',
+    glowColor: 'rgba(180, 83, 9, 0.06)',
   },
   {
     id: 'scholarships',
@@ -182,7 +182,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'फीस छूट व अनुदान',
     route: '/scholarships',
     iconSrc: '/icons/3d/scholarships.png?v=5',
-    glowColor: 'rgba(202, 138, 4, 0.20)',
+    glowColor: 'rgba(202, 138, 4, 0.06)',
   },
   {
     id: 'reports',
@@ -192,7 +192,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'विश्लेषण व ऑडिट',
     route: '/reports',
     iconSrc: '/icons/3d/reports.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.20)',
+    glowColor: 'rgba(225, 29, 72, 0.06)',
   },
   {
     id: 'settings',
@@ -202,7 +202,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'सत्र व विन्यास',
     route: '/settings',
     iconSrc: '/icons/3d/settings.png?v=5',
-    glowColor: 'rgba(244, 63, 94, 0.20)',
+    glowColor: 'rgba(244, 63, 94, 0.06)',
   },
   {
     id: 'statistics',
@@ -212,7 +212,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'रिपोर्ट व विश्लेषण',
     route: '/statistics',
     iconSrc: '/icons/3d/statistics.png?v=5',
-    glowColor: 'rgba(168, 85, 247, 0.20)',
+    glowColor: 'rgba(168, 85, 247, 0.06)',
   },
   {
     id: 'audit',
@@ -222,7 +222,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'गतिविधि इतिहास',
     route: '/audit',
     iconSrc: '/icons/3d/audit.png?v=5',
-    glowColor: 'rgba(99, 102, 241, 0.20)',
+    glowColor: 'rgba(99, 102, 241, 0.06)',
   },
   {
     id: 'security',
@@ -232,7 +232,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'पहुंच व अनुमतियां',
     route: '/security',
     iconSrc: '/icons/3d/security.png?v=5',
-    glowColor: 'rgba(16, 185, 129, 0.20)',
+    glowColor: 'rgba(16, 185, 129, 0.06)',
   },
   {
     id: 'portal',
@@ -242,7 +242,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'अभिभावक पहुंच',
     route: '/portal',
     iconSrc: '/icons/3d/portal.png?v=5',
-    glowColor: 'rgba(6, 182, 212, 0.20)',
+    glowColor: 'rgba(6, 182, 212, 0.06)',
   },
   {
     id: 'resources',
@@ -252,18 +252,18 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'शिक्षण सामग्री',
     route: '/resources',
     iconSrc: '/icons/3d/resources.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.20)',
+    glowColor: 'rgba(217, 119, 6, 0.06)',
   },
 ];
 
 // Clean, prominent 3D Icon Component with authentic transparent renders from 3dicons.co
 function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative flex items-center justify-center shrink-0 w-14 h-14 sm:w-16 sm:h-16 lg:w-[68px] lg:h-[68px]">
+    <div className="relative flex items-center justify-center shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13">
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)] transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
+        className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.30)] transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
         loading="lazy"
       />
     </div>
@@ -698,8 +698,16 @@ export function DashboardPage() {
       )}
 
       {/* 1. Top Full-Width KPI Metric Hub */}
-      <div className="rounded-[4px] border border-border/80 bg-card p-4 shadow-xs shrink-0 relative overflow-hidden">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="rounded-[4px] border border-border/80 bg-card p-4 shadow-xs shrink-0 relative overflow-hidden group/kpihub">
+        {/* Subtle ambient glow on Top KPI Metric Hub */}
+        <div
+          className="pointer-events-none absolute inset-0 transition-opacity duration-300 opacity-60 group-hover/kpihub:opacity-90 z-0"
+          style={{
+            background: 'radial-gradient(ellipse 70% 35% at 50% 0%, rgba(234, 88, 12, 0.025) 0%, transparent 100%)',
+          }}
+          aria-hidden="true"
+        />
+        <div className="relative z-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {currentKpis.map((kpiId, index) => renderKpiCard(kpiId, index))}
         </div>
       </div>
@@ -736,9 +744,9 @@ export function DashboardPage() {
                 >
                   {/* Subtle dark ambient glow inside card matching icon's color */}
                   <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-70 group-hover/shortcut:opacity-100"
+                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-35 group-hover/shortcut:opacity-70"
                     style={{
-                      background: `radial-gradient(circle at 50% 36%, ${action.glowColor} 0%, rgba(18, 18, 18, 0) 72%)`,
+                      background: `radial-gradient(circle at 50% 32%, ${action.glowColor} 0%, rgba(18, 18, 18, 0) 55%)`,
                     }}
                   />
 

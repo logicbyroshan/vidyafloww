@@ -10,7 +10,20 @@ export interface VFCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   bodyClassName?: string;
   topBarClassName?: string;
   accentColor?: 'blue' | 'emerald' | 'amber' | 'purple' | 'rose' | 'cyan' | 'indigo' | 'primary' | 'none';
+  showAmbientGlow?: boolean;
 }
+
+const ACCENT_GLOW_COLORS: Record<string, string> = {
+  blue: 'rgba(59, 130, 246, 0.035)',
+  emerald: 'rgba(16, 185, 129, 0.035)',
+  amber: 'rgba(245, 158, 11, 0.035)',
+  purple: 'rgba(168, 85, 247, 0.035)',
+  rose: 'rgba(244, 63, 94, 0.035)',
+  cyan: 'rgba(6, 182, 212, 0.035)',
+  indigo: 'rgba(99, 102, 241, 0.035)',
+  primary: 'rgba(234, 88, 12, 0.03)',
+  none: 'rgba(234, 88, 12, 0.025)',
+};
 
 export function VFCard({
   title,
@@ -23,19 +36,33 @@ export function VFCard({
   bodyClassName,
   topBarClassName,
   accentColor,
+  showAmbientGlow = true,
   ...props
 }: VFCardProps) {
+  const glowColor = (accentColor && ACCENT_GLOW_COLORS[accentColor]) || 'rgba(234, 88, 12, 0.025)';
+
   return (
     <div
       className={cn(
-        "rounded-[4px] border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col",
+        "rounded-[4px] border border-border/80 bg-card text-card-foreground shadow-xs transition-all duration-200 relative overflow-hidden flex flex-col group/vfcard",
         className
       )}
       {...props}
     >
+      {/* Subtle ambient card glow across the whole website */}
+      {showAmbientGlow && (
+        <div
+          className="pointer-events-none absolute inset-0 transition-opacity duration-300 opacity-60 group-hover/vfcard:opacity-90 z-0"
+          style={{
+            background: `radial-gradient(ellipse 70% 35% at 50% 0%, ${glowColor} 0%, transparent 100%)`,
+          }}
+          aria-hidden="true"
+        />
+      )}
+
       {(title || description || actions) && (
         <div className={cn(
-          "flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-5 py-4 border-b border-border/80 shrink-0",
+          "relative z-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-5 py-4 border-b border-border/80 shrink-0",
           headerBgClassName,
           headerClassName
         )}>
@@ -47,7 +74,7 @@ export function VFCard({
         </div>
       )}
       {children && (
-        <div className={cn("p-4 flex-1 min-h-0", bodyClassName)}>
+        <div className={cn("relative z-1 p-4 flex-1 min-h-0", bodyClassName)}>
           {children}
         </div>
       )}
