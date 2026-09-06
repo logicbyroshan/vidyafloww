@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFCard,
@@ -12,18 +12,12 @@ import {
   ShieldCheck,
   Key,
   Server,
-  MessageSquare,
-  Smartphone,
-  Sparkles,
-  ArrowLeft,
   Copy,
   Check,
   Eye,
   EyeOff,
   Download,
   RefreshCw,
-  HardDrive,
-  CheckCircle2,
   Lock,
   CreditCard,
   Building,
@@ -78,15 +72,6 @@ const INVOICE_HISTORY: InvoiceRecord[] = [
   },
 ];
 
-const ENTERPRISE_FEATURES = [
-  { title: 'Unlimited Students & Faculty Portals', desc: 'No per-seat barrier across student, parent, and teacher apps.' },
-  { title: 'Multi-Campus Realtime Sync', desc: 'Synchronize student dossiers, marks, and rosters across all branches.' },
-  { title: 'CBSE / State Board Compliance Audit Engine', desc: 'Automated 1-click export of official government format registries.' },
-  { title: 'Dedicated Institutional Account Manager', desc: 'Direct 24/7 priority SLA support line and technical onboarding.' },
-  { title: 'Biometric & RFID Attendance Integration', desc: 'Realtime hardware terminal API webhooks and auto-SMS triggers.' },
-  { title: '99.99% Guaranteed Cloud Uptime SLA', desc: 'SOC-2 Type II certified encrypted cloud infrastructure in Mumbai.' },
-];
-
 function LicenseManagementPage() {
   const { schoolProfile, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
@@ -115,7 +100,7 @@ function LicenseManagementPage() {
   const handleSyncQuotas = () => {
     addNotification({
       title: 'Quotas Synchronized',
-      description: 'Refreshed cloud tokens, WhatsApp broadcast credits, and storage metrics.',
+      description: 'Refreshed cloud tokens, security keys, and entitlement metrics.',
       type: 'info',
     });
   };
@@ -138,53 +123,37 @@ function LicenseManagementPage() {
 
   return (
     <VFPageContainer className="space-y-4 w-full">
-      {/* 1. TOP STATUS & NAVIGATION BAR */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 rounded-lg border border-border bg-[#101010] shadow-xs shrink-0">
-        <div className="flex items-center gap-3.5">
-          <Link to="/">
-            <VFButton
-              size="sm"
-              variant="outline"
-              className="h-9 px-3 bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs"
-              leftIcon={<ArrowLeft className="h-4 w-4" />}
-            >
-              {t('nav.dashboard')}
-            </VFButton>
-          </Link>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-black text-foreground tracking-tight">
-                {isHindi ? 'संस्थागत लाइसेंस व बिलिंग' : 'Institutional License & Billing'}
-              </h2>
-              <VFBadge variant="success" className="text-xs font-bold font-mono">
-                {isHindi ? 'एंटरप्राइज एक्टिव' : 'Enterprise Active'}
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium mt-0.5">
-              {isHindi
-                ? 'स्कूल सब्सक्रिप्शन प्लान, पेमेंट के तरीके, इनवॉइस हिस्ट्री, टोकन बैलेंस और सिक्योरिटी कीज।'
-                : 'School subscription tier, payment methods, invoice history, token balances, and security keys.'}
-            </p>
+      {/* 1. Sleek Standard Header Toolbar (No Back to Dashboard Button) */}
+      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
+            <Key className="h-3.5 w-3.5 text-primary" />
+            <span className="font-bold text-foreground">
+              {isHindi ? 'संस्थागत लाइसेंस व बिलिंग' : 'Institutional License & Billing'}
+            </span>
           </div>
+          <VFBadge variant="success" className="text-xs font-bold font-mono">
+            {isHindi ? 'एंटरप्राइज एक्टिव' : 'Enterprise Active'}
+          </VFBadge>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <VFButton
             size="sm"
             variant="outline"
-            className="h-9 px-3.5 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] border-border"
-            leftIcon={<Download className="h-4 w-4" />}
+            className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
+            leftIcon={<Download className="h-3.5 w-3.5" />}
             onClick={handleDownloadCertificate}
           >
-            {isHindi ? 'लाइसेंस सर्टिफिकेट' : 'Entitlement Certificate'}
+            {isHindi ? 'लाइसेंस सर्टिफिकेट' : 'Certificate'}
           </VFButton>
           <VFButton
             size="sm"
-            className="h-9 px-4 text-xs font-bold"
-            leftIcon={<RefreshCw className="h-4 w-4" />}
+            className="h-8 px-3.5 text-xs font-bold rounded-[4px]"
+            leftIcon={<RefreshCw className="h-3.5 w-3.5" />}
             onClick={handleSyncQuotas}
           >
-            {isHindi ? 'कोटा सिंक करें' : 'Sync Quotas'}
+            {isHindi ? 'कोटा सिंक' : 'Sync Quotas'}
           </VFButton>
         </div>
       </div>
@@ -515,104 +484,7 @@ function LicenseManagementPage() {
           </div>
         </VFCard>
 
-        {/* 5. MONTHLY COMMUNICATION & COMPUTE QUOTA METERS */}
-        <VFCard
-          title="Monthly Quotas & Gateway Metrics"
-          description="Current monthly dispatch metrics and compute token balances. Quotas reset automatically on the 1st of each month."
-          actions={<span className="text-xs font-bold text-emerald-400 font-mono">Resets Sep 1</span>}
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4 space-y-4"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* WhatsApp Messages */}
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-foreground">
-                  <MessageSquare className="h-4 w-4 text-emerald-400" />
-                  WhatsApp Broadcast Messages
-                </span>
-                <span className="font-mono text-xs text-emerald-400 font-bold">
-                  8,450 <span className="text-muted-foreground font-normal">/ 10,000 (84.5%)</span>
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-[#242424] overflow-hidden">
-                <div className="h-full rounded-full bg-emerald-400 transition-all duration-300" style={{ width: '84.5%' }} />
-              </div>
-              <p className="text-[11px] text-muted-foreground">Used for fee receipts, emergency circulars, and attendance alerts.</p>
-            </div>
 
-            {/* SMS Messages */}
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-foreground">
-                  <Smartphone className="h-4 w-4 text-emerald-400" />
-                  SMS Gateway Dispatches
-                </span>
-                <span className="font-mono text-xs text-emerald-400 font-bold">
-                  24,200 <span className="text-muted-foreground font-normal">/ 30,000 (80.6%)</span>
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-[#242424] overflow-hidden">
-                <div className="h-full rounded-full bg-emerald-400 transition-all duration-300" style={{ width: '80.6%' }} />
-              </div>
-              <p className="text-[11px] text-muted-foreground">DLT registered transactional gateway for OTPs and notifications.</p>
-            </div>
-
-            {/* Cloud Processing Tokens */}
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-foreground">
-                  <Sparkles className="h-4 w-4 text-emerald-400" />
-                  Cloud Processing & Sync Tokens
-                </span>
-                <span className="font-mono text-xs text-emerald-400 font-bold">
-                  412,500 <span className="text-muted-foreground font-normal">/ 500,000 (82.5%)</span>
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-[#242424] overflow-hidden">
-                <div className="h-full rounded-full bg-emerald-400 transition-all duration-300" style={{ width: '82.5%' }} />
-              </div>
-              <p className="text-[11px] text-muted-foreground">Document indexing, automated report generation, and multi-campus synchronization.</p>
-            </div>
-
-            {/* Cloud Storage */}
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold">
-                <span className="flex items-center gap-2 text-foreground">
-                  <HardDrive className="h-4 w-4 text-emerald-400" />
-                  Cloud Document & Photo Storage
-                </span>
-                <span className="font-mono text-xs text-emerald-400 font-bold">
-                  48.2 GB <span className="text-muted-foreground font-normal">/ 100 GB (48.2%)</span>
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-[#242424] overflow-hidden">
-                <div className="h-full rounded-full bg-emerald-400 transition-all duration-300" style={{ width: '48.2%' }} />
-              </div>
-              <p className="text-[11px] text-muted-foreground">Student dossiers, photo archives, and institutional PDF registers.</p>
-            </div>
-          </div>
-        </VFCard>
-
-        {/* 6. ENTERPRISE PLAN INCLUSIONS */}
-        <VFCard
-          title="Enterprise Tier Inclusions & Institutional Entitlements"
-          description="Everything included in your active enterprise school management subscription."
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4"
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            {ENTERPRISE_FEATURES.map((feat, i) => (
-              <div key={i} className="p-3 rounded-lg bg-[#141414] border border-[#242424] space-y-1">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                  <p className="text-xs font-bold text-foreground">{feat.title}</p>
-                </div>
-                <p className="text-[11px] text-muted-foreground pl-6">{feat.desc}</p>
-              </div>
-            ))}
-          </div>
-        </VFCard>
 
         {/* 7. LICENSE KEY & API SERIAL VAULT */}
         <VFCard
