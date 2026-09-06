@@ -4,24 +4,18 @@ import {
   VFPageContainer,
   VFCard,
   VFBadge,
-  VFButton,
   VFStatCard,
-  VFAreaChart,
-  VFBarChart,
-  VFPieChart,
 } from '@vidyafloww/ui';
 import {
-  BarChart3,
   Users,
   UserCheck,
   TrendingUp,
-  GraduationCap,
-  Download,
   CreditCard,
   Sparkles,
   Award,
   School,
   CheckCircle2,
+  Layers,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -31,7 +25,7 @@ export const Route = createFileRoute('/statistics')({
 });
 
 function StatisticsPage() {
-  const { activeSession, addNotification } = useGlobalStore();
+  const { activeSession } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
 
@@ -39,49 +33,42 @@ function StatisticsPage() {
     document.title = t('page.statistics') + ' – VidyaFloww';
   }, [t]);
 
+  // Intake & Attendance Trajectory Data
+  const monthlyTrends = [
+    { month: 'Apr', intake: 180, attendance: 92 },
+    { month: 'May', intake: 220, attendance: 94 },
+    { month: 'Jun', intake: 190, attendance: 91 },
+    { month: 'Jul', intake: 310, attendance: 96 },
+    { month: 'Aug', intake: 280, attendance: 95 },
+    { month: 'Sep', intake: 340, attendance: 97 },
+  ];
+
+  // Wing distribution data
+  const wingBreakdown = [
+    { title: isHindi ? 'प्राइमरी विंग' : 'Primary Wing', grade: 'Grades 1 – 5', count: 430, pct: 34.5, color: '#3b82f6' },
+    { title: isHindi ? 'मिडिल स्कूल' : 'Middle School', grade: 'Grades 6 – 8', count: 374, pct: 30.0, color: '#06b6d4' },
+    { title: isHindi ? 'हाई स्कूल' : 'High School', grade: 'Grades 9 – 10', count: 250, pct: 20.0, color: '#10b981' },
+    { title: isHindi ? 'सीनियर सेकेंडरी' : 'Senior Secondary', grade: 'Grades 11 – 12', count: 194, pct: 15.5, color: '#f59e0b' },
+  ];
+
+  // Quarterly revenue realization
+  const quarterlyFeeData = [
+    { quarter: 'Q1 (Apr–Jun)', target: '₹ 85 L', collected: '₹ 80 L', pct: 94.1, status: 'Completed' },
+    { quarter: 'Q2 (Jul–Sep)', target: '₹ 95 L', collected: '₹ 92 L', pct: 96.8, status: 'Active' },
+    { quarter: 'Q3 (Oct–Dec)', target: '₹ 90 L', collected: '₹ 70 L', pct: 77.7, status: 'Upcoming' },
+    { quarter: 'Q4 (Jan–Mar)', target: '₹ 100 L', collected: '₹ 88 L', pct: 88.0, status: 'Projected' },
+  ];
+
   return (
     <VFPageContainer className="space-y-4 w-full">
-      {/* 1. Sleek Command Toolbar */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-            <BarChart3 className="h-3.5 w-3.5 text-blue-400" />
-            <span className="font-bold text-foreground">
-              {isHindi ? 'संस्थागत विश्लेषण व सांख्यिकी' : 'Institutional Analytics & Intelligence'}
-            </span>
-          </div>
-          <VFBadge variant="success" className="text-xs font-bold font-mono">
-            {t('ui.session').split(' ')[0] + ' ' + activeSession}
-          </VFBadge>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            variant="outline"
-            size="sm"
-            className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
-            onClick={() =>
-              addNotification({
-                title: t('action.export'),
-                description: `Exported Institutional Intelligence Report for Session ${activeSession}.`,
-                type: 'success',
-              })
-            }
-          >
-            {t('action.export')}
-          </VFButton>
-        </div>
-      </div>
-
-      {/* 2. Top Executive KPI Metric Cards (4 Cards) */}
+      {/* 1. Top Executive KPI Metric Cards (No Redundant Toolbar Header) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
         <VFStatCard
           title={t('students.totalStudents')}
           value={activeSession === '2026–2027' ? '1,248' : '1,180'}
           icon={<Users className="h-4.5 w-4.5" />}
           trend="up"
-          trendLabel={`AY ${activeSession}`}
+          trendLabel={`Session ${activeSession}`}
           accentColor="blue"
         />
         <VFStatCard
@@ -89,8 +76,8 @@ function StatisticsPage() {
           value="18 : 1"
           icon={<School className="h-4.5 w-4.5" />}
           trend="neutral"
-          trendLabel="CBSE Norm"
-          accentColor="blue"
+          trendLabel="CBSE Standard"
+          accentColor="cyan"
         />
         <VFStatCard
           title={isHindi ? 'दैनिक औसत उपस्थिति' : 'Daily Attendance Avg'}
@@ -98,7 +85,7 @@ function StatisticsPage() {
           icon={<UserCheck className="h-4.5 w-4.5" />}
           trend="up"
           trendLabel="1,210 Active Daily"
-          accentColor="blue"
+          accentColor="emerald"
         />
         <VFStatCard
           title={isHindi ? 'वार्षिक बोर्ड उत्तीर्ण दर' : 'Board Exam Pass Rate'}
@@ -106,191 +93,268 @@ function StatisticsPage() {
           icon={<Award className="h-4.5 w-4.5" />}
           trend="up"
           trendLabel="+1.4% vs State Avg"
-          accentColor="blue"
+          accentColor="primary"
         />
       </div>
 
-      {/* 3. Section 1: Academic & Attendance Health (Two Balanced Cards) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Attendance & Student Intake Monthly Trends */}
-        <VFCard
-          title={
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-emerald-400" />
-              <span>{isHindi ? 'उपस्थिति व छात्र प्रवेश रुझान' : 'Attendance & Intake Trends'}</span>
-            </div>
-          }
-          description={
-            isHindi
-              ? 'सत्र 2026-2027 के लिए मासिक प्रवेश व उपस्थिति तुलना'
-              : 'Monthly student intake vs attendance rate comparison for AY 2026-2027'
-          }
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4"
-        >
-          <div className="h-60">
-            <VFAreaChart
-              data={[
-                { label: 'Apr', intake: 180, attendance: 92 },
-                { label: 'May', intake: 220, attendance: 94 },
-                { label: 'Jun', intake: 190, attendance: 91 },
-                { label: 'Jul', intake: 310, attendance: 96 },
-                { label: 'Aug', intake: 280, attendance: 95 },
-                { label: 'Sep', intake: 340, attendance: 97 },
-              ]}
-              xKey="label"
-              dataKeys={[
-                { key: 'intake', color: '#3b82f6', name: 'Student Intake' },
-                { key: 'attendance', color: '#10b981', name: 'Avg Attendance %' },
-              ]}
-            />
-          </div>
-        </VFCard>
+      {/* 2. Section 1: Modern Attendance & Intake Trajectory + Wing Distribution */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Modern Interactive Trajectory Visual (7 cols) */}
+        <div className="lg:col-span-7">
+          <VFCard
+            title={
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-emerald-400" />
+                <span>{isHindi ? 'उपस्थिति व छात्र प्रवेश रुझान' : 'Attendance & Intake Trajectory'}</span>
+              </div>
+            }
+            description={
+              isHindi
+                ? 'सत्र 2026-2027 के लिए मासिक छात्र प्रवेश और दैनिक उपस्थिति रुझान'
+                : 'Realtime monthly intake volume vs attendance velocity for AY 2026-2027'
+            }
+            className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
+            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-4"
+          >
+            {/* Trajectory Graphic Visual Bars with Smooth Trendline */}
+            <div className="space-y-3 pt-1">
+              <div className="flex items-center justify-between text-xs text-muted-foreground pb-1 border-b border-[#202020]">
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    <span className="h-2.5 w-2.5 rounded-[2px] bg-primary" />
+                    New Student Intake (Pupils)
+                  </span>
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    <span className="h-2.5 w-2.5 rounded-[2px] bg-emerald-400" />
+                    Daily Attendance (%)
+                  </span>
+                </div>
+                <span className="text-[11px] font-mono text-muted-foreground">Session AY 2026–27</span>
+              </div>
 
-        {/* Student Enrollment Distribution by Wing */}
-        <VFCard
-          title={
-            <div className="flex items-center gap-2">
-              <GraduationCap className="h-4 w-4 text-blue-400" />
-              <span>{isHindi ? 'विंग अनुसार कुल छात्र वितरण' : 'Enrollment Distribution by Wing'}</span>
+              {/* Responsive Metric Visual Track */}
+              <div className="grid grid-cols-6 gap-2 sm:gap-3 items-end pt-4 h-48">
+                {monthlyTrends.map((m, idx) => {
+                  const intakeHeight = Math.round((m.intake / 350) * 100);
+                  const attHeight = Math.round(((m.attendance - 85) / 15) * 100);
+                  return (
+                    <div key={idx} className="flex flex-col items-center justify-end h-full gap-2 group/bar">
+                      <div className="text-[10px] font-mono text-muted-foreground opacity-70 group-hover/bar:opacity-100 transition-opacity">
+                        {m.attendance}%
+                      </div>
+                      <div className="w-full flex items-end justify-center gap-1 h-32 bg-[#141414] rounded-[3px] p-1 border border-border/60">
+                        {/* Intake Bar */}
+                        <div
+                          style={{ height: `${intakeHeight}%` }}
+                          className="w-1/2 bg-gradient-to-t from-orange-600 to-primary rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110"
+                          title={`Intake: ${m.intake}`}
+                        />
+                        {/* Attendance Bar */}
+                        <div
+                          style={{ height: `${attHeight}%` }}
+                          className="w-1/2 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-[2px] transition-all duration-300 group-hover/bar:brightness-110"
+                          title={`Attendance: ${m.attendance}%`}
+                        />
+                      </div>
+                      <span className="text-xs font-bold font-mono text-foreground">{m.month}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          }
-          description={
-            isHindi
-              ? '1,248 विद्यार्थियों का विंग अनुसार अनुपातिक संतुलन'
-              : 'Class tier strength distribution across 1,248 pupils'
-          }
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4"
-        >
-          <div className="flex flex-col sm:flex-row items-center gap-5">
-            <div className="shrink-0" style={{ width: 170, height: 170 }}>
-              <VFPieChart
-                data={[
-                  { name: 'Primary (1-5)', value: 430, color: '#3b82f6' },
-                  { name: 'Middle (6-8)', value: 374, color: '#60a5fa' },
-                  { name: 'High School (9-10)', value: 250, color: '#93c5fd' },
-                  { name: 'Senior Sec (11-12)', value: 194, color: '#bfdbfe' },
-                ]}
-                height={170}
-              />
+
+            {/* Quick Summary Highlights Footer */}
+            <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#202020] text-xs">
+              <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Peak Intake</span>
+                <span className="font-mono font-extrabold text-primary">340 Students</span>
+              </div>
+              <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Avg Attendance</span>
+                <span className="font-mono font-extrabold text-emerald-400">96.9%</span>
+              </div>
+              <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Biometric Sync</span>
+                <span className="font-mono font-extrabold text-blue-400">100% Realtime</span>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 w-full flex-1">
-              {[
-                { title: isHindi ? 'प्राइमरी विंग' : 'Primary Wing', grade: 'Grades 1 – 5', count: '430', pct: '34.5%', dot: 'bg-blue-500' },
-                { title: isHindi ? 'मिडिल स्कूल' : 'Middle School', grade: 'Grades 6 – 8', count: '374', pct: '30.0%', dot: 'bg-blue-400' },
-                { title: isHindi ? 'हाई स्कूल' : 'High School', grade: 'Grades 9 – 10', count: '250', pct: '20.0%', dot: 'bg-blue-300' },
-                { title: isHindi ? 'सीनियर सेकेंडरी' : 'Senior Secondary', grade: 'Grades 11 – 12', count: '194', pct: '15.5%', dot: 'bg-blue-200' },
-              ].map((item, idx) => (
-                <div key={idx} className="p-2.5 rounded-[4px] border border-border/80 bg-[#141414] space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className={`h-2 w-2 rounded-full ${item.dot} shrink-0`} />
-                    <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
+          </VFCard>
+        </div>
+
+        {/* Modern Wing Enrollment Distribution (5 cols) */}
+        <div className="lg:col-span-5">
+          <VFCard
+            title={
+              <div className="flex items-center gap-2">
+                <Layers className="h-4 w-4 text-blue-400" />
+                <span>{isHindi ? 'विंग अनुसार छात्र वितरण' : 'Enrollment by Academic Wing'}</span>
+              </div>
+            }
+            description={isHindi ? '1,248 विद्यार्थियों का विंग वार विभाजन' : 'Tier strength distribution across 1,248 enrolled pupils'}
+            className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
+            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-4"
+          >
+            {/* Modern Segmented Progress Stack */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-foreground">Total Capacity Allocation</span>
+                <span className="font-mono font-extrabold text-primary">1,248 Students (100%)</span>
+              </div>
+              <div className="h-3.5 w-full bg-[#161616] rounded-[3px] overflow-hidden flex gap-0.5 p-0.5 border border-[#282828]">
+                {wingBreakdown.map((w, idx) => (
+                  <div
+                    key={idx}
+                    style={{ width: `${w.pct}%`, backgroundColor: w.color }}
+                    className="h-full rounded-[1px] transition-all hover:opacity-90"
+                    title={`${w.title}: ${w.count} (${w.pct}%)`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Wing Tiles List */}
+            <div className="space-y-2">
+              {wingBreakdown.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-2.5 px-3 rounded-[4px] border border-border/80 bg-[#141414] flex items-center justify-between gap-3 hover:border-border transition-colors"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span
+                      className="h-3 w-3 rounded-[2px] shrink-0"
+                      style={{ backgroundColor: item.color }}
+                    />
+                    <div>
+                      <p className="text-xs font-bold text-foreground truncate">{item.title}</p>
+                      <p className="text-[10px] text-muted-foreground font-medium">{item.grade}</p>
+                    </div>
                   </div>
-                  <div className="flex items-baseline justify-between pt-0.5">
-                    <span className="text-sm font-extrabold text-foreground">{item.count}</span>
-                    <span className="text-[10px] font-semibold text-muted-foreground">{item.pct}</span>
+                  <div className="text-right shrink-0">
+                    <span className="text-sm font-extrabold text-foreground font-mono">{item.count}</span>
+                    <span className="text-[11px] font-semibold text-muted-foreground block">{item.pct}%</span>
                   </div>
-                  <p className="text-[10px] text-muted-foreground font-medium">{item.grade}</p>
                 </div>
               ))}
             </div>
-          </div>
-        </VFCard>
+
+            <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center justify-between text-xs">
+              <span className="text-muted-foreground font-medium">Class Section Ratio:</span>
+              <span className="font-mono font-bold text-foreground">~31.2 Pupils / Class</span>
+            </div>
+          </VFCard>
+        </div>
       </div>
 
-      {/* 4. Section 2: Institutional Financial & Academic Standing (Two Balanced Cards) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Fee Collection vs Target Bar Chart */}
-        <VFCard
-          title={
-            <div className="flex items-center gap-2">
-              <CreditCard className="h-4 w-4 text-primary" />
-              <span>{isHindi ? 'फीस संग्रह बनाम लक्ष्य' : 'Fee Realization vs Target'}</span>
+      {/* 3. Section 2: Fee Realization vs Target + Academic Honors */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Fee Realization Progress Gauges (7 cols) */}
+        <div className="lg:col-span-7">
+          <VFCard
+            title={
+              <div className="flex items-center gap-2">
+                <CreditCard className="h-4 w-4 text-primary" />
+                <span>{isHindi ? 'फीस संग्रह बनाम बजट लक्ष्य' : 'Fee Collection vs Budget Target'}</span>
+              </div>
+            }
+            description={
+              isHindi
+                ? 'त्रैमासिक बजट विश्लेषण (संग्रहित बनाम निर्धारित बजट)'
+                : 'Quarterly collection audit across ₹ Lakhs (Realized vs Annual Target)'
+            }
+            actions={<VFBadge variant="success" className="text-xs font-bold font-mono">98.1% Realized</VFBadge>}
+            className="bg-[#0d0d0d] border-border/90"
+            bodyClassName="p-4 space-y-4"
+          >
+            <div className="space-y-3">
+              {quarterlyFeeData.map((q, idx) => (
+                <div key={idx} className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-foreground">{q.quarter}</span>
+                      <span className="text-[10px] font-mono text-muted-foreground">({q.status})</span>
+                    </div>
+                    <div className="flex items-center gap-2 font-mono">
+                      <span className="font-extrabold text-emerald-400">{q.collected}</span>
+                      <span className="text-muted-foreground">/ {q.target}</span>
+                      <span className="font-bold text-foreground">({q.pct}%)</span>
+                    </div>
+                  </div>
+                  <div className="w-full h-2 rounded-[2px] bg-[#222222] overflow-hidden">
+                    <div
+                      className="h-full rounded-[2px] bg-gradient-to-r from-orange-500 to-emerald-400 transition-all duration-300"
+                      style={{ width: `${q.pct}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-          }
-          description={
-            isHindi
-              ? 'त्रैमासिक बजट विश्लेषण (संग्रहित बनाम अनुमानित बजट)'
-              : 'Quarterly collection audit in ₹ Lakhs (Collected vs Projected Budget)'
-          }
-          actions={<VFBadge variant="success" className="text-xs font-bold font-mono">98.1% Realized</VFBadge>}
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4"
-        >
-          <div className="h-60">
-            <VFBarChart
-              data={[
-                { label: 'Q1', target: 85, collected: 80 },
-                { label: 'Q2', target: 95, collected: 92 },
-                { label: 'Q3', target: 90, collected: 70 },
-                { label: 'Q4', target: 100, collected: 88 },
-              ]}
-              xKey="label"
-              dataKeys={[
-                { key: 'collected', color: '#f97316', name: 'Collected Revenue' },
-                { key: 'target', color: '#52525b', name: 'Target Budget' },
-              ]}
-            />
-          </div>
-        </VFCard>
+          </VFCard>
+        </div>
 
-        {/* Academic Excellence & Distinction Summary */}
-        <VFCard
-          title={
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-amber-400" />
-              <span>{isHindi ? 'अकादमिक विशिष्टता व उपलब्धियां' : 'Academic Standing & Distinctions'}</span>
+        {/* Academic Excellence & Distinction Standings (5 cols) */}
+        <div className="lg:col-span-5">
+          <VFCard
+            title={
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-amber-400" />
+                <span>{isHindi ? 'अकादमिक विशिष्टता व उपलब्धियां' : 'Academic Standing & Distinctions'}</span>
+              </div>
+            }
+            description={
+              isHindi
+                ? 'बोर्ड परीक्षा परिणाम, मेरिट डिस्टिंक्शन व विषयवार प्रदर्शन'
+                : 'Board standings, merit honors, and subject distinction benchmarks'
+            }
+            className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
+            bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-3"
+          >
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'डिस्टिंक्शन दर' : 'Distinction (>75%)'}
+                </span>
+                <p className="text-xl font-black text-foreground font-mono">89.2%</p>
+                <p className="text-[11px] text-emerald-400 font-medium">324 Students with Honors</p>
+              </div>
+              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
+                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                  {isHindi ? 'राज्य मेरिट रैंकर्स' : 'State Merit Rankers'}
+                </span>
+                <p className="text-xl font-black text-foreground font-mono">14 Pupils</p>
+                <p className="text-[11px] text-blue-400 font-medium">Top 0.5 percentile CBSE</p>
+              </div>
             </div>
-          }
-          description={
-            isHindi
-              ? 'बोर्ड परीक्षा परिणाम, मेरिट डिस्टिंक्शन व विषयवार प्रदर्शन'
-              : 'Board summative standings, merit honors, and subject distinction benchmarks'
-          }
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4 space-y-3"
-        >
-          <div className="grid grid-cols-2 gap-2.5">
-            <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-              <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                {isHindi ? 'डिस्टिंक्शन दर' : 'Distinction Rate (>75%)'}
-              </span>
-              <p className="text-xl font-black text-foreground font-mono">89.2%</p>
-              <p className="text-[11px] text-emerald-400 font-medium">324 Students with Honors</p>
-            </div>
-            <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-              <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                {isHindi ? 'राज्य मेरिट रैंकर्स' : 'State Merit Rankers'}
-              </span>
-              <p className="text-xl font-black text-foreground font-mono">14 Pupils</p>
-              <p className="text-[11px] text-blue-400 font-medium">Top 0.5 percentile CBSE</p>
-            </div>
-          </div>
 
-          <div className="space-y-2 pt-1 border-t border-[#202020]">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
-              {isHindi ? 'मुख्य विषयवार औसत अंक' : 'Core Subject Averages'}
-            </span>
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="p-2 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
-                <span className="text-muted-foreground text-[10px] block">Mathematics</span>
-                <span className="font-mono font-bold text-foreground">92.4%</span>
-              </div>
-              <div className="p-2 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
-                <span className="text-muted-foreground text-[10px] block">Science</span>
-                <span className="font-mono font-bold text-foreground">91.8%</span>
-              </div>
-              <div className="p-2 rounded-[4px] bg-[#141414] border border-[#242424] text-center">
-                <span className="text-muted-foreground text-[10px] block">English</span>
-                <span className="font-mono font-bold text-foreground">94.1%</span>
+            <div className="space-y-2 pt-2 border-t border-[#202020]">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
+                {isHindi ? 'मुख्य विषयवार औसत अंक' : 'Core Subject Averages'}
+              </span>
+              <div className="space-y-2 text-xs">
+                {[
+                  { subject: 'Mathematics', score: 92.4, color: 'bg-blue-500' },
+                  { subject: 'Science & Tech', score: 91.8, color: 'bg-emerald-500' },
+                  { subject: 'English & Lit', score: 94.1, color: 'bg-amber-500' },
+                ].map((s, i) => (
+                  <div key={i} className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-semibold text-foreground">{s.subject}</span>
+                      <span className="font-mono font-bold text-foreground">{s.score}%</span>
+                    </div>
+                    <div className="w-full h-1.5 rounded-[2px] bg-[#222222] overflow-hidden">
+                      <div
+                        className={`h-full rounded-[2px] ${s.color}`}
+                        style={{ width: `${s.score}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </VFCard>
+          </VFCard>
+        </div>
       </div>
 
-      {/* 5. Section 3: Class Enrollment & Operational Summary (Clean 4-col Grid) */}
+      {/* 4. Section 3: Class Roster Summary (4-Column Grid) */}
       <VFCard
         title={
           <div className="flex items-center gap-2">

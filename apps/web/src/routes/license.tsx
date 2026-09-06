@@ -11,18 +11,16 @@ import {
 import {
   ShieldCheck,
   Key,
-  Server,
   Copy,
   Check,
   Eye,
   EyeOff,
   Download,
-  RefreshCw,
-  Lock,
   CreditCard,
-  Building,
   Receipt,
   Edit3,
+  Sparkles,
+  Lock,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -76,10 +74,17 @@ function LicenseManagementPage() {
   const { schoolProfile, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('nav.license') + ' \u2013 VidyaFloww'; }, [t]);
+
+  React.useEffect(() => {
+    document.title = t('nav.license') + ' – VidyaFloww';
+  }, [t]);
+
   const [copied, setCopied] = React.useState(false);
   const [showKey, setShowKey] = React.useState(false);
   const [isUpdateCardModalOpen, setIsUpdateCardModalOpen] = React.useState(false);
+  const [isPayEarlyModalOpen, setIsPayEarlyModalOpen] = React.useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = React.useState(false);
+
   const [cardholderName, setCardholderName] = React.useState('VidyaFloww International Academy');
   const [cardNumber, setCardNumber] = React.useState('•••• •••• •••• 4242');
   const [expiryDate, setExpiryDate] = React.useState('08/29');
@@ -97,22 +102,6 @@ function LicenseManagementPage() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleSyncQuotas = () => {
-    addNotification({
-      title: 'Quotas Synchronized',
-      description: 'Refreshed cloud tokens, security keys, and entitlement metrics.',
-      type: 'info',
-    });
-  };
-
-  const handleDownloadCertificate = () => {
-    addNotification({
-      title: 'Certificate Generated',
-      description: `Official digital entitlement certificate for ${schoolProfile.name} ready.`,
-      type: 'success',
-    });
-  };
-
   const handleDownloadInvoice = (invoiceNo: string) => {
     addNotification({
       title: 'Invoice Downloaded',
@@ -121,396 +110,134 @@ function LicenseManagementPage() {
     });
   };
 
+  const handleProcessEarlyPayment = () => {
+    setIsProcessingPayment(true);
+    setTimeout(() => {
+      setIsProcessingPayment(false);
+      setIsPayEarlyModalOpen(false);
+      addNotification({
+        title: isHindi ? 'भुगतान सफल' : 'Payment Successful',
+        description: isHindi
+          ? 'वार्षिक एंटरप्राइज रिन्यूअल ₹2,40,000 सफलतापूर्वक प्रोसेस किया गया। वैधता 31 मार्च 2028 तक बढ़ा दी गई है।'
+          : 'Annual Enterprise Renewal of ₹2,40,000 successfully processed. Entitlement extended through March 31, 2028.',
+        type: 'success',
+      });
+    }, 1200);
+  };
+
   return (
     <VFPageContainer className="space-y-4 w-full">
-      {/* 1. Sleek Standard Header Toolbar (No Back to Dashboard Button) */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-            <Key className="h-3.5 w-3.5 text-primary" />
-            <span className="font-bold text-foreground">
-              {isHindi ? 'संस्थागत लाइसेंस व बिलिंग' : 'Institutional License & Billing'}
+      {/* 1. Subscription Status & Early Payment Hero Banner */}
+      <VFCard
+        className="bg-[#0d0d0d] border-border/90"
+        bodyClassName="p-5 space-y-4"
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="h-12 w-12 rounded-[4px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-base sm:text-lg font-extrabold text-foreground tracking-tight">
+                  {schoolProfile.name}
+                </h2>
+                <VFBadge variant="success" className="text-xs font-bold font-mono">
+                  Enterprise Active
+                </VFBadge>
+              </div>
+              <p className="text-xs text-muted-foreground font-medium mt-0.5">
+                {schoolProfile.affiliation} · {isHindi ? 'वार्षिक संस्थागत लाइसेंस' : 'Annual Institutional Enterprise License'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="p-2.5 px-3.5 rounded-[4px] bg-[#141414] border border-[#242424] text-right">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                {isHindi ? 'वैधता समाप्ति' : 'Valid Until'}
+              </span>
+              <span className="text-xs font-extrabold text-foreground font-mono">
+                March 31, 2027 <span className="text-emerald-400 font-semibold">(225 Days)</span>
+              </span>
+            </div>
+
+            {/* Prominent Early Payment / Renewal Button */}
+            <VFButton
+              size="sm"
+              onClick={() => setIsPayEarlyModalOpen(true)}
+              className="h-10 px-4 text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] shadow-sm cursor-pointer"
+              leftIcon={<Sparkles className="h-4 w-4" />}
+            >
+              {isHindi ? 'जल्दी भुगतान / रिन्यू करें' : 'Pay Early / Renew Plan'}
+            </VFButton>
+          </div>
+        </div>
+
+        {/* Quick Subscription Metrics Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-[#202020] text-xs">
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+              {isHindi ? 'वार्षिक प्लान दर' : 'Annual Rate'}
+            </span>
+            <span className="text-sm font-extrabold text-foreground font-mono">₹ 2,40,000</span>
+          </div>
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+              {isHindi ? 'छात्र नामांकन क्षमता' : 'Student Capacity'}
+            </span>
+            <span className="text-sm font-extrabold text-foreground font-mono">1,248 / 2,500</span>
+          </div>
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+              {isHindi ? 'डिफ़ॉल्ट पेमेंट कार्ड' : 'Default Payment'}
+            </span>
+            <span className="text-sm font-extrabold text-foreground font-mono">Visa •••• 4242</span>
+          </div>
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+              {isHindi ? 'ऑटो-डेबिट स्थिति' : 'Auto-Debit'}
+            </span>
+            <span className="text-sm font-bold text-emerald-400 flex items-center gap-1">
+              <Check className="h-3 w-3" /> Enabled
             </span>
           </div>
-          <VFBadge variant="success" className="text-xs font-bold font-mono">
-            {isHindi ? 'एंटरप्राइज एक्टिव' : 'Enterprise Active'}
-          </VFBadge>
         </div>
+      </VFCard>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            size="sm"
-            variant="outline"
-            className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
-            onClick={handleDownloadCertificate}
-          >
-            {isHindi ? 'लाइसेंस सर्टिफिकेट' : 'Certificate'}
-          </VFButton>
-          <VFButton
-            size="sm"
-            className="h-8 px-3.5 text-xs font-bold rounded-[4px]"
-            leftIcon={<RefreshCw className="h-3.5 w-3.5" />}
-            onClick={handleSyncQuotas}
-          >
-            {isHindi ? 'कोटा सिंक' : 'Sync Quotas'}
-          </VFButton>
-        </div>
-      </div>
-
-      {/* Main Content Container — Natural flow matching page scroll */}
-      <div className="space-y-4">
-        
-        {/* 2. TOP OVERVIEW KPI CARDS (Subscription, Capacity, Security) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Card 1: Subscription Tier & Validity */}
-          <VFCard
-            title={isHindi ? 'सब्सक्रिप्शन व वैधता' : 'Subscription & Validity'}
-            description={isHindi ? 'सक्रिय संस्थागत एंटरप्राइज सदस्यता।' : 'Active institutional enterprise entitlement.'}
-            actions={<VFBadge variant="success" className="text-xs font-bold">{isHindi ? '225 दिन शेष' : '225 Days Left'}</VFBadge>}
-            className="bg-[#0d0d0d] border-border/90"
-            bodyClassName="p-4 space-y-3"
-          >
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex items-center gap-3">
-              <div className="h-10 w-10 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-black text-foreground truncate">{schoolProfile.name}</p>
-                <p className="text-xs text-muted-foreground font-mono truncate">{schoolProfile.affiliation}</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'नवीनीकरण तिथि' : 'Renewal Date'}
-                </span>
-                <span className="text-xs font-black text-foreground font-mono">March 31, 2027</span>
-              </div>
-              <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'प्लान दर' : 'Plan Rate'}
-                </span>
-                <span className="text-xs font-black text-emerald-400 font-mono">₹ 2,40,000 / Yr</span>
-              </div>
-            </div>
-          </VFCard>
-
-          {/* Card 2: Student & Staff Capacity */}
-          <VFCard
-            title={isHindi ? 'लाइसेंस्ड सीट क्षमता' : 'Licensed Seat Capacity'}
-            description={isHindi ? 'सक्रिय छात्र व शिक्षक सीट आवंटन।' : 'Active student & faculty user allocations.'}
-            actions={<VFBadge variant="primary" className="text-xs font-bold font-mono">{isHindi ? '50% नामांकित' : '50% Enrolled'}</VFBadge>}
-            className="bg-[#0d0d0d] border-border/90"
-            bodyClassName="p-4 space-y-3"
-          >
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex items-center justify-between">
-              <div>
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'छात्र प्रोफाइल' : 'Student Dossiers'}
-                </span>
-                <p className="text-xl font-black text-foreground font-mono">
-                  1,248 <span className="text-xs text-muted-foreground font-normal">/ 2,500 Max</span>
-                </p>
-              </div>
-              <div className="h-9 w-9 rounded-md bg-[#1c1c1c] text-primary border border-border flex items-center justify-center shrink-0">
-                <Server className="h-4.5 w-4.5" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'शिक्षक सीटें' : 'Teacher Seats'}
-                </span>
-                <span className="text-xs font-black text-foreground font-mono">94 / 150</span>
-              </div>
-              <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'एडमिन रोल्स' : 'Admin Roles'}
-                </span>
-                <span className="text-xs font-black text-foreground font-mono">8 / 15</span>
-              </div>
-            </div>
-          </VFCard>
-
-          {/* Card 3: Security & Encryption Standard */}
-          <VFCard
-            title={isHindi ? 'सुरक्षा व क्लाउड वॉल्ट' : 'Security & Cloud Vault'}
-            description={isHindi ? 'संस्थागत डेटा सुरक्षा व कंप्लायंस।' : 'Institutional data integrity & compliance.'}
-            actions={<VFBadge variant="success" className="text-xs font-bold">{isHindi ? 'ऑनलाइन' : 'Online'}</VFBadge>}
-            className="bg-[#0d0d0d] border-border/90"
-            bodyClassName="p-4 space-y-3"
-          >
-            <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex items-center gap-3">
-              <div className="h-10 w-10 rounded-md bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
-                <Lock className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-sm font-black text-foreground">AES-256 Cloud Vault</p>
-                <p className="text-xs text-muted-foreground">SOC-2 Type II Certified</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'क्लाउड बैकअप' : 'Cloud Backup'}
-                </span>
-                <span className="text-xs font-bold text-emerald-400">{isHindi ? 'दैनिक स्वचालित' : 'Daily Automated'}</span>
-              </div>
-              <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'डेटा सेंटर' : 'Data Center'}
-                </span>
-                <span className="text-xs font-mono font-bold text-foreground">ap-south-1 (Mumbai)</span>
-              </div>
-            </div>
-          </VFCard>
-        </div>
-
-        {/* 3. BILLING, UPCOMING PAYMENTS & SAVED PAYMENT METHODS */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          
-          {/* Upcoming Payments & Saved Card (7 cols) */}
-          <div className="lg:col-span-7 space-y-4">
-            <VFCard
-              title={
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-4.5 w-4.5 text-primary" />
-                  <span className="text-base font-extrabold text-foreground">Upcoming Payments & Card Info</span>
-                </div>
-              }
-              description="Saved corporate payment methods and upcoming automatic renewal schedule."
-              actions={
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  leftIcon={<Edit3 className="h-3.5 w-3.5" />}
-                  onClick={() => setIsUpdateCardModalOpen(true)}
-                  className="h-8 px-2.5 text-xs font-bold"
-                >
-                  Manage Payment Method
-                </VFButton>
-              }
-              className="bg-[#0d0d0d] border-border/90"
-              bodyClassName="p-4 space-y-3.5"
-            >
-              {/* Upcoming Payment Box */}
-              <div className="p-4 rounded-lg bg-[#141414] border border-[#242424] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Next Scheduled Invoice</span>
-                    <VFBadge variant="outline" className="text-[10px] font-mono text-emerald-400 border-emerald-500/30 bg-emerald-500/10 font-bold">
-                      Auto-Debit Active
-                    </VFBadge>
-                  </div>
-                  <p className="text-xl font-black text-foreground font-mono">₹ 2,40,000</p>
-                  <p className="text-xs text-muted-foreground font-medium">
-                    Due on <span className="text-foreground font-bold font-mono">March 31, 2027</span> for Annual Enterprise Renewal (2027–2028).
-                  </p>
-                </div>
-                <div className="p-2.5 rounded-md bg-[#1a1a1a] border border-[#282828] text-right shrink-0">
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">Billed To</span>
-                  <span className="text-xs font-mono font-bold text-foreground">HDFC Visa •••• 4242</span>
-                </div>
-              </div>
-
-              {/* Saved Payment Methods List */}
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
-                  Saved Payment Methods
-                </span>
-
-                {/* Primary Card */}
-                <div className="p-3 rounded-lg bg-[#141414] border border-[#242424] flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-14 rounded-md bg-[#1f1f1f] border border-[#2e2e2e] flex flex-col items-center justify-center text-[10px] font-black text-white font-mono shrink-0 shadow-xs">
-                      VISA
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs sm:text-sm font-bold text-foreground font-mono">{cardNumber}</p>
-                        <VFBadge variant="success" className="text-[9px] font-extrabold uppercase py-0.2">
-                          Default
-                        </VFBadge>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground font-medium">
-                        Expires {expiryDate} · {cardholderName}
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsUpdateCardModalOpen(true)}
-                    className="text-xs font-bold text-primary hover:underline px-2 py-1 cursor-pointer"
-                  >
-                    Edit
-                  </button>
-                </div>
-
-                {/* Backup Bank Transfer */}
-                <div className="p-3 rounded-lg bg-[#141414] border border-[#242424] flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-14 rounded-md bg-[#1f1f1f] border border-[#2e2e2e] flex flex-col items-center justify-center text-[9px] font-bold text-muted-foreground uppercase shrink-0">
-                      NEFT/RTGS
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm font-bold text-foreground">HDFC Bank Corporate Current A/C</p>
-                      <p className="text-[11px] text-muted-foreground font-mono">Account No. ••••••••••1048 · IFSC HDFC0000240</p>
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground font-medium">Backup</span>
-                </div>
-              </div>
-            </VFCard>
-          </div>
-
-          {/* Legal Entity & Tax Profile (5 cols) */}
-          <div className="lg:col-span-5 space-y-4">
-            <VFCard
-              title={
-                <div className="flex items-center gap-2">
-                  <Building className="h-4.5 w-4.5 text-primary" />
-                  <span className="text-base font-extrabold text-foreground">Billing Entity & Tax Details</span>
-                </div>
-              }
-              description="Official institutional invoicing records for GST and tax compliance."
-              className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
-              bodyClassName="p-4 space-y-3 flex-1 flex flex-col justify-between"
-            >
-              <div className="space-y-2.5 text-xs">
-                <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">Legal Institution Name</span>
-                  <span className="text-xs font-bold text-foreground">{schoolProfile.name} Pvt. Ltd.</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                    <span className="text-[10px] text-muted-foreground uppercase font-bold block">GSTIN / Tax ID</span>
-                    <span className="text-xs font-mono font-bold text-foreground">07AAAAA1234A1Z5</span>
-                  </div>
-                  <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                    <span className="text-[10px] text-muted-foreground uppercase font-bold block">PAN Identifier</span>
-                    <span className="text-xs font-mono font-bold text-foreground">AAACV1234A</span>
-                  </div>
-                </div>
-                <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">Billing Contact Email</span>
-                  <span className="text-xs font-mono text-foreground">finance@vidyafloww.edu.in</span>
-                </div>
-                <div className="p-2.5 rounded-md bg-[#141414] border border-[#242424]">
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">Registered Billing Address</span>
-                  <span className="text-xs text-muted-foreground">Plot 4, Institutional Area, Vasant Kunj, New Delhi 110070</span>
-                </div>
-              </div>
-
-              <p className="text-[11px] text-muted-foreground font-medium pt-2 border-t border-[#202020]">
-                Need changes to your legal tax invoicing info? Contact support at <span className="text-primary font-mono">support@vidyafloww.edu.in</span>.
-              </p>
-            </VFCard>
-          </div>
-        </div>
-
-        {/* 4. PAYMENT HISTORY & OFFICIAL INVOICES (LAST PAYMENTS) */}
+      {/* 2. License Key & Corporate Payment Method (2-Col Grid) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Cryptographic Master License Key */}
         <VFCard
           title={
             <div className="flex items-center gap-2">
-              <Receipt className="h-4.5 w-4.5 text-primary" />
-              <span className="text-base font-extrabold text-foreground">Payment History & Tax Invoices</span>
+              <Key className="h-4 w-4 text-primary" />
+              <span>{isHindi ? 'मास्टर लाइसेंस की' : 'Master License Key'}</span>
             </div>
           }
-          description="Official historical payment records with itemized tax breakdowns and downloadable receipts."
-          actions={
-            <VFButton
-              size="sm"
-              variant="outline"
-              className="h-8 px-3 text-xs font-bold"
-              leftIcon={<Download className="h-3.5 w-3.5" />}
-              onClick={() => {
-                addNotification({
-                  title: 'Archive Export Started',
-                  description: 'All past invoices compiled into ZIP package.',
-                  type: 'success',
-                });
-              }}
-            >
-              Download All Invoices
-            </VFButton>
+          description={
+            isHindi
+              ? 'संस्थागत प्रमाणीकरण व क्लस्टर सत्यापन के लिए उपयोग की जाने वाली क्रिप्टोग्राफिक की'
+              : 'Institutional cryptographic key for cluster sync and offline node validation'
           }
-          className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-0 overflow-hidden"
-        >
-          <div className="overflow-x-auto no-scrollbar">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b border-[#242424] bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                  <th className="py-3 px-4">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
-                  <th className="py-3 px-4">{t('col.date')}</th>
-                  <th className="py-3 px-4">{t('col.description')}</th>
-                  <th className="py-3 px-4">{t('col.amount')}</th>
-                  <th className="py-3 px-4">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
-                  <th className="py-3 px-4">{t('col.status')}</th>
-                  <th className="py-3 px-4 text-right">{t('col.action')}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1c1c1c] text-foreground font-medium">
-                {INVOICE_HISTORY.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-[#141414] transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
-                    <td className="py-3.5 px-4 font-mono text-muted-foreground">{inv.date}</td>
-                    <td className="py-3.5 px-4 text-foreground font-semibold">{inv.description}</td>
-                    <td className="py-3.5 px-4 font-mono font-extrabold text-foreground">{inv.amount}</td>
-                    <td className="py-3.5 px-4 font-mono text-xs text-muted-foreground">{inv.method}</td>
-                    <td className="py-3.5 px-4">
-                      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                        <Check className="h-3 w-3" /> {inv.status}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 text-right">
-                      <button
-                        type="button"
-                        onClick={() => handleDownloadInvoice(inv.invoiceNo)}
-                        className="inline-flex items-center gap-1 h-7 px-2.5 rounded text-xs font-bold text-primary hover:bg-primary/10 border border-primary/30 transition-colors cursor-pointer"
-                      >
-                        <Download className="h-3 w-3" /> PDF
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </VFCard>
-
-
-
-        {/* 7. LICENSE KEY & API SERIAL VAULT */}
-        <VFCard
-          title="License Key & Cryptographic Serial Vault"
-          description="Institutional master license identifier used for cluster authentication and offline validation."
           className="bg-[#0d0d0d] border-border/90"
           bodyClassName="p-4 space-y-3"
         >
-          <div className="p-3.5 rounded-lg bg-[#141414] border border-[#242424] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-md bg-[#1e1e1e] border border-[#2c2c2c] flex items-center justify-center shrink-0">
-                <Key className="h-4.5 w-4.5 text-primary" />
-              </div>
-              <div>
-                <span className="text-[10px] text-muted-foreground uppercase font-bold block">Enterprise License Key</span>
-                <span className="text-sm font-mono font-black text-foreground">
-                  {showKey ? licenseKey : 'VFL-••••-••••-CBSE-••••-DELHI'}
-                </span>
-              </div>
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="min-w-0">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                Enterprise Key Serial
+              </span>
+              <span className="text-sm font-mono font-extrabold text-foreground tracking-wider">
+                {showKey ? licenseKey : 'VFL-••••-••••-CBSE-••••-DELHI'}
+              </span>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setShowKey(!showKey)}
-                className="h-8 px-2.5 text-xs font-bold rounded border border-border bg-[#181818] hover:bg-[#222222] text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="h-8 px-2.5 text-xs font-bold rounded-[4px] border border-border bg-[#181818] hover:bg-[#222222] text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                 {showKey ? 'Hide' : 'Reveal'}
@@ -518,35 +245,223 @@ function LicenseManagementPage() {
               <button
                 type="button"
                 onClick={handleCopyKey}
-                className="h-8 px-3 text-xs font-bold rounded border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="h-8 px-3 text-xs font-bold rounded-[4px] border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                {copied ? 'Copied' : 'Copy Key'}
+                {copied ? 'Copied' : 'Copy'}
               </button>
             </div>
           </div>
         </VFCard>
 
+        {/* Corporate Payment Method */}
+        <VFCard
+          title={
+            <div className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4 text-primary" />
+              <span>{isHindi ? 'भुगतान विधि व कार्ड' : 'Payment Method & Card'}</span>
+            </div>
+          }
+          description={isHindi ? 'सक्रिय कॉर्पोरेट कार्ड और बिलिंग संपर्क' : 'Active corporate payment method and billing details'}
+          actions={
+            <VFButton
+              size="sm"
+              variant="outline"
+              leftIcon={<Edit3 className="h-3.5 w-3.5" />}
+              onClick={() => setIsUpdateCardModalOpen(true)}
+              className="h-7.5 px-2.5 text-xs font-bold rounded-[4px]"
+            >
+              {isHindi ? 'कार्ड बदलें' : 'Manage Card'}
+            </VFButton>
+          }
+          className="bg-[#0d0d0d] border-border/90"
+          bodyClassName="p-4 space-y-3"
+        >
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-12 rounded-[4px] bg-[#1f1f1f] border border-[#2e2e2e] flex flex-col items-center justify-center text-[10px] font-black text-white font-mono shrink-0 shadow-xs">
+                VISA
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs sm:text-sm font-bold text-foreground font-mono">{cardNumber}</p>
+                  <VFBadge variant="success" className="text-[9px] font-extrabold uppercase py-0.2">
+                    Default
+                  </VFBadge>
+                </div>
+                <p className="text-[11px] text-muted-foreground font-medium">
+                  Expires {expiryDate} · {cardholderName}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsUpdateCardModalOpen(true)}
+              className="text-xs font-bold text-primary hover:underline px-2 py-1 cursor-pointer"
+            >
+              Edit
+            </button>
+          </div>
+        </VFCard>
       </div>
 
-      {/* 8. UPDATE PAYMENT METHOD MODAL */}
+      {/* 3. Payment History & Tax Invoices Table */}
+      <VFCard
+        title={
+          <div className="flex items-center gap-2">
+            <Receipt className="h-4 w-4 text-primary" />
+            <span>{isHindi ? 'भुगतान इतिहास व टैक्स इनवॉइस' : 'Payment History & Tax Invoices'}</span>
+          </div>
+        }
+        description={
+          isHindi
+            ? 'जीएसटी अनुपालन रसीदें और पिछले भुगतानों का आधिकारिक रिकॉर्ड'
+            : 'Official tax invoice receipts with itemized GSTIN breakdowns'
+        }
+        actions={
+          <VFButton
+            size="sm"
+            variant="outline"
+            className="h-8 px-3 text-xs font-bold rounded-[4px]"
+            leftIcon={<Download className="h-3.5 w-3.5" />}
+            onClick={() => {
+              addNotification({
+                title: 'Archive Export Started',
+                description: 'All past invoices compiled into ZIP package.',
+                type: 'success',
+              });
+            }}
+          >
+            {isHindi ? 'सभी डाउनलोड करें' : 'Download All Invoices'}
+          </VFButton>
+        }
+        className="bg-[#0d0d0d] border-border/90"
+        bodyClassName="p-0 overflow-hidden"
+      >
+        <div className="overflow-x-auto no-scrollbar">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-[#242424] bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
+                <th className="py-3 px-4">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
+                <th className="py-3 px-4">{t('col.date')}</th>
+                <th className="py-3 px-4">{t('col.description')}</th>
+                <th className="py-3 px-4">{t('col.amount')}</th>
+                <th className="py-3 px-4">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
+                <th className="py-3 px-4">{t('col.status')}</th>
+                <th className="py-3 px-4 text-right">{t('col.action')}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1c1c1c] text-foreground font-medium">
+              {INVOICE_HISTORY.map((inv) => (
+                <tr key={inv.id} className="hover:bg-[#141414] transition-colors">
+                  <td className="py-3.5 px-4 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
+                  <td className="py-3.5 px-4 font-mono text-muted-foreground">{inv.date}</td>
+                  <td className="py-3.5 px-4 text-foreground font-semibold">{inv.description}</td>
+                  <td className="py-3.5 px-4 font-mono font-extrabold text-foreground">{inv.amount}</td>
+                  <td className="py-3.5 px-4 font-mono text-xs text-muted-foreground">{inv.method}</td>
+                  <td className="py-3.5 px-4">
+                    <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold px-2 py-0.5 rounded-[2px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                      <Check className="h-3 w-3" /> {inv.status}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-4 text-right">
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadInvoice(inv.invoiceNo)}
+                      className="inline-flex items-center gap-1 h-7 px-2.5 rounded-[3px] text-xs font-bold text-primary hover:bg-primary/10 border border-primary/30 transition-colors cursor-pointer"
+                    >
+                      <Download className="h-3 w-3" /> PDF
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </VFCard>
+
+      {/* 4. Pay Early / Renewal Modal */}
       <VFDialog
-        isOpen={isUpdateCardModalOpen}
-        onClose={() => setIsUpdateCardModalOpen(false)}
-        title="Update Corporate Payment Method"
-        description="Add or update corporate credit card for automatic license billing and quota refills."
-        className="max-w-md"
+        isOpen={isPayEarlyModalOpen}
+        onClose={() => setIsPayEarlyModalOpen(false)}
+        title={isHindi ? 'वार्षिक प्लान का जल्दी भुगतान / रिन्यू करें' : 'Early License Renewal & Payment'}
+        description={
+          isHindi
+            ? 'आगामी शैक्षणिक सत्र 2027–2028 के लिए समय से पहले रिन्यू करें और निर्बाध सेवा सुनिश्चित करें।'
+            : 'Pre-pay your institutional license renewal for Academic Year 2027–2028 with instant tax invoice generation.'
+        }
+        className="max-w-md rounded-[4px]"
         footerActions={
           <div className="flex items-center justify-end gap-2 w-full">
             <VFButton
               variant="outline"
               size="sm"
+              className="rounded-[4px]"
+              onClick={() => setIsPayEarlyModalOpen(false)}
+              disabled={isProcessingPayment}
+            >
+              Cancel
+            </VFButton>
+            <VFButton
+              size="sm"
+              className="rounded-[4px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
+              onClick={handleProcessEarlyPayment}
+              isLoading={isProcessingPayment}
+              leftIcon={<Check className="h-3.5 w-3.5" />}
+            >
+              {isHindi ? 'भुगतान की पुष्टि करें (₹2,40,000)' : 'Confirm & Pay ₹2,40,000'}
+            </VFButton>
+          </div>
+        }
+      >
+        <div className="space-y-3.5 py-2 text-xs">
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground font-medium">Subscription Term:</span>
+              <span className="font-extrabold text-foreground">April 2027 – March 2028</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground font-medium">Tier / License:</span>
+              <span className="font-bold text-foreground">Annual Enterprise (K-12)</span>
+            </div>
+            <div className="flex items-center justify-between border-t border-[#202020] pt-2">
+              <span className="text-muted-foreground font-medium">Payment Charged To:</span>
+              <span className="font-mono font-bold text-foreground">{cardNumber}</span>
+            </div>
+            <div className="flex items-center justify-between border-t border-[#202020] pt-2 text-sm font-black">
+              <span className="text-foreground">Total Payable Amount:</span>
+              <span className="text-emerald-400 font-mono">₹ 2,40,000</span>
+            </div>
+          </div>
+
+          <div className="p-2.5 rounded-[4px] bg-emerald-500/10 border border-emerald-500/25 flex items-center gap-2 text-[11px] text-emerald-400">
+            <ShieldCheck className="h-4 w-4 shrink-0" />
+            <span>Early renewal extends license coverage uninterrupted without price fluctuations.</span>
+          </div>
+        </div>
+      </VFDialog>
+
+      {/* 5. Update Corporate Payment Method Modal */}
+      <VFDialog
+        isOpen={isUpdateCardModalOpen}
+        onClose={() => setIsUpdateCardModalOpen(false)}
+        title="Update Corporate Payment Method"
+        description="Add or update corporate credit card for automatic license billing."
+        className="max-w-md rounded-[4px]"
+        footerActions={
+          <div className="flex items-center justify-end gap-2 w-full">
+            <VFButton
+              variant="outline"
+              size="sm"
+              className="rounded-[4px]"
               onClick={() => setIsUpdateCardModalOpen(false)}
             >
               Cancel
             </VFButton>
             <VFButton
               size="sm"
+              className="rounded-[4px]"
               onClick={() => {
                 setIsUpdateCardModalOpen(false);
                 addNotification({
@@ -567,12 +482,14 @@ function LicenseManagementPage() {
             value={cardholderName}
             onChange={(e) => setCardholderName(e.target.value)}
             placeholder="Official Institution / Trustee Name"
+            className="rounded-[4px]"
           />
           <VFInput
             label="Card Number"
             value={cardNumber}
             onChange={(e) => setCardNumber(e.target.value)}
             placeholder="16-Digit Corporate Card Number"
+            className="rounded-[4px]"
           />
           <div className="grid grid-cols-2 gap-3">
             <VFInput
@@ -580,17 +497,19 @@ function LicenseManagementPage() {
               value={expiryDate}
               onChange={(e) => setExpiryDate(e.target.value)}
               placeholder="MM/YY"
+              className="rounded-[4px]"
             />
             <VFInput
               label="CVV / CVC"
               type="password"
               defaultValue="•••"
               placeholder="3 Digits"
+              className="rounded-[4px]"
             />
           </div>
-          <div className="p-3 rounded bg-[#141414] border border-[#242424] flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center gap-2 text-xs text-muted-foreground">
             <Lock className="h-4 w-4 text-emerald-400 shrink-0" />
-            <span>PCI-DSS Level 1 Encrypted Vault. Card is verified with a ₹2 reversible authorization.</span>
+            <span>PCI-DSS Level 1 Encrypted Vault. Instant card verification.</span>
           </div>
         </div>
       </VFDialog>

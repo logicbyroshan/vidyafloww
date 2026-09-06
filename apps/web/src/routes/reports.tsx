@@ -10,7 +10,6 @@ import {
   VFInput,
 } from '@vidyafloww/ui';
 import {
-  FileSpreadsheet,
   Download,
   Plus,
   Check,
@@ -158,62 +157,38 @@ function ReportsPage() {
 
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* 1. Header Toolbar Box */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-            <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-400" />
-            <span className="font-bold text-foreground">{isHindi ? 'रिपोर्ट व अभिलेख' : 'Academic Reporting'}</span>
-          </div>
-          <VFBadge variant="success" className="text-xs font-bold font-mono">
-            {isHindi ? 'CBSE व राज्य बोर्ड संरेखित' : 'CBSE & State Aligned'}
-          </VFBadge>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            size="sm"
-            onClick={() => setIsGenerateModalOpen(true)}
-            className="h-9 px-3.5 text-xs font-bold shadow-xs"
-            leftIcon={<Plus className="h-3.5 w-3.5" />}
-          >
-            {t('action.generate')}
-          </VFButton>
-        </div>
-      </div>
-
-      {/* 2. Global Dropdown Filters Bar */}
-      <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex items-center gap-3 flex-1 min-w-[280px]">
-          <span className="text-xs font-extrabold text-foreground uppercase tracking-wider whitespace-nowrap">
-            {t('action.filter')}:
-          </span>
-          <div className="w-56">
-            <VFSelect
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(String(e.target.value))}
-              options={[
-                { label: isHindi ? 'सभी रिपोर्ट श्रेणियां' : 'All Report Categories', value: 'All' },
-                { label: isHindi ? 'कंप्लायंस व कानूनी' : 'Compliance & Legal', value: 'Compliance' },
-                { label: isHindi ? 'उपस्थिति ऑडिट' : 'Attendance Audit', value: 'Attendance' },
-                { label: isHindi ? 'फाइनेंस व एकाउंट्स' : 'Finance & Accounts', value: 'Finance' },
-                { label: isHindi ? 'एकेडमिक्स व GPA' : 'Academics & GPA', value: 'Academics' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
-            />
-          </div>
-        </div>
-
-        <span className="text-xs font-mono text-muted-foreground font-semibold">
-          {filteredReports.length} {isHindi ? 'रिपोर्ट्स तैयार' : 'Reports Ready'}
-        </span>
-      </div>
-
-      {/* 3. Main Reports Table */}
+      {/* Main Reports Data Table with Integrated Toolbar & Filter */}
       <VFDataTable
         columns={reportColumns}
         data={filteredReports}
-        filterPlaceholder={t('form.searchFees')}
+        filterPlaceholder={isHindi ? "रिपोर्ट नाम या कोड से खोजें..." : "Search reports by name, code, or format..."}
+        rightActions={
+          <div className="flex items-center gap-2">
+            <div className="w-44 sm:w-48">
+              <VFSelect
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी श्रेणियां' : 'All Categories', value: 'All' },
+                  { label: isHindi ? 'कंप्लायंस व कानूनी' : 'Compliance & Legal', value: 'Compliance' },
+                  { label: isHindi ? 'उपस्थिति ऑडिट' : 'Attendance Audit', value: 'Attendance' },
+                  { label: isHindi ? 'फाइनेंस व एकाउंट्स' : 'Finance & Accounts', value: 'Finance' },
+                  { label: isHindi ? 'एकेडमिक्स व GPA' : 'Academics & GPA', value: 'Academics' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+              />
+            </div>
+
+            <VFButton
+              size="sm"
+              onClick={() => setIsGenerateModalOpen(true)}
+              className="h-8 px-3 text-xs font-bold rounded-[4px]"
+              leftIcon={<Plus className="h-3.5 w-3.5" />}
+            >
+              {t('action.generate')}
+            </VFButton>
+          </div>
+        }
       />
 
       {/* Custom Report Builder Modal */}

@@ -11,7 +11,6 @@ import {
   VFDialog,
 } from '@vidyafloww/ui';
 import {
-  Bell,
   Plus,
   Download,
   Send,
@@ -179,85 +178,63 @@ function NoticesPage() {
 
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* 1. Header Toolbar Box */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-            <Bell className="h-3.5 w-3.5 text-amber-400" />
-            <span className="font-bold text-foreground">{isHindi ? 'सक्रिय प्रसारण' : 'Broadcast Center'}</span>
-          </div>
-          <VFBadge variant="success" className="text-xs font-bold font-mono">
-            {isHindi ? 'SMS व ऐप लाइव' : 'SMS & App Live'}
-          </VFBadge>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            size="sm"
-            variant="outline"
-            onClick={handleExportArchive}
-            className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
-          >
-            {t('action.export')}
-          </VFButton>
-          <VFButton
-            size="sm"
-            onClick={() => setIsPublishModalOpen(true)}
-            className="h-9 px-3.5 text-xs font-bold shadow-xs"
-            leftIcon={<Plus className="h-3.5 w-3.5" />}
-          >
-            {t('action.add') + ' ' + t('nav.notices')}
-          </VFButton>
-        </div>
-      </div>
-
-      {/* 2. Global Dropdown Filters Bar */}
-      <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
-          {/* Target Audience Filter */}
-          <div className="w-52">
-            <VFSelect
-              value={audienceFilter}
-              onChange={(e) => setAudienceFilter(String(e.target.value))}
-              options={[
-                { label: isHindi ? 'सभी दर्शक' : 'All Audiences', value: 'All' },
-                { label: isHindi ? 'पूरा स्कूल' : 'All School', value: 'All School' },
-                { label: isHindi ? 'केवल अभिभावक' : 'Parents Only', value: 'Parents' },
-                { label: isHindi ? 'केवल शिक्षक' : 'Teachers Only', value: 'Teachers' },
-                { label: isHindi ? 'कक्षा 9-12' : 'Classes 9-12', value: 'Classes 9-12' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
-            />
-          </div>
-
-          {/* Category Filter */}
-          <div className="w-48">
-            <VFSelect
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(String(e.target.value))}
-              options={[
-                { label: isHindi ? 'सभी श्रेणियां' : 'All Categories', value: 'All' },
-                { label: isHindi ? 'शैक्षणिक घोषणाएं' : 'Academic Announcements', value: 'Academic' },
-                { label: isHindi ? 'कार्यक्रम व उत्सव' : 'Events & Functions', value: 'Event' },
-                { label: isHindi ? 'छुट्टियां व अवकाश' : 'Holidays & Closures', value: 'Holiday' },
-                { label: isHindi ? 'प्रशासनिक नीतियां' : 'Administrative Policies', value: 'Administrative' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
-            />
-          </div>
-        </div>
-
-        <span className="text-xs font-mono text-muted-foreground font-semibold">
-          {filteredNotices.length} {isHindi ? 'नोटिस रिकॉर्डेड' : 'Broadcasts Recorded'}
-        </span>
-      </div>
-
-      {/* 3. Main Data Table */}
+      {/* Main Broadcasts Data Table with Integrated Toolbar & Filters */}
       <VFDataTable
         columns={noticeColumns}
         data={filteredNotices}
-        filterPlaceholder="Search circulars by title, circular number, category, or audience..."
+        filterPlaceholder={isHindi ? "सर्कुलर, शीर्षक या कोड खोजें..." : "Search circulars by title, code, category..."}
+        rightActions={
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="w-32 sm:w-36">
+              <VFSelect
+                value={audienceFilter}
+                onChange={(e) => setAudienceFilter(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी दर्शक' : 'All Audiences', value: 'All' },
+                  { label: isHindi ? 'पूरा स्कूल' : 'All School', value: 'All School' },
+                  { label: isHindi ? 'अभिभावक' : 'Parents', value: 'Parents' },
+                  { label: isHindi ? 'शिक्षक' : 'Teachers', value: 'Teachers' },
+                  { label: 'Classes 9-12', value: 'Classes 9-12' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+              />
+            </div>
+
+            <div className="w-32 sm:w-36">
+              <VFSelect
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी श्रेणियां' : 'All Categories', value: 'All' },
+                  { label: isHindi ? 'शैक्षणिक' : 'Academic', value: 'Academic' },
+                  { label: isHindi ? 'कार्यक्रम' : 'Events', value: 'Event' },
+                  { label: isHindi ? 'अवकाश' : 'Holidays', value: 'Holiday' },
+                  { label: isHindi ? 'प्रशासनिक' : 'Admin', value: 'Administrative' },
+                ]}
+                className="bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+              />
+            </div>
+
+            <VFButton
+              size="sm"
+              variant="outline"
+              onClick={handleExportArchive}
+              className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
+              leftIcon={<Download className="h-3.5 w-3.5" />}
+            >
+              {t('action.export')}
+            </VFButton>
+
+            <VFButton
+              size="sm"
+              onClick={() => setIsPublishModalOpen(true)}
+              className="h-8 px-3 text-xs font-bold rounded-[4px]"
+              leftIcon={<Plus className="h-3.5 w-3.5" />}
+            >
+              {t('action.add')}
+            </VFButton>
+          </div>
+        }
       />
 
       {/* Publish Notice Modal */}
