@@ -13,6 +13,7 @@ Permanent operating rules and execution guidelines for AI coding agents working 
 5. **No Unjustified Dependencies**: Use existing workspace packages (`@vidyafloww/ui`, `@vidyafloww/utils`, etc.) and installed libraries. Do not add external npm or pip packages without clear justification.
 6. **Zero Secrets & Credentials (NEVER PUSH ID/PASS)**: Absolutely NEVER create, commit, push, log, or expose user IDs, usernames, passwords, API tokens, session credentials, private keys, or `.env` files to the repository under any circumstances. Always verify that test fixtures and mock states use generic, non-sensitive placeholders.
 7. **Strict Sharp Border Radius Rule**: NEVER use large, bubbly, or excessive border radius (avoid `rounded-xl`, `rounded-2xl`, `rounded-3xl`, or bubbly circular buttons). Maintain sharp, crisp, clean geometric corners with minimal radius (`rounded-sm`, `rounded-[4px]`, or at most `rounded-md` / 4px-6px). We strictly favor crisp, sharp borders across cards, buttons, dialogs, and modules.
+8. **Test, Verify, and Commit Per Feature (Never Push Unless Explicitly Instructed)**: Each time changes are made to a feature or module, immediately run relevant type checks/tests and verify the implementation. Once verified and audited for clean diffs, commit the changes locally with a clear, conventional commit message (`feat:`, `fix:`, etc.). **NEVER push (`git push`) to the remote repository under any circumstances unless explicitly commanded by the user.** Always commit locally, but do not push without instruction.
 
 ---
 
@@ -52,8 +53,9 @@ To maintain high context quality and prevent token waste:
   * Web unit tests: `pnpm --filter @vidyafloww/web test`
   * Backend integrity: `python apps/backend/manage.py check`
 * **Avoid Wasteful Full Builds**: Do not trigger full monorepo builds (`turbo run build`) for trivial single-file edits unless validating a cross-package release.
-* **Credential & Secrets Audit**: Always inspect `git status` and `git diff` before reporting completion or pushing commits to verify that no user IDs, passwords, private keys, or `.env` files were accidentally created or staged.
-* **Review Diffs**: Always inspect `git status` and `git diff` before reporting completion to ensure no accidental whitespace, debug logs, or unrelated file changes occurred.
+* **Credential & Secrets Audit**: Always inspect `git status` and `git diff` before reporting completion or creating commits to verify that no user IDs, passwords, private keys, or `.env` files were accidentally created or staged.
+* **Review Diffs & Clean Commits**: Always inspect `git status` and `git diff` before reporting completion to ensure no accidental whitespace, debug logs, or unrelated file changes occurred. Always commit verified feature work locally with a descriptive commit message.
+* **Strict No-Push Policy**: Never run `git push` unless the user explicitly commands it. Commits stay local until push is instructed.
 
 ---
 
