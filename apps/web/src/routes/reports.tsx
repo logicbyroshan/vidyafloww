@@ -710,7 +710,7 @@ function ReportsPage() {
                     { label: '2025–2026', value: '2025–2026' },
                     { label: '2024–2025 (Archive)', value: '2024–2025' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
 
@@ -728,7 +728,7 @@ function ReportsPage() {
                     { label: 'Class 12 (Senior Sec)', value: 'Class 12' },
                     { label: 'Class 9 (High School)', value: 'Class 9' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
 
@@ -745,7 +745,7 @@ function ReportsPage() {
                     { label: 'Quarter 2 (Jul–Sep)', value: 'Quarter 2' },
                     { label: 'Quarter 1 (Apr–Jun)', value: 'Quarter 1' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
             </div>

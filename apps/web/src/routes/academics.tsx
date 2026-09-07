@@ -1854,7 +1854,7 @@ function AcademicsPage() {
                 placeholder="e.g. Mathematics Standard, Science, Computer Applications"
                 value={subjectForm.name}
                 onChange={(e) => setSubjectForm({ ...subjectForm, name: e.target.value })}
-                className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
 
@@ -1866,7 +1866,7 @@ function AcademicsPage() {
                   placeholder={`SUB-${selectedClassId.replace('Class ', '')}-MTH`}
                   value={subjectForm.code}
                   onChange={(e) => setSubjectForm({ ...subjectForm, code: e.target.value })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
               <div className="space-y-1">
@@ -1877,7 +1877,7 @@ function AcademicsPage() {
                   max="12"
                   value={String(subjectForm.weeklyPeriods)}
                   onChange={(e) => setSubjectForm({ ...subjectForm, weeklyPeriods: Number(e.target.value) })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
@@ -1897,7 +1897,7 @@ function AcademicsPage() {
                     { label: 'Elective', value: 'Elective' },
                     { label: 'Humanities Core', value: 'Humanities Core' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
               <div className="space-y-1">
@@ -1906,7 +1906,7 @@ function AcademicsPage() {
                   placeholder="e.g. Dr. Rajesh Sharma"
                   value={subjectForm.teacherInCharge}
                   onChange={(e) => setSubjectForm({ ...subjectForm, teacherInCharge: e.target.value })}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
@@ -1925,7 +1925,7 @@ function AcademicsPage() {
                   type="number"
                   value={String(subjectForm.theoryMarks)}
                   onChange={(e) => setSubjectForm({ ...subjectForm, theoryMarks: Number(e.target.value) })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
               <div className="space-y-1">
@@ -1934,7 +1934,7 @@ function AcademicsPage() {
                   type="number"
                   value={String(subjectForm.internalMarks)}
                   onChange={(e) => setSubjectForm({ ...subjectForm, internalMarks: Number(e.target.value) })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
               <div className="space-y-1">
@@ -1943,7 +1943,7 @@ function AcademicsPage() {
                   type="number"
                   value={String(subjectForm.syllabusChapters)}
                   onChange={(e) => setSubjectForm({ ...subjectForm, syllabusChapters: Number(e.target.value) })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
@@ -2019,7 +2019,7 @@ function AcademicsPage() {
                 placeholder="e.g. Dr. Rajesh Sharma"
                 value={classDetailsForm.classMentor}
                 onChange={(e) => setClassDetailsForm({ ...classDetailsForm, classMentor: e.target.value })}
-                className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
 
@@ -2030,7 +2030,7 @@ function AcademicsPage() {
                 placeholder="e.g. Room 201"
                 value={classDetailsForm.room}
                 onChange={(e) => setClassDetailsForm({ ...classDetailsForm, room: e.target.value })}
-                className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
               />
             </div>
           </div>
@@ -2047,7 +2047,7 @@ function AcademicsPage() {
                   type="number"
                   value={String(classDetailsForm.totalStudents)}
                   onChange={(e) => setClassDetailsForm({ ...classDetailsForm, totalStudents: Number(e.target.value) })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
 
@@ -2056,7 +2056,7 @@ function AcademicsPage() {
                 <VFInput
                   value={classDetailsForm.stage}
                   onChange={(e) => setClassDetailsForm({ ...classDetailsForm, stage: e.target.value })}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
@@ -2128,7 +2128,7 @@ function AcademicsPage() {
                 placeholder="e.g. Term 1 Mid-Year Summative Evaluation, Pre-Board Model Exam"
                 value={milestoneForm.title}
                 onChange={(e) => setMilestoneForm({ ...milestoneForm, title: e.target.value })}
-                className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
 
@@ -2146,7 +2146,7 @@ function AcademicsPage() {
                     { label: 'Pre-Board Examination', value: 'Pre-Board' },
                     { label: 'Final CBSE Board', value: 'Final Board' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
               <div className="space-y-1">
@@ -2161,7 +2161,7 @@ function AcademicsPage() {
                     { label: 'Final CBSE Board', value: 'Final CBSE Board' },
                     { label: 'Internal Assessment & Practical', value: 'Internal Assessment & Practical' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
             </div>
@@ -2181,7 +2181,7 @@ function AcademicsPage() {
                   required
                   value={milestoneForm.startDate}
                   onChange={(e) => setMilestoneForm({ ...milestoneForm, startDate: e.target.value })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
               <div className="space-y-1">
@@ -2191,7 +2191,7 @@ function AcademicsPage() {
                   required
                   value={milestoneForm.endDate}
                   onChange={(e) => setMilestoneForm({ ...milestoneForm, endDate: e.target.value })}
-                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
@@ -2206,7 +2206,7 @@ function AcademicsPage() {
                     max="100"
                     value={String(milestoneForm.targetSyllabusCoverage)}
                     onChange={(e) => setMilestoneForm({ ...milestoneForm, targetSyllabusCoverage: Number(e.target.value) })}
-                    className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                    className="bg-[#181818] border-border font-mono h-9 text-xs rounded-[4px]"
                   />
                   <span className="font-mono font-bold text-xs text-foreground">%</span>
                 </div>
@@ -2223,7 +2223,7 @@ function AcademicsPage() {
                     { label: 'Scheduled', value: 'Scheduled' },
                     { label: 'Completed', value: 'Completed' },
                   ]}
-                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-9 text-xs rounded-[4px] w-full"
                 />
               </div>
             </div>

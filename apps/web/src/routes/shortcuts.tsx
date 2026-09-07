@@ -278,7 +278,7 @@ function ShortcutsConfigPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={isHindi ? "एक्शन मॉड्यूल खोजें..." : "Search action modules by title or keyword..."}
-                className="w-full pl-8 pr-3 h-8.5 rounded-md bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
+                className="w-full pl-8 pr-3 h-9 rounded-[4px] bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-zinc-400 transition-colors"
               />
             </div>
 

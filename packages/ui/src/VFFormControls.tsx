@@ -53,7 +53,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "flex h-8 w-full rounded-[4px] border border-border/60 bg-muted/40 px-3 py-1 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
+              "flex h-9 w-full rounded-[4px] border border-border bg-[#161616] px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-zinc-400 focus-visible:ring-1 focus-visible:ring-zinc-400/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
               leftIcon && "pl-9",
               rightIcon && "pr-9",
               error && "border-destructive focus-visible:ring-destructive",
@@ -154,8 +154,6 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
       }
     };
 
-    const isInline = !label && !description && !error;
-
     // Detect if width or sizing classes were passed in className or wrapperClassName
     const widthMatch = className ? className.match(/\b(?:sm:|md:|lg:|xl:)?(?:w-|min-w-|max-w-)[^\s]+/g) : null;
     const widthClasses = widthMatch ? widthMatch.join(' ') : '';
@@ -163,9 +161,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
     return (
       <div
         className={cn(
-          isInline
-            ? cn("relative inline-flex items-center", widthClasses || "w-full")
-            : "w-full relative",
+          "w-full relative",
+          widthClasses,
           wrapperClassName
         )}
       >
@@ -181,13 +178,15 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
             id={selectId}
             className={cn(
               "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#161616] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#202020] hover:border-zinc-500 data-[state=open]:border-zinc-400 shadow-xs",
-              size === 'sm' ? "h-8 px-2.5 text-xs" : size === 'lg' ? "h-10 px-3.5 text-sm" : "h-8.5 px-3 text-xs",
+              size === 'sm' ? "h-8 min-h-[32px] px-2.5 py-1 text-xs" : size === 'lg' ? "h-10 min-h-[40px] px-3.5 py-2 text-sm" : "h-9 min-h-[36px] px-3 py-1.5 text-xs",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
             )}
           >
-            <SelectPrimitive.Value placeholder={placeholder} />
+            <span className="truncate flex-1 text-left">
+              <SelectPrimitive.Value placeholder={placeholder} />
+            </span>
             <SelectPrimitive.Icon asChild>
               <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5" />
             </SelectPrimitive.Icon>

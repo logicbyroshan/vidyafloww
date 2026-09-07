@@ -1148,7 +1148,7 @@ function AttendancePage() {
                         '_blank'
                       )
                     }
-                    className="h-8.5 px-3 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
+                    className="h-9 px-3 rounded-[4px] bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
                     title="Send WhatsApp Absence Alert to Parent"
                   >
                     <MessageSquare className="h-3.5 w-3.5" />

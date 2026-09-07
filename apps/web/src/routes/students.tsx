@@ -3542,7 +3542,7 @@ function StudentsPage() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleAddCustomField();
                   }}
-                  className="w-full h-8.5 px-3 text-xs text-foreground bg-card border border-border rounded-md outline-none focus:border-primary"
+                  className="w-full h-9 px-3 text-xs text-foreground bg-card border border-border rounded-[4px] outline-none focus:border-zinc-400"
                 />
               </div>
               <div>

@@ -65,6 +65,9 @@ const config: Config = {
         sans: ['Mukta', 'system-ui', '-apple-system', 'sans-serif'],
         heading: ['Mukta', 'system-ui', '-apple-system', 'sans-serif'],
       },
+      spacing: {
+        '8.5': '2.125rem',
+      },
     },
   },
   plugins: [],
