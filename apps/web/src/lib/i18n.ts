@@ -41,6 +41,8 @@ export const translations = {
   'nav.shortcuts':        { en: 'Shortcuts',         hi: 'शॉर्टकट' },
   'nav.license':          { en: 'License',           hi: 'लाइसेंस' },
   'nav.management':       { en: 'Management',        hi: 'प्रबंधन' },
+  'nav.hrManage':         { en: 'HR Manage',         hi: 'स्टाफ एचआर' },
+  'nav.designLab':        { en: 'Design Lab',        hi: 'डिजाइन लैब' },
 
   // ─── COMMON ACTIONS ───────────────────────────────────────────────────────
   'action.save':          { en: 'Save',              hi: 'सेव करें' },

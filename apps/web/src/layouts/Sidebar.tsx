@@ -21,8 +21,10 @@ import {
   LogOut,
   LucideIcon,
   MessageSquareWarning,
+  Palette,
   School,
   Settings,
+  UserCheck,
   UserPlus,
   Users,
   Video,
@@ -61,6 +63,7 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'attendance', labelKey: 'nav.attendance', route: '/attendance', icon: CalendarCheck },
       { id: 'timetable', labelKey: 'nav.timetable', route: '/timetable', icon: Calendar },
       { id: 'teachers', labelKey: 'nav.teachers', route: '/teachers', icon: Users },
+      { id: 'hrmanage', labelKey: 'nav.hrManage', route: '/hr-manage', icon: UserCheck },
     ],
   },
   {
@@ -72,6 +75,7 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'eclass', labelKey: 'nav.eclass', route: '/e-class', icon: Video },
       { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
       { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
+      { id: 'designlab', labelKey: 'nav.designLab', route: '/design-lab', icon: Palette },
     ],
   },
   {
