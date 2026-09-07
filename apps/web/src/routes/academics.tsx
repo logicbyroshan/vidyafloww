@@ -1147,14 +1147,12 @@ function AcademicsPage() {
             <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">
               {isHindi ? 'कक्षा:' : 'Class:'}
             </span>
-            <div className="w-52">
-              <VFSelect
-                value={selectedClassId}
-                onChange={(e) => setSelectedClassId(String(e.target.value))}
-                options={CLASS_OPTIONS}
-                className="bg-transparent border-0 h-7 text-xs font-bold focus:ring-0 p-0 text-foreground cursor-pointer"
-              />
-            </div>
+            <VFSelect
+              value={selectedClassId}
+              onChange={(e) => setSelectedClassId(String(e.target.value))}
+              options={CLASS_OPTIONS}
+              className="w-48 bg-transparent border-0 h-7 text-xs font-bold focus:ring-0 p-0 text-foreground cursor-pointer"
+            />
           </div>
 
           <div className="h-5 w-[1px] bg-border/80 hidden md:block" />

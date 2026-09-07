@@ -156,8 +156,19 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
 
     const isInline = !label && !description && !error;
 
+    // Detect if width or sizing classes were passed in className or wrapperClassName
+    const widthMatch = className ? className.match(/\b(?:sm:|md:|lg:|xl:)?(?:w-|min-w-|max-w-)[^\s]+/g) : null;
+    const widthClasses = widthMatch ? widthMatch.join(' ') : '';
+
     return (
-      <div className={cn(isInline ? "relative inline-flex items-center" : "w-full relative", wrapperClassName)}>
+      <div
+        className={cn(
+          isInline
+            ? cn("relative inline-flex items-center", widthClasses || "w-full")
+            : "w-full relative",
+          wrapperClassName
+        )}
+      >
         {label && <VFFormLabel htmlFor={selectId} required={required}>{label}</VFFormLabel>}
         
         <SelectPrimitive.Root

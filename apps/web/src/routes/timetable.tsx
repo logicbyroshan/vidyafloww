@@ -590,19 +590,18 @@ function TimetablePage() {
       <div className="flex-1 min-h-0 flex flex-col space-y-3">
         {/* Action Toolbar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#101010] p-3 rounded-lg border border-[#242424] shadow-xs shrink-0">
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="w-56">
-              <VFSelect
-                value={selectedClass}
-                onChange={(e) => handleClassChange(String(e.target.value))}
-                options={[
-                  { label: 'Class 9 - Section A', value: 'Class 9-A' },
-                  { label: 'Class 10 - Section B', value: 'Class 10-B' },
-                  { label: 'Class 11 - Science', value: 'Class 11-Sci' },
-                  { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
-                ]}
-              />
-            </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <VFSelect
+              value={selectedClass}
+              onChange={(e) => handleClassChange(String(e.target.value))}
+              options={[
+                { label: 'Class 9 - Section A', value: 'Class 9-A' },
+                { label: 'Class 10 - Section B', value: 'Class 10-B' },
+                { label: 'Class 11 - Science', value: 'Class 11-Sci' },
+                { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
+              ]}
+              className="w-48"
+            />
             <div className="flex items-center gap-2 px-3 h-9 rounded-md bg-[#161616] border border-[#262626] text-xs">
               <School className="h-4 w-4 text-zinc-400 shrink-0" />
               <span className="font-medium text-zinc-400">{t('teachers.classTeacher')}:</span>

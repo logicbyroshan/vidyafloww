@@ -620,38 +620,34 @@ export function ELibraryPage() {
             </div>
 
             {/* Grade Filter */}
-            <div className="w-28 sm:w-32">
-              <VFSelect
-                value={selectedGrade}
-                onChange={(e) => setSelectedGrade(String(e.target.value))}
-                options={[
-                  { label: isHindi ? 'सभी कक्षाएं' : 'All Classes', value: 'All' },
-                  { label: 'Class 10', value: 'Class 10' },
-                  { label: 'Class 12', value: 'Class 12' },
-                  { label: 'Class 11', value: 'Class 11' },
-                  { label: 'Class 9', value: 'Class 9' },
-                  { label: 'Class 8', value: 'Class 8' },
-                  { label: 'Class 6', value: 'Class 6' },
-                ]}
-                className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
-              />
-            </div>
+            <VFSelect
+              value={selectedGrade}
+              onChange={(e) => setSelectedGrade(String(e.target.value))}
+              options={[
+                { label: isHindi ? 'सभी कक्षाएं' : 'All Classes', value: 'All' },
+                { label: 'Class 10', value: 'Class 10' },
+                { label: 'Class 12', value: 'Class 12' },
+                { label: 'Class 11', value: 'Class 11' },
+                { label: 'Class 9', value: 'Class 9' },
+                { label: 'Class 8', value: 'Class 8' },
+                { label: 'Class 6', value: 'Class 6' },
+              ]}
+              className="w-28 sm:w-32 bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
+            />
 
             {/* Publisher Filter */}
-            <div className="w-32 sm:w-36">
-              <VFSelect
-                value={selectedPublisher}
-                onChange={(e) => setSelectedPublisher(String(e.target.value))}
-                options={[
-                  { label: isHindi ? 'सभी प्रकाशक' : 'All Publishers', value: 'All' },
-                  { label: 'NCERT', value: 'NCERT' },
-                  { label: 'CBSE Curriculum', value: 'CBSE Curriculum' },
-                  { label: 'Dhanpat Rai & Co.', value: 'Dhanpat Rai & Co.' },
-                  { label: 'Sultan Chand & Sons', value: 'Sultan Chand & Sons' },
-                ]}
-                className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
-              />
-            </div>
+            <VFSelect
+              value={selectedPublisher}
+              onChange={(e) => setSelectedPublisher(String(e.target.value))}
+              options={[
+                { label: isHindi ? 'सभी प्रकाशक' : 'All Publishers', value: 'All' },
+                { label: 'NCERT', value: 'NCERT' },
+                { label: 'CBSE Curriculum', value: 'CBSE Curriculum' },
+                { label: 'Dhanpat Rai & Co.', value: 'Dhanpat Rai & Co.' },
+                { label: 'Sultan Chand & Sons', value: 'Sultan Chand & Sons' },
+              ]}
+              className="w-32 sm:w-36 bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
+            />
 
             {/* Add New Book Button (Opens Drawer) */}
             <VFButton

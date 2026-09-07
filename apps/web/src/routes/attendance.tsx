@@ -985,19 +985,18 @@ function AttendancePage() {
         filterPlaceholder="Search by student name, roll no, or admission ID..."
         rightActions={
           <div className="flex items-center gap-2.5 flex-wrap">
-            <div className="w-48">
-              <VFSelect
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(String(e.target.value))}
-                options={[
-                  { label: 'Class 8 - Section A', value: 'Class 8-A' },
-                  { label: 'Class 9 - Section B', value: 'Class 9-B' },
-                  { label: 'Class 10 - Section A', value: 'Class 10-A' },
-                  { label: 'Class 11 - Science', value: 'Class 11-Sci' },
-                  { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
-                ]}
-              />
-            </div>
+            <VFSelect
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(String(e.target.value))}
+              options={[
+                { label: 'Class 8 - Section A', value: 'Class 8-A' },
+                { label: 'Class 9 - Section B', value: 'Class 9-B' },
+                { label: 'Class 10 - Section A', value: 'Class 10-A' },
+                { label: 'Class 11 - Science', value: 'Class 11-Sci' },
+                { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
+              ]}
+              className="w-48"
+            />
             <VFButton
               size="sm"
               variant="outline"

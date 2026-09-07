@@ -230,34 +230,28 @@ function AuditLogPage() {
           </div>
 
           {/* Global VFSelect Role Filter */}
-          <div className="w-48 shrink-0">
-            <VFSelect
-              value={selectedRoleFilter}
-              onChange={(e) => setSelectedRoleFilter(String(e.target.value))}
-              options={ROLE_OPTIONS}
-              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
-            />
-          </div>
+          <VFSelect
+            value={selectedRoleFilter}
+            onChange={(e) => setSelectedRoleFilter(String(e.target.value))}
+            options={ROLE_OPTIONS}
+            className="w-40 shrink-0 bg-[#141414] border-border h-8 text-xs rounded-[4px]"
+          />
 
           {/* Global VFSelect Category Filter */}
-          <div className="w-48 shrink-0">
-            <VFSelect
-              value={selectedCategoryFilter}
-              onChange={(e) => setSelectedCategoryFilter(String(e.target.value))}
-              options={CATEGORY_OPTIONS}
-              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
-            />
-          </div>
+          <VFSelect
+            value={selectedCategoryFilter}
+            onChange={(e) => setSelectedCategoryFilter(String(e.target.value))}
+            options={CATEGORY_OPTIONS}
+            className="w-40 shrink-0 bg-[#141414] border-border h-8 text-xs rounded-[4px]"
+          />
 
           {/* Global VFSelect Status Filter */}
-          <div className="w-44 shrink-0">
-            <VFSelect
-              value={selectedStatusFilter}
-              onChange={(e) => setSelectedStatusFilter(String(e.target.value))}
-              options={STATUS_OPTIONS}
-              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
-            />
-          </div>
+          <VFSelect
+            value={selectedStatusFilter}
+            onChange={(e) => setSelectedStatusFilter(String(e.target.value))}
+            options={STATUS_OPTIONS}
+            className="w-36 shrink-0 bg-[#141414] border-border h-8 text-xs rounded-[4px]"
+          />
         </div>
 
         {hasActiveFilters && (

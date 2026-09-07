@@ -228,38 +228,34 @@ function HomeworkPage() {
 
       {/* 2. Global Dropdown Filters Bar */}
       <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+        <div className="flex flex-wrap items-center gap-2 flex-1 min-w-[280px]">
           {/* Class Filter */}
-          <div className="w-52">
-            <VFSelect
-              value={classFilter}
-              onChange={(e) => setClassFilter(String(e.target.value))}
-              options={[
-                { label: t('form.allClasses'), value: 'All' },
-                { label: 'Class 9-A', value: 'Class 9-A' },
-                { label: 'Class 10-A', value: 'Class 10-A' },
-                { label: 'Class 10-B', value: 'Class 10-B' },
-                { label: 'Class 11-Sci', value: 'Class 11-Sci' },
-                { label: 'Class 12-Com', value: 'Class 12-Com' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
-            />
-          </div>
+          <VFSelect
+            value={classFilter}
+            onChange={(e) => setClassFilter(String(e.target.value))}
+            options={[
+              { label: t('form.allClasses'), value: 'All' },
+              { label: 'Class 9-A', value: 'Class 9-A' },
+              { label: 'Class 10-A', value: 'Class 10-A' },
+              { label: 'Class 10-B', value: 'Class 10-B' },
+              { label: 'Class 11-Sci', value: 'Class 11-Sci' },
+              { label: 'Class 12-Com', value: 'Class 12-Com' },
+            ]}
+            className="w-44 bg-[#1a1a1a] border-border h-9 text-xs"
+          />
 
           {/* Status Filter */}
-          <div className="w-44">
-            <VFSelect
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(String(e.target.value))}
-              options={[
-                { label: t('form.allStatuses'), value: 'All' },
-                { label: t('status.published'), value: 'Published' },
-                { label: t('status.draft'), value: 'Draft' },
-                { label: t('status.closed'), value: 'Closed' },
-              ]}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
-            />
-          </div>
+          <VFSelect
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(String(e.target.value))}
+            options={[
+              { label: t('form.allStatuses'), value: 'All' },
+              { label: t('status.published'), value: 'Published' },
+              { label: t('status.draft'), value: 'Draft' },
+              { label: t('status.closed'), value: 'Closed' },
+            ]}
+            className="w-36 bg-[#1a1a1a] border-border h-9 text-xs"
+          />
         </div>
 
         <span className="text-xs font-mono text-muted-foreground font-semibold">

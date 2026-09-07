@@ -767,20 +767,18 @@ function ExaminationsPage() {
               <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">
                 {isHindi ? 'कक्षा चुनें:' : 'Select Grade:'}
               </span>
-              <div className="w-64">
-                <VFSelect
-                  value={selectedSchemeClass}
-                  onChange={(e) => setSelectedSchemeClass(String(e.target.value))}
-                  options={[
-                    { label: 'Class 10 (Secondary - CBSE)', value: 'class-10' },
-                    { label: 'Class 12 - Science (PCM/PCB)', value: 'class-12-sci' },
-                    { label: 'Class 12 - Commerce & Humanities', value: 'class-12-com' },
-                    { label: 'Class 9 (Secondary Foundation)', value: 'class-9' },
-                    { label: 'Class 6–8 (Middle School)', value: 'class-6-8' },
-                  ]}
-                  className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
-                />
-              </div>
+              <VFSelect
+                value={selectedSchemeClass}
+                onChange={(e) => setSelectedSchemeClass(String(e.target.value))}
+                options={[
+                  { label: 'Class 10 (Secondary - CBSE)', value: 'class-10' },
+                  { label: 'Class 12 - Science (PCM/PCB)', value: 'class-12-sci' },
+                  { label: 'Class 12 - Commerce & Humanities', value: 'class-12-com' },
+                  { label: 'Class 9 (Secondary Foundation)', value: 'class-9' },
+                  { label: 'Class 6–8 (Middle School)', value: 'class-6-8' },
+                ]}
+                className="w-56 bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
+              />
             </div>
           </div>
 
@@ -997,20 +995,18 @@ function ExaminationsPage() {
               <span className="text-xs font-extrabold text-foreground uppercase tracking-wider whitespace-nowrap">
                 {isHindi ? 'कक्षा व वर्ग चुनें:' : 'Select Class & Section:'}
               </span>
-              <div className="w-56">
-                <VFSelect
-                  value={selectedClass}
-                  onChange={(e) => setSelectedClass(String(e.target.value))}
-                  options={[
-                    { label: 'Class 9 - Section A', value: 'Class 9-A' },
-                    { label: 'Class 10 - Section A', value: 'Class 10-A' },
-                    { label: 'Class 10 - Section B', value: 'Class 10-B' },
-                    { label: 'Class 11 - Science', value: 'Class 11-Sci' },
-                    { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
-                  ]}
-                  className="bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
-                />
-              </div>
+              <VFSelect
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(String(e.target.value))}
+                options={[
+                  { label: 'Class 9 - Section A', value: 'Class 9-A' },
+                  { label: 'Class 10 - Section A', value: 'Class 10-A' },
+                  { label: 'Class 10 - Section B', value: 'Class 10-B' },
+                  { label: 'Class 11 - Science', value: 'Class 11-Sci' },
+                  { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
+                ]}
+                className="w-52 bg-[#1a1a1a] border-border h-8 text-xs font-bold rounded-[4px]"
+              />
             </div>
 
             <div className="flex items-center gap-2">

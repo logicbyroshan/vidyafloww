@@ -582,22 +582,20 @@ function ReportsPage() {
         filterPlaceholder={isHindi ? 'रिपोर्ट नाम, कोड या फॉर्मेट से खोजें...' : 'Search reports by name, code, or format...'}
         rightActions={
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="w-44 sm:w-48">
-              <VFSelect
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(String(e.target.value))}
-                options={[
-                  { label: isHindi ? 'सभी श्रेणियां' : 'All Domains', value: 'All' },
-                  { label: isHindi ? 'छात्र डायरेक्टरी' : 'Student Master', value: 'students' },
-                  { label: isHindi ? 'फीस लेजर' : 'Fee Ledgers', value: 'fees' },
-                  { label: isHindi ? 'उपस्थिति' : 'Attendance', value: 'attendance' },
-                  { label: isHindi ? 'परीक्षाएं व मार्क्स' : 'Examinations', value: 'examinations' },
-                  { label: isHindi ? 'शिक्षक कार्यभार' : 'Faculty Workload', value: 'faculty' },
-                  { label: isHindi ? 'टीसी व कंप्लायंस' : 'TC & Compliance', value: 'compliance' },
-                ]}
-                className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
-              />
-            </div>
+            <VFSelect
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(String(e.target.value))}
+              options={[
+                { label: isHindi ? 'सभी श्रेणियां' : 'All Domains', value: 'All' },
+                { label: isHindi ? 'छात्र डायरेक्टरी' : 'Student Master', value: 'students' },
+                { label: isHindi ? 'फीस लेजर' : 'Fee Ledgers', value: 'fees' },
+                { label: isHindi ? 'उपस्थिति' : 'Attendance', value: 'attendance' },
+                { label: isHindi ? 'परीक्षाएं व मार्क्स' : 'Examinations', value: 'examinations' },
+                { label: isHindi ? 'शिक्षक कार्यभार' : 'Faculty Workload', value: 'faculty' },
+                { label: isHindi ? 'टीसी व कंप्लायंस' : 'TC & Compliance', value: 'compliance' },
+              ]}
+              className="w-44 sm:w-48 bg-[#141414] border-border h-8 text-xs rounded-[4px]"
+            />
 
             <VFButton
               size="sm"

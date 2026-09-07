@@ -185,35 +185,31 @@ function NoticesPage() {
         filterPlaceholder={isHindi ? "सर्कुलर, शीर्षक या कोड खोजें..." : "Search circulars by title, code, category..."}
         rightActions={
           <div className="flex flex-wrap items-center gap-2">
-            <div className="w-32 sm:w-36">
-              <VFSelect
-                value={audienceFilter}
-                onChange={(e) => setAudienceFilter(String(e.target.value))}
-                options={[
-                  { label: isHindi ? 'सभी दर्शक' : 'All Audiences', value: 'All' },
-                  { label: isHindi ? 'पूरा स्कूल' : 'All School', value: 'All School' },
-                  { label: isHindi ? 'अभिभावक' : 'Parents', value: 'Parents' },
-                  { label: isHindi ? 'शिक्षक' : 'Teachers', value: 'Teachers' },
-                  { label: 'Classes 9-12', value: 'Classes 9-12' },
-                ]}
-                className="bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
-              />
-            </div>
+            <VFSelect
+              value={audienceFilter}
+              onChange={(e) => setAudienceFilter(String(e.target.value))}
+              options={[
+                { label: isHindi ? 'सभी दर्शक' : 'All Audiences', value: 'All' },
+                { label: isHindi ? 'पूरा स्कूल' : 'All School', value: 'All School' },
+                { label: isHindi ? 'अभिभावक' : 'Parents', value: 'Parents' },
+                { label: isHindi ? 'शिक्षक' : 'Teachers', value: 'Teachers' },
+                { label: 'Classes 9-12', value: 'Classes 9-12' },
+              ]}
+              className="w-32 sm:w-36 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+            />
 
-            <div className="w-32 sm:w-36">
-              <VFSelect
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(String(e.target.value))}
-                options={[
-                  { label: isHindi ? 'सभी श्रेणियां' : 'All Categories', value: 'All' },
-                  { label: isHindi ? 'शैक्षणिक' : 'Academic', value: 'Academic' },
-                  { label: isHindi ? 'कार्यक्रम' : 'Events', value: 'Event' },
-                  { label: isHindi ? 'अवकाश' : 'Holidays', value: 'Holiday' },
-                  { label: isHindi ? 'प्रशासनिक' : 'Admin', value: 'Administrative' },
-                ]}
-                className="bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
-              />
-            </div>
+            <VFSelect
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(String(e.target.value))}
+              options={[
+                { label: isHindi ? 'सभी श्रेणियां' : 'All Categories', value: 'All' },
+                { label: isHindi ? 'शैक्षणिक' : 'Academic', value: 'Academic' },
+                { label: isHindi ? 'कार्यक्रम' : 'Events', value: 'Event' },
+                { label: isHindi ? 'अवकाश' : 'Holidays', value: 'Holiday' },
+                { label: isHindi ? 'प्रशासनिक' : 'Admin', value: 'Administrative' },
+              ]}
+              className="w-32 sm:w-36 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+            />
 
             <VFButton
               size="sm"
