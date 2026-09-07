@@ -32,6 +32,13 @@ import {
   MapPin,
   Printer,
   Briefcase,
+  CheckCircle2,
+  FileSpreadsheet,
+  FileCheck,
+  Award,
+  CalendarCheck2,
+  Filter,
+  Wrench,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -39,6 +46,14 @@ import { useTranslation } from '../hooks/useTranslation';
 export const Route = createFileRoute('/hr-manage')({
   component: HRManagementPage,
 });
+
+export interface StaffAssetItem {
+  name: string;
+  category: string;
+  tagNo: string;
+  condition: 'Good' | 'Fair' | 'Service Due';
+  issuedDate: string;
+}
 
 export interface OperationalStaffRecord {
   id: string;
@@ -107,6 +122,7 @@ export interface OperationalStaffRecord {
     zone: string;
     completed: boolean;
   }[];
+  assets?: StaffAssetItem[];
 }
 
 const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
@@ -163,6 +179,11 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
       { task: 'Morning Student Pick-up Route (Preet Vihar to Campus)', scheduledTime: '06:30 AM', zone: 'Route 2 Corridor', completed: true },
       { task: 'Afternoon Student Dispersal Drop-off Route', scheduledTime: '01:30 PM', zone: 'Route 2 Corridor', completed: false },
     ],
+    assets: [
+      { name: 'School Bus #04 (DL-1PC-4091)', category: 'Heavy Fleet', tagNo: 'AST-FLT-04', condition: 'Good', issuedDate: '12 Aug 2021' },
+      { name: 'Fleet GPS Transponder & Panic Button', category: 'Telematics', tagNo: 'AST-GPS-09', condition: 'Good', issuedDate: '15 Aug 2021' },
+      { name: 'Bharat Petroleum Fleet Fuel Smart Card', category: 'Fuel Card', tagNo: 'BPCL-CORP-4091', condition: 'Good', issuedDate: '01 Apr 2026' },
+    ],
   },
   {
     id: '2',
@@ -211,6 +232,10 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
       { task: 'Morning Pick-up Route 5 (Rohini Sector 11-18)', scheduledTime: '06:30 AM', zone: 'Route 5 Corridor', completed: true },
       { task: 'Bus Interior Sanitization & Fuel Log Entry', scheduledTime: '09:30 AM', zone: 'Depot Bay 7', completed: true },
     ],
+    assets: [
+      { name: 'School Bus #07 (DL-1PC-7712)', category: 'Heavy Fleet', tagNo: 'AST-FLT-07', condition: 'Good', issuedDate: '04 Jan 2023' },
+      { name: 'Onboard Fire Extinguisher 5kg (ISI)', category: 'Safety Rig', tagNo: 'AST-FE-07', condition: 'Good', issuedDate: '10 Jan 2026' },
+    ],
   },
   {
     id: '3',
@@ -257,6 +282,10 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
     dailyDuties: [
       { task: 'Pre-assembly corridor sanitization & mopping', scheduledTime: '06:15 AM', zone: 'Block A Ground Floor', completed: true },
       { task: 'Washroom deep clean & liquid soap replenishment', scheduledTime: '09:45 AM', zone: 'Block A Wings 1 & 2', completed: true },
+    ],
+    assets: [
+      { name: 'Nilfisk Industrial Floor Scrubber #HK-02', category: 'Machinery', tagNo: 'AST-MAC-02', condition: 'Good', issuedDate: '15 Mar 2020' },
+      { name: 'Biohazard Waste Cart & Disinfectant Kit', category: 'Sanitation', tagNo: 'AST-SAN-14', condition: 'Good', issuedDate: '05 Jan 2026' },
     ],
   },
   {
@@ -305,6 +334,11 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
       { task: 'Visitor Entry Log Audit & Security Gate Guard Briefing', scheduledTime: '08:30 AM', zone: 'Gate A Security Cabin', completed: true },
       { task: 'Perimeter Boundary Fence & CCTV 64-Channel Audit', scheduledTime: '11:00 AM', zone: 'CCTV Monitoring Room', completed: true },
       { task: 'Afternoon Parent & Bus Traffic Control Supervision', scheduledTime: '01:45 PM', zone: 'Main Entry Plaza', completed: false },
+    ],
+    assets: [
+      { name: 'Motorola VHF Two-Way Radio (Handheld)', category: 'Comms', tagNo: 'AST-VHF-01', condition: 'Good', issuedDate: '01 Nov 2019' },
+      { name: 'Garrett Super Scanner Metal Detector Wand', category: 'Screening', tagNo: 'AST-SCR-02', condition: 'Good', issuedDate: '12 Jan 2022' },
+      { name: 'Campus Armory & Master Key Safe Custody', category: 'Access Keys', tagNo: 'AST-KEY-M01', condition: 'Good', issuedDate: '01 Nov 2019' },
     ],
   },
   {
@@ -355,6 +389,10 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
       { task: 'Dry Grocery & Fresh Vegetable Inward Inspection', scheduledTime: '09:00 AM', zone: 'Central Pantry Store', completed: true },
       { task: 'Lunch Service Supervision (Class 6-12 Boarders)', scheduledTime: '12:15 PM', zone: 'Dining Hall 1', completed: false },
     ],
+    assets: [
+      { name: 'Commercial Industrial 3-Tier Steam Cooker Unit', category: 'Kitchen Equipment', tagNo: 'AST-CKR-01', condition: 'Good', issuedDate: '22 Oct 2021' },
+      { name: 'FSSAI Digital Food Core Probe Thermometer', category: 'Food Safety', tagNo: 'AST-THRM-03', condition: 'Good', issuedDate: '15 Aug 2026' },
+    ],
   },
   {
     id: '6',
@@ -403,6 +441,11 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
       { task: 'Diesel Generator Fuel & Battery Voltage Inspection', scheduledTime: '08:45 AM', zone: 'Substation Yard', completed: true },
       { task: 'Physics Lab 204 Ray Optics light circuit load testing', scheduledTime: '11:30 AM', zone: 'Science Block Lab 204', completed: true },
     ],
+    assets: [
+      { name: 'Fluke 117 True-RMS Industrial Digital Multimeter', category: 'Instrumentation', tagNo: 'AST-FLK-01', condition: 'Good', issuedDate: '05 Sep 2020' },
+      { name: '11kV Certified High-Voltage Insulated Safety Gloves', category: 'High-Voltage PPE', tagNo: 'AST-HV-03', condition: 'Good', issuedDate: '10 Jan 2026' },
+      { name: 'DeWalt 20V Cordless Hammer Drill & Insulated Tool Chest', category: 'Power Tools', tagNo: 'AST-PWR-07', condition: 'Good', issuedDate: '20 Sep 2021' },
+    ],
   },
   {
     id: '7',
@@ -450,6 +493,10 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
       { task: 'Morning Inward Bus GPS Confirmation & Arrival SMS', scheduledTime: '08:00 AM', zone: 'Reception Terminal', completed: true },
       { task: 'Visitor Gate Pass Verification & ID Scanning', scheduledTime: '10:30 AM', zone: 'Admin Entry Lobby', completed: true },
     ],
+    assets: [
+      { name: 'Dell OptiPlex Core-i7 Administrative Terminal #ADM-04', category: 'IT Assets', tagNo: 'AST-PC-04', condition: 'Good', issuedDate: '14 Feb 2024' },
+      { name: 'Zebra RFID Smart Card Encoder / Issuer', category: 'Hardware', tagNo: 'AST-ENC-01', condition: 'Good', issuedDate: '20 Feb 2024' },
+    ],
   },
   {
     id: '8',
@@ -496,7 +543,126 @@ const INITIAL_OPERATIONAL_STAFF: OperationalStaffRecord[] = [
     dailyDuties: [
       { task: 'RO Purifier TDS & Chlorine Water Quality Sampling', scheduledTime: '09:00 AM', zone: 'Academic Block RO Plant', completed: true },
     ],
+    assets: [
+      { name: 'HM Digital Commercial TDS Water Tester #W-02', category: 'Instrumentation', tagNo: 'AST-TDS-02', condition: 'Good', issuedDate: '01 Aug 2022' },
+      { name: 'Heavy-Duty Pipe Threader & Plumber Wrench Kit', category: 'Plumbing Kit', tagNo: 'AST-PLM-09', condition: 'Good', issuedDate: '10 Aug 2022' },
+    ],
   },
+  {
+    id: '9',
+    code: 'STF-SEC-012',
+    name: 'Baljit Singh',
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
+    department: 'Security',
+    role: 'Night Perimeter & CCTV Watchman',
+    phone: '+91 98119 77241',
+    email: 'b.singh.security@vidyafloww.edu.in',
+    address: 'Qtr #02, Security Barracks, East Perimeter Gate',
+    dob: '12 Dec 1979',
+    bloodGroup: 'O+',
+    shift: 'Night (20:00 - 06:00)',
+    assignedArea: 'East Perimeter Boundary Fence & Armory Checkpoint',
+    assignedEquipment: 'High-Lumen Searchlight #SL-02 · VHF Radio CH-2 · Patrol Baton',
+    status: 'On Duty',
+    verification: 'Verified',
+    policeVerificationNo: 'POL-DEL-2022-8819',
+    aadhaarMasked: '•••• •••• 9921',
+    medicalFitnessDate: '12 Jan 2026',
+    joinDate: '10 Nov 2020',
+    salaryGrade: 'Grade OPS-SEC-3',
+    basicPay: '₹ 17,500',
+    hra: '₹ 4,200',
+    da: '₹ 3,200',
+    specialAllowance: '₹ 2,100',
+    grossPay: '₹ 27,000',
+    pfDeduction: '₹ 2,100',
+    esiDeduction: '₹ 202',
+    netPay: '₹ 24,698',
+    bankName: 'Punjab National Bank',
+    bankAccountNo: '0482001500339182',
+    bankIfsc: 'PUNB0048200',
+    emergencyContact: { name: 'Harpreet Kaur', relation: 'Spouse', phone: '+91 98119 77249' },
+    attendance: '99.1%',
+    leaveBalance: { casual: 8, medical: 10, earned: 14 },
+    payoutHistory: [
+      { month: 'August 2026', gross: '₹ 27,000', deductions: '₹ 2,302', net: '₹ 24,698', status: 'Credited' },
+    ],
+    attendanceLog: [
+      { date: '31 Aug 2026', day: 'Monday', inTime: '07:55 PM', outTime: '06:05 AM', totalHours: '10h 10m', status: 'Present' },
+    ],
+    dailyDuties: [
+      { task: 'Perimeter Boundary Fence Sensor & Spotlight Audit', scheduledTime: '08:30 PM', zone: 'East Boundary Wall', completed: true },
+      { task: 'Armory Safe Lock & Key Log Custody Turnover', scheduledTime: '09:00 PM', zone: 'Central Armory Cabin', completed: true },
+      { task: 'Hourly Guard Patrol RFID Tag Punch (Checkpoints 1-12)', scheduledTime: '01:00 AM', zone: 'Campus Perimeter Track', completed: false },
+    ],
+    assets: [
+      { name: 'Fenix 3000-Lumen High-Output Patrol Searchlight', category: 'Lighting', tagNo: 'AST-SRCH-02', condition: 'Good', issuedDate: '10 Nov 2020' },
+      { name: 'Motorola VHF Tactical Radio CH-2', category: 'Comms', tagNo: 'AST-VHF-04', condition: 'Good', issuedDate: '15 Nov 2020' },
+    ],
+  },
+  {
+    id: '10',
+    code: 'STF-CLN-031',
+    name: 'Shanti Devi',
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80',
+    department: 'Housekeeping',
+    role: 'Evening Sanitation & Library Caretaker',
+    phone: '+91 98709 11284',
+    email: 's.devi.hk@vidyafloww.edu.in',
+    address: 'Qtr #18, Institutional Staff Enclave, Dwarka',
+    dob: '18 Jul 1987',
+    bloodGroup: 'B+',
+    shift: 'Evening (13:00 - 21:00)',
+    assignedArea: 'Central Digital Library, Robotics Hub & Staff Lounge',
+    assignedEquipment: 'Cordless HEPA Vacuum Cart #HK-05',
+    status: 'On Duty',
+    verification: 'Verified',
+    policeVerificationNo: 'POL-DEL-2024-4412',
+    aadhaarMasked: '•••• •••• 3310',
+    medicalFitnessDate: '15 Mar 2026',
+    joinDate: '18 Mar 2023',
+    salaryGrade: 'Grade OPS-HK-2',
+    basicPay: '₹ 14,000',
+    hra: '₹ 3,500',
+    da: '₹ 2,500',
+    specialAllowance: '₹ 1,200',
+    grossPay: '₹ 21,200',
+    pfDeduction: '₹ 1,680',
+    esiDeduction: '₹ 159',
+    netPay: '₹ 19,361',
+    bankName: 'State Bank of India',
+    bankAccountNo: '3049281094821',
+    bankIfsc: 'SBIN0004821',
+    emergencyContact: { name: 'Manoj Kumar', relation: 'Spouse', phone: '+91 98709 11289' },
+    attendance: '98.0%',
+    leaveBalance: { casual: 7, medical: 9, earned: 12 },
+    payoutHistory: [
+      { month: 'August 2026', gross: '₹ 21,200', deductions: '₹ 1,839', net: '₹ 19,361', status: 'Credited' },
+    ],
+    attendanceLog: [
+      { date: '31 Aug 2026', day: 'Monday', inTime: '12:55 PM', outTime: '09:05 PM', totalHours: '8h 10m', status: 'Present' },
+    ],
+    dailyDuties: [
+      { task: 'Post-School Student Dispersal Classroom Lock & Bin Clear', scheduledTime: '02:30 PM', zone: 'Academic Block A Floors 1 & 2', completed: true },
+      { task: 'Central Library & Reading Hall HEPA Vacuuming', scheduledTime: '05:00 PM', zone: 'Digital Library 2nd Floor', completed: true },
+    ],
+    assets: [
+      { name: 'Kärcher Professional Cordless HEPA Vacuum #HK-05', category: 'Cleaning Machine', tagNo: 'AST-VAC-05', condition: 'Good', issuedDate: '18 Mar 2023' },
+    ],
+  },
+];
+
+export const GATE_PUNCH_LOGS = [
+  { id: '1', time: '05:45:12 AM', name: 'Surender Rawat', code: 'STF-DRV-014', role: 'Senior Heavy Bus Driver', dept: 'Transport', terminal: 'Fleet Depot Turnstile Bay 4', event: 'Punch In (Shift Start)', status: 'Granted', temp: '36.5°C' },
+  { id: '2', time: '05:48:30 AM', name: 'Mohammad Irfan', code: 'STF-DRV-019', role: 'School Bus Driver', dept: 'Transport', terminal: 'Fleet Depot Turnstile Bay 7', event: 'Punch In (Shift Start)', status: 'Granted', temp: '36.6°C' },
+  { id: '3', time: '05:55:04 AM', name: 'Ram Charan Lal', code: 'STF-CLN-022', role: 'Sanitation Specialist', dept: 'Housekeeping', terminal: 'Academic Block A Service Gate', event: 'Punch In (Shift Start)', status: 'Granted', temp: '36.4°C' },
+  { id: '4', time: '05:30:19 AM', name: 'Kailash Chand', code: 'STF-HOS-008', role: 'Head Chef & Nutrition Lead', dept: 'Dining & Hostel', terminal: 'Kitchen Loading Bay Barrier K-1', event: 'Punch In (Breakfast Prep)', status: 'Granted', temp: '36.7°C' },
+  { id: '5', time: '08:00:15 AM', name: 'Subhash Chandra Bose', code: 'STF-SEC-005', role: 'Security Supervisor', dept: 'Security', terminal: 'Main Gate A Security Console', event: 'Punch In (General Shift)', status: 'Granted', temp: '36.5°C' },
+  { id: '6', time: '08:15:22 AM', name: 'Deepak Sharma', code: 'STF-MNT-003', role: 'Campus Electrician', dept: 'Maintenance', terminal: 'Substation RFID Reader', event: 'Punch In (Grid Inspection)', status: 'Granted', temp: '36.6°C' },
+  { id: '7', time: '08:20:40 AM', name: 'Pooja Kashyap', code: 'STF-ADM-011', role: 'Front Office Dispatcher', dept: 'Administration', terminal: 'Admin Block Turnstile T-2', event: 'Punch In (General Shift)', status: 'Granted', temp: '36.4°C' },
+  { id: '8', time: '12:55:10 PM', name: 'Shanti Devi', code: 'STF-CLN-031', role: 'Evening Sanitation Lead', dept: 'Housekeeping', terminal: 'Academic Block A Service Gate', event: 'Punch In (Evening Shift)', status: 'Granted', temp: '36.5°C' },
+  { id: '9', time: '02:02:11 PM', name: 'Surender Rawat', code: 'STF-DRV-014', role: 'Senior Heavy Bus Driver', dept: 'Transport', terminal: 'Fleet Depot Turnstile Bay 4', event: 'Punch Out (Break / Standby)', status: 'Granted', temp: '36.6°C' },
+  { id: '10', time: '07:55:08 PM', name: 'Baljit Singh', code: 'STF-SEC-012', role: 'Night Perimeter Watchman', dept: 'Security', terminal: 'East Perimeter Turnstile EP-1', event: 'Punch In (Night Shift)', status: 'Granted', temp: '36.6°C' },
 ];
 
 function HRManagementPage() {
@@ -555,6 +721,38 @@ function HRManagementPage() {
   const [exportFormat, setExportFormat] = React.useState<'csv' | 'pdf' | 'bundle'>('bundle');
   const [isExporting, setIsExporting] = React.useState<boolean>(false);
   const [exportProgressText, setExportProgressText] = React.useState<string>('');
+
+  // 3-Way Mode Switcher & Operational Filter States
+  const [activeView, setActiveView] = React.useState<'directory' | 'roster' | 'gateLogs'>('directory');
+  const [selectedDepartment, setSelectedDepartment] = React.useState<string>('All');
+  const [selectedShiftFilter, setSelectedShiftFilter] = React.useState<string>('All');
+
+  // Official Pay Slip Modal State
+  const [isPaySlipModalOpen, setIsPaySlipModalOpen] = React.useState<boolean>(false);
+  const [selectedPaySlipData, setSelectedPaySlipData] = React.useState<{
+    staff: OperationalStaffRecord;
+    month: string;
+    gross: string;
+    deductions: string;
+    net: string;
+    status: string;
+  } | null>(null);
+
+  const filteredStaffList = React.useMemo(() => {
+    return staffList.filter((s) => {
+      const matchDept = selectedDepartment === 'All' || s.department === selectedDepartment;
+      const matchShift = selectedShiftFilter === 'All' || s.shift.startsWith(selectedShiftFilter);
+      return matchDept && matchShift;
+    });
+  }, [staffList, selectedDepartment, selectedShiftFilter]);
+
+  const departmentCounts = React.useMemo(() => {
+    const counts: Record<string, number> = { All: staffList.length };
+    staffList.forEach((s) => {
+      counts[s.department] = (counts[s.department] || 0) + 1;
+    });
+    return counts;
+  }, [staffList]);
 
   const activeStaff =
     selectedStaffIndex !== null && selectedStaffIndex >= 0 && selectedStaffIndex < staffList.length
@@ -976,31 +1174,274 @@ function HRManagementPage() {
         />
       </div>
 
-      {/* 2. MAIN OPERATIONAL STAFF DATA TABLE */}
-      <VFDataTable
-        columns={staffColumns}
-        data={staffList}
-        filterPlaceholder={isHindi ? 'नाम, आईडी या कार्यक्षेत्र खोजें...' : 'Search staff by name, code, post or vehicle...'}
-        rightActions={
-          <>
-            <VFButton
-              variant="outline"
-              size="sm"
-              leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
-              onClick={() => setIsExportModalOpen(true)}
-            >
-              {t('action.export')}
-            </VFButton>
-            <VFButton
-              size="sm"
-              leftIcon={<Plus className="h-3.5 w-3.5" />}
-              onClick={() => setIsAddStaffDrawerOpen(true)}
-            >
-              {isHindi ? '+ नया स्टाफ जोड़ें' : '+ Onboard Staff'}
-            </VFButton>
-          </>
-        }
-      />
+      {/* 2. OPERATIONAL CONTROLS & VIEW SELECTOR */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#111114] p-2.5 rounded-[4px] border border-[#242428] shrink-0">
+        {/* Left: 3-Way Mode Switcher */}
+        <div className="flex items-center gap-1 bg-[#161619] p-1 rounded-[3px] border border-[#27272e]">
+          <button
+            type="button"
+            onClick={() => setActiveView('directory')}
+            className={cn(
+              'px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer',
+              activeView === 'directory'
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'text-zinc-400 hover:text-white'
+            )}
+          >
+            <Users className="h-3.5 w-3.5" />
+            <span>Staff Directory</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView('roster')}
+            className={cn(
+              'px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer',
+              activeView === 'roster'
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'text-zinc-400 hover:text-white'
+            )}
+          >
+            <CalendarCheck2 className="h-3.5 w-3.5" />
+            <span>Shift & Duty Roster</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView('gateLogs')}
+            className={cn(
+              'px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer',
+              activeView === 'gateLogs'
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'text-zinc-400 hover:text-white'
+            )}
+          >
+            <Clock className="h-3.5 w-3.5" />
+            <span>Gate & Turnstile Logs</span>
+          </button>
+        </div>
+
+        {/* Right: Shift Filter Dropdown (When in directory or roster) */}
+        <div className="flex items-center gap-2 text-xs">
+          <span className="text-zinc-400 font-semibold flex items-center gap-1">
+            <Filter className="h-3 w-3 text-zinc-500" /> Shift:
+          </span>
+          <select
+            value={selectedShiftFilter}
+            onChange={(e) => setSelectedShiftFilter(e.target.value)}
+            className="px-2.5 py-1 rounded-[3px] bg-[#161619] border border-[#27272e] text-white text-xs font-medium focus:outline-none cursor-pointer"
+          >
+            <option value="All">All Shifts (24x7 Roster)</option>
+            <option value="Morning">Morning (06:00 - 14:00)</option>
+            <option value="General">General (08:30 - 17:00)</option>
+            <option value="Evening">Evening (13:00 - 21:00)</option>
+            <option value="Night">Night (20:00 - 06:00)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* VIEW 1: STAFF DIRECTORY DATA TABLE */}
+      {activeView === 'directory' && (
+        <div className="space-y-3 min-h-0 flex-1 flex flex-col">
+          {/* Department Filter Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 shrink-0 scrollbar-none">
+            {['All', 'Transport', 'Housekeeping', 'Security', 'Dining & Hostel', 'Maintenance', 'Administration'].map((dept) => {
+              const count = departmentCounts[dept] || 0;
+              const isSelected = selectedDepartment === dept;
+              return (
+                <button
+                  key={dept}
+                  type="button"
+                  onClick={() => setSelectedDepartment(dept)}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-[3px] border transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer',
+                    isSelected
+                      ? 'bg-[#222228] text-white border-zinc-500 font-bold'
+                      : 'bg-[#141417] text-zinc-400 border-[#242428] hover:text-zinc-200 hover:border-[#33333a]'
+                  )}
+                >
+                  <span>{dept === 'All' ? 'All Staff' : dept}</span>
+                  <span className={cn(
+                    'px-1.5 py-0.2 rounded-[2px] text-[10px] font-mono',
+                    isSelected ? 'bg-primary text-primary-foreground font-bold' : 'bg-[#1e1e24] text-zinc-400'
+                  )}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <VFDataTable
+            columns={staffColumns}
+            data={filteredStaffList}
+            filterPlaceholder={isHindi ? 'नाम, आईडी या कार्यक्षेत्र खोजें...' : 'Search staff by name, code, post or vehicle...'}
+            rightActions={
+              <>
+                <VFButton
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<Download className="h-3.5 w-3.5 text-zinc-400" />}
+                  onClick={() => setIsExportModalOpen(true)}
+                >
+                  {t('action.export')}
+                </VFButton>
+                <VFButton
+                  size="sm"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                  onClick={() => setIsAddStaffDrawerOpen(true)}
+                >
+                  {isHindi ? '+ नया स्टाफ जोड़ें' : '+ Onboard Staff'}
+                </VFButton>
+              </>
+            }
+          />
+        </div>
+      )}
+
+      {/* VIEW 2: LIVE SHIFT & DUTY ROSTER MATRIX */}
+      {activeView === 'roster' && (
+        <div className="space-y-3 min-h-0 flex-1 overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+            {[
+              { title: 'Morning Shift', time: '06:00 - 14:00', prefix: 'Morning', color: 'border-amber-500/40 bg-amber-950/10' },
+              { title: 'General Shift', time: '08:30 - 17:00', prefix: 'General', color: 'border-blue-500/40 bg-blue-950/10' },
+              { title: 'Evening Shift', time: '13:00 - 21:00', prefix: 'Evening', color: 'border-indigo-500/40 bg-indigo-950/10' },
+              { title: 'Night Shift', time: '20:00 - 06:00', prefix: 'Night', color: 'border-purple-500/40 bg-purple-950/10' },
+            ].map((shiftInfo) => {
+              const shiftStaff = staffList.filter((s) => s.shift.startsWith(shiftInfo.prefix));
+              return (
+                <div
+                  key={shiftInfo.title}
+                  className={cn(
+                    'p-3.5 rounded-[4px] border flex flex-col space-y-3 bg-[#121215]',
+                    shiftInfo.color
+                  )}
+                >
+                  <div className="flex items-center justify-between pb-2 border-b border-[#242428]">
+                    <div>
+                      <h3 className="text-xs font-black text-white uppercase tracking-wider">{shiftInfo.title}</h3>
+                      <p className="text-[10px] font-mono text-zinc-400">{shiftInfo.time}</p>
+                    </div>
+                    <VFBadge variant="outline" className="text-[10px] font-mono font-bold">
+                      {shiftStaff.length} Staff
+                    </VFBadge>
+                  </div>
+
+                  <div className="space-y-2.5 flex-1 overflow-y-auto max-h-[500px]">
+                    {shiftStaff.map((staff) => (
+                      <div
+                        key={staff.id}
+                        className="p-3 rounded-[3px] bg-[#17171b] border border-[#27272e] space-y-2 hover:border-zinc-500 transition-colors"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src={staff.avatarUrl}
+                            alt=""
+                            className="w-8 h-10 object-cover rounded-[3px] border border-border shrink-0 cursor-pointer"
+                            onClick={() => openPhotoPreview(staff)}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-1">
+                              <p
+                                className="text-xs font-bold text-white truncate cursor-pointer hover:underline"
+                                onClick={() => openStaffDrawer(staff)}
+                              >
+                                {staff.name}
+                              </p>
+                              <span className="text-[9px] font-mono font-bold text-primary">{staff.code}</span>
+                            </div>
+                            <p className="text-[11px] text-zinc-400 truncate">{staff.role}</p>
+                            <span className="text-[10px] text-zinc-500 font-semibold block truncate">
+                              📍 {staff.assignedArea}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="pt-2 border-t border-[#232328] flex items-center justify-between text-xs">
+                          <VFBadge
+                            variant={staff.status === 'On Duty' ? 'success' : staff.status === 'On Leave' ? 'danger' : 'outline'}
+                            className="text-[10px] px-1.5 py-0.2 rounded-[2px]"
+                          >
+                            {staff.status}
+                          </VFBadge>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => handleToggleDutyStatus(staff.id, staff.status === 'On Duty' ? 'On Leave' : 'On Duty')}
+                              className="text-[10px] font-bold text-zinc-400 hover:text-white px-1.5 py-0.5 rounded bg-[#202026] border border-[#2e2e36] cursor-pointer"
+                            >
+                              Toggle
+                            </button>
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="text-[10px] h-6 px-1.5"
+                              onClick={() => openStaffDrawer(staff)}
+                            >
+                              Profile
+                            </VFButton>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* VIEW 3: BIOMETRIC GATE & TURNSTILE PUNCH LOGS */}
+      {activeView === 'gateLogs' && (
+        <div className="space-y-3 min-h-0 flex-1 overflow-y-auto">
+          <div className="p-3 bg-[#121215] rounded-[4px] border border-[#242428] flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+              <strong className="text-white text-xs">Live Biometric Turnstile Event Feed</strong>
+              <span className="text-zinc-500 text-xs">· Synced with Gate A, Depot Barrier & Service Turnstiles</span>
+            </div>
+            <VFBadge variant="success" className="text-xs">Turnstile Sync Active</VFBadge>
+          </div>
+
+          <div className="border border-[#27272e] rounded-[4px] overflow-hidden bg-[#141417]">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-[#18181c] text-zinc-400 border-b border-[#27272e]">
+                  <th className="py-2.5 px-3">Punch Time</th>
+                  <th className="py-2.5 px-3">Staff Member</th>
+                  <th className="py-2.5 px-3">Department</th>
+                  <th className="py-2.5 px-3">Terminal Location</th>
+                  <th className="py-2.5 px-3">Event Type</th>
+                  <th className="py-2.5 px-3">Health / Temp</th>
+                  <th className="py-2.5 px-3 text-right">Access Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#202026]">
+                {GATE_PUNCH_LOGS.map((punch) => (
+                  <tr key={punch.id} className="hover:bg-white/5 transition-colors">
+                    <td className="py-2 px-3 font-mono font-bold text-amber-400">{punch.time}</td>
+                    <td className="py-2 px-3">
+                      <div className="font-bold text-white">{punch.name}</div>
+                      <div className="text-[11px] font-mono text-zinc-400">{punch.code} · {punch.role}</div>
+                    </td>
+                    <td className="py-2 px-3">
+                      <VFBadge variant="outline" className="text-[10px]">{punch.dept}</VFBadge>
+                    </td>
+                    <td className="py-2 px-3 text-zinc-300 font-mono text-[11px]">{punch.terminal}</td>
+                    <td className="py-2 px-3 text-zinc-200">{punch.event}</td>
+                    <td className="py-2 px-3 font-mono text-zinc-400">{punch.temp}</td>
+                    <td className="py-2 px-3 text-right">
+                      <span className="px-2 py-0.5 rounded-[2px] text-[10px] font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-700/50">
+                        {punch.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* ═══════════════════════════════════════════════════════════════════════
           3. 360° OPERATIONAL STAFF PROFILE & DOSSIER SIDE DRAWER (5 TABS)
@@ -1338,6 +1779,67 @@ function HRManagementPage() {
                       ))}
                     </div>
                   </div>
+
+                  {/* Physical Issued Assets & Equipment Tracking */}
+                  <div className="space-y-2 pt-2 border-t border-[#242428]">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
+                        <Wrench className="h-4 w-4 text-primary" />
+                        Issued Institutional Equipment & Asset Custody
+                      </h4>
+                      <span className="text-[10px] text-zinc-400 font-mono">
+                        {(activeStaff.assets?.length || 0)} Items In Custody
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      {activeStaff.assets && activeStaff.assets.length > 0 ? (
+                        activeStaff.assets.map((asset, idx) => (
+                          <div
+                            key={idx}
+                            className="p-3 rounded-[3px] bg-[#161619] border border-[#27272e] flex items-center justify-between"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="h-6 w-6 rounded-[2px] bg-[#222226] text-primary flex items-center justify-center font-bold text-xs">
+                                {idx + 1}
+                              </span>
+                              <div>
+                                <strong className="text-white block text-xs">{asset.name}</strong>
+                                <div className="flex items-center gap-2 text-[11px] text-zinc-400 mt-0.5">
+                                  <span className="font-mono text-zinc-300 font-semibold">{asset.tagNo}</span>
+                                  <span>•</span>
+                                  <span>{asset.category}</span>
+                                  <span>•</span>
+                                  <span>Issued: {asset.issuedDate}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <VFBadge variant="outline" className="text-[10px] border-emerald-700/50 text-emerald-400 bg-emerald-950/20">
+                                {asset.condition}
+                              </VFBadge>
+                              <VFButton
+                                size="sm"
+                                variant="outline"
+                                className="text-[10px] h-6 px-2"
+                                onClick={() => addNotification({
+                                  title: 'Inspection Logged',
+                                  description: `Asset ${asset.tagNo} verified in operable condition.`,
+                                  type: 'info',
+                                })}
+                              >
+                                Verify
+                              </VFButton>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-3 rounded-[3px] bg-[#161619] border border-[#27272e] text-center text-zinc-500 text-xs">
+                          Standard safety uniform, name badge, and biometric access token issued.
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -1465,6 +1967,19 @@ function HRManagementPage() {
                     </div>
                   </div>
 
+                  <div className="p-3 bg-[#151518] rounded-[4px] border border-[#27272e] flex items-center justify-between">
+                    <div>
+                      <strong className="text-white block">Monthly Overtime & Extra Duty Log</strong>
+                      <span className="text-zinc-400 text-[11px]">
+                        12.5 Hours logged for campus events & dispersal standby · Standard ₹ 150/hr rate applied.
+                      </span>
+                    </div>
+                    <div className="text-right font-mono">
+                      <span className="text-[11px] text-zinc-400 block">Overtime Pay:</span>
+                      <strong className="text-emerald-400 text-sm font-bold">+ ₹ 1,875</strong>
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                       Salary Credited History
@@ -1491,15 +2006,20 @@ function HRManagementPage() {
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    addNotification({
-                                      title: 'Pay Slip Downloaded',
-                                      description: `${p.month} salary voucher for ${activeStaff.name}.`,
-                                      type: 'info',
+                                    setSelectedPaySlipData({
+                                      staff: activeStaff,
+                                      month: p.month,
+                                      gross: p.gross,
+                                      deductions: p.deductions,
+                                      net: p.net,
+                                      status: p.status,
                                     });
+                                    setIsPaySlipModalOpen(true);
                                   }}
-                                  className="text-xs text-primary hover:underline font-bold"
+                                  className="text-xs text-primary hover:underline font-bold inline-flex items-center gap-1"
                                 >
-                                  Slip
+                                  <Receipt className="h-3 w-3" />
+                                  <span>Pay Slip</span>
                                 </button>
                               </td>
                             </tr>
@@ -1559,6 +2079,114 @@ function HRManagementPage() {
                     <div className="bg-slate-100 p-2 px-3 flex items-center justify-between border-t border-slate-200 text-[9px]">
                       <span className="font-mono text-slate-600">POLICE VERIFIED: {activeStaff.policeVerificationNo}</span>
                       <span className="font-mono font-bold text-emerald-700">AUTHORIZED ACCESS</span>
+                    </div>
+                  </div>
+
+                  {/* Institutional Compliance & Verification Certificates Hub (Matching teachers.tsx) */}
+                  <div className="w-full pt-4 border-t border-[#242428] space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+                        <Award className="h-4 w-4 text-primary" />
+                        <span>Official Non-Teaching Compliance Certificates</span>
+                      </h4>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        Institutional Seal Ready
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                      {/* 1. Police & POCSO Clearance */}
+                      <div className="p-3 rounded-[3px] bg-[#141417] border border-[#24242a] flex flex-col justify-between space-y-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-white font-bold text-xs">
+                              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                              <span>Police Clearance</span>
+                            </div>
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                              Verified
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-400 leading-relaxed">
+                            Statutory POCSO safety compliance certificate certifying character clearance & background verification.
+                          </p>
+                        </div>
+                        <VFButton
+                          size="sm"
+                          variant="outline"
+                          className="w-full text-xs"
+                          leftIcon={<FileCheck className="h-3.5 w-3.5" />}
+                          onClick={() => addNotification({
+                            title: 'Clearance Certificate Issued',
+                            description: `Generated Police & POCSO Safety Certificate for ${activeStaff.name}.`,
+                            type: 'success',
+                          })}
+                        >
+                          Issue Certificate
+                        </VFButton>
+                      </div>
+
+                      {/* 2. Commercial Duty Bonafide Letter */}
+                      <div className="p-3 rounded-[3px] bg-[#141417] border border-[#24242a] flex flex-col justify-between space-y-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-white font-bold text-xs">
+                              <FileSpreadsheet className="h-4 w-4 text-blue-400" />
+                              <span>Bonafide Duty Letter</span>
+                            </div>
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                              Official
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-400 leading-relaxed">
+                            Official institutional letter for State Transport Authority (STA), vehicle insurance, or bank loan clearance.
+                          </p>
+                        </div>
+                        <VFButton
+                          size="sm"
+                          variant="outline"
+                          className="w-full text-xs"
+                          leftIcon={<Download className="h-3.5 w-3.5" />}
+                          onClick={() => addNotification({
+                            title: 'Bonafide Letter Issued',
+                            description: `Generated Bonafide Duty Letter for ${activeStaff.name}.`,
+                            type: 'success',
+                          })}
+                        >
+                          Bonafide Letter
+                        </VFButton>
+                      </div>
+
+                      {/* 3. Service & Conduct Certificate */}
+                      <div className="p-3 rounded-[3px] bg-[#141417] border border-[#24242a] flex flex-col justify-between space-y-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-white font-bold text-xs">
+                              <Award className="h-4 w-4 text-amber-400" />
+                              <span>Service Certificate</span>
+                            </div>
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                              Exemplary
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-zinc-400 leading-relaxed">
+                            Certifies tenure duration, operational discipline, equipment handling record, and institutional conduct.
+                          </p>
+                        </div>
+                        <VFButton
+                          size="sm"
+                          variant="outline"
+                          className="w-full text-xs"
+                          leftIcon={<CheckCircle2 className="h-3.5 w-3.5" />}
+                          onClick={() => addNotification({
+                            title: 'Service Certificate Issued',
+                            description: `Generated Service & Conduct Certificate for ${activeStaff.name}.`,
+                            type: 'success',
+                          })}
+                        >
+                          Service Certificate
+                        </VFButton>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1806,6 +2434,197 @@ function HRManagementPage() {
           )}
         </div>
       </VFDialog>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          7. OFFICIAL SALARY PAY SLIP MODAL
+          ═══════════════════════════════════════════════════════════════════════ */}
+      {selectedPaySlipData && (
+        <VFDialog
+          isOpen={isPaySlipModalOpen}
+          onClose={() => {
+            setIsPaySlipModalOpen(false);
+            setSelectedPaySlipData(null);
+          }}
+          title={isHindi ? `वेतन पर्ची – ${selectedPaySlipData.month}` : `Official Salary Pay Voucher – ${selectedPaySlipData.month}`}
+          description={`${selectedPaySlipData.staff.name} (${selectedPaySlipData.staff.code}) · ${selectedPaySlipData.staff.role}`}
+          className="max-w-2xl rounded-[4px]"
+          footerActions={
+            <div className="flex items-center justify-between w-full">
+              <span className="text-[11px] text-zinc-400 font-mono">Disbursement Mode: Electronic Direct Deposit</span>
+              <div className="flex items-center gap-2">
+                <VFButton
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsPaySlipModalOpen(false);
+                    setSelectedPaySlipData(null);
+                  }}
+                >
+                  Close
+                </VFButton>
+                <VFButton
+                  size="sm"
+                  leftIcon={<Printer className="h-3.5 w-3.5" />}
+                  onClick={() => window.print()}
+                >
+                  Print Voucher
+                </VFButton>
+              </div>
+            </div>
+          }
+        >
+          <div className="p-4 bg-white text-slate-900 rounded-[4px] border border-slate-300 font-sans space-y-4 my-1 select-none text-xs">
+            {/* Voucher Header */}
+            <div className="text-center pb-3 border-b border-slate-300">
+              <h2 className="text-sm font-black tracking-wider uppercase text-slate-900">
+                VIDYAFLOWW INTERNATIONAL ACADEMY
+              </h2>
+              <p className="text-[10px] text-slate-600 font-medium">
+                Affiliated to CBSE (Affiliation #2130842) · Institutional Area, Sector 12, Dwarka, New Delhi
+              </p>
+              <div className="mt-1.5 inline-block bg-slate-100 text-slate-800 text-[10px] font-bold px-3 py-0.5 rounded border border-slate-300 uppercase tracking-wide">
+                SALARY DISBURSEMENT VOUCHER · {selectedPaySlipData.month}
+              </div>
+            </div>
+
+            {/* Staff Metadata Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 p-3 rounded border border-slate-200 text-[11px]">
+              <div>
+                <span className="text-slate-500 block text-[10px]">Staff Name:</span>
+                <strong className="text-slate-900">{selectedPaySlipData.staff.name}</strong>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">Employee ID:</span>
+                <strong className="font-mono text-slate-900">{selectedPaySlipData.staff.code}</strong>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">Department:</span>
+                <span className="text-slate-800 font-semibold">{selectedPaySlipData.staff.department}</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">Designation:</span>
+                <span className="text-slate-800 font-semibold">{selectedPaySlipData.staff.role}</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">Bank Name:</span>
+                <span className="text-slate-800">{selectedPaySlipData.staff.bankName}</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">Account No:</span>
+                <span className="font-mono text-slate-900">{selectedPaySlipData.staff.bankAccountNo}</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">IFSC Code:</span>
+                <span className="font-mono text-slate-900">{selectedPaySlipData.staff.bankIfsc}</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block text-[10px]">Aadhaar Masked:</span>
+                <span className="font-mono text-slate-900">{selectedPaySlipData.staff.aadhaarMasked}</span>
+              </div>
+            </div>
+
+            {/* Earnings & Deductions Dual Column */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Earnings */}
+              <div className="border border-slate-300 rounded overflow-hidden">
+                <div className="bg-emerald-50 px-3 py-1.5 border-b border-emerald-200 font-bold text-emerald-900 text-xs flex justify-between">
+                  <span>EARNINGS & ALLOWANCES</span>
+                  <span>AMOUNT (INR)</span>
+                </div>
+                <div className="p-2 space-y-1 text-[11px]">
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">Basic Monthly Wage</span>
+                    <span className="font-mono font-bold text-slate-900">{selectedPaySlipData.staff.basicPay}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">House Rent Allowance (HRA)</span>
+                    <span className="font-mono text-slate-800">{selectedPaySlipData.staff.hra}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">Dearness Allowance (DA)</span>
+                    <span className="font-mono text-slate-800">{selectedPaySlipData.staff.da}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">Special Operational Allowance</span>
+                    <span className="font-mono text-slate-800">{selectedPaySlipData.staff.specialAllowance}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 text-emerald-700 font-semibold">
+                    <span>Overtime & Night Allowance</span>
+                    <span className="font-mono">₹ 1,500</span>
+                  </div>
+                </div>
+                <div className="bg-slate-100 px-3 py-1.5 border-t border-slate-300 flex justify-between font-bold text-slate-900 text-xs">
+                  <span>GROSS EARNINGS</span>
+                  <span className="font-mono">{selectedPaySlipData.gross}</span>
+                </div>
+              </div>
+
+              {/* Deductions */}
+              <div className="border border-slate-300 rounded overflow-hidden">
+                <div className="bg-rose-50 px-3 py-1.5 border-b border-rose-200 font-bold text-rose-900 text-xs flex justify-between">
+                  <span>STATUTORY DEDUCTIONS</span>
+                  <span>AMOUNT (INR)</span>
+                </div>
+                <div className="p-2 space-y-1 text-[11px]">
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">Provident Fund (EPF 12%)</span>
+                    <span className="font-mono text-rose-700 font-bold">{selectedPaySlipData.staff.pfDeduction}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">Employee State Insurance (ESI)</span>
+                    <span className="font-mono text-rose-700 font-bold">{selectedPaySlipData.staff.esiDeduction}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b border-slate-100">
+                    <span className="text-slate-600">Staff Welfare & Uniform Fund</span>
+                    <span className="font-mono text-slate-700">₹ 200</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 text-slate-500">
+                    <span>Professional Tax / TDS</span>
+                    <span className="font-mono">₹ 0</span>
+                  </div>
+                </div>
+                <div className="bg-slate-100 px-3 py-1.5 border-t border-slate-300 flex justify-between font-bold text-rose-900 text-xs">
+                  <span>TOTAL DEDUCTIONS</span>
+                  <span className="font-mono text-rose-700">{selectedPaySlipData.deductions}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Net Payout Banner */}
+            <div className="p-3 bg-emerald-50 border border-emerald-300 rounded flex items-center justify-between">
+              <div>
+                <span className="text-emerald-800 block text-[10px] uppercase tracking-wider font-bold">
+                  NET DISBURSED TO BANK ACCOUNT
+                </span>
+                <span className="text-[11px] text-slate-600 italic">
+                  Credited to {selectedPaySlipData.staff.bankName} (A/C: •••• {selectedPaySlipData.staff.bankAccountNo.slice(-4)})
+                </span>
+              </div>
+              <strong className="text-xl font-black font-mono text-emerald-800">
+                {selectedPaySlipData.net}
+              </strong>
+            </div>
+
+            {/* Signatures & Seal */}
+            <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+              <div>
+                <p className="font-bold text-slate-800">Prepared by: Accounts Officer</p>
+                <p>VidyaFloww Finance Division</p>
+              </div>
+              <div className="text-center">
+                <div className="h-7 w-7 rounded-full border border-emerald-600 text-emerald-700 flex items-center justify-center font-bold text-[8px] mx-auto mb-0.5">
+                  SEAL
+                </div>
+                <p className="text-[9px] text-emerald-800 font-bold">DIGITALLY VERIFIED</p>
+              </div>
+              <div className="text-right">
+                <p className="font-bold text-slate-800">Approved: Bursar / Principal</p>
+                <p>VidyaFloww International Academy</p>
+              </div>
+            </div>
+          </div>
+        </VFDialog>
+      )}
     </VFPageContainer>
   );
 }
