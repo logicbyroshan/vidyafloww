@@ -137,7 +137,7 @@
     line-height: 1.25;
   }
 
-  /* Hindi mode — line-height tailored for Poppins Devanagari matras */
+  /* Hindi mode — line-height tailored for Mukta Devanagari matras */
   html.lang-hi button,
   html.lang-hi [role="button"],
   html.lang-hi [role="tab"] {

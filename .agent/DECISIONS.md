@@ -28,7 +28,7 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 
 ---
 
-### Decision 4: Desktop-Only Viewport Gate (`≥ 1000px`) for Web Command Portal
+### Decision 4: Desktop-Only Viewport Gate (≥ 1000px) for Web Command Portal
 * **Date**: 2026-08-10
 * **Decision**: Enforce a minimum viewport width of 1000px via `SmallScreenBlocker` in `AppShell.tsx`, redirecting smaller viewports to the dedicated mobile app.
 * **Reason**: School administrative ERP workflows involve dense data tables, side drawers, multi-column filters, and timetable grids that lose operational utility on mobile screens.
@@ -39,7 +39,7 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 ### Decision 5: Dedicated Component Library (`@vidyafloww/ui`) with Radix UI & Framer Motion
 * **Date**: 2026-08-10
 * **Decision**: Standardize all application UI primitives in `packages/ui` backed by Radix UI unstyled primitives, Tailwind CSS, and Framer Motion spring physics.
-* **Reason**: Guarantees keyboard accessibility, consistent drawer/modal animations, unified border radii (`rounded-lg`/`rounded-md`), and eliminates fragmented third-party styling across modules.
+* **Reason**: Guarantees keyboard accessibility, consistent drawer/modal animations, unified sharp border radii, and eliminates fragmented third-party styling across modules.
 * **Impact**: Application routes must import UI components from `@vidyafloww/ui` rather than re-implementing custom dialogs, buttons, or badge wrappers.
 
 ---
@@ -60,8 +60,24 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 
 ---
 
-### Decision 8: Dual-Font Localization System (Sofia Sans + Baloo 2) with `useTranslation`
-* **Date**: 2026-08-20 (Commits `cf8f354`, `ab65c5a`, `929e1d3`)
-* **Decision**: Implement a bilingual localization framework (English & Hindi) utilizing a dual-font CSS cascade with `Sofia Sans` for Latin characters and tabular figures, and `Baloo 2` for Devanagari script.
-* **Reason**: Standard web fonts either clipped Devanagari diacritics or broke tabular numeric alignment in dense financial and roll call tables.
-* **Impact**: The `--ui-font` CSS custom property manages font fallback; all user-facing route chrome keys must use the centralized `useTranslation` hook.
+### Decision 8: Single Bilingual Font — Mukta
+* **Date**: 2026-08-20 (updated 2026-09-07)
+* **Decision**: Use **Mukta** as the single `--ui-font` token covering both Latin (English) and Devanagari (Hindi) script. Loaded from Google Fonts in `globals.css`. The `lang-hi` class on `<html>` triggers the same Mukta stack with adjusted line-height for Devanagari matras.
+* **Reason**: Mukta is a unified humanist sans-serif with native Devanagari support, eliminating the need for a dual-font cascade. Earlier prototypes used Sofia Sans + Baloo 2 but this caused inconsistent weight rendering; Mukta was adopted as the final production font.
+* **Impact**: A single `--ui-font` CSS property manages the entire app. All components inherit via `font-family: inherit`. No per-locale font switching is needed.
+
+---
+
+### Decision 9: Strict Sharp Border Radius Enforcement
+* **Date**: 2026-09-01
+* **Decision**: Strictly prohibit `rounded-xl`, `rounded-2xl`, `rounded-3xl`, and any large bubbly border radius across all UI surfaces (cards, buttons, dialogs, badges, drawers, modules). Permitted maximum: `rounded-md` (≈6px) for container elements; preferred standard is `rounded-[4px]` / `rounded-sm`.
+* **Reason**: The VidyaFloww design system is built on a crisp, geometric, professional enterprise aesthetic. Large rounded corners conflict with the high-information-density data table paradigm and break visual rhythm between adjacent elements.
+* **Impact**: All new and existing routes must use sharp geometry. The AI agent operating under `AGENTS.md` is instructed to flag and correct radius violations on every edit.
+
+---
+
+### Decision 10: Permanently Dark Theme — No Light/System Mode
+* **Date**: 2026-09-01
+* **Decision**: Force `.dark` class on `<html>` on every app mount via `initTheme()` in `globalStore.ts`. No light mode, system mode, or theme toggle is exposed to the user.
+* **Reason**: The command portal's visual design, color palette, contrast ratios, and component color tokens are exclusively optimized for dark mode. Maintaining two theme variants would double visual QA surface without a meaningful user need (institutional desktop admin tools are typically used in controlled lit environments).
+* **Impact**: `theme: 'dark'` is a literal type in `GlobalState`. All CSS tokens in `globals.css` `.dark {}` block are the only active values at runtime.
