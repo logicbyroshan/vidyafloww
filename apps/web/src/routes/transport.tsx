@@ -140,36 +140,36 @@ function TransportManagementPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards) ── */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
+      {/* ── SINGLE UNIFIED HEADER (Consistent Standard Padding & Typography) ── */}
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: 2 Tabs */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
+          <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
             <button
               type="button"
               id="tab-routes"
               onClick={() => setActiveTab('routes')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'routes'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Navigation className="h-3.5 w-3.5" />
+              <Navigation className="h-4 w-4" />
               {isHindi ? 'लाइव फ्लीट व रूट्स' : 'Live Fleet & Routes'}
             </button>
             <button
               type="button"
               id="tab-vehicles"
               onClick={() => setActiveTab('vehicles')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'vehicles'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <ShieldCheck className="h-3.5 w-3.5" />
+              <ShieldCheck className="h-4 w-4" />
               {isHindi ? 'वाहन व छात्र रोस्टर' : 'Vehicles & Commuters'}
             </button>
           </div>
@@ -180,7 +180,7 @@ function TransportManagementPage() {
           <VFButton
             size="sm"
             onClick={() => setIsAddRouteModalOpen(true)}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
             {isHindi ? '+ नया रूट जोड़ें' : '+ Add Bus Route'}
@@ -189,57 +189,57 @@ function TransportManagementPage() {
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 1: LIVE FLEET & ROUTES
+          TAB 1: LIVE FLEET & ROUTES (Standardized Cell Padding & Hierarchy)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'routes' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'रूट सं.' : 'Route'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'रूट विवरण व मार्ग' : 'Route Corridor'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'बस नंबर' : 'Vehicle Reg'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'चालक व संपर्क' : 'Driver & Contact'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'ऑक्यूपेंसी' : 'Capacity'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'गति' : 'Speed'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'आगामी स्टॉप' : 'Next Stop'}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.status')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'रूट सं.' : 'Route'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'रूट विवरण व मार्ग' : 'Route Corridor'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'बस नंबर' : 'Vehicle Reg'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'चालक व संपर्क' : 'Driver & Contact'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'ऑक्यूपेंसी' : 'Capacity'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'गति' : 'Speed'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'आगामी स्टॉप' : 'Next Stop'}</th>
+                    <th className="py-3 px-4 text-xs text-right">{t('col.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {routes.map((rt) => (
                     <tr key={rt.id} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-2.5 px-3 font-mono font-bold text-primary">{rt.routeNumber}</td>
-                      <td className="py-2.5 px-3 font-bold text-foreground max-w-[200px] truncate">{rt.name}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{rt.busNumber}</td>
-                      <td className="py-2.5 px-3">
-                        <div className="font-semibold text-foreground">{rt.driverName}</div>
-                        <div className="text-[10px] text-muted-foreground font-mono flex items-center gap-1">
-                          <Phone className="h-2.5 w-2.5 text-muted-foreground" />
+                      <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{rt.routeNumber}</td>
+                      <td className="py-3 px-4 font-bold text-foreground text-sm max-w-[220px] truncate">{rt.name}</td>
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{rt.busNumber}</td>
+                      <td className="py-3 px-4">
+                        <div className="font-semibold text-foreground text-xs">{rt.driverName}</div>
+                        <div className="text-xs text-muted-foreground font-mono flex items-center gap-1 mt-0.5">
+                          <Phone className="h-3 w-3 text-muted-foreground" />
                           {rt.driverPhone}
                         </div>
                       </td>
-                      <td className="py-2.5 px-3">
+                      <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
-                          <div className="w-16 h-1.5 rounded-full bg-muted/60 overflow-hidden">
+                          <div className="w-20 h-1.5 rounded-full bg-muted/60 overflow-hidden">
                             <div
                               className="h-full bg-amber-400 rounded-full"
                               style={{ width: `${Math.round((rt.occupancy / rt.capacity) * 100)}%` }}
                             />
                           </div>
-                          <span className="font-mono text-muted-foreground text-[10px]">
+                          <span className="font-mono text-foreground font-semibold text-xs">
                             {rt.occupancy}/{rt.capacity}
                           </span>
                         </div>
                       </td>
-                      <td className="py-2.5 px-3 font-mono font-bold text-foreground">{rt.currentSpeed}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground max-w-[150px] truncate">{rt.nextStop}</td>
-                      <td className="py-2.5 px-3 text-right">
+                      <td className="py-3 px-4 font-mono font-bold text-foreground text-xs">{rt.currentSpeed}</td>
+                      <td className="py-3 px-4 text-muted-foreground text-xs max-w-[160px] truncate">{rt.nextStop}</td>
+                      <td className="py-3 px-4 text-right">
                         <VFBadge
                           variant={rt.status === 'Moving' ? 'success' : rt.status === 'At Stop' ? 'warning' : 'outline'}
-                          className="text-[10px]"
+                          className="text-xs rounded-[3px] px-2 py-0.5"
                         >
                           {rt.status}
                         </VFBadge>
@@ -260,41 +260,41 @@ function TransportManagementPage() {
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
           {/* Vehicles Compliance Section */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#141414] border-b border-border/80 flex items-center justify-between">
-              <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
+            <div className="p-3.5 bg-[#141414] border-b border-border/80 flex items-center justify-between">
+              <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Bus className="h-4 w-4 text-amber-400" />
                 {isHindi ? 'स्कूल वाहन बेड़ा व फिटनेस वैधता' : 'School Vehicle Registry & Fitness Compliance'}
               </h3>
-              <VFBadge variant="outline" className="font-mono text-[10px]">
+              <VFBadge variant="outline" className="font-mono text-xs px-2 py-0.5 rounded-[3px]">
                 {vehicles.length} Vehicles Inspected
               </VFBadge>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'पंजीकरण संख्या' : 'Reg Number'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'मॉडल व श्रेणी' : 'Make & Model'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'ईंधन प्रकार' : 'Fuel'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'फिटनेस समाप्ति' : 'Fitness Expiry'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'बीमा समाप्ति' : 'Insurance Expiry'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'अधिकृत चालक' : 'Assigned Driver'}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.status')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'पंजीकरण संख्या' : 'Reg Number'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'मॉडल व श्रेणी' : 'Make & Model'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'ईंधन प्रकार' : 'Fuel'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'फिटनेस समाप्ति' : 'Fitness Expiry'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'बीमा समाप्ति' : 'Insurance Expiry'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'अधिकृत चालक' : 'Assigned Driver'}</th>
+                    <th className="py-3 px-4 text-xs text-right">{t('col.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {vehicles.map((v) => (
                     <tr key={v.regNumber} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-2.5 px-3 font-mono font-bold text-foreground">{v.regNumber}</td>
-                      <td className="py-2.5 px-3 font-medium text-foreground">{v.model}</td>
-                      <td className="py-2.5 px-3">
-                        <VFBadge variant="outline" className="text-[10px]">{v.fuelType}</VFBadge>
+                      <td className="py-3 px-4 font-mono font-bold text-foreground text-xs">{v.regNumber}</td>
+                      <td className="py-3 px-4 font-medium text-foreground text-xs">{v.model}</td>
+                      <td className="py-3 px-4">
+                        <VFBadge variant="outline" className="text-xs px-2 py-0.5 rounded-[3px]">{v.fuelType}</VFBadge>
                       </td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{v.fitnessExpiry}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{v.insuranceExpiry}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground font-medium">{v.driver}</td>
-                      <td className="py-2.5 px-3 text-right">
-                        <VFBadge variant="success" className="text-[10px]">
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{v.fitnessExpiry}</td>
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{v.insuranceExpiry}</td>
+                      <td className="py-3 px-4 text-muted-foreground font-medium text-xs">{v.driver}</td>
+                      <td className="py-3 px-4 text-right">
+                        <VFBadge variant="success" className="text-xs px-2 py-0.5 rounded-[3px]">
                           {isHindi ? 'सत्यापित' : 'Compliant'}
                         </VFBadge>
                       </td>
@@ -307,33 +307,33 @@ function TransportManagementPage() {
 
           {/* Student Commute Allocations Section */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#141414] border-b border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
+            <div className="p-3.5 bg-[#141414] border-b border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Users className="h-4 w-4 text-primary" />
                 {isHindi ? 'छात्र परिवहन रोस्टर व बोर्डिंग स्टॉप' : 'Student Commute Roster & Fee Status'}
               </h3>
-              <div className="relative w-full sm:w-60">
+              <div className="relative w-full sm:w-64">
                 <input
                   type="text"
                   value={searchStudent}
                   onChange={(e) => setSearchStudent(e.target.value)}
                   placeholder={isHindi ? 'छात्र या स्टॉप खोजें...' : 'Filter student or stop...'}
-                  className="w-full px-3 py-1 pl-8 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
+                  className="w-full px-3 py-1.5 pl-8 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
                 />
-                <Search className="h-3 w-3 absolute left-2.5 top-2.5 text-muted-foreground" />
+                <Search className="h-3.5 w-3.5 absolute left-2.5 top-2.5 text-muted-foreground" />
               </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'कक्षा / रोल' : 'Class & Roll'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'रूट संख्या' : 'Route'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'बोर्डिंग स्टॉप' : 'Boarding Stop'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'मासिक शुल्क' : 'Monthly Fee'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'स्थिति' : 'Fee Status'}</th>
-                    <th className="py-2.5 px-3 text-right">{isHindi ? 'आपातकालीन फोन' : 'Emergency Phone'}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'कक्षा / रोल' : 'Class & Roll'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'रूट संख्या' : 'Route'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'बोर्डिंग स्टॉप' : 'Boarding Stop'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'मासिक शुल्क' : 'Monthly Fee'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'स्थिति' : 'Fee Status'}</th>
+                    <th className="py-3 px-4 text-xs text-right">{isHindi ? 'आपातकालीन फोन' : 'Emergency Phone'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -341,17 +341,17 @@ function TransportManagementPage() {
                     .filter((s) => s.name.toLowerCase().includes(searchStudent.toLowerCase()) || s.stopName.toLowerCase().includes(searchStudent.toLowerCase()))
                     .map((st) => (
                       <tr key={st.id} className="hover:bg-[#1a1a1a] transition-colors">
-                        <td className="py-2.5 px-3 font-bold text-foreground">{st.name}</td>
-                        <td className="py-2.5 px-3 text-muted-foreground">{st.classSection} · {st.roll}</td>
-                        <td className="py-2.5 px-3 font-mono font-bold text-primary">{st.routeNumber}</td>
-                        <td className="py-2.5 px-3 text-foreground font-medium">{st.stopName}</td>
-                        <td className="py-2.5 px-3 font-mono text-foreground font-bold">{st.monthlyFee}</td>
-                        <td className="py-2.5 px-3">
-                          <VFBadge variant={st.feeStatus === 'Paid' ? 'success' : 'warning'} className="text-[10px]">
+                        <td className="py-3 px-4 font-bold text-foreground text-sm">{st.name}</td>
+                        <td className="py-3 px-4 text-muted-foreground text-xs">{st.classSection} · {st.roll}</td>
+                        <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{st.routeNumber}</td>
+                        <td className="py-3 px-4 text-foreground font-medium text-xs">{st.stopName}</td>
+                        <td className="py-3 px-4 font-mono text-foreground font-bold text-xs">{st.monthlyFee}</td>
+                        <td className="py-3 px-4">
+                          <VFBadge variant={st.feeStatus === 'Paid' ? 'success' : 'warning'} className="text-xs px-2 py-0.5 rounded-[3px]">
                             {st.feeStatus}
                           </VFBadge>
                         </td>
-                        <td className="py-2.5 px-3 text-right font-mono text-muted-foreground">{st.emergencyPhone}</td>
+                        <td className="py-3 px-4 text-right font-mono text-muted-foreground text-xs">{st.emergencyPhone}</td>
                       </tr>
                     ))}
                 </tbody>

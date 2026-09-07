@@ -152,9 +152,9 @@ function SurveysManagementPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
       {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards) ── */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: 2 Tabs */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
@@ -162,9 +162,9 @@ function SurveysManagementPage() {
               type="button"
               id="tab-active"
               onClick={() => setActiveTab('active')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'active'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -175,9 +175,9 @@ function SurveysManagementPage() {
               type="button"
               id="tab-results"
               onClick={() => setActiveTab('results')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'results'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -192,7 +192,7 @@ function SurveysManagementPage() {
           <VFButton
             size="sm"
             onClick={() => setIsNewSurveyModalOpen(true)}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
             {isHindi ? '+ नया सर्वे बनाएं' : '+ Create Survey'}
@@ -204,56 +204,56 @@ function SurveysManagementPage() {
           TAB 1: ACTIVE SURVEYS & POLLS
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'active' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {surveys.map((s) => {
               const progressPct = Math.round((s.responsesCount / s.totalTarget) * 100);
 
               return (
                 <div
                   key={s.id}
-                  className="p-3.5 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between"
+                  className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-bold text-xs text-primary">{s.id}</span>
-                        <VFBadge variant="outline" className="text-[10px] rounded-[3px]">{s.targetAudience}</VFBadge>
+                        <VFBadge variant="outline" className="text-xs px-2 py-0.5 rounded-[3px]">{s.targetAudience}</VFBadge>
                       </div>
-                      <span className="text-[10px] font-mono text-muted-foreground">Closes: {s.endDate}</span>
+                      <span className="text-xs font-mono text-muted-foreground">Closes: {s.endDate}</span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-foreground leading-snug">{s.title}</h4>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{s.category}</p>
+                    <h4 className="text-sm font-bold text-foreground leading-snug">{s.title}</h4>
+                    <p className="text-xs text-muted-foreground mt-1">{s.category}</p>
 
                     {/* Progress Bar */}
-                    <div className="mt-3 space-y-1">
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-muted-foreground">Responses Collected</span>
+                    <div className="mt-3.5 space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground font-medium">Responses Collected</span>
                         <span className="font-mono font-bold text-foreground">
                           {s.responsesCount} / {s.totalTarget} ({progressPct}%)
                         </span>
                       </div>
-                      <div className="w-full h-1.5 rounded-full bg-muted/60 overflow-hidden">
+                      <div className="w-full h-2 rounded-[2px] bg-muted/60 overflow-hidden">
                         <div
-                          className="h-full bg-indigo-500 rounded-full"
+                          className="h-full bg-indigo-500 rounded-[2px]"
                           style={{ width: `${Math.min(progressPct, 100)}%` }}
                         />
                       </div>
                     </div>
 
                     {/* Key finding preview */}
-                    <div className="mt-3 p-2 bg-[#141414] border border-border/70 rounded-[3px] text-[11px] text-muted-foreground">
+                    <div className="mt-3.5 p-2.5 bg-[#141414] border border-border/70 rounded-[3px] text-xs text-muted-foreground leading-relaxed">
                       <strong className="text-foreground">Key Finding:</strong> {s.keyFinding}
                     </div>
                   </div>
 
-                  <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-bold">
+                  <div className="mt-3.5 pt-3 border-t border-border/60 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-bold">
                       <span className="text-muted-foreground">Satisfaction:</span>
-                      <span className="text-emerald-400 font-mono">{s.satisfactionScore}</span>
+                      <span className="text-emerald-400 font-mono text-sm">{s.satisfactionScore}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => {
@@ -264,16 +264,16 @@ function SurveysManagementPage() {
                             type: 'info',
                           });
                         }}
-                        className="px-2 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors cursor-pointer"
+                        className="h-7 px-2.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
                         title="Copy Shareable Link"
                       >
-                        <Copy className="h-3 w-3" />
+                        <Copy className="h-3.5 w-3.5" />
                         <span>Link</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => setSelectedSurvey(s)}
-                        className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1 transition-colors cursor-pointer"
+                        className="h-7 px-3 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <span>{isHindi ? 'विवरण' : 'Insights'}</span>
                       </button>
@@ -292,13 +292,13 @@ function SurveysManagementPage() {
       {activeTab === 'results' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
           {/* Sentiment & NPS Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-3 rounded-[4px] border border-border/80 bg-card space-y-2">
-              <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <Users className="h-3.5 w-3.5 text-primary" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-3.5 rounded-[4px] border border-border/80 bg-card space-y-2.5">
+              <h5 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary" />
                 Stakeholder Satisfaction
               </h5>
-              <div className="space-y-1.5 text-xs text-muted-foreground">
+              <div className="space-y-2 text-xs text-muted-foreground">
                 <div className="flex justify-between"><span>Parents Satisfaction</span><span className="font-bold text-emerald-400 font-mono">92.4%</span></div>
                 <div className="flex justify-between"><span>Student Experience</span><span className="font-bold text-emerald-400 font-mono">88.6%</span></div>
                 <div className="flex justify-between"><span>Faculty Happiness</span><span className="font-bold text-emerald-400 font-mono">96.2%</span></div>
@@ -306,25 +306,25 @@ function SurveysManagementPage() {
               </div>
             </div>
 
-            <div className="p-3 rounded-[4px] border border-border/80 bg-card space-y-2">
-              <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <BarChart3 className="h-3.5 w-3.5 text-indigo-400" />
+            <div className="p-3.5 rounded-[4px] border border-border/80 bg-card space-y-2.5">
+              <h5 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-indigo-400" />
                 Net Promoter Score (NPS)
               </h5>
-              <div className="space-y-1 text-xs">
+              <div className="space-y-1.5 text-xs">
                 <p className="text-indigo-400 font-mono font-bold text-xl">+74 NPS</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Institutional benchmark: Top decile nationwide. 82% Promoters, 14% Passive, 4% Detractors.
                 </p>
               </div>
             </div>
 
-            <div className="p-3 rounded-[4px] border border-border/80 bg-card space-y-2">
-              <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+            <div className="p-3.5 rounded-[4px] border border-border/80 bg-card space-y-2.5">
+              <h5 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                 Recent Actions Implemented
               </h5>
-              <div className="space-y-1.5 text-[11px] text-muted-foreground">
+              <div className="space-y-2 text-xs text-muted-foreground">
                 <p>• Added 8 study carrels in library</p>
                 <p>• Preet Vihar morning bus timing +10m</p>
                 <p>• Added seasonal fruits in hostel tea</p>
@@ -335,43 +335,43 @@ function SurveysManagementPage() {
 
           {/* Historical Completed Audits */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#141414] border-b border-border/80 flex items-center justify-between">
+            <div className="p-3.5 bg-[#141414] border-b border-border/80 flex items-center justify-between">
               <div>
-                <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <BarChart3 className="h-4 w-4 text-primary" />
                   {isHindi ? 'विगत सत्रों के पूर्ण सर्वेक्षण रिकॉर्ड' : 'Archived Surveys & Compliance Reports'}
                 </h3>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-1">
                   {isHindi ? 'डाउनलोड योग्य ऑडिट व संस्थागत प्रमाणन रिपोर्ट' : 'Past feedback surveys with verified community participation logs'}
                 </p>
               </div>
-              <VFBadge variant="outline" className="font-mono text-xs rounded-[3px]">
+              <VFBadge variant="outline" className="font-mono text-xs px-2.5 py-1 rounded-[3px]">
                 3 Archived Audits
               </VFBadge>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">#</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'सर्वेक्षण शीर्षक' : 'Survey Title'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'लक्षित समूह' : 'Audience'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'पूर्णता तिथि' : 'Completion Date'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'कुल प्रतिक्रियाएं' : 'Total Responses'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'अंतिम रेटिंग' : 'Final Rating'}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs font-semibold">#</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'सर्वेक्षण शीर्षक' : 'Survey Title'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'लक्षित समूह' : 'Audience'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'पूर्णता तिथि' : 'Completion Date'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'कुल प्रतिक्रियाएं' : 'Total Responses'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'अंतिम रेटिंग' : 'Final Rating'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold text-right">{t('col.action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {archives.map((a) => (
                     <tr key={a.id} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{a.id}</td>
-                      <td className="py-2.5 px-3 font-bold text-foreground">{a.title}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground">{a.audience}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{a.completedDate}</td>
-                      <td className="py-2.5 px-3 font-mono font-bold text-foreground">{a.totalResponses}</td>
-                      <td className="py-2.5 px-3 font-mono font-bold text-emerald-400">{a.finalRating}</td>
-                      <td className="py-2.5 px-3 text-right">
+                      <td className="py-3 px-4 font-mono text-xs text-muted-foreground">{a.id}</td>
+                      <td className="py-3 px-4 font-bold text-foreground text-sm">{a.title}</td>
+                      <td className="py-3 px-4 text-xs text-muted-foreground font-medium">{a.audience}</td>
+                      <td className="py-3 px-4 font-mono text-xs text-muted-foreground">{a.completedDate}</td>
+                      <td className="py-3 px-4 font-mono font-bold text-xs text-foreground">{a.totalResponses}</td>
+                      <td className="py-3 px-4 font-mono font-bold text-xs text-emerald-400">{a.finalRating}</td>
+                      <td className="py-3 px-4 text-right">
                         <button
                           type="button"
                           onClick={() => {
@@ -381,9 +381,9 @@ function SurveysManagementPage() {
                               type: 'info',
                             });
                           }}
-                          className="px-2 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1 transition-colors cursor-pointer ml-auto"
+                          className="px-3 py-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer ml-auto"
                         >
-                          <Download className="h-3 w-3" />
+                          <Download className="h-3.5 w-3.5" />
                           <span>PDF</span>
                         </button>
                       </td>
@@ -503,19 +503,19 @@ function SurveysManagementPage() {
           }
         >
           <div className="space-y-3 py-1 text-xs">
-            <div className="grid grid-cols-2 gap-2">
-              <div className="p-2.5 bg-[#161616] border border-border/80 rounded-[3px]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold">Responses</span>
-                <p className="font-mono text-base font-bold text-foreground mt-0.5">{selectedSurvey.responsesCount} Submissions</p>
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="p-3 bg-[#161616] border border-border/80 rounded-[3px]">
+                <span className="text-xs text-muted-foreground uppercase font-bold">Responses</span>
+                <p className="font-mono text-base font-bold text-foreground mt-1">{selectedSurvey.responsesCount} Submissions</p>
               </div>
-              <div className="p-2.5 bg-[#161616] border border-border/80 rounded-[3px]">
-                <span className="text-[10px] text-muted-foreground uppercase font-bold">Satisfaction Score</span>
-                <p className="font-mono text-base font-bold text-emerald-400 mt-0.5">{selectedSurvey.satisfactionScore}</p>
+              <div className="p-3 bg-[#161616] border border-border/80 rounded-[3px]">
+                <span className="text-xs text-muted-foreground uppercase font-bold">Satisfaction Score</span>
+                <p className="font-mono text-base font-bold text-emerald-400 mt-1">{selectedSurvey.satisfactionScore}</p>
               </div>
             </div>
 
-            <div className="p-3 bg-[#161616] border border-border/80 rounded-[3px] space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Key Stakeholder Finding:</span>
+            <div className="p-3.5 bg-[#161616] border border-border/80 rounded-[3px] space-y-1.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Key Stakeholder Finding:</span>
               <p className="text-xs text-foreground leading-relaxed">{selectedSurvey.keyFinding}</p>
             </div>
           </div>

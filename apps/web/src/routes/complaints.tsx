@@ -179,9 +179,9 @@ function ComplaintsManagementPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
       {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards) ── */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: 2 Tabs */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
@@ -189,9 +189,9 @@ function ComplaintsManagementPage() {
               type="button"
               id="tab-registry"
               onClick={() => setActiveTab('registry')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'registry'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -202,9 +202,9 @@ function ComplaintsManagementPage() {
               type="button"
               id="tab-queue"
               onClick={() => setActiveTab('queue')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'queue'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -219,7 +219,7 @@ function ComplaintsManagementPage() {
           <VFButton
             size="sm"
             onClick={() => setIsLodgeModalOpen(true)}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
             {isHindi ? '+ शिकायत दर्ज करें' : '+ Lodge Grievance'}
@@ -231,12 +231,12 @@ function ComplaintsManagementPage() {
           TAB 1: GRIEVANCE REGISTRY
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'registry' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
           {/* Filters Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-[#141414] border border-border/80 p-2.5 rounded-[4px]">
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1.5 bg-[#181818] px-2 py-1 rounded-[3px] border border-border/60">
-                <span className="text-[11px] text-muted-foreground font-semibold">{isHindi ? 'स्थिति:' : 'Status:'}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#141414] border border-border/80 p-3 rounded-[4px]">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex items-center gap-2 bg-[#181818] px-2.5 py-1.5 rounded-[3px] border border-border/70">
+                <span className="text-xs text-muted-foreground font-semibold">{isHindi ? 'स्थिति:' : 'Status:'}</span>
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
@@ -249,8 +249,8 @@ function ComplaintsManagementPage() {
                 </select>
               </div>
 
-              <div className="flex items-center gap-1.5 bg-[#181818] px-2 py-1 rounded-[3px] border border-border/60">
-                <span className="text-[11px] text-muted-foreground font-semibold">{isHindi ? 'विभाग:' : 'Dept:'}</span>
+              <div className="flex items-center gap-2 bg-[#181818] px-2.5 py-1.5 rounded-[3px] border border-border/70">
+                <span className="text-xs text-muted-foreground font-semibold">{isHindi ? 'विभाग:' : 'Dept:'}</span>
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
@@ -266,15 +266,15 @@ function ComplaintsManagementPage() {
               </div>
             </div>
 
-            <div className="relative w-full sm:w-60">
+            <div className="relative w-full sm:w-64">
               <input
                 type="text"
                 value={searchGrievance}
                 onChange={(e) => setSearchGrievance(e.target.value)}
-                placeholder={isHindi ? 'शिकायतकर्ता या विषय खोजें...' : 'Search ticket or name...'}
-                className="w-full px-3 py-1 pl-8 border border-border rounded-[3px] bg-[#181818] text-foreground text-xs focus:outline-none"
+                placeholder={isHindi ? 'शिकायतकर्ता या विषय खोजें...' : 'Search ticket, subject or name...'}
+                className="w-full px-3 py-1.5 pl-8 border border-border rounded-[3px] bg-[#181818] text-foreground text-xs focus:outline-none"
               />
-              <Search className="h-3 w-3 absolute left-2.5 top-2 text-muted-foreground" />
+              <Search className="h-3.5 w-3.5 absolute left-2.5 top-2.5 text-muted-foreground" />
             </div>
           </div>
 
@@ -283,15 +283,15 @@ function ComplaintsManagementPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'टिकट आईडी' : 'Ticket ID'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'शिकायतकर्ता' : 'Complainant'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'विभाग' : 'Category'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'विषय' : 'Subject'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'प्राथमिकता' : 'Priority'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'दर्ज तिथि' : 'Lodged'}</th>
-                    <th className="py-2.5 px-3">{t('col.status')}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'टिकट आईडी' : 'Ticket ID'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'शिकायतकर्ता' : 'Complainant'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'विभाग' : 'Category'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'विषय' : 'Subject'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'प्राथमिकता' : 'Priority'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'दर्ज तिथि' : 'Lodged'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{t('col.status')}</th>
+                    <th className="py-3 px-4 text-xs font-semibold text-right">{t('col.action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -306,39 +306,40 @@ function ComplaintsManagementPage() {
                     )
                     .map((item) => (
                       <tr key={item.id} className="hover:bg-[#1a1a1a] transition-colors">
-                        <td className="py-2.5 px-3 font-mono font-bold text-primary">{item.id}</td>
-                        <td className="py-2.5 px-3">
-                          <div className="font-bold text-foreground">{item.complainantName}</div>
-                          <div className="text-[10px] text-muted-foreground">{item.complainantType}</div>
+                        <td className="py-3 px-4 font-mono font-bold text-xs text-primary">{item.id}</td>
+                        <td className="py-3 px-4">
+                          <div className="text-sm font-bold text-foreground">{item.complainantName}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">{item.complainantType}</div>
                         </td>
-                        <td className="py-2.5 px-3">
-                          <VFBadge variant="outline" className="text-[10px] rounded-[3px]">{item.category}</VFBadge>
+                        <td className="py-3 px-4">
+                          <VFBadge variant="outline" className="text-xs px-2 py-0.5 rounded-[3px]">{item.category}</VFBadge>
                         </td>
-                        <td className="py-2.5 px-3 font-medium text-foreground max-w-[240px] truncate">
-                          {item.subject}
+                        <td className="py-3 px-4">
+                          <div className="text-sm font-bold text-foreground max-w-[280px] truncate">{item.subject}</div>
+                          <div className="text-xs text-muted-foreground truncate max-w-[280px] mt-0.5">{item.description}</div>
                         </td>
-                        <td className="py-2.5 px-3">
+                        <td className="py-3 px-4">
                           <VFBadge
                             variant={item.priority === 'Urgent' ? 'danger' : item.priority === 'High' ? 'warning' : 'outline'}
-                            className="text-[10px] rounded-[3px]"
+                            className="text-xs px-2 py-0.5 rounded-[3px]"
                           >
                             {item.priority}
                           </VFBadge>
                         </td>
-                        <td className="py-2.5 px-3 font-mono text-muted-foreground">{item.lodgedDate}</td>
-                        <td className="py-2.5 px-3">
+                        <td className="py-3 px-4 font-mono text-xs text-muted-foreground">{item.lodgedDate}</td>
+                        <td className="py-3 px-4">
                           <VFBadge
                             variant={item.status === 'Resolved' ? 'success' : item.status === 'In Progress' ? 'warning' : 'danger'}
-                            className="text-[10px] rounded-[3px]"
+                            className="text-xs px-2 py-0.5 rounded-[3px]"
                           >
                             {item.status}
                           </VFBadge>
                         </td>
-                        <td className="py-2.5 px-3 text-right">
+                        <td className="py-3 px-4 text-right">
                           <button
                             type="button"
                             onClick={() => setViewingTicket(item)}
-                            className="px-2 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground transition-colors cursor-pointer"
+                            className="px-3 py-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground transition-colors cursor-pointer"
                           >
                             {isHindi ? 'विवरण' : 'Details'}
                           </button>
@@ -358,54 +359,54 @@ function ComplaintsManagementPage() {
       {activeTab === 'queue' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#141414] border-b border-border/80 flex items-center justify-between">
+            <div className="p-3.5 bg-[#141414] border-b border-border/80 flex items-center justify-between">
               <div>
-                <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Clock className="h-4 w-4 text-amber-400" />
                   {isHindi ? 'तत्काल कार्रवाई योग्य लंबित शिकायतें' : 'Pending & Actionable Grievance Queue'}
                 </h3>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-1">
                   {isHindi ? 'प्राथमिकता के आधार पर सीधे समाधान व हस्ताक्षर' : 'Active institutional tickets requiring departmental resolution'}
                 </p>
               </div>
-              <VFBadge variant="warning" className="font-mono text-xs rounded-[3px]">
+              <VFBadge variant="warning" className="font-mono text-xs px-2.5 py-1 rounded-[3px]">
                 {grievances.filter((g) => g.status !== 'Resolved').length} {isHindi ? 'लंबित' : 'Pending Action'}
               </VFBadge>
             </div>
 
-            <div className="p-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               {grievances
                 .filter((g) => g.status !== 'Resolved')
                 .map((item) => (
-                  <div key={item.id} className="p-3 rounded-[3px] border border-border/80 bg-[#161616] flex flex-col justify-between">
+                  <div key={item.id} className="p-3.5 rounded-[3px] border border-border/80 bg-[#161616] flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center justify-between mb-2">
                         <span className="font-mono font-bold text-xs text-primary">{item.id}</span>
                         <VFBadge
                           variant={item.priority === 'Urgent' ? 'danger' : 'warning'}
-                          className="text-[10px] rounded-[3px]"
+                          className="text-xs px-2 py-0.5 rounded-[3px]"
                         >
                           {item.priority}
                         </VFBadge>
                       </div>
-                      <h4 className="text-xs font-bold text-foreground line-clamp-1">{item.subject}</h4>
-                      <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{item.description}</p>
-                      <div className="mt-2 text-[11px] text-muted-foreground flex items-center justify-between border-t border-border/50 pt-2">
+                      <h4 className="text-sm font-bold text-foreground line-clamp-1">{item.subject}</h4>
+                      <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{item.description}</p>
+                      <div className="mt-2.5 text-xs text-muted-foreground flex items-center justify-between border-t border-border/50 pt-2.5">
                         <span>By: <strong className="text-foreground">{item.complainantName}</strong></span>
-                        <span className="font-mono text-primary font-semibold">{item.category}</span>
+                        <span className="font-mono text-primary font-bold text-xs">{item.category}</span>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-border/60 pt-2 mt-3">
-                      <span className="text-[10px] font-mono text-amber-400 flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
+                    <div className="flex items-center justify-between border-t border-border/60 pt-2.5 mt-3">
+                      <span className="text-xs font-mono text-amber-400 flex items-center gap-1.5 font-medium">
+                        <Clock className="h-3.5 w-3.5" />
                         SLA: {item.expectedSLA}
                       </span>
                       <VFButton
                         size="sm"
                         variant="success"
-                        className="h-6 px-2 text-[10px] rounded-[2px] font-bold"
-                        leftIcon={<Check className="h-3 w-3" />}
+                        className="h-7 px-3 text-xs rounded-[3px] font-bold"
+                        leftIcon={<Check className="h-3.5 w-3.5" />}
                         onClick={() => handleMarkResolved(item.id)}
                       >
                         {isHindi ? 'समाधान करें' : 'Mark Resolved'}
@@ -417,13 +418,13 @@ function ComplaintsManagementPage() {
           </div>
 
           {/* Department Breakdown & Resolution Analytics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-3 rounded-[4px] border border-border/80 bg-card space-y-2">
-              <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <Building2 className="h-3.5 w-3.5 text-primary" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-3.5 rounded-[4px] border border-border/80 bg-card space-y-2.5">
+              <h5 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-primary" />
                 Department Breakdown
               </h5>
-              <div className="space-y-1.5 text-xs text-muted-foreground">
+              <div className="space-y-2 text-xs text-muted-foreground">
                 <div className="flex justify-between"><span>Transport</span><span className="font-bold text-foreground font-mono">14 (33%)</span></div>
                 <div className="flex justify-between"><span>Academics</span><span className="font-bold text-foreground font-mono">11 (26%)</span></div>
                 <div className="flex justify-between"><span>Hostel</span><span className="font-bold text-foreground font-mono">8 (19%)</span></div>
@@ -431,12 +432,12 @@ function ComplaintsManagementPage() {
               </div>
             </div>
 
-            <div className="p-3 rounded-[4px] border border-border/80 bg-card space-y-2">
-              <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-emerald-400" />
+            <div className="p-3.5 rounded-[4px] border border-border/80 bg-card space-y-2.5">
+              <h5 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Clock className="h-4 w-4 text-emerald-400" />
                 Avg Resolution Speed
               </h5>
-              <div className="space-y-1.5 text-xs text-muted-foreground">
+              <div className="space-y-2 text-xs text-muted-foreground">
                 <div className="flex justify-between"><span>IT & Accounts</span><span className="font-bold text-emerald-400 font-mono">0.8 Days</span></div>
                 <div className="flex justify-between"><span>Transport</span><span className="font-bold text-emerald-400 font-mono">1.2 Days</span></div>
                 <div className="flex justify-between"><span>Hostel</span><span className="font-bold text-emerald-400 font-mono">1.5 Days</span></div>
@@ -444,14 +445,14 @@ function ComplaintsManagementPage() {
               </div>
             </div>
 
-            <div className="p-3 rounded-[4px] border border-border/80 bg-card space-y-2">
-              <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+            <div className="p-3.5 rounded-[4px] border border-border/80 bg-card space-y-2.5">
+              <h5 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                 SLA Compliance Rate
               </h5>
-              <div className="space-y-1 text-xs">
-                <p className="text-emerald-400 font-mono font-bold text-sm">96.8% Compliant</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
+              <div className="space-y-1.5 text-xs">
+                <p className="text-emerald-400 font-mono font-bold text-base">96.8% Compliant</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   36 of 42 tickets resolved inside institutional 48-hour SLA limits. Zero overdue cases.
                 </p>
               </div>
@@ -627,21 +628,21 @@ function ComplaintsManagementPage() {
           <div className="space-y-3 py-1 text-xs">
             <div className="p-3 rounded-[3px] bg-[#161616] border border-border/80 space-y-2">
               <p className="font-semibold text-foreground text-xs">{viewingTicket.description}</p>
-              <div className="grid grid-cols-2 gap-2 text-[11px] text-muted-foreground pt-2 border-t border-border/60">
+              <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground pt-2.5 border-t border-border/60">
                 <div>
-                  <span className="block text-[10px] uppercase font-bold">Assigned Officer:</span>
-                  <span className="text-foreground">{viewingTicket.assignedOfficer}</span>
+                  <span className="block text-xs uppercase font-bold text-muted-foreground">Assigned Officer:</span>
+                  <span className="text-foreground font-semibold">{viewingTicket.assignedOfficer}</span>
                 </div>
                 <div>
-                  <span className="block text-[10px] uppercase font-bold">Target SLA:</span>
+                  <span className="block text-xs uppercase font-bold text-muted-foreground">Target SLA:</span>
                   <span className="text-amber-400 font-mono font-bold">{viewingTicket.expectedSLA}</span>
                 </div>
               </div>
             </div>
 
             {viewingTicket.resolutionNotes && (
-              <div className="p-2.5 rounded-[3px] bg-emerald-950/20 border border-emerald-500/30 text-emerald-400 space-y-1">
-                <span className="font-bold uppercase tracking-wider text-[10px] block">Official Redressal Notes:</span>
+              <div className="p-3 rounded-[3px] bg-emerald-950/20 border border-emerald-500/30 text-emerald-400 space-y-1">
+                <span className="font-bold uppercase tracking-wider text-xs block">Official Redressal Notes:</span>
                 <p className="text-xs">{viewingTicket.resolutionNotes}</p>
               </div>
             )}

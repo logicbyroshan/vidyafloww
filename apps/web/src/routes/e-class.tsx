@@ -490,36 +490,36 @@ Class: ${lecture.grade}`;
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards, No WebRTC badge) ── */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
-        {/* Left: 2 Clean Tabs (No unnecessary badges) */}
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
+      {/* ── SINGLE UNIFIED HEADER (Standardized Padding & Clean Typography) ── */}
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        {/* Left: 2 Clean Tabs (Consistent Font Size & Spacing) */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
+          <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
             <button
               type="button"
               id="tab-timetable"
               onClick={() => setActiveTab('timetable')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'timetable'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Calendar className="h-3.5 w-3.5" />
+              <Calendar className="h-4 w-4" />
               {isHindi ? 'लाइव टाइमटेबल व सत्र' : 'Live Timetable & Sessions'}
             </button>
             <button
               type="button"
               id="tab-vault"
               onClick={() => setActiveTab('vault')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'vault'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <PlayCircle className="h-3.5 w-3.5" />
+              <PlayCircle className="h-4 w-4" />
               {isHindi ? 'रिकॉर्डेड लेक्चर्स' : 'Recorded Vault'}
             </button>
           </div>
@@ -530,7 +530,7 @@ Class: ${lecture.grade}`;
           <VFButton
             size="sm"
             onClick={() => setIsScheduleDrawerOpen(true)}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
             {isHindi ? '+ क्लास शेड्यूल करें' : '+ Schedule E-Class'}
@@ -539,36 +539,36 @@ Class: ${lecture.grade}`;
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 1: LIVE TIMETABLE & SESSIONS
+          TAB 1: LIVE TIMETABLE & SESSIONS (Standardized Cell Padding & Hierarchy)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'timetable' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'सत्र कोड' : 'Session Code'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'व्याख्यान शीर्षक' : 'Lecture Title'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'कक्षा / सेक्शन' : 'Grade'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'शिक्षक' : 'Instructor'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'शेड्यूल समय' : 'Time'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'प्लेटफ़ॉर्म' : 'Platform'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'उपस्थिति' : 'Attendees'}</th>
-                    <th className="py-2.5 px-3">{t('col.status')}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.action')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'सत्र कोड' : 'Session Code'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'व्याख्यान शीर्षक' : 'Lecture Title'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'कक्षा / सेक्शन' : 'Grade'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'शिक्षक' : 'Instructor'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'शेड्यूल समय' : 'Time'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'प्लेटफ़ॉर्म' : 'Platform'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'उपस्थिति' : 'Attendees'}</th>
+                    <th className="py-3 px-4 text-xs">{t('col.status')}</th>
+                    <th className="py-3 px-4 text-xs text-right">{t('col.action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {sessions.map((item) => (
                     <tr key={item.code} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-2.5 px-3 font-mono font-bold text-primary">{item.code}</td>
-                      <td className="py-2.5 px-3 font-bold text-foreground max-w-[240px] truncate">{item.title}</td>
-                      <td className="py-2.5 px-3 font-medium text-foreground">{item.grade}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground">{item.host}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{item.time}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground">{item.platform}</td>
-                      <td className="py-2.5 px-3 font-mono">
+                      <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{item.code}</td>
+                      <td className="py-3 px-4 font-bold text-foreground text-sm max-w-[280px] truncate">{item.title}</td>
+                      <td className="py-3 px-4 font-semibold text-foreground text-xs">{item.grade}</td>
+                      <td className="py-3 px-4 text-muted-foreground text-xs">{item.host}</td>
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{item.time}</td>
+                      <td className="py-3 px-4 text-muted-foreground text-xs">{item.platform}</td>
+                      <td className="py-3 px-4 font-mono text-xs">
                         {item.status === 'Live Now' ? (
                           <span className="text-emerald-400 font-bold">{item.attendees} online</span>
                         ) : item.status === 'Completed' ? (
@@ -577,27 +577,27 @@ Class: ${lecture.grade}`;
                           <span className="text-muted-foreground">--</span>
                         )}
                       </td>
-                      <td className="py-2.5 px-3">
+                      <td className="py-3 px-4">
                         {item.status === 'Live Now' ? (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[2px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[3px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
                             <span className="h-1.5 w-1.5 rounded-[1px] bg-emerald-500 animate-pulse" />
                             Live Now
                           </span>
                         ) : item.status === 'Upcoming' ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-sky-500/10 text-sky-400 border border-sky-500/30 text-[11px] font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-sky-500/10 text-sky-400 border border-sky-500/30 text-xs font-semibold">
                             Upcoming
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[2px] bg-zinc-800 text-zinc-400 border border-zinc-700 text-[11px] font-medium">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-zinc-800 text-zinc-400 border border-zinc-700 text-xs font-medium">
                             Completed
                           </span>
                         )}
                       </td>
-                      <td className="py-2.5 px-3 text-right">
+                      <td className="py-3 px-4 text-right">
                         {item.status === 'Live Now' ? (
                           <VFButton
                             size="sm"
-                            className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
+                            className="rounded-[3px] text-xs h-7 px-3 font-bold"
                             leftIcon={<ExternalLink className="h-3 w-3" />}
                             onClick={() => handleJoinRoom(item.code)}
                           >
@@ -608,7 +608,7 @@ Class: ${lecture.grade}`;
                             <VFButton
                               size="sm"
                               variant="outline"
-                              className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
+                              className="rounded-[3px] text-xs h-7 px-3 font-bold"
                               leftIcon={<Copy className="h-3 w-3" />}
                               onClick={() => {
                                 navigator.clipboard?.writeText(item.meetingLink);
@@ -623,7 +623,7 @@ Class: ${lecture.grade}`;
                             </VFButton>
                             <VFButton
                               size="sm"
-                              className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
+                              className="rounded-[3px] text-xs h-7 px-3 font-bold"
                               leftIcon={<ExternalLink className="h-3 w-3" />}
                               onClick={() => handleJoinRoom(item.code)}
                             >
@@ -634,10 +634,9 @@ Class: ${lecture.grade}`;
                           <VFButton
                             size="sm"
                             variant="ghost"
-                            className="rounded-[3px] text-[11px] h-7 px-2 font-bold text-primary hover:text-primary/90"
+                            className="rounded-[3px] text-xs h-7 px-3 font-bold text-primary hover:text-primary/90"
                             leftIcon={<Play className="h-3 w-3" />}
                             onClick={() => {
-                              // Play the completed biology lecture from vault
                               const bioRec = recordings.find((r) => r.id === 'REC-204') || recordings[0];
                               handlePlayLecture(bioRec);
                             }}
@@ -656,15 +655,15 @@ Class: ${lecture.grade}`;
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 2: RECORDED LECTURE VAULT (Working Play & Working Download)
+          TAB 2: RECORDED LECTURE VAULT (Enhanced Typography & Grid Spacing)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'vault' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {recordings.map((rec) => (
               <div
                 key={rec.id}
-                className="p-3 rounded-[4px] border border-border/80 bg-card hover:border-primary/50 transition-all flex flex-col justify-between"
+                className="p-3.5 rounded-[4px] border border-border/80 bg-card hover:border-primary/50 transition-all flex flex-col justify-between"
               >
                 <div>
                   {/* Video Thumbnail with Hover Play Button */}
@@ -672,11 +671,11 @@ Class: ${lecture.grade}`;
                     onClick={() => handlePlayLecture(rec)}
                     role="button"
                     tabIndex={0}
-                    className="relative aspect-video rounded-[3px] bg-[#111111] border border-border/60 flex items-center justify-center mb-2.5 overflow-hidden group cursor-pointer"
+                    className="relative aspect-video rounded-[3px] bg-[#111111] border border-border/60 flex items-center justify-center mb-3 overflow-hidden group cursor-pointer"
                   >
                     {/* Simulated subject background preview */}
                     <div className="absolute inset-0 opacity-20 bg-gradient-to-tr from-primary/30 to-sky-500/20" />
-                    <div className="absolute top-1.5 left-1.5 font-mono text-[9px] px-1.5 py-0.5 rounded-[2px] bg-black/80 text-zinc-400 border border-border/40">
+                    <div className="absolute top-2 left-2 font-mono text-[10px] px-2 py-0.5 rounded-[2px] bg-black/80 text-zinc-300 border border-border/50 font-bold">
                       {rec.subject}
                     </div>
 
@@ -684,32 +683,32 @@ Class: ${lecture.grade}`;
                       <Play className="h-4 w-4 fill-current ml-0.5" />
                     </div>
 
-                    <span className="absolute bottom-1.5 right-1.5 font-mono text-[10px] bg-black/80 text-foreground px-1.5 py-0.5 rounded-[2px]">
+                    <span className="absolute bottom-2 right-2 font-mono text-[11px] bg-black/80 text-foreground px-2 py-0.5 rounded-[2px] font-semibold">
                       {rec.duration}
                     </span>
                   </div>
 
                   <h4
                     onClick={() => handlePlayLecture(rec)}
-                    className="text-xs font-bold text-foreground line-clamp-2 leading-snug cursor-pointer hover:text-primary transition-colors"
+                    className="text-sm font-bold text-foreground line-clamp-2 leading-snug cursor-pointer hover:text-primary transition-colors"
                   >
                     {rec.title}
                   </h4>
-                  <p className="text-[11px] text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-1.5 font-medium">
                     {rec.instructor} · <span className="font-semibold text-foreground">{rec.grade}</span>
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between text-[10px] text-muted-foreground">
-                  <span>{rec.views} views · {rec.fileSize}</span>
+                <div className="mt-3.5 pt-3 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
+                  <span className="font-mono text-xs">{rec.views} views · {rec.fileSize}</span>
                   <div className="flex items-center gap-1.5">
                     {/* Download Button */}
                     <VFButton
                       size="sm"
                       variant="outline"
-                      className="h-6 px-2 text-[10px] rounded-[3px] font-bold"
+                      className="h-7 px-2.5 text-xs rounded-[3px] font-bold"
                       title="Download Full HD Video or Notes PDF"
-                      leftIcon={<Download className="h-2.5 w-2.5" />}
+                      leftIcon={<Download className="h-3 w-3" />}
                       onClick={() => {
                         setDownloadModalLecture(rec);
                         setDownloadCompletedName(null);
@@ -722,8 +721,8 @@ Class: ${lecture.grade}`;
                     {/* Play Button */}
                     <VFButton
                       size="sm"
-                      className="h-6 px-2.5 text-[10px] rounded-[3px] font-bold"
-                      leftIcon={<Play className="h-2.5 w-2.5 fill-current" />}
+                      className="h-7 px-3 text-xs rounded-[3px] font-bold"
+                      leftIcon={<Play className="h-3 w-3 fill-current" />}
                       onClick={() => handlePlayLecture(rec)}
                     >
                       {isHindi ? 'चलाएं' : 'Play'}

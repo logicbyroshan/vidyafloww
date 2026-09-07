@@ -289,36 +289,36 @@ function HostelManagementPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards) ── */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
+      {/* ── SINGLE UNIFIED HEADER (Consistent Standard Padding & Typography) ── */}
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: 2 Tabs */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
+          <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
             <button
               type="button"
               id="tab-rooms"
               onClick={() => setActiveTab('rooms')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'rooms'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Bed className="h-3.5 w-3.5" />
+              <Bed className="h-4 w-4" />
               {isHindi ? 'कमरा व बेड मैट्रिक्स' : 'Rooms & Beds'}
             </button>
             <button
               type="button"
               id="tab-mess"
               onClick={() => setActiveTab('mess')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'mess'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Utensils className="h-3.5 w-3.5" />
+              <Utensils className="h-4 w-4" />
               {isHindi ? 'मेस, भोजन व आउटपास' : 'Food, Mess & Outpass'}
             </button>
           </div>
@@ -329,7 +329,7 @@ function HostelManagementPage() {
           <VFButton
             size="sm"
             onClick={() => setIsOutpassModalOpen(true)}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
             {isHindi ? '+ नया आउटपास' : '+ Issue Outpass'}
@@ -338,11 +338,11 @@ function HostelManagementPage() {
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 1: ROOMS & BEDS MATRIX (With Interactive Bed Drawer)
+          TAB 1: ROOMS & BEDS MATRIX (Standardized Card Padding & Hierarchy)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'rooms' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {rooms.map((rm) => {
               const occupied = rm.residents.length;
               const isFull = occupied >= rm.totalBeds;
@@ -351,46 +351,46 @@ function HostelManagementPage() {
               return (
                 <div
                   key={rm.roomNumber}
-                  className="p-3 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between group"
+                  className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between group"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2.5">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-sm font-bold text-primary">{rm.roomNumber}</span>
-                        <VFBadge variant="outline" className="text-[10px] rounded-[3px]">{rm.type}</VFBadge>
+                        <span className="font-mono text-base font-bold text-primary">{rm.roomNumber}</span>
+                        <VFBadge variant="outline" className="text-xs rounded-[3px] px-2 py-0.5">{rm.type}</VFBadge>
                       </div>
                       <VFBadge
                         variant={isFull ? 'danger' : hasVacancy ? 'warning' : 'success'}
-                        className="text-[10px] rounded-[3px]"
+                        className="text-xs rounded-[3px] px-2 py-0.5"
                       >
                         {occupied} / {rm.totalBeds} Beds {isFull ? '(Full)' : `(${rm.totalBeds - occupied} Vacant)`}
                       </VFBadge>
                     </div>
 
-                    <p className="text-[11px] text-muted-foreground font-semibold">{rm.block} · {rm.floor}</p>
+                    <p className="text-xs text-muted-foreground font-semibold">{rm.block} · {rm.floor}</p>
 
                     {/* Beds Representation */}
-                    <div className="mt-2.5 pt-2 border-t border-border/60">
-                      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                    <div className="mt-3 pt-2.5 border-t border-border/60">
+                      <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
                         <span>{isHindi ? 'बेड स्थिति' : 'Bed Occupancy'}</span>
                         <span className="font-mono text-foreground font-bold">{occupied}/{rm.totalBeds}</span>
                       </div>
 
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         {Array.from({ length: rm.totalBeds }).map((_, bIdx) => {
                           const resident = rm.residents[bIdx];
                           return (
                             <div
                               key={bIdx}
-                              className={`p-1.5 rounded-[3px] border flex items-center justify-between text-xs ${
+                              className={`p-2 rounded-[3px] border flex items-center justify-between text-xs ${
                                 resident
                                   ? 'bg-[#181818] border-border/70 text-foreground'
                                   : 'bg-emerald-950/20 border-emerald-500/30 text-emerald-400'
                               }`}
                             >
                               <div className="flex items-center gap-2 truncate">
-                                <Bed className={`h-3 w-3 shrink-0 ${resident ? 'text-primary' : 'text-emerald-400'}`} />
-                                <span className="font-mono text-[10px] font-bold text-muted-foreground shrink-0">
+                                <Bed className={`h-3.5 w-3.5 shrink-0 ${resident ? 'text-primary' : 'text-emerald-400'}`} />
+                                <span className="font-mono text-xs font-bold text-muted-foreground shrink-0">
                                   Bed #{bIdx + 1}:
                                 </span>
                                 <span className="truncate font-semibold text-xs">
@@ -398,11 +398,11 @@ function HostelManagementPage() {
                                 </span>
                               </div>
                               {resident ? (
-                                <span className="text-[10px] text-muted-foreground shrink-0 font-mono">
+                                <span className="text-xs text-muted-foreground shrink-0 font-mono">
                                   {resident.classSection}
                                 </span>
                               ) : (
-                                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider shrink-0">
+                                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider shrink-0">
                                   {isHindi ? 'उपलब्ध' : 'Free'}
                                 </span>
                               )}
@@ -413,16 +413,16 @@ function HostelManagementPage() {
                     </div>
                   </div>
 
-                  <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-between">
-                    <span className="text-[10px] text-muted-foreground truncate max-w-[170px]">
+                  <div className="mt-3.5 pt-2.5 border-t border-border/60 flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground truncate max-w-[190px]">
                       {rm.amenities}
                     </span>
                     <button
                       type="button"
                       onClick={() => setSelectedRoomNumber(rm.roomNumber)}
-                      className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className="px-3 py-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <Users className="h-3 w-3 text-muted-foreground" />
+                      <Users className="h-3.5 w-3.5 text-muted-foreground" />
                       <span>{isHindi ? 'बेड देखें / आवंटित' : 'Inspect Beds'}</span>
                     </button>
                   </div>
@@ -440,40 +440,40 @@ function HostelManagementPage() {
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
           {/* Mess & Dining Menu Section */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#141414] border-b border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="p-3.5 bg-[#141414] border-b border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Utensils className="h-4 w-4 text-amber-400" />
                   {isHindi ? 'दैनिक छात्रावास मेस व भोजन समय-सारणी' : 'Daily Mess Dining Schedule & Meal Menu'}
                 </h3>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {isHindi ? 'एफएसएसएआई प्रमाणित स्वच्छता रेटिंग (4.9/5.0) व संतुलित पोषण मेनू' : 'FSSAI certified dining facility · Fresh ingredients & student mess committee inspected'}
                 </p>
               </div>
-              <VFBadge variant="success" className="font-mono text-xs w-fit rounded-[3px]">
+              <VFBadge variant="success" className="font-mono text-xs w-fit rounded-[3px] px-2.5 py-1">
                 FSSAI Certified · 4.9 ★
               </VFBadge>
             </div>
 
-            <div className="p-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               {MESS_SCHEDULE.map((m, idx) => (
-                <div key={idx} className="p-3 rounded-[3px] border border-border/80 bg-[#161616] flex flex-col justify-between">
+                <div key={idx} className="p-3.5 rounded-[3px] border border-border/80 bg-[#161616] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
                         <Utensils className="h-3.5 w-3.5 text-amber-400" />
-                        <span className="font-bold text-foreground text-xs">{m.meal}</span>
+                        <span className="font-bold text-foreground text-sm">{m.meal}</span>
                       </div>
-                      <VFBadge variant="outline" className="text-[10px] rounded-[3px]">{m.tag}</VFBadge>
+                      <VFBadge variant="outline" className="text-xs rounded-[3px] px-2 py-0.5">{m.tag}</VFBadge>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed mt-1">
                       {m.items}
                     </p>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] border-t border-border/60 pt-2 mt-3 text-muted-foreground">
+                  <div className="flex items-center justify-between text-xs border-t border-border/60 pt-2.5 mt-3.5 text-muted-foreground">
                     <span className="truncate">{m.chef}</span>
-                    <span className="font-mono text-primary font-bold shrink-0 flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
+                    <span className="font-mono text-primary font-bold shrink-0 flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" />
                       {m.time}
                     </span>
                   </div>
@@ -484,20 +484,20 @@ function HostelManagementPage() {
 
           {/* Outpass Movement Ledger Section */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#141414] border-b border-border/80 flex items-center justify-between">
+            <div className="p-3.5 bg-[#141414] border-b border-border/80 flex items-center justify-between">
               <div>
-                <h3 className="text-xs font-bold text-foreground flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <LogOut className="h-4 w-4 text-primary" />
-                  {isHindi ? 'बायोमेट्रिक गेट आउटपास व आवागमन पंजिका' : 'Biometric Gate Outpass & Student Leave Ledger'}
+                  {isHindi ? 'कैंपस गेट आउटपास व आवागमन पंजिका' : 'Campus Gate Outpass & Student Leave Ledger'}
                 </h3>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {isHindi ? 'वार्डन अधिकृत अवकाश व क्यूआर कोड स्कैन गेट चेक-इन' : 'Approved student leaves, guardian contact sync & real-time gate departure status'}
                 </p>
               </div>
               <VFButton
                 size="sm"
                 variant="outline"
-                className="h-7 px-2.5 text-xs font-bold rounded-[3px]"
+                className="h-8 px-3 text-xs font-bold rounded-[4px]"
                 leftIcon={<Plus className="h-3 w-3" />}
                 onClick={() => setIsOutpassModalOpen(true)}
               >
@@ -507,34 +507,34 @@ function HostelManagementPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'पास आईडी' : 'Pass ID'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'कमरा' : 'Room'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'अवकाश प्रयोजन' : 'Purpose'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'प्रस्थान समय' : 'Departure'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'अपेक्षित वापसी' : 'Return Time'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'स्वीकृति' : 'Approved By'}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.status')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'पास आईडी' : 'Pass ID'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'कमरा' : 'Room'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'अवकाश प्रयोजन' : 'Purpose'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'प्रस्थान समय' : 'Departure'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'अपेक्षित वापसी' : 'Return Time'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'स्वीकृति' : 'Approved By'}</th>
+                    <th className="py-3 px-4 text-xs text-right">{t('col.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {outpasses.map((op) => (
                     <tr key={op.id} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-2.5 px-3 font-mono font-bold text-primary">{op.id}</td>
-                      <td className="py-2.5 px-3 font-bold text-foreground">
+                      <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{op.id}</td>
+                      <td className="py-3 px-4 font-bold text-foreground text-sm">
                         <div>{op.studentName}</div>
-                        <div className="text-[10px] text-muted-foreground">{op.classSection}</div>
+                        <div className="text-xs text-muted-foreground font-medium">{op.classSection}</div>
                       </td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{op.room}</td>
-                      <td className="py-2.5 px-3 font-medium text-foreground">{op.purpose}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{op.leaveTime}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{op.returnTime}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground">{op.approvedBy}</td>
-                      <td className="py-2.5 px-3 text-right">
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{op.room}</td>
+                      <td className="py-3 px-4 font-medium text-foreground text-xs">{op.purpose}</td>
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{op.leaveTime}</td>
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{op.returnTime}</td>
+                      <td className="py-3 px-4 text-muted-foreground text-xs">{op.approvedBy}</td>
+                      <td className="py-3 px-4 text-right">
                         <VFBadge
                           variant={op.gateStatus === 'Returned' ? 'success' : op.gateStatus === 'Approved - Out' ? 'warning' : 'outline'}
-                          className="text-[10px] rounded-[3px]"
+                          className="text-xs rounded-[3px] px-2 py-0.5"
                         >
                           {op.gateStatus}
                         </VFBadge>

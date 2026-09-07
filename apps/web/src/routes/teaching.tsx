@@ -156,36 +156,36 @@ function TeachingPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* ── SINGLE UNIFIED HEADER (No Double Header, No Stat Cards) ── */}
-      <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
+      {/* ── SINGLE UNIFIED HEADER (Consistent Standard Padding & Typography) ── */}
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: Tab Switcher */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
+          <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
             <button
               type="button"
               id="tab-classes"
               onClick={() => setActiveTab('classes')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'classes'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <School className="h-3.5 w-3.5" />
+              <School className="h-4 w-4" />
               {isHindi ? 'असाइंड कक्षाएं व वर्कलोड' : 'Classes & Workload'}
             </button>
             <button
               type="button"
               id="tab-planner"
               onClick={() => setActiveTab('planner')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'planner'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <BookOpenCheck className="h-3.5 w-3.5" />
+              <BookOpenCheck className="h-4 w-4" />
               {isHindi ? 'पाठ योजना व रूटीन' : 'Lesson Planner'}
             </button>
           </div>
@@ -196,7 +196,7 @@ function TeachingPage() {
           <VFButton
             size="sm"
             onClick={() => setIsNewPlanModalOpen(true)}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+            className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
             {isHindi ? '+ नई पाठ योजना' : '+ New Lesson Plan'}
@@ -205,37 +205,37 @@ function TeachingPage() {
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 1: ASSIGNED CLASSES & WORKLOAD
+          TAB 1: ASSIGNED CLASSES & WORKLOAD (Standardized Cell Padding & Hierarchy)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'classes' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-[#141414] text-muted-foreground font-semibold">
-                    <th className="py-2.5 px-3">{isHindi ? 'क्लास कोड' : 'Class Code'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'कक्षा व सेक्शन' : 'Grade & Section'}</th>
-                    <th className="py-2.5 px-3">{t('col.subject')}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'कक्ष संख्या' : 'Room'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'छात्र संख्या' : 'Students'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods'}</th>
-                    <th className="py-2.5 px-3">{isHindi ? 'औसत उपस्थिति' : 'Avg Attendance'}</th>
-                    <th className="py-2.5 px-3 text-right">{t('col.status')}</th>
+                  <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'क्लास कोड' : 'Class Code'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'कक्षा व सेक्शन' : 'Grade & Section'}</th>
+                    <th className="py-3 px-4 text-xs">{t('col.subject')}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'कक्ष संख्या' : 'Room'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'छात्र संख्या' : 'Students'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'औसत उपस्थिति' : 'Avg Attendance'}</th>
+                    <th className="py-3 px-4 text-xs text-right">{t('col.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {classes.map((cls) => (
                     <tr key={cls.code} className="hover:bg-[#1a1a1a] transition-colors">
-                      <td className="py-2.5 px-3 font-mono font-bold text-primary">{cls.code}</td>
-                      <td className="py-2.5 px-3 font-bold text-foreground">{cls.grade} – {cls.section}</td>
-                      <td className="py-2.5 px-3 text-foreground font-medium">{cls.subject}</td>
-                      <td className="py-2.5 px-3 text-muted-foreground font-mono">{cls.room}</td>
-                      <td className="py-2.5 px-3 font-bold text-foreground">{cls.students}</td>
-                      <td className="py-2.5 px-3 font-mono text-muted-foreground">{cls.weeklyPeriods} periods/wk</td>
-                      <td className="py-2.5 px-3 font-bold text-emerald-400">{cls.avgAttendance}</td>
-                      <td className="py-2.5 px-3 text-right">
-                        <VFBadge variant="success" className="text-[10px]">{cls.status}</VFBadge>
+                      <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{cls.code}</td>
+                      <td className="py-3 px-4 font-bold text-foreground text-sm">{cls.grade} – {cls.section}</td>
+                      <td className="py-3 px-4 text-foreground font-medium text-xs">{cls.subject}</td>
+                      <td className="py-3 px-4 text-muted-foreground font-mono text-xs">{cls.room}</td>
+                      <td className="py-3 px-4 font-bold text-foreground text-xs">{cls.students} students</td>
+                      <td className="py-3 px-4 font-mono text-muted-foreground text-xs">{cls.weeklyPeriods} periods/wk</td>
+                      <td className="py-3 px-4 font-bold text-emerald-400 text-xs">{cls.avgAttendance}</td>
+                      <td className="py-3 px-4 text-right">
+                        <VFBadge variant="success" className="text-xs px-2 py-0.5 rounded-[3px]">{cls.status}</VFBadge>
                       </td>
                     </tr>
                   ))}
@@ -247,38 +247,38 @@ function TeachingPage() {
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 2: LESSON PLANNER & DAILY ROUTINE
+          TAB 2: LESSON PLANNER & DAILY ROUTINE (Enhanced Cards & Typography)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'planner' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="flex-1 min-h-0 flex flex-col space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Left: Saved Plans */}
-            <div className="lg:col-span-1 space-y-2">
-              <div className="p-2.5 bg-[#141414] border border-border/80 rounded-[4px] flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">{isHindi ? 'पाठ योजना संग्रह' : 'Saved Lesson Plans'}</span>
-                <span className="text-[10px] text-muted-foreground font-mono">{plans.length} Plans</span>
+            <div className="lg:col-span-1 space-y-2.5">
+              <div className="p-3 bg-[#141414] border border-border/80 rounded-[4px] flex items-center justify-between">
+                <span className="text-sm font-bold text-foreground">{isHindi ? 'पाठ योजना संग्रह' : 'Saved Lesson Plans'}</span>
+                <span className="text-xs text-muted-foreground font-mono">{plans.length} Plans</span>
               </div>
-              <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+              <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
                 {plans.map((p) => {
                   const isSelected = activePlan?.id === p.id || (!activePlan && plans[0]?.id === p.id);
                   return (
                     <div
                       key={p.id}
                       onClick={() => setActivePlan(p)}
-                      className={`p-3 rounded-[4px] border cursor-pointer transition-all ${
+                      className={`p-3.5 rounded-[4px] border cursor-pointer transition-all ${
                         isSelected
-                          ? 'bg-[#1c1c1c] border-primary/50 text-foreground'
+                          ? 'bg-[#1c1c1c] border-primary/50 text-foreground shadow-xs'
                           : 'bg-card border-border/80 hover:bg-[#161616] text-muted-foreground'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-primary font-bold">{p.id}</span>
-                        <span className="text-[10px] text-muted-foreground">{p.duration}</span>
+                        <span className="font-mono text-xs text-primary font-bold">{p.id}</span>
+                        <span className="text-xs text-muted-foreground font-mono">{p.duration}</span>
                       </div>
-                      <h4 className="text-xs font-bold text-foreground mt-1 line-clamp-1">{p.title}</h4>
-                      <div className="flex items-center gap-2 mt-2 text-[11px]">
-                        <VFBadge variant="outline" className="text-[10px] px-1.5 py-0">{p.grade}</VFBadge>
-                        <span className="text-muted-foreground">{p.subject}</span>
+                      <h4 className="text-sm font-bold text-foreground mt-1.5 line-clamp-1">{p.title}</h4>
+                      <div className="flex items-center gap-2 mt-2 text-xs">
+                        <VFBadge variant="outline" className="text-xs px-2 py-0.5 rounded-[3px]">{p.grade}</VFBadge>
+                        <span className="text-muted-foreground font-medium">{p.subject}</span>
                       </div>
                     </div>
                   );
@@ -295,38 +295,38 @@ function TeachingPage() {
                   <VFCard
                     title={current.title}
                     description={`${current.grade} · ${current.subject} · ${current.duration} Timeline`}
-                    className="rounded-[4px]"
+                    className="rounded-[4px] border-border/80"
                   >
-                    <div className="space-y-3 text-xs mt-1">
+                    <div className="space-y-4 text-xs mt-1">
                       <div>
-                        <h4 className="font-bold text-foreground uppercase tracking-wider text-[11px] mb-1 flex items-center gap-1.5">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                        <h4 className="font-bold text-foreground uppercase tracking-wider text-xs mb-2 flex items-center gap-1.5">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                           {isHindi ? 'सीखने के मुख्य उद्देश्य' : 'Learning Objectives'}
                         </h4>
-                        <ul className="space-y-1 pl-4 list-disc text-muted-foreground">
+                        <ul className="space-y-1.5 pl-4 list-disc text-muted-foreground text-xs leading-relaxed">
                           {current.objectives.map((obj, i) => (
                             <li key={i}>{obj}</li>
                           ))}
                         </ul>
                       </div>
 
-                      <div className="border-t border-border/80 pt-3">
-                        <h4 className="font-bold text-foreground uppercase tracking-wider text-[11px] mb-1 flex items-center gap-1.5">
-                          <Clock className="h-3.5 w-3.5 text-primary" />
+                      <div className="border-t border-border/80 pt-3.5">
+                        <h4 className="font-bold text-foreground uppercase tracking-wider text-xs mb-2 flex items-center gap-1.5">
+                          <Clock className="h-4 w-4 text-primary" />
                           {isHindi ? '45 मिनट समय विभाजन' : '45-Minute Period Breakdown'}
                         </h4>
-                        <div className="p-3 bg-[#121212] border border-border/70 rounded-[4px] font-mono text-xs whitespace-pre-wrap text-foreground/90 leading-relaxed">
+                        <div className="p-3.5 bg-[#121212] border border-border/70 rounded-[4px] font-mono text-xs whitespace-pre-wrap text-foreground/90 leading-relaxed">
                           {current.outline}
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/80">
+                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-border/80">
                         <VFButton
                           size="sm"
                           variant="outline"
                           leftIcon={<Printer className="h-3.5 w-3.5" />}
                           onClick={() => window.print()}
-                          className="rounded-[4px]"
+                          className="rounded-[4px] h-8 px-3 text-xs font-bold"
                         >
                           {isHindi ? 'प्रिंट करें' : 'Print'}
                         </VFButton>
@@ -340,7 +340,7 @@ function TeachingPage() {
                               type: 'info',
                             });
                           }}
-                          className="rounded-[4px]"
+                          className="rounded-[4px] h-8 px-3.5 text-xs font-bold"
                         >
                           {isHindi ? 'क्लास में शुरू करें' : 'Launch in Class'}
                         </VFButton>
@@ -353,21 +353,21 @@ function TeachingPage() {
           </div>
 
           {/* Daily Schedule Row */}
-          <div className="border border-border/80 rounded-[4px] bg-[#141414] p-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-foreground">{isHindi ? 'आज की पीरियड समय-सारणी' : 'Today’s Period Timetable'}</span>
-              <span className="text-[10px] text-muted-foreground font-mono">Monday, 07 Sep 2026</span>
+          <div className="border border-border/80 rounded-[4px] bg-[#141414] p-3.5 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold text-foreground">{isHindi ? 'आज की पीरियड समय-सारणी' : 'Today’s Period Timetable'}</span>
+              <span className="text-xs text-muted-foreground font-mono">Monday, 07 Sep 2026</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
               {DAILY_SCHEDULE.map((slot, idx) => (
-                <div key={idx} className="p-2 bg-[#1a1a1a] border border-border/70 rounded-[4px] text-[11px]">
+                <div key={idx} className="p-2.5 bg-[#1a1a1a] border border-border/70 rounded-[4px] text-xs space-y-1">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono font-bold text-primary">{slot.period}</span>
-                    <span className="text-[10px] text-muted-foreground">{slot.type}</span>
+                    <span className="font-mono font-bold text-primary text-xs">{slot.period}</span>
+                    <span className="text-xs text-muted-foreground font-mono">{slot.type}</span>
                   </div>
-                  <p className="font-bold text-foreground truncate">{slot.class}</p>
-                  <p className="text-muted-foreground truncate">{slot.subject}</p>
-                  <p className="text-[10px] font-mono text-emerald-400 mt-1">{slot.room}</p>
+                  <p className="font-bold text-foreground truncate text-xs">{slot.class}</p>
+                  <p className="text-muted-foreground truncate text-xs">{slot.subject}</p>
+                  <p className="text-xs font-mono text-emerald-400 mt-1">{slot.room}</p>
                 </div>
               ))}
             </div>
