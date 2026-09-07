@@ -200,14 +200,15 @@ export function AppShell() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const isAuthPage =
+  const isFullScreenPage =
     location.pathname === '/login' ||
     location.pathname === '/signup' ||
-    location.pathname === '/forgot-password';
+    location.pathname === '/forgot-password' ||
+    location.pathname.startsWith('/live-room');
 
-  if (isAuthPage) {
+  if (isFullScreenPage) {
     return (
-      <div className="w-full min-h-screen bg-background text-foreground overflow-x-hidden">
+      <div className="w-full min-h-screen bg-black text-foreground overflow-hidden">
         <Outlet />
       </div>
     );

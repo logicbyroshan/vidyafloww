@@ -1,25 +1,21 @@
 import * as React from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from '../hooks/useTranslation';
 import { useGlobalStore } from '../stores/globalStore';
 import {
   VFPageContainer,
   VFButton,
   VFBadge,
-  VFDialog,
+  VFDrawer,
 } from '@vidyafloww/ui';
 import {
-  Video,
   PlayCircle,
   Calendar,
   Plus,
-  Mic,
-  MicOff,
-  VideoOff,
-  Share2,
   Download,
   Copy,
   Radio,
+  ExternalLink,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/e-class')({
@@ -110,6 +106,7 @@ const RECORDED_VAULT: RecordedLecture[] = [
 ];
 
 function EClassPage() {
+  const navigate = useNavigate();
   const { t, lang } = useTranslation();
   const { addNotification } = useGlobalStore();
   const isHindi = lang === 'hi';
@@ -121,22 +118,22 @@ function EClassPage() {
   const [activeTab, setActiveTab] = React.useState<'timetable' | 'vault'>('timetable');
   const [sessions, setSessions] = React.useState<OnlineSession[]>(INITIAL_SESSIONS);
   const [recordings] = React.useState<RecordedLecture[]>(RECORDED_VAULT);
-  const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
-  const [activeLiveModal, setActiveLiveModal] = React.useState<OnlineSession | null>(null);
+  const [isScheduleDrawerOpen, setIsScheduleDrawerOpen] = React.useState(false);
 
   // New session form
   const [formTitle, setFormTitle] = React.useState('');
   const [formGrade, setFormGrade] = React.useState('Class 10-A');
   const [formSubject, setFormSubject] = React.useState('Physics');
+  const [formDate, setFormDate] = React.useState('Today');
   const [formTime, setFormTime] = React.useState('11:00 AM – 11:45 AM');
   const [formPlatform, setFormPlatform] = React.useState<'VidyaClass Live' | 'Zoom Integration' | 'Google Meet'>('VidyaClass Live');
+  const [formDescription, setFormDescription] = React.useState('');
+  const [autoRecord, setAutoRecord] = React.useState(true);
+  const [muteOnEntry, setMuteOnEntry] = React.useState(true);
+  const [notifyParents, setNotifyParents] = React.useState(true);
 
-  // Classroom control state
-  const [isMicMuted, setIsMicMuted] = React.useState(false);
-  const [isVideoOff, setIsVideoOff] = React.useState(false);
-
-  const handleScheduleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleScheduleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!formTitle.trim()) return;
 
     const newSession: OnlineSession = {
@@ -145,7 +142,7 @@ function EClassPage() {
       grade: formGrade,
       subject: formSubject,
       host: 'Faculty Member',
-      time: formTime,
+      time: `${formDate}, ${formTime}`,
       platform: formPlatform,
       attendees: 0,
       status: 'Upcoming',
@@ -153,12 +150,20 @@ function EClassPage() {
     };
 
     setSessions([newSession, ...sessions]);
-    setIsScheduleModalOpen(false);
+    setIsScheduleDrawerOpen(false);
     setFormTitle('');
+    setFormDescription('');
     addNotification({
-      title: isHindi ? 'ई-क्लास शेड्यूल हुई' : 'E-Class Scheduled',
-      description: `Session "${newSession.title}" added to timetable.`,
+      title: isHindi ? 'ई-क्लास शेड्यूल हुई' : 'E-Class Scheduled Successfully',
+      description: `Session "${newSession.title}" added to academic timetable.`,
       type: 'success',
+    });
+  };
+
+  const handleJoinRoom = (sessionCode: string) => {
+    navigate({
+      to: '/live-room',
+      search: { session: sessionCode },
     });
   };
 
@@ -198,7 +203,7 @@ function EClassPage() {
           </div>
 
           <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
-          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex">
+          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex rounded-[3px]">
             {isHindi ? 'WebRTC लाइव' : 'WebRTC HD Live'}
           </VFBadge>
         </div>
@@ -207,7 +212,7 @@ function EClassPage() {
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
             size="sm"
-            onClick={() => setIsScheduleModalOpen(true)}
+            onClick={() => setIsScheduleDrawerOpen(true)}
             className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
@@ -246,7 +251,7 @@ function EClassPage() {
                       <td className="py-2.5 px-3 text-muted-foreground">{item.host}</td>
                       <td className="py-2.5 px-3 text-muted-foreground font-mono">{item.time}</td>
                       <td className="py-2.5 px-3">
-                        <VFBadge variant="outline" className="text-[10px] font-medium">{item.platform}</VFBadge>
+                        <VFBadge variant="outline" className="text-[10px] font-medium rounded-[3px]">{item.platform}</VFBadge>
                       </td>
                       <td className="py-2.5 px-3 font-bold text-foreground">
                         {item.status === 'Live Now' ? (
@@ -261,7 +266,7 @@ function EClassPage() {
                       <td className="py-2.5 px-3">
                         <VFBadge
                           variant={item.status === 'Live Now' ? 'danger' : item.status === 'Upcoming' ? 'primary' : 'success'}
-                          className="text-[10px]"
+                          className="text-[10px] rounded-[3px]"
                         >
                           {item.status}
                         </VFBadge>
@@ -271,29 +276,39 @@ function EClassPage() {
                           <VFButton
                             size="sm"
                             variant="danger"
-                            className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
-                            leftIcon={<Radio className="h-3 w-3" />}
-                            onClick={() => setActiveLiveModal(item)}
+                            className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold shadow-xs"
+                            leftIcon={<Radio className="h-3 w-3 animate-pulse" />}
+                            onClick={() => handleJoinRoom(item.code)}
                           >
                             {isHindi ? 'ज्वाइन करें' : 'Join Room'}
                           </VFButton>
                         ) : item.status === 'Upcoming' ? (
-                          <VFButton
-                            size="sm"
-                            variant="outline"
-                            className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
-                            leftIcon={<Copy className="h-3 w-3" />}
-                            onClick={() => {
-                              navigator.clipboard?.writeText(item.meetingLink);
-                              addNotification({
-                                title: isHindi ? 'लिंक कॉपी हुआ' : 'Invite Link Copied',
-                                description: item.meetingLink,
-                                type: 'info',
-                              });
-                            }}
-                          >
-                            {isHindi ? 'लिंक कॉपी' : 'Copy Link'}
-                          </VFButton>
+                          <div className="inline-flex items-center gap-1.5">
+                            <VFButton
+                              size="sm"
+                              variant="outline"
+                              className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
+                              leftIcon={<Copy className="h-3 w-3" />}
+                              onClick={() => {
+                                navigator.clipboard?.writeText(item.meetingLink);
+                                addNotification({
+                                  title: isHindi ? 'लिंक कॉपी हुआ' : 'Invite Link Copied',
+                                  description: item.meetingLink,
+                                  type: 'info',
+                                });
+                              }}
+                            >
+                              {isHindi ? 'लिंक' : 'Copy'}
+                            </VFButton>
+                            <VFButton
+                              size="sm"
+                              className="rounded-[3px] text-[11px] h-7 px-2.5 font-bold"
+                              leftIcon={<ExternalLink className="h-3 w-3" />}
+                              onClick={() => handleJoinRoom(item.code)}
+                            >
+                              {isHindi ? 'प्रारंभ' : 'Start'}
+                            </VFButton>
+                          </div>
                         ) : (
                           <VFButton
                             size="sm"
@@ -381,19 +396,21 @@ function EClassPage() {
         </div>
       )}
 
-      {/* ── Schedule Class Dialog ── */}
-      <VFDialog
-        isOpen={isScheduleModalOpen}
-        onClose={() => setIsScheduleModalOpen(false)}
-        title={isHindi ? 'नई ई-क्लास शेड्यूल करें' : 'Schedule E-Class'}
-        description={isHindi ? 'सत्र का शीर्षक, कक्षा, समय व इंजन चुनें' : 'Configure room title, grade section, schedule time, and meeting engine'}
-        className="max-w-md rounded-[4px]"
+      {/* ──────────────────────────────────────────────────────────────────────────
+          SCHEDULE E-CLASS SLIDE-OVER DRAWER (Requested: Open Drawer)
+          ────────────────────────────────────────────────────────────────────────── */}
+      <VFDrawer
+        isOpen={isScheduleDrawerOpen}
+        onClose={() => setIsScheduleDrawerOpen(false)}
+        title={isHindi ? 'नई ई-क्लास शेड्यूल करें' : 'Schedule Virtual E-Class'}
+        description={isHindi ? 'कक्षा, विषय, समय, इंजन व डिजिटल क्लासरूम सेटिंग्स कॉन्फ़िगर करें' : 'Configure live room parameters, curriculum topic, schedule window and engine'}
+        className="max-w-md"
         footerActions={
           <div className="flex items-center justify-end gap-2 w-full">
             <VFButton
               variant="outline"
               size="sm"
-              onClick={() => setIsScheduleModalOpen(false)}
+              onClick={() => setIsScheduleDrawerOpen(false)}
               className="rounded-[3px]"
             >
               {isHindi ? 'रद्द करें' : 'Cancel'}
@@ -408,15 +425,15 @@ function EClassPage() {
           </div>
         }
       >
-        <form onSubmit={handleScheduleSubmit} className="space-y-3 py-1 text-xs">
+        <form onSubmit={handleScheduleSubmit} className="space-y-3.5 py-1 text-xs">
           <div>
             <label className="block text-muted-foreground font-semibold mb-1">
-              {isHindi ? 'व्याख्यान शीर्षक' : 'Lecture / Session Title'}
+              {isHindi ? 'व्याख्यान शीर्षक व विषय' : 'Lecture / Session Title'}
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Chapter 4 Motion: Force & Laws"
+              placeholder="e.g. Chapter 4 Motion: Force & Laws of Physics"
               value={formTitle}
               onChange={(e) => setFormTitle(e.target.value)}
               className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
@@ -426,7 +443,7 @@ function EClassPage() {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'कक्षा' : 'Grade'}
+                {isHindi ? 'कक्षा' : 'Grade & Section'}
               </label>
               <select
                 value={formGrade}
@@ -464,6 +481,23 @@ function EClassPage() {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
+                {isHindi ? 'तारीख' : 'Date'}
+              </label>
+              <select
+                value={formDate}
+                onChange={(e) => setFormDate(e.target.value)}
+                className="w-full px-2.5 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
+              >
+                <option value="Today">Today</option>
+                <option value="Tomorrow">Tomorrow</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-muted-foreground font-semibold mb-1">
                 {isHindi ? 'समय स्लॉट' : 'Time Window'}
               </label>
               <input
@@ -474,105 +508,74 @@ function EClassPage() {
                 className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
               />
             </div>
+          </div>
 
-            <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'इंजन' : 'Platform Engine'}
-              </label>
-              <select
-                value={formPlatform}
-                onChange={(e) => setFormPlatform(e.target.value as any)}
-                className="w-full px-2.5 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
-              >
-                <option value="VidyaClass Live">VidyaClass Live</option>
-                <option value="Zoom Integration">Zoom Integration</option>
-                <option value="Google Meet">Google Meet</option>
-              </select>
-            </div>
+          <div>
+            <label className="block text-muted-foreground font-semibold mb-1">
+              {isHindi ? 'मीटिंग इंजन' : 'Streaming Platform'}
+            </label>
+            <select
+              value={formPlatform}
+              onChange={(e) => setFormPlatform(e.target.value as any)}
+              className="w-full px-2.5 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
+            >
+              <option value="VidyaClass Live">VidyaClass Live (WebRTC HD Studio)</option>
+              <option value="Zoom Integration">Zoom Cloud Integration</option>
+              <option value="Google Meet">Google Meet Integration</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-muted-foreground font-semibold mb-1">
+              {isHindi ? 'पाठ विवरण व निर्देश' : 'Lesson Overview & Preparation'}
+            </label>
+            <textarea
+              rows={3}
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              placeholder="Keep Chapter 4 NCERT book ready. Homework review will precede numerical solving."
+              className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
+            />
+          </div>
+
+          {/* Smart Classroom Permissions */}
+          <div className="p-3 rounded-[3px] bg-[#141414] border border-border/80 space-y-2.5">
+            <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block">
+              {isHindi ? 'वर्चुअल क्लासरूम नियंत्रण' : 'Classroom Policies & Controls'}
+            </span>
+
+            <label className="flex items-center justify-between text-xs cursor-pointer">
+              <span className="text-foreground">{isHindi ? 'छात्रों का माइक प्रारंभ में म्यूट रखें' : 'Mute student microphones on entry'}</span>
+              <input
+                type="checkbox"
+                checked={muteOnEntry}
+                onChange={(e) => setMuteOnEntry(e.target.checked)}
+                className="rounded-[2px] accent-primary"
+              />
+            </label>
+
+            <label className="flex items-center justify-between text-xs cursor-pointer">
+              <span className="text-foreground">{isHindi ? 'क्लाउड रिकॉर्डिंग स्वतः प्रारंभ करें' : 'Automatic cloud recording to vault'}</span>
+              <input
+                type="checkbox"
+                checked={autoRecord}
+                onChange={(e) => setAutoRecord(e.target.checked)}
+                className="rounded-[2px] accent-primary"
+              />
+            </label>
+
+            <label className="flex items-center justify-between text-xs cursor-pointer">
+              <span className="text-foreground">{isHindi ? 'अभिभावक व छात्रों को एसएमएस सूचना' : 'Dispatch SMS & Portal alerts'}</span>
+              <input
+                type="checkbox"
+                checked={notifyParents}
+                onChange={(e) => setNotifyParents(e.target.checked)}
+                className="rounded-[2px] accent-primary"
+              />
+            </label>
           </div>
         </form>
-      </VFDialog>
-
-      {/* ── Interactive Live Room Modal ── */}
-      {activeLiveModal && (
-        <VFDialog
-          isOpen={!!activeLiveModal}
-          onClose={() => setActiveLiveModal(null)}
-          title={activeLiveModal.title}
-          description={`${activeLiveModal.code} · ${activeLiveModal.grade} · Host: ${activeLiveModal.host}`}
-          className="max-w-4xl rounded-[4px]"
-        >
-          <div className="space-y-3">
-            <div className="relative aspect-video rounded-[3px] bg-[#0c0c0c] border border-border/80 flex flex-col items-center justify-between p-4 overflow-hidden">
-              <div className="w-full flex items-center justify-between z-10">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
-                  <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-widest">
-                    LIVE HD 1080p
-                  </span>
-                </div>
-                <span className="font-mono text-xs text-emerald-400 bg-black/60 px-2 py-0.5 rounded-[2px] border border-border/50">
-                  {activeLiveModal.attendees} Students Connected
-                </span>
-              </div>
-
-              <div className="text-center py-10">
-                <p className="text-xs text-muted-foreground font-mono">
-                  [ Interactive Whiteboard &amp; HD Video Streaming Active ]
-                </p>
-              </div>
-
-              {/* Controls */}
-              <div className="flex items-center justify-center gap-2 z-10">
-                <button
-                  type="button"
-                  onClick={() => setIsMicMuted(!isMicMuted)}
-                  className={`p-2 rounded-[3px] border ${isMicMuted ? 'bg-rose-500/20 border-rose-500/50 text-rose-400' : 'bg-[#1e1e1e] border-border text-foreground hover:bg-[#252525]'}`}
-                >
-                  {isMicMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsVideoOff(!isVideoOff)}
-                  className={`p-2 rounded-[3px] border ${isVideoOff ? 'bg-rose-500/20 border-rose-500/50 text-rose-400' : 'bg-[#1e1e1e] border-border text-foreground hover:bg-[#252525]'}`}
-                >
-                  {isVideoOff ? <VideoOff className="h-4 w-4" /> : <Video className="h-4 w-4" />}
-                </button>
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  className="rounded-[3px] text-xs font-bold"
-                  leftIcon={<Share2 className="h-3.5 w-3.5" />}
-                  onClick={() => {
-                    addNotification({
-                      title: 'Screen Share Active',
-                      description: 'Presenting display output to participants.',
-                      type: 'info',
-                    });
-                  }}
-                >
-                  Share Screen
-                </VFButton>
-                <VFButton
-                  size="sm"
-                  variant="danger"
-                  className="rounded-[3px] text-xs font-bold"
-                  onClick={() => {
-                    setActiveLiveModal(null);
-                    addNotification({
-                      title: 'Class Concluded',
-                      description: 'Room session closed successfully.',
-                      type: 'info',
-                    });
-                  }}
-                >
-                  Leave Class
-                </VFButton>
-              </div>
-            </div>
-          </div>
-        </VFDialog>
-      )}
+      </VFDrawer>
     </VFPageContainer>
   );
 }
