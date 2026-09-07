@@ -322,11 +322,6 @@ function HostelManagementPage() {
               {isHindi ? 'मेस, भोजन व आउटपास' : 'Food, Mess & Outpass'}
             </button>
           </div>
-
-          <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
-          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex">
-            {isHindi ? 'बायोमेट्रिक गेट सक्रिय' : 'Biometric Gate Sync'}
-          </VFBadge>
         </div>
 
         {/* Right: Actions */}

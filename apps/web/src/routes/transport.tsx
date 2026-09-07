@@ -173,11 +173,6 @@ function TransportManagementPage() {
               {isHindi ? 'वाहन व छात्र रोस्टर' : 'Vehicles & Commuters'}
             </button>
           </div>
-
-          <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
-          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex">
-            {isHindi ? 'GPS लाइव ट्रैकिंग' : 'GPS Telematics Live'}
-          </VFBadge>
         </div>
 
         {/* Right: Actions */}

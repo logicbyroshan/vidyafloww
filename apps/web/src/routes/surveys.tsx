@@ -185,11 +185,6 @@ function SurveysManagementPage() {
               {isHindi ? 'संतुष्टि विश्लेषण व आर्काइव' : 'Sentiment & Archive'}
             </button>
           </div>
-
-          <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
-          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex">
-            {isHindi ? 'फीडबैक सक्रिय' : 'Feedback Active'}
-          </VFBadge>
         </div>
 
         {/* Right: Actions */}

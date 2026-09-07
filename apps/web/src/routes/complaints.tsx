@@ -212,11 +212,6 @@ function ComplaintsManagementPage() {
               {isHindi ? 'सक्रिय कतार व एसएलए' : 'Action Queue & SLA'}
             </button>
           </div>
-
-          <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
-          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex">
-            {isHindi ? 'एसओपी 48h सक्रिय' : 'SLA 48h Target Active'}
-          </VFBadge>
         </div>
 
         {/* Right: Actions */}

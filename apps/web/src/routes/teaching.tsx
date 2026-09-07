@@ -189,11 +189,6 @@ function TeachingPage() {
               {isHindi ? 'पाठ योजना व रूटीन' : 'Lesson Planner'}
             </button>
           </div>
-
-          <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
-          <VFBadge variant="success" className="font-mono text-xs hidden sm:inline-flex">
-            {isHindi ? 'NEP 2020 संरेखित' : 'NEP 2020 Aligned'}
-          </VFBadge>
         </div>
 
         {/* Right: Actions */}
