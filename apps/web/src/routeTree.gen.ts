@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TransportRouteImport } from './routes/transport'
 import { Route as TimetableRouteImport } from './routes/timetable'
+import { Route as TeachingRouteImport } from './routes/teaching'
 import { Route as TeachersRouteImport } from './routes/teachers'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as StatisticsRouteImport } from './routes/statistics'
@@ -26,20 +28,33 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
 import { Route as LicenseRouteImport } from './routes/license'
 import { Route as LearningRouteImport } from './routes/learning'
+import { Route as HostelRouteImport } from './routes/hostel'
 import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
 import { Route as ElibraryRouteImport } from './routes/elibrary'
+import { Route as EClassRouteImport } from './routes/e-class'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ComplaintsRouteImport } from './routes/complaints'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AcademicsRouteImport } from './routes/academics'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TransportRoute = TransportRouteImport.update({
+  id: '/transport',
+  path: '/transport',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TimetableRoute = TimetableRouteImport.update({
   id: '/timetable',
   path: '/timetable',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeachingRoute = TeachingRouteImport.update({
+  id: '/teaching',
+  path: '/teaching',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeachersRoute = TeachersRouteImport.update({
@@ -122,6 +137,11 @@ const LearningRoute = LearningRouteImport.update({
   path: '/learning',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HostelRoute = HostelRouteImport.update({
+  id: '/hostel',
+  path: '/hostel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeworkRoute = HomeworkRouteImport.update({
   id: '/homework',
   path: '/homework',
@@ -142,9 +162,19 @@ const ElibraryRoute = ElibraryRouteImport.update({
   path: '/elibrary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EClassRoute = EClassRouteImport.update({
+  id: '/e-class',
+  path: '/e-class',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComplaintsRoute = ComplaintsRouteImport.update({
+  id: '/complaints',
+  path: '/complaints',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuditRoute = AuditRouteImport.update({
@@ -179,11 +209,14 @@ export interface FileRoutesByFullPath {
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
   '/audit': typeof AuditRoute
+  '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
+  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
+  '/hostel': typeof HostelRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
   '/lms': typeof LmsRoute
@@ -200,7 +233,9 @@ export interface FileRoutesByFullPath {
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
   '/teachers': typeof TeachersRoute
+  '/teaching': typeof TeachingRoute
   '/timetable': typeof TimetableRoute
+  '/transport': typeof TransportRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -208,11 +243,14 @@ export interface FileRoutesByTo {
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
   '/audit': typeof AuditRoute
+  '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
+  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
+  '/hostel': typeof HostelRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
   '/lms': typeof LmsRoute
@@ -229,7 +267,9 @@ export interface FileRoutesByTo {
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
   '/teachers': typeof TeachersRoute
+  '/teaching': typeof TeachingRoute
   '/timetable': typeof TimetableRoute
+  '/transport': typeof TransportRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -238,11 +278,14 @@ export interface FileRoutesById {
   '/admissions': typeof AdmissionsRoute
   '/attendance': typeof AttendanceRoute
   '/audit': typeof AuditRoute
+  '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
+  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
   '/homework': typeof HomeworkRoute
+  '/hostel': typeof HostelRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
   '/lms': typeof LmsRoute
@@ -259,7 +302,9 @@ export interface FileRoutesById {
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
   '/teachers': typeof TeachersRoute
+  '/teaching': typeof TeachingRoute
   '/timetable': typeof TimetableRoute
+  '/transport': typeof TransportRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -269,11 +314,14 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/attendance'
     | '/audit'
+    | '/complaints'
     | '/dashboard'
+    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
     | '/homework'
+    | '/hostel'
     | '/learning'
     | '/license'
     | '/lms'
@@ -290,7 +338,9 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/students'
     | '/teachers'
+    | '/teaching'
     | '/timetable'
+    | '/transport'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -298,11 +348,14 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/attendance'
     | '/audit'
+    | '/complaints'
     | '/dashboard'
+    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
     | '/homework'
+    | '/hostel'
     | '/learning'
     | '/license'
     | '/lms'
@@ -319,7 +372,9 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/students'
     | '/teachers'
+    | '/teaching'
     | '/timetable'
+    | '/transport'
   id:
     | '__root__'
     | '/'
@@ -327,11 +382,14 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/attendance'
     | '/audit'
+    | '/complaints'
     | '/dashboard'
+    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
     | '/homework'
+    | '/hostel'
     | '/learning'
     | '/license'
     | '/lms'
@@ -348,7 +406,9 @@ export interface FileRouteTypes {
     | '/statistics'
     | '/students'
     | '/teachers'
+    | '/teaching'
     | '/timetable'
+    | '/transport'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -357,11 +417,14 @@ export interface RootRouteChildren {
   AdmissionsRoute: typeof AdmissionsRoute
   AttendanceRoute: typeof AttendanceRoute
   AuditRoute: typeof AuditRoute
+  ComplaintsRoute: typeof ComplaintsRoute
   DashboardRoute: typeof DashboardRoute
+  EClassRoute: typeof EClassRoute
   ElibraryRoute: typeof ElibraryRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
   HomeworkRoute: typeof HomeworkRoute
+  HostelRoute: typeof HostelRoute
   LearningRoute: typeof LearningRoute
   LicenseRoute: typeof LicenseRoute
   LmsRoute: typeof LmsRoute
@@ -378,16 +441,32 @@ export interface RootRouteChildren {
   StatisticsRoute: typeof StatisticsRoute
   StudentsRoute: typeof StudentsRoute
   TeachersRoute: typeof TeachersRoute
+  TeachingRoute: typeof TeachingRoute
   TimetableRoute: typeof TimetableRoute
+  TransportRoute: typeof TransportRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/transport': {
+      id: '/transport'
+      path: '/transport'
+      fullPath: '/transport'
+      preLoaderRoute: typeof TransportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/timetable': {
       id: '/timetable'
       path: '/timetable'
       fullPath: '/timetable'
       preLoaderRoute: typeof TimetableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teaching': {
+      id: '/teaching'
+      path: '/teaching'
+      fullPath: '/teaching'
+      preLoaderRoute: typeof TeachingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/teachers': {
@@ -502,6 +581,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearningRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hostel': {
+      id: '/hostel'
+      path: '/hostel'
+      fullPath: '/hostel'
+      preLoaderRoute: typeof HostelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/homework': {
       id: '/homework'
       path: '/homework'
@@ -530,11 +616,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ElibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/e-class': {
+      id: '/e-class'
+      path: '/e-class'
+      fullPath: '/e-class'
+      preLoaderRoute: typeof EClassRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/complaints': {
+      id: '/complaints'
+      path: '/complaints'
+      fullPath: '/complaints'
+      preLoaderRoute: typeof ComplaintsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/audit': {
@@ -581,11 +681,14 @@ const rootRouteChildren: RootRouteChildren = {
   AdmissionsRoute: AdmissionsRoute,
   AttendanceRoute: AttendanceRoute,
   AuditRoute: AuditRoute,
+  ComplaintsRoute: ComplaintsRoute,
   DashboardRoute: DashboardRoute,
+  EClassRoute: EClassRoute,
   ElibraryRoute: ElibraryRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
   HomeworkRoute: HomeworkRoute,
+  HostelRoute: HostelRoute,
   LearningRoute: LearningRoute,
   LicenseRoute: LicenseRoute,
   LmsRoute: LmsRoute,
@@ -602,7 +705,9 @@ const rootRouteChildren: RootRouteChildren = {
   StatisticsRoute: StatisticsRoute,
   StudentsRoute: StudentsRoute,
   TeachersRoute: TeachersRoute,
+  TeachingRoute: TeachingRoute,
   TimetableRoute: TimetableRoute,
+  TransportRoute: TransportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

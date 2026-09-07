@@ -32,6 +32,10 @@ import {
   Plus,
   Trash2,
   BarChart3,
+  Bus,
+  Building2,
+  Video,
+  MessageSquareWarning,
 } from 'lucide-react';
 import { useGlobalStore, DEFAULT_DASHBOARD_SHORTCUTS } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -59,9 +63,14 @@ export const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'timetable', label: 'Timetable', labelHi: 'टाइमटेबल', desc: 'Class schedules & proxy assignment', descHi: 'कक्षा शेड्यूल व टाइमटेबल', route: '/timetable', icon: Calendar, category: 'Academic' },
   { id: 'fees', label: 'Payments', labelHi: 'फीस व पेमेंट्स', desc: 'Dues collection & digital receipts', descHi: 'फीस संग्रह व डिजिटल रसीदें', route: '/fees', icon: CreditCard, category: 'Finance' },
   { id: 'notices', label: 'Notices', labelHi: 'नोटिस व सर्कुलर', desc: 'Campus circulars & broadcasts', descHi: 'स्कूल सर्कुलर व घोषणाएं', route: '/notices', icon: Bell, category: 'Communication' },
+  { id: 'teaching', label: 'Teaching', labelHi: 'शिक्षण', desc: 'Lesson planner & faculty pacing', descHi: 'पाठ योजना व शिक्षण ट्रैकिंग', route: '/teaching', icon: BookOpenCheck, category: 'Academic' },
   { id: 'homework', label: 'Homework', labelHi: 'होमवर्क', desc: 'Daily assignments & submissions', descHi: 'दैनिक असाइनमेंट व सबमिशन', route: '/homework', icon: BookOpen, category: 'Academic' },
+  { id: 'eclass', label: 'E-Class', labelHi: 'ई-क्लास ऑनलाइन', desc: 'Live virtual classroom & video lectures', descHi: 'लाइव वर्चुअल कक्षा व रिकॉर्डेड लेक्चर', route: '/e-class', icon: Video, category: 'Academic' },
   { id: 'examinations', label: 'Exams', labelHi: 'परीक्षाएं', desc: 'Marksheets, grades & report cards', descHi: 'मार्कशीट, ग्रेड व रिपोर्ट कार्ड', route: '/examinations', icon: ClipboardList, category: 'Academic' },
   { id: 'academics', label: 'Academics', labelHi: 'एकेडमिक्स', desc: 'Grade hierarchy & wing structure', descHi: 'कक्षा संरचना व विंग', route: '/academics', icon: School, category: 'Academic' },
+  { id: 'transport', label: 'Transport', labelHi: 'परिवहन', desc: 'Fleet GPS telematics & bus routes', descHi: 'बस रूट व लाइव जीपीएस ट्रैकिंग', route: '/transport', icon: Bus, category: 'Operations' },
+  { id: 'hostel', label: 'Hostel', labelHi: 'छात्रावास', desc: 'Dormitory beds, outpass & mess menu', descHi: 'कमरा आवंटन, आउटपास व मेस मेनू', route: '/hostel', icon: Building2, category: 'Operations' },
+  { id: 'complaints', label: 'Complaints & Surveys', labelHi: 'शिकायतें व सर्वे', desc: 'Grievance redressal & parent surveys', descHi: 'शिकायत निवारण व संस्थागत सर्वे', route: '/complaints', icon: MessageSquareWarning, category: 'Operations' },
   { id: 'statistics', label: 'Statistics', labelHi: 'आंकड़े व स्टेट्स', desc: 'Institutional telemetry & analytics', descHi: 'संस्थान के आंकड़े व विश्लेषण', route: '/statistics', icon: BarChart3, category: 'Operations' },
   { id: 'reports', label: 'Reports', labelHi: 'रिपोर्ट्स', desc: 'CBSE, RTE compliance & export audit', descHi: 'CBSE, RTE कंप्लायंस व ऑडिट', route: '/reports', icon: FileSpreadsheet, category: 'Operations' },
   { id: 'settings', label: 'Settings', labelHi: 'सेटिंग्स', desc: 'School branding, logos & AY session', descHi: 'स्कूल ब्रांडिंग, लोगो व सत्र', route: '/settings', icon: Settings, category: 'System' },

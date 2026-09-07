@@ -32,6 +32,14 @@ Concise record of verified milestones and structural changes reconstructed from 
 * **Corrected DECISIONS.md**: Decision 8 incorrectly stated "Sofia Sans + Baloo 2" — updated to reflect actual production font (Mukta).
 * **Updated CONTEXT.md**: Complete source directory map, full 28-route status table, Known Limitations section, font clarification.
 
+#### New Sidebar Modules Integration (2026-09-07)
+* **Teaching (`/teaching`)**: Added directly above Homework in the Academics navigation group. Includes assigned faculty sections, workload KPI cards, AI-assisted 45-minute lesson planner, CBSE/NEP 2020 syllabus completion tracker, and daily period routine.
+* **E-Class Online Class (`/e-class`)**: Integrated WebRTC HD live virtual classroom studio, scheduled lectures timetable with platform engines (VidyaClass Live, Zoom, Google Meet), interactive classroom launcher with screen share and participant management, and recorded lecture vault.
+* **Transport (`/transport`)**: Added to dedicated Facilities group in the sidebar. Fleet management with live GPS bus telematics, active routes, driver and vehicle compliance registry, and student commute allocation rosters.
+* **Hostel (`/hostel`)**: Added to Facilities group. Dormitory room and bed matrix (Block A Boys, Block B Girls, Block C Junior), resident student directory, biometric gate outpass registry, and weekly 4-meal nutritional dining hall menu.
+* **Complaints & Surveys (`/complaints`)**: Added to Admin group in sidebar. Features both a full Grievance Redressal ticketing system with SLA timers and Department routing, and an Institutional Surveys & Community Polls platform with response progress metrics and survey creation wizard.
+* **Shortcuts & Localization**: Registered all 5 modules in `shortcuts.tsx` and added bilingual translation keys in `i18n.ts`. All interfaces strictly adhere to sharp geometric borders (`rounded-md`, `rounded-sm`).
+
 ---
 
 ## [Pre-September 2026] — August 2026 Sprint

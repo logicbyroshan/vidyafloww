@@ -6,6 +6,9 @@ import {
   BarChart3,
   Bell,
   BookMarked,
+  BookOpenCheck,
+  Building2,
+  Bus,
   Calendar,
   CalendarCheck,
   ClipboardList,
@@ -17,10 +20,12 @@ import {
   Library,
   LogOut,
   LucideIcon,
+  MessageSquareWarning,
   School,
   Settings,
   UserPlus,
   Users,
+  Video,
   Wallet,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -61,9 +66,18 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     id: 'academics-group',
     items: [
       { id: 'academics', labelKey: 'nav.academics', route: '/academics', icon: School },
+      { id: 'teaching', labelKey: 'nav.teaching', route: '/teaching', icon: BookOpenCheck },
       { id: 'homework', labelKey: 'nav.homework', route: '/homework', icon: BookMarked },
+      { id: 'eclass', labelKey: 'nav.eclass', route: '/e-class', icon: Video },
       { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
       { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
+    ],
+  },
+  {
+    id: 'facilities-group',
+    items: [
+      { id: 'transport', labelKey: 'nav.transport', route: '/transport', icon: Bus },
+      { id: 'hostel', labelKey: 'nav.hostel', route: '/hostel', icon: Building2 },
     ],
   },
   {
@@ -79,6 +93,7 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     items: [
       { id: 'statistics', labelKey: 'nav.statistics', route: '/statistics', icon: BarChart3 },
       { id: 'notices', labelKey: 'nav.notices', route: '/notices', icon: Bell },
+      { id: 'complaints', labelKey: 'nav.complaints', route: '/complaints', icon: MessageSquareWarning },
       { id: 'reports', labelKey: 'nav.reports', route: '/reports', icon: FileSpreadsheet },
       { id: 'license', labelKey: 'nav.license', route: '/license', icon: Key },
       { id: 'settings', labelKey: 'nav.settings', route: '/settings', icon: Settings },
@@ -189,10 +204,10 @@ export function Sidebar() {
 
                     {/* Label: CSS fade + collapse — ample 165px maxWidth fits both English & Devanagari without touching edge */}
                     <span
-                      className="text-sm leading-snug overflow-hidden font-[inherit] whitespace-nowrap"
+                      className="text-sm leading-snug overflow-hidden font-[inherit] whitespace-nowrap truncate"
                       style={{
                         opacity: sidebarExpanded ? 1 : 0,
-                        maxWidth: sidebarExpanded ? '165px' : '0px',
+                        maxWidth: sidebarExpanded ? '175px' : '0px',
                         marginLeft: sidebarExpanded ? `${EXPANDED_ICON_GAP}px` : '0px',
                         transition: 'opacity 300ms ease-in-out, max-width 300ms ease-in-out, margin-left 300ms ease-in-out',
                       }}
