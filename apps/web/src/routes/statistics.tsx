@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   VFPageContainer,
   VFCard,
   VFBadge,
   VFStatCard,
+  VFButton,
 } from '@vidyafloww/ui';
 import {
   Users,
@@ -61,43 +62,97 @@ function StatisticsPage() {
 
   return (
     <VFPageContainer className="space-y-4 w-full">
-      {/* 1. Top Executive KPI Metric Cards (No Redundant Toolbar Header) */}
+      {/* 1. Top Executive KPI Metric Cards (Clickable Deep Links to Detailed Domains) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
-        <VFStatCard
-          title={t('students.totalStudents')}
-          value={activeSession === '2026–2027' ? '1,248' : '1,180'}
-          icon={<Users className="h-4.5 w-4.5" />}
-          trend="up"
-          trendLabel={`Session ${activeSession}`}
-          accentColor="blue"
-        />
-        <VFStatCard
-          title={isHindi ? 'शिक्षक-छात्र अनुपात' : 'Teacher-Student Ratio'}
-          value="18 : 1"
-          icon={<School className="h-4.5 w-4.5" />}
-          trend="neutral"
-          trendLabel="CBSE Standard"
-          accentColor="cyan"
-        />
-        <VFStatCard
-          title={isHindi ? 'दैनिक औसत उपस्थिति' : 'Daily Attendance Avg'}
-          value="96.9%"
-          icon={<UserCheck className="h-4.5 w-4.5" />}
-          trend="up"
-          trendLabel="1,210 Active Daily"
-          accentColor="emerald"
-        />
-        <VFStatCard
-          title={isHindi ? 'वार्षिक बोर्ड उत्तीर्ण दर' : 'Board Exam Pass Rate'}
-          value="98.6%"
-          icon={<Award className="h-4.5 w-4.5" />}
-          trend="up"
-          trendLabel="+1.4% vs State Avg"
-          accentColor="primary"
-        />
+        <Link to="/students" className="block group focus:outline-hidden">
+          <VFStatCard
+            title={t('students.totalStudents')}
+            value={activeSession === '2026–2027' ? '1,248' : '1,180'}
+            icon={<Users className="h-4.5 w-4.5" />}
+            trend="up"
+            trendLabel={`Session ${activeSession}`}
+            accentColor="blue"
+            className="group-hover:border-primary/50 transition-colors"
+          />
+        </Link>
+        <Link to="/teachers" className="block group focus:outline-hidden">
+          <VFStatCard
+            title={isHindi ? 'शिक्षक-छात्र अनुपात' : 'Teacher-Student Ratio'}
+            value="18 : 1"
+            icon={<School className="h-4.5 w-4.5" />}
+            trend="neutral"
+            trendLabel="CBSE Standard"
+            accentColor="cyan"
+            className="group-hover:border-cyan-500/50 transition-colors"
+          />
+        </Link>
+        <Link to="/attendance" className="block group focus:outline-hidden">
+          <VFStatCard
+            title={isHindi ? 'दैनिक औसत उपस्थिति' : 'Daily Attendance Avg'}
+            value="96.9%"
+            icon={<UserCheck className="h-4.5 w-4.5" />}
+            trend="up"
+            trendLabel="1,210 Active Daily"
+            accentColor="emerald"
+            className="group-hover:border-emerald-500/50 transition-colors"
+          />
+        </Link>
+        <Link to="/examinations" className="block group focus:outline-hidden">
+          <VFStatCard
+            title={isHindi ? 'वार्षिक बोर्ड उत्तीर्ण दर' : 'Board Exam Pass Rate'}
+            value="98.6%"
+            icon={<Award className="h-4.5 w-4.5" />}
+            trend="up"
+            trendLabel="+1.4% vs State Avg"
+            accentColor="primary"
+            className="group-hover:border-primary/50 transition-colors"
+          />
+        </Link>
       </div>
 
-      {/* 2. Section 1: Modern Attendance & Intake Trajectory + Wing Distribution */}
+      {/* 2. Quick Domain Navigation Register (Direct jump to detailed functional pages) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-2.5 px-3 rounded-[4px] bg-[#0d0d0d] border border-border/80 text-xs">
+        <div className="flex items-center gap-2 shrink-0">
+          <Layers className="h-3.5 w-3.5 text-primary" />
+          <span className="font-bold text-foreground">
+            {isHindi ? 'विस्तृत रिकॉर्ड रजिस्टर:' : 'Detailed Registers & Reports:'}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <Link to="/attendance">
+            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
+              {isHindi ? 'उपस्थिति' : 'Attendance'} ↗
+            </VFButton>
+          </Link>
+          <Link to="/admissions">
+            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
+              {isHindi ? 'प्रवेश' : 'Admissions'} ↗
+            </VFButton>
+          </Link>
+          <Link to="/students">
+            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
+              {isHindi ? 'छात्र निर्देशिका' : 'Students'} ↗
+            </VFButton>
+          </Link>
+          <Link to="/fees">
+            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
+              {isHindi ? 'फीस लेजर' : 'Fee Ledgers'} ↗
+            </VFButton>
+          </Link>
+          <Link to="/examinations">
+            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
+              {isHindi ? 'परीक्षाएं' : 'Exams'} ↗
+            </VFButton>
+          </Link>
+          <Link to="/academics">
+            <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
+              {isHindi ? 'कक्षाएं' : 'Academics'} ↗
+            </VFButton>
+          </Link>
+        </div>
+      </div>
+
+      {/* 3. Section 1: Modern Attendance & Intake Trajectory + Wing Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Modern Interactive Trajectory Visual (7 cols) */}
         <div className="lg:col-span-7">
@@ -112,6 +167,28 @@ function StatisticsPage() {
               isHindi
                 ? 'सत्र 2026-2027 के लिए मासिक छात्र प्रवेश और दैनिक उपस्थिति रुझान'
                 : 'Realtime monthly intake volume vs attendance velocity for AY 2026-2027'
+            }
+            actions={
+              <div className="flex items-center gap-2 flex-wrap">
+                <Link to="/attendance">
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+                  >
+                    {isHindi ? 'उपस्थिति रजिस्टर ↗' : 'Attendance Register ↗'}
+                  </VFButton>
+                </Link>
+                <Link to="/admissions">
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+                  >
+                    {isHindi ? 'प्रवेश रिकॉर्ड ↗' : 'Admissions Intake ↗'}
+                  </VFButton>
+                </Link>
+              </div>
             }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
             bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-4"
@@ -191,6 +268,17 @@ function StatisticsPage() {
               </div>
             }
             description={isHindi ? '1,248 विद्यार्थियों का विंग वार विभाजन' : 'Tier strength distribution across 1,248 enrolled pupils'}
+            actions={
+              <Link to="/students">
+                <VFButton
+                  size="sm"
+                  variant="outline"
+                  className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+                >
+                  {isHindi ? 'छात्र निर्देशिका ↗' : 'Student Dossiers ↗'}
+                </VFButton>
+              </Link>
+            }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
             bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-4"
           >
@@ -245,7 +333,7 @@ function StatisticsPage() {
         </div>
       </div>
 
-      {/* 3. Section 2: Fee Realization vs Target + Academic Honors */}
+      {/* 4. Section 2: Fee Realization vs Target + Academic Honors */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Fee Realization Progress Gauges (7 cols) */}
         <div className="lg:col-span-7">
@@ -261,7 +349,20 @@ function StatisticsPage() {
                 ? 'त्रैमासिक बजट विश्लेषण (संग्रहित बनाम निर्धारित बजट)'
                 : 'Quarterly collection audit across ₹ Lakhs (Realized vs Annual Target)'
             }
-            actions={<VFBadge variant="success" className="text-xs font-bold font-mono">98.1% Realized</VFBadge>}
+            actions={
+              <div className="flex items-center gap-2">
+                <VFBadge variant="success" className="text-xs font-bold font-mono">98.1% Realized</VFBadge>
+                <Link to="/fees">
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+                  >
+                    {isHindi ? 'फीस लेजर ↗' : 'Fee Ledgers ↗'}
+                  </VFButton>
+                </Link>
+              </div>
+            }
             className="bg-[#0d0d0d] border-border/90"
             bodyClassName="p-4 space-y-4"
           >
@@ -304,6 +405,17 @@ function StatisticsPage() {
               isHindi
                 ? 'बोर्ड परीक्षा परिणाम, मेरिट डिस्टिंक्शन व विषयवार प्रदर्शन'
                 : 'Board standings, merit honors, and subject distinction benchmarks'
+            }
+            actions={
+              <Link to="/examinations">
+                <VFButton
+                  size="sm"
+                  variant="outline"
+                  className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+                >
+                  {isHindi ? 'परीक्षा परिणाम ↗' : 'Exam Standings ↗'}
+                </VFButton>
+              </Link>
             }
             className="bg-[#0d0d0d] border-border/90 h-full flex flex-col"
             bodyClassName="p-4 flex-1 flex flex-col justify-between space-y-3"
@@ -354,7 +466,7 @@ function StatisticsPage() {
         </div>
       </div>
 
-      {/* 4. Section 3: Class Roster Summary (4-Column Grid) */}
+      {/* 5. Section 3: Class Roster Summary (4-Column Grid) */}
       <VFCard
         title={
           <div className="flex items-center gap-2">
@@ -366,6 +478,17 @@ function StatisticsPage() {
           isHindi
             ? 'कक्षा 9 से 12 के छात्रों, सेक्शन्स व सक्रिय उपस्थिति दर का संक्षिप्त विवरण'
             : 'Operational division strength and realtime attendance benchmark across core grades'
+        }
+        actions={
+          <Link to="/academics">
+            <VFButton
+              size="sm"
+              variant="outline"
+              className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+            >
+              {isHindi ? 'शैक्षणिक प्रभाग ↗' : 'Academic Divisions ↗'}
+            </VFButton>
+          </Link>
         }
         className="bg-[#0d0d0d] border-border/90"
         bodyClassName="p-4"
