@@ -214,7 +214,7 @@ function ProfessionalAuthPage() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-10">
         <div className="w-full max-w-[490px]">
           {/* Main Card Container */}
-          <div className="rounded-xl bg-[#101010] border border-[#242424] shadow-2xl p-6 sm:p-8 space-y-5 relative">
+          <div className="rounded-[4px] bg-[#101010] border border-[#242424] shadow-2xl p-6 sm:p-8 space-y-5 relative">
 
             {/* Status Alert Toast */}
             {statusMessage && (

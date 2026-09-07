@@ -1510,47 +1510,7 @@ function AcademicsPage() {
           SUB-VIEW 1: SUBJECTS & CURRICULUM
           ────────────────────────────────────────────────────────────────────────── */}
       {activeView === 'subjects' && (
-        <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          {/* Class Summary Banner with Single Clean Edit Mentor / Room Button */}
-          <div className="px-3.5 py-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 text-sm">
-            <div className="flex items-center gap-3">
-              <span className="font-extrabold text-foreground text-sm">
-                {isHindi ? currentClassProfile.hindiClassName : currentClassProfile.className}
-              </span>
-              <span className="text-muted-foreground font-semibold">·</span>
-              <span className="text-muted-foreground font-medium text-xs">
-                {currentClassProfile.stage}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3 text-xs font-semibold">
-              <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground">{isHindi ? 'कक्षा अध्यापक:' : 'Mentor:'}</span>
-                <span className="text-foreground font-bold">{currentClassProfile.classMentor}</span>
-              </div>
-              <div className="h-3.5 w-[1px] bg-border" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground">{isHindi ? 'कमरा:' : 'Room:'}</span>
-                <span className="text-foreground font-bold font-mono">{currentClassProfile.room}</span>
-              </div>
-              <div className="h-3.5 w-[1px] bg-border" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-muted-foreground">{isHindi ? 'कुल विषय:' : 'Subjects:'}</span>
-                <span className="text-foreground font-bold">{subjects.length}</span>
-              </div>
-              <div className="h-3.5 w-[1px] bg-border" />
-              <button
-                type="button"
-                onClick={handleOpenClassDetailsDrawer}
-                className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#282828] border border-border/80 hover:border-zinc-500 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
-                title={isHindi ? 'कक्षा अध्यापक व विवरण अपडेट करें' : 'Update Class Teacher & Room'}
-              >
-                <Edit2 className="h-3 w-3 text-muted-foreground" />
-                <span>{isHindi ? 'अध्यापक बदलें' : 'Update Mentor'}</span>
-              </button>
-            </div>
-          </div>
-
+        <div className="flex-1 min-h-0 flex flex-col">
           <VFDataTable
             columns={subjectColumns}
             data={subjects}

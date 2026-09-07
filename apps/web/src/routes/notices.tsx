@@ -22,6 +22,9 @@ import {
   Smartphone,
   Mail,
   Bell,
+  GraduationCap,
+  User,
+  Layers,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -34,7 +37,7 @@ interface NoticeRecord {
   id: string;
   circularNo: string;
   title: string;
-  targetAudience: 'All School' | 'Parents' | 'Teachers' | 'Classes 9-12';
+  targetAudience: string;
   category: 'Academic' | 'Holiday' | 'Event' | 'Administrative';
   publishDate: string;
   deliveryStatus: string;
@@ -43,12 +46,32 @@ interface NoticeRecord {
   priority?: 'Normal' | 'High' | 'Urgent';
 }
 
-const AUDIENCE_STATS: Record<string, { label: string; count: number; desc: string }> = {
-  'All School': { label: 'All School Community', count: 1248, desc: 'Every parent, faculty member, and enrolled student' },
-  'Parents': { label: 'Parents & Guardians', count: 1080, desc: 'Registered primary family mobile contacts' },
-  'Teachers': { label: 'Faculty & Educators', count: 124, desc: 'All teaching staff, HODs, and administrators' },
-  'Classes 9-12': { label: 'Senior Secondary Wing', count: 420, desc: 'Classes 9, 10, 11, and 12 pupils & guardians' },
+const AUDIENCE_STATS: Record<string, { label: string; count: number; desc: string; icon: 'users' | 'parents' | 'teachers' | 'wing' | 'class' | 'person' }> = {
+  'All School': { label: 'All School Community', count: 1248, desc: 'Every parent, faculty member, and enrolled student', icon: 'users' },
+  'Parents': { label: 'Parents & Guardians', count: 1080, desc: 'Registered primary family mobile contacts', icon: 'parents' },
+  'Teachers': { label: 'Faculty & Educators', count: 124, desc: 'All teaching staff, HODs, and administrators', icon: 'teachers' },
+  'Classes 9-12': { label: 'Senior Secondary Wing', count: 420, desc: 'Classes 9, 10, 11, and 12 pupils & guardians', icon: 'wing' },
+  'Custom Class': { label: 'Specific Class / Section', count: 42, desc: 'Target students & parents of a designated section', icon: 'class' },
+  'Individual': { label: 'Single Person / Direct', count: 1, desc: 'Direct confidential notice to an individual student/staff', icon: 'person' },
 };
+
+const INDIVIDUAL_DIRECTORY = [
+  { id: 'ADM-2026-001', name: 'Aarav Sharma', role: 'Student' as const, details: 'Class 10-A · Roll #101' },
+  { id: 'ADM-2026-002', name: 'Diya Patel', role: 'Student' as const, details: 'Class 10-A · Roll #102' },
+  { id: 'ADM-2026-003', name: 'Rohan Verma', role: 'Student' as const, details: 'Class 10-B · Roll #103' },
+  { id: 'ADM-2026-004', name: 'Ananya Iyer', role: 'Student' as const, details: 'Class 11-Sci · Roll #104' },
+  { id: 'ADM-2026-005', name: 'Kabir Mehta', role: 'Student' as const, details: 'Class 11-Com · Roll #105' },
+  { id: 'ADM-2026-006', name: 'Meera Nair', role: 'Student' as const, details: 'Class 12-Sci · Roll #106' },
+  { id: 'PAR-2026-001', name: 'Mr. Ramesh Sharma (Guardian)', role: 'Parent' as const, details: 'Guardian of Aarav Sharma (10-A)' },
+  { id: 'PAR-2026-002', name: 'Dr. K. Patel (Guardian)', role: 'Parent' as const, details: 'Guardian of Diya Patel (10-A)' },
+  { id: 'PAR-2026-003', name: 'Mr. S. Verma (Guardian)', role: 'Parent' as const, details: 'Guardian of Rohan Verma (10-B)' },
+  { id: 'PAR-2026-004', name: 'Mrs. V. Iyer (Guardian)', role: 'Parent' as const, details: 'Guardian of Ananya Iyer (11-Sci)' },
+  { id: 'FAC-001', name: 'Dr. Rajesh Sharma (Principal)', role: 'Teacher' as const, details: 'Executive Directorate' },
+  { id: 'FAC-010', name: 'Dr. Meenakshi Sundaram (HOD)', role: 'Teacher' as const, details: 'Physics & Science' },
+  { id: 'FAC-014', name: 'Mr. Arvind Rao (Senior Faculty)', role: 'Teacher' as const, details: 'Mathematics' },
+  { id: 'FAC-018', name: 'Mrs. Kavita Singh (Faculty)', role: 'Teacher' as const, details: 'English & Humanities' },
+  { id: 'FAC-022', name: 'Mr. Sameer Khan (Coordinator)', role: 'Teacher' as const, details: 'Computer Science & AI' },
+];
 
 const INITIAL_NOTICES: NoticeRecord[] = [
   { id: '1', circularNo: 'CIR-2026-042', title: 'Independence Day Celebrations & Dress Code Guidelines', targetAudience: 'All School', category: 'Event', publishDate: '12 Aug 2026', deliveryStatus: '1,248 Delivered (100%)', content: 'Students are requested to assemble in formal white attire by 08:00 AM on August 15.', status: 'Published', priority: 'High' },
@@ -70,7 +93,12 @@ function NoticesPage() {
   const [selectedNotice, setSelectedNotice] = React.useState<NoticeRecord | null>(null);
 
   // Broadcast Drawer Form State
-  const [targetAudience, setTargetAudience] = React.useState<NoticeRecord['targetAudience']>('All School');
+  const [targetAudience, setTargetAudience] = React.useState<string>('All School');
+  const [selectedClass, setSelectedClass] = React.useState<string>('Class 10');
+  const [selectedSection, setSelectedSection] = React.useState<string>('A');
+  const [individualRole, setIndividualRole] = React.useState<'Student' | 'Parent' | 'Teacher'>('Student');
+  const [individualId, setIndividualId] = React.useState<string>('ADM-2026-001');
+
   const [noticeCategory, setNoticeCategory] = React.useState<NoticeRecord['category']>('Academic');
   const [noticePriority, setNoticePriority] = React.useState<'Normal' | 'High' | 'Urgent'>('Normal');
   const [noticeTitle, setNoticeTitle] = React.useState('');
@@ -81,11 +109,22 @@ function NoticesPage() {
     portal: true,
   });
 
+  const activeRecipientCount = targetAudience === 'Custom Class'
+    ? (selectedSection === 'All' ? 120 : 42)
+    : targetAudience === 'Individual'
+    ? 1
+    : (AUDIENCE_STATS[targetAudience]?.count || 1248);
+
+  const activeAudienceLabel = targetAudience === 'Custom Class'
+    ? `${selectedClass}${selectedSection !== 'All' ? `-${selectedSection}` : ' (All Sections)'}`
+    : targetAudience === 'Individual'
+    ? `${INDIVIDUAL_DIRECTORY.find((p) => p.id === individualId)?.name || 'Direct Recipient'}`
+    : (AUDIENCE_STATS[targetAudience]?.label || targetAudience);
+
   const handlePublishNotice = (e: React.FormEvent) => {
     e.preventDefault();
     if (!noticeTitle.trim()) return;
 
-    const audienceInfo = AUDIENCE_STATS[targetAudience] || { count: 1248, label: targetAudience };
     const enabledChannelNames = [];
     if (channels.app) enabledChannelNames.push('App Push');
     if (channels.sms) enabledChannelNames.push('SMS');
@@ -95,12 +134,12 @@ function NoticesPage() {
       id: String(Date.now()),
       circularNo: `CIR-2026-0${notices.length + 43}`,
       title: noticeTitle.trim(),
-      targetAudience,
+      targetAudience: activeAudienceLabel,
       category: noticeCategory,
       priority: noticePriority,
       publishDate: 'Today, Just Now',
-      deliveryStatus: `${audienceInfo.count.toLocaleString()} Delivered (${enabledChannelNames.join(' · ')})`,
-      content: noticeContent.trim() || 'Official administrative circular dispatched to all designated recipients.',
+      deliveryStatus: `${activeRecipientCount.toLocaleString()} Delivered (${enabledChannelNames.join(' · ')})`,
+      content: noticeContent.trim() || 'Official administrative circular dispatched to designated recipients.',
       status: 'Published',
     };
 
@@ -114,8 +153,8 @@ function NoticesPage() {
     setTargetAudience('All School');
 
     addNotification({
-      title: isHindi ? 'सर्कुलर सभी को भेजा गया' : 'Circular Broadcast Dispatched',
-      description: `"${added.title}" delivered to ${audienceInfo.count} recipients (${targetAudience}) via ${enabledChannelNames.join(', ')}.`,
+      title: isHindi ? 'सर्कुलर भेजा गया' : 'Notice Dispatched',
+      description: `"${added.title}" delivered to ${activeRecipientCount} recipient(s) (${activeAudienceLabel}) via ${enabledChannelNames.join(', ')}.`,
       type: 'success',
     });
   };
@@ -130,7 +169,12 @@ function NoticesPage() {
 
   const filteredNotices = React.useMemo(() => {
     return notices.filter((n) => {
-      const matchesAudience = audienceFilter === 'All' || n.targetAudience === audienceFilter;
+      const matchesAudience =
+        audienceFilter === 'All' ||
+        n.targetAudience === audienceFilter ||
+        n.targetAudience.toLowerCase().includes(audienceFilter.toLowerCase()) ||
+        (audienceFilter === 'Custom Class' && n.targetAudience.includes('Class')) ||
+        (audienceFilter === 'Individual' && (n.targetAudience.includes('Direct') || INDIVIDUAL_DIRECTORY.some((p) => n.targetAudience.includes(p.name))));
       const matchesCategory = categoryFilter === 'All' || n.category === categoryFilter;
       return matchesAudience && matchesCategory;
     });
@@ -288,16 +332,16 @@ function NoticesPage() {
         }
         footerActions={
           <div className="flex items-center justify-between gap-3 w-full">
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono text-emerald-400 font-bold">
-                ✓ {AUDIENCE_STATS[targetAudience]?.count || 1248} Recipients
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-[11px] font-mono text-emerald-400 font-bold whitespace-nowrap">
+                ✓ {activeRecipientCount.toLocaleString()} Recipient{activeRecipientCount > 1 ? 's' : ''}
               </span>
               <span className="text-muted-foreground text-[11px]">·</span>
-              <span className="text-muted-foreground text-[11px]">
-                {targetAudience}
+              <span className="text-muted-foreground text-[11px] truncate max-w-[200px]" title={activeAudienceLabel}>
+                {activeAudienceLabel}
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <VFButton
                 variant="outline"
                 size="sm"
@@ -342,12 +386,18 @@ function NoticesPage() {
               {(Object.keys(AUDIENCE_STATS) as NoticeRecord['targetAudience'][]).map((aud) => {
                 const info = AUDIENCE_STATS[aud];
                 const isSelected = targetAudience === aud;
+                const getIcon = () => {
+                  if (aud === 'Teachers') return <GraduationCap className="h-3.5 w-3.5 text-muted-foreground" />;
+                  if (aud === 'Custom Class' || aud === 'Classes 9-12') return <Layers className="h-3.5 w-3.5 text-muted-foreground" />;
+                  if (aud === 'Individual') return <User className="h-3.5 w-3.5 text-muted-foreground" />;
+                  return <Users className="h-3.5 w-3.5 text-muted-foreground" />;
+                };
                 return (
                   <button
                     key={aud}
                     type="button"
                     onClick={() => setTargetAudience(aud)}
-                    className={`p-3 rounded-[4px] border text-left flex flex-col justify-between gap-1.5 transition-all cursor-pointer ${
+                    className={`p-2.5 rounded-[4px] border text-left flex flex-col justify-between gap-1.5 transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-[#1c1c1c] border-zinc-400 text-foreground shadow-xs ring-1 ring-zinc-500/20'
                         : 'bg-[#181818] border-border/70 text-muted-foreground hover:text-foreground hover:border-zinc-600'
@@ -355,19 +405,132 @@ function NoticesPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <Users className="h-3.5 w-3.5 text-muted-foreground" />
+                        {getIcon()}
                         <span className="font-bold text-xs text-foreground">{info.label}</span>
                       </div>
                       {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />}
                     </div>
                     <p className="text-[10px] text-muted-foreground line-clamp-1">{info.desc}</p>
                     <span className="font-mono text-[10px] font-bold text-muted-foreground">
-                      {info.count.toLocaleString()} {isHindi ? 'सक्रिय प्राप्तकर्ता' : 'Active Recipients'}
+                      {aud === 'Custom Class'
+                        ? `${activeRecipientCount} ${isHindi ? 'छात्र (कक्षा अनुसार)' : 'Selected Students'}`
+                        : aud === 'Individual'
+                        ? `1 ${isHindi ? 'गोपनीय प्राप्तकर्ता' : 'Direct Recipient'}`
+                        : `${info.count.toLocaleString()} ${isHindi ? 'सक्रिय प्राप्तकर्ता' : 'Active Recipients'}`}
                     </span>
                   </button>
                 );
               })}
             </div>
+
+            {/* Custom Class Selection Sub-panel */}
+            {targetAudience === 'Custom Class' && (
+              <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/70 space-y-2.5 mt-2 animate-in fade-in duration-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
+                    <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+                    {isHindi ? 'कक्षा और सेक्शन निर्दिष्ट करें' : 'Designate Class & Section'}
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-[3px] bg-zinc-800 border border-border text-emerald-400 font-bold">
+                    ~{activeRecipientCount} Students Targeted
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-semibold text-muted-foreground block">
+                      {isHindi ? 'कक्षा चुनें' : 'Select Class'}
+                    </label>
+                    <VFSelect
+                      value={selectedClass}
+                      onChange={(e) => setSelectedClass(String(e.target.value))}
+                      options={[
+                        { label: 'Class 6', value: 'Class 6' },
+                        { label: 'Class 7', value: 'Class 7' },
+                        { label: 'Class 8', value: 'Class 8' },
+                        { label: 'Class 9', value: 'Class 9' },
+                        { label: 'Class 10', value: 'Class 10' },
+                        { label: 'Class 11', value: 'Class 11' },
+                        { label: 'Class 12', value: 'Class 12' },
+                      ]}
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-semibold text-muted-foreground block">
+                      {isHindi ? 'सेक्शन चुनें' : 'Select Section'}
+                    </label>
+                    <VFSelect
+                      value={selectedSection}
+                      onChange={(e) => setSelectedSection(String(e.target.value))}
+                      options={[
+                        { label: 'All Sections (A+B+C)', value: 'All' },
+                        { label: 'Section A (42 Students)', value: 'A' },
+                        { label: 'Section B (40 Students)', value: 'B' },
+                        { label: 'Section C (38 Students)', value: 'C' },
+                      ]}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+                <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <span className="text-zinc-400">ℹ</span> Notice will be pushed specifically to parents and students registered under <strong className="text-foreground">{selectedClass} - Section {selectedSection}</strong>.
+                </p>
+              </div>
+            )}
+
+            {/* Individual Selection Sub-panel */}
+            {targetAudience === 'Individual' && (
+              <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/70 space-y-2.5 mt-2 animate-in fade-in duration-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
+                    <User className="h-3.5 w-3.5 text-muted-foreground" />
+                    {isHindi ? 'व्यक्तिगत प्राप्तकर्ता खोजें' : 'Individual Confidential Recipient'}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    {(['Student', 'Parent', 'Teacher'] as const).map((r) => (
+                      <button
+                        key={r}
+                        type="button"
+                        onClick={() => {
+                          setIndividualRole(r);
+                          const first = INDIVIDUAL_DIRECTORY.find((item) => item.role === r);
+                          if (first) setIndividualId(first.id);
+                        }}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-[3px] border transition-colors cursor-pointer ${
+                          individualRole === r
+                            ? 'bg-zinc-700 text-foreground border-zinc-500'
+                            : 'bg-zinc-900 text-muted-foreground border-border hover:text-foreground'
+                        }`}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-semibold text-muted-foreground block">
+                    {isHindi ? `${individualRole} चुनें` : `Select ${individualRole}`}
+                  </label>
+                  <VFSelect
+                    value={individualId}
+                    onChange={(e) => setIndividualId(String(e.target.value))}
+                    options={INDIVIDUAL_DIRECTORY.filter((i) => i.role === individualRole).map((i) => ({
+                      label: `${i.name} — ${i.details}`,
+                      value: i.id,
+                    }))}
+                    className="w-full"
+                  />
+                </div>
+
+                <div className="p-2 rounded-[3px] bg-zinc-900/80 border border-border/50 text-[10px] text-muted-foreground flex items-center justify-between">
+                  <span>
+                    🔒 1-to-1 Private Dispatch · Dispatches directly to registered phone & portal inbox
+                  </span>
+                  <span className="font-mono text-emerald-400 font-bold">Active</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Section 2: Category, Priority & Channels Card */}
