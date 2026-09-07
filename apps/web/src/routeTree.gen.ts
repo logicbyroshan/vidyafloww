@@ -13,6 +13,7 @@ import { Route as TransportRouteImport } from './routes/transport'
 import { Route as TimetableRouteImport } from './routes/timetable'
 import { Route as TeachingRouteImport } from './routes/teaching'
 import { Route as TeachersRouteImport } from './routes/teachers'
+import { Route as SurveysRouteImport } from './routes/surveys'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as StatisticsRouteImport } from './routes/statistics'
 import { Route as ShortcutsRouteImport } from './routes/shortcuts'
@@ -60,6 +61,11 @@ const TeachingRoute = TeachingRouteImport.update({
 const TeachersRoute = TeachersRouteImport.update({
   id: '/teachers',
   path: '/teachers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SurveysRoute = SurveysRouteImport.update({
+  id: '/surveys',
+  path: '/surveys',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StudentsRoute = StudentsRouteImport.update({
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/shortcuts': typeof ShortcutsRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
+  '/surveys': typeof SurveysRoute
   '/teachers': typeof TeachersRoute
   '/teaching': typeof TeachingRoute
   '/timetable': typeof TimetableRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByTo {
   '/shortcuts': typeof ShortcutsRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
+  '/surveys': typeof SurveysRoute
   '/teachers': typeof TeachersRoute
   '/teaching': typeof TeachingRoute
   '/timetable': typeof TimetableRoute
@@ -301,6 +309,7 @@ export interface FileRoutesById {
   '/shortcuts': typeof ShortcutsRoute
   '/statistics': typeof StatisticsRoute
   '/students': typeof StudentsRoute
+  '/surveys': typeof SurveysRoute
   '/teachers': typeof TeachersRoute
   '/teaching': typeof TeachingRoute
   '/timetable': typeof TimetableRoute
@@ -337,6 +346,7 @@ export interface FileRouteTypes {
     | '/shortcuts'
     | '/statistics'
     | '/students'
+    | '/surveys'
     | '/teachers'
     | '/teaching'
     | '/timetable'
@@ -371,6 +381,7 @@ export interface FileRouteTypes {
     | '/shortcuts'
     | '/statistics'
     | '/students'
+    | '/surveys'
     | '/teachers'
     | '/teaching'
     | '/timetable'
@@ -405,6 +416,7 @@ export interface FileRouteTypes {
     | '/shortcuts'
     | '/statistics'
     | '/students'
+    | '/surveys'
     | '/teachers'
     | '/teaching'
     | '/timetable'
@@ -440,6 +452,7 @@ export interface RootRouteChildren {
   ShortcutsRoute: typeof ShortcutsRoute
   StatisticsRoute: typeof StatisticsRoute
   StudentsRoute: typeof StudentsRoute
+  SurveysRoute: typeof SurveysRoute
   TeachersRoute: typeof TeachersRoute
   TeachingRoute: typeof TeachingRoute
   TimetableRoute: typeof TimetableRoute
@@ -474,6 +487,13 @@ declare module '@tanstack/react-router' {
       path: '/teachers'
       fullPath: '/teachers'
       preLoaderRoute: typeof TeachersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/surveys': {
+      id: '/surveys'
+      path: '/surveys'
+      fullPath: '/surveys'
+      preLoaderRoute: typeof SurveysRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/students': {
@@ -704,6 +724,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShortcutsRoute: ShortcutsRoute,
   StatisticsRoute: StatisticsRoute,
   StudentsRoute: StudentsRoute,
+  SurveysRoute: SurveysRoute,
   TeachersRoute: TeachersRoute,
   TeachingRoute: TeachingRoute,
   TimetableRoute: TimetableRoute,

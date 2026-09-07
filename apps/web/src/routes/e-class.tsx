@@ -121,7 +121,7 @@ function EClassOnlineClassPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'ई-क्लास (ऑनलाइन कक्षा)' : 'E-Class (Online Class)') + ' – VidyaFloww';
+    document.title = (isHindi ? 'ई-क्लास' : 'E-Class') + ' – VidyaFloww';
   }, [isHindi]);
 
   const [sessions, setSessions] = React.useState<OnlineSession[]>(INITIAL_SESSIONS);
@@ -466,7 +466,7 @@ function EClassOnlineClassPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-base font-extrabold text-foreground tracking-tight">
-                {isHindi ? 'ई-क्लास (ऑनलाइन कक्षा)' : 'E-Class (Online Class)'}
+                {isHindi ? 'ई-क्लास' : 'E-Class'}
               </span>
               <VFBadge variant="success" className="text-[10px] font-bold font-mono">
                 {isHindi ? 'WebRTC लाइव सक्षम' : 'WebRTC HD Live'}

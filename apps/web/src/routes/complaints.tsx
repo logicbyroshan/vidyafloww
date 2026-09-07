@@ -13,17 +13,17 @@ import {
 } from '@vidyafloww/ui';
 import {
   MessageSquareWarning,
-  Vote,
   CheckCircle2,
   Clock,
   Plus,
   Search,
+  TrendingUp,
   BarChart3,
-  Download,
+  Check,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/complaints')({
-  component: ComplaintsSurveysPage,
+  component: ComplaintsManagementPage,
 });
 
 interface GrievanceTicket {
@@ -38,18 +38,7 @@ interface GrievanceTicket {
   assignedOfficer: string;
   status: 'Open' | 'In Progress' | 'Resolved';
   resolutionNotes?: string;
-}
-
-interface InstitutionalSurvey {
-  id: string;
-  title: string;
-  targetAudience: 'Parents' | 'Students' | 'Faculty' | 'All Community';
-  category: string;
-  responsesCount: number;
-  totalTarget: number;
-  satisfactionScore: string;
-  status: 'Active' | 'Completed';
-  endDate: string;
+  expectedSLA: string;
 }
 
 const INITIAL_GRIEVANCES: GrievanceTicket[] = [
@@ -65,6 +54,7 @@ const INITIAL_GRIEVANCES: GrievanceTicket[] = [
     assignedOfficer: 'Transport Head (Surender Rawat)',
     status: 'In Progress',
     resolutionNotes: 'Driver contacted; alternate diversion route via Vikas Marg mapped.',
+    expectedSLA: 'Today, 04:00 PM',
   },
   {
     id: 'TKT-2026-088',
@@ -78,6 +68,7 @@ const INITIAL_GRIEVANCES: GrievanceTicket[] = [
     assignedOfficer: 'Hostel Warden (R. K. Saxena)',
     status: 'In Progress',
     resolutionNotes: 'HVAC technician scheduled for maintenance today at 03:00 PM.',
+    expectedSLA: 'Tomorrow, 12:00 PM',
   },
   {
     id: 'TKT-2026-085',
@@ -91,6 +82,7 @@ const INITIAL_GRIEVANCES: GrievanceTicket[] = [
     assignedOfficer: 'Chief Accounts Officer',
     status: 'Resolved',
     resolutionNotes: 'Bank gateway reference reconciled. Official receipt #VF-9021 issued.',
+    expectedSLA: 'Resolved on time',
   },
   {
     id: 'TKT-2026-082',
@@ -104,6 +96,7 @@ const INITIAL_GRIEVANCES: GrievanceTicket[] = [
     assignedOfficer: 'Academic Dean & Store Manager',
     status: 'Resolved',
     resolutionNotes: 'New optical replacement lamps fitted and certified.',
+    expectedSLA: 'Resolved on time',
   },
   {
     id: 'TKT-2026-079',
@@ -117,73 +110,25 @@ const INITIAL_GRIEVANCES: GrievanceTicket[] = [
     assignedOfficer: 'Head Librarian',
     status: 'Resolved',
     resolutionNotes: '8 ergonomic study cubicles installed in Wing B.',
+    expectedSLA: 'Resolved on time',
   },
 ];
 
-const INITIAL_SURVEYS: InstitutionalSurvey[] = [
-  {
-    id: 'SURV-101',
-    title: 'Annual Parent Satisfaction & Academic Pacing Survey 2026',
-    targetAudience: 'Parents',
-    category: 'Academic & Institutional Excellence',
-    responsesCount: 482,
-    totalTarget: 600,
-    satisfactionScore: '92.4%',
-    status: 'Active',
-    endDate: '15 Sep 2026',
-  },
-  {
-    id: 'SURV-102',
-    title: 'Student Cafeteria & Hostel Mess Nutrition Quality Poll',
-    targetAudience: 'Students',
-    category: 'Campus Dining & Hygiene',
-    responsesCount: 310,
-    totalTarget: 350,
-    satisfactionScore: '88.6%',
-    status: 'Active',
-    endDate: '12 Sep 2026',
-  },
-  {
-    id: 'SURV-103',
-    title: 'Faculty Smart Board & Digital Learning Tools Feedback',
-    targetAudience: 'Faculty',
-    category: 'EdTech & Teaching Infrastructure',
-    responsesCount: 48,
-    totalTarget: 50,
-    satisfactionScore: '96.2%',
-    status: 'Completed',
-    endDate: '30 Aug 2026',
-  },
-  {
-    id: 'SURV-104',
-    title: 'Campus Safe Environment & Anti-Bullying Welfare Check',
-    targetAudience: 'All Community',
-    category: 'Student Welfare & Mental Health',
-    responsesCount: 586,
-    totalTarget: 620,
-    satisfactionScore: '97.8%',
-    status: 'Active',
-    endDate: '20 Sep 2026',
-  },
-];
-
-function ComplaintsSurveysPage() {
+function ComplaintsManagementPage() {
   const { t, lang } = useTranslation();
   const { addNotification } = useGlobalStore();
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'शिकायतें व सर्वे' : 'Complaints & Surveys') + ' – VidyaFloww';
+    document.title = (isHindi ? 'शिकायतें व निवारण' : 'Complaints & Grievances') + ' – VidyaFloww';
   }, [isHindi]);
 
   const [grievances, setGrievances] = React.useState<GrievanceTicket[]>(INITIAL_GRIEVANCES);
-  const [surveys, setSurveys] = React.useState<InstitutionalSurvey[]>(INITIAL_SURVEYS);
   const [statusFilter, setStatusFilter] = React.useState<'All' | 'Open' | 'In Progress' | 'Resolved'>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
   const [searchGrievance, setSearchGrievance] = React.useState('');
 
   const [isLodgeModalOpen, setIsLodgeModalOpen] = React.useState(false);
-  const [isSurveyModalOpen, setIsSurveyModalOpen] = React.useState(false);
   const [viewingTicket, setViewingTicket] = React.useState<GrievanceTicket | null>(null);
 
   // New Grievance form
@@ -193,11 +138,6 @@ function ComplaintsSurveysPage() {
   const [ticketSubject, setTicketSubject] = React.useState('');
   const [ticketPriority, setTicketPriority] = React.useState<'Urgent' | 'High' | 'Medium' | 'Low'>('High');
   const [ticketDesc, setTicketDesc] = React.useState('');
-
-  // New Survey form
-  const [surveyTitle, setSurveyTitle] = React.useState('');
-  const [surveyAudience, setSurveyAudience] = React.useState<'Parents' | 'Students' | 'Faculty' | 'All Community'>('Parents');
-  const [surveyCategory, setSurveyCategory] = React.useState('Academic & Student Welfare');
 
   const handleLodgeComplaint = (e: React.FormEvent) => {
     e.preventDefault();
@@ -214,6 +154,7 @@ function ComplaintsSurveysPage() {
       lodgedDate: 'Today, Just now',
       assignedOfficer: `${ticketCategory} In-Charge Officer`,
       status: 'Open',
+      expectedSLA: ticketPriority === 'Urgent' ? 'Within 24 Hours' : 'Within 48 Hours',
     };
 
     setGrievances([newTicket, ...grievances]);
@@ -228,28 +169,28 @@ function ComplaintsSurveysPage() {
     });
   };
 
-  const handleCreateSurvey = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!surveyTitle.trim()) return;
-
-    const newSurvey: InstitutionalSurvey = {
-      id: `SURV-${Math.floor(100 + Math.random() * 900)}`,
-      title: surveyTitle.trim(),
-      targetAudience: surveyAudience,
-      category: surveyCategory,
-      responsesCount: 0,
-      totalTarget: 500,
-      satisfactionScore: '—',
-      status: 'Active',
-      endDate: '30 Sep 2026',
-    };
-
-    setSurveys([newSurvey, ...surveys]);
-    setIsSurveyModalOpen(false);
-    setSurveyTitle('');
+  const handleMarkResolved = (ticketId: string) => {
+    setGrievances((prev) =>
+      prev.map((g) =>
+        g.id === ticketId
+          ? {
+              ...g,
+              status: 'Resolved',
+              resolutionNotes: 'Resolved by duty officer. Confirmed with complainant.',
+            }
+          : g
+      )
+    );
+    if (viewingTicket && viewingTicket.id === ticketId) {
+      setViewingTicket({
+        ...viewingTicket,
+        status: 'Resolved',
+        resolutionNotes: 'Resolved by duty officer. Confirmed with complainant.',
+      });
+    }
     addNotification({
-      title: isHindi ? 'सर्वेक्षण प्रकाशित किया गया' : 'Survey Published',
-      description: `"${newSurvey.title}" live for ${newSurvey.targetAudience}.`,
+      title: isHindi ? 'शिकायत का समाधान हुआ' : 'Ticket Resolved',
+      description: `Ticket ${ticketId} marked as successfully resolved.`,
       type: 'success',
     });
   };
@@ -269,9 +210,9 @@ function ComplaintsSurveysPage() {
   });
 
   // ----------------------------------------------------
-  // TAB 1: Complaints & Grievances Option
+  // TAB 1: Grievance Registry
   // ----------------------------------------------------
-  const complaintsContent = (
+  const registryContent = (
     <div className="space-y-4">
       {/* Filters Toolbar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-[#141414] border border-border/80 p-3 rounded-md">
@@ -384,72 +325,64 @@ function ComplaintsSurveysPage() {
   );
 
   // ----------------------------------------------------
-  // TAB 2: Institutional Surveys Option
+  // TAB 2: Actionable Queue
   // ----------------------------------------------------
-  const surveysContent = (
+  const activeQueueContent = (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#141414] border border-border/80 p-3 rounded-md">
+      <div className="flex items-center justify-between bg-[#141414] border border-border/80 p-3 rounded-md">
         <div>
           <h3 className="text-sm font-bold text-foreground">
-            {isHindi ? 'संस्थागत सर्वे व फीडबैक पोल' : 'Active Institutional Feedback Surveys & Community Polls'}
+            {isHindi ? 'सक्रिय व तत्काल कार्रवाई योग्य शिकायतें' : 'Pending & Actionable Grievance Queue'}
           </h3>
           <p className="text-xs text-muted-foreground">
-            {isHindi ? 'अभिभावक, छात्र व शिक्षक संतुष्टि दर व सुझाव' : 'Anonymous feedback loops, Net Promoter Score (NPS), and cafeteria quality checks'}
+            {isHindi ? 'एसओपी के तहत प्राथमिकता के आधार पर समाधान प्रक्रिया' : 'Active issues requiring administrative resolution and departmental sign-off'}
           </p>
         </div>
-        <VFButton
-          size="sm"
-          leftIcon={<Plus className="h-3.5 w-3.5" />}
-          onClick={() => setIsSurveyModalOpen(true)}
-          className="rounded-md font-bold"
-        >
-          {isHindi ? 'नया सर्वे बनाएं' : 'Create Survey'}
-        </VFButton>
+        <VFBadge variant="warning" className="font-mono text-xs">
+          {grievances.filter((g) => g.status !== 'Resolved').length} {isHindi ? 'लंबित' : 'Pending Action'}
+        </VFBadge>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {surveys.map((sv) => {
-          const completionPct = Math.round((sv.responsesCount / sv.totalTarget) * 100);
-          return (
-            <div key={sv.id} className="p-3.5 rounded-md border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between">
+        {grievances
+          .filter((g) => g.status !== 'Resolved')
+          .map((item) => (
+            <div key={item.id} className="p-3.5 rounded-md border border-border/80 bg-card flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-2">
-                    <VFBadge variant="outline" className="text-[10px] font-mono">{sv.targetAudience}</VFBadge>
-                    <span className="text-[10px] text-muted-foreground">{sv.category}</span>
-                  </div>
-                  <VFBadge variant={sv.status === 'Active' ? 'success' : 'outline'} className="text-[10px]">
-                    {sv.status}
+                  <span className="font-mono font-bold text-xs text-primary">{item.id}</span>
+                  <VFBadge
+                    variant={item.priority === 'Urgent' ? 'danger' : 'warning'}
+                    className="text-[10px]"
+                  >
+                    {item.priority}
                   </VFBadge>
                 </div>
-
-                <h4 className="text-xs font-bold text-foreground leading-snug">{sv.title}</h4>
-
-                <div className="mt-3 space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-muted-foreground">Responses Received</span>
-                    <span className="font-mono font-bold text-foreground">{sv.responsesCount} / {sv.totalTarget} ({completionPct}%)</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-primary" style={{ width: `${completionPct}%` }} />
-                  </div>
+                <h4 className="text-xs font-bold text-foreground line-clamp-1">{item.subject}</h4>
+                <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{item.description}</p>
+                <div className="mt-2 text-[11px] text-muted-foreground flex items-center justify-between border-t border-border/50 pt-2">
+                  <span>By: <strong className="text-foreground">{item.complainantName}</strong></span>
+                  <span className="font-mono text-primary">{item.category}</span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between border-t border-border/60 pt-2.5 mt-3 text-[11px]">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-muted-foreground">Satisfaction Score:</span>
-                  <span className="font-bold text-emerald-400 font-mono">{sv.satisfactionScore}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <VFButton size="sm" variant="outline" className="h-6 px-2 text-[10px] rounded-sm" leftIcon={<Download className="h-2.5 w-2.5" />}>
-                    Export
-                  </VFButton>
-                </div>
+              <div className="flex items-center justify-between border-t border-border/60 pt-2.5 mt-3">
+                <span className="text-[10px] font-mono text-amber-400 flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  SLA: {item.expectedSLA}
+                </span>
+                <VFButton
+                  size="sm"
+                  variant="success"
+                  className="h-6 px-2 text-[10px] rounded-sm font-bold"
+                  leftIcon={<Check className="h-3 w-3" />}
+                  onClick={() => handleMarkResolved(item.id)}
+                >
+                  {isHindi ? 'समाधान करें' : 'Mark Resolved'}
+                </VFButton>
               </div>
             </div>
-          );
-        })}
+          ))}
       </div>
     </div>
   );
@@ -512,8 +445,8 @@ function ComplaintsSurveysPage() {
   );
 
   const tabs = [
-    { id: 'complaints', label: isHindi ? 'शिकायतें व निवारण' : 'Complaints & Redressal', icon: <MessageSquareWarning className="h-4 w-4" />, content: complaintsContent },
-    { id: 'surveys', label: isHindi ? 'सर्वे व फीडबैक' : 'Institutional Surveys', icon: <Vote className="h-4 w-4" />, content: surveysContent },
+    { id: 'registry', label: isHindi ? 'शिकायत पंजिका' : 'Grievance Registry', icon: <MessageSquareWarning className="h-4 w-4" />, content: registryContent },
+    { id: 'active', label: isHindi ? 'सक्रिय कतार' : 'Actionable Queue', icon: <Clock className="h-4 w-4" />, content: activeQueueContent },
     { id: 'analytics', label: isHindi ? 'निवारण विश्लेषण' : 'Resolution Analytics & SLA', icon: <BarChart3 className="h-4 w-4" />, content: analyticsContent },
   ];
 
@@ -528,28 +461,19 @@ function ComplaintsSurveysPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-base font-extrabold text-foreground tracking-tight">
-                {isHindi ? 'शिकायतें व सर्वेक्षण' : 'Complaints & Surveys'}
+                {isHindi ? 'शिकायतें व निवारण' : 'Complaints & Grievance Redressal'}
               </span>
               <VFBadge variant="success" className="text-[10px] font-bold font-mono">
-                {isHindi ? 'सक्रिय निवारण पोर्टल' : 'SLA Active'}
+                {isHindi ? 'एसओपी सक्रिय' : 'SLA Active'}
               </VFBadge>
             </div>
             <p className="text-xs text-muted-foreground">
-              {isHindi ? 'शिकायत निवारण, अभिभावक फीडबैक पोल, व छात्र संतुष्टि सर्वेक्षण' : 'Grievance ticket management, community satisfaction polls & institutional SLA tracking'}
+              {isHindi ? 'संस्थागत शिकायत निवारण, प्राथमिकता ट्रैकिंग व विभागवार समाधान' : 'Structured complaint registration, departmental routing & strict resolution SLA tracking'}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            size="sm"
-            variant="outline"
-            leftIcon={<Vote className="h-3.5 w-3.5" />}
-            onClick={() => setIsSurveyModalOpen(true)}
-            className="rounded-md font-bold"
-          >
-            {isHindi ? 'नया सर्वे' : 'New Survey'}
-          </VFButton>
           <VFButton
             size="sm"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
@@ -580,25 +504,25 @@ function ComplaintsSurveysPage() {
           className="rounded-md"
         />
         <VFStatCard
-          title={isHindi ? 'सक्रिय सर्वे' : 'Active Surveys'}
-          value="3 Live Polls"
-          icon={<Vote className="h-4.5 w-4.5 text-primary" />}
+          title={isHindi ? 'एसओपी अनुपालन' : 'SLA Compliance'}
+          value="96.8%"
+          icon={<CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />}
           trend="up"
-          trendLabel="1,426 Responses"
+          trendLabel="Within 48h SLA"
           className="rounded-md"
         />
         <VFStatCard
-          title={isHindi ? 'संतुष्टि रेटिंग' : 'Satisfaction Rating'}
-          value="94.2%"
-          icon={<CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />}
+          title={isHindi ? 'समाधान गति' : 'Resolution Velocity'}
+          value="1.4 Days"
+          icon={<TrendingUp className="h-4.5 w-4.5 text-purple-400" />}
           trend="up"
-          trendLabel="+1.8% vs last quarter"
+          trendLabel="Across all depts"
           className="rounded-md"
         />
       </div>
 
       {/* ── Tabs Navigation ── */}
-      <VFTabs items={tabs} defaultTabId="complaints" variant="top-bar" />
+      <VFTabs items={tabs} defaultTabId="registry" variant="top-bar" />
 
       {/* ── Lodge Complaint Modal ── */}
       <VFDialog
@@ -710,74 +634,6 @@ function ComplaintsSurveysPage() {
         </form>
       </VFDialog>
 
-      {/* ── Create Survey Modal ── */}
-      <VFDialog
-        isOpen={isSurveyModalOpen}
-        onClose={() => setIsSurveyModalOpen(false)}
-        title={isHindi ? 'नया संस्थागत सर्वेक्षण बनाएं' : 'Create Institutional Survey'}
-        description={isHindi ? 'लक्षित समूह व सर्वेक्षण शीर्षक निर्धारित करें' : 'Broadcast a digital questionnaire to collect anonymous feedback'}
-        className="max-w-md rounded-md"
-        footerActions={
-          <div className="flex items-center justify-end gap-2 w-full">
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => setIsSurveyModalOpen(false)}
-              className="rounded-md"
-            >
-              {t('action.cancel')}
-            </VFButton>
-            <VFButton
-              variant="primary"
-              size="sm"
-              onClick={handleCreateSurvey}
-              disabled={!surveyTitle.trim()}
-              className="rounded-md font-bold"
-            >
-              {isHindi ? 'प्रकाशित करें' : 'Publish Survey'}
-            </VFButton>
-          </div>
-        }
-      >
-        <form onSubmit={handleCreateSurvey} className="space-y-3 text-xs mt-1">
-          <div>
-            <label className="block font-bold text-foreground mb-1">{isHindi ? 'सर्वेक्षण शीर्षक' : 'Survey Title'}</label>
-            <input
-              type="text"
-              value={surveyTitle}
-              onChange={(e) => setSurveyTitle(e.target.value)}
-              placeholder="e.g. Mid-Term Student Learning Comfort Poll"
-              className="w-full px-3 py-2 border border-border rounded-md bg-[#161616] text-foreground text-xs focus:outline-none"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block font-bold text-foreground mb-1">{isHindi ? 'लक्षित समूह' : 'Target Audience'}</label>
-              <select
-                value={surveyAudience}
-                onChange={(e: any) => setSurveyAudience(e.target.value)}
-                className="w-full px-2.5 py-2 border border-border rounded-md bg-[#161616] text-foreground text-xs focus:outline-none"
-              >
-                <option value="Parents">Parents Only</option>
-                <option value="Students">Students Only</option>
-                <option value="Faculty">Faculty &amp; Staff</option>
-                <option value="All Community">All School Community</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-bold text-foreground mb-1">{isHindi ? 'श्रेणी' : 'Category'}</label>
-              <input
-                type="text"
-                value={surveyCategory}
-                onChange={(e) => setSurveyCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-border rounded-md bg-[#161616] text-foreground text-xs focus:outline-none"
-              />
-            </div>
-          </div>
-        </form>
-      </VFDialog>
-
       {/* ── Ticket Detail View Dialog ── */}
       {viewingTicket && (
         <VFDialog
@@ -788,9 +644,21 @@ function ComplaintsSurveysPage() {
           className="max-w-md rounded-md"
           footerActions={
             <div className="flex items-center justify-between w-full">
-              <span className="text-[11px] text-muted-foreground font-mono">
-                Assigned: {viewingTicket.assignedOfficer}
-              </span>
+              {viewingTicket.status !== 'Resolved' ? (
+                <VFButton
+                  variant="success"
+                  size="sm"
+                  onClick={() => handleMarkResolved(viewingTicket.id)}
+                  className="rounded-md font-bold"
+                >
+                  {isHindi ? 'समाधान करें' : 'Mark Resolved'}
+                </VFButton>
+              ) : (
+                <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Resolved
+                </span>
+              )}
               <VFButton
                 variant="outline"
                 size="sm"
@@ -814,6 +682,11 @@ function ComplaintsSurveysPage() {
             <div className="border border-border/70 rounded-md p-2.5 bg-[#121212]">
               <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1">Full Statement</p>
               <p className="text-foreground leading-relaxed">{viewingTicket.description}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-[11px] text-muted-foreground">
+              <div>Assigned: <strong className="text-foreground">{viewingTicket.assignedOfficer}</strong></div>
+              <div>SLA Target: <strong className="text-amber-400 font-mono">{viewingTicket.expectedSLA}</strong></div>
             </div>
 
             {viewingTicket.resolutionNotes && (

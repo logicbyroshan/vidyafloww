@@ -26,6 +26,7 @@ import {
   UserPlus,
   Users,
   Video,
+  Vote,
   Wallet,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -94,6 +95,7 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'statistics', labelKey: 'nav.statistics', route: '/statistics', icon: BarChart3 },
       { id: 'notices', labelKey: 'nav.notices', route: '/notices', icon: Bell },
       { id: 'complaints', labelKey: 'nav.complaints', route: '/complaints', icon: MessageSquareWarning },
+      { id: 'surveys', labelKey: 'nav.surveys', route: '/surveys', icon: Vote },
       { id: 'reports', labelKey: 'nav.reports', route: '/reports', icon: FileSpreadsheet },
       { id: 'license', labelKey: 'nav.license', route: '/license', icon: Key },
       { id: 'settings', labelKey: 'nav.settings', route: '/settings', icon: Settings },

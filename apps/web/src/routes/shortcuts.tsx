@@ -36,6 +36,7 @@ import {
   Building2,
   Video,
   MessageSquareWarning,
+  Vote,
 } from 'lucide-react';
 import { useGlobalStore, DEFAULT_DASHBOARD_SHORTCUTS } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -65,12 +66,13 @@ export const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'notices', label: 'Notices', labelHi: 'नोटिस व सर्कुलर', desc: 'Campus circulars & broadcasts', descHi: 'स्कूल सर्कुलर व घोषणाएं', route: '/notices', icon: Bell, category: 'Communication' },
   { id: 'teaching', label: 'Teaching', labelHi: 'शिक्षण', desc: 'Lesson planner & faculty pacing', descHi: 'पाठ योजना व शिक्षण ट्रैकिंग', route: '/teaching', icon: BookOpenCheck, category: 'Academic' },
   { id: 'homework', label: 'Homework', labelHi: 'होमवर्क', desc: 'Daily assignments & submissions', descHi: 'दैनिक असाइनमेंट व सबमिशन', route: '/homework', icon: BookOpen, category: 'Academic' },
-  { id: 'eclass', label: 'E-Class', labelHi: 'ई-क्लास ऑनलाइन', desc: 'Live virtual classroom & video lectures', descHi: 'लाइव वर्चुअल कक्षा व रिकॉर्डेड लेक्चर', route: '/e-class', icon: Video, category: 'Academic' },
+  { id: 'eclass', label: 'E-Class', labelHi: 'ई-क्लास', desc: 'Virtual classroom & video lectures', descHi: 'वर्चुअल कक्षा व वीडियो लेक्चर्स', route: '/e-class', icon: Video, category: 'Academic' },
   { id: 'examinations', label: 'Exams', labelHi: 'परीक्षाएं', desc: 'Marksheets, grades & report cards', descHi: 'मार्कशीट, ग्रेड व रिपोर्ट कार्ड', route: '/examinations', icon: ClipboardList, category: 'Academic' },
   { id: 'academics', label: 'Academics', labelHi: 'एकेडमिक्स', desc: 'Grade hierarchy & wing structure', descHi: 'कक्षा संरचना व विंग', route: '/academics', icon: School, category: 'Academic' },
   { id: 'transport', label: 'Transport', labelHi: 'परिवहन', desc: 'Fleet GPS telematics & bus routes', descHi: 'बस रूट व लाइव जीपीएस ट्रैकिंग', route: '/transport', icon: Bus, category: 'Operations' },
   { id: 'hostel', label: 'Hostel', labelHi: 'छात्रावास', desc: 'Dormitory beds, outpass & mess menu', descHi: 'कमरा आवंटन, आउटपास व मेस मेनू', route: '/hostel', icon: Building2, category: 'Operations' },
-  { id: 'complaints', label: 'Complaints & Surveys', labelHi: 'शिकायतें व सर्वे', desc: 'Grievance redressal & parent surveys', descHi: 'शिकायत निवारण व संस्थागत सर्वे', route: '/complaints', icon: MessageSquareWarning, category: 'Operations' },
+  { id: 'complaints', label: 'Complaints', labelHi: 'शिकायतें', desc: 'Grievance redressal & ticket tracking', descHi: 'शिकायत निवारण व टिकट ट्रैकिंग', route: '/complaints', icon: MessageSquareWarning, category: 'Operations' },
+  { id: 'surveys', label: 'Surveys', labelHi: 'सर्वेक्षण', desc: 'Institutional feedback & community polls', descHi: 'संस्थागत फीडबैक व कम्युनिटी पोल', route: '/surveys', icon: Vote, category: 'Operations' },
   { id: 'statistics', label: 'Statistics', labelHi: 'आंकड़े व स्टेट्स', desc: 'Institutional telemetry & analytics', descHi: 'संस्थान के आंकड़े व विश्लेषण', route: '/statistics', icon: BarChart3, category: 'Operations' },
   { id: 'reports', label: 'Reports', labelHi: 'रिपोर्ट्स', desc: 'CBSE, RTE compliance & export audit', descHi: 'CBSE, RTE कंप्लायंस व ऑडिट', route: '/reports', icon: FileSpreadsheet, category: 'Operations' },
   { id: 'settings', label: 'Settings', labelHi: 'सेटिंग्स', desc: 'School branding, logos & AY session', descHi: 'स्कूल ब्रांडिंग, लोगो व सत्र', route: '/settings', icon: Settings, category: 'System' },
