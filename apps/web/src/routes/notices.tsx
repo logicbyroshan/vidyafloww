@@ -9,12 +9,19 @@ import {
   VFInput,
   VFTextarea,
   VFDialog,
+  VFDrawer,
 } from '@vidyafloww/ui';
 import {
-  Plus,
   Download,
   Send,
   Eye,
+  Users,
+  Radio,
+  CheckCircle2,
+  X,
+  Smartphone,
+  Mail,
+  Bell,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -33,65 +40,82 @@ interface NoticeRecord {
   deliveryStatus: string;
   content: string;
   status: 'Published' | 'Draft' | 'Scheduled';
+  priority?: 'Normal' | 'High' | 'Urgent';
 }
 
+const AUDIENCE_STATS: Record<string, { label: string; count: number; desc: string }> = {
+  'All School': { label: 'All School Community', count: 1248, desc: 'Every parent, faculty member, and enrolled student' },
+  'Parents': { label: 'Parents & Guardians', count: 1080, desc: 'Registered primary family mobile contacts' },
+  'Teachers': { label: 'Faculty & Educators', count: 124, desc: 'All teaching staff, HODs, and administrators' },
+  'Classes 9-12': { label: 'Senior Secondary Wing', count: 420, desc: 'Classes 9, 10, 11, and 12 pupils & guardians' },
+};
+
 const INITIAL_NOTICES: NoticeRecord[] = [
-  { id: '1', circularNo: 'CIR-2026-042', title: 'Independence Day Celebrations & Dress Code Guidelines', targetAudience: 'All School', category: 'Event', publishDate: '12 Aug 2026', deliveryStatus: '1,248 Delivered (100%)', content: 'Students are requested to assemble in formal white attire by 08:00 AM on August 15.', status: 'Published' },
-  { id: '2', circularNo: 'CIR-2026-041', title: 'Term 1 Parent-Teacher Meeting (PTM) Schedule & Slots', targetAudience: 'Parents', category: 'Academic', publishDate: '10 Aug 2026', deliveryStatus: '1,142 App / 106 SMS', content: 'PTM slots are allocated roll-number wise from 09:00 AM to 01:30 PM on Saturday.', status: 'Published' },
-  { id: '3', circularNo: 'CIR-2026-040', title: 'CBSE Board Examination Registration LOC Verification', targetAudience: 'Classes 9-12', category: 'Academic', publishDate: '08 Aug 2026', deliveryStatus: '620 Delivered', content: 'Class 10 & 12 guardians must review subject choices and sign LOC document by Friday.', status: 'Published' },
-  { id: '4', circularNo: 'CIR-2026-039', title: 'Faculty Professional Development Workshop on NEP 2020', targetAudience: 'Teachers', category: 'Administrative', publishDate: '05 Aug 2026', deliveryStatus: '124 Staff Notified', content: 'Mandatory pedagogy seminar conducted by CBSE resource persons in the main auditorium.', status: 'Published' },
-  { id: '5', circularNo: 'CIR-2026-038', title: 'Monsoon Seasonal Health Advisory & Infirmary Guidelines', targetAudience: 'Parents', category: 'Event', publishDate: '01 Aug 2026', deliveryStatus: '1,248 Delivered', content: 'Preventative guidelines regarding viral flu precautions and drinking water hygiene.', status: 'Published' },
+  { id: '1', circularNo: 'CIR-2026-042', title: 'Independence Day Celebrations & Dress Code Guidelines', targetAudience: 'All School', category: 'Event', publishDate: '12 Aug 2026', deliveryStatus: '1,248 Delivered (100%)', content: 'Students are requested to assemble in formal white attire by 08:00 AM on August 15.', status: 'Published', priority: 'High' },
+  { id: '2', circularNo: 'CIR-2026-041', title: 'Term 1 Parent-Teacher Meeting (PTM) Schedule & Slots', targetAudience: 'Parents', category: 'Academic', publishDate: '10 Aug 2026', deliveryStatus: '1,142 App / 106 SMS', content: 'PTM slots are allocated roll-number wise from 09:00 AM to 01:30 PM on Saturday.', status: 'Published', priority: 'Normal' },
+  { id: '3', circularNo: 'CIR-2026-040', title: 'CBSE Board Examination Registration LOC Verification', targetAudience: 'Classes 9-12', category: 'Academic', publishDate: '08 Aug 2026', deliveryStatus: '620 Delivered', content: 'Class 10 & 12 guardians must review subject choices and sign LOC document by Friday.', status: 'Published', priority: 'Urgent' },
+  { id: '4', circularNo: 'CIR-2026-039', title: 'Faculty Professional Development Workshop on NEP 2020', targetAudience: 'Teachers', category: 'Administrative', publishDate: '05 Aug 2026', deliveryStatus: '124 Staff Notified', content: 'Mandatory pedagogy seminar conducted by CBSE resource persons in the main auditorium.', status: 'Published', priority: 'Normal' },
+  { id: '5', circularNo: 'CIR-2026-038', title: 'Monsoon Seasonal Health Advisory & Infirmary Guidelines', targetAudience: 'Parents', category: 'Event', publishDate: '01 Aug 2026', deliveryStatus: '1,248 Delivered', content: 'Preventative guidelines regarding viral flu precautions and drinking water hygiene.', status: 'Published', priority: 'Normal' },
 ];
 
 function NoticesPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.notices') + ' \u2013 VidyaFloww'; }, [t]);
+  React.useEffect(() => { document.title = t('page.notices') + ' – VidyaFloww'; }, [t]);
   const [notices, setNotices] = React.useState<NoticeRecord[]>(INITIAL_NOTICES);
   const [audienceFilter, setAudienceFilter] = React.useState<string>('All');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('All');
-  const [isPublishModalOpen, setIsPublishModalOpen] = React.useState(false);
+  const [isBroadcastDrawerOpen, setIsBroadcastDrawerOpen] = React.useState(false);
   const [selectedNotice, setSelectedNotice] = React.useState<NoticeRecord | null>(null);
 
-  const [newNotice, setNewNotice] = React.useState<Partial<NoticeRecord>>({
-    circularNo: `CIR-2026-0${notices.length + 43}`,
-    title: '',
-    targetAudience: 'Parents',
-    category: 'Academic',
-    content: '',
-    status: 'Published',
+  // Broadcast Drawer Form State
+  const [targetAudience, setTargetAudience] = React.useState<NoticeRecord['targetAudience']>('All School');
+  const [noticeCategory, setNoticeCategory] = React.useState<NoticeRecord['category']>('Academic');
+  const [noticePriority, setNoticePriority] = React.useState<'Normal' | 'High' | 'Urgent'>('Normal');
+  const [noticeTitle, setNoticeTitle] = React.useState('');
+  const [noticeContent, setNoticeContent] = React.useState('');
+  const [channels, setChannels] = React.useState<{ app: boolean; sms: boolean; portal: boolean }>({
+    app: true,
+    sms: true,
+    portal: true,
   });
 
   const handlePublishNotice = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newNotice.title) return;
+    if (!noticeTitle.trim()) return;
+
+    const audienceInfo = AUDIENCE_STATS[targetAudience] || { count: 1248, label: targetAudience };
+    const enabledChannelNames = [];
+    if (channels.app) enabledChannelNames.push('App Push');
+    if (channels.sms) enabledChannelNames.push('SMS');
+    if (channels.portal) enabledChannelNames.push('Web Notice');
 
     const added: NoticeRecord = {
       id: String(Date.now()),
-      circularNo: newNotice.circularNo || `CIR-2026-0${notices.length + 43}`,
-      title: newNotice.title,
-      targetAudience: (newNotice.targetAudience as any) || 'Parents',
-      category: (newNotice.category as any) || 'Academic',
-      publishDate: 'Today',
-      deliveryStatus: 'Broadcasting via SMS & App Push...',
-      content: newNotice.content || 'Official circular issued by school administration.',
-      status: (newNotice.status as any) || 'Published',
+      circularNo: `CIR-2026-0${notices.length + 43}`,
+      title: noticeTitle.trim(),
+      targetAudience,
+      category: noticeCategory,
+      priority: noticePriority,
+      publishDate: 'Today, Just Now',
+      deliveryStatus: `${audienceInfo.count.toLocaleString()} Delivered (${enabledChannelNames.join(' · ')})`,
+      content: noticeContent.trim() || 'Official administrative circular dispatched to all designated recipients.',
+      status: 'Published',
     };
 
     setNotices([added, ...notices]);
-    setIsPublishModalOpen(false);
-    setNewNotice({
-      circularNo: `CIR-2026-0${notices.length + 44}`,
-      title: '',
-      targetAudience: 'Parents',
-      category: 'Academic',
-      content: '',
-      status: 'Published',
-    });
+    setIsBroadcastDrawerOpen(false);
+
+    // Reset Form
+    setNoticeTitle('');
+    setNoticeContent('');
+    setNoticePriority('Normal');
+    setTargetAudience('All School');
+
     addNotification({
-      title: isHindi ? 'सर्कुलर जारी किया गया' : 'Circular Dispatched',
-      description: `"${added.title}" broadcasted to ${added.targetAudience} via App & SMS.`,
+      title: isHindi ? 'सर्कुलर सभी को भेजा गया' : 'Circular Broadcast Dispatched',
+      description: `"${added.title}" delivered to ${audienceInfo.count} recipients (${targetAudience}) via ${enabledChannelNames.join(', ')}.`,
       type: 'success',
     });
   };
@@ -117,7 +141,7 @@ function NoticesPage() {
       header: isHindi ? 'सर्कुलर नं.' : 'Circular No',
       accessorKey: 'circularNo',
       cell: (r: NoticeRecord) => (
-        <span className="font-mono font-bold text-foreground bg-muted px-2.5 py-1 rounded-md border border-border text-xs">
+        <span className="font-mono font-bold text-foreground bg-[#181818] px-2.5 py-1 rounded-[3px] border border-border/80 text-xs">
           {r.circularNo}
         </span>
       ),
@@ -127,8 +151,17 @@ function NoticesPage() {
       accessorKey: 'title',
       cell: (r: NoticeRecord) => (
         <div>
-          <p className="font-extrabold text-foreground text-sm leading-tight">{r.title}</p>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5">{r.category} {isHindi ? 'सूचना' : 'Announcement'}</p>
+          <p className="font-extrabold text-foreground text-sm leading-tight flex items-center gap-1.5">
+            {r.title}
+            {r.priority === 'Urgent' && (
+              <span className="px-1.5 py-0.5 rounded-[2px] bg-rose-500/20 text-rose-400 text-[10px] font-bold border border-rose-500/30">
+                URGENT
+              </span>
+            )}
+          </p>
+          <p className="text-xs text-muted-foreground font-semibold mt-0.5">
+            {r.category} {isHindi ? 'सूचना' : 'Circular'}
+          </p>
         </div>
       ),
     },
@@ -136,7 +169,7 @@ function NoticesPage() {
       header: isHindi ? 'लक्षित वर्ग' : 'Target Audience',
       accessorKey: 'targetAudience',
       cell: (r: NoticeRecord) => (
-        <VFBadge variant="outline" className="font-bold">
+        <VFBadge variant={r.targetAudience === 'All School' ? 'default' : 'outline'} className="font-bold text-xs">
           {r.targetAudience}
         </VFBadge>
       ),
@@ -168,9 +201,10 @@ function NoticesPage() {
           size="sm"
           variant="outline"
           leftIcon={<Eye className="h-3.5 w-3.5" />}
+          className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
           onClick={() => setSelectedNotice(r)}
         >
-          {isHindi ? 'नोटिस देखें' : 'View Notice'}
+          {isHindi ? 'देखें' : 'View Circular'}
         </VFButton>
       ),
     },
@@ -223,88 +257,239 @@ function NoticesPage() {
 
             <VFButton
               size="sm"
-              onClick={() => setIsPublishModalOpen(true)}
-              className="h-8 px-3 text-xs font-bold rounded-[4px]"
-              leftIcon={<Plus className="h-3.5 w-3.5" />}
+              onClick={() => setIsBroadcastDrawerOpen(true)}
+              className="h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs"
+              leftIcon={<Radio className="h-3.5 w-3.5 text-primary-foreground" />}
             >
-              {t('action.add')}
+              {isHindi ? 'सभी को सर्कुलर भेजें' : 'Send Notice to All'}
             </VFButton>
           </div>
         }
       />
 
-      {/* Publish Notice Modal */}
-      <VFDialog
-        isOpen={isPublishModalOpen}
-        onClose={() => setIsPublishModalOpen(false)}
-        title="Publish Official Notice / Circular"
-        description="Broadcast emergency announcements, holiday schedules, and circulars instantly."
+      {/* ──────────────────────────────────────────────────────────────────────────
+          BROADCAST NOTICE / CIRCULAR SIDE DRAWER
+          ────────────────────────────────────────────────────────────────────────── */}
+      <VFDrawer
+        isOpen={isBroadcastDrawerOpen}
+        onClose={() => setIsBroadcastDrawerOpen(false)}
+        title={isHindi ? 'सर्कुलर व नोटिस जारी करें' : 'Broadcast Notice / Circular'}
+        description={isHindi ? 'सभी छात्रों, अभिभावकों व शिक्षकों को त्वरित सूचना प्रेषित करें' : 'Dispatch institutional announcements across mobile app, SMS, and portal.'}
+        className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
+        bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
+        headerActions={
+          <button
+            onClick={() => setIsBroadcastDrawerOpen(false)}
+            className="p-1.5 rounded-[4px] text-muted-foreground hover:text-foreground hover:bg-[#1f1f1f] transition-colors cursor-pointer"
+            title="Close"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        }
+        footerActions={
+          <div className="flex items-center justify-between gap-3 w-full">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-mono text-emerald-400 font-bold">
+                ✓ {AUDIENCE_STATS[targetAudience]?.count || 1248} Recipients
+              </span>
+              <span className="text-muted-foreground text-[11px]">·</span>
+              <span className="text-muted-foreground text-[11px]">
+                {targetAudience}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <VFButton
+                variant="outline"
+                size="sm"
+                className="h-8 text-xs font-bold rounded-[4px]"
+                onClick={() => setIsBroadcastDrawerOpen(false)}
+              >
+                Cancel
+              </VFButton>
+              <VFButton
+                size="sm"
+                className="h-8 px-4 text-xs font-bold rounded-[4px] shadow-xs"
+                leftIcon={<Send className="h-3.5 w-3.5" />}
+                onClick={handlePublishNotice}
+              >
+                {isHindi ? 'अभी सभी को भेजें 🚀' : 'Broadcast Notice Now 🚀'}
+              </VFButton>
+            </div>
+          </div>
+        }
       >
-        <form onSubmit={handlePublishNotice} className="space-y-3.5 pt-1">
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">Notice Title *</label>
-            <VFInput
-              required
-              placeholder="e.g. Schedule for Annual Science Fair & Project Exhibition"
-              value={newNotice.title}
-              onChange={(e) => setNewNotice({ ...newNotice, title: e.target.value })}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
-            />
+        <div className="space-y-4">
+          {/* Section 1: Target Audience Selection */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
+                1. Select Target Audience *
+              </label>
+              <button
+                type="button"
+                onClick={() => setTargetAudience('All School')}
+                className={`text-[11px] font-bold px-2 py-0.5 rounded-[3px] border transition-colors cursor-pointer ${
+                  targetAudience === 'All School'
+                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                    : 'bg-[#181818] text-muted-foreground border-border hover:text-foreground'
+                }`}
+              >
+                ⚡ Quick: Send to Everyone (Whole School)
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {(Object.keys(AUDIENCE_STATS) as NoticeRecord['targetAudience'][]).map((aud) => {
+                const info = AUDIENCE_STATS[aud];
+                const isSelected = targetAudience === aud;
+                return (
+                  <button
+                    key={aud}
+                    type="button"
+                    onClick={() => setTargetAudience(aud)}
+                    className={`p-2.5 rounded-[4px] border text-left flex flex-col justify-between gap-1 transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-primary/15 border-primary text-foreground ring-1 ring-primary/40'
+                        : 'bg-[#141414] border-[#242424] text-muted-foreground hover:text-foreground hover:border-[#333]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <Users className="h-3.5 w-3.5 text-primary" />
+                        <span className="font-bold text-xs text-foreground">{info.label}</span>
+                      </div>
+                      {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-primary" />}
+                    </div>
+                    <p className="text-[10px] text-muted-foreground line-clamp-1">{info.desc}</p>
+                    <span className="font-mono text-[10px] font-bold text-emerald-400 mt-0.5">
+                      {info.count.toLocaleString()} Active Recipients
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          {/* Section 2: Category, Priority & Broadcast Channels */}
+          <div className="space-y-2">
+            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
+              2. Classification & Dispatch Channels
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-muted-foreground block">Circular Category</label>
+                <VFSelect
+                  value={noticeCategory}
+                  onChange={(e) => setNoticeCategory(e.target.value as any)}
+                  options={[
+                    { label: 'Academic Notice', value: 'Academic' },
+                    { label: 'Event / Function', value: 'Event' },
+                    { label: 'Holiday Announcement', value: 'Holiday' },
+                    { label: 'Administrative Memo', value: 'Administrative' },
+                  ]}
+                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-muted-foreground block">Priority Level</label>
+                <VFSelect
+                  value={noticePriority}
+                  onChange={(e) => setNoticePriority(e.target.value as any)}
+                  options={[
+                    { label: 'Normal Circular', value: 'Normal' },
+                    { label: 'High Priority', value: 'High' },
+                    { label: 'Urgent Alert', value: 'Urgent' },
+                  ]}
+                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-muted-foreground block">Ref Code</label>
+                <VFInput
+                  readOnly
+                  value={`CIR-2026-0${notices.length + 43}`}
+                  className="bg-[#141414] border-border h-8 text-xs font-mono text-muted-foreground rounded-[4px]"
+                />
+              </div>
+            </div>
+
+            {/* Delivery Channels */}
+            <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center justify-between gap-2 mt-1">
+              <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
+                <Radio className="h-3.5 w-3.5 text-primary" />
+                Dispatch Mediums:
+              </span>
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-1.5 text-xs text-foreground cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={channels.app}
+                    onChange={(e) => setChannels({ ...channels, app: e.target.checked })}
+                    className="rounded-[2px] accent-primary"
+                  />
+                  <Smartphone className="h-3 w-3 text-muted-foreground" />
+                  <span>Mobile App Push</span>
+                </label>
+                <label className="flex items-center gap-1.5 text-xs text-foreground cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={channels.sms}
+                    onChange={(e) => setChannels({ ...channels, sms: e.target.checked })}
+                    className="rounded-[2px] accent-primary"
+                  />
+                  <Bell className="h-3 w-3 text-muted-foreground" />
+                  <span>SMS Gateway</span>
+                </label>
+                <label className="flex items-center gap-1.5 text-xs text-foreground cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={channels.portal}
+                    onChange={(e) => setChannels({ ...channels, portal: e.target.checked })}
+                    className="rounded-[2px] accent-primary"
+                  />
+                  <Mail className="h-3 w-3 text-muted-foreground" />
+                  <span>Portal Feed</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Notice Title & Message Body */}
+          <div className="space-y-2">
+            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
+              3. Notice Subject & Content *
+            </label>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">Target Audience</label>
-              <VFSelect
-                value={newNotice.targetAudience || 'Parents'}
-                onChange={(e) => setNewNotice({ ...newNotice, targetAudience: e.target.value as any })}
-                options={[
-                  { label: 'All School (Parents, Staff, Students)', value: 'All School' },
-                  { label: 'Parents & Guardians Only', value: 'Parents' },
-                  { label: 'Faculty & Staff Only', value: 'Teachers' },
-                  { label: 'Classes 9 to 12', value: 'Classes 9-12' },
-                ]}
-                className="bg-[#1a1a1a] border-border h-9 text-xs"
+              <label className="text-[11px] font-semibold text-muted-foreground">Notice Subject Line *</label>
+              <VFInput
+                required
+                placeholder="e.g. Schedule for Annual Sports Day & Athletic Meet 2026"
+                value={noticeTitle}
+                onChange={(e) => setNoticeTitle(e.target.value)}
+                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">Category</label>
-              <VFSelect
-                value={newNotice.category || 'Academic'}
-                onChange={(e) => setNewNotice({ ...newNotice, category: e.target.value as any })}
-                options={[
-                  { label: 'Academic', value: 'Academic' },
-                  { label: 'Event', value: 'Event' },
-                  { label: 'Holiday', value: 'Holiday' },
-                  { label: 'Administrative', value: 'Administrative' },
-                ]}
-                className="bg-[#1a1a1a] border-border h-9 text-xs"
+              <div className="flex justify-between items-center">
+                <label className="text-[11px] font-semibold text-muted-foreground">Circular Body & Guidelines *</label>
+                <span className="text-[10px] text-muted-foreground font-mono">
+                  {noticeContent.length} chars
+                </span>
+              </div>
+              <VFTextarea
+                rows={5}
+                placeholder="Type complete circular text, reporting timings, guidelines, uniform instructions, or emergency details here..."
+                value={noticeContent}
+                onChange={(e) => setNoticeContent(e.target.value)}
+                className="bg-[#141414] border-border text-xs rounded-[4px] leading-relaxed"
               />
             </div>
           </div>
-
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">Circular Body Text & Instructions</label>
-            <VFTextarea
-              rows={4}
-              placeholder="Enter complete circular text, instructions, and date details..."
-              value={newNotice.content}
-              onChange={(e) => setNewNotice({ ...newNotice, content: e.target.value })}
-              className="bg-[#1a1a1a] border-border text-xs"
-            />
-          </div>
-
-          <div className="flex justify-end gap-2 pt-3 border-t border-border/50">
-            <VFButton type="button" variant="outline" size="sm" onClick={() => setIsPublishModalOpen(false)}>
-              Cancel
-            </VFButton>
-            <VFButton type="submit" size="sm" leftIcon={<Send className="h-4 w-4" />}>
-              Broadcast Notice
-            </VFButton>
-          </div>
-        </form>
-      </VFDialog>
+        </div>
+      </VFDrawer>
 
       {/* View Notice Detail Modal */}
       {selectedNotice && (
