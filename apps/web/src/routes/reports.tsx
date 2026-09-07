@@ -554,7 +554,7 @@ function ReportsPage() {
             size="sm"
             variant="outline"
             className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
-            leftIcon={<Download className="h-3.5 w-3.5 text-primary" />}
+            leftIcon={<Download className="h-3.5 w-3.5" />}
             onClick={() => handleInstantRowExport(r)}
           >
             {isHindi ? 'डाउनलोड ⬇' : 'Download ⬇'}
@@ -614,7 +614,7 @@ function ReportsPage() {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         title={isHindi ? 'कस्टम रिपोर्ट एक्सपोर्ट' : 'Custom Report & Data Export'}
-        description={isHindi ? 'डोमेन डेटासेट, फ़िल्टर स्कोप, कॉलम और फॉर्मेट चुनें' : 'Configure domain dataset, filter criteria, columns, and target format'}
+        description={isHindi ? 'डोमेन डेटासेट, फ़िल्टर स्कोप, कॉलम और फॉर्मेट चुनें' : 'Configure domain dataset, filter criteria, columns, and target format.'}
         className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
         bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
         headerActions={
@@ -657,12 +657,12 @@ function ReportsPage() {
           </div>
         }
       >
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           {/* Step 1: Select Domain Dataset */}
-          <div className="space-y-2">
-            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
-              1. Select Domain Dataset *
-            </label>
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '1. डेटासेट श्रेणी चुनें *' : '1. Select Domain Dataset *'}
+            </h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {(Object.keys(DOMAINS) as DomainType[]).map((domKey) => {
                 const dom = DOMAINS[domKey];
@@ -674,13 +674,13 @@ function ReportsPage() {
                     onClick={() => setSelectedDomain(domKey)}
                     className={`p-2.5 rounded-[4px] border text-left flex flex-col justify-between gap-1.5 transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-primary/10 border-primary text-foreground ring-1 ring-primary/40'
-                        : 'bg-[#141414] border-[#242424] text-muted-foreground hover:text-foreground hover:border-[#333]'
+                        ? 'bg-[#1c1c1c] border-zinc-400 text-foreground ring-1 ring-zinc-500/20 shadow-xs'
+                        : 'bg-[#161616] border-border/70 text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                   >
                     <div className="flex items-center justify-between w-full">
                       {dom.icon}
-                      {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-primary" />}
+                      {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-foreground" />}
                     </div>
                     <div>
                       <p className="font-bold text-xs text-foreground truncate">{dom.labelEn}</p>
@@ -692,15 +692,15 @@ function ReportsPage() {
             </div>
           </div>
 
-          {/* Step 2: Scope & Filters (Clean, Unboxed 3-Column Grid) */}
-          <div className="space-y-2">
-            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
-              2. Filter Scope & Criteria
-            </label>
+          {/* Step 2: Scope & Filters */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '2. फ़िल्टर स्कोप व अवधि' : '2. Filter Scope & Criteria'}
+            </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground block">
-                  Academic Session
+                <label className="text-xs font-bold text-foreground block">
+                  {isHindi ? 'शैक्षणिक सत्र' : 'Academic Session'}
                 </label>
                 <VFSelect
                   value={selectedSession}
@@ -710,13 +710,13 @@ function ReportsPage() {
                     { label: '2025–2026', value: '2025–2026' },
                     { label: '2024–2025 (Archive)', value: '2024–2025' },
                   ]}
-                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground block">
-                  Class / Division
+                <label className="text-xs font-bold text-foreground block">
+                  {isHindi ? 'कक्षा / डिवीजन' : 'Class / Division'}
                 </label>
                 <VFSelect
                   value={selectedGrade}
@@ -728,13 +728,13 @@ function ReportsPage() {
                     { label: 'Class 12 (Senior Sec)', value: 'Class 12' },
                     { label: 'Class 9 (High School)', value: 'Class 9' },
                   ]}
-                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground block">
-                  Audit Timeframe
+                <label className="text-xs font-bold text-foreground block">
+                  {isHindi ? 'समय सीमा' : 'Audit Timeframe'}
                 </label>
                 <VFSelect
                   value={selectedTimeframe}
@@ -745,23 +745,23 @@ function ReportsPage() {
                     { label: 'Quarter 2 (Jul–Sep)', value: 'Quarter 2' },
                     { label: 'Quarter 1 (Apr–Jun)', value: 'Quarter 1' },
                   ]}
-                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
                 />
               </div>
             </div>
           </div>
 
           {/* Step 3: Column Attributes Selector */}
-          <div className="space-y-2">
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-extrabold text-foreground uppercase tracking-wider">
-                3. Choose Included Columns ({selectedColumnKeys.length}/{DOMAINS[selectedDomain].columns.length})
-              </label>
+              <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+                {isHindi ? '3. सम्मिलित कॉलम' : '3. Included Columns'} ({selectedColumnKeys.length}/{DOMAINS[selectedDomain].columns.length})
+              </h4>
               <div className="flex items-center gap-2 text-[11px]">
                 <button
                   type="button"
                   onClick={handleSelectAllColumns}
-                  className="text-primary hover:underline font-bold cursor-pointer"
+                  className="text-foreground hover:underline font-bold cursor-pointer"
                 >
                   Select All
                 </button>
@@ -776,7 +776,7 @@ function ReportsPage() {
               </div>
             </div>
 
-            <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex flex-wrap gap-1.5">
+            <div className="p-2 rounded-[4px] bg-[#181818] border border-border/70 flex flex-wrap gap-1.5">
               {DOMAINS[selectedDomain].columns.map((col) => {
                 const isChecked = selectedColumnKeys.includes(col.key);
                 return (
@@ -786,12 +786,12 @@ function ReportsPage() {
                     onClick={() => handleToggleColumn(col.key)}
                     className={`px-2.5 py-1 rounded-[3px] text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
                       isChecked
-                        ? 'bg-primary/15 border-primary/50 text-foreground'
-                        : 'bg-[#1c1c1c] border-[#2c2c2c] text-muted-foreground hover:text-foreground'
+                        ? 'bg-[#222] border-zinc-400 text-foreground shadow-2xs'
+                        : 'bg-[#161616] border-border/70 text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     <span
-                      className={`h-2 w-2 rounded-[1px] ${isChecked ? 'bg-primary' : 'bg-muted-foreground/40'}`}
+                      className={`h-2 w-2 rounded-[1px] ${isChecked ? 'bg-zinc-200' : 'bg-muted-foreground/30'}`}
                     />
                     <span>{col.label}</span>
                   </button>
@@ -801,10 +801,10 @@ function ReportsPage() {
           </div>
 
           {/* Step 4: Export Format Selection */}
-          <div className="space-y-2">
-            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
-              4. Target Export Format *
-            </label>
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '4. एक्सपोर्ट प्रारूप चुनें *' : '4. Target Export Format *'}
+            </h4>
             <div className="grid grid-cols-3 gap-2">
               {[
                 {
@@ -837,8 +837,8 @@ function ReportsPage() {
                     onClick={() => setSelectedFormat(fmt.id)}
                     className={`p-2.5 rounded-[4px] border text-left flex flex-col justify-between gap-1 transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-primary/15 border-primary text-foreground ring-1 ring-primary/40'
-                        : 'bg-[#141414] border-[#242424] text-muted-foreground hover:text-foreground hover:border-[#333]'
+                        ? 'bg-[#1c1c1c] border-zinc-400 text-foreground ring-1 ring-zinc-500/20 shadow-xs'
+                        : 'bg-[#161616] border-border/70 text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                   >
                     <div className="flex items-center justify-between">

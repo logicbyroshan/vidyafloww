@@ -259,22 +259,22 @@ function NoticesPage() {
               size="sm"
               onClick={() => setIsBroadcastDrawerOpen(true)}
               className="h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs"
-              leftIcon={<Radio className="h-3.5 w-3.5 text-primary-foreground" />}
+              leftIcon={<Send className="h-3.5 w-3.5" />}
             >
-              {isHindi ? 'सभी को सर्कुलर भेजें' : 'Send Notice to All'}
+              {isHindi ? 'नोटिस भेजें' : 'Send Notice'}
             </VFButton>
           </div>
         }
       />
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          BROADCAST NOTICE / CIRCULAR SIDE DRAWER
+          SEND NOTICE / CIRCULAR SIDE DRAWER
           ────────────────────────────────────────────────────────────────────────── */}
       <VFDrawer
         isOpen={isBroadcastDrawerOpen}
         onClose={() => setIsBroadcastDrawerOpen(false)}
-        title={isHindi ? 'सर्कुलर व नोटिस जारी करें' : 'Broadcast Notice / Circular'}
-        description={isHindi ? 'सभी छात्रों, अभिभावकों व शिक्षकों को त्वरित सूचना प्रेषित करें' : 'Dispatch institutional announcements across mobile app, SMS, and portal.'}
+        title={isHindi ? 'नोटिस भेजें' : 'Send Notice'}
+        description={isHindi ? 'छात्रों, अभिभावकों व शिक्षकों को त्वरित आधिकारिक सूचना प्रेषित करें।' : 'Dispatch institutional announcements across mobile app push, SMS, and portal feed.'}
         className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
         bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
         headerActions={
@@ -312,33 +312,33 @@ function NoticesPage() {
                 leftIcon={<Send className="h-3.5 w-3.5" />}
                 onClick={handlePublishNotice}
               >
-                {isHindi ? 'अभी सभी को भेजें 🚀' : 'Broadcast Notice Now 🚀'}
+                {isHindi ? 'नोटिस भेजें' : 'Send Notice'}
               </VFButton>
             </div>
           </div>
         }
       >
         <div className="space-y-4">
-          {/* Section 1: Target Audience Selection */}
-          <div className="space-y-2">
+          {/* Section 1: Target Audience Selection Card */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
-                1. Select Target Audience *
-              </label>
+              <span className="text-xs font-bold text-foreground tracking-wide">
+                1. {isHindi ? 'लक्षित समूह चुनें *' : 'Target Audience *'}
+              </span>
               <button
                 type="button"
                 onClick={() => setTargetAudience('All School')}
-                className={`text-[11px] font-bold px-2 py-0.5 rounded-[3px] border transition-colors cursor-pointer ${
+                className={`text-[11px] font-bold px-2.5 py-1 rounded-[3px] border transition-colors cursor-pointer ${
                   targetAudience === 'All School'
-                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
-                    : 'bg-[#181818] text-muted-foreground border-border hover:text-foreground'
+                    ? 'bg-zinc-800 text-foreground border-zinc-500'
+                    : 'bg-[#1a1a1a] text-muted-foreground border-border/70 hover:text-foreground hover:border-border'
                 }`}
               >
-                ⚡ Quick: Send to Everyone (Whole School)
+                ⚡ {isHindi ? 'संपूर्ण विद्यालय (सभी)' : 'Whole School (All)'}
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2.5">
               {(Object.keys(AUDIENCE_STATS) as NoticeRecord['targetAudience'][]).map((aud) => {
                 const info = AUDIENCE_STATS[aud];
                 const isSelected = targetAudience === aud;
@@ -347,22 +347,22 @@ function NoticesPage() {
                     key={aud}
                     type="button"
                     onClick={() => setTargetAudience(aud)}
-                    className={`p-2.5 rounded-[4px] border text-left flex flex-col justify-between gap-1 transition-all cursor-pointer ${
+                    className={`p-3 rounded-[4px] border text-left flex flex-col justify-between gap-1.5 transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-primary/15 border-primary text-foreground ring-1 ring-primary/40'
-                        : 'bg-[#141414] border-[#242424] text-muted-foreground hover:text-foreground hover:border-[#333]'
+                        ? 'bg-[#1c1c1c] border-zinc-400 text-foreground shadow-xs ring-1 ring-zinc-500/20'
+                        : 'bg-[#181818] border-border/70 text-muted-foreground hover:text-foreground hover:border-zinc-600'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <Users className="h-3.5 w-3.5 text-primary" />
+                        <Users className="h-3.5 w-3.5 text-muted-foreground" />
                         <span className="font-bold text-xs text-foreground">{info.label}</span>
                       </div>
-                      {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-primary" />}
+                      {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />}
                     </div>
                     <p className="text-[10px] text-muted-foreground line-clamp-1">{info.desc}</p>
-                    <span className="font-mono text-[10px] font-bold text-emerald-400 mt-0.5">
-                      {info.count.toLocaleString()} Active Recipients
+                    <span className="font-mono text-[10px] font-bold text-muted-foreground">
+                      {info.count.toLocaleString()} {isHindi ? 'सक्रिय प्राप्तकर्ता' : 'Active Recipients'}
                     </span>
                   </button>
                 );
@@ -370,14 +370,16 @@ function NoticesPage() {
             </div>
           </div>
 
-          {/* Section 2: Category, Priority & Broadcast Channels */}
-          <div className="space-y-2">
-            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
-              2. Classification & Dispatch Channels
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          {/* Section 2: Category, Priority & Channels Card */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <span className="text-xs font-bold text-foreground tracking-wide block">
+              2. {isHindi ? 'श्रेणी व प्रेषण माध्यम' : 'Classification & Channels'}
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground block">Circular Category</label>
+                <label className="text-[11px] font-semibold text-muted-foreground block">
+                  {isHindi ? 'सर्कुलर श्रेणी' : 'Circular Category'}
+                </label>
                 <VFSelect
                   value={noticeCategory}
                   onChange={(e) => setNoticeCategory(e.target.value as any)}
@@ -387,12 +389,14 @@ function NoticesPage() {
                     { label: 'Holiday Announcement', value: 'Holiday' },
                     { label: 'Administrative Memo', value: 'Administrative' },
                   ]}
-                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                  className="w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground block">Priority Level</label>
+                <label className="text-[11px] font-semibold text-muted-foreground block">
+                  {isHindi ? 'प्राथमिकता स्तर' : 'Priority Level'}
+                </label>
                 <VFSelect
                   value={noticePriority}
                   onChange={(e) => setNoticePriority(e.target.value as any)}
@@ -401,27 +405,18 @@ function NoticesPage() {
                     { label: 'High Priority', value: 'High' },
                     { label: 'Urgent Alert', value: 'Urgent' },
                   ]}
-                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground block">Ref Code</label>
-                <VFInput
-                  readOnly
-                  value={`CIR-2026-0${notices.length + 43}`}
-                  className="bg-[#141414] border-border h-8 text-xs font-mono text-muted-foreground rounded-[4px]"
+                  className="w-full"
                 />
               </div>
             </div>
 
-            {/* Delivery Channels */}
-            <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center justify-between gap-2 mt-1">
+            {/* Delivery Mediums */}
+            <div className="p-2.5 rounded-[4px] bg-[#181818] border border-border/60 flex flex-wrap items-center justify-between gap-2.5 mt-1">
               <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
-                <Radio className="h-3.5 w-3.5 text-primary" />
-                Dispatch Mediums:
+                <Radio className="h-3.5 w-3.5 text-muted-foreground" />
+                {isHindi ? 'प्रेषण माध्यम:' : 'Dispatch Mediums:'}
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <label className="flex items-center gap-1.5 text-xs text-foreground cursor-pointer select-none">
                   <input
                     type="checkbox"
@@ -430,7 +425,7 @@ function NoticesPage() {
                     className="rounded-[2px] accent-primary"
                   />
                   <Smartphone className="h-3 w-3 text-muted-foreground" />
-                  <span>Mobile App Push</span>
+                  <span>Mobile App</span>
                 </label>
                 <label className="flex items-center gap-1.5 text-xs text-foreground cursor-pointer select-none">
                   <input
@@ -456,35 +451,39 @@ function NoticesPage() {
             </div>
           </div>
 
-          {/* Section 3: Notice Title & Message Body */}
-          <div className="space-y-2">
-            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
-              3. Notice Subject & Content *
-            </label>
+          {/* Section 3: Notice Content Card */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <span className="text-xs font-bold text-foreground tracking-wide block">
+              3. {isHindi ? 'नोटिस विषय व विवरण *' : 'Notice Subject & Content *'}
+            </span>
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-muted-foreground">Notice Subject Line *</label>
+              <label className="text-[11px] font-semibold text-muted-foreground">
+                {isHindi ? 'नोटिस शीर्षक / विषय लाइन *' : 'Notice Subject Line *'}
+              </label>
               <VFInput
                 required
                 placeholder="e.g. Schedule for Annual Sports Day & Athletic Meet 2026"
                 value={noticeTitle}
                 onChange={(e) => setNoticeTitle(e.target.value)}
-                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
+                className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
 
             <div className="space-y-1">
               <div className="flex justify-between items-center">
-                <label className="text-[11px] font-semibold text-muted-foreground">Circular Body & Guidelines *</label>
+                <label className="text-[11px] font-semibold text-muted-foreground">
+                  {isHindi ? 'सर्कुलर का संपूर्ण विवरण *' : 'Circular Body & Instructions *'}
+                </label>
                 <span className="text-[10px] text-muted-foreground font-mono">
                   {noticeContent.length} chars
                 </span>
               </div>
               <VFTextarea
                 rows={5}
-                placeholder="Type complete circular text, reporting timings, guidelines, uniform instructions, or emergency details here..."
+                placeholder="Type complete notice text, reporting timings, guidelines, uniform instructions, or emergency details here..."
                 value={noticeContent}
                 onChange={(e) => setNoticeContent(e.target.value)}
-                className="bg-[#141414] border-border text-xs rounded-[4px] leading-relaxed"
+                className="bg-[#181818] border-border text-xs rounded-[4px] leading-relaxed min-h-[110px]"
               />
             </div>
           </div>

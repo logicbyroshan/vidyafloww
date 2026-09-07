@@ -1327,7 +1327,7 @@ function AcademicsPage() {
             {r.name}
           </p>
           <p className="text-xs text-muted-foreground font-semibold mt-0.5 flex items-center gap-1">
-            <Layers className="h-3 w-3 text-primary/80" />
+            <Layers className="h-3 w-3 text-muted-foreground" />
             {r.syllabusChapters} {isHindi ? 'निर्धारित अध्याय' : 'Prescribed Chapters'}
           </p>
         </div>
@@ -1356,7 +1356,7 @@ function AcademicsPage() {
       accessorKey: 'weeklyPeriods',
       cell: (r: ClassSubject) => (
         <div className="flex items-center gap-1.5 font-mono text-xs">
-          <Clock className="h-3.5 w-3.5 text-amber-400" />
+          <Clock className="h-3.5 w-3.5 text-muted-foreground" />
           <span className="font-black text-foreground">{r.weeklyPeriods}</span>
           <span className="text-muted-foreground text-[11px]">{isHindi ? 'पीरियड्स' : 'Periods/wk'}</span>
         </div>
@@ -1378,7 +1378,7 @@ function AcademicsPage() {
       accessorKey: 'teacherInCharge',
       cell: (r: ClassSubject) => (
         <div className="flex items-center gap-2">
-          <div className="h-6 w-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-[10px] font-bold shrink-0">
+          <div className="h-6 w-6 rounded-full bg-[#202020] border border-border flex items-center justify-center text-foreground text-[10px] font-bold shrink-0">
             {r.teacherInCharge.replace('Dr. ', '').replace('Mrs. ', '').replace('Mr. ', '').replace('Ms. ', '').substring(0, 2)}
           </div>
           <span className="text-foreground text-xs font-semibold">{r.teacherInCharge}</span>
@@ -1413,10 +1413,10 @@ function AcademicsPage() {
           <button
             type="button"
             onClick={() => handleOpenEditSubject(r)}
-            className="p-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#282828] border border-border/80 hover:border-primary/60 text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+            className="p-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#282828] border border-border/80 hover:border-zinc-500 text-muted-foreground hover:text-foreground transition-all cursor-pointer"
             title={isHindi ? 'विषय विवरण अपडेट करें' : 'Edit Subject'}
           >
-            <Edit2 className="h-3.5 w-3.5 text-primary" />
+            <Edit2 className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground" />
           </button>
           <button
             type="button"
@@ -1441,7 +1441,7 @@ function AcademicsPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Class Selector Dropdown */}
           <div className="flex items-center gap-2 bg-[#1a1a1a] px-2.5 py-1 rounded-[4px] border border-border/80">
-            <GraduationCap className="h-4 w-4 text-primary shrink-0" />
+            <GraduationCap className="h-4 w-4 text-muted-foreground shrink-0" />
             <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">
               {isHindi ? 'कक्षा:' : 'Class:'}
             </span>
@@ -1460,7 +1460,7 @@ function AcademicsPage() {
             <button
               type="button"
               onClick={() => setActiveView('subjects')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'subjects'
                   ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
                   : 'text-muted-foreground hover:text-foreground'
@@ -1472,7 +1472,7 @@ function AcademicsPage() {
             <button
               type="button"
               onClick={() => setActiveView('overview')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'overview'
                   ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
                   : 'text-muted-foreground hover:text-foreground'
@@ -1511,7 +1511,7 @@ function AcademicsPage() {
           ────────────────────────────────────────────────────────────────────────── */}
       {activeView === 'subjects' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          {/* Class Summary Banner with Edit Mentor / Room option */}
+          {/* Class Summary Banner with Single Clean Edit Mentor / Room Button */}
           <div className="px-3.5 py-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 text-sm">
             <div className="flex items-center gap-3">
               <span className="font-extrabold text-foreground text-sm">
@@ -1536,16 +1536,16 @@ function AcademicsPage() {
               <div className="h-3.5 w-[1px] bg-border" />
               <div className="flex items-center gap-1.5">
                 <span className="text-muted-foreground">{isHindi ? 'कुल विषय:' : 'Subjects:'}</span>
-                <span className="text-primary font-bold">{subjects.length}</span>
+                <span className="text-foreground font-bold">{subjects.length}</span>
               </div>
               <div className="h-3.5 w-[1px] bg-border" />
               <button
                 type="button"
                 onClick={handleOpenClassDetailsDrawer}
-                className="px-2 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#282828] border border-border/80 hover:border-primary/60 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#282828] border border-border/80 hover:border-zinc-500 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
                 title={isHindi ? 'कक्षा अध्यापक व विवरण अपडेट करें' : 'Update Class Teacher & Room'}
               >
-                <Edit2 className="h-3 w-3 text-primary" />
+                <Edit2 className="h-3 w-3 text-muted-foreground" />
                 <span>{isHindi ? 'अध्यापक बदलें' : 'Update Mentor'}</span>
               </button>
             </div>
@@ -1579,7 +1579,7 @@ function AcademicsPage() {
                 onClick={handleOpenClassDetailsDrawer}
                 className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#262626] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <UserCheck className="h-3.5 w-3.5 text-primary" />
+                <UserCheck className="h-3.5 w-3.5 text-muted-foreground" />
                 <span>{isHindi ? 'कक्षा विवरण बदलें' : 'Edit Class / Mentor'}</span>
               </button>
             }
@@ -1592,7 +1592,7 @@ function AcademicsPage() {
                     key={idx}
                     className="p-3.5 rounded-[4px] bg-[#181818] border border-border/80 space-y-3"
                   >
-                    {/* Section Header */}
+                    {/* Section Header (Duplicate Update Button Removed!) */}
                     <div className="flex flex-wrap justify-between items-center gap-2 pb-2 border-b border-border/60">
                       <div className="flex items-center gap-2">
                         <span className="font-black text-foreground text-sm tracking-wide">{secName}</span>
@@ -1603,19 +1603,9 @@ function AcademicsPage() {
                           {Math.floor(currentClassProfile.totalStudents / currentClassProfile.sections.length)} / 40 {isHindi ? 'छात्र' : 'Students'}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground font-semibold">
-                          {isHindi ? 'कक्षा अध्यापक:' : 'Class Teacher:'}{' '}
-                          <span className="text-foreground font-bold">{currentClassProfile.classMentor}</span>
-                        </span>
-                        <button
-                          type="button"
-                          onClick={handleOpenClassDetailsDrawer}
-                          className="p-1 rounded-[3px] bg-[#222] hover:bg-[#2c2c2c] border border-border/70 text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
-                          title={isHindi ? 'अध्यापक अपडेट करें' : 'Update Class Teacher'}
-                        >
-                          <Edit2 className="h-3 w-3 text-primary" />
-                        </button>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-semibold">
+                        <span>{isHindi ? 'कक्षा अध्यापक:' : 'Class Teacher:'}</span>
+                        <span className="text-foreground font-bold">{currentClassProfile.classMentor}</span>
                       </div>
                     </div>
 
@@ -1623,7 +1613,7 @@ function AcademicsPage() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                         <span>{isHindi ? 'साप्ताहिक विषय पीरियड आवंटन' : 'Subject Period Allocation'}</span>
-                        <span className="font-mono text-primary">
+                        <span className="font-mono text-foreground font-bold">
                           {totalWeeklyPeriods} {isHindi ? 'पीरियड्स / सप्ताह' : 'Total Periods/wk'}
                         </span>
                       </div>
@@ -1634,21 +1624,21 @@ function AcademicsPage() {
                           return (
                             <div
                               key={sub.code}
-                              className="p-2 rounded-[3px] bg-[#141414] border border-border/60 flex items-center justify-between gap-2 group hover:border-primary/50 transition-colors"
+                              className="p-2 rounded-[3px] bg-[#141414] border border-border/60 flex items-center justify-between gap-2 group hover:border-zinc-500 transition-colors"
                             >
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center justify-between gap-1 mb-1">
                                   <span className="text-xs font-bold text-foreground truncate" title={sub.name}>
                                     {sub.name}
                                   </span>
-                                  <span className="font-mono text-[11px] font-extrabold text-amber-400 shrink-0">
+                                  <span className="font-mono text-[11px] font-extrabold text-foreground shrink-0">
                                     {sub.weeklyPeriods} {isHindi ? 'प्र.' : 'p/w'}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <div className="flex-1 h-1.5 rounded-full bg-muted/60 overflow-hidden">
                                     <div
-                                      className="h-full bg-primary rounded-full transition-all"
+                                      className="h-full bg-zinc-400 dark:bg-zinc-500 rounded-full transition-all"
                                       style={{ width: `${Math.min(percentage * 3, 100)}%` }}
                                     />
                                   </div>
@@ -1669,7 +1659,7 @@ function AcademicsPage() {
                                 className="p-1 rounded-[3px] bg-[#202020] hover:bg-[#2b2b2b] border border-border/60 text-muted-foreground hover:text-foreground opacity-70 group-hover:opacity-100 transition-opacity cursor-pointer shrink-0"
                                 title={isHindi ? 'पीरियड आवंटन संशोधित करें' : 'Edit Period Allocation'}
                               >
-                                <Edit2 className="h-3 w-3 text-primary" />
+                                <Edit2 className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                               </button>
                             </div>
                           );
@@ -1710,7 +1700,7 @@ function AcademicsPage() {
                 milestones.map((ms) => (
                   <div
                     key={ms.id}
-                    className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/70 space-y-2 relative group hover:border-primary/50 transition-colors"
+                    className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/70 space-y-2 relative group hover:border-zinc-500 transition-colors"
                   >
                     {/* Top Row: Title & Badges */}
                     <div className="flex justify-between items-start gap-2">
@@ -1746,7 +1736,7 @@ function AcademicsPage() {
 
                     {/* Dates Row */}
                     <div className="flex items-center gap-1.5 text-muted-foreground font-mono text-[11px]">
-                      <Calendar className="h-3 w-3 text-primary/80 shrink-0" />
+                      <Calendar className="h-3 w-3 text-muted-foreground shrink-0" />
                       <span>{ms.startDate} – {ms.endDate}</span>
                     </div>
 
@@ -1756,11 +1746,11 @@ function AcademicsPage() {
                         <span className="text-muted-foreground font-medium">
                           {isHindi ? 'सिलेबस कवरेज लक्ष्य:' : 'Target Syllabus Coverage:'}
                         </span>
-                        <span className="font-bold text-primary font-mono">{ms.targetSyllabusCoverage}%</span>
+                        <span className="font-bold text-foreground font-mono">{ms.targetSyllabusCoverage}%</span>
                       </div>
                       <div className="w-full h-1.5 rounded-full bg-muted/60 overflow-hidden">
                         <div
-                          className="h-full bg-primary rounded-full transition-all"
+                          className="h-full bg-emerald-500 rounded-full transition-all"
                           style={{ width: `${ms.targetSyllabusCoverage}%` }}
                         />
                       </div>
@@ -1781,7 +1771,7 @@ function AcademicsPage() {
                         className="p-1 rounded-[3px] bg-[#222] hover:bg-[#2c2c2c] border border-border/60 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                         title={isHindi ? 'मील का पत्थर संपादित करें' : 'Edit Milestone'}
                       >
-                        <Edit2 className="h-3 w-3 text-primary" />
+                        <Edit2 className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                       </button>
                       <button
                         type="button"
@@ -1850,112 +1840,126 @@ function AcademicsPage() {
           </div>
         }
       >
-        <form onSubmit={handleSaveSubject} className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय का नाम *' : 'Subject Name *'}</label>
-            <VFInput
-              required
-              placeholder="e.g. Mathematics Standard, Science, Computer Applications"
-              value={subjectForm.name}
-              onChange={(e) => setSubjectForm({ ...subjectForm, name: e.target.value })}
-              className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
-            />
-          </div>
+        <form onSubmit={handleSaveSubject} className="space-y-3.5">
+          {/* Section 1: Subject Identity & Workload */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '1. विषय पहचान व कार्यभार' : '1. Subject Identity & Allocation'}
+            </h4>
 
-          <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय कोड *' : 'Course / Subject Code *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय का नाम *' : 'Subject Name *'}</label>
               <VFInput
                 required
-                placeholder={`SUB-${selectedClassId.replace('Class ', '')}-MTH`}
-                value={subjectForm.code}
-                onChange={(e) => setSubjectForm({ ...subjectForm, code: e.target.value })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                placeholder="e.g. Mathematics Standard, Science, Computer Applications"
+                value={subjectForm.name}
+                onChange={(e) => setSubjectForm({ ...subjectForm, name: e.target.value })}
+                className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
               />
             </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'साप्ताहिक पीरियड्स *' : 'Weekly Periods Allocation *'}</label>
-              <VFInput
-                type="number"
-                min="1"
-                max="12"
-                value={String(subjectForm.weeklyPeriods)}
-                onChange={(e) => setSubjectForm({ ...subjectForm, weeklyPeriods: Number(e.target.value) })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
-              />
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय कोड *' : 'Course / Subject Code *'}</label>
+                <VFInput
+                  required
+                  placeholder={`SUB-${selectedClassId.replace('Class ', '')}-MTH`}
+                  value={subjectForm.code}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, code: e.target.value })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'साप्ताहिक पीरियड्स *' : 'Weekly Periods Allocation *'}</label>
+                <VFInput
+                  type="number"
+                  min="1"
+                  max="12"
+                  value={String(subjectForm.weeklyPeriods)}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, weeklyPeriods: Number(e.target.value) })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'पाठ्यक्रम श्रेणी' : 'Curriculum Tier'}</label>
+                <VFSelect
+                  value={subjectForm.type}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, type: e.target.value as any })}
+                  options={[
+                    { label: 'Core Compulsory', value: 'Core Compulsory' },
+                    { label: 'Core Science', value: 'Core Science' },
+                    { label: 'Language & Comms', value: 'Language & Comms' },
+                    { label: 'Commerce Core', value: 'Commerce Core' },
+                    { label: 'Skill & IT', value: 'Skill & IT' },
+                    { label: 'Elective', value: 'Elective' },
+                    { label: 'Humanities Core', value: 'Humanities Core' },
+                  ]}
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय अध्यापक / मेंटर' : 'Faculty In-Charge / Mentor'}</label>
+                <VFInput
+                  placeholder="e.g. Dr. Rajesh Sharma"
+                  value={subjectForm.teacherInCharge}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, teacherInCharge: e.target.value })}
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'पाठ्यक्रम श्रेणी' : 'Curriculum Tier'}</label>
-              <VFSelect
-                value={subjectForm.type}
-                onChange={(e) => setSubjectForm({ ...subjectForm, type: e.target.value as any })}
-                options={[
-                  { label: 'Core Compulsory', value: 'Core Compulsory' },
-                  { label: 'Core Science', value: 'Core Science' },
-                  { label: 'Language & Comms', value: 'Language & Comms' },
-                  { label: 'Commerce Core', value: 'Commerce Core' },
-                  { label: 'Skill & IT', value: 'Skill & IT' },
-                  { label: 'Elective', value: 'Elective' },
-                  { label: 'Humanities Core', value: 'Humanities Core' },
-                ]}
-                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px] w-full"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय अध्यापक / मेंटर' : 'Faculty In-Charge / Mentor'}</label>
-              <VFInput
-                placeholder="e.g. Dr. Rajesh Sharma"
-                value={subjectForm.teacherInCharge}
-                onChange={(e) => setSubjectForm({ ...subjectForm, teacherInCharge: e.target.value })}
-                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
-              />
-            </div>
-          </div>
+          {/* Section 2: Grading Structure & Chapters */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '2. अंक संरचना व अध्याय' : '2. Marks Weightage & Scope'}
+            </h4>
 
-          <div className="grid grid-cols-3 gap-3">
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'थ्योरी अंक' : 'Theory Marks'}</label>
-              <VFInput
-                type="number"
-                value={String(subjectForm.theoryMarks)}
-                onChange={(e) => setSubjectForm({ ...subjectForm, theoryMarks: Number(e.target.value) })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
-              />
+            <div className="grid grid-cols-3 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'थ्योरी अंक' : 'Theory Marks'}</label>
+                <VFInput
+                  type="number"
+                  value={String(subjectForm.theoryMarks)}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, theoryMarks: Number(e.target.value) })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'इंटरनल अंक' : 'Internal Marks'}</label>
+                <VFInput
+                  type="number"
+                  value={String(subjectForm.internalMarks)}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, internalMarks: Number(e.target.value) })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'अध्याय संख्या' : 'Chapters'}</label>
+                <VFInput
+                  type="number"
+                  value={String(subjectForm.syllabusChapters)}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, syllabusChapters: Number(e.target.value) })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'इंटरनल अंक' : 'Internal Marks'}</label>
-              <VFInput
-                type="number"
-                value={String(subjectForm.internalMarks)}
-                onChange={(e) => setSubjectForm({ ...subjectForm, internalMarks: Number(e.target.value) })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'अध्याय संख्या' : 'Chapters'}</label>
-              <VFInput
-                type="number"
-                value={String(subjectForm.syllabusChapters)}
-                onChange={(e) => setSubjectForm({ ...subjectForm, syllabusChapters: Number(e.target.value) })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
-              />
-            </div>
-          </div>
 
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/70 flex items-center justify-between text-xs">
-            <span className="text-muted-foreground flex items-center gap-1.5">
-              <Book className="h-3.5 w-3.5 text-teal-400" />
-              {isHindi ? 'पाठ्यपुस्तक कैटलॉगिंग:' : 'Prescribed Textbooks:'}
-            </span>
-            <Link
-              to="/elibrary"
-              className="text-teal-400 hover:text-teal-300 font-bold flex items-center gap-1"
-            >
-              {isHindi ? 'ई-लाइब्रेरी में प्रबंधित करें ↗' : 'Manage in E-Library ↗'}
-            </Link>
+            <div className="p-2.5 rounded-[4px] bg-[#181818] border border-border/70 flex items-center justify-between text-xs">
+              <span className="text-muted-foreground flex items-center gap-1.5">
+                <Book className="h-3.5 w-3.5 text-foreground/70" />
+                {isHindi ? 'पाठ्यपुस्तक कैटलॉगिंग:' : 'Prescribed Textbooks:'}
+              </span>
+              <Link
+                to="/elibrary"
+                className="text-foreground hover:underline font-bold flex items-center gap-1 text-[11px]"
+              >
+                {isHindi ? 'ई-लाइब्रेरी में प्रबंधित करें ↗' : 'Manage in E-Library ↗'}
+              </Link>
+            </div>
           </div>
         </form>
       </VFDrawer>
@@ -2002,19 +2006,23 @@ function AcademicsPage() {
           </div>
         }
       >
-        <form onSubmit={handleSaveClassDetails} className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">{isHindi ? 'कक्षा अध्यापक / मुख्य मेंटर *' : 'Class Mentor / Head Teacher *'}</label>
-            <VFInput
-              required
-              placeholder="e.g. Dr. Rajesh Sharma"
-              value={classDetailsForm.classMentor}
-              onChange={(e) => setClassDetailsForm({ ...classDetailsForm, classMentor: e.target.value })}
-              className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
-            />
-          </div>
+        <form onSubmit={handleSaveClassDetails} className="space-y-3.5">
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '1. नेतृत्व व कक्ष आवंटन' : '1. Mentor & Room Designation'}
+            </h4>
 
-          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'कक्षा अध्यापक / मुख्य मेंटर *' : 'Class Mentor / Head Teacher *'}</label>
+              <VFInput
+                required
+                placeholder="e.g. Dr. Rajesh Sharma"
+                value={classDetailsForm.classMentor}
+                onChange={(e) => setClassDetailsForm({ ...classDetailsForm, classMentor: e.target.value })}
+                className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+              />
+            </div>
+
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">{isHindi ? 'निर्धारित कमरा / हॉल *' : 'Designated Room / Hall *'}</label>
               <VFInput
@@ -2022,27 +2030,36 @@ function AcademicsPage() {
                 placeholder="e.g. Room 201"
                 value={classDetailsForm.room}
                 onChange={(e) => setClassDetailsForm({ ...classDetailsForm, room: e.target.value })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'कुल नामांकित छात्र' : 'Total Enrolled Students'}</label>
-              <VFInput
-                type="number"
-                value={String(classDetailsForm.totalStudents)}
-                onChange={(e) => setClassDetailsForm({ ...classDetailsForm, totalStudents: Number(e.target.value) })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
               />
             </div>
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">{isHindi ? 'शैक्षणिक स्तर / बोर्ड विवरण' : 'Academic Stage / Board Affiliation'}</label>
-            <VFInput
-              value={classDetailsForm.stage}
-              onChange={(e) => setClassDetailsForm({ ...classDetailsForm, stage: e.target.value })}
-              className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
-            />
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '2. शैक्षणिक स्तर व क्षमता' : '2. Academic Stage & Capacity'}
+            </h4>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'कुल नामांकित छात्र' : 'Total Enrolled'}</label>
+                <VFInput
+                  type="number"
+                  value={String(classDetailsForm.totalStudents)}
+                  onChange={(e) => setClassDetailsForm({ ...classDetailsForm, totalStudents: Number(e.target.value) })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'शैक्षणिक स्तर / बोर्ड' : 'Academic Stage'}</label>
+                <VFInput
+                  value={classDetailsForm.stage}
+                  onChange={(e) => setClassDetailsForm({ ...classDetailsForm, stage: e.target.value })}
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+            </div>
           </div>
         </form>
       </VFDrawer>
@@ -2097,115 +2114,132 @@ function AcademicsPage() {
           </div>
         }
       >
-        <form onSubmit={handleSaveMilestone} className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">{isHindi ? 'मील का पत्थर शीर्षक *' : 'Milestone Title *'}</label>
-            <VFInput
-              required
-              placeholder="e.g. Term 1 Mid-Year Summative Evaluation, Pre-Board Model Exam"
-              value={milestoneForm.title}
-              onChange={(e) => setMilestoneForm({ ...milestoneForm, title: e.target.value })}
-              className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px]"
-            />
-          </div>
+        <form onSubmit={handleSaveMilestone} className="space-y-3.5">
+          {/* Card 1: Milestone Identity */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '1. मील का पत्थर पहचान' : '1. Milestone Identity'}
+            </h4>
 
-          <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'सत्र / चरण श्रेणी' : 'Applicable Term / Phase'}</label>
-              <VFSelect
-                value={milestoneForm.term}
-                onChange={(e) => setMilestoneForm({ ...milestoneForm, term: String(e.target.value) })}
-                options={[
-                  { label: 'Term 1 (Mid-Year)', value: 'Term 1' },
-                  { label: 'Term 2 (Final)', value: 'Term 2' },
-                  { label: 'Periodic Test 1', value: 'Periodic Test 1' },
-                  { label: 'Periodic Test 2', value: 'Periodic Test 2' },
-                  { label: 'Pre-Board Examination', value: 'Pre-Board' },
-                  { label: 'Final CBSE Board', value: 'Final Board' },
-                ]}
-                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px] w-full"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'मूल्यांकन प्रारूप' : 'Assessment Classification'}</label>
-              <VFSelect
-                value={milestoneForm.assessmentType}
-                onChange={(e) => setMilestoneForm({ ...milestoneForm, assessmentType: e.target.value as any })}
-                options={[
-                  { label: 'Mid-Term Exam', value: 'Mid-Term Exam' },
-                  { label: 'Periodic Test', value: 'Periodic Test' },
-                  { label: 'Pre-Board Exam', value: 'Pre-Board Exam' },
-                  { label: 'Final CBSE Board', value: 'Final CBSE Board' },
-                  { label: 'Internal Assessment & Practical', value: 'Internal Assessment & Practical' },
-                ]}
-                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px] w-full"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'आरंभ तिथि *' : 'Start Date *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'मील का पत्थर शीर्षक *' : 'Milestone Title *'}</label>
               <VFInput
-                type="date"
                 required
-                value={milestoneForm.startDate}
-                onChange={(e) => setMilestoneForm({ ...milestoneForm, startDate: e.target.value })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                placeholder="e.g. Term 1 Mid-Year Summative Evaluation, Pre-Board Model Exam"
+                value={milestoneForm.title}
+                onChange={(e) => setMilestoneForm({ ...milestoneForm, title: e.target.value })}
+                className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px]"
               />
             </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'समाप्ति तिथि *' : 'End Date *'}</label>
-              <VFInput
-                type="date"
-                required
-                value={milestoneForm.endDate}
-                onChange={(e) => setMilestoneForm({ ...milestoneForm, endDate: e.target.value })}
-                className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
-              />
-            </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'सिलेबस कवरेज लक्ष्य (%):' : 'Target Syllabus Coverage (%):'}</label>
-              <div className="flex items-center gap-2">
-                <VFInput
-                  type="number"
-                  min="0"
-                  max="100"
-                  value={String(milestoneForm.targetSyllabusCoverage)}
-                  onChange={(e) => setMilestoneForm({ ...milestoneForm, targetSyllabusCoverage: Number(e.target.value) })}
-                  className="bg-[#141414] border-border font-mono h-8.5 text-xs rounded-[4px]"
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'सत्र / चरण श्रेणी' : 'Applicable Term / Phase'}</label>
+                <VFSelect
+                  value={milestoneForm.term}
+                  onChange={(e) => setMilestoneForm({ ...milestoneForm, term: String(e.target.value) })}
+                  options={[
+                    { label: 'Term 1 (Mid-Year)', value: 'Term 1' },
+                    { label: 'Term 2 (Final)', value: 'Term 2' },
+                    { label: 'Periodic Test 1', value: 'Periodic Test 1' },
+                    { label: 'Periodic Test 2', value: 'Periodic Test 2' },
+                    { label: 'Pre-Board Examination', value: 'Pre-Board' },
+                    { label: 'Final CBSE Board', value: 'Final Board' },
+                  ]}
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
                 />
-                <span className="font-bold text-xs text-primary">%</span>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'मूल्यांकन प्रारूप' : 'Assessment Classification'}</label>
+                <VFSelect
+                  value={milestoneForm.assessmentType}
+                  onChange={(e) => setMilestoneForm({ ...milestoneForm, assessmentType: e.target.value as any })}
+                  options={[
+                    { label: 'Mid-Term Exam', value: 'Mid-Term Exam' },
+                    { label: 'Periodic Test', value: 'Periodic Test' },
+                    { label: 'Pre-Board Exam', value: 'Pre-Board Exam' },
+                    { label: 'Final CBSE Board', value: 'Final CBSE Board' },
+                    { label: 'Internal Assessment & Practical', value: 'Internal Assessment & Practical' },
+                  ]}
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Timeline & Coverage */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '2. समय सीमा व कवरेज लक्ष्य' : '2. Timeline & Target Coverage'}
+            </h4>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'आरंभ तिथि *' : 'Start Date *'}</label>
+                <VFInput
+                  type="date"
+                  required
+                  value={milestoneForm.startDate}
+                  onChange={(e) => setMilestoneForm({ ...milestoneForm, startDate: e.target.value })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'समाप्ति तिथि *' : 'End Date *'}</label>
+                <VFInput
+                  type="date"
+                  required
+                  value={milestoneForm.endDate}
+                  onChange={(e) => setMilestoneForm({ ...milestoneForm, endDate: e.target.value })}
+                  className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'स्थिति' : 'Milestone Status'}</label>
-              <VFSelect
-                value={milestoneForm.status}
-                onChange={(e) => setMilestoneForm({ ...milestoneForm, status: e.target.value as any })}
-                options={[
-                  { label: 'Upcoming', value: 'Upcoming' },
-                  { label: 'In Progress', value: 'In Progress' },
-                  { label: 'Scheduled', value: 'Scheduled' },
-                  { label: 'Completed', value: 'Completed' },
-                ]}
-                className="bg-[#141414] border-border h-8.5 text-xs rounded-[4px] w-full"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'सिलेबस कवरेज लक्ष्य (%):' : 'Target Syllabus Coverage (%):'}</label>
+                <div className="flex items-center gap-2">
+                  <VFInput
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={String(milestoneForm.targetSyllabusCoverage)}
+                    onChange={(e) => setMilestoneForm({ ...milestoneForm, targetSyllabusCoverage: Number(e.target.value) })}
+                    className="bg-[#181818] border-border font-mono h-8.5 text-xs rounded-[4px]"
+                  />
+                  <span className="font-mono font-bold text-xs text-foreground">%</span>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'स्थिति' : 'Milestone Status'}</label>
+                <VFSelect
+                  value={milestoneForm.status}
+                  onChange={(e) => setMilestoneForm({ ...milestoneForm, status: e.target.value as any })}
+                  options={[
+                    { label: 'Upcoming', value: 'Upcoming' },
+                    { label: 'In Progress', value: 'In Progress' },
+                    { label: 'Scheduled', value: 'Scheduled' },
+                    { label: 'Completed', value: 'Completed' },
+                  ]}
+                  className="bg-[#181818] border-border h-8.5 text-xs rounded-[4px] w-full"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">{isHindi ? 'दिशानिर्देश व विवरण' : 'Scope & Exam Guidelines'}</label>
+          {/* Card 3: Scope Notes */}
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2">
+            <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? '3. दिशानिर्देश व विवरण' : '3. Scope & Exam Guidelines'}
+            </h4>
             <VFTextarea
               rows={3}
               placeholder="e.g. 50% prescribed syllabus coverage. Assessment scores will be registered on CBSE portal."
               value={milestoneForm.notes}
               onChange={(e) => setMilestoneForm({ ...milestoneForm, notes: e.target.value })}
-              className="bg-[#141414] border-border text-xs rounded-[4px]"
+              className="bg-[#181818] border-border text-xs rounded-[4px]"
             />
           </div>
         </form>

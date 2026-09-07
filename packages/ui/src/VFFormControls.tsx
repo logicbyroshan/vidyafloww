@@ -180,8 +180,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <SelectPrimitive.Trigger
             id={selectId}
             className={cn(
-              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#181818] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#222222] hover:border-zinc-500 data-[state=open]:border-emerald-500/50 shadow-xs",
-              size === 'sm' || isInline ? "h-8 px-2.5 text-xs rounded-[4px]" : size === 'lg' ? "h-10 px-3.5 text-sm rounded-[4px]" : "h-9 px-3 text-xs rounded-[4px]",
+              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#161616] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#202020] hover:border-zinc-500 data-[state=open]:border-zinc-400 shadow-xs",
+              size === 'sm' ? "h-8 px-2.5 text-xs" : size === 'lg' ? "h-10 px-3.5 text-sm" : "h-8.5 px-3 text-xs",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
@@ -195,7 +195,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
 
           <SelectPrimitive.Portal>
             <SelectPrimitive.Content
-              className="z-50 min-w-[10rem] overflow-hidden rounded-[4px] border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-xs text-foreground backdrop-blur-md"
+              className="z-50 min-w-[var(--radix-select-trigger-width)] max-w-[var(--radix-select-content-available-width)] overflow-hidden rounded-[4px] border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-xs text-foreground backdrop-blur-md"
               position="popper"
               sideOffset={4}
             >
