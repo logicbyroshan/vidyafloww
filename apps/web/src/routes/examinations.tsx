@@ -37,6 +37,8 @@ import {
   LayoutGrid,
   List,
   X,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -226,7 +228,15 @@ const INITIAL_MARKS_SCHEMES: Record<string, ClassMarksScheme> = {
   },
 };
 
-const CBSE_GRADING_SCALE = [
+export interface GradingTier {
+  grade: string;
+  min: number;
+  max: number;
+  desc: string;
+  color: string;
+}
+
+const INITIAL_GRADING_SCALE: GradingTier[] = [
   { grade: 'A1', min: 91, max: 100, desc: 'Outstanding', color: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/5' },
   { grade: 'A2', min: 81, max: 90, desc: 'Excellent', color: 'text-emerald-300 border-emerald-500/20 bg-emerald-500/5' },
   { grade: 'B1', min: 71, max: 80, desc: 'Very Good', color: 'text-sky-400 border-sky-500/30 bg-sky-500/5' },
@@ -236,6 +246,13 @@ const CBSE_GRADING_SCALE = [
   { grade: 'D', min: 33, max: 40, desc: 'Pass Threshold', color: 'text-yellow-400 border-yellow-500/30 bg-yellow-500/5' },
   { grade: 'E', min: 0, max: 32, desc: 'Remedial', color: 'text-rose-400 border-rose-500/30 bg-rose-500/5' },
 ];
+
+function getGradeFromScale(pct: number, scale: GradingTier[]): string {
+  const matched = scale.find((item) => pct >= item.min && pct <= item.max);
+  if (matched) return matched.grade;
+  if (pct >= 33) return 'D';
+  return 'E';
+}
 
 interface StudentMarkRow {
   rollNo: string;
@@ -290,10 +307,35 @@ function ExaminationsPage() {
   const [isEditingScheme, setIsEditingScheme] = React.useState(false);
   const [editingSubjects, setEditingSubjects] = React.useState<SubjectMarksScheme[]>(INITIAL_MARKS_SCHEMES['class-10'].subjects);
 
+  // Scheme Lock State per class (default locked for Board classes)
+  const [lockedSchemes, setLockedSchemes] = React.useState<Record<string, boolean>>({
+    'class-10': true,
+    'class-12-sci': true,
+    'class-12-com': true,
+    'class-9': false,
+    'class-6-8': false,
+  });
+  const isCurrentSchemeLocked = Boolean(lockedSchemes[selectedSchemeClass]);
+
+  // Grading Scale State (Editable)
+  const [gradingScale, setGradingScale] = React.useState<GradingTier[]>(INITIAL_GRADING_SCALE);
+  const [isEditingGrading, setIsEditingGrading] = React.useState(false);
+  const [tempGradingScale, setTempGradingScale] = React.useState<GradingTier[]>(INITIAL_GRADING_SCALE);
+
   // Marks entry state
   const [marksData, setMarksData] = React.useState<StudentMarkRow[]>(INITIAL_STUDENT_MARKS);
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 10-A');
   const [studentSearch, setStudentSearch] = React.useState<string>('');
+
+  // Register Lock State per class
+  const [lockedRegisters, setLockedRegisters] = React.useState<Record<string, boolean>>({
+    'Class 10-A': false,
+    'Class 10-B': true,
+    'Class 9-A': false,
+    'Class 11-Sci': false,
+    'Class 12-Com': true,
+  });
+  const isRegisterLocked = Boolean(lockedRegisters[selectedClass]);
 
   // Drawers & Modals
   const [isScheduleDrawerOpen, setIsScheduleDrawerOpen] = React.useState(false);
@@ -320,6 +362,7 @@ function ExaminationsPage() {
 
   // Active exam object
   const activeExam = exams.find((e) => e.id === selectedExamId) || exams[0];
+  const currentScheme = marksSchemes[selectedSchemeClass] || marksSchemes['class-10'];
 
   // When class changes in Scheme view, load that class's subjects
   React.useEffect(() => {
@@ -328,6 +371,109 @@ function ExaminationsPage() {
       setIsEditingScheme(false);
     }
   }, [selectedSchemeClass, marksSchemes]);
+
+  // Toggle Scheme Lock
+  const handleToggleSchemeLock = () => {
+    const next = !isCurrentSchemeLocked;
+    setLockedSchemes((prev) => ({
+      ...prev,
+      [selectedSchemeClass]: next,
+    }));
+    if (next) setIsEditingScheme(false);
+    addNotification({
+      title: next
+        ? (isHindi ? 'योजना लॉक की गई' : 'Scheme Locked')
+        : (isHindi ? 'योजना अनलॉक की गई' : 'Scheme Unlocked'),
+      description: next
+        ? `${currentScheme.className} scheme is now locked against edits.`
+        : `${currentScheme.className} scheme unlocked for editing.`,
+      type: next ? 'warning' : 'success',
+    });
+  };
+
+  // Toggle Register Lock
+  const handleToggleRegisterLock = () => {
+    const next = !isRegisterLocked;
+    setLockedRegisters((prev) => ({
+      ...prev,
+      [selectedClass]: next,
+    }));
+    addNotification({
+      title: next
+        ? (isHindi ? 'रजिस्टर लॉक किया गया' : 'Register Locked')
+        : (isHindi ? 'रजिस्टर अनलॉक किया गया' : 'Register Unlocked'),
+      description: next
+        ? `${selectedClass} marks ledger locked. Cell inputs are now read-only.`
+        : `${selectedClass} marks ledger unlocked for mark entry.`,
+      type: next ? 'warning' : 'success',
+    });
+  };
+
+  // Save Grading Scale
+  const handleSaveGradingScale = () => {
+    for (const g of tempGradingScale) {
+      if (g.min > g.max || g.min < 0 || g.max > 100) {
+        addNotification({
+          title: isHindi ? 'अमान्य पैमाना' : 'Invalid Range',
+          description: `Grade ${g.grade} range (${g.min}–${g.max}%) is invalid.`,
+          type: 'warning',
+        });
+        return;
+      }
+    }
+    setGradingScale(tempGradingScale);
+    setIsEditingGrading(false);
+
+    // Recalculate marksData with the updated grading scale
+    setMarksData((prev) =>
+      prev.map((row) => ({
+        ...row,
+        grade: getGradeFromScale(row.pct, tempGradingScale),
+      }))
+    );
+
+    addNotification({
+      title: isHindi ? 'ग्रेडिंग पैमाना सहेजा गया' : 'Grading Scale Saved',
+      description: 'Updated criteria applied across marks ledger.',
+      type: 'success',
+    });
+  };
+
+  // Reset Grading Scale
+  const handleResetGradingScale = () => {
+    setTempGradingScale([...INITIAL_GRADING_SCALE]);
+    setGradingScale([...INITIAL_GRADING_SCALE]);
+    setIsEditingGrading(false);
+    setMarksData((prev) =>
+      prev.map((row) => ({
+        ...row,
+        grade: getGradeFromScale(row.pct, INITIAL_GRADING_SCALE),
+      }))
+    );
+    addNotification({
+      title: isHindi ? 'रीसेट पूर्ण' : 'Scale Reset',
+      description: 'Reverted to CBSE standard 9-point scale.',
+      type: 'info',
+    });
+  };
+
+  // Student mark update handler
+  const handleStudentMarkChange = (
+    rollNo: string,
+    subject: 'maths' | 'science' | 'english' | 'social' | 'hindi',
+    val: number
+  ) => {
+    setMarksData((prev) =>
+      prev.map((row) => {
+        if (row.rollNo !== rollNo) return row;
+        const updated = { ...row, [subject]: val };
+        updated.total = updated.maths + updated.science + updated.english + updated.social + updated.hindi;
+        updated.pct = Number((updated.total / 5).toFixed(1));
+        updated.grade = getGradeFromScale(updated.pct, gradingScale);
+        return updated;
+      })
+    );
+  };
 
   // Handle Save Edited Scheme for selected class
   const handleSaveClassScheme = () => {
@@ -477,8 +623,6 @@ function ExaminationsPage() {
   const topScorer = marksData.length > 0
     ? marksData.reduce((max, s) => (s.pct > max.pct ? s : max), marksData[0])
     : null;
-
-  const currentScheme = marksSchemes[selectedSchemeClass] || marksSchemes['class-10'];
 
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
@@ -893,46 +1037,74 @@ function ExaminationsPage() {
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              {!isEditingScheme ? (
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setIsEditingScheme(true)}
-                  className="h-8 px-3 text-xs font-bold rounded-[4px]"
-                  leftIcon={<Edit3 className="h-3.5 w-3.5" />}
-                >
-                  {isHindi ? 'संपादित करें' : 'Edit Scheme'}
-                </VFButton>
+              {isCurrentSchemeLocked ? (
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 font-mono px-2 py-1 rounded-[3px] bg-amber-500/10 border border-amber-500/30">
+                    <Lock className="h-3 w-3" /> Locked
+                  </span>
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    onClick={handleToggleSchemeLock}
+                    className="h-8 px-2.5 text-xs font-bold rounded-[4px] text-zinc-300 border-zinc-700 hover:bg-zinc-800"
+                    leftIcon={<Unlock className="h-3.5 w-3.5 text-zinc-400" />}
+                  >
+                    {isHindi ? 'अनलॉक' : 'Unlock Scheme'}
+                  </VFButton>
+                </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <VFButton
                     size="sm"
                     variant="outline"
-                    onClick={handleResetToBoardScheme}
-                    className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
-                    leftIcon={<RotateCcw className="h-3 w-3" />}
+                    onClick={handleToggleSchemeLock}
+                    className="h-8 px-2.5 text-xs font-bold rounded-[4px] text-zinc-400 hover:text-foreground"
+                    leftIcon={<Lock className="h-3.5 w-3.5" />}
                   >
-                    {isHindi ? 'रीसेट' : 'Reset'}
+                    {isHindi ? 'लॉक करें' : 'Lock Scheme'}
                   </VFButton>
-                  <VFButton
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setEditingSubjects([...currentScheme.subjects]);
-                      setIsEditingScheme(false);
-                    }}
-                    className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
-                  >
-                    {isHindi ? 'रद्द करें' : 'Cancel'}
-                  </VFButton>
-                  <VFButton
-                    size="sm"
-                    onClick={handleSaveClassScheme}
-                    className="h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs"
-                    leftIcon={<Save className="h-3.5 w-3.5" />}
-                  >
-                    {isHindi ? 'सुरक्षित करें' : 'Save'}
-                  </VFButton>
+                  {!isEditingScheme ? (
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setIsEditingScheme(true)}
+                      className="h-8 px-3 text-xs font-bold rounded-[4px]"
+                      leftIcon={<Edit3 className="h-3.5 w-3.5" />}
+                    >
+                      {isHindi ? 'संपादित करें' : 'Edit Scheme'}
+                    </VFButton>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        onClick={handleResetToBoardScheme}
+                        className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
+                        leftIcon={<RotateCcw className="h-3 w-3" />}
+                      >
+                        {isHindi ? 'रीसेट' : 'Reset'}
+                      </VFButton>
+                      <VFButton
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setEditingSubjects([...currentScheme.subjects]);
+                          setIsEditingScheme(false);
+                        }}
+                        className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
+                      >
+                        {isHindi ? 'रद्द करें' : 'Cancel'}
+                      </VFButton>
+                      <VFButton
+                        size="sm"
+                        onClick={handleSaveClassScheme}
+                        className="h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs"
+                        leftIcon={<Save className="h-3.5 w-3.5" />}
+                      >
+                        {isHindi ? 'सुरक्षित करें' : 'Save'}
+                      </VFButton>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -1058,21 +1230,118 @@ function ExaminationsPage() {
             </VFTable>
           </VFCard>
 
-          {/* Standard Grading Scale Matrix Reference */}
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 space-y-2 shrink-0">
+          {/* Standard Grading Scale Matrix Reference & Configurator */}
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5 shrink-0">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-foreground text-xs">
-                {isHindi ? 'सीबीएसई 9-पॉइंट ग्रेडिंग पैमाना' : 'CBSE 9-Point Grading Scale'}
-              </span>
-              <span className="text-[10px] font-mono text-muted-foreground">Reference</span>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-foreground text-xs">
+                  {isHindi ? 'सीबीएसई 9-पॉइंट ग्रेडिंग पैमाना' : 'CBSE 9-Point Grading Scale'}
+                </span>
+                <span className="text-[10px] font-mono text-muted-foreground">
+                  {isEditingGrading ? (isHindi ? 'संपादन मोड' : 'Editable Mode') : (isHindi ? 'मानदंड' : 'Evaluation Criteria')}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {!isEditingGrading ? (
+                  <VFButton
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setTempGradingScale([...gradingScale]);
+                      setIsEditingGrading(true);
+                    }}
+                    className="h-7 px-2.5 text-[11px] font-bold rounded-[4px]"
+                    leftIcon={<Edit3 className="h-3 w-3" />}
+                  >
+                    {isHindi ? 'पैमाना संपादित करें' : 'Edit Scale'}
+                  </VFButton>
+                ) : (
+                  <div className="flex items-center gap-1.5">
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      onClick={handleResetGradingScale}
+                      className="h-7 px-2 text-[11px] font-bold rounded-[4px]"
+                      leftIcon={<RotateCcw className="h-3 w-3" />}
+                    >
+                      {isHindi ? 'रीसेट' : 'Reset'}
+                    </VFButton>
+                    <VFButton
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setTempGradingScale([...gradingScale]);
+                        setIsEditingGrading(false);
+                      }}
+                      className="h-7 px-2 text-[11px] font-bold rounded-[4px]"
+                    >
+                      {isHindi ? 'रद्द करें' : 'Cancel'}
+                    </VFButton>
+                    <VFButton
+                      size="sm"
+                      onClick={handleSaveGradingScale}
+                      className="h-7 px-2.5 text-[11px] font-bold rounded-[4px] shadow-xs"
+                      leftIcon={<Save className="h-3 w-3" />}
+                    >
+                      {isHindi ? 'सुरक्षित करें' : 'Save Scale'}
+                    </VFButton>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-              {CBSE_GRADING_SCALE.map((g) => (
-                <div key={g.grade} className={cn('p-2 rounded-[3px] border text-center font-mono text-xs', g.color)}>
+              {(isEditingGrading ? tempGradingScale : gradingScale).map((g, gIdx) => (
+                <div key={g.grade} className={cn('p-2 rounded-[3px] border text-center font-mono text-xs flex flex-col justify-between gap-1', g.color)}>
                   <p className="font-black text-sm">{g.grade}</p>
-                  <p className="text-[10px] font-bold mt-0.5">{g.min}–{g.max}%</p>
-                  <p className="text-[9px] opacity-70 mt-0.5 leading-none">{g.desc}</p>
+
+                  {isEditingGrading ? (
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-center gap-1">
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={g.min}
+                          onChange={(e) => {
+                            const updated = [...tempGradingScale];
+                            updated[gIdx].min = Number(e.target.value) || 0;
+                            setTempGradingScale(updated);
+                          }}
+                          className="w-9 h-6 text-center bg-[#1a1a1a] border border-border rounded-[2px] font-mono text-[10px] text-foreground focus:outline-none focus:border-zinc-400"
+                        />
+                        <span className="text-[10px] opacity-60">–</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={g.max}
+                          onChange={(e) => {
+                            const updated = [...tempGradingScale];
+                            updated[gIdx].max = Number(e.target.value) || 0;
+                            setTempGradingScale(updated);
+                          }}
+                          className="w-9 h-6 text-center bg-[#1a1a1a] border border-border rounded-[2px] font-mono text-[10px] text-foreground focus:outline-none focus:border-zinc-400"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        value={g.desc}
+                        onChange={(e) => {
+                          const updated = [...tempGradingScale];
+                          updated[gIdx].desc = e.target.value;
+                          setTempGradingScale(updated);
+                        }}
+                        className="w-full h-5 text-center bg-[#1a1a1a] border border-border/70 rounded-[2px] text-[9px] text-muted-foreground focus:outline-none focus:border-zinc-400"
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-[10px] font-bold mt-0.5">{g.min}–{g.max}%</p>
+                      <p className="text-[9px] opacity-70 mt-0.5 leading-none">{g.desc}</p>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
@@ -1129,6 +1398,30 @@ function ExaminationsPage() {
                 )}
               </div>
 
+              {/* Lock / Unlock Register Button */}
+              <VFButton
+                size="sm"
+                variant="outline"
+                onClick={handleToggleRegisterLock}
+                className={cn(
+                  'h-8 px-2.5 text-xs font-bold rounded-[4px]',
+                  isRegisterLocked
+                    ? 'text-amber-400 border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20'
+                    : 'text-zinc-300 border-zinc-700 hover:bg-zinc-800'
+                )}
+                leftIcon={
+                  isRegisterLocked ? (
+                    <Lock className="h-3.5 w-3.5 text-amber-400" />
+                  ) : (
+                    <Unlock className="h-3.5 w-3.5 text-zinc-400" />
+                  )
+                }
+              >
+                {isRegisterLocked
+                  ? (isHindi ? 'अनलॉक रजिस्टर' : 'Unlock Register')
+                  : (isHindi ? 'लॉक रजिस्टर' : 'Lock Register')}
+              </VFButton>
+
               <VFButton
                 size="sm"
                 variant="outline"
@@ -1147,20 +1440,43 @@ function ExaminationsPage() {
 
               <VFButton
                 size="sm"
+                disabled={isRegisterLocked}
                 onClick={() => {
+                  if (isRegisterLocked) return;
                   addNotification({
                     title: isHindi ? 'अंक सुरक्षित किए गए' : 'Marks Saved',
                     description: `${selectedClass} marks ledger saved successfully.`,
                     type: 'success',
                   });
                 }}
-                className="h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs"
+                className={cn(
+                  'h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs',
+                  isRegisterLocked && 'opacity-50 cursor-not-allowed'
+                )}
                 leftIcon={<Save className="h-3.5 w-3.5" />}
               >
                 {isHindi ? 'सुरक्षित करें' : 'Save Marks'}
               </VFButton>
             </div>
           </div>
+
+          {/* Locked Register Notification Banner */}
+          {isRegisterLocked && (
+            <div className="px-3 py-2 rounded-[4px] bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-2 text-xs shrink-0">
+              <div className="flex items-center gap-2">
+                <Lock className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                <span className="font-bold text-amber-300">
+                  {isHindi ? 'रजिस्टर लॉक है' : 'Marks Register Locked'}
+                </span>
+                <span className="text-muted-foreground text-[11px] hidden sm:inline">
+                  — {isHindi ? 'परीक्षा प्रकोष्ठ द्वारा अंतिम रूप दिया गया। संपादन अक्षम है।' : 'Finalized by Examination Cell. Marks entry is locked to prevent accidental or unauthorized edits.'}
+                </span>
+              </div>
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                READ-ONLY
+              </span>
+            </div>
+          )}
 
           {/* Marks Spreadsheet Table */}
           <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 flex-1 overflow-auto">
@@ -1187,7 +1503,7 @@ function ExaminationsPage() {
                     </VFTableCell>
                   </VFTableRow>
                 ) : (
-                  filteredStudents.map((row, idx) => (
+                  filteredStudents.map((row) => (
                     <VFTableRow key={row.rollNo} className="hover:bg-[#1a1a1a]/60">
                       <VFTableCell className="py-2 px-3 font-mono font-bold text-muted-foreground text-xs">
                         {row.rollNo}
@@ -1196,105 +1512,95 @@ function ExaminationsPage() {
                         {row.name}
                       </VFTableCell>
 
-                      {/* Maths input */}
-                      <VFTableCell className="py-1.5 px-2 text-center">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={row.maths}
-                          onChange={(e) => {
-                            const val = Number(e.target.value) || 0;
-                            const updated = [...marksData];
-                            updated[idx].maths = val;
-                            updated[idx].total = val + row.science + row.english + row.social + row.hindi;
-                            updated[idx].pct = Number((updated[idx].total / 5).toFixed(1));
-                            updated[idx].grade = updated[idx].pct >= 91 ? 'A1' : updated[idx].pct >= 81 ? 'A2' : updated[idx].pct >= 71 ? 'B1' : updated[idx].pct >= 61 ? 'B2' : updated[idx].pct >= 51 ? 'C1' : updated[idx].pct >= 41 ? 'C2' : updated[idx].pct >= 33 ? 'D' : 'E';
-                            setMarksData(updated);
-                          }}
-                          className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
-                        />
-                      </VFTableCell>
+                      {/* Maths input or read-only */}
+                      {isRegisterLocked ? (
+                        <VFTableCell className="py-2 px-2 text-center font-mono font-bold text-xs text-zinc-200">
+                          {row.maths}
+                        </VFTableCell>
+                      ) : (
+                        <VFTableCell className="py-1.5 px-2 text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={row.maths}
+                            onChange={(e) => handleStudentMarkChange(row.rollNo, 'maths', Number(e.target.value) || 0)}
+                            className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
+                          />
+                        </VFTableCell>
+                      )}
 
-                      {/* Science input */}
-                      <VFTableCell className="py-1.5 px-2 text-center">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={row.science}
-                          onChange={(e) => {
-                            const val = Number(e.target.value) || 0;
-                            const updated = [...marksData];
-                            updated[idx].science = val;
-                            updated[idx].total = row.maths + val + row.english + row.social + row.hindi;
-                            updated[idx].pct = Number((updated[idx].total / 5).toFixed(1));
-                            updated[idx].grade = updated[idx].pct >= 91 ? 'A1' : updated[idx].pct >= 81 ? 'A2' : updated[idx].pct >= 71 ? 'B1' : updated[idx].pct >= 61 ? 'B2' : updated[idx].pct >= 51 ? 'C1' : updated[idx].pct >= 41 ? 'C2' : updated[idx].pct >= 33 ? 'D' : 'E';
-                            setMarksData(updated);
-                          }}
-                          className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
-                        />
-                      </VFTableCell>
+                      {/* Science input or read-only */}
+                      {isRegisterLocked ? (
+                        <VFTableCell className="py-2 px-2 text-center font-mono font-bold text-xs text-zinc-200">
+                          {row.science}
+                        </VFTableCell>
+                      ) : (
+                        <VFTableCell className="py-1.5 px-2 text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={row.science}
+                            onChange={(e) => handleStudentMarkChange(row.rollNo, 'science', Number(e.target.value) || 0)}
+                            className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
+                          />
+                        </VFTableCell>
+                      )}
 
-                      {/* English input */}
-                      <VFTableCell className="py-1.5 px-2 text-center">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={row.english}
-                          onChange={(e) => {
-                            const val = Number(e.target.value) || 0;
-                            const updated = [...marksData];
-                            updated[idx].english = val;
-                            updated[idx].total = row.maths + row.science + val + row.social + row.hindi;
-                            updated[idx].pct = Number((updated[idx].total / 5).toFixed(1));
-                            updated[idx].grade = updated[idx].pct >= 91 ? 'A1' : updated[idx].pct >= 81 ? 'A2' : updated[idx].pct >= 71 ? 'B1' : updated[idx].pct >= 61 ? 'B2' : updated[idx].pct >= 51 ? 'C1' : updated[idx].pct >= 41 ? 'C2' : updated[idx].pct >= 33 ? 'D' : 'E';
-                            setMarksData(updated);
-                          }}
-                          className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
-                        />
-                      </VFTableCell>
+                      {/* English input or read-only */}
+                      {isRegisterLocked ? (
+                        <VFTableCell className="py-2 px-2 text-center font-mono font-bold text-xs text-zinc-200">
+                          {row.english}
+                        </VFTableCell>
+                      ) : (
+                        <VFTableCell className="py-1.5 px-2 text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={row.english}
+                            onChange={(e) => handleStudentMarkChange(row.rollNo, 'english', Number(e.target.value) || 0)}
+                            className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
+                          />
+                        </VFTableCell>
+                      )}
 
-                      {/* Social input */}
-                      <VFTableCell className="py-1.5 px-2 text-center">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={row.social}
-                          onChange={(e) => {
-                            const val = Number(e.target.value) || 0;
-                            const updated = [...marksData];
-                            updated[idx].social = val;
-                            updated[idx].total = row.maths + row.science + row.english + val + row.hindi;
-                            updated[idx].pct = Number((updated[idx].total / 5).toFixed(1));
-                            updated[idx].grade = updated[idx].pct >= 91 ? 'A1' : updated[idx].pct >= 81 ? 'A2' : updated[idx].pct >= 71 ? 'B1' : updated[idx].pct >= 61 ? 'B2' : updated[idx].pct >= 51 ? 'C1' : updated[idx].pct >= 41 ? 'C2' : updated[idx].pct >= 33 ? 'D' : 'E';
-                            setMarksData(updated);
-                          }}
-                          className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
-                        />
-                      </VFTableCell>
+                      {/* Social input or read-only */}
+                      {isRegisterLocked ? (
+                        <VFTableCell className="py-2 px-2 text-center font-mono font-bold text-xs text-zinc-200">
+                          {row.social}
+                        </VFTableCell>
+                      ) : (
+                        <VFTableCell className="py-1.5 px-2 text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={row.social}
+                            onChange={(e) => handleStudentMarkChange(row.rollNo, 'social', Number(e.target.value) || 0)}
+                            className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
+                          />
+                        </VFTableCell>
+                      )}
 
-                      {/* Hindi input */}
-                      <VFTableCell className="py-1.5 px-2 text-center">
-                        <input
-                          type="number"
-                          min="0"
-                          max="100"
-                          value={row.hindi}
-                          onChange={(e) => {
-                            const val = Number(e.target.value) || 0;
-                            const updated = [...marksData];
-                            updated[idx].hindi = val;
-                            updated[idx].total = row.maths + row.science + row.english + row.social + val;
-                            updated[idx].pct = Number((updated[idx].total / 5).toFixed(1));
-                            updated[idx].grade = updated[idx].pct >= 91 ? 'A1' : updated[idx].pct >= 81 ? 'A2' : updated[idx].pct >= 71 ? 'B1' : updated[idx].pct >= 61 ? 'B2' : updated[idx].pct >= 51 ? 'C1' : updated[idx].pct >= 41 ? 'C2' : updated[idx].pct >= 33 ? 'D' : 'E';
-                            setMarksData(updated);
-                          }}
-                          className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
-                        />
-                      </VFTableCell>
+                      {/* Hindi input or read-only */}
+                      {isRegisterLocked ? (
+                        <VFTableCell className="py-2 px-2 text-center font-mono font-bold text-xs text-zinc-200">
+                          {row.hindi}
+                        </VFTableCell>
+                      ) : (
+                        <VFTableCell className="py-1.5 px-2 text-center">
+                          <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={row.hindi}
+                            onChange={(e) => handleStudentMarkChange(row.rollNo, 'hindi', Number(e.target.value) || 0)}
+                            className="w-16 h-7 text-center bg-[#181818] hover:bg-[#202020] border border-border/70 rounded-[3px] font-mono font-bold text-xs text-foreground focus:outline-none focus:border-zinc-400 mx-auto"
+                          />
+                        </VFTableCell>
+                      )}
 
                       <VFTableCell className="py-2 px-3 font-mono font-bold text-foreground text-center text-xs">
                         {row.total}
