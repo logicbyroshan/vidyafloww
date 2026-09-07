@@ -7,13 +7,10 @@ import {
   VFBadge,
   VFSelect,
   VFDrawer,
-  VFInput,
-  VFStatCard,
 } from '@vidyafloww/ui';
 import {
   Download,
   Plus,
-  FileText,
   Calendar,
   Users,
   CreditCard,
@@ -352,20 +349,18 @@ function ReportsPage() {
   // Side Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [selectedDomain, setSelectedDomain] = React.useState<DomainType>('students');
-  const [selectedSession, setSelectedSession] = React.useState('2026–2027');
+  const [selectedSession, setSelectedSession] = React.useState(activeSession || '2026–2027');
   const [selectedGrade, setSelectedGrade] = React.useState('All');
   const [selectedTimeframe, setSelectedTimeframe] = React.useState('Academic Year 2026-27');
   const [selectedFormat, setSelectedFormat] = React.useState<ExportFormat>('csv');
   const [selectedColumnKeys, setSelectedColumnKeys] = React.useState<string[]>(
     DOMAINS.students.columns.map((c) => c.key)
   );
-  const [customReportName, setCustomReportName] = React.useState('');
 
-  // When domain changes, reset columns and default name
+  // When domain changes, reset columns
   React.useEffect(() => {
     const domainDef = DOMAINS[selectedDomain];
     setSelectedColumnKeys(domainDef.columns.map((c) => c.key));
-    setCustomReportName(domainDef.defaultFilename);
   }, [selectedDomain]);
 
   // Open drawer preconfigured for a given domain
@@ -412,7 +407,7 @@ function ReportsPage() {
       return;
     }
 
-    const filenameBase = customReportName.trim() || domainDef.defaultFilename;
+    const filenameBase = domainDef.defaultFilename;
     const nowStr = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
 
     if (selectedFormat === 'csv') {
@@ -580,43 +575,7 @@ function ReportsPage() {
 
   return (
     <VFPageContainer className="space-y-4 w-full">
-      {/* 1. Top Executive KPI Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <VFStatCard
-          title={isHindi ? 'उपलब्ध रिपोर्ट कैटलॉग' : 'Total Reports Catalog'}
-          value="24 Reports"
-          icon={<FileText className="h-4.5 w-4.5" />}
-          trend="up"
-          trendLabel="Across 6 Domains"
-          accentColor="blue"
-        />
-        <VFStatCard
-          title={isHindi ? 'एक्सपोर्ट इंजन स्थिति' : 'Realtime Export Engine'}
-          value="CSV · JSON · HTML"
-          icon={<FileSpreadsheet className="h-4.5 w-4.5" />}
-          trend="neutral"
-          trendLabel="Browser Generated"
-          accentColor="emerald"
-        />
-        <VFStatCard
-          title={isHindi ? 'सक्रिय सत्र स्कोप' : 'Active Session Scope'}
-          value={activeSession}
-          icon={<Calendar className="h-4.5 w-4.5" />}
-          trend="neutral"
-          trendLabel="AY 2026-2027"
-          accentColor="cyan"
-        />
-        <VFStatCard
-          title={isHindi ? 'नियामक अनुपालन' : 'Compliance Accreditation'}
-          value="CBSE & RTE 25%"
-          icon={<Shield className="h-4.5 w-4.5" />}
-          trend="up"
-          trendLabel="SOC-2 Audit Trail"
-          accentColor="primary"
-        />
-      </div>
-
-      {/* 2. Main Reports Table with Custom Drawer Trigger */}
+      {/* 1. Main Reports Table with Custom Drawer Trigger */}
       <VFDataTable
         columns={reportColumns}
         data={filteredCatalog}
@@ -652,12 +611,12 @@ function ReportsPage() {
         }
       />
 
-      {/* 3. Fully Working Custom Report Builder Side Drawer */}
+      {/* 2. Streamlined Custom Report Builder Side Drawer */}
       <VFDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        title={isHindi ? 'कस्टम रिपोर्ट एक्सपोर्ट बिल्डर' : 'Custom Report & Data Export Builder'}
-        description={isHindi ? 'डोमेन डेटासेट, फ़िल्टर स्कोप, कॉलम और फॉर्मेट का चयन करें' : 'Configure domain dataset, column attributes, and target export format'}
+        title={isHindi ? 'कस्टम रिपोर्ट एक्सपोर्ट' : 'Custom Report & Data Export'}
+        description={isHindi ? 'डोमेन डेटासेट, फ़िल्टर स्कोप, कॉलम और फॉर्मेट चुनें' : 'Configure domain dataset, filter criteria, columns, and target format'}
         className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
         bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
         headerActions={
@@ -671,9 +630,14 @@ function ReportsPage() {
         }
         footerActions={
           <div className="flex items-center justify-between gap-3 w-full">
-            <span className="text-[11px] text-muted-foreground font-mono">
-              ✓ {SAMPLE_DATA[selectedDomain].length} records · {selectedColumnKeys.length} cols
-            </span>
+            <div className="flex flex-col">
+              <span className="text-[11px] font-mono text-muted-foreground">
+                File: <span className="text-foreground font-semibold">{DOMAINS[selectedDomain].defaultFilename}.{selectedFormat}</span>
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                {SAMPLE_DATA[selectedDomain].length} records · {selectedColumnKeys.length} columns included
+              </span>
+            </div>
             <div className="flex items-center gap-2">
               <VFButton
                 variant="outline"
@@ -689,7 +653,7 @@ function ReportsPage() {
                 leftIcon={<Download className="h-3.5 w-3.5" />}
                 onClick={handleExecuteExport}
               >
-                {isHindi ? 'एक्सपोर्ट व डाउनलोड करें ⬇' : 'Generate & Download File ⬇'}
+                {isHindi ? 'डाउनलोड करें ⬇' : 'Download Report ⬇'}
               </VFButton>
             </div>
           </div>
@@ -730,56 +694,62 @@ function ReportsPage() {
             </div>
           </div>
 
-          {/* Step 2: Scope & Filters */}
-          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-[#242424] space-y-3">
-            <span className="text-[11px] font-extrabold text-foreground uppercase tracking-wider block">
+          {/* Step 2: Scope & Filters (Clean, Unboxed 3-Column Grid) */}
+          <div className="space-y-2">
+            <label className="text-xs font-extrabold text-foreground uppercase tracking-wider block">
               2. Filter Scope & Criteria
-            </span>
-            <div className="grid grid-cols-2 gap-3">
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground">Academic Session</label>
+                <label className="text-[11px] font-semibold text-muted-foreground block">
+                  Academic Session
+                </label>
                 <VFSelect
                   value={selectedSession}
                   onChange={(e) => setSelectedSession(String(e.target.value))}
                   options={[
-                    { label: 'Session 2026–2027 (Active)', value: '2026–2027' },
-                    { label: 'Session 2025–2026', value: '2025–2026' },
-                    { label: 'Session 2024–2025 (Archive)', value: '2024–2025' },
+                    { label: '2026–2027 (Active)', value: '2026–2027' },
+                    { label: '2025–2026', value: '2025–2026' },
+                    { label: '2024–2025 (Archive)', value: '2024–2025' },
                   ]}
-                  className="bg-[#1c1c1c] border-border h-8 text-xs rounded-[4px]"
+                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-muted-foreground">Class / Division Focus</label>
+                <label className="text-[11px] font-semibold text-muted-foreground block">
+                  Class / Division
+                </label>
                 <VFSelect
                   value={selectedGrade}
                   onChange={(e) => setSelectedGrade(String(e.target.value))}
                   options={[
-                    { label: 'All Classes & Sections', value: 'All' },
+                    { label: 'All Classes', value: 'All' },
                     { label: 'Class 10 (Secondary)', value: 'Class 10' },
-                    { label: 'Class 11 (Senior Secondary)', value: 'Class 11' },
-                    { label: 'Class 12 (Senior Secondary)', value: 'Class 12' },
+                    { label: 'Class 11 (Senior Sec)', value: 'Class 11' },
+                    { label: 'Class 12 (Senior Sec)', value: 'Class 12' },
                     { label: 'Class 9 (High School)', value: 'Class 9' },
                   ]}
-                  className="bg-[#1c1c1c] border-border h-8 text-xs rounded-[4px]"
+                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
                 />
               </div>
-            </div>
 
-            <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-muted-foreground">Date Range / Audit Period</label>
-              <VFSelect
-                value={selectedTimeframe}
-                onChange={(e) => setSelectedTimeframe(String(e.target.value))}
-                options={[
-                  { label: 'Academic Year 2026-27 (Entire Session)', value: 'Academic Year 2026-27' },
-                  { label: 'Current Month (September 2026)', value: 'Current Month' },
-                  { label: 'Quarter 2 (Jul – Sep 2026)', value: 'Quarter 2' },
-                  { label: 'Quarter 1 (Apr – Jun 2026)', value: 'Quarter 1' },
-                ]}
-                className="bg-[#1c1c1c] border-border h-8 text-xs rounded-[4px]"
-              />
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-muted-foreground block">
+                  Audit Timeframe
+                </label>
+                <VFSelect
+                  value={selectedTimeframe}
+                  onChange={(e) => setSelectedTimeframe(String(e.target.value))}
+                  options={[
+                    { label: 'Full Year (2026-27)', value: 'Academic Year 2026-27' },
+                    { label: 'Current Month (Sep)', value: 'Current Month' },
+                    { label: 'Quarter 2 (Jul–Sep)', value: 'Quarter 2' },
+                    { label: 'Quarter 1 (Apr–Jun)', value: 'Quarter 1' },
+                  ]}
+                  className="bg-[#141414] border-border h-8 text-xs rounded-[4px] w-full"
+                />
+              </div>
             </div>
           </div>
 
@@ -808,7 +778,7 @@ function ReportsPage() {
               </div>
             </div>
 
-            <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] flex flex-wrap gap-1.5">
+            <div className="p-2.5 rounded-[4px] bg-[#141414] border border-[#242424] flex flex-wrap gap-1.5">
               {DOMAINS[selectedDomain].columns.map((col) => {
                 const isChecked = selectedColumnKeys.includes(col.key);
                 return (
@@ -867,7 +837,7 @@ function ReportsPage() {
                     key={fmt.id}
                     type="button"
                     onClick={() => setSelectedFormat(fmt.id)}
-                    className={`p-3 rounded-[4px] border text-left flex flex-col justify-between gap-1 transition-all cursor-pointer ${
+                    className={`p-2.5 rounded-[4px] border text-left flex flex-col justify-between gap-1 transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-primary/15 border-primary text-foreground ring-1 ring-primary/40'
                         : 'bg-[#141414] border-[#242424] text-muted-foreground hover:text-foreground hover:border-[#333]'
@@ -884,22 +854,6 @@ function ReportsPage() {
                   </button>
                 );
               })}
-            </div>
-          </div>
-
-          {/* Step 5: Custom Filename */}
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">File Name *</label>
-            <div className="flex items-center gap-2">
-              <VFInput
-                value={customReportName}
-                onChange={(e) => setCustomReportName(e.target.value)}
-                placeholder="e.g. VidyaFloww_Q2_Audit"
-                className="bg-[#141414] border-border h-9 text-xs rounded-[4px] flex-1 font-mono"
-              />
-              <span className="font-mono text-xs text-muted-foreground font-bold shrink-0">
-                .{selectedFormat}
-              </span>
             </div>
           </div>
         </div>
