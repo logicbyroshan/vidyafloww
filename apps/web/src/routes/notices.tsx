@@ -35,6 +35,7 @@ import {
   ListOrdered,
   Eraser,
   Sparkles,
+  Lock,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -57,12 +58,12 @@ interface NoticeRecord {
 }
 
 const AUDIENCE_STATS: Record<string, { label: string; count: number; desc: string; icon: 'users' | 'parents' | 'teachers' | 'wing' | 'class' | 'person' }> = {
-  'All School': { label: 'All School Community', count: 1248, desc: 'Every parent, faculty member, and enrolled student', icon: 'users' },
-  'Parents': { label: 'Parents & Guardians', count: 1080, desc: 'Registered primary family mobile contacts', icon: 'parents' },
-  'Teachers': { label: 'Faculty & Educators', count: 124, desc: 'All teaching staff, HODs, and administrators', icon: 'teachers' },
-  'Classes 9-12': { label: 'Senior Secondary Wing', count: 420, desc: 'Classes 9, 10, 11, and 12 pupils & guardians', icon: 'wing' },
-  'Custom Class': { label: 'Specific Class / Section', count: 42, desc: 'Target students & parents of a designated section', icon: 'class' },
-  'Individual': { label: 'Single Person / Direct', count: 1, desc: 'Direct confidential notice to an individual student/staff', icon: 'person' },
+  'All School': { label: 'All School', count: 1248, desc: 'Students, parents & staff', icon: 'users' },
+  'Parents': { label: 'Parents', count: 1080, desc: 'Registered parent contacts', icon: 'parents' },
+  'Teachers': { label: 'Teachers', count: 124, desc: 'Teaching faculty', icon: 'teachers' },
+  'Classes 9-12': { label: 'Classes 9–12', count: 420, desc: 'Senior classes', icon: 'wing' },
+  'Custom Class': { label: 'Class / Section', count: 42, desc: 'Specific section', icon: 'class' },
+  'Individual': { label: 'Individual', count: 1, desc: 'Single person', icon: 'person' },
 };
 
 const INDIVIDUAL_DIRECTORY = [
@@ -93,25 +94,25 @@ const INITIAL_NOTICES: NoticeRecord[] = [
 
 const QUICK_TEMPLATES = [
   {
-    label: '📋 Exam Guidelines',
-    title: 'CBSE Secondary Board Examination LOC Verification Notice',
+    label: 'Exam',
+    title: 'Board Exam LOC Verification',
     category: 'Academic' as const,
     priority: 'Urgent' as const,
-    content: `<p><strong>Attention All Senior Secondary Students &amp; Guardians,</strong></p><p>Please review the final <em>List of Candidates (LOC)</em> draft issued by the academic cell. Immediate action is required:</p><ul><li>Cross-check spelling of candidate name, date of birth, and Aadhaar match.</li><li>Confirm optional subjects and lab codes with section mentor.</li><li>Sign and submit printed verification acknowledgement slip by <strong>Friday, 03:00 PM</strong>.</li></ul><p>Discrepancies reported post-deadline cannot be corrected under board regulations.</p>`,
+    content: `<p><strong>Attention Students &amp; Guardians,</strong></p><p>Please review the final <em>LOC draft</em> from the academic cell:</p><ul><li>Verify candidate name, date of birth, and Aadhaar match.</li><li>Confirm optional subjects and lab codes with mentor.</li><li>Submit signed acknowledgement slip by <strong>Friday, 03:00 PM</strong>.</li></ul>`,
   },
   {
-    label: '🎉 Sports Meet',
-    title: 'Schedule for Annual Sports Day & Athletic Meet 2026',
+    label: 'Sports',
+    title: 'Annual Sports Meet 2026',
     category: 'Event' as const,
     priority: 'Normal' as const,
-    content: `<p><strong>Dear Students, Parents, and Esteemed Faculty,</strong></p><p>We take pride in announcing the <strong>Annual Inter-House Athletics Meet 2026</strong> at the campus sports complex.</p><p><strong>Important Instructions:</strong></p><ul><li>Reporting time is strictly <strong>07:45 AM</strong> in full house sports track uniform.</li><li>House captains must report to the sports pavilion for ceremonial oath-taking.</li><li>Parents and family members are cordially invited to cheer track events.</li></ul>`,
+    content: `<p><strong>Dear Students &amp; Faculty,</strong></p><p>The <strong>Annual Athletics Meet 2026</strong> is scheduled for this Saturday.</p><ul><li>Reporting time is <strong>07:45 AM</strong> in house sports uniform.</li><li>House captains must report to sports pavilion.</li><li>Parents are welcome to attend.</li></ul>`,
   },
   {
-    label: '🚨 Urgent Advisory',
-    title: 'Advisory: Monsoon Heavy Rainfall Early Dismissal Protocol',
+    label: 'Urgent',
+    title: 'Rainfall Advisory & Early Dismissal',
     category: 'Administrative' as const,
     priority: 'Urgent' as const,
-    content: `<p><strong>URGENT INSTITUTIONAL DIRECTIVE:</strong></p><p>In view of the heavy rainfall weather advisory issued for the district, school operations will conclude early today.</p><ul><li>School transport buses will depart premises at <strong>12:30 PM</strong>.</li><li>Self-pickup guardians are requested to report at Gate 2 with student ID cards.</li><li>Tomorrow's scheduled assessments stand postponed to next Monday.</li></ul>`,
+    content: `<p><strong>URGENT NOTICE:</strong></p><p>Due to heavy rain warnings, school will dismiss early today.</p><ul><li>School buses depart premises at <strong>12:30 PM</strong>.</li><li>Parent pickups report to Gate 2.</li><li>Scheduled tests are postponed to Monday.</li></ul>`,
   },
 ];
 
@@ -312,10 +313,6 @@ function NoticeRichEditor({ value, onChange, placeholder }: RichEditorProps) {
             <Eraser className="h-3.5 w-3.5" />
           </button>
         </div>
-
-        <span className="text-[10px] text-muted-foreground font-mono hidden sm:inline">
-          Rich HTML &amp; Clipboard Formatting
-        </span>
       </div>
 
       {/* ContentEditable Area */}
@@ -329,7 +326,7 @@ function NoticeRichEditor({ value, onChange, placeholder }: RichEditorProps) {
         onPaste={handlePaste}
         onKeyUp={updateFormatStates}
         onMouseUp={updateFormatStates}
-        data-placeholder={placeholder || 'Type formatted circular notice body...'}
+        data-placeholder={placeholder || 'Type message...'}
         className="p-3 min-h-[140px] max-h-[260px] overflow-y-auto text-xs text-foreground leading-relaxed outline-none empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground/50 empty:before:pointer-events-none prose prose-invert prose-xs max-w-none"
       />
     </div>
@@ -349,6 +346,7 @@ function NoticesPage() {
 
   // Broadcast Drawer Form State
   const [drawerTab, setDrawerTab] = React.useState<'audience' | 'content'>('audience');
+  const [step1Done, setStep1Done] = React.useState(false);
   const [targetAudience, setTargetAudience] = React.useState<string>('All School');
   const [selectedClass, setSelectedClass] = React.useState<string>('Class 10');
   const [selectedSection, setSelectedSection] = React.useState<string>('A');
@@ -372,9 +370,9 @@ function NoticesPage() {
     : (AUDIENCE_STATS[targetAudience]?.count || 1248);
 
   const activeAudienceLabel = targetAudience === 'Custom Class'
-    ? `${selectedClass}${selectedSection !== 'All' ? `-${selectedSection}` : ' (All Sections)'}`
+    ? `${selectedClass}${selectedSection !== 'All' ? `-${selectedSection}` : ' (All)'}`
     : targetAudience === 'Individual'
-    ? `${INDIVIDUAL_DIRECTORY.find((p) => p.id === individualId)?.name || 'Direct Recipient'}`
+    ? `${INDIVIDUAL_DIRECTORY.find((p) => p.id === individualId)?.name || 'Direct'}`
     : (AUDIENCE_STATS[targetAudience]?.label || targetAudience);
 
   const handleApplyTemplate = (tmpl: (typeof QUICK_TEMPLATES)[0]) => {
@@ -383,10 +381,23 @@ function NoticesPage() {
     setNoticePriority(tmpl.priority);
     setNoticeContent(tmpl.content);
     addNotification({
-      title: isHindi ? 'टेम्पलेट लोड किया गया' : 'Preset Template Loaded',
-      description: `Loaded preset "${tmpl.label}". You can now customize and dispatch.`,
+      title: isHindi ? 'टेम्पलेट लोड किया गया' : 'Template Loaded',
+      description: `Loaded "${tmpl.label}" preset.`,
       type: 'info',
     });
+  };
+
+  const handleProceedToContent = () => {
+    if (!channels.app && !channels.sms && !channels.portal) {
+      addNotification({
+        title: isHindi ? 'माध्यम चुनें' : 'Select Channel',
+        description: isHindi ? 'कम से कम एक प्रेषण माध्यम चुनें।' : 'Select at least one delivery channel.',
+        type: 'error',
+      });
+      return;
+    }
+    setStep1Done(true);
+    setDrawerTab('content');
   };
 
   const handlePublishNotice = (e: React.FormEvent) => {
@@ -402,9 +413,9 @@ function NoticesPage() {
     }
 
     const enabledChannelNames = [];
-    if (channels.app) enabledChannelNames.push('App Push');
+    if (channels.app) enabledChannelNames.push('App');
     if (channels.sms) enabledChannelNames.push('SMS');
-    if (channels.portal) enabledChannelNames.push('Web Notice');
+    if (channels.portal) enabledChannelNames.push('Portal');
 
     const added: NoticeRecord = {
       id: String(Date.now()),
@@ -427,11 +438,12 @@ function NoticesPage() {
     setNoticeContent('');
     setNoticePriority('Normal');
     setTargetAudience('All School');
+    setStep1Done(false);
     setDrawerTab('audience');
 
     addNotification({
       title: isHindi ? 'सर्कुलर भेजा गया' : 'Notice Dispatched',
-      description: `"${added.title}" delivered to ${activeRecipientCount} recipient(s) (${activeAudienceLabel}) via ${enabledChannelNames.join(', ')}.`,
+      description: `"${added.title}" sent to ${activeRecipientCount} recipient(s).`,
       type: 'success',
     });
   };
@@ -487,7 +499,7 @@ function NoticesPage() {
       ),
     },
     {
-      header: isHindi ? 'लक्षित वर्ग' : 'Target Audience',
+      header: isHindi ? 'लक्षित' : 'Audience',
       accessorKey: 'targetAudience',
       cell: (r: NoticeRecord) => (
         <VFBadge variant={r.targetAudience === 'All School' ? 'default' : 'outline'} className="font-bold text-xs">
@@ -496,12 +508,12 @@ function NoticesPage() {
       ),
     },
     {
-      header: isHindi ? 'प्रकाशन तिथि' : 'Date Published',
+      header: isHindi ? 'तिथि' : 'Date',
       accessorKey: 'publishDate',
       cell: (r: NoticeRecord) => <span className="text-muted-foreground text-xs font-semibold">{r.publishDate}</span>,
     },
     {
-      header: isHindi ? 'डिलीवरी स्थिति' : 'Delivery Telemetry',
+      header: isHindi ? 'डिलीवरी' : 'Delivery',
       accessorKey: 'deliveryStatus',
       cell: (r: NoticeRecord) => (
         <span className="text-xs font-mono font-bold text-emerald-400">
@@ -525,7 +537,7 @@ function NoticesPage() {
           className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
           onClick={() => setSelectedNotice(r)}
         >
-          {isHindi ? 'देखें' : 'View Circular'}
+          {isHindi ? 'देखें' : 'View'}
         </VFButton>
       ),
     },
@@ -537,7 +549,7 @@ function NoticesPage() {
       <VFDataTable
         columns={noticeColumns}
         data={filteredNotices}
-        filterPlaceholder={isHindi ? "सर्कुलर, शीर्षक या कोड खोजें..." : "Search circulars by title, code, category..."}
+        filterPlaceholder={isHindi ? "सूचना खोजें..." : "Search notices..."}
         rightActions={
           <div className="flex flex-wrap items-center gap-2">
             <VFSelect
@@ -595,7 +607,7 @@ function NoticesPage() {
         isOpen={isBroadcastDrawerOpen}
         onClose={() => setIsBroadcastDrawerOpen(false)}
         title={isHindi ? 'नोटिस भेजें' : 'Send Notice'}
-        description={isHindi ? 'छात्रों, अभिभावकों व शिक्षकों को त्वरित आधिकारिक सूचना प्रेषित करें।' : 'Dispatch institutional announcements across mobile app push, SMS, and portal feed.'}
+        description={isHindi ? 'आधिकारिक सूचना प्रेषित करें।' : 'Send school announcements.'}
         className="max-w-2xl bg-[#0d0d0d] border-l border-border/90"
         bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
         headerActions={
@@ -611,7 +623,7 @@ function NoticesPage() {
           <div className="flex items-center justify-between gap-3 w-full">
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-[11px] font-mono text-emerald-400 font-bold whitespace-nowrap">
-                ✓ {activeRecipientCount.toLocaleString()} Recipient{activeRecipientCount > 1 ? 's' : ''}
+                ✓ {activeRecipientCount.toLocaleString()} {activeRecipientCount === 1 ? 'Recipient' : 'Recipients'}
               </span>
               <span className="text-muted-foreground text-[11px]">·</span>
               <span className="text-muted-foreground text-[11px] truncate max-w-[200px]" title={activeAudienceLabel}>
@@ -627,15 +639,15 @@ function NoticesPage() {
                     className="h-8 text-xs font-bold rounded-[4px]"
                     onClick={() => setIsBroadcastDrawerOpen(false)}
                   >
-                    Cancel
+                    {isHindi ? 'रद्द करें' : 'Cancel'}
                   </VFButton>
                   <VFButton
                     size="sm"
                     className="h-8 px-4 text-xs font-bold rounded-[4px] shadow-xs"
                     rightIcon={<ArrowRight className="h-3.5 w-3.5" />}
-                    onClick={() => setDrawerTab('content')}
+                    onClick={handleProceedToContent}
                   >
-                    {isHindi ? 'अगला: विवरण →' : 'Next: Compose →'}
+                    {isHindi ? 'आगे →' : 'Next →'}
                   </VFButton>
                 </>
               ) : (
@@ -647,7 +659,7 @@ function NoticesPage() {
                     leftIcon={<ArrowLeft className="h-3.5 w-3.5" />}
                     onClick={() => setDrawerTab('audience')}
                   >
-                    {isHindi ? '← दर्शक' : '← Audience'}
+                    {isHindi ? '← पीछे' : '← Back'}
                   </VFButton>
                   <VFButton
                     size="sm"
@@ -655,7 +667,7 @@ function NoticesPage() {
                     leftIcon={<Send className="h-3.5 w-3.5" />}
                     onClick={handlePublishNotice}
                   >
-                    {isHindi ? 'नोटिस भेजें' : 'Send Notice'}
+                    {isHindi ? 'भेजें' : 'Send Notice'}
                   </VFButton>
                 </>
               )}
@@ -684,17 +696,22 @@ function NoticesPage() {
               >
                 1
               </div>
-              <span>{isHindi ? 'लक्षित समूह व माध्यम' : '1. Target & Distribution'}</span>
+              <span>{isHindi ? 'दर्शक' : 'Audience'}</span>
             </button>
 
             <button
               type="button"
-              onClick={() => setDrawerTab('content')}
+              disabled={!step1Done}
+              onClick={() => {
+                if (step1Done) setDrawerTab('content');
+              }}
               className={cn(
-                'flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold rounded-[3px] transition-all cursor-pointer',
-                drawerTab === 'content'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/90'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a]'
+                'flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold rounded-[3px] transition-all',
+                !step1Done
+                  ? 'opacity-40 cursor-not-allowed text-muted-foreground'
+                  : drawerTab === 'content'
+                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/90 cursor-pointer'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a] cursor-pointer'
               )}
             >
               <div
@@ -703,9 +720,9 @@ function NoticesPage() {
                   drawerTab === 'content' ? 'bg-primary text-primary-foreground' : 'bg-zinc-800 text-muted-foreground'
                 )}
               >
-                2
+                {!step1Done ? <Lock className="h-2.5 w-2.5" /> : '2'}
               </div>
-              <span>{isHindi ? 'विषय व विवरण (रिच टेक्स्ट)' : '2. Subject & Rich Content'}</span>
+              <span>{isHindi ? 'विवरण' : 'Content'}</span>
               {noticeTitle.trim() && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
             </button>
           </div>
@@ -719,7 +736,7 @@ function NoticesPage() {
               <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-foreground tracking-wide">
-                    1. {isHindi ? 'लक्षित समूह चुनें *' : 'Target Audience *'}
+                    {isHindi ? 'लक्षित समूह *' : 'Audience *'}
                   </span>
                   <button
                     type="button"
@@ -730,7 +747,7 @@ function NoticesPage() {
                         : 'bg-[#1a1a1a] text-muted-foreground border-border/70 hover:text-foreground hover:border-border'
                     }`}
                   >
-                    ⚡ {isHindi ? 'संपूर्ण विद्यालय (सभी)' : 'Whole School (All)'}
+                    ⚡ {isHindi ? 'संपूर्ण विद्यालय' : 'All School'}
                   </button>
                 </div>
 
@@ -765,10 +782,10 @@ function NoticesPage() {
                         <p className="text-[10px] text-muted-foreground line-clamp-1">{info.desc}</p>
                         <span className="font-mono text-[10px] font-bold text-muted-foreground">
                           {aud === 'Custom Class'
-                            ? `${activeRecipientCount} ${isHindi ? 'छात्र (कक्षा अनुसार)' : 'Selected Students'}`
+                            ? `${activeRecipientCount} ${isHindi ? 'छात्र' : 'Students'}`
                             : aud === 'Individual'
-                            ? `1 ${isHindi ? 'गोपनीय प्राप्तकर्ता' : 'Direct Recipient'}`
-                            : `${info.count.toLocaleString()} ${isHindi ? 'सक्रिय प्राप्तकर्ता' : 'Active Recipients'}`}
+                            ? `1 ${isHindi ? 'प्राप्तकर्ता' : 'Recipient'}`
+                            : `${info.count.toLocaleString()} ${isHindi ? 'प्राप्तकर्ता' : 'Recipients'}`}
                         </span>
                       </button>
                     );
@@ -781,16 +798,16 @@ function NoticesPage() {
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
                         <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-                        {isHindi ? 'कक्षा और सेक्शन निर्दिष्ट करें' : 'Designate Class & Section'}
+                        {isHindi ? 'कक्षा और सेक्शन' : 'Class & Section'}
                       </span>
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded-[3px] bg-zinc-800 border border-border text-emerald-400 font-bold">
-                        ~{activeRecipientCount} Students Targeted
+                        ~{activeRecipientCount} Students
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-2.5">
                       <div className="space-y-1">
                         <label className="text-[10px] font-semibold text-muted-foreground block">
-                          {isHindi ? 'कक्षा चुनें' : 'Select Class'}
+                          {isHindi ? 'कक्षा' : 'Class'}
                         </label>
                         <VFSelect
                           value={selectedClass}
@@ -809,7 +826,7 @@ function NoticesPage() {
                       </div>
                       <div className="space-y-1">
                         <label className="text-[10px] font-semibold text-muted-foreground block">
-                          {isHindi ? 'सेक्शन चुनें' : 'Select Section'}
+                          {isHindi ? 'सेक्शन' : 'Section'}
                         </label>
                         <VFSelect
                           value={selectedSection}
@@ -825,7 +842,7 @@ function NoticesPage() {
                       </div>
                     </div>
                     <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                      <span className="text-zinc-400">ℹ</span> Notice will be pushed specifically to parents and students registered under <strong className="text-foreground">{selectedClass} - Section {selectedSection}</strong>.
+                      <span className="text-zinc-400">ℹ</span> Notice sent to <strong className="text-foreground">{selectedClass}-{selectedSection}</strong>.
                     </p>
                   </div>
                 )}
@@ -836,7 +853,7 @@ function NoticesPage() {
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
                         <User className="h-3.5 w-3.5 text-muted-foreground" />
-                        {isHindi ? 'व्यक्तिगत प्राप्तकर्ता खोजें' : 'Individual Confidential Recipient'}
+                        {isHindi ? 'प्राप्तकर्ता' : 'Recipient'}
                       </span>
                       <div className="flex items-center gap-1">
                         {(['Student', 'Parent', 'Teacher'] as const).map((r) => (
@@ -862,7 +879,7 @@ function NoticesPage() {
 
                     <div className="space-y-1">
                       <label className="text-[10px] font-semibold text-muted-foreground block">
-                        {isHindi ? `${individualRole} चुनें` : `Select ${individualRole}`}
+                        {isHindi ? `${individualRole}` : `Select ${individualRole}`}
                       </label>
                       <VFSelect
                         value={individualId}
@@ -877,7 +894,7 @@ function NoticesPage() {
 
                     <div className="p-2 rounded-[3px] bg-zinc-900/80 border border-border/50 text-[10px] text-muted-foreground flex items-center justify-between">
                       <span>
-                        🔒 1-to-1 Private Dispatch · Dispatches directly to registered phone & portal inbox
+                        🔒 Direct Dispatch · Dispatches to registered mobile & portal inbox
                       </span>
                       <span className="font-mono text-emerald-400 font-bold">Active</span>
                     </div>
@@ -888,12 +905,12 @@ function NoticesPage() {
               {/* Section 2: Category, Priority & Channels Card */}
               <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
                 <span className="text-xs font-bold text-foreground tracking-wide block">
-                  2. {isHindi ? 'श्रेणी व प्रेषण माध्यम' : 'Classification & Channels'}
+                  {isHindi ? 'श्रेणी व माध्यम' : 'Classification'}
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <label className="text-[11px] font-semibold text-muted-foreground block">
-                      {isHindi ? 'सर्कुलर श्रेणी' : 'Circular Category'}
+                      {isHindi ? 'श्रेणी' : 'Category'}
                     </label>
                     <VFSelect
                       value={noticeCategory}
@@ -910,7 +927,7 @@ function NoticesPage() {
 
                   <div className="space-y-1">
                     <label className="text-[11px] font-semibold text-muted-foreground block">
-                      {isHindi ? 'प्राथमिकता स्तर' : 'Priority Level'}
+                      {isHindi ? 'प्राथमिकता' : 'Priority'}
                     </label>
                     <VFSelect
                       value={noticePriority}
@@ -929,7 +946,7 @@ function NoticesPage() {
                 <div className="p-2.5 rounded-[4px] bg-[#181818] border border-border/60 flex flex-wrap items-center justify-between gap-2.5 mt-1">
                   <span className="text-[11px] font-bold text-foreground flex items-center gap-1.5">
                     <Radio className="h-3.5 w-3.5 text-muted-foreground" />
-                    {isHindi ? 'प्रेषण माध्यम:' : 'Dispatch Mediums:'}
+                    {isHindi ? 'माध्यम:' : 'Channels:'}
                   </span>
                   <div className="flex items-center gap-4">
                     <label className="flex items-center gap-1.5 text-xs text-foreground cursor-pointer select-none">
@@ -970,15 +987,15 @@ function NoticesPage() {
               <div className="pt-1 flex items-center justify-between border-t border-border/50">
                 <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                  <span>Target confirmed: <strong>{activeAudienceLabel}</strong> ({activeRecipientCount})</span>
+                  <span>Audience: <strong>{activeAudienceLabel}</strong> ({activeRecipientCount})</span>
                 </div>
                 <VFButton
                   size="sm"
                   className="h-8 px-4 text-xs font-bold rounded-[4px] shadow-xs"
                   rightIcon={<ArrowRight className="h-3.5 w-3.5" />}
-                  onClick={() => setDrawerTab('content')}
+                  onClick={handleProceedToContent}
                 >
-                  {isHindi ? 'अगला: सूचना विषय व विवरण →' : 'Next: Compose Notice →'}
+                  {isHindi ? 'आगे →' : 'Next →'}
                 </VFButton>
               </div>
             </div>
@@ -993,7 +1010,7 @@ function NoticesPage() {
               <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-foreground tracking-wide block">
-                    {isHindi ? 'सर्कुलर का शीर्षक व संदर्भ *' : 'Notice Subject & Reference *'}
+                    {isHindi ? 'विषय *' : 'Subject *'}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded-[3px] bg-zinc-900 border border-border text-muted-foreground">
@@ -1007,11 +1024,11 @@ function NoticesPage() {
 
                 <div className="space-y-1">
                   <label className="text-[11px] font-semibold text-muted-foreground block">
-                    {isHindi ? 'नोटिस शीर्षक / विषय पंक्ति *' : 'Subject Line / Circular Header *'}
+                    {isHindi ? 'विषय *' : 'Subject *'}
                   </label>
                   <VFInput
                     required
-                    placeholder={isHindi ? "उदा. वार्षिक खेल दिवस व एथलेटिक्स मीट 2026 की समय-सारणी" : "e.g. Schedule for Annual Sports Day & Athletic Meet 2026"}
+                    placeholder={isHindi ? "उदा. वार्षिक खेल दिवस 2026" : "e.g. Annual Sports Meet 2026"}
                     value={noticeTitle}
                     onChange={(e) => setNoticeTitle(e.target.value)}
                     className="bg-[#181818] border-border h-9 text-xs rounded-[4px]"
@@ -1022,7 +1039,7 @@ function NoticesPage() {
                 <div className="space-y-1.5 pt-1">
                   <span className="text-[10px] font-bold text-muted-foreground flex items-center gap-1">
                     <Sparkles className="h-3 w-3 text-primary" />
-                    {isHindi ? 'त्वरित टेम्पलेट लोड करें:' : 'Quick Formatted Presets:'}
+                    {isHindi ? 'टेम्पलेट्स:' : 'Templates:'}
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {QUICK_TEMPLATES.map((tmpl) => (
@@ -1043,7 +1060,7 @@ function NoticesPage() {
               <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-foreground tracking-wide block">
-                    {isHindi ? 'सूचना का विस्तृत विवरण (रिच टेक्स्ट) *' : 'Circular Notice Body (Rich Formatted) *'}
+                    {isHindi ? 'विवरण *' : 'Message *'}
                   </label>
                   <span className="text-[10px] text-muted-foreground font-mono">
                     {noticeContent.replace(/<[^>]*>/g, '').length} chars
@@ -1053,14 +1070,14 @@ function NoticesPage() {
                 <NoticeRichEditor
                   value={noticeContent}
                   onChange={setNoticeContent}
-                  placeholder={isHindi ? "यहाँ सूचना का संपूर्ण विवरण टाइप करें या फ़ॉर्मेटेड टेक्स्ट पेस्ट करें..." : "Type formatted notice instructions here or paste rich text directly from Word / Docs..."}
+                  placeholder={isHindi ? "यहाँ विवरण टाइप करें..." : "Type message..."}
                 />
 
                 <p className="text-[10px] text-muted-foreground flex items-center gap-1 pt-0.5">
                   <span className="text-zinc-400">💡</span>
                   {isHindi
-                    ? 'बोल्ड, इटैलिक, बुलेट लिस्ट सपोर्टेड हैं। वर्ड या डॉक्स से पेस्ट करने पर फ़ॉर्मेटिंग स्वतः सुरक्षित रहती है।'
-                    : 'Bold, italic, underlines & bullet lists supported. Rich clipboard formatting from Word/Docs is preserved cleanly.'}
+                    ? 'बोल्ड, इटैलिक व लिस्ट सपोर्टेड।'
+                    : 'Supports bold, italic, lists & clipboard pasting.'}
                 </p>
               </div>
 
@@ -1069,10 +1086,10 @@ function NoticesPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-muted-foreground text-[11px] font-bold">
                     <Eye className="h-3.5 w-3.5 text-primary" />
-                    <span>{isHindi ? 'लाइव प्रेषण पूर्वावलोकन (प्राप्तकर्ता स्क्रीन)' : 'Live Dispatch Preview (Recipient View)'}</span>
+                    <span>{isHindi ? 'पूर्वावलोकन' : 'Preview'}</span>
                   </div>
                   <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-[3px]">
-                    App &amp; Portal View
+                    Preview
                   </span>
                 </div>
 
@@ -1101,7 +1118,7 @@ function NoticesPage() {
                   </div>
 
                   <h4 className="text-xs font-bold text-foreground">
-                    {noticeTitle.trim() || (isHindi ? 'सर्कुलर का शीर्षक यहाँ दिखेगा' : 'Untitled Circular Subject')}
+                    {noticeTitle.trim() || (isHindi ? 'शीर्षक' : 'Untitled Notice')}
                   </h4>
 
                   {noticeContent ? (
@@ -1111,7 +1128,7 @@ function NoticesPage() {
                     />
                   ) : (
                     <p className="text-xs italic text-zinc-600">
-                      {isHindi ? 'सूचना का विवरण यहाँ फ़ॉर्मेटिंग के साथ प्रदर्शित होगा...' : 'Notice body will render here with rich styling...'}
+                      {isHindi ? 'विवरण यहाँ दिखेगा...' : 'Message preview will appear here...'}
                     </p>
                   )}
 
@@ -1119,7 +1136,7 @@ function NoticesPage() {
                     <span className="flex items-center gap-1 font-mono">
                       <Radio className="h-3 w-3 text-emerald-400" /> {activeAudienceLabel} ({activeRecipientCount})
                     </span>
-                    <span className="font-semibold text-zinc-400">VidyaFloww Institutional Office</span>
+                    <span className="font-semibold text-zinc-400">VidyaFloww Office</span>
                   </div>
                 </div>
               </div>
