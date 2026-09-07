@@ -644,13 +644,10 @@ function SchoolAdministrationPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Left 2 Cols: Configured Roles & Privileges */}
           <div className="lg:col-span-2 space-y-3">
-            <div className="flex items-center justify-between pb-1 border-b border-[#202020]">
+            <div className="pb-1 border-b border-[#202020]">
               <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
                 {isHindi ? 'कॉन्फ़िगर किए गए उपयोगकर्ता रोल व अधिकार' : 'Configured User Roles & Authorization Hierarchy'}
               </h4>
-              <Link to="/security" className="text-xs text-primary hover:underline font-bold">
-                {isHindi ? 'पूर्ण मैट्रिक्स देखें →' : 'View Full Matrix →'}
-              </Link>
             </div>
 
             <div className="rounded-[4px] bg-[#141414] border border-[#242424] divide-y divide-[#202020]">

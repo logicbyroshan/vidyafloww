@@ -95,43 +95,43 @@ function SecurityManagementPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
-      {/* 1. Header Toolbar Box (Consistent with Students & Timetable Pages) */}
-      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3 shrink-0 shadow-xs">
-        {/* Left: Back Button + Title */}
+    <VFPageContainer className="space-y-4 w-full">
+      {/* 1. Sleek Header Toolbar Box */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        {/* Left: Back to Settings + Title */}
         <div className="flex items-center gap-3">
           <Link to="/settings">
             <VFButton
               size="sm"
               variant="outline"
-              className="h-9 w-9 p-0 aspect-square bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
-              title="Back to Settings"
+              className="h-8 px-2.5 text-xs font-bold rounded-[4px] bg-[#141414] hover:bg-[#1f1f1f] border-border text-foreground"
+              leftIcon={<ArrowLeft className="h-3.5 w-3.5" />}
             >
-              <ArrowLeft className="h-4 w-4" />
+              {isHindi ? 'सेटिंग्स' : 'Settings'}
             </VFButton>
           </Link>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#141414] border border-border/80 text-xs font-mono font-bold text-foreground">
               <Shield className="h-3.5 w-3.5 text-rose-400" />
-              <span className="font-bold text-foreground">{isHindi ? 'सुरक्षा व अनुपालन' : 'Security & Policy Engine'}</span>
+              <span>{isHindi ? 'सुरक्षा व भूमिका अनुमतियां' : 'Security Governance & Role Matrix'}</span>
             </div>
-            <VFBadge variant="success" className="text-xs font-bold font-mono">
+            <VFBadge variant="success" className="text-[10px] font-mono font-bold">
               ISO 27001
             </VFBadge>
           </div>
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
           <Link to="/audit">
             <VFButton
               size="sm"
               variant="outline"
-              className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
-              leftIcon={<Terminal className="h-3.5 w-3.5 text-primary" />}
+              className="h-8 px-3 text-xs font-bold rounded-[4px]"
+              leftIcon={<Terminal className="h-3.5 w-3.5 text-emerald-400" />}
             >
-              {t('nav.audit')}
+              {isHindi ? 'ऑडिट लॉग्स ↗' : 'Audit Logs ↗'}
             </VFButton>
           </Link>
 
@@ -146,7 +146,7 @@ function SecurityManagementPage() {
                 type: 'info',
               });
             }}
-            className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-muted-foreground hover:text-foreground"
+            className="h-8 px-3 text-xs font-bold rounded-[4px]"
             leftIcon={<RotateCcw className="h-3.5 w-3.5" />}
           >
             {t('action.reset')}
@@ -155,8 +155,8 @@ function SecurityManagementPage() {
           <VFButton
             size="sm"
             onClick={handleSaveMatrix}
-            className="h-9 px-4 text-xs font-bold shadow-xs"
-            leftIcon={<Save className="h-4 w-4" />}
+            className="h-8 px-3.5 text-xs font-bold rounded-[4px] shadow-xs"
+            leftIcon={<Save className="h-3.5 w-3.5" />}
           >
             {t('action.saveChanges')}
           </VFButton>
@@ -165,46 +165,46 @@ function SecurityManagementPage() {
 
       {/* 2. Top Security Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex items-center justify-between">
+        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Role Tiers</span>
             <p className="text-base font-extrabold text-foreground">5 Institutional Tiers</p>
             <span className="text-[10px] text-emerald-400 font-semibold block">Principal Delegation Active</span>
           </div>
-          <div className="h-9 w-9 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+          <div className="h-9 w-9 rounded-[4px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
             <Users className="h-4.5 w-4.5" />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex items-center justify-between">
+        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Two-Factor Auth</span>
             <p className="text-base font-extrabold text-foreground">Enforced</p>
             <span className="text-[10px] text-primary font-semibold block">All Admins & Principals</span>
           </div>
-          <div className="h-9 w-9 rounded-md bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
+          <div className="h-9 w-9 rounded-[4px] bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
             <Smartphone className="h-4.5 w-4.5" />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex items-center justify-between">
+        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Session Timeout</span>
             <p className="text-base font-extrabold text-foreground">{sessionTimeout} Minutes</p>
             <span className="text-[10px] text-blue-400 font-semibold block">Auto-disconnect Lock</span>
           </div>
-          <div className="h-9 w-9 rounded-md bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+          <div className="h-9 w-9 rounded-[4px] bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
             <Lock className="h-4.5 w-4.5" />
           </div>
         </div>
 
-        <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex items-center justify-between">
+        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Campus Subnet IP</span>
             <p className="text-base font-extrabold text-foreground truncate max-w-[120px]">103.21.244.0/24</p>
             <span className="text-[10px] text-emerald-400 font-semibold block">Whitelist Protected</span>
           </div>
-          <div className="h-9 w-9 rounded-md bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+          <div className="h-9 w-9 rounded-[4px] bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
             <Globe className="h-4.5 w-4.5" />
           </div>
         </div>
@@ -214,19 +214,19 @@ function SecurityManagementPage() {
       <VFCard
         title={
           <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
+            <div className="h-6 w-6 rounded-[4px] bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
               <Users className="h-3.5 w-3.5" />
             </div>
             <span>{isHindi ? 'एंटरप्राइज मॉड्यूल अनुमति मैट्रिक्स' : 'Enterprise Module Authorization Matrix'}</span>
           </div>
         }
         description={isHindi ? 'मॉड्यूल एक्सेस टॉगल करने के लिए किसी भी सेल पर क्लिक करें। शिक्षक अनुमतियां सीधे स्कूल प्रिंसिपल द्वारा प्रबंधित की जाती हैं।' : 'Click any cell to toggle module capabilities. Faculty permissions are managed directly by the School Principal.'}
-        className="bg-[#141414] border-border/80"
-        bodyClassName="p-0 overflow-x-auto"
+        className="bg-[#0d0d0d] border-border/90"
+        bodyClassName="p-0 overflow-x-auto no-scrollbar"
       >
         <table className="w-full text-xs text-left border-collapse">
           <thead>
-            <tr className="border-b border-border/80 bg-[#1a1a1a] text-muted-foreground font-extrabold uppercase tracking-wider text-[10px]">
+            <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-extrabold uppercase tracking-wider text-[10px]">
               <th className="py-3.5 px-4">{isHindi ? 'ERP मॉड्यूल' : 'Core Portal Module'}</th>
               <th className="py-3.5 px-3 text-center">
                 {isHindi ? 'सुपर एडमिन' : 'Super Admin'}
@@ -252,7 +252,7 @@ function SecurityManagementPage() {
           </thead>
           <tbody className="divide-y divide-border/60">
             {permissions.map((row, idx) => (
-              <tr key={idx} className="hover:bg-[#1a1a1a]/60 transition-colors">
+              <tr key={idx} className="hover:bg-[#141414]/60 transition-colors">
                 <td className="py-3.5 px-4 font-bold text-foreground">{row.module}</td>
                 
                 {/* Super Admin */}
@@ -260,7 +260,7 @@ function SecurityManagementPage() {
                   <button
                     type="button"
                     disabled
-                    className="h-5 w-5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 inline-flex items-center justify-center cursor-not-allowed mx-auto"
+                    className="h-5 w-5 rounded-[3px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 inline-flex items-center justify-center cursor-not-allowed mx-auto"
                     title="Super Admin has immutable full root privileges"
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
@@ -272,7 +272,7 @@ function SecurityManagementPage() {
                   <button
                     type="button"
                     onClick={() => handleTogglePermission(idx, 'principal')}
-                    className={`h-5 w-5 rounded border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
+                    className={`h-5 w-5 rounded-[3px] border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
                       row.principal
                         ? 'bg-primary/20 text-primary border-primary/40'
                         : 'bg-[#141414] text-muted-foreground/40 border-border/60 hover:border-border'
@@ -287,7 +287,7 @@ function SecurityManagementPage() {
                   <button
                     type="button"
                     onClick={() => handleTogglePermission(idx, 'frontOffice')}
-                    className={`h-5 w-5 rounded border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
+                    className={`h-5 w-5 rounded-[3px] border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
                       row.frontOffice
                         ? 'bg-amber-500/20 text-amber-400 border-amber-500/40'
                         : 'bg-[#141414] text-muted-foreground/40 border-border/60 hover:border-border'
@@ -302,7 +302,7 @@ function SecurityManagementPage() {
                   <button
                     type="button"
                     onClick={() => handleTogglePermission(idx, 'accountant')}
-                    className={`h-5 w-5 rounded border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
+                    className={`h-5 w-5 rounded-[3px] border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
                       row.accountant
                         ? 'bg-purple-500/20 text-purple-400 border-purple-500/40'
                         : 'bg-[#141414] text-muted-foreground/40 border-border/60 hover:border-border'
@@ -317,7 +317,7 @@ function SecurityManagementPage() {
                   <button
                     type="button"
                     onClick={() => handleTogglePermission(idx, 'parent')}
-                    className={`h-5 w-5 rounded border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
+                    className={`h-5 w-5 rounded-[3px] border inline-flex items-center justify-center cursor-pointer transition-colors mx-auto ${
                       row.parent
                         ? 'bg-blue-500/20 text-blue-400 border-blue-500/40'
                         : 'bg-[#141414] text-muted-foreground/40 border-border/60 hover:border-border'
@@ -336,7 +336,7 @@ function SecurityManagementPage() {
       <VFCard
         title={
           <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
+            <div className="h-6 w-6 rounded-[4px] bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30">
               <Sliders className="h-3.5 w-3.5" />
             </div>
             <span>Network Perimeter & Session Governance</span>
@@ -354,20 +354,20 @@ function SecurityManagementPage() {
                 setIsEditingPolicies(true);
               }
             }}
-            className="h-8 px-3 text-xs bg-[#141414] hover:bg-[#222222] border-border text-foreground"
+            className="h-8 px-3 text-xs rounded-[4px]"
           >
             {isEditingPolicies ? 'Save Parameters' : 'Edit Security Parameters'}
           </VFButton>
         }
-        className="bg-[#141414] border-border/80"
-        bodyClassName="p-5"
+        className="bg-[#0d0d0d] border-border/90"
+        bodyClassName="p-4"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* 2FA Policy */}
-          <div className="p-4 rounded-lg bg-[#1a1a1a] border border-border/80 space-y-2.5">
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-foreground">Two-Factor Authentication (2FA)</label>
-              <VFBadge variant="success" className="text-[10px]">Active</VFBadge>
+              <VFBadge variant="success" className="text-[10px] font-bold">Active</VFBadge>
             </div>
             <p className="text-[11px] text-muted-foreground">
               Mandatory for Super Administrators, Department Heads, and Bursar Accounts on new device logins.
@@ -379,7 +379,7 @@ function SecurityManagementPage() {
                     type="checkbox"
                     checked={twoFactorEnforced}
                     onChange={(e) => setTwoFactorEnforced(e.target.checked)}
-                    className="rounded border-border bg-[#141414] text-primary"
+                    className="rounded-[2px] border-border bg-[#141414] text-primary"
                   />
                   Enforce 2FA globally
                 </label>
@@ -388,7 +388,7 @@ function SecurityManagementPage() {
           </div>
 
           {/* Inactivity Auto-Logout */}
-          <div className="p-4 rounded-lg bg-[#1a1a1a] border border-border/80 space-y-2.5">
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-foreground">Inactivity Session Timeout</label>
               <span className="font-mono font-bold text-primary text-xs">{sessionTimeout} Minutes</span>
@@ -418,10 +418,10 @@ function SecurityManagementPage() {
           </div>
 
           {/* IP Whitelisting Subnet */}
-          <div className="p-4 rounded-lg bg-[#1a1a1a] border border-border/80 space-y-2.5">
+          <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-foreground">Campus IP Whitelist Subnet</label>
-              <VFBadge variant="outline" className="text-[10px]">Restricted</VFBadge>
+              <VFBadge variant="outline" className="text-[10px] font-mono">Restricted</VFBadge>
             </div>
             <p className="text-[11px] text-muted-foreground">
               Restricts financial fee disbursement and master grade publishing to registered institutional static IPs.
@@ -431,10 +431,10 @@ function SecurityManagementPage() {
                 type="text"
                 value={whitelistSubnet}
                 onChange={(e) => setWhitelistSubnet(e.target.value)}
-                className="w-full px-3 py-1.5 text-xs border border-border rounded-md bg-[#141414] text-foreground font-mono"
+                className="w-full px-3 py-1.5 text-xs border border-border rounded-[4px] bg-[#141414] text-foreground font-mono"
               />
             ) : (
-              <code className="px-2.5 py-1 rounded bg-[#141414] border border-border/60 text-foreground font-mono text-xs block">
+              <code className="px-2.5 py-1 rounded-[3px] bg-[#141414] border border-border/60 text-foreground font-mono text-xs block">
                 {whitelistSubnet}
               </code>
             )}

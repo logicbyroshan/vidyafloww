@@ -19,8 +19,8 @@ import {
   Search,
   Download,
   Terminal,
-  SlidersHorizontal,
   RotateCcw,
+  Shield,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -83,7 +83,7 @@ function AuditLogPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.audit') + ' \u2013 VidyaFloww'; }, [t]);
+  React.useEffect(() => { document.title = t('page.audit') + ' – VidyaFloww'; }, [t]);
 
   // Filters State
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -164,42 +164,42 @@ function AuditLogPage() {
   }, [liveStreamLogs, searchQuery, selectedRoleFilter, selectedCategoryFilter, selectedStatusFilter]);
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
-      {/* 1. Header Toolbar Box (Consistent with Students & Timetable Pages) */}
-      <div className="p-3.5 rounded-lg bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+    <VFPageContainer className="space-y-3.5 w-full">
+      {/* 1. Sleek Header Toolbar Box */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div className="flex items-center gap-3">
           <Link to="/settings">
             <VFButton
               size="sm"
               variant="outline"
-              className="h-9 w-9 p-0 aspect-square bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
-              title="Back to Settings"
+              className="h-8 px-2.5 text-xs font-bold rounded-[4px] bg-[#141414] hover:bg-[#1f1f1f] border-border text-foreground"
+              leftIcon={<ArrowLeft className="h-3.5 w-3.5" />}
             >
-              <ArrowLeft className="h-4 w-4" />
+              {isHindi ? 'सेटिंग्स' : 'Settings'}
             </VFButton>
           </Link>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-              <Terminal className="h-3.5 w-3.5 text-purple-400" />
-              <span className="font-bold text-foreground">{isHindi ? 'ऑडिट लॉग' : 'Live Audit Telemetry'}</span>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#141414] border border-border/80 text-xs font-mono font-bold text-foreground">
+              <Terminal className="h-3.5 w-3.5 text-emerald-400" />
+              <span>{isHindi ? 'ऑडिट लॉग रजिस्टर' : 'Audit Logs & Activity Trail'}</span>
             </div>
-            <VFBadge variant="success" className="text-xs font-bold font-mono">
+            <VFBadge variant="success" className="text-[10px] font-mono font-bold">
               Live Stream Active
             </VFBadge>
           </div>
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 flex-wrap">
           <Link to="/security">
             <VFButton
               size="sm"
               variant="outline"
-              className="h-9 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
-              leftIcon={<SlidersHorizontal className="h-3.5 w-3.5" />}
+              className="h-8 px-3 text-xs font-bold rounded-[4px]"
+              leftIcon={<Shield className="h-3.5 w-3.5 text-rose-400" />}
             >
-              {t('nav.security')}
+              {isHindi ? 'सुरक्षा व अनुमतियां ↗' : 'Security & Roles ↗'}
             </VFButton>
           </Link>
 
@@ -207,7 +207,7 @@ function AuditLogPage() {
             size="sm"
             variant="outline"
             onClick={handleExportAuditLogs}
-            className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground"
+            className="h-8 px-3.5 text-xs font-bold rounded-[4px]"
             leftIcon={<Download className="h-3.5 w-3.5" />}
           >
             {t('action.export')}
@@ -216,16 +216,16 @@ function AuditLogPage() {
       </div>
 
       {/* 2. Interactive Global Search & VFSelect Dropdown Filters Bar */}
-      <div className="p-3 rounded-lg bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-3 shrink-0 shadow-xs">
-        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+      <div className="p-2.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-wrap items-center justify-between gap-2.5 shrink-0 shadow-xs">
+        <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-[280px]">
           {/* Global VFInput Search */}
           <div className="flex-1 min-w-[220px]">
             <VFInput
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={isHindi ? "एक्टर, एक्शन, टारगेट, आईपी या इवेंट आईडी से खोजें..." : "Search logs by actor, action, target, IP, or event ID..."}
-              leftIcon={<Search className="h-4 w-4" />}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
+              leftIcon={<Search className="h-3.5 w-3.5" />}
+              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
             />
           </div>
 
@@ -235,7 +235,7 @@ function AuditLogPage() {
               value={selectedRoleFilter}
               onChange={(e) => setSelectedRoleFilter(String(e.target.value))}
               options={ROLE_OPTIONS}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
+              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
             />
           </div>
 
@@ -245,7 +245,7 @@ function AuditLogPage() {
               value={selectedCategoryFilter}
               onChange={(e) => setSelectedCategoryFilter(String(e.target.value))}
               options={CATEGORY_OPTIONS}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
+              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
             />
           </div>
 
@@ -255,7 +255,7 @@ function AuditLogPage() {
               value={selectedStatusFilter}
               onChange={(e) => setSelectedStatusFilter(String(e.target.value))}
               options={STATUS_OPTIONS}
-              className="bg-[#1a1a1a] border-border h-9 text-xs"
+              className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
             />
           </div>
         </div>
@@ -265,17 +265,17 @@ function AuditLogPage() {
             size="sm"
             variant="outline"
             onClick={handleResetFilters}
-            className="h-9 px-3 text-xs bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground shrink-0"
+            className="h-8 px-3 text-xs rounded-[4px]"
             leftIcon={<RotateCcw className="h-3 w-3" />}
           >
-            {isHindi ? 'फ़िल्टर रीसेट करें' : 'Reset Filters'}
+            {isHindi ? 'फ़िल्टर रीसेट करें' : 'Reset'}
           </VFButton>
         )}
       </div>
 
       {/* 3. Global VFTable Live Audit Logs */}
-      <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 overflow-hidden flex-1 flex flex-col">
-        <VFTable className="rounded-none border-0 h-full">
+      <VFCard className="bg-[#0d0d0d] border-border/90" bodyClassName="p-0 overflow-x-auto no-scrollbar">
+        <VFTable className="rounded-none border-0 w-full">
           <VFTableHead className="bg-[#1a1a1a]">
             <VFTableRow>
               <VFTableHeaderCell className="py-3 px-4 text-xs font-bold text-muted-foreground">{isHindi ? 'इवेंट आईडी' : 'Event ID'}</VFTableHeaderCell>
