@@ -1,0 +1,16 @@
+{
+  "name": "@vidyafloww/design-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VidyaFloww Standalone Design Lab Subsystem (Marksheets, ID Cards, Certificates & Admit Cards Studio)",
+  "main": "src/DesignLabModule.tsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lucide-react": "^1.23.0"
+  }
+}
