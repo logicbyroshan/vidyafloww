@@ -1,0 +1,16 @@
+{
+  "name": "@vidyafloww/transport-management",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VidyaFloww Standalone Fleet & School Bus Transport Management Subsystem",
+  "main": "src/TransportModule.tsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lucide-react": "^1.23.0"
+  }
+}
