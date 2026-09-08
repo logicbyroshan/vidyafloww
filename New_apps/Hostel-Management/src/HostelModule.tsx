@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { useTranslation } from '../hooks/useTranslation';
-import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from './hooks/useTranslation';
+import { useGlobalStore } from './stores/globalStore';
 import {
   VFPageContainer,
   VFButton,
@@ -1673,3 +1673,6 @@ function HostelManagementPage() {
     </VFPageContainer>
   );
 }
+
+
+export { HostelManagementPage };

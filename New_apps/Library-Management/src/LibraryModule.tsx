@@ -33,8 +33,8 @@ import {
   X,
   FileUp,
 } from 'lucide-react';
-import { useGlobalStore } from '../stores/globalStore';
-import { useTranslation } from '../hooks/useTranslation';
+import { useGlobalStore } from './stores/globalStore';
+import { useTranslation } from './hooks/useTranslation';
 
 export const Route = createFileRoute('/elibrary')({
   component: ELibraryPage,
