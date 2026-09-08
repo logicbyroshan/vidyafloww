@@ -81,3 +81,11 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 * **Decision**: Force `.dark` class on `<html>` on every app mount via `initTheme()` in `globalStore.ts`. No light mode, system mode, or theme toggle is exposed to the user.
 * **Reason**: The command portal's visual design, color palette, contrast ratios, and component color tokens are exclusively optimized for dark mode. Maintaining two theme variants would double visual QA surface without a meaningful user need (institutional desktop admin tools are typically used in controlled lit environments).
 * **Impact**: `theme: 'dark'` is a literal type in `GlobalState`. All CSS tokens in `globals.css` `.dark {}` block are the only active values at runtime.
+
+---
+
+### Decision 11: Mandatory Branching & GitHub CLI PR Workflow
+* **Date**: 2026-09-08
+* **Decision**: Require all new features and bug fixes to be implemented on isolated branches (`feature/*` or `fix/*`), pushed to remote, and submitted as Pull Requests via GitHub CLI (`gh pr create`). Direct commits or pushes to `main` are strictly prohibited.
+* **Reason**: Protects the stability of the base `main` branch, creates an auditable review record, and leverages GitHub CLI to streamline PR lifecycle operations directly from local developer environments.
+* **Impact**: All work begins from an up-to-date `main`, branches off to dedicated feature/fix branches, undergoes verification and credential audits, and is proposed through `gh pr create`.
