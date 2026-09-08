@@ -162,6 +162,34 @@ VidyaFloww uses a **shared schema with tenant isolation** approach:
 | Notification counts | 30 seconds | Cache invalidation on write |
 | Static reference data | 24 hours | Cache warming on deploy |
 
+## Decoupled Standalone Subsystems Architecture
+
+VidyaFloww decouples operation-heavy subsystems into dedicated standalone repositories and subdomains, while maintaining **integrated single-page overview dashboards** directly within the main command portal:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│             VidyaFloww Main Command Portal (apps/web)                   │
+│   • Core ERP: Students, Admissions, Attendance, Academics, Fees, Exams  │
+│   • Integrated Overview Dashboards (Stats, Modals, Status Matrices)     │
+└────────┬──────────────┬───────────────┬──────────────┬─────────────────┘
+         │              │               │              │
+         │ Redirect     │ Redirect      │ Redirect     │ Redirect
+         ▼              ▼               ▼              ▼
+┌─────────────────┐ ┌────────────────┐ ┌───────────────┐ ┌───────────────┐
+│   Design Lab    │ │Hostel Mgmt App │ │Transport App  │ │  HR & Biomet  │
+│ designlab.*.com │ │  hostel.*.com  │ │transport.*.com│ │   hr.*.com    │
+└─────────────────┘ └────────────────┘ └───────────────┘ └───────────────┘
+```
+
+| Subsystem | Main Portal Route | Standalone Target | Architectural Role |
+|:---|:---|:---|:---|
+| **Design Lab** | `/design-lab` | `designlab.vidyafloww.com` | Vector-rendered certificates, CBSE marksheets, CR80 ID card generation engine |
+| **Hostel Management** | `/hostel` | `hostel.vidyafloww.com` | Dormitory room matrix, 7-day nutritional timetable, night attendance, outpass ledger |
+| **Transport Telemetry** | `/transport` | `transport.vidyafloww.com` | GPS fleet hardware telematics, live route tracking, driver compliance audit |
+| **HR & Biometrics** | `/hr-manage` | `hr.vidyafloww.com` | Biometric turnstile logs, support staff departmental rosters, statutory payroll |
+| **E-Library & DRM** | `/elibrary` | `library.vidyafloww.com` | DRM protected reading engine, NCERT digital textbook catalog, circulation tracking |
+
 ---
 
-*Last updated: 2026-07-02*
+*Last updated: 2026-09-08*
+

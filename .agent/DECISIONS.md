@@ -89,3 +89,12 @@ Meaningful architectural and engineering decisions supported by the codebase, do
 * **Decision**: Require all new features and bug fixes to be implemented on isolated branches (`feature/*` or `fix/*`), pushed to remote, and submitted as Pull Requests via GitHub CLI (`gh pr create`). Direct commits or pushes to `main` are strictly prohibited.
 * **Reason**: Protects the stability of the base `main` branch, creates an auditable review record, and leverages GitHub CLI to streamline PR lifecycle operations directly from local developer environments.
 * **Impact**: All work begins from an up-to-date `main`, branches off to dedicated feature/fix branches, undergoes verification and credential audits, and is proposed through `gh pr create`.
+
+---
+
+### Decision 12: Decoupled Independent Subsystems with In-Portal Integrated Overview Dashboards
+* **Date**: 2026-09-08
+* **Decision**: Decouple heavy, specialized operational subsystems (Design Lab / Certificate Studio, Hostel Management, Transport & Fleet Telemetry, HR & Support Staff Biometrics, and E-Library & DRM Reader) into dedicated standalone repositories and subdomains (`designlab.vidyafloww.com`, `hostel.vidyafloww.com`, `transport.vidyafloww.com`, `hr.vidyafloww.com`, `library.vidyafloww.com`), while maintaining high-density, real-time integrated single-page overview dashboards within the main VidyaFloww command portal (`/design-lab`, `/hostel`, `/transport`, `/hr-manage`, `/elibrary`).
+* **Reason**: Full implementations of these specialized domains require complex dedicated hardware integrations (GPS telematics, biometric turnstiles, vector layout engines, DRM reader pipelines). Isolating them into dedicated repositories prevents frontend bundle bloat, permits independent engineering iteration and deployment cadences, and maintains sharp single-responsibility separation. Retaining integrated single-page overview dashboards within the core portal ensures school leadership still enjoys instantaneous telemetry, status summaries, quick preview modals, and contextual one-click redirection without cognitive disruption.
+* **Impact**: The main web app maintains snappy load times and zero dependency overhead from external vector or hardware modules. Subsystem routes in `apps/web/src/routes/` render rich operational KPI cards, recent records, active ledgers, and a standardized "Open Standalone Portal" action header directing administrators to the respective subdomain.
+
