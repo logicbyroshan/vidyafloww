@@ -8,7 +8,6 @@ import {
   VFBadge,
   VFDialog,
   VFDrawer,
-  VFStatCard,
   cn,
 } from '@vidyafloww/ui';
 import {
@@ -26,14 +25,8 @@ import {
   Check,
   X,
   Search,
-  Filter,
-  Moon,
-  CalendarDays,
-  Flame,
-  AlertTriangle,
-  FileText,
   Coffee,
-  Sparkles,
+  Moon,
 } from 'lucide-react';
 
 export const Route = createFileRoute('/hostel')({
@@ -41,7 +34,7 @@ export const Route = createFileRoute('/hostel')({
 });
 
 /* ──────────────────────────────────────────────────────────────────────────
-   TYPES & INTERFACES
+   TYPES & DATA MODELS
    ────────────────────────────────────────────────────────────────────────── */
 
 interface ResidentProfile {
@@ -77,32 +70,17 @@ interface OutpassRecord {
   leaveTime: string;
   returnTime: string;
   approvedBy: string;
-  gateStatus: 'Approved - Out' | 'Returned' | 'Overdue' | 'Pending Approval';
+  gateStatus: 'Approved - Out' | 'Returned' | 'Overdue';
   guardianPhone: string;
-  emergencyContact?: string;
-  remarks?: string;
 }
 
-interface MealItem {
-  meal: string;
-  hindiMeal: string;
-  time: string;
-  items: string;
-  tag: string;
-  calories: string;
-  chef: string;
-  highlight: string;
-}
-
-interface DayMenu {
+interface DailyMealSchedule {
   dayId: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
   dayName: string;
   hindiDayName: string;
-  theme: string;
-  breakfast: MealItem;
-  lunch: MealItem;
-  dinner: MealItem;
-  eveningTea: string;
+  breakfast: { time: string; items: string; calories: string };
+  lunch: { time: string; items: string; calories: string };
+  dinner: { time: string; items: string; calories: string };
 }
 
 interface NightAttendanceRecord {
@@ -120,11 +98,10 @@ interface NightAttendanceRecord {
   status: 'Present' | 'Absent' | 'Late' | 'Leave';
   punchTime?: string;
   verifiedBy: string;
-  remarks?: string;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   INITIAL STATIC DATA
+   INITIAL DATA
    ────────────────────────────────────────────────────────────────────────── */
 
 const INITIAL_ROOMS: RoomBedItem[] = [
@@ -215,15 +192,13 @@ const INITIAL_OUTPASSES: OutpassRecord[] = [
     room: 'A-101',
     block: 'Block A (Boys)',
     purpose: 'Weekend Home Visit',
-    grantedDate: '18 Aug 2026, 04:30 PM',
+    grantedDate: '18 Aug 2026',
     daysGranted: 3,
-    leaveTime: 'Friday, 05:00 PM',
-    returnTime: 'Monday, 07:00 AM',
-    approvedBy: 'Warden R. K. Saxena',
+    leaveTime: 'Fri 05:00 PM',
+    returnTime: 'Mon 07:00 AM',
+    approvedBy: 'Warden Saxena',
     gateStatus: 'Approved - Out',
     guardianPhone: '+91 98111 00123',
-    emergencyContact: '+91 98111 99111',
-    remarks: 'Parents accompanied check-out at Main Gate.',
   },
   {
     id: 'OUT-882',
@@ -232,15 +207,13 @@ const INITIAL_OUTPASSES: OutpassRecord[] = [
     room: 'B-201',
     block: 'Block B (Girls)',
     purpose: 'Coaching / Olympiad',
-    grantedDate: '19 Aug 2026, 07:45 AM',
+    grantedDate: '19 Aug 2026',
     daysGranted: 1,
-    leaveTime: 'Saturday, 08:30 AM',
-    returnTime: 'Saturday, 01:30 PM',
-    approvedBy: 'Warden Sunita Grover',
+    leaveTime: 'Sat 08:30 AM',
+    returnTime: 'Sat 01:30 PM',
+    approvedBy: 'Warden Grover',
     gateStatus: 'Returned',
     guardianPhone: '+91 98111 00345',
-    emergencyContact: '+91 98111 88345',
-    remarks: 'Returned and biometric punch confirmed at 01:25 PM.',
   },
   {
     id: 'OUT-883',
@@ -249,15 +222,13 @@ const INITIAL_OUTPASSES: OutpassRecord[] = [
     room: 'A-101',
     block: 'Block A (Boys)',
     purpose: 'Medical Examination',
-    grantedDate: '20 Aug 2026, 01:15 PM',
+    grantedDate: '20 Aug 2026',
     daysGranted: 1,
-    leaveTime: 'Today, 02:00 PM',
-    returnTime: 'Today, 06:30 PM',
+    leaveTime: 'Today 02:00 PM',
+    returnTime: 'Today 06:30 PM',
     approvedBy: 'Chief Warden',
     gateStatus: 'Overdue',
     guardianPhone: '+91 98111 00456',
-    emergencyContact: '+91 98111 77456',
-    remarks: 'Hospital consultation delayed; warden notified.',
   },
   {
     id: 'OUT-884',
@@ -266,287 +237,74 @@ const INITIAL_OUTPASSES: OutpassRecord[] = [
     room: 'C-301',
     block: 'Block C (Junior)',
     purpose: 'Family Emergency',
-    grantedDate: '20 Aug 2026, 11:00 AM',
+    grantedDate: '20 Aug 2026',
     daysGranted: 2,
-    leaveTime: 'Today, 12:00 PM',
-    returnTime: 'Friday, 06:00 PM',
-    approvedBy: 'Warden Deepak Joshi',
+    leaveTime: 'Today 12:00 PM',
+    returnTime: 'Fri 06:00 PM',
+    approvedBy: 'Warden Joshi',
     gateStatus: 'Approved - Out',
     guardianPhone: '+91 98111 00123',
-    emergencyContact: '+91 98111 66123',
-    remarks: 'Signed consent letter submitted by grandfather.',
   },
 ];
 
-/* ──────────────────────────────────────────────────────────────────────────
-   7-DAY FOOD TIMETABLE DATASET (3 CURATED MEALS PER DAY)
-   ────────────────────────────────────────────────────────────────────────── */
-
-const WEEKLY_MESS_SCHEDULE: DayMenu[] = [
+const WEEKLY_FOOD_MENU: DailyMealSchedule[] = [
   {
     dayId: 'mon',
     dayName: 'Monday',
     hindiDayName: 'सोमवार',
-    theme: 'Energy Kickstart & High Protein',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '07:30 AM – 08:30 AM',
-      items: 'Indori Poha with Peanuts & Sev, Steamed Boiled Eggs or Sprouts Salad, Banana, Warm Dairy Milk, Masala Tea & Filter Coffee',
-      tag: 'High Energy & Protein',
-      calories: '420 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Iron & Vitamin B rich sprout salad with lemon garnish',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:30 PM – 01:45 PM',
-      items: 'Shahi Paneer in Cashew Gravy, Yellow Dal Tadka with Desi Ghee, Jeera Basmati Rice, Tawa Phulkas with Butter, Cucumber & Beetroot Salad, Boondi Raita',
-      tag: 'Balanced North Indian Thali',
-      calories: '680 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Farm-fresh cottage cheese delivered same morning',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Aloo Gobi Matar Adraki, Moong Dal Fry, Steamed Rice, Soft Tawa Rotis, Warm Moong Dal Halwa, Roasted Bikaneri Papad',
-      tag: 'Comfort & Digestible',
-      calories: '590 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Light spices to aid deep sleep and concentration',
-    },
-    eveningTea: 'Masala Ginger Tea & Hot Milk with Marie Biscuits & Crunchy Roasted Makhana (05:00 PM – 05:45 PM)',
+    breakfast: { time: '07:30 – 08:30 AM', items: 'Indori Poha with Peanuts, Boiled Eggs or Sprouts, Banana, Fresh Milk, Tea & Coffee', calories: '420 kcal' },
+    lunch: { time: '12:30 – 01:45 PM', items: 'Shahi Paneer, Yellow Dal Tadka, Jeera Rice, Tawa Phulkas with Ghee, Cucumber Salad, Boondi Raita', calories: '680 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Aloo Gobi Matar, Moong Dal Fry, Steamed Rice, Soft Phulkas, Moong Dal Halwa, Roasted Papad', calories: '590 kcal' },
   },
   {
     dayId: 'tue',
     dayName: 'Tuesday',
     hindiDayName: 'मंगलवार',
-    theme: 'South Indian Delights & Iron Boost',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '07:30 AM – 08:30 AM',
-      items: 'Steamed Rava Idli & Medu Vada, Drumstick Sambar, Fresh Coconut & Tangy Tomato Chutney, Hard Boiled Eggs / Fruit Bowl, Milk, Tea & Coffee',
-      tag: 'Fermented & Probiotic',
-      calories: '410 kcal',
-      chef: 'Chef Murugan (South Kitchen)',
-      highlight: 'Freshly ground stone-milled batter, low GI index',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:30 PM – 01:45 PM',
-      items: 'Punjabi Rajma Masala, Kashmiri Pulao, Steamed Basmati Rice, Tawa Phulkas with Ghee, Crunchy Onion & Mint Salad, Mix Vegetable Raita',
-      tag: 'Rich Plant Protein',
-      calories: '660 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Slow-cooked Himalayan red kidney beans simmered 6 hours',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Mix Vegetable Handi, Masoor Dal Tadka, Steamed Fragrant Rice, Butter Phulkas, Sevaiyan Kheer with Roasted Almonds, Crispy Fryums',
-      tag: 'Nutrient Dense',
-      calories: '570 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Seasonal bell peppers, carrots, beans and sweet corn',
-    },
-    eveningTea: 'Cardamom Tea / Cold Milk with Sweet Corn Chaat & Salted Biscuits (05:00 PM – 05:45 PM)',
+    breakfast: { time: '07:30 – 08:30 AM', items: 'Idli Sambar, Medu Vada, Coconut & Tomato Chutney, Boiled Eggs / Fruit Bowl, Milk & Tea', calories: '410 kcal' },
+    lunch: { time: '12:30 – 01:45 PM', items: 'Punjabi Rajma Masala, Kashmiri Pulao, Steamed Rice, Tawa Rotis, Onion & Mint Salad, Mix Veg Raita', calories: '660 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Mix Veg Handi, Masoor Dal Tadka, Steamed Fragrant Rice, Butter Phulkas, Sevaiyan Kheer, Fryums', calories: '570 kcal' },
   },
   {
     dayId: 'wed',
     dayName: 'Wednesday',
     hindiDayName: 'बुधवार',
-    theme: 'Gujarati Specialties & Green Superfoods',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '07:30 AM – 08:30 AM',
-      items: 'Methi Thepla with Fresh Curd & Chunda Pickle, Boiled Eggs / Sprouted Moong Chaat, Fresh Crisp Apple, Warm Haldi Milk, Masala Tea',
-      tag: 'Digestive & Immunity',
-      calories: '390 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Fresh fenugreek leaves packed with dietary fiber',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:30 PM – 01:45 PM',
-      items: 'Palak Paneer (Spinach Cottage Cheese), Panchmel Dal (5-Lentil Blend), Green Peas Pulao, Chapati with Ghee, Beetroot Salad, Warm Gulab Jamun',
-      tag: 'Iron & Calcium Rich',
-      calories: '690 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Pureed blanched spinach retaining essential micronutrients',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Smoky Baingan Bharta & Jeera Aloo, Arhar Dal Tadka, Steamed Rice, Soft Phulkas, Roasted Green Salad, Roasted Papad',
-      tag: 'Traditional Rustic Flavors',
-      calories: '540 kcal',
-      chef: 'Chef Murugan',
-      highlight: 'Clay-oven roasted eggplants tossed in mustard oil tempering',
-    },
-    eveningTea: 'Lemon Grass Herbal Tea / Fresh Milk with Vegetable Cutlets & Mint Dip (05:00 PM – 05:45 PM)',
+    breakfast: { time: '07:30 – 08:30 AM', items: 'Methi Thepla with Fresh Curd & Pickle, Boiled Eggs / Sprouted Moong, Crisp Apple, Milk & Tea', calories: '390 kcal' },
+    lunch: { time: '12:30 – 01:45 PM', items: 'Palak Paneer, Panchmel Dal, Green Peas Pulao, Chapati with Ghee, Beetroot Salad, Gulab Jamun', calories: '690 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Baingan Bharta, Jeera Aloo, Arhar Dal Tadka, Steamed Rice, Phulkas with Ghee, Roasted Papad', calories: '540 kcal' },
   },
   {
     dayId: 'thu',
     dayName: 'Thursday',
     hindiDayName: 'गुरुवार',
-    theme: 'Punjabi Hearty Meals & Dairy Rich',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '07:30 AM – 08:30 AM',
-      items: 'Stuffed Aloo & Onion Paratha with Fresh White Makhan, Set Curd, Boiled Eggs / Ripe Papaya Slices, Fresh Buffalo Milk, Tea & Coffee',
-      tag: 'Wholesome Hearty Start',
-      calories: '460 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'In-house churned white butter, whole wheat dough',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:30 PM – 01:45 PM',
-      items: 'Kadhai Paneer with Bell Peppers, Chana Dal Fry, Jeera Basmati Rice, Butter Phulkas, Fresh Garden Green Salad, Tadka Dahi',
-      tag: 'High Protein & Fiber',
-      calories: '670 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Coarse pounded coriander seeds and dry whole red chilies',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Paneer Bhurji with Peas, Dal Makhani, Steamed Rice, Soft Tawa Chapati, Warm Carrot Gajar Halwa (or Suji Halwa), Roasted Papad',
-      tag: 'Comfort Feast',
-      calories: '620 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Slow-simmered black lentils cooked overnight with cream',
-    },
-    eveningTea: 'Masala Chai / Badam Milk with Crispy Mathri & Marie Biscuits (05:00 PM – 05:45 PM)',
+    breakfast: { time: '07:30 – 08:30 AM', items: 'Aloo & Onion Paratha with White Butter, Set Curd, Boiled Eggs / Papaya, Fresh Milk, Tea', calories: '460 kcal' },
+    lunch: { time: '12:30 – 01:45 PM', items: 'Kadhai Paneer with Bell Peppers, Chana Dal Fry, Jeera Rice, Butter Phulkas, Green Salad, Dahi', calories: '670 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Paneer Bhurji with Peas, Dal Makhani, Steamed Rice, Soft Tawa Chapati, Suji Halwa, Roasted Papad', calories: '620 kcal' },
   },
   {
     dayId: 'fri',
     dayName: 'Friday',
     hindiDayName: 'शुक्रवार',
-    theme: 'Delhi Street Flavors & Nutrition',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '07:30 AM – 08:30 AM',
-      items: 'Vegetable Upma with Roasted Cashews & Coconut Chutney, Boiled Eggs / Fresh Guava, Fresh Milk, Adrak Wali Chai & Coffee',
-      tag: 'Light & Nutrient Loaded',
-      calories: '380 kcal',
-      chef: 'Chef Murugan',
-      highlight: 'Coarse semolina roasted with mustard seeds, curry leaves & ghee',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:30 PM – 01:45 PM',
-      items: 'Amritsari Pindi Chhole, Soft Bhature & Steamed Rice, Pickled Baby Onions, Boondi & Mint Raita, Crispy Masala Papad',
-      tag: 'Friday Special Lunch',
-      calories: '710 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Authentic tea-leaf infused dark chickpea curry',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Bhindi Do Pyaza (Crispy Okra), Yellow Moong Dal Fry, Steamed Rice, Tawa Phulkas, Besan Ladoo, Fresh Kachumber Salad',
-      tag: 'Crisp & Wholesome',
-      calories: '550 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Finely sliced okra shallow-fried to retain crispness',
-    },
-    eveningTea: 'Ginger Tea & Hot Milk with Hot Baked Samosa / Veg Puff & Sweet Chutney (05:00 PM – 05:45 PM)',
+    breakfast: { time: '07:30 – 08:30 AM', items: 'Vegetable Upma with Roasted Cashews, Coconut Chutney, Boiled Eggs / Guava, Fresh Milk & Tea', calories: '380 kcal' },
+    lunch: { time: '12:30 – 01:45 PM', items: 'Amritsari Pindi Chhole, Bhature & Steamed Rice, Pickled Onions, Boondi Mint Raita, Masala Papad', calories: '710 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Bhindi Do Pyaza, Yellow Moong Dal Fry, Steamed Rice, Tawa Phulkas, Besan Ladoo, Fresh Salad', calories: '550 kcal' },
   },
   {
     dayId: 'sat',
     dayName: 'Saturday',
     hindiDayName: 'शनिवार',
-    theme: 'Nutritional Powerhouses & Royal Delights',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '07:30 AM – 08:30 AM',
-      items: 'Moong Dal Cheela stuffed with Paneer, Mint-Coriander Chutney, Boiled Eggs / Sprouted Grams, Fresh Orange, Warm Milk & Tea',
-      tag: 'Superfood High Protein',
-      calories: '400 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Yellow split lentils ground fresh with ginger and green chilies',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:30 PM – 01:45 PM',
-      items: 'Kashmiri Dum Aloo, Dal Makhani, Steamed Basmati Rice, Tawa Phulkas with Butter, Fresh Kachumber Salad, Plain Dahi',
-      tag: 'Creamy & Satisfying',
-      calories: '650 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Deep fried baby potatoes pricked and simmered in fennel yogurt gravy',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Shahi Malai Kofta in Velvety Gravy, Yellow Arhar Dal Tadka, Steamed Fragrant Rice, Butter Rotis, Rice Kheer with Saffron, Roasted Papad',
-      tag: 'Weekend Royalty Menu',
-      calories: '640 kcal',
-      chef: 'Head Chef Khemraj Sharma',
-      highlight: 'Paneer and potato dumplings melt in mouth with saffron touch',
-    },
-    eveningTea: 'Masala Chai / Warm Chocolate Milk with Banana Cake & Glucose Biscuits (05:00 PM – 05:45 PM)',
+    breakfast: { time: '07:30 – 08:30 AM', items: 'Moong Dal Cheela with Paneer, Mint Chutney, Boiled Eggs / Sprouts, Fresh Orange, Warm Milk & Tea', calories: '400 kcal' },
+    lunch: { time: '12:30 – 01:45 PM', items: 'Kashmiri Dum Aloo, Dal Makhani, Steamed Basmati Rice, Butter Phulkas, Kachumber Salad, Curd', calories: '650 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Shahi Malai Kofta, Arhar Dal Tadka, Steamed Rice, Butter Rotis, Saffron Rice Kheer, Roasted Papad', calories: '640 kcal' },
   },
   {
     dayId: 'sun',
     dayName: 'Sunday',
     hindiDayName: 'रविवार',
-    theme: 'Sunday Grand Banquet & Rest Day',
-    breakfast: {
-      meal: 'Breakfast',
-      hindiMeal: 'अल्पाहार',
-      time: '08:00 AM – 09:30 AM (Extended)',
-      items: 'Crispy Mysore Masala Dosa with Potato Roast, Drumstick Sambar, Trio of Chutneys (Coconut, Tomato, Peanut), Boiled Eggs, Fruit Platter, South Indian Filter Coffee',
-      tag: 'Sunday Grand Brunch',
-      calories: '480 kcal',
-      chef: 'Chef Murugan & Master Team',
-      highlight: 'Live hot dosa counter made to order for all hostel students',
-    },
-    lunch: {
-      meal: 'Lunch',
-      hindiMeal: 'दोपहर का भोजन',
-      time: '12:45 PM – 02:15 PM',
-      items: 'Royal Paneer Lababdar, Hyderabadi Dum Vegetable Biryani, Mirchi Ka Salan, Yellow Dal Tadka, Garlic Butter Naan & Phulkas, Spiced Burani Raita, Royal Rasgulla & Ice Cream',
-      tag: 'Grand Sunday Feast',
-      calories: '780 kcal',
-      chef: 'Head Chef Khemraj Sharma & Team',
-      highlight: 'Dum cooked long-grain aged basmati layered with caramelized onions & mint',
-    },
-    dinner: {
-      meal: 'Dinner',
-      hindiMeal: 'रात्रि भोज',
-      time: '08:00 PM – 09:15 PM',
-      items: 'Mumbai Pav Bhaji with Butter Toasted Ladi Pav OR Comfort Dal Khichdi Tadka, Fresh Green Salad, Roasted Papad, Warm Sweet Saffron Milk',
-      tag: 'Light & Comforting Finish',
-      calories: '560 kcal',
-      chef: 'Chef Ramchandra',
-      highlight: 'Warm sweet milk provided before night study hours',
-    },
-    eveningTea: 'Special Sunday Cold Coffee / Hot Elaichi Tea with Veg Sandwich & Cookies (05:00 PM – 05:45 PM)',
+    breakfast: { time: '08:00 – 09:30 AM', items: 'Crispy Masala Dosa with Sambar, Coconut & Tomato Chutney, Boiled Eggs, Fresh Fruits, Filter Coffee', calories: '480 kcal' },
+    lunch: { time: '12:45 – 02:15 PM', items: 'Royal Paneer Lababdar, Dum Veg Biryani, Mirchi Ka Salan, Dal Tadka, Butter Naan & Phulkas, Rasgulla', calories: '780 kcal' },
+    dinner: { time: '08:00 – 09:15 PM', items: 'Mumbai Pav Bhaji with Butter Pav OR Comfort Dal Khichdi Tadka, Green Salad, Warm Saffron Milk', calories: '560 kcal' },
   },
 ];
-
-/* ──────────────────────────────────────────────────────────────────────────
-   NIGHT DORM ATTENDANCE ROSTER (STUDENT-BY-STUDENT ROLL CALL)
-   ────────────────────────────────────────────────────────────────────────── */
 
 const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
   {
@@ -564,7 +322,6 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     status: 'Leave',
     punchTime: 'Outpass OUT-881',
     verifiedBy: 'Warden Saxena',
-    remarks: 'Authorized weekend leave to home.',
   },
   {
     id: 'NAR-102',
@@ -579,9 +336,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00456',
     guardianName: 'Prem Malhotra',
     status: 'Late',
-    punchTime: '09:48 PM (Pending)',
+    punchTime: '09:48 PM',
     verifiedBy: 'Warden Saxena',
-    remarks: 'Outpass delayed for medical check.',
   },
   {
     id: 'NAR-103',
@@ -596,9 +352,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00789',
     guardianName: 'Vinod Kumar',
     status: 'Present',
-    punchTime: '09:15 PM Biometric',
+    punchTime: '09:15 PM',
     verifiedBy: 'Warden Saxena',
-    remarks: 'Present in room studying for terminal exams.',
   },
   {
     id: 'NAR-104',
@@ -613,9 +368,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00999',
     guardianName: 'Mahesh Verma',
     status: 'Present',
-    punchTime: '09:22 PM Biometric',
+    punchTime: '09:22 PM',
     verifiedBy: 'Warden Saxena',
-    remarks: 'Senior room checked and light curfew noted.',
   },
   {
     id: 'NAR-105',
@@ -630,9 +384,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00234',
     guardianName: 'Hemant Sharma',
     status: 'Present',
-    punchTime: '09:10 PM Biometric',
+    punchTime: '09:10 PM',
     verifiedBy: 'Warden Grover',
-    remarks: 'Verified present in dormitory.',
   },
   {
     id: 'NAR-106',
@@ -647,9 +400,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00345',
     guardianName: 'Jayesh Patel',
     status: 'Present',
-    punchTime: '01:25 PM (Returned)',
+    punchTime: '01:25 PM',
     verifiedBy: 'Warden Grover',
-    remarks: 'Returned from coaching on time.',
   },
   {
     id: 'NAR-107',
@@ -664,9 +416,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00567',
     guardianName: 'Subhash Roy',
     status: 'Present',
-    punchTime: '09:25 PM Biometric',
+    punchTime: '09:25 PM',
     verifiedBy: 'Warden Grover',
-    remarks: 'Study lamp on; present.',
   },
   {
     id: 'NAR-108',
@@ -683,7 +434,6 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     status: 'Absent',
     punchTime: 'Unaccounted',
     verifiedBy: 'Warden Grover',
-    remarks: 'Missing during 09:30 PM inspection; calling guardian.',
   },
   {
     id: 'NAR-109',
@@ -700,7 +450,6 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     status: 'Leave',
     punchTime: 'Outpass OUT-884',
     verifiedBy: 'Warden Joshi',
-    remarks: 'On authorized family emergency outpass.',
   },
   {
     id: 'NAR-110',
@@ -715,9 +464,8 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00888',
     guardianName: 'Biplab Das',
     status: 'Present',
-    punchTime: '09:00 PM Biometric',
+    punchTime: '09:00 PM',
     verifiedBy: 'Warden Joshi',
-    remarks: 'Junior resident in bed; lights out verified.',
   },
   {
     id: 'NAR-111',
@@ -732,14 +480,13 @@ const INITIAL_NIGHT_ROSTER: NightAttendanceRecord[] = [
     guardianPhone: '+91 98111 00777',
     guardianName: 'Kailash Rawat',
     status: 'Present',
-    punchTime: '09:05 PM Biometric',
+    punchTime: '09:05 PM',
     verifiedBy: 'Warden Joshi',
-    remarks: 'Present in dorm reading.',
   },
 ];
 
 /* ──────────────────────────────────────────────────────────────────────────
-   MAIN HOSTEL MANAGEMENT COMPONENT
+   MAIN HOSTEL PAGE
    ────────────────────────────────────────────────────────────────────────── */
 
 function HostelManagementPage() {
@@ -751,7 +498,7 @@ function HostelManagementPage() {
     document.title = (isHindi ? 'छात्रावास प्रबंधन' : 'Hostel & Dormitory') + ' – VidyaFloww';
   }, [isHindi]);
 
-  // Tab State: 4 dedicated tabs
+  // Tab State: Clean 4 tabs
   const [activeTab, setActiveTab] = React.useState<'rooms' | 'mess' | 'leaves' | 'attendance'>('rooms');
 
   // Rooms Data State
@@ -779,8 +526,8 @@ function HostelManagementPage() {
   // Inline Bed Allocation Form in Drawer
   const [allocatingBedIndex, setAllocatingBedIndex] = React.useState<number | null>(null);
   const [newStudentName, setNewStudentName] = React.useState('');
-  const [newClassSection, setNewClassSection] = React.useState('Class 10-A');
-  const [newGuardianPhone, setNewGuardianPhone] = React.useState('');
+  const newClassSection = 'Class 10-A';
+  const newGuardianPhone = '+91 98111 00000';
 
   // Issue Outpass Modal
   const [isOutpassModalOpen, setIsOutpassModalOpen] = React.useState(false);
@@ -788,9 +535,9 @@ function HostelManagementPage() {
   const [outpassRoom, setOutpassRoom] = React.useState('A-101');
   const [outpassPurpose, setOutpassPurpose] = React.useState<OutpassRecord['purpose']>('Weekend Home Visit');
   const [outpassDays, setOutpassDays] = React.useState<number>(2);
-  const [outpassLeave, setOutpassLeave] = React.useState('Friday, 05:00 PM');
-  const [outpassReturn, setOutpassReturn] = React.useState('Sunday, 07:00 PM');
-  const [outpassGuardianPhone, setOutpassGuardianPhone] = React.useState('+91 98111 00123');
+  const [outpassLeave, setOutpassLeave] = React.useState('Friday 05:00 PM');
+  const [outpassReturn, setOutpassReturn] = React.useState('Sunday 07:00 PM');
+  const outpassGuardianPhone = '+91 98111 00123';
 
   // Allocate Student to Room
   const handleConfirmBedAllocation = (roomNum: string) => {
@@ -818,14 +565,13 @@ function HostelManagementPage() {
     );
 
     addNotification({
-      title: isHindi ? 'बेड आवंटित किया गया' : 'Bed Allocated Successfully',
+      title: isHindi ? 'बेड आवंटित' : 'Bed Allocated',
       description: `${newStudentName} assigned to Room ${roomNum}.`,
       type: 'success',
     });
 
     setAllocatingBedIndex(null);
     setNewStudentName('');
-    setNewGuardianPhone('');
   };
 
   // Vacate Bed
@@ -843,12 +589,12 @@ function HostelManagementPage() {
 
     addNotification({
       title: isHindi ? 'बेड खाली किया गया' : 'Bed Vacated',
-      description: `${studentName} deallocated from Room ${roomNum}. Bed is now vacant.`,
+      description: `${studentName} removed from Room ${roomNum}.`,
       type: 'info',
     });
   };
 
-  // Issue Outpass / Grant Leave
+  // Issue Outpass
   const handleIssueOutpass = (e: React.FormEvent) => {
     e.preventDefault();
     if (!outpassStudent.trim()) return;
@@ -862,19 +608,17 @@ function HostelManagementPage() {
       room: outpassRoom,
       block: matchedRoom ? matchedRoom.block : 'Block A (Boys)',
       purpose: outpassPurpose,
-      grantedDate: 'Today, 05:00 PM',
+      grantedDate: 'Today',
       daysGranted: outpassDays,
       leaveTime: outpassLeave,
       returnTime: outpassReturn,
-      approvedBy: 'Chief Hostel Warden',
+      approvedBy: 'Chief Warden',
       gateStatus: 'Approved - Out',
       guardianPhone: outpassGuardianPhone,
-      remarks: 'Granted via Warden portal with guardian notification.',
     };
 
     setOutpasses((prev) => [newTicket, ...prev]);
 
-    // Update Night Attendance status if student matches
     setNightRoster((prev) =>
       prev.map((s) => (s.name.toLowerCase() === outpassStudent.trim().toLowerCase() ? { ...s, status: 'Leave', punchTime: `Outpass ${newTicket.id}` } : s))
     );
@@ -883,43 +627,42 @@ function HostelManagementPage() {
     setOutpassStudent('');
 
     addNotification({
-      title: isHindi ? 'अवकाश / आउटपास स्वीकृत' : 'Outpass / Leave Granted',
-      description: `Pass ${newTicket.id} issued for ${newTicket.studentName} (${newTicket.daysGranted} days).`,
+      title: isHindi ? 'आउटपास जारी' : 'Outpass Granted',
+      description: `Outpass ${newTicket.id} issued for ${newTicket.studentName} (${newTicket.daysGranted} days).`,
       type: 'success',
     });
   };
 
-  // Mark Outpass as Returned
+  // Mark Returned
   const handleMarkReturned = (outpassId: string, studentName: string) => {
     setOutpasses((prev) =>
-      prev.map((op) => (op.id === outpassId ? { ...op, gateStatus: 'Returned', remarks: 'Gate biometric scan confirmed return.' } : op))
+      prev.map((op) => (op.id === outpassId ? { ...op, gateStatus: 'Returned' } : op))
     );
 
-    // Update night roster status back to Present
     setNightRoster((prev) =>
-      prev.map((s) => (s.name.toLowerCase() === studentName.toLowerCase() ? { ...s, status: 'Present', punchTime: 'Returned Biometric' } : s))
+      prev.map((s) => (s.name.toLowerCase() === studentName.toLowerCase() ? { ...s, status: 'Present', punchTime: 'Returned' } : s))
     );
 
     addNotification({
-      title: isHindi ? 'वापसी दर्ज की गई' : 'Student Marked Returned',
-      description: `${studentName} has checked back into the hostel.`,
+      title: isHindi ? 'वापसी दर्ज' : 'Student Returned',
+      description: `${studentName} marked returned to hostel.`,
       type: 'success',
     });
   };
 
-  // Night Attendance Status Toggle
+  // Toggle Night Status
   const handleNightStatusToggle = (studentId: string, newStatus: NightAttendanceRecord['status']) => {
     setNightRoster((prev) =>
       prev.map((item) => {
         if (item.id === studentId) {
           const punchTime =
             newStatus === 'Present'
-              ? '10:00 PM Checked'
+              ? '09:30 PM Checked'
               : newStatus === 'Late'
-              ? '10:15 PM Pending'
+              ? 'Pending Entry'
               : newStatus === 'Absent'
               ? 'Unaccounted'
-              : 'Authorized Leave';
+              : 'Outpass';
           return {
             ...item,
             status: newStatus,
@@ -931,65 +674,42 @@ function HostelManagementPage() {
     );
   };
 
-  // Mark All In-Dorm Present
+  // Mark All Present
   const handleMarkAllPresent = () => {
     setNightRoster((prev) =>
       prev.map((item) => {
-        if (item.status === 'Leave') return item; // keep on-leave students
+        if (item.status === 'Leave') return item;
         return {
           ...item,
           status: 'Present',
-          punchTime: '10:00 PM Roll Call',
-          verifiedBy: 'Chief Warden',
+          punchTime: '09:30 PM Roll Call',
         };
       })
     );
 
     addNotification({
-      title: isHindi ? 'सभी उपस्थित मार्क किए गए' : 'All Residents Marked Present',
-      description: 'Hostel roll call updated for all available residents.',
+      title: isHindi ? 'सभी उपस्थित' : 'All Marked Present',
+      description: 'Night roll call updated for in-dorm students.',
       type: 'success',
     });
   };
 
-  // Send Alert for Missing Residents
-  const handleSendMissingAlert = () => {
-    const missing = nightRoster.filter((r) => r.status === 'Absent' || r.status === 'Late');
-    if (missing.length === 0) {
-      addNotification({
-        title: isHindi ? 'कोई छात्र अनुपस्थित नहीं' : 'All Students Accounted For',
-        description: 'Zero residents are absent or late tonight.',
-        type: 'info',
-      });
-      return;
-    }
-
-    addNotification({
-      title: isHindi ? 'वार्डन व अभिभावक अलर्ट प्रेषित' : 'Emergency SMS & Warden Alert Dispatched',
-      description: `Alert sent for ${missing.length} unaccounted/late residents to respective guardians.`,
-      type: 'warning',
-    });
-  };
-
-  // Stats Calculations
+  // Counts
   const totalBeds = rooms.reduce((acc, r) => acc + r.totalBeds, 0);
   const occupiedBeds = rooms.reduce((acc, r) => acc + r.residents.length, 0);
-  const vacantBeds = totalBeds - occupiedBeds;
 
-  const presentDormCount = nightRoster.filter((s) => s.status === 'Present').length;
-  const absentDormCount = nightRoster.filter((s) => s.status === 'Absent').length;
-  const lateDormCount = nightRoster.filter((s) => s.status === 'Late').length;
-  const leaveDormCount = nightRoster.filter((s) => s.status === 'Leave').length;
-  const dormOccupancyRate = ((presentDormCount / nightRoster.length) * 100).toFixed(1);
+  const presentCount = nightRoster.filter((s) => s.status === 'Present').length;
+  const absentCount = nightRoster.filter((s) => s.status === 'Absent').length;
+  const lateCount = nightRoster.filter((s) => s.status === 'Late').length;
+  const leaveCount = nightRoster.filter((s) => s.status === 'Leave').length;
 
   const activeLeavesCount = outpasses.filter((op) => op.gateStatus === 'Approved - Out').length;
   const returnedLeavesCount = outpasses.filter((op) => op.gateStatus === 'Returned').length;
   const overdueLeavesCount = outpasses.filter((op) => op.gateStatus === 'Overdue').length;
 
-  // Filtered Rooms
+  // Filtered lists
   const filteredRooms = rooms.filter((r) => roomBlockFilter === 'All' || r.block === roomBlockFilter);
 
-  // Filtered Outpasses
   const filteredOutpasses = outpasses.filter((op) => {
     const matchesStatus = leaveStatusFilter === 'All' || op.gateStatus === leaveStatusFilter;
     const matchesSearch =
@@ -999,7 +719,6 @@ function HostelManagementPage() {
     return matchesStatus && matchesSearch;
   });
 
-  // Filtered Attendance Roster
   const filteredNightRoster = nightRoster.filter((s) => {
     const matchesBlock = attendanceBlockFilter === 'All' || s.block === attendanceBlockFilter;
     const matchesSearch =
@@ -1009,196 +728,112 @@ function HostelManagementPage() {
     return matchesBlock && matchesSearch;
   });
 
-  const selectedDayMenu = WEEKLY_MESS_SCHEDULE.find((d) => d.dayId === selectedDayId) || WEEKLY_MESS_SCHEDULE[0];
+  const selectedDayMenu = WEEKLY_FOOD_MENU.find((d) => d.dayId === selectedDayId) || WEEKLY_FOOD_MENU[0];
 
   return (
     <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
-      {/* ── UNIFIED HEADER WITH 4 DEDICATED TABS ── */}
-      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3 shrink-0 shadow-xs">
-        {/* Left: 4 Specialized Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
-          <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70 shrink-0">
+      {/* ── UNIFIED HEADER (ORIGINAL CLEAN SEGMENTED PILL BAR PATTERN) ── */}
+      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        {/* Left: 4 Clean Tabs */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
             <button
               type="button"
               id="tab-rooms"
               onClick={() => setActiveTab('rooms')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'rooms'
                   ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Bed className="h-4 w-4 text-primary" />
+              <Bed className="h-4 w-4" />
               <span>{isHindi ? 'कमरा व बेड' : 'Rooms & Beds'}</span>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-[2px] bg-primary/20 text-primary">
-                {occupiedBeds}/{totalBeds}
-              </span>
             </button>
 
             <button
               type="button"
               id="tab-mess"
               onClick={() => setActiveTab('mess')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'mess'
                   ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Utensils className="h-4 w-4 text-amber-400" />
-              <span>{isHindi ? '7-दिवसीय भोजन मेनू' : '7-Day Food Timetable'}</span>
-              <VFBadge variant="outline" className="text-[10px] rounded-[2px] px-1 py-0 border-amber-500/40 text-amber-400">
-                3 Meals/Day
-              </VFBadge>
+              <Utensils className="h-4 w-4" />
+              <span>{isHindi ? '7-दिवसीय भोजन मेनू' : '7-Day Food Menu'}</span>
             </button>
 
             <button
               type="button"
               id="tab-leaves"
               onClick={() => setActiveTab('leaves')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'leaves'
                   ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <LogOut className="h-4 w-4 text-sky-400" />
-              <span>{isHindi ? 'अवकाश व आउटपास पंजिका' : 'Leave Ledger'}</span>
-              {activeLeavesCount > 0 && (
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-[2px] bg-sky-950 border border-sky-500/40 text-sky-400 font-bold">
-                  {activeLeavesCount} {isHindi ? 'बाहर' : 'Out'}
-                </span>
-              )}
+              <LogOut className="h-4 w-4" />
+              <span>{isHindi ? 'अवकाश पंजिका' : 'Leave Ledger'}</span>
             </button>
 
             <button
               type="button"
               id="tab-attendance"
               onClick={() => setActiveTab('attendance')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-2 cursor-pointer ${
                 activeTab === 'attendance'
                   ? 'bg-[#242424] text-foreground shadow-xs border border-border/80'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <CheckSquare className="h-4 w-4 text-emerald-400" />
-              <span>{isHindi ? 'रात्रि उपस्थिति रोल कॉल' : 'Night Dorm Attendance'}</span>
-              {absentDormCount > 0 ? (
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-[2px] bg-rose-950 border border-rose-500/40 text-rose-400 font-bold animate-pulse">
-                  {absentDormCount} {isHindi ? 'अनुपस्थित' : 'Missing'}
-                </span>
-              ) : (
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-[2px] bg-emerald-950 border border-emerald-500/40 text-emerald-400">
-                  {dormOccupancyRate}%
-                </span>
-              )}
+              <CheckSquare className="h-4 w-4" />
+              <span>{isHindi ? 'रात्रि उपस्थिति' : 'Night Attendance'}</span>
             </button>
           </div>
         </div>
 
-        {/* Right: Contextual Quick Actions */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-2 shrink-0">
-          {activeTab === 'leaves' && (
+          {activeTab === 'attendance' ? (
+            <VFButton
+              size="sm"
+              onClick={handleMarkAllPresent}
+              className="h-8 px-3.5 text-xs font-bold rounded-[4px] bg-emerald-600 hover:bg-emerald-500 text-white"
+              leftIcon={<Check className="h-3.5 w-3.5 stroke-[3]" />}
+            >
+              {isHindi ? 'सभी उपस्थित मार्क करें' : 'Mark All Present'}
+            </VFButton>
+          ) : (
             <VFButton
               size="sm"
               onClick={() => setIsOutpassModalOpen(true)}
               className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
               leftIcon={<Plus className="h-3.5 w-3.5" />}
             >
-              {isHindi ? '+ नया अवकाश / आउटपास' : '+ Grant Leave / Outpass'}
+              {isHindi ? '+ नया आउटपास' : '+ Issue Outpass'}
             </VFButton>
-          )}
-
-          {activeTab === 'attendance' && (
-            <div className="flex items-center gap-2">
-              <VFButton
-                size="sm"
-                variant="outline"
-                onClick={handleSendMissingAlert}
-                className="h-8 px-3 text-xs font-bold rounded-[4px] border-rose-500/40 text-rose-400 hover:bg-rose-950/30"
-                leftIcon={<AlertTriangle className="h-3.5 w-3.5" />}
-              >
-                {isHindi ? 'मिसिंग अलर्ट प्रेषित करें' : 'Alert Unaccounted'}
-              </VFButton>
-              <VFButton
-                size="sm"
-                onClick={handleMarkAllPresent}
-                className="h-8 px-3.5 text-xs font-bold rounded-[4px] bg-emerald-600 hover:bg-emerald-500 text-white"
-                leftIcon={<Check className="h-3.5 w-3.5 stroke-[3]" />}
-              >
-                {isHindi ? 'सभी उपस्थित मार्क करें' : 'Mark All Present'}
-              </VFButton>
-            </div>
-          )}
-
-          {activeTab === 'mess' && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground font-mono hidden sm:inline">
-                {isHindi ? 'स्वच्छता रेटिंग: 4.9 ★' : 'FSSAI Hygiene: 4.9 ★'}
-              </span>
-              <div className="flex items-center border border-border/80 rounded-[4px] p-0.5 bg-[#181818]">
-                <button
-                  type="button"
-                  onClick={() => setFoodViewMode('day')}
-                  className={cn(
-                    'px-2 py-1 text-[11px] font-bold rounded-[2px] transition-colors',
-                    foodViewMode === 'day' ? 'bg-[#282828] text-foreground' : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  {isHindi ? 'दैनिक दृश्य' : 'Day View'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFoodViewMode('week')}
-                  className={cn(
-                    'px-2 py-1 text-[11px] font-bold rounded-[2px] transition-colors',
-                    foodViewMode === 'week' ? 'bg-[#282828] text-foreground' : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  {isHindi ? 'साप्ताहिक ग्रिड' : 'Weekly Grid'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'rooms' && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-muted-foreground">
-                {vacantBeds} {isHindi ? 'बेड उपलब्ध' : 'Beds Vacant'}
-              </span>
-              <VFButton
-                size="sm"
-                variant="outline"
-                onClick={() => setIsOutpassModalOpen(true)}
-                className="h-8 px-3 text-xs font-bold rounded-[4px]"
-                leftIcon={<LogOut className="h-3.5 w-3.5" />}
-              >
-                {isHindi ? 'आउटपास जारी करें' : 'Issue Outpass'}
-              </VFButton>
-            </div>
           )}
         </div>
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 1: ROOMS & BEDS MATRIX (PRESERVED & ENRICHED)
+          TAB 1: ROOMS & BEDS (CLEAN ORIGINAL STRUCTURE)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'rooms' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
-          {/* Top Filter Bar */}
-          <div className="flex items-center justify-between gap-3 p-2.5 rounded-[4px] bg-[#141414] border border-border/80">
+          <div className="flex items-center justify-between p-2.5 rounded-[4px] bg-[#141414] border border-border/80 text-xs">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-muted-foreground flex items-center gap-1">
-                <Filter className="h-3.5 w-3.5" />
-                {isHindi ? 'ब्लॉक फिल्टर:' : 'Hostel Block:'}
-              </span>
+              <span className="font-semibold text-muted-foreground">{isHindi ? 'ब्लॉक:' : 'Block:'}</span>
               {(['All', 'Block A (Boys)', 'Block B (Girls)', 'Block C (Junior)'] as const).map((blk) => (
                 <button
                   key={blk}
                   type="button"
                   onClick={() => setRoomBlockFilter(blk)}
                   className={cn(
-                    'px-2.5 py-1 rounded-[3px] text-xs font-semibold transition-colors cursor-pointer',
+                    'px-2.5 py-1 rounded-[3px] font-semibold transition-colors cursor-pointer',
                     roomBlockFilter === blk
                       ? 'bg-primary/20 text-primary border border-primary/40'
                       : 'text-muted-foreground hover:text-foreground bg-[#1a1a1a] border border-border/60'
@@ -1208,18 +843,11 @@ function HostelManagementPage() {
                 </button>
               ))}
             </div>
-
-            <div className="flex items-center gap-4 text-xs font-mono">
-              <span className="text-muted-foreground">
-                {isHindi ? 'कुल कमरे:' : 'Rooms:'} <strong className="text-foreground">{filteredRooms.length}</strong>
-              </span>
-              <span className="text-emerald-400">
-                {isHindi ? 'रिक्त बेड:' : 'Vacant:'} <strong>{vacantBeds}</strong>
-              </span>
+            <div className="font-mono text-muted-foreground">
+              {occupiedBeds} / {totalBeds} {isHindi ? 'बेड आवंटित' : 'Beds Occupied'}
             </div>
           </div>
 
-          {/* Rooms Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredRooms.map((rm) => {
               const occupied = rm.residents.length;
@@ -1229,7 +857,7 @@ function HostelManagementPage() {
               return (
                 <div
                   key={rm.roomNumber}
-                  className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between group"
+                  className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2.5">
@@ -1245,53 +873,47 @@ function HostelManagementPage() {
                       </VFBadge>
                     </div>
 
-                    <div className="text-xs text-muted-foreground space-y-1 mb-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-foreground/90 font-medium">{rm.block}</span>
-                        <span className="font-mono text-xs">{rm.floor}</span>
+                    <div className="text-xs text-muted-foreground space-y-0.5 mb-3">
+                      <div className="flex items-center justify-between font-medium text-foreground">
+                        <span>{rm.block}</span>
+                        <span className="font-mono text-xs text-muted-foreground">{rm.floor}</span>
                       </div>
                       <p className="text-[11px] text-muted-foreground truncate">{rm.warden}</p>
                     </div>
 
-                    {/* Bed-by-Bed Occupant Slot Preview */}
                     <div className="space-y-1.5 pt-2 border-t border-border/60">
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                        {isHindi ? 'बेड आवंटन स्थिति' : 'Bed Allocation Status'}
-                      </div>
-                      <div className="space-y-1.5">
-                        {Array.from({ length: rm.totalBeds }).map((_, bIdx) => {
-                          const resident = rm.residents[bIdx];
-                          return (
-                            <div
-                              key={bIdx}
-                              className={`p-2 rounded-[3px] border flex items-center justify-between text-xs ${
-                                resident
-                                  ? 'bg-[#181818] border-border/70 text-foreground'
-                                  : 'bg-emerald-950/20 border-emerald-500/30 text-emerald-400'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2 truncate">
-                                <Bed className={`h-3.5 w-3.5 shrink-0 ${resident ? 'text-primary' : 'text-emerald-400'}`} />
-                                <span className="font-mono text-xs font-bold text-muted-foreground shrink-0">
-                                  Bed #{bIdx + 1}:
-                                </span>
-                                <span className="truncate font-semibold text-xs">
-                                  {resident ? resident.name : (isHindi ? 'रिक्त बेड' : 'Vacant Bed Space')}
-                                </span>
-                              </div>
-                              {resident ? (
-                                <span className="text-xs text-muted-foreground shrink-0 font-mono">
-                                  {resident.classSection}
-                                </span>
-                              ) : (
-                                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider shrink-0">
-                                  {isHindi ? 'उपलब्ध' : 'Free'}
-                                </span>
-                              )}
+                      {Array.from({ length: rm.totalBeds }).map((_, bIdx) => {
+                        const resident = rm.residents[bIdx];
+                        return (
+                          <div
+                            key={bIdx}
+                            className={`p-2 rounded-[3px] border flex items-center justify-between text-xs ${
+                              resident
+                                ? 'bg-[#181818] border-border/70 text-foreground'
+                                : 'bg-emerald-950/20 border-emerald-500/30 text-emerald-400'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 truncate">
+                              <Bed className={`h-3.5 w-3.5 shrink-0 ${resident ? 'text-primary' : 'text-emerald-400'}`} />
+                              <span className="font-mono text-xs font-bold text-muted-foreground shrink-0">
+                                Bed #{bIdx + 1}:
+                              </span>
+                              <span className="truncate font-semibold text-xs">
+                                {resident ? resident.name : (isHindi ? 'रिक्त बेड' : 'Vacant Space')}
+                              </span>
                             </div>
-                          );
-                        })}
-                      </div>
+                            {resident ? (
+                              <span className="text-xs text-muted-foreground shrink-0 font-mono">
+                                {resident.classSection}
+                              </span>
+                            ) : (
+                              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider shrink-0">
+                                {isHindi ? 'उपलब्ध' : 'Free'}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -1316,280 +938,159 @@ function HostelManagementPage() {
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 2: 7-DAY FOOD TIMETABLE (3 DISTINCT CURATED MEALS PER DAY)
+          TAB 2: 7-DAY FOOD TIMETABLE (CLEAN, FOCUSED 3-MEAL SCHEDULE)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'mess' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
-          {/* Day Selector Pills Bar */}
+          {/* Day Selector & Mode Switcher */}
           <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-              <span className="text-xs font-bold text-muted-foreground mr-1 flex items-center gap-1 shrink-0">
-                <CalendarDays className="h-3.5 w-3.5 text-primary" />
-                {isHindi ? 'दिन चुनें:' : 'Select Day:'}
-              </span>
-              {WEEKLY_MESS_SCHEDULE.map((d) => {
-                const isSelected = selectedDayId === d.dayId;
-                return (
-                  <button
-                    key={d.dayId}
-                    type="button"
-                    onClick={() => setSelectedDayId(d.dayId)}
-                    className={cn(
-                      'px-3 py-1.5 rounded-[3px] text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer',
-                      isSelected
-                        ? 'bg-amber-500 text-black shadow-xs font-extrabold'
-                        : 'bg-[#1a1a1a] text-muted-foreground hover:text-foreground border border-border/70'
-                    )}
-                  >
-                    <span>{d.dayName}</span>
-                    <span className={cn('text-[10px] font-medium opacity-80', isSelected ? 'text-black' : 'text-muted-foreground')}>
-                      {d.hindiDayName}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="flex items-center gap-1.5 overflow-x-auto">
+              {WEEKLY_FOOD_MENU.map((d) => (
+                <button
+                  key={d.dayId}
+                  type="button"
+                  onClick={() => setSelectedDayId(d.dayId)}
+                  className={cn(
+                    'px-3.5 py-1.5 rounded-[3px] text-xs font-bold transition-all cursor-pointer shrink-0',
+                    selectedDayId === d.dayId
+                      ? 'bg-amber-500 text-black shadow-xs font-extrabold'
+                      : 'bg-[#1a1a1a] text-muted-foreground hover:text-foreground border border-border/70'
+                  )}
+                >
+                  {d.dayName}
+                </button>
+              ))}
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <VFBadge variant="outline" className="text-xs font-mono rounded-[3px] border-amber-500/40 text-amber-400">
-                {selectedDayMenu.theme}
-              </VFBadge>
+              <div className="flex items-center border border-border/80 rounded-[4px] p-0.5 bg-[#181818]">
+                <button
+                  type="button"
+                  onClick={() => setFoodViewMode('day')}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-bold rounded-[2px] transition-colors',
+                    foodViewMode === 'day' ? 'bg-[#282828] text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {isHindi ? 'दैनिक दृश्य' : 'Day View'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFoodViewMode('week')}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-bold rounded-[2px] transition-colors',
+                    foodViewMode === 'week' ? 'bg-[#282828] text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {isHindi ? 'साप्ताहिक ग्रिड' : 'Weekly Grid'}
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* VIEW MODE 1: DAY VIEW (3 CURATED MEAL CARDS) */}
-          {foodViewMode === 'day' && (
-            <div className="space-y-4">
-              {/* Daily Overview Hero Card */}
-              <div className="p-3.5 rounded-[4px] bg-gradient-to-r from-[#181818] via-[#151515] to-[#181818] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          {/* DAY VIEW: 3 CRISP MEAL CARDS */}
+          {foodViewMode === 'day' ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* 1. Breakfast */}
+              <div className="p-4 rounded-[4px] border border-border/80 bg-card flex flex-col justify-between space-y-3">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-extrabold text-foreground flex items-center gap-1.5">
-                      <Sparkles className="h-4 w-4 text-amber-400" />
-                      {selectedDayMenu.dayName} ({selectedDayMenu.hindiDayName}) — {selectedDayMenu.theme}
-                    </h3>
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <div className="flex items-center gap-2">
+                      <Coffee className="h-4 w-4 text-amber-400" />
+                      <span className="font-bold text-foreground text-sm">
+                        {isHindi ? 'अल्पाहार' : 'Breakfast'}
+                      </span>
+                    </div>
+                    <span className="font-mono text-xs text-primary font-semibold">
+                      {selectedDayMenu.breakfast.time}
+                    </span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {selectedDayMenu.eveningTea}
+                  <p className="text-xs text-foreground leading-relaxed mt-3 font-medium">
+                    {selectedDayMenu.breakfast.items}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <VFBadge variant="success" className="text-xs font-mono rounded-[3px]">
-                    FSSAI Certified · 4.9 ★
-                  </VFBadge>
+                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground font-mono">
+                  <span>Energy</span>
+                  <span className="text-emerald-400 font-bold">{selectedDayMenu.breakfast.calories}</span>
                 </div>
               </div>
 
-              {/* 3 Dedicated Meal Cards: Breakfast, Lunch, Dinner */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                {/* 1. BREAKFAST */}
-                <div className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-amber-500/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <Coffee className="h-4 w-4 text-amber-400" />
-                        <div>
-                          <h4 className="text-sm font-bold text-foreground">
-                            {selectedDayMenu.breakfast.meal}
-                          </h4>
-                          <span className="text-[11px] text-muted-foreground">
-                            {selectedDayMenu.breakfast.hindiMeal}
-                          </span>
-                        </div>
-                      </div>
-                      <VFBadge variant="outline" className="text-[10px] rounded-[3px] border-amber-500/40 text-amber-400">
-                        {selectedDayMenu.breakfast.tag}
-                      </VFBadge>
-                    </div>
-
-                    <div className="flex items-center justify-between py-1.5 border-y border-border/60 text-xs font-mono text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1 text-primary font-bold">
-                        <Clock className="h-3 w-3" />
-                        {selectedDayMenu.breakfast.time}
-                      </span>
-                      <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                        <Flame className="h-3 w-3" />
-                        {selectedDayMenu.breakfast.calories}
+              {/* 2. Lunch */}
+              <div className="p-4 rounded-[4px] border border-border/80 bg-card flex flex-col justify-between space-y-3">
+                <div>
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <div className="flex items-center gap-2">
+                      <Utensils className="h-4 w-4 text-emerald-400" />
+                      <span className="font-bold text-foreground text-sm">
+                        {isHindi ? 'दोपहर का भोजन' : 'Lunch'}
                       </span>
                     </div>
-
-                    <div className="space-y-2">
-                      <p className="text-xs text-foreground leading-relaxed font-medium">
-                        {selectedDayMenu.breakfast.items}
-                      </p>
-                      <div className="p-2 rounded-[3px] bg-[#161616] border border-border/60 text-[11px] text-muted-foreground">
-                        <strong className="text-foreground block text-[10px] uppercase tracking-wider mb-0.5">
-                          {isHindi ? 'पोषण विशेषता' : 'Nutritional Highlight:'}
-                        </strong>
-                        {selectedDayMenu.breakfast.highlight}
-                      </div>
-                    </div>
+                    <span className="font-mono text-xs text-primary font-semibold">
+                      {selectedDayMenu.lunch.time}
+                    </span>
                   </div>
-
-                  <div className="mt-4 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span>{isHindi ? 'प्रभारी रसोइया:' : 'Chef In-Charge:'}</span>
-                    <span className="font-semibold text-foreground">{selectedDayMenu.breakfast.chef}</span>
-                  </div>
+                  <p className="text-xs text-foreground leading-relaxed mt-3 font-medium">
+                    {selectedDayMenu.lunch.items}
+                  </p>
                 </div>
-
-                {/* 2. LUNCH */}
-                <div className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-amber-500/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <Utensils className="h-4 w-4 text-emerald-400" />
-                        <div>
-                          <h4 className="text-sm font-bold text-foreground">
-                            {selectedDayMenu.lunch.meal}
-                          </h4>
-                          <span className="text-[11px] text-muted-foreground">
-                            {selectedDayMenu.lunch.hindiMeal}
-                          </span>
-                        </div>
-                      </div>
-                      <VFBadge variant="outline" className="text-[10px] rounded-[3px] border-emerald-500/40 text-emerald-400">
-                        {selectedDayMenu.lunch.tag}
-                      </VFBadge>
-                    </div>
-
-                    <div className="flex items-center justify-between py-1.5 border-y border-border/60 text-xs font-mono text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1 text-primary font-bold">
-                        <Clock className="h-3 w-3" />
-                        {selectedDayMenu.lunch.time}
-                      </span>
-                      <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                        <Flame className="h-3 w-3" />
-                        {selectedDayMenu.lunch.calories}
-                      </span>
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="text-xs text-foreground leading-relaxed font-medium">
-                        {selectedDayMenu.lunch.items}
-                      </p>
-                      <div className="p-2 rounded-[3px] bg-[#161616] border border-border/60 text-[11px] text-muted-foreground">
-                        <strong className="text-foreground block text-[10px] uppercase tracking-wider mb-0.5">
-                          {isHindi ? 'पोषण विशेषता' : 'Nutritional Highlight:'}
-                        </strong>
-                        {selectedDayMenu.lunch.highlight}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span>{isHindi ? 'प्रभारी रसोइया:' : 'Chef In-Charge:'}</span>
-                    <span className="font-semibold text-foreground">{selectedDayMenu.lunch.chef}</span>
-                  </div>
+                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground font-mono">
+                  <span>Full Thali</span>
+                  <span className="text-emerald-400 font-bold">{selectedDayMenu.lunch.calories}</span>
                 </div>
+              </div>
 
-                {/* 3. DINNER */}
-                <div className="p-4 rounded-[4px] border border-border/80 bg-card hover:border-amber-500/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <Moon className="h-4 w-4 text-sky-400" />
-                        <div>
-                          <h4 className="text-sm font-bold text-foreground">
-                            {selectedDayMenu.dinner.meal}
-                          </h4>
-                          <span className="text-[11px] text-muted-foreground">
-                            {selectedDayMenu.dinner.hindiMeal}
-                          </span>
-                        </div>
-                      </div>
-                      <VFBadge variant="outline" className="text-[10px] rounded-[3px] border-sky-500/40 text-sky-400">
-                        {selectedDayMenu.dinner.tag}
-                      </VFBadge>
-                    </div>
-
-                    <div className="flex items-center justify-between py-1.5 border-y border-border/60 text-xs font-mono text-muted-foreground mb-3">
-                      <span className="flex items-center gap-1 text-primary font-bold">
-                        <Clock className="h-3 w-3" />
-                        {selectedDayMenu.dinner.time}
-                      </span>
-                      <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                        <Flame className="h-3 w-3" />
-                        {selectedDayMenu.dinner.calories}
+              {/* 3. Dinner */}
+              <div className="p-4 rounded-[4px] border border-border/80 bg-card flex flex-col justify-between space-y-3">
+                <div>
+                  <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                    <div className="flex items-center gap-2">
+                      <Moon className="h-4 w-4 text-sky-400" />
+                      <span className="font-bold text-foreground text-sm">
+                        {isHindi ? 'रात्रि भोज' : 'Dinner'}
                       </span>
                     </div>
-
-                    <div className="space-y-2">
-                      <p className="text-xs text-foreground leading-relaxed font-medium">
-                        {selectedDayMenu.dinner.items}
-                      </p>
-                      <div className="p-2 rounded-[3px] bg-[#161616] border border-border/60 text-[11px] text-muted-foreground">
-                        <strong className="text-foreground block text-[10px] uppercase tracking-wider mb-0.5">
-                          {isHindi ? 'पोषण विशेषता' : 'Nutritional Highlight:'}
-                        </strong>
-                        {selectedDayMenu.dinner.highlight}
-                      </div>
-                    </div>
+                    <span className="font-mono text-xs text-primary font-semibold">
+                      {selectedDayMenu.dinner.time}
+                    </span>
                   </div>
-
-                  <div className="mt-4 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span>{isHindi ? 'प्रभारी रसोइया:' : 'Chef In-Charge:'}</span>
-                    <span className="font-semibold text-foreground">{selectedDayMenu.dinner.chef}</span>
-                  </div>
+                  <p className="text-xs text-foreground leading-relaxed mt-3 font-medium">
+                    {selectedDayMenu.dinner.items}
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground font-mono">
+                  <span>Wholesome</span>
+                  <span className="text-emerald-400 font-bold">{selectedDayMenu.dinner.calories}</span>
                 </div>
               </div>
             </div>
-          )}
-
-          {/* VIEW MODE 2: FULL WEEK MATRIX GRID */}
-          {foodViewMode === 'week' && (
+          ) : (
+            /* WEEKLY GRID: CLEAN COMPACT TABLE */
             <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
-                      <th className="py-3 px-4 w-32">{isHindi ? 'दिन' : 'Day'}</th>
-                      <th className="py-3 px-4 w-[28%]">
-                        <div className="flex items-center gap-1.5 text-amber-400">
-                          <Coffee className="h-3.5 w-3.5" />
-                          <span>Breakfast (07:30–08:30)</span>
-                        </div>
-                      </th>
-                      <th className="py-3 px-4 w-[34%]">
-                        <div className="flex items-center gap-1.5 text-emerald-400">
-                          <Utensils className="h-3.5 w-3.5" />
-                          <span>Lunch (12:30–01:45)</span>
-                        </div>
-                      </th>
-                      <th className="py-3 px-4 w-[34%]">
-                        <div className="flex items-center gap-1.5 text-sky-400">
-                          <Moon className="h-3.5 w-3.5" />
-                          <span>Dinner (08:00–09:15)</span>
-                        </div>
-                      </th>
+                      <th className="py-3 px-4 w-28">{isHindi ? 'दिन' : 'Day'}</th>
+                      <th className="py-3 px-4 w-[30%] text-amber-400 font-bold">Breakfast (07:30–08:30)</th>
+                      <th className="py-3 px-4 w-[35%] text-emerald-400 font-bold">Lunch (12:30–01:45)</th>
+                      <th className="py-3 px-4 w-[35%] text-sky-400 font-bold">Dinner (08:00–09:15)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border/60">
-                    {WEEKLY_MESS_SCHEDULE.map((day) => (
-                      <tr key={day.dayId} className="hover:bg-[#1a1a1a] transition-colors">
-                        <td className="py-3 px-4 align-top font-bold text-foreground">
-                          <div>{day.dayName}</div>
-                          <div className="text-[11px] text-muted-foreground">{day.hindiDayName}</div>
-                          <VFBadge variant="outline" className="text-[9px] rounded-[2px] mt-1 px-1 py-0">
-                            {day.theme.split(' ')[0]}
-                          </VFBadge>
+                    {WEEKLY_FOOD_MENU.map((d) => (
+                      <tr key={d.dayId} className="hover:bg-[#1a1a1a] transition-colors">
+                        <td className="py-3 px-4 font-bold text-foreground align-top">
+                          <div>{d.dayName}</div>
+                          <div className="text-[10px] text-muted-foreground">{d.hindiDayName}</div>
                         </td>
-                        <td className="py-3 px-4 align-top text-xs text-foreground leading-relaxed">
-                          <div className="font-medium">{day.breakfast.items}</div>
-                          <div className="text-[10px] text-amber-400/90 font-mono mt-1">
-                            {day.breakfast.calories} · {day.breakfast.tag}
-                          </div>
+                        <td className="py-3 px-4 text-foreground/90 align-top leading-relaxed">
+                          {d.breakfast.items}
                         </td>
-                        <td className="py-3 px-4 align-top text-xs text-foreground leading-relaxed">
-                          <div className="font-medium">{day.lunch.items}</div>
-                          <div className="text-[10px] text-emerald-400/90 font-mono mt-1">
-                            {day.lunch.calories} · {day.lunch.tag}
-                          </div>
+                        <td className="py-3 px-4 text-foreground/90 align-top leading-relaxed">
+                          {d.lunch.items}
                         </td>
-                        <td className="py-3 px-4 align-top text-xs text-foreground leading-relaxed">
-                          <div className="font-medium">{day.dinner.items}</div>
-                          <div className="text-[10px] text-sky-400/90 font-mono mt-1">
-                            {day.dinner.calories} · {day.dinner.tag}
-                          </div>
+                        <td className="py-3 px-4 text-foreground/90 align-top leading-relaxed">
+                          {d.dinner.items}
                         </td>
                       </tr>
                     ))}
@@ -1602,45 +1103,13 @@ function HostelManagementPage() {
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 3: LEAVE & OUTPASS LEDGER (DEDICATED FULL TRACKER)
+          TAB 3: LEAVE & OUTPASS LEDGER (CLEAN STRUCTURED TABLE)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'leaves' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
-          {/* Top Leave Summary Stat Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <VFStatCard
-              title={isHindi ? 'सक्रिय अवकाश पर' : 'Active Outpass Leaves'}
-              value={activeLeavesCount}
-              description={isHindi ? 'वर्तमान में परिसर से बाहर' : 'Currently off campus'}
-              icon={<LogOut className="h-4 w-4 text-amber-400" />}
-              accentColor="amber"
-            />
-            <VFStatCard
-              title={isHindi ? 'आज वापस लौटे' : 'Returned Students'}
-              value={returnedLeavesCount}
-              description={isHindi ? 'बायोमेट्रिक गेट चेक-इन पूर्ण' : 'Biometric gate punch verified'}
-              icon={<CheckCircle2 className="h-4 w-4 text-emerald-400" />}
-              accentColor="emerald"
-            />
-            <VFStatCard
-              title={isHindi ? 'विलंबित वापसी (ओवरड्यू)' : 'Overdue Returns'}
-              value={overdueLeavesCount}
-              description={isHindi ? 'अपेक्षित समय से विलंब' : 'Late check-in alerts triggered'}
-              icon={<AlertTriangle className="h-4 w-4 text-rose-400" />}
-              accentColor="rose"
-            />
-            <VFStatCard
-              title={isHindi ? 'कुल स्वीकृत अवकाश' : 'Total Leave Records'}
-              value={outpasses.length}
-              description={isHindi ? 'इस माह की पंजिका' : 'Logged in official register'}
-              icon={<FileText className="h-4 w-4 text-primary" />}
-              accentColor="primary"
-            />
-          </div>
-
-          {/* Filter & Search Bar */}
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2 flex-1 max-w-md">
+          {/* Quick Filter Bar */}
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 flex-1 max-w-sm">
               <div className="relative w-full">
                 <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
@@ -1648,48 +1117,50 @@ function HostelManagementPage() {
                   value={leaveSearch}
                   onChange={(e) => setLeaveSearch(e.target.value)}
                   placeholder={isHindi ? 'छात्र, कमरा या पास आईडी खोजें...' : 'Search student, room or pass ID...'}
-                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#1a1a1a] border border-border/70 rounded-[3px] text-foreground focus:outline-none"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#1a1a1a] border border-border/70 rounded-[3px] text-foreground focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground font-semibold flex items-center gap-1">
-                <Filter className="h-3 w-3" />
-                {isHindi ? 'स्थिति:' : 'Status:'}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                {(['All', 'Approved - Out', 'Returned', 'Overdue'] as const).map((st) => (
+                  <button
+                    key={st}
+                    type="button"
+                    onClick={() => setLeaveStatusFilter(st)}
+                    className={cn(
+                      'px-2.5 py-1 rounded-[3px] font-semibold transition-colors cursor-pointer',
+                      leaveStatusFilter === st
+                        ? 'bg-primary/20 text-primary border border-primary/40'
+                        : 'text-muted-foreground hover:text-foreground bg-[#1a1a1a] border border-border/60'
+                    )}
+                  >
+                    {st}
+                  </button>
+                ))}
+              </div>
+
+              <span className="font-mono text-muted-foreground hidden sm:inline">
+                {activeLeavesCount} {isHindi ? 'सक्रिय' : 'Active'} · {returnedLeavesCount} {isHindi ? 'वापस' : 'Returned'} · {overdueLeavesCount} {isHindi ? 'ओवरड्यू' : 'Overdue'}
               </span>
-              {(['All', 'Approved - Out', 'Returned', 'Overdue'] as const).map((st) => (
-                <button
-                  key={st}
-                  type="button"
-                  onClick={() => setLeaveStatusFilter(st)}
-                  className={cn(
-                    'px-2.5 py-1 rounded-[3px] text-xs font-semibold transition-colors cursor-pointer',
-                    leaveStatusFilter === st
-                      ? 'bg-primary/20 text-primary border border-primary/40'
-                      : 'text-muted-foreground hover:text-foreground bg-[#1a1a1a] border border-border/60'
-                  )}
-                >
-                  {st}
-                </button>
-              ))}
             </div>
           </div>
 
-          {/* Outpass Table */}
+          {/* Clean Ledger Table */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
                     <th className="py-3 px-4">{isHindi ? 'पास आईडी' : 'Pass ID'}</th>
-                    <th className="py-3 px-4">{isHindi ? 'छात्रावासी छात्र' : 'Student & Class'}</th>
-                    <th className="py-3 px-4">{isHindi ? 'कमरा व ब्लॉक' : 'Room & Block'}</th>
+                    <th className="py-3 px-4">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
+                    <th className="py-3 px-4">{isHindi ? 'कमरा' : 'Room'}</th>
                     <th className="py-3 px-4">{isHindi ? 'अवकाश प्रयोजन' : 'Purpose'}</th>
-                    <th className="py-3 px-4">{isHindi ? 'अवकाश स्वीकृति व अवधि' : 'Granted Date & Days'}</th>
-                    <th className="py-3 px-4">{isHindi ? 'प्रस्थान व वापसी समय' : 'Departure & Return'}</th>
+                    <th className="py-3 px-4">{isHindi ? 'स्वीकृति व दिन' : 'Granted & Days'}</th>
+                    <th className="py-3 px-4">{isHindi ? 'प्रस्थान व वापसी' : 'Departure & Return'}</th>
                     <th className="py-3 px-4">{isHindi ? 'स्वीकृतिकर्ता' : 'Approved By'}</th>
-                    <th className="py-3 px-4 text-center">{isHindi ? 'गेट स्थिति' : 'Gate Status'}</th>
+                    <th className="py-3 px-4 text-center">{isHindi ? 'गेट स्थिति' : 'Status'}</th>
                     <th className="py-3 px-4 text-right">{isHindi ? 'कार्रवाई' : 'Action'}</th>
                   </tr>
                 </thead>
@@ -1697,41 +1168,30 @@ function HostelManagementPage() {
                   {filteredOutpasses.length === 0 ? (
                     <tr>
                       <td colSpan={9} className="py-8 text-center text-muted-foreground text-xs">
-                        {isHindi ? 'कोई अवकाश रिकॉर्ड नहीं मिला।' : 'No leave records match the filter criteria.'}
+                        {isHindi ? 'कोई अवकाश रिकॉर्ड नहीं मिला।' : 'No leave records found.'}
                       </td>
                     </tr>
                   ) : (
                     filteredOutpasses.map((op) => (
                       <tr key={op.id} className="hover:bg-[#1a1a1a] transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-primary text-xs">{op.id}</td>
+                        <td className="py-3 px-4 font-mono font-bold text-primary">{op.id}</td>
                         <td className="py-3 px-4">
                           <div className="font-bold text-foreground text-sm">{op.studentName}</div>
                           <div className="text-[11px] text-muted-foreground">{op.classSection}</div>
                         </td>
+                        <td className="py-3 px-4 font-mono text-muted-foreground">{op.room}</td>
+                        <td className="py-3 px-4 font-medium text-foreground">{op.purpose}</td>
                         <td className="py-3 px-4">
-                          <span className="font-mono text-xs font-semibold text-foreground">{op.room}</span>
-                          <div className="text-[10px] text-muted-foreground">{op.block.split(' ')[0]}</div>
-                        </td>
-                        <td className="py-3 px-4 font-medium text-foreground">
-                          <span className="px-2 py-0.5 rounded-[2px] bg-[#1a1a1a] border border-border/70 text-[11px]">
-                            {op.purpose}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4">
-                          <div className="font-mono text-xs text-foreground">{op.grantedDate}</div>
-                          <span className="inline-block mt-0.5 text-[10px] font-bold text-sky-400 bg-sky-950/40 px-1.5 py-0.2 rounded border border-sky-500/30">
+                          <div className="font-mono text-xs">{op.grantedDate}</div>
+                          <span className="text-[10px] font-bold text-sky-400">
                             {op.daysGranted} {op.daysGranted === 1 ? 'Day' : 'Days'}
                           </span>
                         </td>
-                        <td className="py-3 px-4">
-                          <div className="text-xs text-muted-foreground">
-                            Out: <span className="font-mono text-foreground font-medium">{op.leaveTime}</span>
-                          </div>
-                          <div className="text-xs text-muted-foreground mt-0.5">
-                            Ret: <span className="font-mono text-foreground font-medium">{op.returnTime}</span>
-                          </div>
+                        <td className="py-3 px-4 text-muted-foreground">
+                          <div>Out: <span className="text-foreground font-mono">{op.leaveTime}</span></div>
+                          <div>Ret: <span className="text-foreground font-mono">{op.returnTime}</span></div>
                         </td>
-                        <td className="py-3 px-4 text-muted-foreground text-xs">{op.approvedBy}</td>
+                        <td className="py-3 px-4 text-muted-foreground">{op.approvedBy}</td>
                         <td className="py-3 px-4 text-center">
                           <VFBadge
                             variant={
@@ -1739,9 +1199,7 @@ function HostelManagementPage() {
                                 ? 'success'
                                 : op.gateStatus === 'Approved - Out'
                                 ? 'warning'
-                                : op.gateStatus === 'Overdue'
-                                ? 'danger'
-                                : 'outline'
+                                : 'danger'
                             }
                             className="text-xs rounded-[3px] px-2 py-0.5"
                           >
@@ -1754,15 +1212,12 @@ function HostelManagementPage() {
                               type="button"
                               onClick={() => handleMarkReturned(op.id, op.studentName)}
                               className="px-2.5 py-1 rounded-[3px] bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/40 text-emerald-400 text-xs font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
-                              title="Mark Student Returned to Hostel"
                             >
                               <CheckCircle2 className="h-3 w-3" />
-                              <span>{isHindi ? 'वापसी दर्ज' : 'Returned'}</span>
+                              <span>{isHindi ? 'वापसी' : 'Return'}</span>
                             </button>
                           ) : (
-                            <span className="text-[11px] text-muted-foreground font-mono">
-                              {isHindi ? 'गेट पर पूर्ण' : 'Closed'}
-                            </span>
+                            <span className="text-muted-foreground font-mono text-[11px]">Closed</span>
                           )}
                         </td>
                       </tr>
@@ -1776,122 +1231,73 @@ function HostelManagementPage() {
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          TAB 4: NIGHT DORM ATTENDANCE / ROLL CALL (PATTERNED FROM ATTENDANCE PAGE)
+          TAB 4: NIGHT ATTENDANCE (PARITY WITH ATTENDANCE.TSX)
           ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === 'attendance' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-4">
-          {/* Top Night Roll Call Stat Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            <VFStatCard
-              title={isHindi ? 'कमरे में उपस्थित' : 'In-Dorm Present'}
-              value={`${presentDormCount} / ${nightRoster.length}`}
-              description={isHindi ? 'शयन कक्ष में मौजूद' : 'In-dorm verified'}
-              icon={<Check className="h-4 w-4 text-emerald-400 stroke-[3]" />}
-              accentColor="emerald"
-            />
-            <VFStatCard
-              title={isHindi ? 'अनुपस्थित / मिसिंग' : 'Missing / Unaccounted'}
-              value={absentDormCount}
-              description={isHindi ? 'रोल कॉल पर अनुपस्थित' : 'Alert warden immediately'}
-              icon={<X className="h-4 w-4 text-rose-400 stroke-[3]" />}
-              accentColor="rose"
-            />
-            <VFStatCard
-              title={isHindi ? 'विलंबित चेक-इन' : 'Late Check-In'}
-              value={lateDormCount}
-              description={isHindi ? 'गेट पर लंबित आगमन' : 'Delayed arrival logged'}
-              icon={<Clock className="h-4 w-4 text-amber-400" />}
-              accentColor="amber"
-            />
-            <VFStatCard
-              title={isHindi ? 'स्वीकृत अवकाश पर' : 'On Authorized Leave'}
-              value={leaveDormCount}
-              description={isHindi ? 'वैध गेट पास धारक' : 'Valid outpass passholder'}
-              icon={<LogOut className="h-4 w-4 text-sky-400" />}
-              accentColor="blue"
-            />
-            <VFStatCard
-              title={isHindi ? 'रात्रि उपस्थिति दर' : 'Night Occupancy'}
-              value={`${dormOccupancyRate}%`}
-              description={isHindi ? 'कुल आवासीय दर' : 'Overall in-room rate'}
-              icon={<Moon className="h-4 w-4 text-purple-400" />}
-              accentColor="purple"
-            />
-          </div>
-
-          {/* Action & Filter Controls */}
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2 flex-1 max-w-md">
+          {/* Top Quick Status Bar */}
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 flex-1 max-w-sm">
               <div className="relative w-full">
                 <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
                   value={attendanceSearch}
                   onChange={(e) => setAttendanceSearch(e.target.value)}
-                  placeholder={isHindi ? 'नाम, कमरा या एडमिशन नं. से खोजें...' : 'Search student, room or roll...'}
-                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#1a1a1a] border border-border/70 rounded-[3px] text-foreground focus:outline-none"
+                  placeholder={isHindi ? 'छात्र, कमरा या एडमिशन नं. खोजें...' : 'Search student, room or ID...'}
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#1a1a1a] border border-border/70 rounded-[3px] text-foreground focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-2 overflow-x-auto">
-              <span className="text-xs text-muted-foreground font-semibold flex items-center gap-1 shrink-0">
-                <Filter className="h-3 w-3" />
-                {isHindi ? 'ब्लॉक:' : 'Block:'}
-              </span>
-              {(['All', 'Block A (Boys)', 'Block B (Girls)', 'Block C (Junior)'] as const).map((blk) => (
-                <button
-                  key={blk}
-                  type="button"
-                  onClick={() => setAttendanceBlockFilter(blk)}
-                  className={cn(
-                    'px-2.5 py-1 rounded-[3px] text-xs font-semibold transition-colors cursor-pointer shrink-0',
-                    attendanceBlockFilter === blk
-                      ? 'bg-primary/20 text-primary border border-primary/40'
-                      : 'text-muted-foreground hover:text-foreground bg-[#1a1a1a] border border-border/60'
-                  )}
-                >
-                  {blk}
-                </button>
-              ))}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                {(['All', 'Block A (Boys)', 'Block B (Girls)', 'Block C (Junior)'] as const).map((blk) => (
+                  <button
+                    key={blk}
+                    type="button"
+                    onClick={() => setAttendanceBlockFilter(blk)}
+                    className={cn(
+                      'px-2.5 py-1 rounded-[3px] font-semibold transition-colors cursor-pointer',
+                      attendanceBlockFilter === blk
+                        ? 'bg-primary/20 text-primary border border-primary/40'
+                        : 'text-muted-foreground hover:text-foreground bg-[#1a1a1a] border border-border/60'
+                    )}
+                  >
+                    {blk}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-3 font-mono text-xs">
+                <span className="text-emerald-400 font-bold">{presentCount} Present</span>
+                <span className="text-rose-400 font-bold">{absentCount} Absent</span>
+                <span className="text-amber-400 font-bold">{lateCount} Late</span>
+                <span className="text-sky-400 font-bold">{leaveCount} Leave</span>
+              </div>
             </div>
           </div>
 
-          {/* Roll Call Table with Interactive 4-Way Status Toggle */}
+          {/* Roll Call Table with Exact 4-Button Toggle from Attendance.tsx */}
           <div className="border border-border/80 rounded-[4px] overflow-hidden bg-card">
-            <div className="p-3 bg-[#161616] border-b border-border/80 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2">
-                <Moon className="h-4 w-4 text-purple-400" />
-                <span className="font-bold text-foreground">
-                  {isHindi ? '09:30 PM रात्रि उपस्थिति निरीक्षण पंजिका' : '09:30 PM Night Roll Call Register'}
-                </span>
-                <span className="text-muted-foreground text-[11px]">
-                  · {isHindi ? 'वार्डन द्वारा व्यक्तिगत कमरा सत्यापन' : 'Room-by-room physical verification'}
-                </span>
-              </div>
-              <span className="font-mono text-muted-foreground text-xs">
-                {filteredNightRoster.length} {isHindi ? 'छात्रावासी' : 'Residents'}
-              </span>
-            </div>
-
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
                     <th className="py-3 px-3 w-14 text-center">{isHindi ? 'फोटो' : 'Photo'}</th>
                     <th className="py-3 px-3 w-28 text-center">{isHindi ? 'कमरा / बेड' : 'Room / Bed'}</th>
-                    <th className="py-3 px-4 min-w-[220px]">{isHindi ? 'छात्रावासी छात्र' : 'Resident Name & ID'}</th>
-                    <th className="py-3 px-4 min-w-[150px]">{isHindi ? 'ब्लॉक व तल' : 'Block & Floor'}</th>
-                    <th className="py-3 px-4 min-w-[170px]">{isHindi ? 'अभिभावक संपर्क' : 'Guardian Contact'}</th>
-                    <th className="py-3 px-4 min-w-[340px] text-center">{isHindi ? 'रात्रि उपस्थिति स्थिति' : 'Night Verification Status'}</th>
-                    <th className="py-3 px-4 text-right min-w-[140px]">{isHindi ? 'सत्यापन समय' : 'Verified At'}</th>
+                    <th className="py-3 px-4 min-w-[200px]">{isHindi ? 'छात्र का नाम' : 'Student Name & Roll'}</th>
+                    <th className="py-3 px-4 min-w-[140px]">{isHindi ? 'ब्लॉक' : 'Block & Floor'}</th>
+                    <th className="py-3 px-4 min-w-[150px]">{isHindi ? 'अभिभावक फोन' : 'Guardian Contact'}</th>
+                    <th className="py-3 px-4 min-w-[320px] text-center">{isHindi ? 'रात्रि उपस्थिति' : 'Night Verification'}</th>
+                    <th className="py-3 px-4 text-right min-w-[120px]">{isHindi ? 'सत्यापन समय' : 'Checked At'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {filteredNightRoster.length === 0 ? (
                     <tr>
                       <td colSpan={7} className="py-8 text-center text-muted-foreground text-xs">
-                        {isHindi ? 'कोई छात्र रिकॉर्ड नहीं मिला।' : 'No residents match the filter.'}
+                        {isHindi ? 'कोई छात्र नहीं मिला।' : 'No residents found.'}
                       </td>
                     </tr>
                   ) : (
@@ -1916,34 +1322,27 @@ function HostelManagementPage() {
                           </span>
                         </td>
 
-                        {/* 3. Student Name & Admission */}
+                        {/* 3. Name & Roll */}
                         <td className="py-3 px-4">
-                          <div className="font-extrabold text-foreground text-sm tracking-tight">{r.name}</div>
-                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium mt-0.5">
-                            <span className="font-mono text-[11px]">{r.admNo}</span>
-                            <span>•</span>
-                            <span>{r.classSection}</span>
-                          </div>
+                          <div className="font-bold text-foreground text-sm">{r.name}</div>
+                          <div className="text-[11px] text-muted-foreground font-mono">{r.admNo} · {r.classSection}</div>
                         </td>
 
                         {/* 4. Block & Floor */}
                         <td className="py-3 px-4">
-                          <div className="text-xs font-semibold text-foreground">{r.block}</div>
+                          <div className="font-medium text-foreground">{r.block}</div>
                           <div className="text-[11px] text-muted-foreground font-mono">{r.floor}</div>
                         </td>
 
-                        {/* 5. Guardian Contact */}
+                        {/* 5. Guardian */}
                         <td className="py-3 px-4">
                           <div className="text-xs font-medium text-foreground">{r.guardianName}</div>
-                          <div className="flex items-center gap-1 font-mono text-[11px] text-muted-foreground mt-0.5">
-                            <Phone className="h-2.5 w-2.5" />
-                            {r.guardianPhone}
-                          </div>
+                          <div className="text-[11px] text-muted-foreground font-mono">{r.guardianPhone}</div>
                         </td>
 
-                        {/* 6. Interactive 4-Way Status Toggle Buttons (Copying attendance.tsx UI) */}
+                        {/* 6. Exact 4-Way Toggle from attendance.tsx */}
                         <td className="py-3 px-4">
-                          <div className="inline-flex items-center h-8 p-0.5 rounded-[4px] bg-[#181818] border border-border gap-1 select-none w-full max-w-[340px]">
+                          <div className="inline-flex items-center h-8 p-0.5 rounded-[4px] bg-[#181818] border border-border gap-1 select-none w-full max-w-[320px]">
                             {/* Present */}
                             <button
                               type="button"
@@ -1954,13 +1353,13 @@ function HostelManagementPage() {
                                   ? 'bg-emerald-500 text-white shadow-xs font-extrabold'
                                   : 'text-muted-foreground hover:text-foreground hover:bg-[#222222]'
                               )}
-                              title="Mark Present in Room"
+                              title="Mark Present"
                             >
                               <Check className={cn('h-3.5 w-3.5', r.status === 'Present' ? 'text-white stroke-[3]' : 'text-emerald-500/70')} />
                               <span>{isHindi ? 'उपस्थित' : 'Present'}</span>
                             </button>
 
-                            {/* Absent / Missing */}
+                            {/* Absent */}
                             <button
                               type="button"
                               onClick={() => handleNightStatusToggle(r.id, 'Absent')}
@@ -1970,7 +1369,7 @@ function HostelManagementPage() {
                                   ? 'bg-rose-500 text-white shadow-xs font-extrabold'
                                   : 'text-muted-foreground hover:text-foreground hover:bg-[#222222]'
                               )}
-                              title="Mark Missing from Dorm"
+                              title="Mark Absent"
                             >
                               <X className={cn('h-3.5 w-3.5', r.status === 'Absent' ? 'text-white stroke-[3]' : 'text-rose-500/70')} />
                               <span>{isHindi ? 'अनुपस्थित' : 'Absent'}</span>
@@ -1986,13 +1385,13 @@ function HostelManagementPage() {
                                   ? 'bg-amber-500 text-black shadow-xs font-extrabold'
                                   : 'text-muted-foreground hover:text-foreground hover:bg-[#222222]'
                               )}
-                              title="Mark Late Check-In"
+                              title="Mark Late"
                             >
                               <Clock className={cn('h-3.5 w-3.5', r.status === 'Late' ? 'text-black stroke-[2.5]' : 'text-amber-500/70')} />
                               <span>{isHindi ? 'विलंबित' : 'Late'}</span>
                             </button>
 
-                            {/* On Leave / Outpass */}
+                            {/* Leave */}
                             <button
                               type="button"
                               onClick={() => handleNightStatusToggle(r.id, 'Leave')}
@@ -2002,7 +1401,7 @@ function HostelManagementPage() {
                                   ? 'bg-sky-500 text-white shadow-xs font-extrabold'
                                   : 'text-muted-foreground hover:text-foreground hover:bg-[#222222]'
                               )}
-                              title="Mark On Authorized Leave"
+                              title="Mark Leave"
                             >
                               <LogOut className={cn('h-3.5 w-3.5', r.status === 'Leave' ? 'text-white stroke-[2.5]' : 'text-sky-500/70')} />
                               <span>{isHindi ? 'अवकाश' : 'Leave'}</span>
@@ -2010,14 +1409,9 @@ function HostelManagementPage() {
                           </div>
                         </td>
 
-                        {/* 7. Verification Time & Note */}
-                        <td className="py-3 px-4 text-right">
-                          <span className="font-mono text-xs text-foreground font-medium block">
-                            {r.punchTime || '10:00 PM'}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground block truncate max-w-[130px] ml-auto">
-                            {r.verifiedBy}
-                          </span>
+                        {/* 7. Checked At */}
+                        <td className="py-3 px-4 text-right font-mono text-xs text-muted-foreground">
+                          {r.punchTime || '09:30 PM'}
                         </td>
                       </tr>
                     ))
@@ -2030,7 +1424,7 @@ function HostelManagementPage() {
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          ROOM-WISE BED INSPECTION & ALLOCATION SLIDE-OVER DRAWER (PRESERVED)
+          ROOM-WISE BED INSPECTION & ALLOCATION DRAWER (PRESERVED)
           ────────────────────────────────────────────────────────────────────────── */}
       {selectedRoom && (
         <VFDrawer
@@ -2039,13 +1433,13 @@ function HostelManagementPage() {
             setSelectedRoomNumber(null);
             setAllocatingBedIndex(null);
           }}
-          title={`${isHindi ? 'कमरा' : 'Room'} ${selectedRoom.roomNumber} – ${isHindi ? 'बेड व छात्रावासी विवरण' : 'Bed & Resident Inspection'}`}
+          title={`${isHindi ? 'कमरा' : 'Room'} ${selectedRoom.roomNumber} – ${isHindi ? 'बेड व छात्रावासी' : 'Bed Inspection'}`}
           description={`${selectedRoom.block} · ${selectedRoom.floor} · ${selectedRoom.type}`}
           className="max-w-lg"
           footerActions={
             <div className="flex items-center justify-between w-full">
               <span className="text-xs font-mono text-muted-foreground">
-                {selectedRoom.residents.length} / {selectedRoom.totalBeds} {isHindi ? 'बेड अधिग्रहीत' : 'Beds Occupied'}
+                {selectedRoom.residents.length} / {selectedRoom.totalBeds} {isHindi ? 'बेड अधिग्रहीत' : 'Occupied'}
               </span>
               <VFButton
                 variant="outline"
@@ -2062,29 +1456,18 @@ function HostelManagementPage() {
           }
         >
           <div className="space-y-4 py-2 text-xs">
-            {/* Room Warden and Amenities Card */}
-            <div className="p-3 rounded-[4px] bg-[#181818] border border-border/80 space-y-1.5">
+            <div className="p-3 rounded-[4px] bg-[#181818] border border-border/80 space-y-1">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                  {isHindi ? 'ब्लॉक वार्डन' : 'Block Warden In-Charge'}
-                </span>
+                <span className="text-[10px] font-bold uppercase text-muted-foreground">Warden</span>
                 <span className="font-semibold text-foreground">{selectedRoom.warden}</span>
               </div>
-              <div className="flex items-center justify-between border-t border-border/60 pt-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                  {isHindi ? 'कमरे की सुविधाएं' : 'Amenities'}
-                </span>
+              <div className="flex items-center justify-between border-t border-border/60 pt-1">
+                <span className="text-[10px] font-bold uppercase text-muted-foreground">Amenities</span>
                 <span className="text-muted-foreground text-[11px]">{selectedRoom.amenities}</span>
               </div>
             </div>
 
-            {/* Bed-by-Bed Layout */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <Bed className="h-3.5 w-3.5 text-primary" />
-                {isHindi ? 'कमरावार व्यक्तिगत बेड आवंटन' : 'Bed-by-Bed Allocation & Resident Dossier'}
-              </h4>
-
+            <div className="space-y-2">
               {Array.from({ length: selectedRoom.totalBeds }).map((_, bedIndex) => {
                 const resident = selectedRoom.residents[bedIndex];
                 const isFormOpen = allocatingBedIndex === bedIndex;
@@ -2094,19 +1477,10 @@ function HostelManagementPage() {
                     key={bedIndex}
                     className="p-3 rounded-[4px] border border-border/80 bg-[#161616] space-y-2"
                   >
-                    <div className="flex items-center justify-between pb-1.5 border-b border-border/60">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono font-black text-foreground text-xs">
-                          Bed #{bedIndex + 1}
-                        </span>
-                        <VFBadge
-                          variant={resident ? 'primary' : 'success'}
-                          className="text-[9px] rounded-[2px]"
-                        >
-                          {resident ? (isHindi ? 'अधिग्रहीत' : 'Occupied') : (isHindi ? 'रिक्त' : 'Vacant')}
-                        </VFBadge>
-                      </div>
-
+                    <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                      <span className="font-mono font-bold text-foreground text-xs">
+                        Bed #{bedIndex + 1}
+                      </span>
                       {resident && (
                         <button
                           type="button"
@@ -2114,34 +1488,29 @@ function HostelManagementPage() {
                           className="px-2 py-0.5 rounded-[3px] bg-rose-950/30 hover:bg-rose-900/50 border border-rose-500/40 text-rose-400 text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
                         >
                           <Trash2 className="h-2.5 w-2.5" />
-                          <span>{isHindi ? 'बेड खाली करें' : 'Vacate Bed'}</span>
+                          <span>Vacate</span>
                         </button>
                       )}
                     </div>
 
                     {resident ? (
-                      <div className="grid grid-cols-2 gap-2 text-xs pt-1">
+                      <div className="grid grid-cols-2 gap-2 text-xs pt-0.5">
                         <div>
-                          <p className="text-[10px] text-muted-foreground">{isHindi ? 'छात्रावासी छात्र' : 'Student Name'}</p>
                           <p className="font-bold text-foreground">{resident.name}</p>
                           <p className="text-[10px] text-muted-foreground">{resident.classSection} · {resident.roll}</p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-muted-foreground">{isHindi ? 'अभिभावक संपर्क' : 'Guardian Contact'}</p>
                           <p className="font-mono text-foreground text-[11px] flex items-center gap-1">
                             <Phone className="h-2.5 w-2.5 text-muted-foreground" />
                             {resident.guardianPhone}
                           </p>
-                          <p className="text-[10px] text-primary font-medium mt-0.5">{resident.messPlan}</p>
                         </div>
                       </div>
                     ) : (
                       <div>
                         {!isFormOpen ? (
                           <div className="flex items-center justify-between py-1">
-                            <span className="text-[11px] text-emerald-400 font-medium">
-                              {isHindi ? 'यह बेड छात्र आवंटन के लिए तैयार है।' : 'Ready for student allocation.'}
-                            </span>
+                            <span className="text-[11px] text-emerald-400 font-medium">Vacant</span>
                             <VFButton
                               size="sm"
                               variant="outline"
@@ -2152,57 +1521,18 @@ function HostelManagementPage() {
                                 setNewStudentName('');
                               }}
                             >
-                              {isHindi ? '+ छात्र आवंटित करें' : '+ Allocate Student'}
+                              + Allocate
                             </VFButton>
                           </div>
                         ) : (
                           <div className="p-2.5 rounded-[3px] bg-[#1a1a1a] border border-border/80 space-y-2 mt-1">
-                            <p className="font-bold text-foreground text-[11px]">
-                              {isHindi ? 'Bed #' + (bedIndex + 1) + ' पर छात्र आवंटन' : `Allocate Student to Bed #${bedIndex + 1}`}
-                            </p>
-                            <div className="space-y-2">
-                              <div>
-                                <label className="block text-[10px] text-muted-foreground mb-0.5">
-                                  {isHindi ? 'छात्र का नाम' : 'Student Full Name'}
-                                </label>
-                                <input
-                                  type="text"
-                                  value={newStudentName}
-                                  onChange={(e) => setNewStudentName(e.target.value)}
-                                  placeholder="e.g. Aryan Malhotra"
-                                  className="w-full px-2.5 py-1 border border-border rounded-[3px] bg-[#141414] text-foreground text-xs focus:outline-none"
-                                />
-                              </div>
-                              <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                  <label className="block text-[10px] text-muted-foreground mb-0.5">
-                                    {isHindi ? 'कक्षा' : 'Class'}
-                                  </label>
-                                  <select
-                                    value={newClassSection}
-                                    onChange={(e) => setNewClassSection(e.target.value)}
-                                    className="w-full px-2 py-1 border border-border rounded-[3px] bg-[#141414] text-foreground text-xs focus:outline-none"
-                                  >
-                                    <option value="Class 9-A">Class 9-A</option>
-                                    <option value="Class 10-A">Class 10-A</option>
-                                    <option value="Class 11-Sci">Class 11-Sci</option>
-                                    <option value="Class 12-Sci">Class 12-Sci</option>
-                                  </select>
-                                </div>
-                                <div>
-                                  <label className="block text-[10px] text-muted-foreground mb-0.5">
-                                    {isHindi ? 'अभिभावक फोन' : 'Guardian Phone'}
-                                  </label>
-                                  <input
-                                    type="text"
-                                    value={newGuardianPhone}
-                                    onChange={(e) => setNewGuardianPhone(e.target.value)}
-                                    placeholder="+91 98111 00000"
-                                    className="w-full px-2 py-1 border border-border rounded-[3px] bg-[#141414] text-foreground text-xs focus:outline-none"
-                                  />
-                                </div>
-                              </div>
-                            </div>
+                            <input
+                              type="text"
+                              value={newStudentName}
+                              onChange={(e) => setNewStudentName(e.target.value)}
+                              placeholder="Student Full Name"
+                              className="w-full px-2.5 py-1 border border-border rounded-[3px] bg-[#141414] text-foreground text-xs focus:outline-none"
+                            />
                             <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/60">
                               <VFButton
                                 size="sm"
@@ -2210,14 +1540,14 @@ function HostelManagementPage() {
                                 className="h-6 px-2 text-[10px] rounded-[2px]"
                                 onClick={() => setAllocatingBedIndex(null)}
                               >
-                                {isHindi ? 'रद्द करें' : 'Cancel'}
+                                Cancel
                               </VFButton>
                               <VFButton
                                 size="sm"
                                 className="h-6 px-2 text-[10px] rounded-[2px] font-bold"
                                 onClick={() => handleConfirmBedAllocation(selectedRoom.roomNumber)}
                               >
-                                {isHindi ? 'आवंटन सेव करें' : 'Confirm Allocation'}
+                                Confirm
                               </VFButton>
                             </div>
                           </div>
@@ -2228,43 +1558,18 @@ function HostelManagementPage() {
                 );
               })}
             </div>
-
-            {/* Room Hygiene & Facilities Checklist */}
-            <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 space-y-1.5">
-              <h5 className="text-[11px] font-bold text-foreground">
-                {isHindi ? 'कमरा निरीक्षण व सुविधा ऑडिट' : 'Room Facilities & Inspection Status'}
-              </h5>
-              <div className="grid grid-cols-2 gap-1.5 text-[10px] text-muted-foreground pt-1">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                  <span>Air Conditioning Serviced</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                  <span>Washroom Cleaned Daily</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                  <span>Wi-Fi Access Strong</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                  <span>Fire Safety Compliant</span>
-                </div>
-              </div>
-            </div>
           </div>
         </VFDrawer>
       )}
 
       {/* ──────────────────────────────────────────────────────────────────────────
-          ISSUE OUTPASS / GRANT LEAVE MODAL DIALOG
+          ISSUE OUTPASS MODAL
           ────────────────────────────────────────────────────────────────────────── */}
       <VFDialog
         isOpen={isOutpassModalOpen}
         onClose={() => setIsOutpassModalOpen(false)}
-        title={isHindi ? 'छात्रावासी अवकाश / आउटपास जारी करें' : 'Grant Hostel Outpass & Leave Authorization'}
-        description={isHindi ? 'छात्र, कमरा, प्रयोजन, दिनों की संख्या व प्रस्थान/वापसी समय भरें' : 'Official warden sanctioned residential student pass with duration & guardian sync'}
+        title={isHindi ? 'नया आउटपास जारी करें' : 'Issue Campus Outpass'}
+        description={isHindi ? 'छात्र विवरण व अवकाश समय भरें' : 'Warden-authorized student gate pass'}
         className="max-w-md rounded-[4px]"
         footerActions={
           <div className="flex items-center justify-end gap-2 w-full">
@@ -2274,14 +1579,14 @@ function HostelManagementPage() {
               onClick={() => setIsOutpassModalOpen(false)}
               className="rounded-[3px]"
             >
-              {isHindi ? 'रद्द करें' : 'Cancel'}
+              Cancel
             </VFButton>
             <VFButton
               size="sm"
               onClick={handleIssueOutpass}
               className="rounded-[3px] font-bold"
             >
-              {isHindi ? 'अवकाश स्वीकृत करें' : 'Authorize & Grant Leave'}
+              Authorize Outpass
             </VFButton>
           </div>
         }
@@ -2289,9 +1594,7 @@ function HostelManagementPage() {
         <form onSubmit={handleIssueOutpass} className="space-y-3 py-1 text-xs">
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'छात्र का नाम' : 'Student Name'}
-              </label>
+              <label className="block text-muted-foreground font-semibold mb-1">Student Name</label>
               <input
                 type="text"
                 required
@@ -2302,9 +1605,7 @@ function HostelManagementPage() {
               />
             </div>
             <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'कमरा संख्या' : 'Room Number'}
-              </label>
+              <label className="block text-muted-foreground font-semibold mb-1">Room Number</label>
               <select
                 value={outpassRoom}
                 onChange={(e) => setOutpassRoom(e.target.value)}
@@ -2321,9 +1622,7 @@ function HostelManagementPage() {
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'अवकाश प्रयोजन' : 'Outpass Purpose'}
-              </label>
+              <label className="block text-muted-foreground font-semibold mb-1">Purpose</label>
               <select
                 value={outpassPurpose}
                 onChange={(e) => setOutpassPurpose(e.target.value as any)}
@@ -2337,9 +1636,7 @@ function HostelManagementPage() {
               </select>
             </div>
             <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'अवकाश अवधि (दिन)' : 'Days Granted'}
-              </label>
+              <label className="block text-muted-foreground font-semibold mb-1">Days Granted</label>
               <input
                 type="number"
                 min={1}
@@ -2353,9 +1650,7 @@ function HostelManagementPage() {
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'प्रस्थान समय' : 'Departure Time'}
-              </label>
+              <label className="block text-muted-foreground font-semibold mb-1">Departure</label>
               <input
                 type="text"
                 value={outpassLeave}
@@ -2364,9 +1659,7 @@ function HostelManagementPage() {
               />
             </div>
             <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'अपेक्षित वापसी' : 'Expected Return'}
-              </label>
+              <label className="block text-muted-foreground font-semibold mb-1">Return Time</label>
               <input
                 type="text"
                 value={outpassReturn}
@@ -2374,19 +1667,6 @@ function HostelManagementPage() {
                 className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none font-mono"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-muted-foreground font-semibold mb-1">
-              {isHindi ? 'अभिभावक संपर्क फोन' : 'Guardian Emergency Contact'}
-            </label>
-            <input
-              type="text"
-              value={outpassGuardianPhone}
-              onChange={(e) => setOutpassGuardianPhone(e.target.value)}
-              placeholder="+91 98111 00000"
-              className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none font-mono"
-            />
           </div>
         </form>
       </VFDialog>
