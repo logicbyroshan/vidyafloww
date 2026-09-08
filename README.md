@@ -35,9 +35,9 @@
 
 ---
 
-## 🏛️ Active V1 Application Modules
+## 🏛️ Active V1 Application Modules & Overview Dashboards
 
-VidyaFloww is organized into clean, isolated modules mapped to distinct, type-safe routes:
+VidyaFloww is organized into clean, isolated modules mapped to distinct, type-safe routes in `apps/web`:
 
 | # | Module | Route | Key Capabilities |
 |:---:|---|---|---|
@@ -47,13 +47,33 @@ VidyaFloww is organized into clean, isolated modules mapped to distinct, type-sa
 | **04** | **Attendance** | `/attendance` | Interactive daily roll call, one-click "Mark All Present", absence alerts, biometric gate telemetry |
 | **05** | **Academics** | `/academics` | Academic session master, subject catalog, classroom & section allocation matrix |
 | **06** | **Timetable** | `/timetable` | Weekly period schedule matrix, automated teacher proxy & substitution matcher, standardized bell timings |
-| **07** | **Teachers** | `/staff` | Faculty & educator master directory, department workload meters, class allocations |
-| **08** | **Homework** | `/homework` | Assignment master register, deadline monitoring, student submission grading queue |
-| **09** | **Examinations** | `/examinations` | Examination schedule setup, marks entry, term gradebooks, academic performance summaries |
-| **10** | **Fees & Payments** | `/fees` | Fee collection master register, quarterly dues tracking, WhatsApp payment reminder broadcasts |
-| **11** | **Notices** | `/notices` | Institutional notice board, circular publisher, multi-channel dispatch (Mobile App, SMS, WhatsApp) |
-| **12** | **Reports** | `/reports` | CBSE / RTE compliance audits, academic GPA analytics, 1-click Excel (.xlsx) & PDF exports |
-| **13** | **Settings** | `/settings` | School Identity & Custom Logo Studio, multi-campus directory, RBAC roles & permissions |
+| **07** | **Teachers** | `/teachers` | Faculty & educator master directory, department workload meters, class allocations |
+| **08** | **Teaching** | `/teaching` | Teacher daily workspace, 45-minute structured lesson planner, CBSE/NEP syllabus tracker |
+| **09** | **Homework** | `/homework` | 2-tab unified workflow: rich-text assignment authoring & all-class submission evaluation queue |
+| **10** | **Examinations** | `/examinations` | 3-tab examination suite: schedule datesheet, subject marks scheme, and lockable marks register |
+| **11** | **E-Class & Live Room** | `/e-class`, `/live-room` | WebRTC live virtual classroom studio, interactive screen share, schedule lecture vault |
+| **12** | **Fees & Payments** | `/fees` | Fee collection master register, quarterly dues tracking, WhatsApp reminder broadcasts |
+| **13** | **Salary & Payroll** | `/salary` | Staff compensation register, statutory deductions, monthly salary slips |
+| **14** | **Scholarships** | `/scholarships` | Merit & financial aid scholarship criteria, grant disbursement ledger |
+| **15** | **Complaints** | `/complaints` | Grievance redressal registry, SLA resolution tracking, departmental escalation queues |
+| **16** | **Surveys** | `/surveys` | Institutional feedback polls, participation meters, Net Promoter Score (NPS) analytics |
+| **17** | **Notices** | `/notices` | 2-tab institutional notice publisher: multi-step audience composer & circular archive |
+| **18** | **Reports & Statistics**| `/reports`, `/statistics`| CBSE / RTE compliance audits, academic GPA analytics, 1-click Excel (.xlsx) & PDF exports |
+| **19** | **Settings & Security** | `/settings`, `/security`| School branding studio, RBAC role permissions, multi-campus governance |
+
+---
+
+## 🌐 Decoupled Standalone Subsystems Ecosystem
+
+Specialized, operationally heavy subsystems are decoupled into dedicated standalone projects and subdomains. School administrators access **integrated, high-density overview dashboards** directly within the main portal, with 1-click seamless redirection to the full standalone engines:
+
+| Subsystem | Main Portal Route | Standalone Subdomain | Overview Dashboard Capabilities |
+|:---|:---|:---|:---|
+| **Design Lab** | `/design-lab` | `designlab.vidyafloww.com` | 24 template presets (CBSE marksheet, CR80 ID cards, certificates, admit cards), live preview modal, batch exports |
+| **Hostel Management** | `/hostel` | `hostel.vidyafloww.com` | Dormitory block & bed occupancy matrix, 3-course daily dining timetable, inside/outside headcounts, leave ledger |
+| **Transport & Telemetry** | `/transport` | `transport.vidyafloww.com` | Live GPS fleet telematics, bus speed monitors, driver quick-call links, vehicle fitness & compliance audit |
+| **HR & Biometrics** | `/hr-manage` | `hr.vidyafloww.com` | Support staff operations, 5 departmental shift rosters, live biometric turnstile punch feed, statutory payroll |
+| **E-Library & DRM** | `/elibrary` | `library.vidyafloww.com` | NCERT textbook digital library, DRM chapter preview modal, active reader telemetry, circulation ledger |
 
 ---
 
@@ -62,26 +82,46 @@ VidyaFloww is organized into clean, isolated modules mapped to distinct, type-sa
 ```text
 vidyafloww/
 ├── apps/
-│   ├── web/                   # React 19 + Vite + TanStack Router Web Portal
+│   ├── web/                   # React 19 + Vite + TanStack Router Web Command Portal (37 routes)
 │   │   ├── src/
 │   │   │   ├── layouts/       # Header (72px), Sidebar (72px header), AppShell
-│   │   │   ├── routes/        # TanStack Router type-safe route definitions
-│   │   │   ├── stores/        # Zustand global store with localStorage persistence
-│   │   │   └── styles/        # Tailwind design tokens & globals.css (16px base)
-│   └── backend/               # Django 5 REST API microservice
+│   │   │   ├── routes/        # TanStack Router type-safe route definitions & overview dashboards
+│   │   │   ├── stores/        # Zustand global persistent store (localStorage)
+│   │   │   └── styles/        # Tailwind design tokens, Mukta font & sharp border radii
+│   ├── backend/               # Django 5.1 REST API + Celery 5.4 + Channels 4.1 backend
+│   ├── landing/               # Institutional marketing and discovery site
+│   ├── desktop/               # Electron desktop shell wrapper
+│   └── mobile/                # Expo / React Native mobile shell
 ├── packages/
-│   ├── ui/                    # @vidyafloww/ui design system primitives
-│   │   ├── VFStatCard.tsx     # Balanced metric card with indicator badges
-│   │   ├── VFCard.tsx         # Flat card with crisp rounded-lg borders
-│   │   ├── VFTabs.tsx         # Open tabs with animated bottom underline indicator
-│   │   ├── VFTable.tsx        # High-performance data table with search & column filters
-│   │   ├── VFButton.tsx       # Standardized buttons with rounded-md/lg styling
-│   │   └── VFBadge.tsx        # Status pill tags
-│   ├── constants/             # Navigation configurations & metadata
-│   ├── types/                 # TypeScript interfaces
-│   └── themes/                # Color palettes & tokens
-└── README.md                  # Project documentation
+│   ├── ui/                    # @vidyafloww/ui standardized primitives (VFCard, VFTable, VFTabs, etc.)
+│   ├── constants/             # Navigation configurations, module registries & metadata
+│   ├── types/                 # Shared TypeScript interfaces
+│   ├── api/                   # Axios API client with standardized error interceptors
+│   ├── themes/                # Color palettes & tokens
+│   └── validation/            # Shared Zod validation schemas
+├── docs/                      # Technical specification documents (01-13)
+└── README.md                  # Project overview documentation
 ```
+
+---
+
+## ⚙️ Backend Architecture & Readiness Status
+
+The backend (`apps/backend`) is designed as a modular Django service layer configured for enterprise scale:
+
+* **Technology Foundation**:
+  * **Runtime**: Python 3.12+
+  * **Framework**: Django 5.1, Django REST Framework (DRF) 3.15
+  * **Stateless Auth**: SimpleJWT (15-min access tokens + HTTP-only refresh cookies)
+  * **Real-time WebSockets**: Django Channels 4.1 with Redis channel layer
+  * **Async Task Processing**: Celery 5.4 with Celery Beat & Celery Results backend
+  * **API Documentation**: OpenAPI 3.0 via `drf-spectacular` (Swagger & Redoc)
+  * **Database**: PostgreSQL (`psycopg3`) configured for production; local `db.sqlite3`
+* **Development State**:
+  * **System Health**: 100% verified — `python apps/backend/manage.py check` reports 0 issues.
+  * **App Registrations**: 56 local apps registered across `core`, `platform_services`, `modules`, `ai`, and `integrations`.
+  * **Database Migrations**: Default Django core migrations applied (`admin`, `auth`, `contenttypes`, `sessions`, `django_celery_beat`, `django_celery_results`).
+  * **Implementation Reality**: Core scaffolding and settings are complete. 4 models are drafted (`ChartOfAccount`, `CertificateTemplate`, `TimetableSlot`, `CounsellingRecord`). Custom business serializers, views, and domain endpoints are ~5-10% developed. The web portal currently operates reliably on client-side Zustand stores and local simulation fixtures.
 
 ---
 
@@ -92,6 +132,8 @@ vidyafloww/
 Ensure you have the following installed:
 - **Node.js**: `v20.x` or `v22.x` ([nodejs.org](https://nodejs.org/))
 - **pnpm**: `v9.x` (`npm install -g pnpm`)
+- **Python**: `v3.12+` (for backend services)
+- **GitHub CLI**: `gh` command-line tool
 
 ---
 
@@ -122,33 +164,50 @@ pnpm --filter @vidyafloww/web dev
 
 ---
 
-### Step 4: Validate TypeScript Types & Build
+### Step 4: Validate Code & Types
 
 ```bash
-# Validate type correctness across all packages
+# Validate type correctness across web portal
 pnpm --filter @vidyafloww/web type-check
 
-# Compile production bundle
-pnpm --filter @vidyafloww/web build
+# Run web unit tests (Vitest)
+pnpm --filter @vidyafloww/web test
+
+# Verify Django backend integrity
+python apps/backend/manage.py check
 ```
+
+---
+
+## 🌿 Git & Pull Request Workflow (Mandatory)
+
+Per `AGENTS.md` Rule 8, **never commit or push directly to `main`**:
+
+1. **Branch**: Create dedicated feature/fix branch:
+   ```bash
+   git checkout -b feature/<short-description>
+   ```
+2. **Verify & Audit**: Run `type-check`, `test`, and inspect `git status` to ensure **ZERO credentials, passwords, or `.env` files** are staged.
+3. **Commit & Push**:
+   ```bash
+   git add <modified-files>
+   git commit -m "feat(<scope>): concise summary"
+   git push -u origin feature/<short-description>
+   ```
+4. **Generate PR via GitHub CLI**:
+   ```bash
+   gh pr create --title "feat(<scope>): summary" --body "Detailed change description"
+   ```
 
 ---
 
 ## 🔐 Authentication & API Documentation
 
-VidyaFloww features a standalone, enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
+VidyaFloww features an enterprise authentication architecture adhering to CBSE cloud data compliance and OpenAPI 3.1 specifications.
 
 - 📘 **Complete REST API Specification**: [`API_DOCUMENTATION.md`](./API_DOCUMENTATION.md)
-  - **Endpoints Covered**:
-    - `POST /api/v1/auth/login` (Standard credentials login)
-    - `POST /api/v1/auth/google` (Google Workspace SSO)
-    - `POST /api/v1/auth/register` (4-step multi-role registration)
-    - `POST /api/v1/auth/otp/verify` (6-digit OTP verification)
-    - `POST /api/v1/auth/password/reset` (Password recovery)
-    - `POST /api/v1/auth/username/lookup` (User ID retrieval)
-    - `GET /api/v1/auth/me` (Authenticated profile & permission scopes)
-    - `POST /api/v1/auth/refresh` (JWT session renewal)
-  - **Security Standards**: RFC 7807 Error Responses, 15-minute JWT Access Tokens, 7-day HTTP-Only Refresh Cookies, Rate Limiting, and CBSE Compliance.
+  - **Endpoints Covered**: Auth login, Google Workspace SSO, multi-role registration, OTP verification, password reset, JWT session renewal, and role-based scope verification.
+  - **Backend Implementation Matrix**: See Section 6 in `API_DOCUMENTATION.md` for live backend readiness.
 
 ---
 

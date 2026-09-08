@@ -6,6 +6,44 @@ Concise record of verified milestones and structural changes reconstructed from 
 
 ## [Unreleased / Active] — September 2026
 
+### Architectural Decoupling, Overview Dashboards & Backend Audit (2026-09-08)
+
+#### Mandatory Branching & GitHub CLI PR Workflow (PR #1)
+* **Added Rule 8 & Section 5 to `AGENTS.md`**: Enforced strict prohibition against direct commits or pushes to `main`. Every new task or fix must be developed on an isolated branch (`feature/*` or `fix/*`), tested, audited for zero credentials, pushed to `origin`, and proposed via GitHub CLI (`gh pr create`).
+* **Logged ADR-011 in `.agent/DECISIONS.md`**.
+
+#### Hostel Management 4-Tab Workflow Refactor (PR #2)
+* **Refactored `apps/web/src/routes/hostel.tsx`**: Replaced fragmented views with a structured 4-tab institutional workflow:
+  * **Tab 1 "Rooms & Beds"**: Dormitory block selector, floor breakdown, room status grid, bed occupancy badges.
+  * **Tab 2 "7-Day Food Timetable"**: Weekly nutrition timetable with 3 daily courses (Breakfast, Lunch, Dinner), calorie markers, and vegetarian/allergen tags.
+  * **Tab 3 "Leave Ledger"**: Student outpass and leave request register with days granted, parent approvals, and status badges.
+  * **Tab 4 "Night Attendance"**: Bed-to-bed night roll call register with Present / Absent / Leave status and biometric gate sync.
+
+#### Subsystem Decoupling & Standalone Repository Architecture (PR #3 & #4)
+* **Decoupled 5 heavy operational modules**:
+  * `Design-Lab` (Target: `designlab.vidyafloww.com`)
+  * `Hostel Management` (Target: `hostel.vidyafloww.com`)
+  * `Transport Management` (Target: `transport.vidyafloww.com`)
+  * `HR Management` (Target: `hr.vidyafloww.com`)
+  * `Library Management` (Target: `library.vidyafloww.com`)
+* **Scaffolded full standalone repository infrastructure** for each subsystem with dedicated Vite configs, Tailwind design systems, Mukta font typography, sharp border radii, package scripts, `.husky`, `turbo.json`, and developer documentation. Decoupled folders were then cleanly separated into their own dedicated repositories.
+
+#### In-Portal Integrated Overview Dashboards (PR #5)
+* **Preserved integrated command center experience in `apps/web`**: Rather than generic launchpad placeholders, designed 5 high-density, interactive single-page overview dashboards matching the core ERP look and feel:
+  * **`/design-lab`**: 24 document template presets (CBSE marksheets, CR80 student ID cards, sports certificates, admit cards), live template preview modal, recent export batches, and jump link to `designlab.vidyafloww.com`.
+  * **`/hostel`**: Dormitory room occupancy matrix, real-time headcounts (156 Inside, 24 Outside, 4 Unaccounted), today's 3-course meal cards (Breakfast, Lunch, Dinner), active leave outpasses, and jump link to `hostel.vidyafloww.com`.
+  * **`/transport`**: Live GPS route telematics cards with speed indicators, arrival ETAs, driver quick call action buttons, vehicle compliance audit ledger (fitness, insurance, pollution), and jump link to `transport.vidyafloww.com`.
+  * **`/hr-manage`**: Support staff operational stats, 5 departmental shift rosters (Housekeeping, Security, Transport, Dining, Maintenance), live biometric turnstile punch feed, statutory payroll breakdown, and jump link to `hr.vidyafloww.com`.
+  * **`/elibrary`**: NCERT digital curriculum catalog, protected DRM chapter preview modal, active reader telemetry, circulation ledger, and jump link to `library.vidyafloww.com`.
+
+#### Backend Architecture Deep Audit & Documentation Synchronization (PR #6)
+* **Executed deep audit of `apps/backend`**:
+  * Analyzed Django 5.1, DRF 3.15, SimpleJWT, Celery 5.4, Channels 4.1, and PostgreSQL/Redis stack.
+  * Ran `manage.py check` (0 system issues identified).
+  * Evaluated migration state (`showmigrations` confirms default Django migrations applied; 0 custom app migrations).
+  * Documented actual implementation level: 100% infrastructure/scaffold readiness; 4 models drafted; 0 custom views/serializers; ~5-10% domain completion.
+* **Updated project documentation suite**: Synchronized `.agent/CONTEXT.md`, `.agent/DECISIONS.md` (ADR-012), `.agent/CHANGELOG.md`, `README.md`, `API_DOCUMENTATION.md`, and `docs/`.
+
 ### UI Redesigns & Module Completions (September 2026 Sprint)
 
 #### Notices Module (`/notices`) — Tabbed Wizard Redesign

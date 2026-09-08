@@ -9,18 +9,27 @@
 ## 2. Technology Stack & Topology
 
 * **Monorepo Management**: TurboRepo 2.x + pnpm 9.x workspaces (`pnpm-workspace.yaml`).
-* **Frontend Web Portal (`apps/web`)**:
+* **Frontend Web Command Portal (`apps/web`)**:
   * React 19 + TypeScript 5.6 + Vite 5.4.
-  * TanStack Router (file-based routing via `routeTree.gen.ts`).
+  * TanStack Router (file-based routing via `routeTree.gen.ts` — 37 active routes).
   * TanStack Query 5.x + Zustand 5.x with `localStorage` persistence.
   * Tailwind CSS 3.4 + `@tailwindcss/forms` + `@tailwindcss/typography`.
   * Radix UI primitives (`dialog`, `popover`, `select`, `tabs`, `tooltip`).
   * Framer Motion 12.x/13.x (page transitions, drawers, springs) + Lenis (smooth scrolling).
   * Lucide React icons + Sonner toast notifications.
   * Typography: **Mukta** — a contemporary humanist sans-serif natively covering Latin and Devanagari script. Loaded via Google Fonts. The single `--ui-font` CSS token is used for both English and Hindi locales.
+* **Decoupled Standalone Subsystem Ecosystem**:
+  * Heavy, operation-intensive modules are decoupled into dedicated standalone repositories and subdomains, while preserving high-density, real-time overview dashboards within the main portal:
+    * **Design Lab**: `designlab.vidyafloww.com` (CBSE marksheet, CR80 ID cards, certificate & admit card vector generator)
+    * **Hostel Management**: `hostel.vidyafloww.com` (Dormitory beds, meal dining timetables, leave ledger, night biometric roll-call)
+    * **Transport Management**: `transport.vidyafloww.com` (Fleet GPS telematics, driver compliance audit, route optimization)
+    * **HR & Biometrics**: `hr.vidyafloww.com` (Support staff rosters, biometric turnstile punch logs, statutory payroll)
+    * **E-Library Management**: `library.vidyafloww.com` (NCERT textbook catalog, protected DRM reading reader, circulation ledger)
 * **Backend API (`apps/backend`)**:
-  * Python 3.11+ / 3.13, Django 5.2.x, Django REST Framework (DRF).
-  * Django Channels (WebSockets), Celery (async task processing), Redis (cache/MQ), PostgreSQL / SQLite.
+  * Python 3.12+ (in `.venv`), Django 5.1.x, Django REST Framework (DRF) 3.15.x.
+  * SimpleJWT (token-based stateless auth), Django Channels 4.1.x (WebSockets ASGI), Celery 5.4.x (async tasks & periodic beat), Redis (cache/MQ).
+  * Database: PostgreSQL (`psycopg3`) configured for production; local development uses SQLite (`db.sqlite3`).
+  * Current Development Status: 100% infrastructure, settings, middleware, and app registration verified (`python manage.py check` passes with 0 errors). 56 local apps registered. Domain models and views are currently scaffolded (~5-10% implemented). The web frontend currently operates on client-side Zustand state stores and simulation fixtures.
 * **Shared Packages (`packages/*`)**:
   * `@vidyafloww/ui`: Standardized primitives (`VFCard`, `VFTable`, `VFDataTable`, `VFStatCard`, `VFTabs`, `VFButton`, `VFBadge`, `VFDialog`, `VFDrawer`, `VFCharts`, etc.).
   * `@vidyafloww/types`: Shared domain interfaces and schemas.
@@ -42,11 +51,15 @@
   * Layout shell: `apps/web/src/layouts/AppShell.tsx` — wraps all authenticated routes with `Sidebar`, `Header`, `CommandPalette`, `NotificationsPanel`, and `ToastContainer`.
   * Data state is currently managed client-side through Zustand stores (`globalStore.ts`) backed by `localStorage` and localized mock fixtures.
   * Sub-navigation uses `VFTabs` (from `@vidyafloww/ui`) with auto-centering horizontal scrolling and zero vertical scroll nesting.
+* **Decoupled Subsystem Architecture & In-Portal Overview Dashboards**:
+  * In the main web portal, `/design-lab`, `/hostel`, `/transport`, `/hr-manage`, and `/elibrary` serve as **instant, high-density overview dashboards** (telemetry stats, quick matrices, active outpasses, meal schedules, vehicle audits, biometric turnstile feeds, and document preview modals).
+  * Each dashboard includes a prominent launch button ("Open Standalone Portal", "Open Studio Engine", "Open Fleet Console", etc.) providing seamless redirection to the dedicated subdomain with contextual school parameters.
 * **Backend Layering Specification**:
-  * `apps/backend/core/`: Foundation services (`accounts`, `authentication`, `campuses`, `organizations`, `permissions`, `users`).
-  * `apps/backend/platform_services/`: Cross-cutting engines (`notifications`, `audit`, `activity`, `reports`, `storage`, `workflows`).
-  * `apps/backend/modules/`: 24 business domain apps (`students`, `academics`, `admissions`, `attendance`, `examinations`, `fees`, `hr`, etc.).
-  * `apps/backend/ai/`: LLM providers, assistants, and OCR pipeline.
+  * `apps/backend/core/` (7 apps): Foundation services (`accounts`, `authentication`, `campuses`, `organizations`, `permissions`, `sessions`, `users`).
+  * `apps/backend/platform_services/` (12 apps): Cross-cutting engines (`notifications`, `storage`, `audit`, `activity`, `imports`, `exports`, `reports`, `search`, `settings`, `workflows`, `forms`, `dashboard`).
+  * `apps/backend/modules/` (23 apps): Business domain apps (`admissions`, `students`, `academics`, `attendance`, `examinations`, `homework`, `lms`, `finance`, `hr`, `library`, `hostel`, `transport`, `communication`, `documents`, `inventory`, `medical`, `events`, `discipline`, `analytics`, `timetable`, `accounting`, `certificates`, `welfare`).
+  * `apps/backend/ai/` (5 apps): LLM providers, assistants, prompts, OCR, predictions.
+  * `apps/backend/integrations/` (9 apps): Payment, SMS, email, WhatsApp, biometric, GPS, Google, Microsoft, webhooks.
   * Service layer pattern: `View` → `Serializer` → `Selector` (read) / `Service` (write) → `Model` → `Task`.
 
 ---
@@ -82,7 +95,7 @@ src/
 │   └── i18n.ts                   # 60KB bilingual translation dictionary (EN + HI keys for all modules)
 ├── pages/
 │   └── ErrorPages.tsx            # Error boundary pages (future integration — not yet imported in router)
-├── routes/                       # TanStack Router file-based pages (28 routes)
+├── routes/                       # TanStack Router file-based pages (37 active routes)
 │   ├── __root.tsx                # Root route: renders AppShell + 404 not-found handler
 │   ├── index.tsx                 # Dashboard (/) — KPI cards, quick shortcuts, attendance overview
 │   ├── dashboard.tsx             # /dashboard alias → re-exports DashboardPage from index.tsx
@@ -90,12 +103,18 @@ src/
 │   ├── admissions.tsx            # Admissions pipeline and enquiry management
 │   ├── attendance.tsx            # Daily/period attendance with biometric integration
 │   ├── audit.tsx                 # System audit log viewer
-│   ├── elibrary.tsx              # Digital library and e-book resources
+│   ├── complaints.tsx            # Grievance redressal and ticket resolution SLA queue
+│   ├── design-lab.tsx            # Design Lab Overview & Template Studio (redirects to designlab.vidyafloww.com)
+│   ├── e-class.tsx               # Virtual live classroom scheduler and recordings archive
+│   ├── elibrary.tsx              # E-Library Overview & DRM Textbook Reader (redirects to library.vidyafloww.com)
 │   ├── examinations.tsx          # 3-tab: Timetable / Marks Scheme (editable) / Marks Register (lockable)
 │   ├── fees.tsx                  # Fee collection, challan generation, ledger
 │   ├── homework.tsx              # 2-tab: Assign (rich-text editor) / Review (all-class submission tracker)
+│   ├── hostel.tsx                # Hostel Overview & Dormitory Matrix (redirects to hostel.vidyafloww.com)
+│   ├── hr-manage.tsx             # HR Overview & Biometric Turnstile Telemetry (redirects to hr.vidyafloww.com)
 │   ├── learning.tsx              # LMS learning content viewer
 │   ├── license.tsx               # License and subscription details
+│   ├── live-room.tsx             # WebRTC interactive live classroom video studio
 │   ├── lms.tsx                   # LMS course management
 │   ├── login.tsx                 # Authentication page (no AppShell wrapper)
 │   ├── notices.tsx               # 2-tab notice board: send (wizard) / view
@@ -109,8 +128,11 @@ src/
 │   ├── shortcuts.tsx             # Dashboard shortcut configurator
 │   ├── statistics.tsx            # Platform-wide statistics and charts
 │   ├── students.tsx              # Student roster, 360° dossier, academic records
+│   ├── surveys.tsx               # Institutional survey feedback and NPS sentiment analytics
 │   ├── teachers.tsx              # Teacher management, schedules, and profiles
-│   └── timetable.tsx             # Weekly timetable grid (CSS Grid layout)
+│   ├── teaching.tsx              # Faculty teaching dashboard, lesson planner, and syllabus tracker
+│   ├── timetable.tsx             # Weekly timetable grid (CSS Grid layout)
+│   └── transport.tsx             # Transport Overview & Live Fleet Telemetry (redirects to transport.vidyafloww.com)
 ├── services/                     # SCAFFOLD — reserved for future API service layer
 ├── stores/
 │   └── globalStore.ts            # Zustand persistent store: theme, language, school profile, notifications, dashboard config
@@ -145,8 +167,8 @@ src/
    * Avoid deep nested card boxes; prefer flat, border-divided lists (`divide-y divide-border`) on `VFCard`.
 8. **Globally Dark Mode**:
    * Theme is permanently dark. `initTheme()` in `globalStore.ts` forces `.dark` class on `<html>`. No light mode toggle exists.
-9. **No Push Without Explicit Command**:
-   * Always commit locally (`git commit`). Never run `git push` unless the user explicitly commands it.
+9. **Mandatory Branching & GitHub CLI PR Workflow** (strict — see AGENTS.md Rule 8):
+   * NEVER commit or push directly to `main`. Every change must be developed on an isolated branch (`fix/*` or `feature/*`), verified with tests and secrets audit, pushed to `origin`, and submitted via `gh pr create`. Direct commits to `main` are strictly prohibited.
 
 ---
 
@@ -173,46 +195,71 @@ pnpm type-check
 
 ## 7. Current Implementation Status
 
-| Module | Route | Status |
-| :--- | :--- | :---: |
-| Dashboard | `/` | ✅ Complete |
-| Students | `/students` | ✅ Complete |
-| Admissions | `/admissions` | ✅ Complete |
-| Attendance | `/attendance` | ✅ Complete |
-| Academics | `/academics` | ✅ Complete |
-| Timetable | `/timetable` | ✅ Complete |
-| Teachers | `/teachers` | ✅ Complete |
-| Homework | `/homework` | ✅ Complete |
-| Examinations | `/examinations` | ✅ Complete |
-| Notices | `/notices` | ✅ Complete |
-| Fees | `/fees` | ✅ Complete |
-| Salary | `/salary` | ✅ Complete |
-| Scholarships | `/scholarships` | ✅ Complete |
-| E-Library | `/elibrary` | ✅ Complete |
-| Statistics | `/statistics` | ✅ Complete |
-| Reports | `/reports` | ✅ Complete |
-| Settings | `/settings` | ✅ Complete |
-| Security | `/security` | ✅ Complete |
-| Audit Log | `/audit` | ✅ Complete |
-| Parent Portal | `/portal` | ✅ Complete |
-| LMS | `/lms` | ✅ Complete |
-| Learning | `/learning` | ✅ Complete |
-| Resources | `/resources` | ✅ Complete |
-| License | `/license` | ✅ Complete |
-| Shortcuts | `/shortcuts` | ✅ Complete |
-| Login | `/login` | ✅ Complete |
-| **Backend API** | — | 🔶 Scaffolded (stubs) |
-| **API Client** | — | 🔶 Scaffolded |
-| **Desktop App** | — | 🔶 Scaffolded |
-| **Mobile App** | — | 🔶 Scaffolded |
+### Core ERP Web Portal (`apps/web`)
+
+| Module | Route | Status | Description |
+| :--- | :--- | :---: | :--- |
+| Dashboard | `/` | ✅ Complete | Real-time KPI telemetry, attendance radar, quick shortcuts |
+| Students | `/students` | ✅ Complete | Master student directory, 360° dossiers, batch promotions |
+| Admissions | `/admissions` | ✅ Complete | 4-stage conversion CRM, OCR verification, merit scoring |
+| Attendance | `/attendance` | ✅ Complete | Daily roll-call, biometric sync, absence alerts |
+| Academics | `/academics` | ✅ Complete | Curriculum, syllabus progress, classroom allocations |
+| Timetable | `/timetable` | ✅ Complete | CSS Grid period schedule, teacher proxy & substitution matcher |
+| Teachers | `/teachers` | ✅ Complete | Faculty roster, workload meters, class allocations |
+| Teaching | `/teaching` | ✅ Complete | Faculty planner, 45-min lesson plans, syllabus tracker |
+| Homework | `/homework` | ✅ Complete | 2-tab unified workflow: Rich-text Assign / All-class Review |
+| Examinations | `/examinations` | ✅ Complete | 3-tab workflow: Timetable / Marks Scheme / Marks Register |
+| E-Class | `/e-class` | ✅ Complete | Live classroom scheduler, WebRTC launcher, recordings vault |
+| Live Room | `/live-room` | ✅ Complete | Interactive WebRTC video studio with screen sharing |
+| Notices | `/notices` | ✅ Complete | 2-tab workflow: Multi-step Compose wizard / Notice archive |
+| Fees | `/fees` | ✅ Complete | Fee master register, challan generation, dues tracking |
+| Salary | `/salary` | ✅ Complete | Staff payroll, statutory allowances, payslip generation |
+| Scholarships | `/scholarships` | ✅ Complete | Scholarship criteria, grant allocations, disbursement ledgers |
+| Complaints | `/complaints` | ✅ Complete | Grievance redressal registry, priority SLA queue, resolution logs |
+| Surveys | `/surveys` | ✅ Complete | Institutional polls, participation progress, NPS sentiment |
+| Statistics | `/statistics` | ✅ Complete | Platform-wide BI analytics and institutional charts |
+| Reports | `/reports` | ✅ Complete | CBSE/RTE compliance audits, GPA analytics, Excel/PDF exports |
+| Settings | `/settings` | ✅ Complete | School branding, session years, institutional metadata |
+| Security | `/security` | ✅ Complete | RBAC role definitions, permission matrix, access logs |
+| Audit Log | `/audit` | ✅ Complete | Immutable system audit log viewer |
+| Parent Portal | `/portal` | ✅ Complete | Parent/guardian view: student academic and fee summary |
+| LMS | `/lms` | ✅ Complete | Course management and learning modules |
+| Learning | `/learning` | ✅ Complete | Interactive student learning viewer |
+| Resources | `/resources` | ✅ Complete | Institutional file and document vault |
+| License | `/license` | ✅ Complete | Enterprise subscription & tier governance |
+| Shortcuts | `/shortcuts` | ✅ Complete | Dashboard quick navigation configurator |
+| Login | `/login` | ✅ Complete | Multi-role authentication interface |
+
+### Decoupled Subsystem Overview Dashboards (Integrated in `apps/web`)
+
+| Subsystem | In-Portal Overview Route | Standalone Subdomain / Repo | Capabilities in Web Portal |
+| :--- | :--- | :--- | :--- |
+| **Design Lab** | `/design-lab` | `designlab.vidyafloww.com` | 24 template presets, live preview modal, recent export batches, jump link |
+| **Hostel Management** | `/hostel` | `hostel.vidyafloww.com` | Dormitory matrix, 3-course dining menu, inside/outside headcounts, outpass ledger |
+| **Transport Management** | `/transport` | `transport.vidyafloww.com` | Live GPS fleet telematics, arrival ETAs, driver contacts, vehicle compliance audit |
+| **HR & Biometrics** | `/hr-manage` | `hr.vidyafloww.com` | Support staff stats, 5 departmental rosters, live biometric turnstile feed, payroll |
+| **E-Library Management** | `/elibrary` | `library.vidyafloww.com` | NCERT catalog, DRM protected chapter preview modal, reader counts, circulation ledger |
+
+### Platform Architecture & Backend Readiness
+
+| Subsystem | Readiness | Status & Technical Findings |
+| :--- | :---: | :--- |
+| **Backend Infrastructure** | 🟢 100% | Django 5.1, DRF 3.15, SimpleJWT, Celery 5.4, Channels 4.1. `manage.py check` passes with 0 issues. |
+| **Backend Domain Logic** | 🔴 5-10% | 56 local apps registered in `base.py`. Only 4 models drafted. Zero views/serializers. `api/v1/` routes commented out in `urls.py`. |
+| **Database Migrations** | 🟡 15% | `db.sqlite3` contains default Django core migrations (`auth`, `admin`, `sessions`, `django_celery_beat`, `django_celery_results`). No custom app migrations exist yet. |
+| **Frontend State** | 🟢 100% | Frontend runs completely and interactively on client-side Zustand stores and simulation fixtures. |
+| **API Client (`@vidyafloww/api`)** | 🟡 40% | Axios client scaffolded with error interceptors; pending integration with live Django endpoints. |
+| **Desktop App (`apps/desktop`)** | ⚪ 20% | Electron container scaffolded. |
+| **Mobile App (`apps/mobile`)** | ⚪ 20% | Expo/React Native shell scaffolded. |
 
 ---
 
 ## 8. Known Limitations & Active Integration Gaps
 
-* **Client/Server Coupling**: The web portal currently relies on client-side state and mock fixtures. Integration with the Django REST API via `@vidyafloww/api` is pending backend domain model implementation.
-* **Tenant Middleware**: Multi-tenancy database isolation middleware is planned but not yet active in Django middleware pipelines.
-* **Authentication**: Web has complete UI forms (`/login`), but live JWT session exchange with the backend is not yet plugged into production storage.
+* **Client/Server Coupling (Backend Gap)**: The web portal currently functions 100% on client-side state and mock simulation data. Django REST API integration via `@vidyafloww/api` is pending backend domain models, serializers, and views implementation.
+* **Backend Custom App Models & Migrations**: While `apps/backend/config/settings/base.py` cleanly registers 56 local apps across `core`, `platform_services`, `modules`, `ai`, and `integrations`, only 4 models are currently written (`ChartOfAccount`, `CertificateTemplate`, `TimetableSlot`, `CounsellingRecord`). The remaining apps contain skeleton files (`# TODO: Implement ...`).
+* **Backend URL Routing**: In `apps/backend/config/urls.py`, all `api/v1/` routes are commented out pending app-level URLconf and viewset creation.
+* **Tenant Middleware**: Multi-tenancy database isolation middleware (`TenantMiddleware` and `TenantQuerySet`) is designed in architecture documentation but not yet implemented in `apps/backend/common/`.
+* **Authentication Linkage**: Web has complete UI forms (`/login`), but live JWT exchange with Django's `rest_framework_simplejwt` requires mounting active auth endpoints and switching Zustand store from mock authentication.
 * **`AIChatDrawer.tsx`**: Component exists in `src/components/` but is not yet wired into `AppShell.tsx`. Pending AI assistant integration milestone.
 * **`ErrorPages.tsx`**: Exists in `src/pages/` as a future React Error Boundary; not yet mounted in the router tree.
-* **`features/` scaffold**: All subdirectories under `src/features/` are empty scaffolds preserved for the planned feature-sliced refactor of domain logic.

@@ -317,3 +317,52 @@ All errors conform to RFC 7807 (Problem Details for HTTP APIs):
 - **Data Encryption**: AES-256 at rest, TLS 1.3 in transit.
 - **Audit Logs**: Every authentication event and privilege escalation is immutably logged with IP, Device Fingerprint, and Geo-coordinates.
 - **CBSE / NEP 2020 Compliance**: Data sovereignty within Indian cloud boundaries (MeitY-empaneled data centers).
+
+---
+
+## 6. Backend Implementation Status & Migration Roadmap
+
+### 6.1 Backend Architecture Overview
+
+The backend microservice is implemented in `apps/backend`:
+- **Framework**: Django 5.1 with Django REST Framework (DRF) 3.15
+- **Authentication**: `rest_framework_simplejwt`
+- **Asynchronous Processing**: Celery 5.4 with Redis message broker and `django-celery-beat` scheduler
+- **Real-Time WebSockets**: Django Channels 4.1 with Redis channel layers
+- **OpenAPI / Schema Generation**: `drf-spectacular` (`/api/schema/`, `/api/docs/swagger/`, `/api/docs/redoc/`)
+- **Database Engine**: PostgreSQL in production (`psycopg3`), SQLite for local development (`db.sqlite3`)
+
+### 6.2 Implementation Reality Matrix
+
+| Layer / Domain | Specification | Django Backend Status (`apps/backend`) | Web Portal Status (`apps/web`) |
+|:---|:---|:---|:---|
+| **System Integrity** | Zero check errors | 🟢 Passing (`manage.py check` reports 0 issues) | 🟢 TypeScript clean (0 errors) |
+| **Settings & Middleware** | JWT, CORS, Redis, Logging | 🟢 100% Configured in `config/settings/base.py` | 🟢 Configured |
+| **App Registration** | 56 local apps | 🟢 Registered in `INSTALLED_APPS` | 🟢 37 routes active |
+| **Auth Endpoints** (`/api/v1/auth/*`) | JWT Login, Refresh, SSO | 🟡 Settings configured; endpoints commented out in `urls.py` | 🟢 UI forms complete; mock auth state in Zustand |
+| **Database Migrations** | Custom business tables | 🟡 Default Django migrations applied (`auth`, `admin`, `sessions`, `celery`); 0 custom app migrations | 🟢 Local schema in Zustand/localStorage |
+| **Domain Models** | 24 business modules | 🔴 4 models drafted (`ChartOfAccount`, `CertificateTemplate`, `TimetableSlot`, `CounsellingRecord`); remainder stubbed | 🟢 Fully simulated in UI |
+| **Serializers & Views** | DRF ModelSerializers & ViewSets | 🔴 Stubs with `# TODO: Implement ...` | 🟢 Fully functional UI views |
+| **Realtime WebSockets** | Channels consumers | 🟡 ASGI routing configured; consumers stubbed | 🟢 Simulated live feeds |
+
+### 6.3 Client-to-Backend Migration Roadmap
+
+1. **Step 1: Core Authentication & User Model**:
+   - Create custom user model in `core.accounts.models.User` (subclass `AbstractUser` with role, tenant foreign key, phone, Devanagari display name).
+   - Activate `AUTH_USER_MODEL = "core.accounts.User"` and generate initial core migrations.
+   - Implement `core.authentication.views` with SimpleJWT token pair serializer.
+   - Uncomment `path("api/v1/auth/", include("core.authentication.urls"))` in `config/urls.py`.
+2. **Step 2: Multi-Tenancy Middleware**:
+   - Implement `TenantMiddleware` in `common.middleware` to resolve tenant from JWT claims or subdomain header (`X-Tenant-ID`).
+   - Implement `TenantModel` base class in `common.models` with automatic query isolation.
+3. **Step 3: Primary ERP Domain Endpoints**:
+   - Implement Models, Serializers, Selectors, and ViewSets for high-frequency modules:
+     - Students (`modules.students`)
+     - Admissions (`modules.admissions`)
+     - Attendance (`modules.attendance`)
+     - Fees & Accounting (`modules.fees`, `modules.accounting`)
+     - Academics & Timetable (`modules.academics`, `modules.timetable`)
+4. **Step 4: Frontend API Integration**:
+   - Connect `@vidyafloww/api` Axios client with live Django endpoints.
+   - Replace Zustand mock stores with TanStack Query hooks (`useQuery`, `useMutation`) talking to `/api/v1/*`.
+

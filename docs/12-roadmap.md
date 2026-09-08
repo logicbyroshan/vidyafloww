@@ -38,13 +38,13 @@
 
 ## Phase 2 — Core Authentication & Multi-Tenancy
 
-- [x] Custom User model with role-based fields
-- [x] JWT authentication (login, refresh, logout)
-- [x] Web login page and auth flow (`/login`)
-- [ ] Organization and Campus models
-- [ ] Tenant isolation middleware
-- [ ] User invitation flow
-- [ ] Role-based permission system (RBAC)
+- [x] Web login page and client auth flow (`/login`)
+- [ ] Backend custom `User` model with institutional roles (`core.accounts.User`)
+- [ ] Backend SimpleJWT login, token refresh, and blacklist endpoints
+- [ ] Multi-tenant `Organization` and `Campus` persistence models
+- [ ] Tenant isolation middleware (`TenantMiddleware` & `TenantQuerySet`)
+- [ ] User invitation and onboarding lifecycle
+- [ ] Role-based permission system (RBAC scopes)
 - [ ] Mobile authentication screens
 
 ## Phase 3 — Student & Academic Management
@@ -54,63 +54,59 @@
 - [x] Academics & Curriculum Module (`/academics`)
 - [x] Timetable & Scheduling Engine (`/timetable`)
 - [x] Attendance & Biometrics Dashboard (`/attendance`)
-- [x] Homework & Learning Module (`/learning`)
-- [x] Events & Activities Module (`/events`)
-- [x] Front Office & Enquiries Module (`/front-office`)
+- [x] Faculty Teaching Workspace (`/teaching`)
+- [x] Homework & Learning Module (`/homework`, `/learning`)
+- [x] Virtual Live Classrooms & Studio (`/e-class`, `/live-room`)
 
 ## Phase 4 — Examinations & Assessments
 
-- [x] Examination & Report Cards Module (`/examinations`)
-- [ ] Exam schedule management
-- [ ] Marks entry & Grade calculation engine
-- [ ] Report card generation (PDF)
-- [ ] Online assessment module
+- [x] Examination Datesheet Schedule (`/examinations` Tab 1)
+- [x] Subject Marks Allocation & Grading Scale (`/examinations` Tab 2)
+- [x] Per-Student Marks Ledger & Lockable Register (`/examinations` Tab 3)
+- [ ] Backend exam results calculation service
+- [ ] Automated CBSE PDF report card generator
 
 ## Phase 5 — Fees & Finance
 
 - [x] Fees & Student Accounts Module (`/fees`)
-- [x] Finance & Accounting Ledger (`/accounting`)
-- [ ] Fee invoicing and collection
+- [x] Staff Salary & Payroll Processing (`/salary`)
+- [x] Scholarship Grants & Disbursements (`/scholarships`)
 - [ ] Payment gateway integration (Razorpay / Stripe)
-- [ ] Receipt generation
+- [ ] Automated fee receipt generation
 
-## Phase 6 — Communication & Notifications
+## Phase 6 — Communication & Governance
 
-- [x] Communication & DLT SMS Module (`/communication`)
-- [ ] Internal messaging system
+- [x] Institutional Notice Publisher with 2-Tab Wizard (`/notices`)
+- [x] Grievance Redressal SLA Queue (`/complaints`)
+- [x] Community Feedback & NPS Surveys (`/surveys`)
 - [ ] Real-time notifications (Django Channels + WebSocket)
 - [ ] WhatsApp broadcasting gateway
 
-## Phase 7 — HR & Administration
+## Phase 7 — Advanced Subsystems Decoupling & In-Portal Dashboards ✅
 
-- [x] HR & Staff Payroll Module (`/hr`)
-- [x] School Administration Module (`/administration`)
-- [ ] Staff profiles and contracts
-- [ ] Payroll processing & payslips
+- [x] Decouple **Design Lab** into standalone repo (`designlab.vidyafloww.com`) + build in-portal overview dashboard (`/design-lab`)
+- [x] Decouple **Hostel Management** into standalone repo (`hostel.vidyafloww.com`) + build in-portal overview dashboard (`/hostel`)
+- [x] Decouple **Transport Management** into standalone repo (`transport.vidyafloww.com`) + build in-portal overview dashboard (`/transport`)
+- [x] Decouple **HR Management** into standalone repo (`hr.vidyafloww.com`) + build in-portal overview dashboard (`/hr-manage`)
+- [x] Decouple **E-Library Management** into standalone repo (`library.vidyafloww.com`) + build in-portal overview dashboard (`/elibrary`)
 
 ## Phase 8 — Portals & Security
 
 - [x] Parent & Student Portal (`/portal`)
-- [x] Security & Audit Logs (`/security`)
-- [x] System Administration (`/system`)
-- [x] Reports & Analytics (`/reports`)
+- [x] Security & Access Control (`/security`)
+- [x] Audit Log Viewer (`/audit`)
+- [x] Reports & Analytics (`/reports`, `/statistics`)
+- [x] Institutional Settings Studio (`/settings`)
 
-## Phase 9 — Advanced Modules
+## Phase 9 — Backend Domain Services Implementation (Next Sprint)
 
-- [x] Transport & Live GPS Tracking (`/transport`)
-- [x] Library & Book Catalog (`/library`)
-- [x] Hostel & Campus Life (`/hostel`)
-- [x] Inventory & Store Procurement (`/inventory`)
-- [x] ID Studio & Document Vault (`/documents`)
-
-## Phase 10 — AI & Enterprise
-
-- [x] Global `VidyaFloww AI` Assistant
-- [x] Dashboard BI Analytics & Operational Radar (`/`)
-- [ ] Multi-region deployment
-- [ ] Advanced audit logging & compliance exports
+- [ ] Activate `core.accounts.User` and generate initial core migrations
+- [ ] Implement `TenantMiddleware` and `TenantModel` in `common`
+- [ ] Implement Student, Admission, and Attendance ViewSets + Serializers
+- [ ] Connect `@vidyafloww/api` Axios client with live Django endpoints
 
 ---
 
 *This roadmap is a living document and will be updated as priorities evolve.*
-*Last updated: 2026-08-11*
+*Last updated: 2026-09-08*
+
