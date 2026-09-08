@@ -1,0 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running pre-commit checks for HR-Management..."
+
+# Check for accidental credentials
+if git diff --cached | grep -E "(BEGIN PRIVATE KEY|AWS_SECRET|TOKEN=|PASSWORD=)"; then
+  echo "ERROR: Potential secret or credential detected in diff! Aborting commit."
+  exit 1
+fi
+
+pnpm type-check

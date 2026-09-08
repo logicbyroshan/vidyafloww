@@ -40,8 +40,8 @@ import {
   Filter,
   Wrench,
 } from 'lucide-react';
-import { useGlobalStore } from '../stores/globalStore';
-import { useTranslation } from '../hooks/useTranslation';
+import { useGlobalStore } from './stores/globalStore';
+import { useTranslation } from './hooks/useTranslation';
 
 export const Route = createFileRoute('/hr-manage')({
   component: HRManagementPage,
@@ -2628,3 +2628,6 @@ function HRManagementPage() {
     </VFPageContainer>
   );
 }
+
+
+export { HRManagementPage };
