@@ -39,6 +39,13 @@ import {
   X,
   Lock,
   Unlock,
+  ChevronDown,
+  Layers,
+  FileText,
+  ShieldCheck,
+  GitCommit,
+  GraduationCap,
+  MapPin,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -51,14 +58,27 @@ export interface ExamPaper {
   id: string;
   date: string;
   displayDate: string;
+  dayNumber?: string;
+  monthText?: string;
+  dayOfWeek?: string;
+  relativeTiming?: string;
   subject: string;
   paperCode: string;
+  subjectCategory?: 'Core Theory' | 'Practical / Lab' | 'Skill Subject' | 'Language';
   grade: string;
   timeSlot: string;
   duration: string;
+  shift?: 'Morning' | 'Afternoon';
+  reportingTime?: string;
+  readingTime?: string;
   hall: string;
+  hallBlock?: string;
+  capacity?: string;
   maxMarks: number;
+  passMarks?: number;
+  internalMarks?: number;
   invigilator: string;
+  assistantInvigilator?: string;
   status: 'Completed' | 'Active Today' | 'Upcoming';
 }
 
@@ -73,6 +93,8 @@ export interface ExamRecord {
   marksEnteredPct: number;
   status: 'Scheduled' | 'Active Live' | 'Evaluation' | 'Completed' | 'Published';
   papersCount: number;
+  chiefSuperintendent?: string;
+  controlRoom?: string;
   timetable: ExamPaper[];
 }
 
@@ -97,12 +119,168 @@ export interface ClassMarksScheme {
 }
 
 const DEFAULT_TIMETABLE_T1: ExamPaper[] = [
-  { id: 'P1', date: '2026-09-18', displayDate: '18 Sep 2026 (Mon)', subject: 'Mathematics', paperCode: 'Code: 041', grade: 'Class 10 (A, B, C)', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Hall A1–A4 (Block 1)', maxMarks: 80, invigilator: 'Dr. Rajesh Sharma', status: 'Completed' },
-  { id: 'P2', date: '2026-09-21', displayDate: '21 Sep 2026 (Thu)', subject: 'Science (Physics, Chem & Bio)', paperCode: 'Code: 086', grade: 'Class 10 (A, B, C)', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Hall A1–A4 (Block 1)', maxMarks: 80, invigilator: 'Mrs. Sunita Verma', status: 'Completed' },
-  { id: 'P3', date: '2026-09-23', displayDate: '23 Sep 2026 (Sat)', subject: 'English Language & Literature', paperCode: 'Code: 184', grade: 'Class 10 (A, B, C)', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Hall B1–B3 (Block 2)', maxMarks: 80, invigilator: 'Mr. Arvind Saxena', status: 'Active Today' },
-  { id: 'P4', date: '2026-09-25', displayDate: '25 Sep 2026 (Mon)', subject: 'Social Science (History, Geo, Civics)', paperCode: 'Code: 087', grade: 'Class 10 (A, B, C)', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Hall A1–A4 (Block 1)', maxMarks: 80, invigilator: 'Ms. Meenakshi Iyer', status: 'Upcoming' },
-  { id: 'P5', date: '2026-09-28', displayDate: '28 Sep 2026 (Thu)', subject: 'Hindi Course-A / Course-B', paperCode: 'Code: 002', grade: 'Class 10 (A, B, C)', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Hall B1–B4 (Block 2)', maxMarks: 80, invigilator: 'Pt. Rameshwar Dayal', status: 'Upcoming' },
-  { id: 'P6', date: '2026-09-30', displayDate: '30 Sep 2026 (Sat)', subject: 'Information Technology (Skill 402)', paperCode: 'Code: 402', grade: 'Class 10 (A, B, C)', timeSlot: '09:00 AM – 11:00 AM', duration: '2h', hall: 'Computer Labs 1 & 2', maxMarks: 50, invigilator: 'Mr. Pradeep Rawat', status: 'Upcoming' },
+  {
+    id: 'P1',
+    date: '2026-09-18',
+    displayDate: '18 Sep 2026 (Mon)',
+    dayNumber: '18',
+    monthText: 'SEP',
+    dayOfWeek: 'MON',
+    relativeTiming: 'COMPLETED',
+    subject: 'Mathematics',
+    paperCode: 'Code: 041',
+    subjectCategory: 'Core Theory',
+    grade: 'Class 10 (A, B, C)',
+    timeSlot: '09:00 AM – 12:00 PM',
+    duration: '3 Hours',
+    shift: 'Morning',
+    reportingTime: '08:30 AM',
+    readingTime: '08:45 AM (15m)',
+    hall: 'Hall A1–A4 (Block 1)',
+    hallBlock: 'Main Academic Block, Floor 1',
+    capacity: '120 Desks · CCTV Monitored',
+    maxMarks: 80,
+    passMarks: 27,
+    internalMarks: 20,
+    invigilator: 'Dr. Rajesh Sharma',
+    assistantInvigilator: 'Mr. K. Narayanan',
+    status: 'Completed',
+  },
+  {
+    id: 'P2',
+    date: '2026-09-21',
+    displayDate: '21 Sep 2026 (Thu)',
+    dayNumber: '21',
+    monthText: 'SEP',
+    dayOfWeek: 'THU',
+    relativeTiming: 'COMPLETED',
+    subject: 'Science (Physics, Chem & Bio)',
+    paperCode: 'Code: 086',
+    subjectCategory: 'Core Theory',
+    grade: 'Class 10 (A, B, C)',
+    timeSlot: '09:00 AM – 12:00 PM',
+    duration: '3 Hours',
+    shift: 'Morning',
+    reportingTime: '08:30 AM',
+    readingTime: '08:45 AM (15m)',
+    hall: 'Hall A1–A4 (Block 1)',
+    hallBlock: 'Main Academic Block, Floor 1',
+    capacity: '120 Desks · CCTV Monitored',
+    maxMarks: 80,
+    passMarks: 27,
+    internalMarks: 20,
+    invigilator: 'Mrs. Sunita Verma',
+    assistantInvigilator: 'Ms. Priyanka Sen',
+    status: 'Completed',
+  },
+  {
+    id: 'P3',
+    date: '2026-09-23',
+    displayDate: '23 Sep 2026 (Sat)',
+    dayNumber: '23',
+    monthText: 'SEP',
+    dayOfWeek: 'SAT',
+    relativeTiming: 'LIVE TODAY',
+    subject: 'English Language & Literature',
+    paperCode: 'Code: 184',
+    subjectCategory: 'Language',
+    grade: 'Class 10 (A, B, C)',
+    timeSlot: '09:00 AM – 12:00 PM',
+    duration: '3 Hours',
+    shift: 'Morning',
+    reportingTime: '08:30 AM',
+    readingTime: '08:45 AM (15m)',
+    hall: 'Hall B1–B3 (Block 2)',
+    hallBlock: 'Senior Wing Block, Floor 2',
+    capacity: '90 Desks · CCTV Monitored',
+    maxMarks: 80,
+    passMarks: 27,
+    internalMarks: 20,
+    invigilator: 'Mr. Arvind Saxena',
+    assistantInvigilator: 'Mrs. Deepa Bhatt',
+    status: 'Active Today',
+  },
+  {
+    id: 'P4',
+    date: '2026-09-25',
+    displayDate: '25 Sep 2026 (Mon)',
+    dayNumber: '25',
+    monthText: 'SEP',
+    dayOfWeek: 'MON',
+    relativeTiming: 'IN 2 DAYS',
+    subject: 'Social Science (History, Geo, Civics)',
+    paperCode: 'Code: 087',
+    subjectCategory: 'Core Theory',
+    grade: 'Class 10 (A, B, C)',
+    timeSlot: '09:00 AM – 12:00 PM',
+    duration: '3 Hours',
+    shift: 'Morning',
+    reportingTime: '08:30 AM',
+    readingTime: '08:45 AM (15m)',
+    hall: 'Hall A1–A4 (Block 1)',
+    hallBlock: 'Main Academic Block, Floor 1',
+    capacity: '120 Desks · CCTV Monitored',
+    maxMarks: 80,
+    passMarks: 27,
+    internalMarks: 20,
+    invigilator: 'Ms. Meenakshi Iyer',
+    assistantInvigilator: 'Mr. Tariq Khan',
+    status: 'Upcoming',
+  },
+  {
+    id: 'P5',
+    date: '2026-09-28',
+    displayDate: '28 Sep 2026 (Thu)',
+    dayNumber: '28',
+    monthText: 'SEP',
+    dayOfWeek: 'THU',
+    relativeTiming: 'IN 5 DAYS',
+    subject: 'Hindi Course-A / Course-B',
+    paperCode: 'Code: 002',
+    subjectCategory: 'Language',
+    grade: 'Class 10 (A, B, C)',
+    timeSlot: '09:00 AM – 12:00 PM',
+    duration: '3 Hours',
+    shift: 'Morning',
+    reportingTime: '08:30 AM',
+    readingTime: '08:45 AM (15m)',
+    hall: 'Hall B1–B4 (Block 2)',
+    hallBlock: 'Senior Wing Block, Floor 2',
+    capacity: '110 Desks · CCTV Monitored',
+    maxMarks: 80,
+    passMarks: 27,
+    internalMarks: 20,
+    invigilator: 'Pt. Rameshwar Dayal',
+    assistantInvigilator: 'Ms. Kavita Tiwari',
+    status: 'Upcoming',
+  },
+  {
+    id: 'P6',
+    date: '2026-09-30',
+    displayDate: '30 Sep 2026 (Sat)',
+    dayNumber: '30',
+    monthText: 'SEP',
+    dayOfWeek: 'SAT',
+    relativeTiming: 'NEXT WEEK',
+    subject: 'Information Technology (Skill 402)',
+    paperCode: 'Code: 402',
+    subjectCategory: 'Skill Subject',
+    grade: 'Class 10 (A, B, C)',
+    timeSlot: '09:00 AM – 11:00 AM',
+    duration: '2 Hours',
+    shift: 'Morning',
+    reportingTime: '08:30 AM',
+    readingTime: '08:45 AM (15m)',
+    hall: 'Computer Labs 1 & 2',
+    hallBlock: 'IT & Robotics Center, Floor 3',
+    capacity: '80 Terminals · Biometric Access',
+    maxMarks: 50,
+    passMarks: 17,
+    internalMarks: 50,
+    invigilator: 'Mr. Pradeep Rawat',
+    assistantInvigilator: 'Ms. Neha Sinha',
+    status: 'Upcoming',
+  },
 ];
 
 const INITIAL_EXAMS: ExamRecord[] = [
@@ -117,6 +295,8 @@ const INITIAL_EXAMS: ExamRecord[] = [
     marksEnteredPct: 84,
     status: 'Active Live',
     papersCount: 6,
+    chiefSuperintendent: 'Dr. K. S. Verma (Exam Cell)',
+    controlRoom: 'Academic Block 1, Room 102',
     timetable: DEFAULT_TIMETABLE_T1,
   },
   {
@@ -130,11 +310,13 @@ const INITIAL_EXAMS: ExamRecord[] = [
     marksEnteredPct: 100,
     status: 'Evaluation',
     papersCount: 4,
+    chiefSuperintendent: 'Mrs. Geeta Mathur (Exam Cell)',
+    controlRoom: 'Secondary Wing, Room 14',
     timetable: [
-      { id: 'UT2-1', date: '2026-08-22', displayDate: '22 Aug 2026 (Mon)', subject: 'Mathematics', paperCode: 'Code: 041', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5h', hall: 'Regular Classrooms', maxMarks: 40, invigilator: 'Class Teachers', status: 'Completed' },
-      { id: 'UT2-2', date: '2026-08-23', displayDate: '23 Aug 2026 (Tue)', subject: 'Science', paperCode: 'Code: 086', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5h', hall: 'Regular Classrooms', maxMarks: 40, invigilator: 'Class Teachers', status: 'Completed' },
-      { id: 'UT2-3', date: '2026-08-24', displayDate: '24 Aug 2026 (Wed)', subject: 'Social Science', paperCode: 'Code: 087', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5h', hall: 'Regular Classrooms', maxMarks: 40, invigilator: 'Class Teachers', status: 'Completed' },
-      { id: 'UT2-4', date: '2026-08-25', displayDate: '25 Aug 2026 (Thu)', subject: 'English', paperCode: 'Code: 184', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5h', hall: 'Regular Classrooms', maxMarks: 40, invigilator: 'Class Teachers', status: 'Completed' },
+      { id: 'UT2-1', date: '2026-08-22', displayDate: '22 Aug 2026 (Mon)', dayNumber: '22', monthText: 'AUG', dayOfWeek: 'MON', relativeTiming: 'COMPLETED', subject: 'Mathematics', paperCode: 'Code: 041', subjectCategory: 'Core Theory', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 9A–10C', hallBlock: 'Secondary Wing, Floor 1', capacity: '60 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+      { id: 'UT2-2', date: '2026-08-23', displayDate: '23 Aug 2026 (Tue)', dayNumber: '23', monthText: 'AUG', dayOfWeek: 'TUE', relativeTiming: 'COMPLETED', subject: 'Science', paperCode: 'Code: 086', subjectCategory: 'Core Theory', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 9A–10C', hallBlock: 'Secondary Wing, Floor 1', capacity: '60 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+      { id: 'UT2-3', date: '2026-08-24', displayDate: '24 Aug 2026 (Wed)', dayNumber: '24', monthText: 'AUG', dayOfWeek: 'WED', relativeTiming: 'COMPLETED', subject: 'Social Science', paperCode: 'Code: 087', subjectCategory: 'Core Theory', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 9A–10C', hallBlock: 'Secondary Wing, Floor 1', capacity: '60 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+      { id: 'UT2-4', date: '2026-08-25', displayDate: '25 Aug 2026 (Thu)', dayNumber: '25', monthText: 'AUG', dayOfWeek: 'THU', relativeTiming: 'COMPLETED', subject: 'English', paperCode: 'Code: 184', subjectCategory: 'Language', grade: 'Class 9 & 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 9A–10C', hallBlock: 'Secondary Wing, Floor 1', capacity: '60 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
     ],
   },
   {
@@ -148,15 +330,80 @@ const INITIAL_EXAMS: ExamRecord[] = [
     marksEnteredPct: 0,
     status: 'Scheduled',
     papersCount: 5,
+    chiefSuperintendent: 'Prof. H. N. Chaturvedi (Observer)',
+    controlRoom: 'Main Auditorium Wing',
     timetable: [
-      { id: 'PB-1', date: '2026-12-02', displayDate: '02 Dec 2026 (Wed)', subject: 'Physics / Accountancy', paperCode: 'Code: 042', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Auditorium Hall', maxMarks: 70, invigilator: 'External Observers', status: 'Upcoming' },
-      { id: 'PB-2', date: '2026-12-05', displayDate: '05 Dec 2026 (Sat)', subject: 'Chemistry / Business Studies', paperCode: 'Code: 043', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Auditorium Hall', maxMarks: 70, invigilator: 'External Observers', status: 'Upcoming' },
-      { id: 'PB-3', date: '2026-12-08', displayDate: '08 Dec 2026 (Tue)', subject: 'Mathematics', paperCode: 'Code: 041', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Auditorium Hall', maxMarks: 80, invigilator: 'External Observers', status: 'Upcoming' },
-      { id: 'PB-4', date: '2026-12-11', displayDate: '11 Dec 2026 (Fri)', subject: 'English Core', paperCode: 'Code: 301', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Auditorium Hall', maxMarks: 80, invigilator: 'External Observers', status: 'Upcoming' },
-      { id: 'PB-5', date: '2026-12-14', displayDate: '14 Dec 2026 (Mon)', subject: 'Biology / Economics', paperCode: 'Code: 044', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3h', hall: 'Auditorium Hall', maxMarks: 70, invigilator: 'External Observers', status: 'Upcoming' },
+      { id: 'PB-1', date: '2026-12-02', displayDate: '02 Dec 2026 (Wed)', dayNumber: '02', monthText: 'DEC', dayOfWeek: 'WED', relativeTiming: 'UPCOMING', subject: 'Physics / Accountancy', paperCode: 'Code: 042 / 055', subjectCategory: 'Core Theory', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'Auditorium Hall 1', hallBlock: 'Central Auditorium', capacity: '180 Desks · CCTV', maxMarks: 70, passMarks: 23, internalMarks: 30, invigilator: 'External Observers', assistantInvigilator: 'Squad Lead', status: 'Upcoming' },
+      { id: 'PB-2', date: '2026-12-05', displayDate: '05 Dec 2026 (Sat)', dayNumber: '05', monthText: 'DEC', dayOfWeek: 'SAT', relativeTiming: 'UPCOMING', subject: 'Chemistry / Business Studies', paperCode: 'Code: 043 / 054', subjectCategory: 'Core Theory', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'Auditorium Hall 1', hallBlock: 'Central Auditorium', capacity: '180 Desks · CCTV', maxMarks: 70, passMarks: 23, internalMarks: 30, invigilator: 'External Observers', assistantInvigilator: 'Squad Lead', status: 'Upcoming' },
+      { id: 'PB-3', date: '2026-12-08', displayDate: '08 Dec 2026 (Tue)', dayNumber: '08', monthText: 'DEC', dayOfWeek: 'TUE', relativeTiming: 'UPCOMING', subject: 'Mathematics / Applied Math', paperCode: 'Code: 041 / 241', subjectCategory: 'Core Theory', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'Auditorium Hall 1', hallBlock: 'Central Auditorium', capacity: '180 Desks · CCTV', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'External Observers', assistantInvigilator: 'Squad Lead', status: 'Upcoming' },
+      { id: 'PB-4', date: '2026-12-11', displayDate: '11 Dec 2026 (Fri)', dayNumber: '11', monthText: 'DEC', dayOfWeek: 'FRI', relativeTiming: 'UPCOMING', subject: 'English Core', paperCode: 'Code: 301', subjectCategory: 'Language', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'Auditorium Hall 1', hallBlock: 'Central Auditorium', capacity: '180 Desks · CCTV', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'External Observers', assistantInvigilator: 'Squad Lead', status: 'Upcoming' },
+      { id: 'PB-5', date: '2026-12-14', displayDate: '14 Dec 2026 (Mon)', dayNumber: '14', monthText: 'DEC', dayOfWeek: 'MON', relativeTiming: 'UPCOMING', subject: 'Biology / Economics', paperCode: 'Code: 044 / 030', subjectCategory: 'Core Theory', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'Auditorium Hall 1', hallBlock: 'Central Auditorium', capacity: '180 Desks · CCTV', maxMarks: 70, passMarks: 23, internalMarks: 30, invigilator: 'External Observers', assistantInvigilator: 'Squad Lead', status: 'Upcoming' },
+    ],
+  },
+  {
+    id: '4',
+    code: 'EXAM-2026-UT1',
+    title: 'Periodic Unit Test 1',
+    session: '2026–2027',
+    grade: 'Class 6–12',
+    dates: '15 Jul – 18 Jul 2026',
+    totalCandidates: 1190,
+    marksEnteredPct: 100,
+    status: 'Completed',
+    papersCount: 4,
+    chiefSuperintendent: 'Dr. K. S. Verma (Exam Cell)',
+    controlRoom: 'Academic Block 1, Room 102',
+    timetable: [
+      { id: 'UT1-1', date: '2026-07-15', displayDate: '15 Jul 2026 (Wed)', dayNumber: '15', monthText: 'JUL', dayOfWeek: 'WED', relativeTiming: 'COMPLETED', subject: 'Mathematics', paperCode: 'Code: 041', subjectCategory: 'Core Theory', grade: 'Class 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 10A–10C', hallBlock: 'Main Block, Floor 1', capacity: '40 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+      { id: 'UT1-2', date: '2026-07-16', displayDate: '16 Jul 2026 (Thu)', dayNumber: '16', monthText: 'JUL', dayOfWeek: 'THU', relativeTiming: 'COMPLETED', subject: 'Science', paperCode: 'Code: 086', subjectCategory: 'Core Theory', grade: 'Class 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 10A–10C', hallBlock: 'Main Block, Floor 1', capacity: '40 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+      { id: 'UT1-3', date: '2026-07-17', displayDate: '17 Jul 2026 (Fri)', dayNumber: '17', monthText: 'JUL', dayOfWeek: 'FRI', relativeTiming: 'COMPLETED', subject: 'Social Science', paperCode: 'Code: 087', subjectCategory: 'Core Theory', grade: 'Class 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 10A–10C', hallBlock: 'Main Block, Floor 1', capacity: '40 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+      { id: 'UT1-4', date: '2026-07-18', displayDate: '18 Jul 2026 (Sat)', dayNumber: '18', monthText: 'JUL', dayOfWeek: 'SAT', relativeTiming: 'COMPLETED', subject: 'English', paperCode: 'Code: 184', subjectCategory: 'Language', grade: 'Class 10', timeSlot: '08:30 AM – 10:00 AM', duration: '1.5 Hours', shift: 'Morning', reportingTime: '08:15 AM', readingTime: '08:20 AM', hall: 'Classrooms 10A–10C', hallBlock: 'Main Block, Floor 1', capacity: '40 Desks / Room', maxMarks: 40, passMarks: 14, internalMarks: 10, invigilator: 'Class Teachers', assistantInvigilator: 'Floor Incharge', status: 'Completed' },
+    ],
+  },
+  {
+    id: '5',
+    code: 'EXAM-2026-PRAC',
+    title: 'Senior Science & Lab Practicals',
+    session: '2026–2027',
+    grade: 'Class 11 & 12',
+    dates: '10 Jan – 18 Jan 2027',
+    totalCandidates: 340,
+    marksEnteredPct: 0,
+    status: 'Scheduled',
+    papersCount: 4,
+    chiefSuperintendent: 'Dr. Alka Raman (Lab Director)',
+    controlRoom: 'Science Laboratories Wing',
+    timetable: [
+      { id: 'PRAC-1', date: '2027-01-10', displayDate: '10 Jan 2027 (Sun)', dayNumber: '10', monthText: 'JAN', dayOfWeek: 'SUN', relativeTiming: 'UPCOMING', subject: 'Physics Practical (Batch A & B)', paperCode: 'Code: 042-P', subjectCategory: 'Practical / Lab', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:45 AM', readingTime: '08:50 AM', hall: 'Physics Lab 1 & 2', hallBlock: 'Science Wing, Floor 2', capacity: '40 Workstations', maxMarks: 30, passMarks: 10, internalMarks: 0, invigilator: 'External Board Examiner', assistantInvigilator: 'Lab Assistant', status: 'Upcoming' },
+      { id: 'PRAC-2', date: '2027-01-12', displayDate: '12 Jan 2027 (Tue)', dayNumber: '12', monthText: 'JAN', dayOfWeek: 'TUE', relativeTiming: 'UPCOMING', subject: 'Chemistry Practical (Batch A & B)', paperCode: 'Code: 043-P', subjectCategory: 'Practical / Lab', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:45 AM', readingTime: '08:50 AM', hall: 'Chemistry Lab 1 & 2', hallBlock: 'Science Wing, Floor 2', capacity: '40 Workstations', maxMarks: 30, passMarks: 10, internalMarks: 0, invigilator: 'External Board Examiner', assistantInvigilator: 'Lab Assistant', status: 'Upcoming' },
+      { id: 'PRAC-3', date: '2027-01-15', displayDate: '15 Jan 2027 (Fri)', dayNumber: '15', monthText: 'JAN', dayOfWeek: 'FRI', relativeTiming: 'UPCOMING', subject: 'Biology Practical (Batch A)', paperCode: 'Code: 044-P', subjectCategory: 'Practical / Lab', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:45 AM', readingTime: '08:50 AM', hall: 'Biology Lab', hallBlock: 'Science Wing, Floor 1', capacity: '30 Microscopes', maxMarks: 30, passMarks: 10, internalMarks: 0, invigilator: 'External Board Examiner', assistantInvigilator: 'Lab Assistant', status: 'Upcoming' },
+      { id: 'PRAC-4', date: '2027-01-18', displayDate: '18 Jan 2027 (Mon)', dayNumber: '18', monthText: 'JAN', dayOfWeek: 'MON', relativeTiming: 'UPCOMING', subject: 'Computer Science Practical', paperCode: 'Code: 083-P', subjectCategory: 'Practical / Lab', grade: 'Class 12', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:45 AM', readingTime: '08:50 AM', hall: 'Advanced Computer Lab', hallBlock: 'IT Complex, Floor 2', capacity: '45 Terminals', maxMarks: 30, passMarks: 10, internalMarks: 0, invigilator: 'External Board Examiner', assistantInvigilator: 'Lab Admin', status: 'Upcoming' },
+    ],
+  },
+  {
+    id: '6',
+    code: 'EXAM-2027-ANN',
+    title: 'Annual Final Summative Evaluation',
+    session: '2026–2027',
+    grade: 'Class 6–11',
+    dates: '20 Feb – 08 Mar 2027',
+    totalCandidates: 1420,
+    marksEnteredPct: 0,
+    status: 'Scheduled',
+    papersCount: 6,
+    chiefSuperintendent: 'Principal & Vice-Principal Board',
+    controlRoom: 'Central Examination Wing',
+    timetable: [
+      { id: 'ANN-1', date: '2027-02-20', displayDate: '20 Feb 2027 (Sat)', dayNumber: '20', monthText: 'FEB', dayOfWeek: 'SAT', relativeTiming: 'UPCOMING', subject: 'Mathematics (Standard / Basic)', paperCode: 'Code: 041', subjectCategory: 'Core Theory', grade: 'Class 6–11', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'All Examination Halls (Block 1 & 2)', hallBlock: 'Entire Campus', capacity: '450 Desks', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'All Senior Faculty', assistantInvigilator: 'Duty Roster', status: 'Upcoming' },
+      { id: 'ANN-2', date: '2027-02-23', displayDate: '23 Feb 2027 (Tue)', dayNumber: '23', monthText: 'FEB', dayOfWeek: 'TUE', relativeTiming: 'UPCOMING', subject: 'Science & Technology', paperCode: 'Code: 086', subjectCategory: 'Core Theory', grade: 'Class 6–11', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'All Examination Halls (Block 1 & 2)', hallBlock: 'Entire Campus', capacity: '450 Desks', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'All Senior Faculty', assistantInvigilator: 'Duty Roster', status: 'Upcoming' },
+      { id: 'ANN-3', date: '2027-02-26', displayDate: '26 Feb 2027 (Fri)', dayNumber: '26', monthText: 'FEB', dayOfWeek: 'FRI', relativeTiming: 'UPCOMING', subject: 'Social Science & Humanities', paperCode: 'Code: 087', subjectCategory: 'Core Theory', grade: 'Class 6–11', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'All Examination Halls (Block 1 & 2)', hallBlock: 'Entire Campus', capacity: '450 Desks', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'All Senior Faculty', assistantInvigilator: 'Duty Roster', status: 'Upcoming' },
+      { id: 'ANN-4', date: '2027-03-01', displayDate: '01 Mar 2027 (Mon)', dayNumber: '01', monthText: 'MAR', dayOfWeek: 'MON', relativeTiming: 'UPCOMING', subject: 'English Language & Literature', paperCode: 'Code: 184', subjectCategory: 'Language', grade: 'Class 6–11', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'All Examination Halls (Block 1 & 2)', hallBlock: 'Entire Campus', capacity: '450 Desks', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'All Senior Faculty', assistantInvigilator: 'Duty Roster', status: 'Upcoming' },
+      { id: 'ANN-5', date: '2027-03-04', displayDate: '04 Mar 2027 (Thu)', dayNumber: '04', monthText: 'MAR', dayOfWeek: 'THU', relativeTiming: 'UPCOMING', subject: 'Second Language (Hindi / Sanskrit)', paperCode: 'Code: 002 / 122', subjectCategory: 'Language', grade: 'Class 6–11', timeSlot: '09:00 AM – 12:00 PM', duration: '3 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'All Examination Halls (Block 1 & 2)', hallBlock: 'Entire Campus', capacity: '450 Desks', maxMarks: 80, passMarks: 27, internalMarks: 20, invigilator: 'All Senior Faculty', assistantInvigilator: 'Duty Roster', status: 'Upcoming' },
+      { id: 'ANN-6', date: '2027-03-08', displayDate: '08 Mar 2027 (Mon)', dayNumber: '08', monthText: 'MAR', dayOfWeek: 'MON', relativeTiming: 'UPCOMING', subject: 'Information Technology / Artificial Intelligence', paperCode: 'Code: 402 / 417', subjectCategory: 'Skill Subject', grade: 'Class 6–11', timeSlot: '09:00 AM – 11:00 AM', duration: '2 Hours', shift: 'Morning', reportingTime: '08:30 AM', readingTime: '08:45 AM (15m)', hall: 'Computer Labs 1, 2 & 3', hallBlock: 'IT Wing, Floor 3', capacity: '120 Terminals', maxMarks: 50, passMarks: 17, internalMarks: 50, invigilator: 'IT Faculty', assistantInvigilator: 'Lab Coordinators', status: 'Upcoming' },
     ],
   },
 ];
+
 
 const INITIAL_MARKS_SCHEMES: Record<string, ClassMarksScheme> = {
   'class-10': {
@@ -299,7 +546,15 @@ function ExaminationsPage() {
   // Timetable Filters & View Mode
   const [paperSearch, setPaperSearch] = React.useState('');
   const [paperStatusFilter, setPaperStatusFilter] = React.useState<string>('All');
-  const [paperViewMode, setPaperViewMode] = React.useState<'table' | 'cards'>('table');
+  const [paperCategoryFilter, setPaperCategoryFilter] = React.useState<string>('All');
+  const [paperShiftFilter, setPaperShiftFilter] = React.useState<string>('All');
+  const [paperViewMode, setPaperViewMode] = React.useState<'table' | 'cards' | 'timeline'>('table');
+  const [showOverviewCards, setShowOverviewCards] = React.useState(false);
+
+  // Modals for Enhanced Timetable
+  const [seatingModalPaper, setSeatingModalPaper] = React.useState<ExamPaper | null>(null);
+  const [isDatesheetModalOpen, setIsDatesheetModalOpen] = React.useState(false);
+
 
   // Marks Schemes by Class
   const [marksSchemes, setMarksSchemes] = React.useState<Record<string, ClassMarksScheme>>(INITIAL_MARKS_SCHEMES);
@@ -568,14 +823,27 @@ function ExaminationsPage() {
       id: `P-${Date.now()}`,
       date: paperDate,
       displayDate: paperDisplayDate,
+      dayNumber: paperDisplayDate.slice(0, 2).trim() || '15',
+      monthText: paperDisplayDate.slice(3, 6).toUpperCase() || 'OCT',
+      dayOfWeek: 'MON',
+      relativeTiming: 'UPCOMING',
       subject: paperSubject.trim(),
       paperCode: paperCode.trim() || 'Code: 101',
+      subjectCategory: 'Core Theory',
       grade: activeExam.grade,
       timeSlot: paperTimeSlot,
       duration: paperDuration,
+      shift: 'Morning',
+      reportingTime: '08:30 AM',
+      readingTime: '08:45 AM (15m)',
       hall: paperHall,
+      hallBlock: 'Academic Examination Wing',
+      capacity: '120 Desks',
       maxMarks: Number(paperMaxMarks) || 80,
+      passMarks: Math.round((Number(paperMaxMarks) || 80) * 0.33),
+      internalMarks: 20,
       invigilator: paperInvigilator,
+      assistantInvigilator: 'Department Duty Staff',
       status: 'Upcoming',
     };
 
@@ -602,13 +870,35 @@ function ExaminationsPage() {
     });
   };
 
-  // Tab 1 Filtered Papers
+  // Tab 1 Filtered Papers & Timetable Telemetry
   const filteredPapers = activeExam.timetable.filter((p) => {
     const q = paperSearch.toLowerCase().trim();
-    const matchSearch = !q || p.subject.toLowerCase().includes(q) || p.paperCode.toLowerCase().includes(q) || p.hall.toLowerCase().includes(q);
-    const matchStatus = paperStatusFilter === 'All' || p.status === paperStatusFilter;
-    return matchSearch && matchStatus;
+    const matchSearch =
+      !q ||
+      p.subject.toLowerCase().includes(q) ||
+      p.paperCode.toLowerCase().includes(q) ||
+      p.hall.toLowerCase().includes(q) ||
+      (p.invigilator && p.invigilator.toLowerCase().includes(q)) ||
+      (p.subjectCategory && p.subjectCategory.toLowerCase().includes(q));
+
+    const matchStatus =
+      paperStatusFilter === 'All' ||
+      p.status === paperStatusFilter ||
+      (paperStatusFilter === 'Active Live' && p.status === 'Active Today');
+
+    const matchCategory =
+      paperCategoryFilter === 'All' || p.subjectCategory === paperCategoryFilter;
+
+    const matchShift =
+      paperShiftFilter === 'All' || p.shift === paperShiftFilter;
+
+    return matchSearch && matchStatus && matchCategory && matchShift;
   });
+
+  const totalPapersCount = activeExam.timetable.length;
+  const completedPapersCount = activeExam.timetable.filter((p) => p.status === 'Completed').length;
+  const activeLiveCount = activeExam.timetable.filter((p) => p.status === 'Active Today').length;
+  const upcomingCount = activeExam.timetable.filter((p) => p.status === 'Upcoming').length;
 
   // Tab 3 Filtered Students & Stats
   const filteredStudents = marksData.filter((s) => {
@@ -718,84 +1008,189 @@ function ExaminationsPage() {
           ══════════════════════════════════════════════════════════════════════ */}
       {activeView === 'timetable' && (
         <div className="flex-1 min-h-0 flex flex-col space-y-3">
-          {/* Exam Selector Strip */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 shrink-0">
-            {exams.map((ex) => {
-              const isSelected = ex.id === activeExam.id;
-              return (
-                <div
-                  key={ex.id}
-                  onClick={() => setSelectedExamId(ex.id)}
-                  className={cn(
-                    'p-3 rounded-[4px] border transition-all duration-150 cursor-pointer flex flex-col justify-between select-none shadow-xs',
-                    isSelected
-                      ? 'bg-[#181818] border-zinc-400 ring-1 ring-zinc-500/20 text-foreground'
-                      : 'bg-[#141414] border-border/80 hover:bg-[#181818] hover:border-zinc-600 text-muted-foreground'
-                  )}
+          {/* 1. Exam Switcher & Active Context Ribbon */}
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col xl:flex-row xl:items-center justify-between gap-3 shrink-0 shadow-xs">
+            {/* Left: Dropdown Selector + Context Info */}
+            <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0 font-medium">
+                <GraduationCap className="h-4 w-4 text-amber-500" />
+                <span className="font-bold text-foreground">{isHindi ? 'सक्रिय परीक्षा:' : 'Selected Exam:'}</span>
+              </div>
+
+              {/* Primary Exam Dropdown */}
+              <div className="relative min-w-[280px] sm:min-w-[340px] max-w-full">
+                <select
+                  value={selectedExamId}
+                  onChange={(e) => setSelectedExamId(e.target.value)}
+                  className="w-full h-8.5 pl-3 pr-8 text-xs font-bold bg-[#1a1a1a] border border-border/90 rounded-[4px] text-foreground focus:outline-none focus:border-zinc-400 cursor-pointer appearance-none shadow-inner tracking-tight font-mono"
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                        {ex.code}
-                      </span>
-                      <h3 className="font-bold text-foreground text-xs leading-snug mt-0.5 truncate" title={ex.title}>
+                  {exams.map((ex) => (
+                    <option key={ex.id} value={ex.id} className="bg-[#181818] text-foreground py-1">
+                      [{ex.status.toUpperCase()}] {ex.code} · {ex.title} ({ex.timetable.length} Papers)
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="h-3.5 w-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+              </div>
+
+              {/* Active Exam Status Badge */}
+              <VFBadge
+                variant={
+                  activeExam.status === 'Active Live'
+                    ? 'danger'
+                    : activeExam.status === 'Evaluation'
+                    ? 'warning'
+                    : activeExam.status === 'Published'
+                    ? 'success'
+                    : 'outline'
+                }
+                className="text-[11px] font-bold px-2 py-0.5"
+              >
+                {activeExam.status === 'Active Live' ? (
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
+                    {isHindi ? 'सक्रिय परीक्षा' : 'Active Live'}
+                  </span>
+                ) : (
+                  activeExam.status
+                )}
+              </VFBadge>
+
+              {/* Session & Target Class Chip */}
+              <div className="hidden md:flex items-center gap-1.5 px-2 py-1 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-mono text-muted-foreground">
+                <span>{activeExam.grade}</span>
+                <span>•</span>
+                <Calendar className="h-3 w-3 text-zinc-400" />
+                <span>{activeExam.dates}</span>
+              </div>
+
+              {/* Chief Superintendent & Control Room */}
+              {activeExam.controlRoom && (
+                <div className="hidden 2xl:flex items-center gap-1 px-2 py-1 rounded-[3px] bg-[#181818] border border-border/60 text-[10px] text-zinc-400 font-mono">
+                  <Building2 className="h-3 w-3 text-zinc-400" />
+                  <span>{activeExam.controlRoom}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Right: Metrics & Overview Toggle */}
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Telemetry Counter Badges */}
+              <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70 text-[11px] font-mono">
+                <div className="px-2 py-0.5 rounded-[2px] bg-zinc-800/80 text-foreground font-bold">
+                  {totalPapersCount} {isHindi ? 'पेपर' : 'Papers'}
+                </div>
+                {activeLiveCount > 0 && (
+                  <div className="px-2 py-0.5 rounded-[2px] bg-rose-950/60 text-rose-300 font-bold border border-rose-800/50 flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                    {activeLiveCount} Live
+                  </div>
+                )}
+                <div className="px-2 py-0.5 rounded-[2px] bg-emerald-950/50 text-emerald-300 border border-emerald-800/40">
+                  {completedPapersCount} Done
+                </div>
+                <div className="px-2 py-0.5 rounded-[2px] text-muted-foreground">
+                  {upcomingCount} Up
+                </div>
+              </div>
+
+              {/* Toggle Overview Cards button */}
+              <button
+                type="button"
+                onClick={() => setShowOverviewCards(!showOverviewCards)}
+                className={cn(
+                  'h-8 px-2.5 text-xs font-bold rounded-[4px] border transition-colors cursor-pointer flex items-center gap-1.5',
+                  showOverviewCards
+                    ? 'bg-zinc-800 text-foreground border-zinc-500'
+                    : 'bg-[#1a1a1a] text-muted-foreground hover:text-foreground border-border/80'
+                )}
+                title="Toggle all examination cards"
+              >
+                <Layers className="h-3.5 w-3.5 text-zinc-400" />
+                <span>{showOverviewCards ? (isHindi ? 'कार्ड छिपाएं' : 'Hide Cards') : (isHindi ? 'सभी परीक्षाएं' : 'All Exam Cards')}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Optional Collapsible Exam Cards Grid */}
+          {showOverviewCards && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2.5 shrink-0 animate-in fade-in duration-200">
+              {exams.map((ex) => {
+                const isSelected = ex.id === activeExam.id;
+                return (
+                  <div
+                    key={ex.id}
+                    onClick={() => setSelectedExamId(ex.id)}
+                    className={cn(
+                      'p-2.5 rounded-[4px] border transition-all duration-150 cursor-pointer flex flex-col justify-between select-none shadow-xs text-left',
+                      isSelected
+                        ? 'bg-[#1c1c1c] border-amber-500/80 ring-1 ring-amber-500/20 text-foreground'
+                        : 'bg-[#141414] border-border/80 hover:bg-[#181818] hover:border-zinc-600 text-muted-foreground'
+                    )}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-1.5 mb-1">
+                        <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-muted-foreground truncate">
+                          {ex.code}
+                        </span>
+                        <VFBadge
+                          variant={
+                            ex.status === 'Active Live'
+                              ? 'danger'
+                              : ex.status === 'Evaluation'
+                              ? 'warning'
+                              : ex.status === 'Published'
+                              ? 'success'
+                              : 'outline'
+                          }
+                          className="text-[9px] font-bold px-1.5 py-0 shrink-0"
+                        >
+                          {ex.status}
+                        </VFBadge>
+                      </div>
+                      <h4 className="font-bold text-foreground text-xs leading-snug truncate" title={ex.title}>
                         {ex.title}
-                      </h3>
-                      <p className="text-[11px] text-muted-foreground font-medium mt-1 flex items-center gap-1.5">
-                        <Calendar className="h-3 w-3 text-zinc-400" />
+                      </h4>
+                      <p className="text-[10px] text-muted-foreground font-medium mt-1 truncate">
                         {ex.dates}
                       </p>
                     </div>
-                    <VFBadge
-                      variant={
-                        ex.status === 'Active Live'
-                          ? 'danger'
-                          : ex.status === 'Evaluation'
-                          ? 'warning'
-                          : ex.status === 'Published'
-                          ? 'success'
-                          : 'outline'
-                      }
-                      className="text-[10px] font-bold shrink-0"
-                    >
-                      {ex.status}
-                    </VFBadge>
-                  </div>
 
-                  <div className="mt-2.5 pt-2 border-t border-border/60 flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-muted-foreground">{ex.grade}</span>
-                    <span className="font-bold text-foreground">
-                      {ex.timetable.length} {isHindi ? 'प्रश्नपत्र' : 'Papers'}
-                    </span>
+                    <div className="mt-2 pt-1.5 border-t border-border/60 flex items-center justify-between text-[10px] font-mono">
+                      <span className="text-muted-foreground truncate">{ex.grade}</span>
+                      <span className="font-bold text-foreground shrink-0">
+                        {ex.timetable.length} {isHindi ? 'पेपर' : 'Papers'}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Active Exam Date Sheet Header & Controls */}
-          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-2 shrink-0">
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="text-xs font-bold text-foreground truncate">
-                {activeExam.title}
-              </span>
-              <span className="text-muted-foreground text-xs">·</span>
-              <span className="text-[11px] font-mono text-muted-foreground">
-                {activeExam.dates} ({activeExam.timetable.length} Papers)
-              </span>
+                );
+              })}
             </div>
+          )}
 
+          {/* 2. Date Sheet Filters & Master Toolbar */}
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center justify-between gap-2 shrink-0">
+            {/* Search & Quick Filter Selectors */}
             <div className="flex flex-wrap items-center gap-2">
               {/* Search input */}
               <div className="relative">
                 <Search className="h-3.5 w-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder={isHindi ? 'विषय या कोड खोजें...' : 'Search papers...'}
+                  placeholder={isHindi ? 'विषय, कोड, हॉल या निरीक्षक खोजें...' : 'Search subject, code, hall, invigilator...'}
                   value={paperSearch}
                   onChange={(e) => setPaperSearch(e.target.value)}
-                  className="h-8 pl-8 pr-3 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground placeholder:text-muted-foreground w-40 sm:w-48 focus:outline-none focus:border-zinc-500"
+                  className="h-8 pl-8 pr-3 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground placeholder:text-muted-foreground w-44 sm:w-60 focus:outline-none focus:border-zinc-500 font-sans"
                 />
+                {paperSearch && (
+                  <button
+                    type="button"
+                    onClick={() => setPaperSearch('')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                )}
               </div>
 
               {/* Status Filter */}
@@ -803,40 +1198,99 @@ function ExaminationsPage() {
                 value={paperStatusFilter}
                 onChange={(e) => setPaperStatusFilter(String(e.target.value))}
                 options={[
-                  { label: isHindi ? 'सभी स्थिति' : 'All Status', value: 'All' },
-                  { label: isHindi ? 'सक्रिय आज' : 'Active Today', value: 'Active Today' },
+                  { label: isHindi ? 'सभी स्थिति' : 'Status: All', value: 'All' },
+                  { label: isHindi ? 'सक्रिय आज' : 'Active Live', value: 'Active Live' },
                   { label: isHindi ? 'संपन्न' : 'Completed', value: 'Completed' },
                   { label: isHindi ? 'आगामी' : 'Upcoming', value: 'Upcoming' },
                 ]}
                 className="w-32 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
               />
 
-              {/* View Mode Toggle */}
+              {/* Category Filter */}
+              <VFSelect
+                value={paperCategoryFilter}
+                onChange={(e) => setPaperCategoryFilter(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी श्रेणियां' : 'Category: All', value: 'All' },
+                  { label: 'Core Theory', value: 'Core Theory' },
+                  { label: 'Language', value: 'Language' },
+                  { label: 'Skill Subject', value: 'Skill Subject' },
+                  { label: 'Practical / Lab', value: 'Practical / Lab' },
+                ]}
+                className="w-36 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+              />
+
+              {/* Shift Filter */}
+              <VFSelect
+                value={paperShiftFilter}
+                onChange={(e) => setPaperShiftFilter(String(e.target.value))}
+                options={[
+                  { label: isHindi ? 'सभी पालियां' : 'Shift: All', value: 'All' },
+                  { label: isHindi ? 'प्रातः (Morning)' : 'Morning Shift', value: 'Morning' },
+                  { label: isHindi ? 'दोपहर (Afternoon)' : 'Afternoon Shift', value: 'Afternoon' },
+                ]}
+                className="w-32 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
+              />
+
+              {(paperSearch || paperStatusFilter !== 'All' || paperCategoryFilter !== 'All' || paperShiftFilter !== 'All') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPaperSearch('');
+                    setPaperStatusFilter('All');
+                    setPaperCategoryFilter('All');
+                    setPaperShiftFilter('All');
+                  }}
+                  className="text-[11px] text-zinc-400 hover:text-foreground font-mono underline ml-1 cursor-pointer"
+                >
+                  {isHindi ? 'रीसेट' : 'Clear'}
+                </button>
+              )}
+            </div>
+
+            {/* View Modes & Action Buttons */}
+            <div className="flex items-center gap-2">
+              {/* 3-way View Switcher: Table | Cards | Timeline */}
               <div className="flex items-center bg-[#1a1a1a] p-0.5 rounded-[4px] border border-border/70">
                 <button
                   type="button"
                   onClick={() => setPaperViewMode('table')}
                   className={cn(
-                    'p-1 rounded-[3px] transition-colors cursor-pointer',
-                    paperViewMode === 'table' ? 'bg-[#262626] text-foreground' : 'text-muted-foreground hover:text-foreground'
+                    'px-2 py-1 rounded-[3px] transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1',
+                    paperViewMode === 'table' ? 'bg-[#262626] text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
                   )}
-                  title="Table View"
+                  title="Master Table View"
                 >
                   <List className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">{isHindi ? 'तालिका' : 'Table'}</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setPaperViewMode('cards')}
                   className={cn(
-                    'p-1 rounded-[3px] transition-colors cursor-pointer',
-                    paperViewMode === 'cards' ? 'bg-[#262626] text-foreground' : 'text-muted-foreground hover:text-foreground'
+                    'px-2 py-1 rounded-[3px] transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1',
+                    paperViewMode === 'cards' ? 'bg-[#262626] text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
                   )}
-                  title="Card View"
+                  title="Grid Card View"
                 >
                   <LayoutGrid className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">{isHindi ? 'कार्ड' : 'Cards'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaperViewMode('timeline')}
+                  className={cn(
+                    'px-2 py-1 rounded-[3px] transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1',
+                    paperViewMode === 'timeline' ? 'bg-[#262626] text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                  )}
+                  title="Chronological Progression Timeline"
+                >
+                  <GitCommit className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">{isHindi ? 'टाइमलाइन' : 'Timeline'}</span>
                 </button>
               </div>
 
+              {/* Add Paper */}
               <VFButton
                 size="sm"
                 variant="outline"
@@ -847,6 +1301,18 @@ function ExaminationsPage() {
                 {isHindi ? 'प्रश्नपत्र' : '+ Paper'}
               </VFButton>
 
+              {/* Official Datesheet Notice Modal */}
+              <VFButton
+                size="sm"
+                variant="outline"
+                onClick={() => setIsDatesheetModalOpen(true)}
+                className="h-8 px-2.5 text-xs font-bold rounded-[4px] border-zinc-700 hover:border-zinc-500"
+                leftIcon={<FileText className="h-3.5 w-3.5 text-amber-400" />}
+              >
+                {isHindi ? 'आधिकारिक डेटशीट' : 'Datesheet Notice'}
+              </VFButton>
+
+              {/* Print */}
               <VFButton
                 size="sm"
                 variant="outline"
@@ -859,127 +1325,357 @@ function ExaminationsPage() {
             </div>
           </div>
 
-          {/* Official Date Sheet — Sleek Table View (Default) */}
-          {paperViewMode === 'table' ? (
+          {/* 3. Timetable Views Content */}
+          {filteredPapers.length === 0 ? (
+            <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-[260px] flex items-center justify-center p-8 text-center">
+              <div className="max-w-md space-y-2">
+                <AlertCircle className="h-8 w-8 text-muted-foreground mx-auto" />
+                <h3 className="font-bold text-foreground text-sm">
+                  {isHindi ? 'कोई प्रश्नपत्र नहीं मिला' : 'No Papers Found'}
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  {isHindi
+                    ? 'वर्तमान खोज या फ़िल्टर मानदंडों के लिए कोई परीक्षा नहीं मिली।'
+                    : 'No exam papers matched your search query or filter settings.'}
+                </p>
+                <VFButton
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setPaperSearch('');
+                    setPaperStatusFilter('All');
+                    setPaperCategoryFilter('All');
+                    setPaperShiftFilter('All');
+                  }}
+                  className="rounded-[4px] text-xs font-bold mt-2"
+                >
+                  {isHindi ? 'फ़िल्टर साफ़ करें' : 'Clear All Filters'}
+                </VFButton>
+              </div>
+            </VFCard>
+          ) : paperViewMode === 'table' ? (
+            /* Official Date Sheet — Supercharged Master Table View */
             <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 flex-1 overflow-auto">
               <VFTable className="rounded-none border-0 text-xs w-full">
                 <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
                   <VFTableRow>
                     <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-12 text-center">#</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'तिथि' : 'Date & Day'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'विषय' : 'Subject & Code'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'समय व अवधि' : 'Time & Duration'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'कक्ष / हॉल' : 'Exam Hall'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'पूर्णांक' : 'Max Marks'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'निरीक्षक' : 'Invigilator'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-right">{isHindi ? 'स्थिति' : 'Status'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-44">{isHindi ? 'तिथि व दिवस' : 'Date & Day'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'विषय, कोड व वर्ग' : 'Subject & Category'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-48">{isHindi ? 'समय, अवधि व रिपोर्टिंग' : 'Bell Schedule'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-48">{isHindi ? 'कक्ष / हॉल आवंटन' : 'Exam Hall & Seating'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-28">{isHindi ? 'पूर्णांक व अर्हता' : 'Max Marks'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-40">{isHindi ? 'निरीक्षक दल' : 'Invigilation Team'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-right w-24">{isHindi ? 'स्थिति' : 'Status'}</VFTableHeaderCell>
                   </VFTableRow>
                 </VFTableHead>
                 <VFTableBody>
-                  {filteredPapers.length === 0 ? (
-                    <VFTableRow>
-                      <VFTableCell colSpan={8} className="py-8 text-center text-muted-foreground">
-                        {isHindi ? 'कोई प्रश्नपत्र नहीं मिला।' : 'No papers found matching criteria.'}
+                  {filteredPapers.map((paper, idx) => (
+                    <VFTableRow key={paper.id} className="hover:bg-[#1a1a1a]/70 transition-colors">
+                      {/* 1. Sequence Number */}
+                      <VFTableCell className="py-2.5 px-3 font-mono font-bold text-muted-foreground text-center text-xs">
+                        {idx + 1}
                       </VFTableCell>
-                    </VFTableRow>
-                  ) : (
-                    filteredPapers.map((paper, idx) => (
-                      <VFTableRow key={paper.id} className="hover:bg-[#1a1a1a]/60">
-                        <VFTableCell className="py-2.5 px-3 font-mono font-bold text-muted-foreground text-center text-xs">
-                          {idx + 1}
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3">
-                          <span className="font-semibold text-foreground text-xs">{paper.displayDate}</span>
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3">
-                          <div className="flex items-center gap-1.5">
+
+                      {/* 2. Date & Calendar Badge */}
+                      <VFTableCell className="py-2.5 px-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-11 h-11 rounded-[4px] bg-[#1a1a1a] border border-border/90 flex flex-col items-center justify-center shrink-0 shadow-xs">
+                            <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground font-mono leading-none">
+                              {paper.monthText || 'SEP'}
+                            </span>
+                            <span className="text-sm font-black text-foreground font-mono leading-tight">
+                              {paper.dayNumber || '18'}
+                            </span>
+                            <span className="text-[8px] font-semibold text-zinc-500 font-mono leading-none">
+                              {paper.dayOfWeek || 'MON'}
+                            </span>
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-semibold text-foreground text-xs block truncate">{paper.displayDate}</span>
+                            <span
+                              className={cn(
+                                'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] inline-block mt-0.5',
+                                paper.status === 'Active Today'
+                                  ? 'bg-rose-950/80 text-rose-300 border border-rose-800/50'
+                                  : paper.status === 'Completed'
+                                  ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/40'
+                                  : 'bg-zinc-800/80 text-zinc-400 border border-border/70'
+                              )}
+                            >
+                              {paper.relativeTiming || (paper.status === 'Active Today' ? 'LIVE TODAY' : paper.status === 'Completed' ? 'COMPLETED' : 'UPCOMING')}
+                            </span>
+                          </div>
+                        </div>
+                      </VFTableCell>
+
+                      {/* 3. Subject, Code & Category */}
+                      <VFTableCell className="py-2.5 px-3">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="font-bold text-foreground text-xs">{paper.subject}</span>
-                            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded-[2px] bg-zinc-800 text-muted-foreground border border-border/70">
+                            <span className="font-mono text-[10px] font-semibold px-1.5 py-0.5 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/80">
                               {paper.paperCode}
                             </span>
                           </div>
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3 font-mono text-xs">
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <Clock className="h-3 w-3 text-zinc-400" />
-                            <span>{paper.timeSlot} ({paper.duration})</span>
+                          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                            <span className="px-1.5 py-0.2 rounded-[2px] bg-[#1e1e1e] border border-border/60 font-medium">
+                              {paper.subjectCategory || 'Core Theory'}
+                            </span>
+                            <span>•</span>
+                            <span className="font-mono">{paper.grade}</span>
                           </div>
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3 text-xs text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <Building2 className="h-3 w-3 text-zinc-400" />
-                            <span>{paper.hall}</span>
+                        </div>
+                      </VFTableCell>
+
+                      {/* 4. Bell Schedule, Reporting & Reading Time */}
+                      <VFTableCell className="py-2.5 px-3 font-mono text-xs">
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1 text-foreground font-semibold">
+                            <Clock className="h-3 w-3 text-amber-500/80" />
+                            <span>{paper.timeSlot}</span>
+                            <span className="text-[10px] text-muted-foreground font-normal">({paper.duration})</span>
                           </div>
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3 text-center font-mono font-bold text-emerald-400 text-xs">
-                          {paper.maxMarks}
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3 text-xs text-muted-foreground">
-                          {paper.invigilator}
-                        </VFTableCell>
-                        <VFTableCell className="py-2.5 px-3 text-right">
-                          <VFBadge
-                            variant={
-                              paper.status === 'Completed'
-                                ? 'success'
-                                : paper.status === 'Active Today'
-                                ? 'danger'
-                                : 'outline'
-                            }
-                            className="text-[10px] font-bold"
-                          >
-                            {paper.status === 'Active Today' ? (
-                              <span className="flex items-center gap-1">
-                                <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
-                                {isHindi ? 'आज' : 'Live'}
-                              </span>
-                            ) : paper.status === 'Completed' ? (
-                              isHindi ? 'संपन्न' : 'Done'
-                            ) : (
-                              isHindi ? 'आगामी' : 'Upcoming'
-                            )}
-                          </VFBadge>
-                        </VFTableCell>
-                      </VFTableRow>
-                    ))
-                  )}
+                          <div className="text-[10px] text-muted-foreground flex items-center gap-1.5">
+                            <span className="text-zinc-400">Rep: {paper.reportingTime || '08:30 AM'}</span>
+                            <span>|</span>
+                            <span className="text-zinc-400">Reading: {paper.readingTime || '08:45 AM'}</span>
+                          </div>
+                        </div>
+                      </VFTableCell>
+
+                      {/* 5. Exam Hall, Block & Interactive Seating Plan */}
+                      <VFTableCell className="py-2.5 px-3 text-xs">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-1 text-foreground font-medium">
+                            <Building2 className="h-3 w-3 text-zinc-400 shrink-0" />
+                            <span className="truncate">{paper.hall}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
+                            <span>{paper.capacity || '120 Desks'}</span>
+                            <span>•</span>
+                            <button
+                              type="button"
+                              onClick={() => setSeatingModalPaper(paper)}
+                              className="text-amber-400/90 hover:text-amber-300 font-bold flex items-center gap-0.5 cursor-pointer hover:underline"
+                              title="View Desk Seating Plan"
+                            >
+                              <MapPin className="h-2.5 w-2.5" />
+                              <span>{isHindi ? 'सिटिंग प्लान' : 'Seating Plan'}</span>
+                            </button>
+                          </div>
+                        </div>
+                      </VFTableCell>
+
+                      {/* 6. Max Marks, Pass Threshold & Internal Weightage */}
+                      <VFTableCell className="py-2.5 px-3 text-center font-mono">
+                        <div className="text-xs font-bold text-emerald-400">
+                          {paper.maxMarks} <span className="text-[9px] text-muted-foreground font-normal">{isHindi ? 'पूर्णांक' : 'Marks'}</span>
+                        </div>
+                        <div className="text-[10px] text-muted-foreground">
+                          Pass: <span className="text-foreground font-bold">{paper.passMarks || 27}</span>
+                          {paper.internalMarks ? ` · Int: ${paper.internalMarks}` : ''}
+                        </div>
+                      </VFTableCell>
+
+                      {/* 7. Invigilators */}
+                      <VFTableCell className="py-2.5 px-3 text-xs">
+                        <div className="space-y-0.5">
+                          <div className="text-foreground font-medium flex items-center gap-1">
+                            <ShieldCheck className="h-3 w-3 text-zinc-400 shrink-0" />
+                            <span className="truncate">{paper.invigilator}</span>
+                          </div>
+                          {paper.assistantInvigilator && (
+                            <div className="text-[10px] text-muted-foreground truncate pl-4">
+                              Asst: {paper.assistantInvigilator}
+                            </div>
+                          )}
+                        </div>
+                      </VFTableCell>
+
+                      {/* 8. Status Badge */}
+                      <VFTableCell className="py-2.5 px-3 text-right">
+                        <VFBadge
+                          variant={
+                            paper.status === 'Completed'
+                              ? 'success'
+                              : paper.status === 'Active Today'
+                              ? 'danger'
+                              : 'outline'
+                          }
+                          className="text-[10px] font-bold"
+                        >
+                          {paper.status === 'Active Today' ? (
+                            <span className="flex items-center gap-1">
+                              <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                              {isHindi ? 'सक्रिय आज' : 'Live Today'}
+                            </span>
+                          ) : paper.status === 'Completed' ? (
+                            isHindi ? 'संपन्न' : 'Done'
+                          ) : (
+                            isHindi ? 'आगामी' : 'Upcoming'
+                          )}
+                        </VFBadge>
+                      </VFTableCell>
+                    </VFTableRow>
+                  ))}
                 </VFTableBody>
               </VFTable>
             </VFCard>
-          ) : (
+          ) : paperViewMode === 'cards' ? (
             /* Cards View */
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 pb-4 overflow-y-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-4 overflow-y-auto">
               {filteredPapers.map((paper) => (
                 <div
                   key={paper.id}
-                  className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col justify-between gap-2 hover:border-zinc-600 transition-colors"
+                  className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col justify-between gap-3 hover:border-zinc-600 transition-all shadow-xs"
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/70">
-                          {paper.paperCode}
+                  {/* Card Header */}
+                  <div className="flex items-start justify-between gap-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-[4px] bg-[#1a1a1a] border border-border/90 flex flex-col items-center justify-center shrink-0">
+                        <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground font-mono leading-none">
+                          {paper.monthText || 'SEP'}
                         </span>
-                        <span className="text-[11px] font-semibold text-muted-foreground">{paper.displayDate}</span>
+                        <span className="text-sm font-black text-foreground font-mono leading-tight">
+                          {paper.dayNumber || '18'}
+                        </span>
                       </div>
-                      <h4 className="font-bold text-foreground text-xs leading-tight">{paper.subject}</h4>
+                      <div>
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="font-mono text-[9px] font-bold px-1.5 py-0.2 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/70">
+                            {paper.paperCode}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground font-semibold">{paper.displayDate}</span>
+                        </div>
+                        <h4 className="font-bold text-foreground text-xs leading-snug">{paper.subject}</h4>
+                      </div>
                     </div>
+
                     <VFBadge
                       variant={paper.status === 'Completed' ? 'success' : paper.status === 'Active Today' ? 'danger' : 'outline'}
                       className="text-[10px] font-bold shrink-0"
                     >
-                      {paper.status}
+                      {paper.status === 'Active Today' ? (
+                        <span className="flex items-center gap-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                          Live
+                        </span>
+                      ) : (
+                        paper.status
+                      )}
                     </VFBadge>
                   </div>
 
-                  <div className="pt-2 border-t border-border/50 flex items-center justify-between text-[11px] font-mono text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-zinc-400" /> {paper.timeSlot}
+                  {/* Card Schedule & Details */}
+                  <div className="space-y-1.5 py-2 border-y border-border/50 text-[11px]">
+                    <div className="flex items-center justify-between font-mono text-muted-foreground">
+                      <span className="flex items-center gap-1 text-foreground">
+                        <Clock className="h-3 w-3 text-amber-500/80" /> {paper.timeSlot}
+                      </span>
+                      <span className="font-bold text-emerald-400">{paper.maxMarks} Marks</span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-muted-foreground text-[10px]">
+                      <span className="flex items-center gap-1 truncate">
+                        <Building2 className="h-3 w-3 text-zinc-400" /> {paper.hall}
+                      </span>
+                      <span className="font-mono text-zinc-400 shrink-0">{paper.capacity || '120 Desks'}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-0.5">
+                      <span className="flex items-center gap-1 truncate">
+                        <ShieldCheck className="h-3 w-3 text-zinc-400" /> {paper.invigilator}
+                      </span>
+                      <span className="font-mono text-zinc-400">Pass: {paper.passMarks || 27}</span>
+                    </div>
+                  </div>
+
+                  {/* Card Footer Actions */}
+                  <div className="flex items-center justify-between pt-0.5">
+                    <span className="text-[10px] font-mono text-muted-foreground px-1.5 py-0.5 rounded-[2px] bg-[#1a1a1a] border border-border/60">
+                      {paper.subjectCategory || 'Core Theory'}
                     </span>
-                    <span className="font-bold text-emerald-400">{paper.maxMarks} Marks</span>
+                    <button
+                      type="button"
+                      onClick={() => setSeatingModalPaper(paper)}
+                      className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
+                    >
+                      <MapPin className="h-3 w-3" />
+                      <span>{isHindi ? 'सिटिंग व्यवस्था' : 'Seating Plan'}</span>
+                    </button>
                   </div>
                 </div>
               ))}
+            </div>
+          ) : (
+            /* Timeline View */
+            <div className="flex-1 min-h-0 overflow-y-auto pb-6 pl-2 pr-4">
+              <div className="relative border-l-2 border-border/80 ml-5 pl-6 space-y-6 my-2">
+                {filteredPapers.map((paper, idx) => (
+                  <div key={paper.id} className="relative group">
+                    {/* Progression Node on Track */}
+                    <div
+                      className={cn(
+                        'absolute -left-[35px] top-1.5 w-6 h-6 rounded-full border-2 flex items-center justify-center font-mono text-[10px] font-black',
+                        paper.status === 'Completed'
+                          ? 'bg-emerald-950 border-emerald-500 text-emerald-400'
+                          : paper.status === 'Active Today'
+                          ? 'bg-rose-950 border-rose-500 text-rose-400 ring-4 ring-rose-500/20 animate-pulse'
+                          : 'bg-[#181818] border-zinc-600 text-zinc-400'
+                      )}
+                    >
+                      {paper.status === 'Completed' ? '✓' : idx + 1}
+                    </div>
+
+                    {/* Milestone Card */}
+                    <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-600 transition-colors shadow-xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 pb-2 border-b border-border/60">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-foreground text-xs">{paper.subject}</span>
+                          <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/80">
+                            {paper.paperCode}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground">·</span>
+                          <span className="text-xs font-semibold text-zinc-300">{paper.displayDate}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <VFBadge
+                            variant={paper.status === 'Completed' ? 'success' : paper.status === 'Active Today' ? 'danger' : 'outline'}
+                            className="text-[10px] font-bold"
+                          >
+                            {paper.status === 'Active Today' ? 'Live Today' : paper.status}
+                          </VFBadge>
+                          <button
+                            type="button"
+                            onClick={() => setSeatingModalPaper(paper)}
+                            className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
+                          >
+                            <MapPin className="h-3 w-3" />
+                            <span>Seating</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono text-muted-foreground">
+                        <div className="flex items-center gap-1 text-foreground">
+                          <Clock className="h-3 w-3 text-amber-500/80 shrink-0" />
+                          <span>{paper.timeSlot} ({paper.duration})</span>
+                        </div>
+                        <div className="flex items-center gap-1 truncate">
+                          <Building2 className="h-3 w-3 text-zinc-400 shrink-0" />
+                          <span>{paper.hall}</span>
+                        </div>
+                        <div className="flex items-center justify-between sm:justify-end gap-2">
+                          <span className="text-zinc-400">Invigilator: {paper.invigilator}</span>
+                          <span className="font-bold text-emerald-400">{paper.maxMarks} M</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -1827,6 +2523,225 @@ function ExaminationsPage() {
           </div>
         </form>
       </VFDialog>
+
+      {/* 5. Interactive Seating Plan Modal */}
+      {seatingModalPaper && (
+        <VFDialog
+          isOpen={Boolean(seatingModalPaper)}
+          onClose={() => setSeatingModalPaper(null)}
+          title={isHindi ? `कक्ष सिटिंग व्यवस्था: ${seatingModalPaper.subject}` : `Seating Plan: ${seatingModalPaper.subject}`}
+          description={`${seatingModalPaper.hall} (${seatingModalPaper.hallBlock || 'Academic Wing'}) · ${seatingModalPaper.displayDate} · ${seatingModalPaper.timeSlot}`}
+          className="max-w-3xl rounded-[4px] bg-[#121212] border-border"
+        >
+          <div className="space-y-4 py-1">
+            {/* Top Telemetry Strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
+              <div className="p-2 rounded-[3px] bg-[#181818] border border-border/70">
+                <span className="text-[10px] text-muted-foreground block">ALLOCATED HALL</span>
+                <span className="font-bold text-foreground truncate block">{seatingModalPaper.hall}</span>
+              </div>
+              <div className="p-2 rounded-[3px] bg-[#181818] border border-border/70">
+                <span className="text-[10px] text-muted-foreground block">TOTAL CAPACITY</span>
+                <span className="font-bold text-foreground block">{seatingModalPaper.capacity || '120 Desks'}</span>
+              </div>
+              <div className="p-2 rounded-[3px] bg-[#181818] border border-border/70">
+                <span className="text-[10px] text-muted-foreground block">CHIEF PROCTOR</span>
+                <span className="font-bold text-foreground truncate block">{seatingModalPaper.invigilator}</span>
+              </div>
+              <div className="p-2 rounded-[3px] bg-[#181818] border border-border/70">
+                <span className="text-[10px] text-muted-foreground block">ASSISTANT</span>
+                <span className="font-bold text-foreground truncate block">{seatingModalPaper.assistantInvigilator || 'Staff Roster'}</span>
+              </div>
+            </div>
+
+            {/* Visual Exam Hall Grid */}
+            <div className="p-3 rounded-[4px] bg-[#161616] border border-border/80 space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4 text-amber-500" />
+                  <span className="text-xs font-bold text-foreground">
+                    {isHindi ? 'परीक्षा कक्ष लेआउट (मॉक सिटिंग)' : 'Floor Desk Configuration (Sample Room Block A)'}
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded-[2px]">
+                  Roll No. 10101 – 10124
+                </span>
+              </div>
+
+              {/* Podium */}
+              <div className="w-48 mx-auto py-1 text-center bg-zinc-800/80 border border-border rounded-[3px] text-[10px] font-mono font-bold text-zinc-300">
+                ★ INVIGILATOR PODIUM & QUESTION VAULT ★
+              </div>
+
+              {/* Desks Grid */}
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 pt-2">
+                {Array.from({ length: 18 }).map((_, i) => {
+                  const rollNo = 10101 + i;
+                  const isEven = i % 2 === 0;
+                  return (
+                    <div
+                      key={rollNo}
+                      className={cn(
+                        'p-2 rounded-[3px] border text-center font-mono text-[10px] flex flex-col justify-between h-14 select-none',
+                        isEven
+                          ? 'bg-[#1e1e1e] border-zinc-700/80 text-foreground'
+                          : 'bg-[#1a1a1a] border-border/70 text-zinc-300'
+                      )}
+                    >
+                      <span className="text-[8px] text-muted-foreground">Desk {String(i + 1).padStart(2, '0')}</span>
+                      <span className="font-bold text-xs text-amber-400/90">{rollNo}</span>
+                      <span className="text-[8px] text-zinc-500">Seat Verified</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-border/60 text-[10px] text-muted-foreground font-mono">
+                <span>Door A: Main Entrance (Admit Card Check)</span>
+                <span>Door B: Emergency Fire Exit</span>
+              </div>
+            </div>
+
+            {/* Strict Exam Instructions */}
+            <div className="p-2.5 rounded-[4px] bg-amber-950/20 border border-amber-800/40 text-xs space-y-1 text-amber-200/90">
+              <span className="font-bold flex items-center gap-1 text-amber-400">
+                <ShieldCheck className="h-3.5 w-3.5" /> Examination Hall Protocol
+              </span>
+              <p className="text-[11px] leading-relaxed">
+                Candidates must occupy their assigned desks 15 minutes before the bell. Bags and mobile phones must remain in designated corridor lockers. Only transparent pouches and board-approved stationery are permitted.
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-2 pt-2 border-t border-border/60">
+              <VFButton
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => window.print()}
+                className="text-xs font-bold rounded-[4px]"
+                leftIcon={<Printer className="h-3.5 w-3.5" />}
+              >
+                {isHindi ? 'रोल लिस्ट प्रिंट करें' : 'Print Room Chart'}
+              </VFButton>
+              <VFButton
+                type="button"
+                size="sm"
+                onClick={() => setSeatingModalPaper(null)}
+                className="text-xs font-bold rounded-[4px]"
+              >
+                {isHindi ? 'बंद करें' : 'Close'}
+              </VFButton>
+            </div>
+          </div>
+        </VFDialog>
+      )}
+
+      {/* 6. Official Printable Datesheet Circular Modal */}
+      {isDatesheetModalOpen && (
+        <VFDialog
+          isOpen={isDatesheetModalOpen}
+          onClose={() => setIsDatesheetModalOpen(false)}
+          title={isHindi ? 'आधिकारिक परीक्षा डेटशीट परिपत्र' : 'Official Examination Date Sheet Notice'}
+          description={`Ref: VIA/EXAM/2026-27/CIR-094 · CBSE Affiliation No. 2130089 · ${activeExam.title}`}
+          className="max-w-4xl rounded-[4px] bg-[#121212] border-border"
+        >
+          <div className="space-y-4 py-1">
+            {/* Formal Letterhead */}
+            <div className="p-4 rounded-[4px] bg-[#161616] border border-border/80 text-center space-y-1">
+              <span className="text-[10px] font-mono font-bold tracking-widest text-amber-400 uppercase">
+                VIDYAFLOWW INTERNATIONAL ACADEMY · SENIOR SECONDARY CAMPUS
+              </span>
+              <h2 className="font-bold text-foreground text-sm uppercase tracking-wide">
+                Office of the Controller of Examinations — Annual Circular
+              </h2>
+              <p className="text-[11px] text-muted-foreground font-mono">
+                Affiliated to CBSE, New Delhi (Affiliation No: 2130089 · School Code: 70142)
+              </p>
+              <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                <span>Date of Issue: 10 Sep 2026</span>
+                <span className="font-bold text-foreground">{activeExam.title} ({activeExam.grade})</span>
+                <span>Session: 2026–2027</span>
+              </div>
+            </div>
+
+            {/* Consolidated Schedule Table */}
+            <div className="rounded-[4px] border border-border/80 overflow-hidden">
+              <VFTable className="text-xs w-full">
+                <VFTableHead className="bg-[#1a1a1a]">
+                  <VFTableRow>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground w-12 text-center">#</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'तिथि' : 'Date & Day'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'कोड' : 'Code'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'विषय' : 'Subject'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'समय' : 'Timings'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'पूर्णांक' : 'Max'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'हॉल' : 'Exam Hall'}</VFTableHeaderCell>
+                  </VFTableRow>
+                </VFTableHead>
+                <VFTableBody>
+                  {activeExam.timetable.map((p, idx) => (
+                    <VFTableRow key={p.id} className="hover:bg-[#181818]/60">
+                      <VFTableCell className="py-2 px-3 font-mono font-bold text-center text-muted-foreground text-xs">{idx + 1}</VFTableCell>
+                      <VFTableCell className="py-2 px-3 font-semibold text-foreground text-xs">{p.displayDate}</VFTableCell>
+                      <VFTableCell className="py-2 px-3 font-mono text-[10px] text-muted-foreground">{p.paperCode}</VFTableCell>
+                      <VFTableCell className="py-2 px-3 font-bold text-foreground text-xs">{p.subject}</VFTableCell>
+                      <VFTableCell className="py-2 px-3 font-mono text-xs text-muted-foreground">{p.timeSlot}</VFTableCell>
+                      <VFTableCell className="py-2 px-3 font-mono font-bold text-center text-emerald-400 text-xs">{p.maxMarks}</VFTableCell>
+                      <VFTableCell className="py-2 px-3 text-xs text-muted-foreground">{p.hall}</VFTableCell>
+                    </VFTableRow>
+                  ))}
+                </VFTableBody>
+              </VFTable>
+            </div>
+
+            {/* General Candidate Instructions */}
+            <div className="p-3 rounded-[4px] bg-[#161616] border border-border/80 space-y-1.5 text-xs">
+              <span className="font-bold text-foreground block">Key Regulations for Candidates & Parents:</span>
+              <ul className="list-disc list-inside space-y-1 text-muted-foreground text-[11px] leading-relaxed">
+                <li>Candidates must report in full school uniform with official Admit Card by 08:30 AM sharp.</li>
+                <li>Question paper reading time is from 08:45 AM to 09:00 AM (15 Minutes strict). Writing starts at 09:00 AM.</li>
+                <li>No electronic watches, cellular phones, or digital gadgets will be permitted inside the examination hall.</li>
+                <li>In case of sudden illness, medical proctor verification is required on the date of examination.</li>
+              </ul>
+            </div>
+
+            {/* Institutional Signatures */}
+            <div className="grid grid-cols-2 gap-4 pt-2 text-xs font-mono text-center">
+              <div className="p-2 border-t border-border/80">
+                <span className="font-bold text-foreground block">Dr. H.S. Rathore</span>
+                <span className="text-[10px] text-muted-foreground">Controller of Examinations</span>
+              </div>
+              <div className="p-2 border-t border-border/80">
+                <span className="font-bold text-foreground block">Dr. Sunita Deshmukh</span>
+                <span className="text-[10px] text-muted-foreground">Director & Officiating Principal</span>
+              </div>
+            </div>
+
+            {/* Action Bar */}
+            <div className="flex justify-end gap-2 pt-2 border-t border-border/60">
+              <VFButton
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => window.print()}
+                className="text-xs font-bold rounded-[4px]"
+                leftIcon={<Printer className="h-3.5 w-3.5" />}
+              >
+                {isHindi ? 'डेटशीट प्रिंट करें' : 'Print Official Datesheet'}
+              </VFButton>
+              <VFButton
+                type="button"
+                size="sm"
+                onClick={() => setIsDatesheetModalOpen(false)}
+                className="text-xs font-bold rounded-[4px]"
+              >
+                {isHindi ? 'बंद करें' : 'Close'}
+              </VFButton>
+            </div>
+          </div>
+        </VFDialog>
+      )}
     </VFPageContainer>
   );
 }
