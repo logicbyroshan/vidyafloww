@@ -53,13 +53,12 @@ VidyaFloww is organized into clean, isolated modules mapped to distinct, type-sa
 | **10** | **Examinations** | `/examinations` | 3-tab examination suite: schedule datesheet, subject marks scheme, and lockable marks register |
 | **11** | **E-Class & Live Room** | `/e-class`, `/live-room` | WebRTC live virtual classroom studio, interactive screen share, schedule lecture vault |
 | **12** | **Fees & Payments** | `/fees` | Fee collection master register, quarterly dues tracking, WhatsApp reminder broadcasts |
-| **13** | **Salary & Payroll** | `/salary` | Staff compensation register, statutory deductions, monthly salary slips |
-| **14** | **Scholarships** | `/scholarships` | Merit & financial aid scholarship criteria, grant disbursement ledger |
-| **15** | **Complaints** | `/complaints` | Grievance redressal registry, SLA resolution tracking, departmental escalation queues |
-| **16** | **Surveys** | `/surveys` | Institutional feedback polls, participation meters, Net Promoter Score (NPS) analytics |
-| **17** | **Notices** | `/notices` | 2-tab institutional notice publisher: multi-step audience composer & circular archive |
-| **18** | **Reports & Statistics**| `/reports`, `/statistics`| CBSE / RTE compliance audits, academic GPA analytics, 1-click Excel (.xlsx) & PDF exports |
-| **19** | **Settings & Security** | `/settings`, `/security`| School branding studio, RBAC role permissions, multi-campus governance |
+| **13** | **Scholarships** | `/scholarships` | Merit & financial aid scholarship criteria, grant disbursement ledger |
+| **14** | **Complaints** | `/complaints` | Grievance redressal registry, SLA resolution tracking, departmental escalation queues |
+| **15** | **Surveys** | `/surveys` | Institutional feedback polls, participation meters, Net Promoter Score (NPS) analytics |
+| **16** | **Notices** | `/notices` | 2-tab institutional notice publisher: multi-step audience composer & circular archive |
+| **17** | **Reports & Statistics**| `/reports`, `/statistics`| CBSE / RTE compliance audits, academic GPA analytics, 1-click Excel (.xlsx) & PDF exports |
+| **18** | **Settings & Security** | `/settings`, `/security`| School branding studio, RBAC role permissions, multi-campus governance |
 
 ---
 

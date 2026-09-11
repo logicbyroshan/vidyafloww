@@ -20,7 +20,6 @@ import { Route as ShortcutsRouteImport } from './routes/shortcuts'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ScholarshipsRouteImport } from './routes/scholarships'
-import { Route as SalaryRouteImport } from './routes/salary'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PortalRouteImport } from './routes/portal'
@@ -99,11 +98,6 @@ const SecurityRoute = SecurityRouteImport.update({
 const ScholarshipsRoute = ScholarshipsRouteImport.update({
   id: '/scholarships',
   path: '/scholarships',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SalaryRoute = SalaryRouteImport.update({
-  id: '/salary',
-  path: '/salary',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesRoute = ResourcesRouteImport.update({
@@ -252,7 +246,6 @@ export interface FileRoutesByFullPath {
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
-  '/salary': typeof SalaryRoute
   '/scholarships': typeof ScholarshipsRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
@@ -290,7 +283,6 @@ export interface FileRoutesByTo {
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
-  '/salary': typeof SalaryRoute
   '/scholarships': typeof ScholarshipsRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
@@ -329,7 +321,6 @@ export interface FileRoutesById {
   '/portal': typeof PortalRoute
   '/reports': typeof ReportsRoute
   '/resources': typeof ResourcesRoute
-  '/salary': typeof SalaryRoute
   '/scholarships': typeof ScholarshipsRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
@@ -369,7 +360,6 @@ export interface FileRouteTypes {
     | '/portal'
     | '/reports'
     | '/resources'
-    | '/salary'
     | '/scholarships'
     | '/security'
     | '/settings'
@@ -407,7 +397,6 @@ export interface FileRouteTypes {
     | '/portal'
     | '/reports'
     | '/resources'
-    | '/salary'
     | '/scholarships'
     | '/security'
     | '/settings'
@@ -445,7 +434,6 @@ export interface FileRouteTypes {
     | '/portal'
     | '/reports'
     | '/resources'
-    | '/salary'
     | '/scholarships'
     | '/security'
     | '/settings'
@@ -484,7 +472,6 @@ export interface RootRouteChildren {
   PortalRoute: typeof PortalRoute
   ReportsRoute: typeof ReportsRoute
   ResourcesRoute: typeof ResourcesRoute
-  SalaryRoute: typeof SalaryRoute
   ScholarshipsRoute: typeof ScholarshipsRoute
   SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
@@ -575,13 +562,6 @@ declare module '@tanstack/react-router' {
       path: '/scholarships'
       fullPath: '/scholarships'
       preLoaderRoute: typeof ScholarshipsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/salary': {
-      id: '/salary'
-      path: '/salary'
-      fullPath: '/salary'
-      preLoaderRoute: typeof SalaryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources': {
@@ -780,7 +760,6 @@ const rootRouteChildren: RootRouteChildren = {
   PortalRoute: PortalRoute,
   ReportsRoute: ReportsRoute,
   ResourcesRoute: ResourcesRoute,
-  SalaryRoute: SalaryRoute,
   ScholarshipsRoute: ScholarshipsRoute,
   SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
