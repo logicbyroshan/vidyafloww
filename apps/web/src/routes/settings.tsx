@@ -21,7 +21,6 @@ import {
   Upload,
   Shield,
   Terminal,
-  RefreshCw,
   Lock,
   UserCheck,
   Users,
@@ -264,21 +263,6 @@ function SchoolAdministrationPage() {
     });
   };
 
-  const handleTriggerBackup = () => {
-    addNotification({
-      title: isHindi ? 'क्लाउड बैकअप शुरू' : 'Cloud Backup Started',
-      description: 'Triggering AES-256 cloud snapshot to AWS S3 Mumbai. Est. time: ~2 seconds.',
-      type: 'info',
-    });
-    setTimeout(() => {
-      addNotification({
-        title: isHindi ? 'क्लाउड बैकअप पूर्ण' : 'Cloud Backup Complete',
-        description: 'Snapshot snapshot_20260907_enc.tar.gz (256 MB) successfully verified.',
-        type: 'success',
-      });
-    }, 1600);
-  };
-
   return (
     <VFPageContainer className="space-y-4 w-full">
       {/* Role-Based Access Control (RBAC) & Governance Stat Cards Bar */}
@@ -296,8 +280,8 @@ function SchoolAdministrationPage() {
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
               {isHindi
-                ? 'संस्थागत प्राधिकरण स्तर, उपयोगकर्ता भूमिकाएं, ऑडिट ट्रेल्स और क्लाउड बैकअप'
-                : 'Configured user roles, authorization hierarchy, tamper-evident audit trails, and backup security'}
+                ? 'संस्थागत प्राधिकरण स्तर, उपयोगकर्ता भूमिकाएं और ऑडिट ट्रेल्स'
+                : 'Configured user roles, authorization hierarchy, and tamper-evident audit trails'}
             </p>
           </div>
 
@@ -322,15 +306,6 @@ function SchoolAdministrationPage() {
                 {isHindi ? 'सुरक्षा व रोल्स ↗' : 'Security & Roles ↗'}
               </VFButton>
             </Link>
-            <VFButton
-              size="sm"
-              variant="outline"
-              className="h-8 px-3 text-xs font-bold rounded-[4px]"
-              leftIcon={<RefreshCw className="h-3.5 w-3.5 text-cyan-400" />}
-              onClick={handleTriggerBackup}
-            >
-              {isHindi ? 'क्लाउड बैकअप' : 'Cloud Backup'}
-            </VFButton>
           </div>
         </div>
 
@@ -632,7 +607,7 @@ function SchoolAdministrationPage() {
               className="rounded-[4px] bg-[#141414] border border-border/80 overflow-hidden flex flex-col justify-between hover:border-border transition-colors group shadow-xs"
             >
               {/* Branch Cover Header with Top Actions */}
-              <div className="relative h-28 w-full bg-[#1c1c1c] overflow-hidden">
+              <div className="relative h-48 w-full bg-[#1c1c1c] overflow-hidden">
                 <img
                   src={branch.coverUrl}
                   alt={branch.name}
