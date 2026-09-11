@@ -8,16 +8,11 @@ import {
 } from '@vidyafloww/ui';
 import {
   Shield,
-  Lock,
   ArrowLeft,
   CheckCircle2,
   Users,
-  Smartphone,
-  Globe,
   Sliders,
   Save,
-  RotateCcw,
-  Terminal,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -50,7 +45,7 @@ function SecurityManagementPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.security') + ' \u2013 VidyaFloww'; }, [t]);
+  React.useEffect(() => { document.title = (isHindi ? 'सुरक्षा व रोल्स' : 'Security & Roles') + ' – VidyaFloww'; }, [isHindi]);
 
   // Permission Matrix State
   const [permissions, setPermissions] = React.useState<RolePermission[]>(DEFAULT_PERMISSIONS);
@@ -111,47 +106,14 @@ function SecurityManagementPage() {
             </VFButton>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#141414] border border-border/80 text-xs font-mono font-bold text-foreground">
-              <Shield className="h-3.5 w-3.5 text-rose-400" />
-              <span>{isHindi ? 'सुरक्षा व भूमिका अनुमतियां' : 'Security Governance & Role Matrix'}</span>
-            </div>
-            <VFBadge variant="success" className="text-[10px] font-mono font-bold">
-              ISO 27001
-            </VFBadge>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#141414] border border-border/80 text-xs font-mono font-bold text-foreground">
+            <Shield className="h-3.5 w-3.5 text-rose-400" />
+            <span>{isHindi ? 'सुरक्षा व रोल्स' : 'Security & Roles'}</span>
           </div>
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 shrink-0 flex-wrap">
-          <Link to="/audit">
-            <VFButton
-              size="sm"
-              variant="outline"
-              className="h-8 px-3 text-xs font-bold rounded-[4px]"
-              leftIcon={<Terminal className="h-3.5 w-3.5 text-emerald-400" />}
-            >
-              {isHindi ? 'ऑडिट लॉग्स ↗' : 'Audit Logs ↗'}
-            </VFButton>
-          </Link>
-
-          <VFButton
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              setPermissions(DEFAULT_PERMISSIONS);
-              addNotification({
-                title: 'Matrix Reset',
-                description: 'Reset permissions matrix to institutional baseline.',
-                type: 'info',
-              });
-            }}
-            className="h-8 px-3 text-xs font-bold rounded-[4px]"
-            leftIcon={<RotateCcw className="h-3.5 w-3.5" />}
-          >
-            {t('action.reset')}
-          </VFButton>
-
+        <div className="flex items-center gap-2 shrink-0">
           <VFButton
             size="sm"
             onClick={handleSaveMatrix}
@@ -160,53 +122,6 @@ function SecurityManagementPage() {
           >
             {t('action.saveChanges')}
           </VFButton>
-        </div>
-      </div>
-
-      {/* 2. Top Security Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Role Tiers</span>
-            <p className="text-base font-extrabold text-foreground">5 Institutional Tiers</p>
-            <span className="text-[10px] text-emerald-400 font-semibold block">Principal Delegation Active</span>
-          </div>
-          <div className="h-9 w-9 rounded-[4px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
-            <Users className="h-4.5 w-4.5" />
-          </div>
-        </div>
-
-        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Two-Factor Auth</span>
-            <p className="text-base font-extrabold text-foreground">Enforced</p>
-            <span className="text-[10px] text-primary font-semibold block">All Admins & Principals</span>
-          </div>
-          <div className="h-9 w-9 rounded-[4px] bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
-            <Smartphone className="h-4.5 w-4.5" />
-          </div>
-        </div>
-
-        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Session Timeout</span>
-            <p className="text-base font-extrabold text-foreground">{sessionTimeout} Minutes</p>
-            <span className="text-[10px] text-blue-400 font-semibold block">Auto-disconnect Lock</span>
-          </div>
-          <div className="h-9 w-9 rounded-[4px] bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
-            <Lock className="h-4.5 w-4.5" />
-          </div>
-        </div>
-
-        <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Campus Subnet IP</span>
-            <p className="text-base font-extrabold text-foreground truncate max-w-[120px]">103.21.244.0/24</p>
-            <span className="text-[10px] text-emerald-400 font-semibold block">Whitelist Protected</span>
-          </div>
-          <div className="h-9 w-9 rounded-[4px] bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
-            <Globe className="h-4.5 w-4.5" />
-          </div>
         </div>
       </div>
 

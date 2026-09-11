@@ -7,6 +7,7 @@ import {
   VFBadge,
   VFDialog,
   VFInput,
+  VFStatCard,
 } from '@vidyafloww/ui';
 import {
   Building,
@@ -20,9 +21,11 @@ import {
   Upload,
   Shield,
   Terminal,
-  RefreshCw,
-  HardDrive,
   Lock,
+  UserCheck,
+  Users,
+  CreditCard,
+  GraduationCap,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -260,23 +263,106 @@ function SchoolAdministrationPage() {
     });
   };
 
-  const handleTriggerBackup = () => {
-    addNotification({
-      title: isHindi ? 'क्लाउड बैकअप शुरू' : 'Cloud Backup Started',
-      description: 'Triggering AES-256 cloud snapshot to AWS S3 Mumbai. Est. time: ~2 seconds.',
-      type: 'info',
-    });
-    setTimeout(() => {
-      addNotification({
-        title: isHindi ? 'क्लाउड बैकअप पूर्ण' : 'Cloud Backup Complete',
-        description: 'Snapshot snapshot_20260907_enc.tar.gz (256 MB) successfully verified.',
-        type: 'success',
-      });
-    }, 1600);
-  };
-
   return (
     <VFPageContainer className="space-y-4 w-full">
+      {/* Role-Based Access Control (RBAC) & Governance Stat Cards Bar */}
+      <div className="space-y-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1">
+          <div>
+            <div className="flex items-center gap-2">
+              <Lock className="h-4 w-4 text-rose-400" />
+              <h2 className="text-sm font-extrabold text-foreground uppercase tracking-wide">
+                {isHindi ? 'रोल-आधारित एक्सेस कंट्रोल (RBAC) व सिस्टम गवर्नेंस' : 'Role-Based Access Control (RBAC) & Governance'}
+              </h2>
+              <VFBadge variant="outline" className="text-[10px] font-bold font-mono">
+                {isHindi ? '5 सक्रिय श्रेणियां' : '5 Active Tiers'}
+              </VFBadge>
+            </div>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {isHindi
+                ? 'संस्थागत प्राधिकरण स्तर, उपयोगकर्ता भूमिकाएं और ऑडिट ट्रेल्स'
+                : 'Configured user roles, authorization hierarchy, and tamper-evident audit trails'}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap shrink-0">
+            <Link to="/audit">
+              <VFButton
+                size="sm"
+                variant="outline"
+                className="h-8 px-3 text-xs font-bold rounded-[4px]"
+                leftIcon={<Terminal className="h-3.5 w-3.5 text-emerald-400" />}
+              >
+                {isHindi ? 'लाइव ऑडिट लॉग्स ↗' : 'Audit Logs ↗'}
+              </VFButton>
+            </Link>
+            <Link to="/security">
+              <VFButton
+                size="sm"
+                variant="outline"
+                className="h-8 px-3 text-xs font-bold rounded-[4px]"
+                leftIcon={<Shield className="h-3.5 w-3.5 text-rose-400" />}
+              >
+                {isHindi ? 'सुरक्षा व रोल्स ↗' : 'Security & Roles ↗'}
+              </VFButton>
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
+          <VFStatCard
+            title={isHindi ? 'सुपर एडमिन' : 'Super Administrator'}
+            value="2 Accounts"
+            icon={<Shield className="h-5 w-5 text-rose-400" />}
+            trend="up"
+            trendLabel="Full Root"
+            description={isHindi ? 'रूट डेटाबेस, लाइसेंस व एपीआई क्रेडेंशियल' : 'Root database, license keys & API'}
+            accentColor="rose"
+            className="rounded-[4px]"
+          />
+          <VFStatCard
+            title={isHindi ? 'स्कूल प्रिंसिपल' : 'School Principal'}
+            value="2 Accounts"
+            icon={<UserCheck className="h-5 w-5 text-primary" />}
+            trend="up"
+            trendLabel="Executive"
+            description={isHindi ? 'संकाय कार्यभार, प्रवेश व परीक्षा पर्यवेक्षण' : 'Faculty workload & admissions'}
+            accentColor="primary"
+            className="rounded-[4px]"
+          />
+          <VFStatCard
+            title={isHindi ? 'फ्रंट ऑफिस / रजिस्ट्रार' : 'Front Office / Registrar'}
+            value="6 Accounts"
+            icon={<Users className="h-5 w-5 text-amber-400" />}
+            trend="neutral"
+            trendLabel="Operations"
+            description={isHindi ? 'प्रवेश पंजीकरण, रसीदें व टीसी दस्तावेज' : 'Admissions, receipts & TC generation'}
+            accentColor="amber"
+            className="rounded-[4px]"
+          />
+          <VFStatCard
+            title={isHindi ? 'अकाउंटेंट / कोषाध्यक्ष' : 'Accountant / Bursar'}
+            value="3 Accounts"
+            icon={<CreditCard className="h-5 w-5 text-emerald-400" />}
+            trend="up"
+            trendLabel="Finance"
+            description={isHindi ? 'शुल्क रजिस्टर, रिफंड व बैंक समाधान' : 'Fee registers & bank reconciliations'}
+            accentColor="emerald"
+            className="rounded-[4px]"
+          />
+          <VFStatCard
+            title={isHindi ? 'अभिभावक व छात्र' : 'Parent & Student Portal'}
+            value="2,450+"
+            icon={<GraduationCap className="h-5 w-5 text-purple-400" />}
+            trend="up"
+            trendLabel="Self-Service"
+            description={isHindi ? 'छात्र प्रोफाइल, समय सारणी व परीक्षा परिणाम' : 'Dossiers, timetable & online fees'}
+            accentColor="purple"
+            className="rounded-[4px]"
+          />
+        </div>
+      </div>
+
       {/* 1. School Profile & Identity Card */}
       <VFCard
         title={
@@ -520,24 +606,51 @@ function SchoolAdministrationPage() {
               key={branch.code}
               className="rounded-[4px] bg-[#141414] border border-border/80 overflow-hidden flex flex-col justify-between hover:border-border transition-colors group shadow-xs"
             >
-              {/* Branch Cover Header */}
-              <div className="relative h-24 w-full bg-[#1c1c1c] overflow-hidden">
+              {/* Branch Cover Header with Top Actions */}
+              <div className="relative h-48 w-full bg-[#1c1c1c] overflow-hidden">
                 <img
                   src={branch.coverUrl}
                   alt={branch.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-80"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
                 <div className="absolute top-2 left-2 flex items-center gap-1.5">
-                  <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-[2px] bg-black/70 text-white border border-white/10">
+                  <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-[2px] bg-black/70 text-white border border-white/10 backdrop-blur-xs">
                     {branch.code}
                   </span>
                   <VFBadge
                     variant={branch.status === 'Active Primary' ? 'success' : 'outline'}
-                    className="text-[10px] font-bold"
+                    className="text-[10px] font-bold backdrop-blur-xs"
                   >
                     {branch.status}
                   </VFBadge>
+                </div>
+
+                {/* Top Action Buttons (Edit & Delete on top where image is) */}
+                <div className="absolute top-2 right-2 flex items-center gap-1.5 z-10">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingCampus(branch);
+                      setNewCampus(branch);
+                      setIsAddCampusModalOpen(true);
+                    }}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-[3px] text-[11px] font-bold bg-black/75 hover:bg-black/95 text-white border border-white/20 backdrop-blur-xs transition-colors cursor-pointer shadow-xs"
+                    title={isHindi ? 'शाखा संपादित करें' : 'Edit Branch'}
+                  >
+                    <Edit2 className="h-3 w-3 text-primary" />
+                    <span>{isHindi ? 'संपादित करें' : 'Edit'}</span>
+                  </button>
+                  {branch.status !== 'Active Primary' && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCampus(branch.code)}
+                      className="p-1 rounded-[3px] bg-black/75 hover:bg-rose-600/90 text-white/80 hover:text-white border border-white/20 backdrop-blur-xs transition-colors cursor-pointer shadow-xs"
+                      title={isHindi ? 'शाखा हटाएं' : 'Delete Branch'}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -552,39 +665,17 @@ function SchoolAdministrationPage() {
 
                 <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-[#202020]">
                   <div className="p-2 rounded-[3px] bg-[#181818] border border-[#242424]">
-                    <span className="text-[10px] text-muted-foreground uppercase font-bold block">Students</span>
+                    <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                      {isHindi ? 'छात्र' : 'Students'}
+                    </span>
                     <span className="font-mono font-extrabold text-foreground">{branch.students}</span>
                   </div>
                   <div className="p-2 rounded-[3px] bg-[#181818] border border-[#242424]">
-                    <span className="text-[10px] text-muted-foreground uppercase font-bold block">Principal</span>
+                    <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+                      {isHindi ? 'प्रधानाचार्य' : 'Principal'}
+                    </span>
                     <span className="font-bold text-foreground truncate block">{branch.principal}</span>
                   </div>
-                </div>
-
-                {/* Card Actions */}
-                <div className="flex items-center justify-end gap-2 pt-1">
-                  <VFButton
-                    size="sm"
-                    variant="outline"
-                    className="h-7 px-2 text-xs rounded-[3px]"
-                    onClick={() => {
-                      setEditingCampus(branch);
-                      setNewCampus(branch);
-                      setIsAddCampusModalOpen(true);
-                    }}
-                  >
-                    Edit
-                  </VFButton>
-                  {branch.status !== 'Active Primary' && (
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteCampus(branch.code)}
-                      className="p-1.5 rounded-[3px] text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
-                      title="Remove branch"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
@@ -592,173 +683,7 @@ function SchoolAdministrationPage() {
         </div>
       </VFCard>
 
-      {/* 3. Role-Based Access Control (RBAC) & System Governance (Direct links to /audit and /security) */}
-      <VFCard
-        title={
-          <div className="flex items-center gap-2">
-            <Lock className="h-4 w-4 text-rose-400" />
-            <span>{isHindi ? 'रोल-आधारित एक्सेस कंट्रोल (RBAC) व सिस्टम गवर्नेंस' : 'Role-Based Access Control (RBAC) & System Governance'}</span>
-          </div>
-        }
-        description={
-          isHindi
-            ? 'संस्थागत प्राधिकरण स्तर, उपयोगकर्ता भूमिकाएं, ऑडिट ट्रेल्स और सुरक्षा नीतियां'
-            : 'Institutional authorization tiers, role matrices, tamper-evident audit trails, and backup security'
-        }
-        actions={
-          <div className="flex items-center gap-2 flex-wrap">
-            <Link to="/audit">
-              <VFButton
-                size="sm"
-                variant="outline"
-                className="h-8 px-3 text-xs font-bold rounded-[4px]"
-                leftIcon={<Terminal className="h-3.5 w-3.5 text-emerald-400" />}
-              >
-                {isHindi ? 'लाइव ऑडिट लॉग्स ↗' : 'Audit Logs ↗'}
-              </VFButton>
-            </Link>
-            <Link to="/security">
-              <VFButton
-                size="sm"
-                variant="outline"
-                className="h-8 px-3 text-xs font-bold rounded-[4px]"
-                leftIcon={<Shield className="h-3.5 w-3.5 text-rose-400" />}
-              >
-                {isHindi ? 'सुरक्षा व अनुमतियां ↗' : 'Security & Roles ↗'}
-              </VFButton>
-            </Link>
-            <VFButton
-              size="sm"
-              variant="outline"
-              className="h-8 px-3 text-xs font-bold rounded-[4px]"
-              leftIcon={<RefreshCw className="h-3.5 w-3.5 text-cyan-400" />}
-              onClick={handleTriggerBackup}
-            >
-              {isHindi ? 'क्लाउड बैकअप' : 'Cloud Backup'}
-            </VFButton>
-          </div>
-        }
-        className="bg-[#0d0d0d] border-border/90"
-        bodyClassName="p-4 space-y-4"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Left 2 Cols: Configured Roles & Privileges */}
-          <div className="lg:col-span-2 space-y-3">
-            <div className="pb-1 border-b border-[#202020]">
-              <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
-                {isHindi ? 'कॉन्फ़िगर किए गए उपयोगकर्ता रोल व अधिकार' : 'Configured User Roles & Authorization Hierarchy'}
-              </h4>
-            </div>
 
-            <div className="rounded-[4px] bg-[#141414] border border-[#242424] divide-y divide-[#202020]">
-              {[
-                {
-                  role: 'Super Administrator',
-                  users: '2 Accounts',
-                  access: 'Full system privileges, root database access, license keys, and API credentials',
-                  badge: 'Full Root',
-                  badgeVariant: 'danger',
-                },
-                {
-                  role: 'School Principal',
-                  users: '2 Accounts',
-                  access: 'Executive oversight: manages faculty workload, admissions approvals, student dossiers & examinations',
-                  badge: 'Executive',
-                  badgeVariant: 'primary',
-                },
-                {
-                  role: 'Front Office / Registrar',
-                  users: '6 Accounts',
-                  access: 'Admissions registration, student dossiers, fee receipts, and TC document generation',
-                  badge: 'Operations',
-                  badgeVariant: 'warning',
-                },
-                {
-                  role: 'Accountant / Bursar',
-                  users: '3 Accounts',
-                  access: 'Fee collection registers, refund receipts, expense ledgers, and bank reconciliations',
-                  badge: 'Finance',
-                  badgeVariant: 'outline',
-                },
-                {
-                  role: 'Parent & Student Portal',
-                  users: '2,450+ Accounts',
-                  access: 'View-only student dossier, timetable, report cards, notices, and online fee payments',
-                  badge: 'Self-Service',
-                  badgeVariant: 'neutral',
-                },
-              ].map((r, i) => (
-                <div key={i} className="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-extrabold text-foreground text-sm">{r.role}</p>
-                      <VFBadge variant={r.badgeVariant as any} className="text-[10px] font-bold">
-                        {r.badge}
-                      </VFBadge>
-                    </div>
-                    <p className="text-muted-foreground text-xs font-medium mt-0.5">{r.access}</p>
-                  </div>
-                  <span className="font-mono font-bold text-foreground shrink-0 bg-[#1c1c1c] px-2.5 py-1 rounded-[3px] border border-[#2c2c2c] text-xs">
-                    {r.users}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right 1 Col: Security Policies & Snapshot Telemetry */}
-          <div className="space-y-3 flex flex-col justify-between">
-            <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider pb-1 border-b border-[#202020]">
-              {isHindi ? 'सुरक्षा नीतियां व बैकअप' : 'Institutional Security & Backup'}
-            </h4>
-            <div className="space-y-2 text-xs flex-1 flex flex-col justify-between">
-              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-foreground">Two-Factor Auth (2FA)</span>
-                  <VFBadge variant="success" className="text-[10px] font-bold">Enforced</VFBadge>
-                </div>
-                <p className="text-[11px] text-muted-foreground">Mandatory for Super Admins and Principals</p>
-              </div>
-
-              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-foreground">Idle Session Timeout</span>
-                  <span className="font-mono font-bold text-primary text-xs">30 Mins</span>
-                </div>
-                <p className="text-[11px] text-muted-foreground">Auto-logout on inactive browser windows</p>
-              </div>
-
-              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-foreground">Audit Log Retention</span>
-                  <span className="font-mono font-bold text-emerald-400 text-xs">365 Days</span>
-                </div>
-                <p className="text-[11px] text-muted-foreground">Immutable SOC-2 compliant event trail</p>
-              </div>
-
-              <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 font-bold text-foreground">
-                    <HardDrive className="h-3.5 w-3.5 text-cyan-400" />
-                    <span>Cloud Backup (AWS S3)</span>
-                  </div>
-                  <VFBadge variant="outline" className="text-[10px] font-mono">ap-south-1</VFBadge>
-                </div>
-                <p className="text-[11px] text-muted-foreground">Automated AES-256 snapshot synchronized daily.</p>
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  className="w-full h-7 text-xs font-bold rounded-[3px] justify-center"
-                  leftIcon={<RefreshCw className="h-3 w-3 text-cyan-400" />}
-                  onClick={handleTriggerBackup}
-                >
-                  {isHindi ? 'नया बैकअप स्नैपशॉट बनाएं' : 'Create Snapshot Now'}
-                </VFButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </VFCard>
 
       {/* 4. Add / Edit Campus Modal */}
       <VFDialog
