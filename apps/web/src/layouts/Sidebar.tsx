@@ -29,7 +29,6 @@ import {
   Users,
   Video,
   Vote,
-  Wallet,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -89,7 +88,6 @@ const NAVIGATION_GROUPS: NavGroup[] = [
     id: 'finance-group',
     items: [
       { id: 'fees', labelKey: 'nav.fees', route: '/fees', icon: CreditCard },
-      { id: 'salary', labelKey: 'nav.salary', route: '/salary', icon: Wallet },
       { id: 'scholarships', labelKey: 'nav.scholarships', route: '/scholarships', icon: Award },
     ],
   },

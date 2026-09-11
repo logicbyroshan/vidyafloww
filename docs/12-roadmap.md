@@ -69,7 +69,7 @@
 ## Phase 5 — Fees & Finance
 
 - [x] Fees & Student Accounts Module (`/fees`)
-- [x] Staff Salary & Payroll Processing (`/salary`)
+- [x] Staff Salary & Payroll Processing (Unified into Standalone HR Subsystem: `/hr-manage`)
 - [x] Scholarship Grants & Disbursements (`/scholarships`)
 - [ ] Payment gateway integration (Razorpay / Stripe)
 - [ ] Automated fee receipt generation

@@ -165,16 +165,6 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     glowColor: 'rgba(234, 88, 12, 0.06)',
   },
   {
-    id: 'salary',
-    label: 'Staff Salary',
-    hindiLabel: 'वेतन प्रबंधन',
-    desc: 'Payroll & Payslips',
-    hindiDesc: 'पेरोल व वेतन पर्ची',
-    route: '/salary',
-    iconSrc: '/icons/3d/salary.png?v=5',
-    glowColor: 'rgba(180, 83, 9, 0.06)',
-  },
-  {
     id: 'scholarships',
     label: 'Scholarships',
     hindiLabel: 'छात्रवृत्ति',
