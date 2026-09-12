@@ -45,11 +45,11 @@ function OnlineClassesPage() {
 
   const classColumns = [
     { header: isHindi ? 'क्लास कोड' : 'Class Code', accessorKey: 'code', cell: (r: any) => <span className="font-mono font-bold text-primary">{r.code}</span> },
-    { header: isHindi ? 'सत्र शीर्षक' : 'Session Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
-    { header: isHindi ? 'शिक्षक' : 'Instructor', accessorKey: 'host' },
+    { header: isHindi ? 'सेशन टाइटल' : 'Session Title', accessorKey: 'title', cell: (r: any) => <span className="font-bold text-foreground">{r.title}</span> },
+    { header: isHindi ? 'इंस्ट्रक्टर / टीचर' : 'Instructor', accessorKey: 'host' },
     { header: isHindi ? 'शेड्यूल्ड समय' : 'Scheduled Time', accessorKey: 'time' },
     { header: isHindi ? 'प्लेटफ़ॉर्म / प्रकार' : 'Platform / Type', accessorKey: 'platform', cell: (r: any) => <VFBadge variant="outline">{r.platform}</VFBadge> },
-    { header: isHindi ? 'उपस्थित छात्र' : 'Attendees', accessorKey: 'attendees', cell: (r: any) => `${r.attendees} Students` },
+    { header: isHindi ? 'अटेंडीज' : 'Attendees', accessorKey: 'attendees', cell: (r: any) => `${r.attendees} Students` },
     { header: t('col.status'), accessorKey: 'status', cell: (r: any) => <VFBadge variant={r.status === 'Live Now' ? 'danger' : r.status === 'Upcoming' ? 'primary' : 'success'}>{r.status}</VFBadge> },
   ];
 
@@ -231,7 +231,7 @@ function OnlineClassesPage() {
     { id: 'create-class', label: isHindi ? 'ऑनलाइन क्लास बनाएं' : 'Create Online Class', icon: <Plus className="h-3.5 w-3.5" />, content: createClassContent },
     { id: 'live-classes', label: isHindi ? 'लाइव क्लासेज' : 'Live Classes', icon: <Video className="h-3.5 w-3.5 text-rose-500" />, content: liveClassesContent },
     { id: 'meeting-management', label: isHindi ? 'मीटिंग मैनेजमेंट' : 'Meeting Management', icon: <Users className="h-3.5 w-3.5" />, content: meetingManagementContent },
-    { id: 'attendance', label: isHindi ? 'ऑनलाइन उपस्थिति' : 'Online Attendance', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: attendanceContent },
+    { id: 'attendance', label: isHindi ? 'ऑनलाइन अटेंडेंस' : 'Online Attendance', icon: <CheckCircle2 className="h-3.5 w-3.5" />, content: attendanceContent },
     { id: 'class-materials', label: isHindi ? 'क्लास स्टडी मटेरियल' : 'Class Materials', icon: <Download className="h-3.5 w-3.5" />, content: classMaterialsContent },
     { id: 'content-sharing', label: isHindi ? 'स्क्रीन / कंटेंट शेयरिंग' : 'Screen/Content Sharing', icon: <Share2 className="h-3.5 w-3.5" />, content: contentSharingContent },
     { id: 'recordings', label: isHindi ? 'रिकॉर्डिंग्स' : 'Recordings', icon: <PlayCircle className="h-3.5 w-3.5" />, content: recordingsContent },

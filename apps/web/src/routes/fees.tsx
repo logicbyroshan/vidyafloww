@@ -736,7 +736,7 @@ function FeesPage() {
 
   const feeColumns = [
     {
-      header: isHindi ? 'छात्र विवरण' : 'Student & Admission No',
+      header: isHindi ? 'स्टूडेंट डिटेल्स' : 'Student & Admission No',
       accessorKey: 'studentName',
       cell: (r: FeeRecord) => (
         <div className="flex items-center gap-3">
@@ -757,7 +757,7 @@ function FeesPage() {
       ),
     },
     {
-      header: isHindi ? 'पेमेंट प्लान' : 'Payment Plan & Due Day',
+      header: isHindi ? 'पेमेंट प्लान & ड्यू डेट' : 'Payment Plan & Due Day',
       accessorKey: 'paymentPlan',
       cell: (r: FeeRecord) => (
         <div className="space-y-0.5">
@@ -766,26 +766,26 @@ function FeesPage() {
               variant={r.paymentPlan === 'Annual Full' ? 'success' : r.paymentPlan === 'Monthly Installment' ? 'primary' : 'outline'}
               className="text-[10px] font-bold rounded-md"
             >
-              {r.paymentPlan === 'Annual Full' ? (isHindi ? 'वार्षिक एकमुश्त' : r.paymentPlan) : r.paymentPlan === 'Monthly Installment' ? (isHindi ? 'मासिक किश्त' : r.paymentPlan) : r.paymentPlan}
+              {r.paymentPlan === 'Annual Full' ? (isHindi ? 'एनुअल लम्पसम' : r.paymentPlan) : r.paymentPlan === 'Monthly Installment' ? (isHindi ? 'मंथली इंस्टॉलमेंट' : r.paymentPlan) : r.paymentPlan}
             </VFBadge>
           </div>
           <p className="text-[11px] text-muted-foreground font-medium">
             {r.paymentPlan === 'Annual Full'
-              ? `₹${r.annualTuition.toLocaleString('en-IN')}/${isHindi ? 'वर्ष' : 'yr'}`
-              : `₹${r.monthlyAmount.toLocaleString('en-IN')}/${isHindi ? 'माह' : 'mo'} (${isHindi ? 'देय' : 'Due'} ${r.installmentDueDay}th)`}
+              ? `₹${r.annualTuition.toLocaleString('en-IN')}/${isHindi ? 'साल' : 'yr'}`
+              : `₹${r.monthlyAmount.toLocaleString('en-IN')}/${isHindi ? 'मंथ' : 'mo'} (${isHindi ? 'ड्यू' : 'Due'} ${r.installmentDueDay}th)`}
           </p>
         </div>
       ),
     },
     {
-      header: isHindi ? 'अगली किश्त तिथि' : 'Next Installment Due',
+      header: isHindi ? 'नेक्स्ट इंस्टॉलमेंट डेट' : 'Next Installment Due',
       accessorKey: 'nextDueDate',
       cell: (r: FeeRecord) => (
         <div className="space-y-0.5">
           <div className="flex items-center gap-1 text-xs font-semibold">
             {r.status === 'Paid' ? (
               <span className="text-emerald-400 font-bold flex items-center gap-1">
-                <CheckCircle2 className="h-3 w-3" /> {isHindi ? 'वार्षिक चुकता' : 'Annual Cleared'}
+                <CheckCircle2 className="h-3 w-3" /> {isHindi ? 'एनुअल क्लीयर' : 'Annual Cleared'}
               </span>
             ) : r.status === 'Overdue' ? (
               <span className="text-rose-400 font-bold flex items-center gap-1">
@@ -798,7 +798,7 @@ function FeesPage() {
             )}
           </div>
           <p className="text-[10px] text-muted-foreground">
-            {r.status === 'Paid' ? (isHindi ? 'कोई बकाया किश्त नहीं' : 'No pending installments') : (isHindi ? 'रियायत अवधि लागू' : 'Subject to grace period')}
+            {r.status === 'Paid' ? (isHindi ? 'कोई पेंडिंग इंस्टॉलमेंट नहीं' : 'No pending installments') : (isHindi ? 'ग्रेस पीरियड लागू' : 'Subject to grace period')}
           </p>
         </div>
       ),
@@ -822,7 +822,7 @@ function FeesPage() {
       ),
     },
     {
-      header: isHindi ? 'बकाया राशि' : 'Pending Due',
+      header: isHindi ? 'पेंडिंग ड्यू' : 'Pending Due',
       accessorKey: 'dueAmount',
       cell: (r: FeeRecord) => (
         <span
@@ -831,7 +831,7 @@ function FeesPage() {
             r.dueAmount === 0 ? 'text-emerald-400 font-black' : 'text-rose-400'
           )}
         >
-          {r.dueAmount === 0 ? (isHindi ? '₹0 (चुकता)' : '₹0 (Cleared)') : `₹${r.dueAmount.toLocaleString('en-IN')}`}
+          {r.dueAmount === 0 ? (isHindi ? '₹0 (क्लीयर)' : '₹0 (Cleared)') : `₹${r.dueAmount.toLocaleString('en-IN')}`}
         </span>
       ),
     },
@@ -843,7 +843,7 @@ function FeesPage() {
           variant={r.status === 'Paid' ? 'success' : r.status === 'Partial' ? 'warning' : 'danger'}
           className="rounded-md"
         >
-          {r.status === 'Paid' ? (isHindi ? 'भुगतान पूर्ण' : 'Paid') : r.status === 'Partial' ? (isHindi ? 'आंशिक' : 'Partial') : (isHindi ? 'अतिदेय' : 'Overdue')}
+          {r.status === 'Paid' ? (isHindi ? 'पेड' : 'Paid') : r.status === 'Partial' ? (isHindi ? 'पार्शियल' : 'Partial') : (isHindi ? 'ओवरड्यू' : 'Overdue')}
         </VFBadge>
       ),
     },
@@ -876,7 +876,7 @@ function FeesPage() {
           {r.dueAmount > 0 && (
             <button
               type="button"
-              title={isHindi ? "व्हाट्सएप भुगतान रिमाइंडर भेजें" : "Send WhatsApp Payment Reminder"}
+              title={isHindi ? "व्हाट्सएप पेमेंट रिमाइंडर भेजें" : "Send WhatsApp Payment Reminder"}
               onClick={() => handleSendIndividualReminder(r)}
               className="h-8 w-8 rounded-md bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors"
             >

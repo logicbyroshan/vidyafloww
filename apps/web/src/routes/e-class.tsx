@@ -36,7 +36,7 @@ const FEATURED_SESSIONS: OnlineSessionCard[] = [
     id: 'SESS-101',
     code: 'VIRT-101',
     title: 'Ray Optics & Lens Formula Revision',
-    hindiTitle: 'किरण प्रकाशिकी व लेंस सूत्र पुनरावृत्ति',
+    hindiTitle: 'रे ऑप्टिक्स व लेंस फॉर्मूला रिवीजन',
     subject: 'Physics',
     grade: 'Class 10-A',
     instructor: 'Dr. Sarah Connor',
@@ -48,7 +48,7 @@ const FEATURED_SESSIONS: OnlineSessionCard[] = [
     id: 'SESS-102',
     code: 'VIRT-102',
     title: 'Quadratic Polynomial Factorization',
-    hindiTitle: 'द्विघात बहुपद गुणनखंड विधि',
+    hindiTitle: 'क्वाड्रैटिक पॉलिनॉमियल्स फैक्टराइजेशन',
     subject: 'Mathematics',
     grade: 'Class 9-B',
     instructor: 'Prof. Rajesh Sharma',
@@ -60,7 +60,7 @@ const FEATURED_SESSIONS: OnlineSessionCard[] = [
     id: 'SESS-103',
     code: 'VIRT-103',
     title: 'Organic Chemistry: Alkanes & Haloalkanes',
-    hindiTitle: 'कार्बनिक रसायन: एल्केन व हैलोएल्केन',
+    hindiTitle: 'ऑर्गेनिक केमिस्ट्री: एल्केन्स व हैलोएल्केन्स',
     subject: 'Chemistry',
     grade: 'Class 12-Sci',
     instructor: 'Dr. Meenakshi Sundaram',
@@ -72,7 +72,7 @@ const FEATURED_SESSIONS: OnlineSessionCard[] = [
     id: 'SESS-104',
     code: 'VIRT-104',
     title: 'Human Physiology & Neural Coordination',
-    hindiTitle: 'मानव शरीर विज्ञान व तंत्रिका समन्वय',
+    hindiTitle: 'ह्यूमन फिजियोलॉजी व न्यूरल को-ऑर्डिनेशन',
     subject: 'Biology',
     grade: 'Class 11-Bio',
     instructor: 'Dr. Anita Desai',
@@ -124,7 +124,7 @@ function EClassOverviewPage() {
   const handleLaunchStandalone = () => {
     window.open(standaloneUrl, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: isHindi ? 'ई-कक्षा पोर्टल खोला जा रहा है' : 'Opening E-Classroom Portal',
+      title: isHindi ? 'ई-क्लास पोर्टल खोला जा रहा है' : 'Opening E-Classroom Portal',
       description: isHindi ? 'पोर्ट 8016 पर स्टैंडअलोन पोर्टल पर भेजा जा रहा है।' : 'Redirecting to dedicated e-class portal on port 8016.',
       type: 'info',
     });
@@ -137,7 +137,7 @@ function EClassOverviewPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'ई-कक्षा व लाइव क्लासरूम हब (Virtual E-Classroom)' : 'Virtual E-Classroom & Lecture Hub'}
+              {isHindi ? 'ई-क्लास व लाइव क्लासरूम हब (Virtual E-Classroom)' : 'Virtual E-Classroom & Lecture Hub'}
             </h1>
             <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
               Port: {standalonePort}
@@ -145,7 +145,7 @@ function EClassOverviewPage() {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'लाइव वीडियो कक्षाएं, इंटरएक्टिव व्हाइटबोर्ड, रिकॉर्डेड व्याख्यान और फॉर्मूला रिपॉजिटरी।'
+              ? 'लाइव वीडियो क्लासेस, इंटरएक्टिव व्हाइटबोर्ड, रिकॉर्डेड लेक्चर्स और फॉर्मूला रिपॉजिटरी।'
               : 'Live video classrooms, interactive whiteboard, lecture recording repository, and academic formulas.'}
           </p>
         </div>
@@ -166,7 +166,7 @@ function EClassOverviewPage() {
             className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'ई-कक्षा पोर्टल लॉन्च करें' : 'Launch E-Class Portal'}</span>
+            <span>{isHindi ? 'ई-क्लास पोर्टल लॉन्च करें' : 'Launch E-Class Portal'}</span>
           </VFButton>
         </div>
       </div>
@@ -175,10 +175,10 @@ function EClassOverviewPage() {
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-            {isHindi ? 'सक्रिय व आगामी वर्चुअल कक्षाएं' : 'Active & Upcoming Virtual Classroom Sessions'}
+            {isHindi ? 'एक्टिव व अपकमिंग वर्चुअल क्लासेस' : 'Active & Upcoming Virtual Classroom Sessions'}
           </h2>
           <span className="text-[11px] font-mono text-muted-foreground">
-            {FEATURED_SESSIONS.length} {isHindi ? 'कक्षाएं' : 'Sessions'}
+            {FEATURED_SESSIONS.length} {isHindi ? 'क्लासेस' : 'Sessions'}
           </span>
         </div>
 
@@ -223,7 +223,7 @@ function EClassOverviewPage() {
         title={
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'हाल ही में रिकॉर्ड किए गए व्याख्यान' : 'Recent On-Demand Recorded Lectures'}
+              {isHindi ? 'रीसेंट ऑन-डिमांड रिकॉर्डेड लेक्चर्स' : 'Recent On-Demand Recorded Lectures'}
             </span>
             <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
               HD Video Repository
@@ -232,7 +232,7 @@ function EClassOverviewPage() {
         }
         description={
           isHindi
-            ? 'कक्षावार डिजिटल व्याख्यान, व्हाइटबोर्ड नोट्स व रिवीजन सामग्री।'
+            ? 'क्लास-वाइज डिजिटल लेक्चर्स, व्हाइटबोर्ड नोट्स व रिवीजन मटीरियल।'
             : 'Class-wise digital lectures, whiteboard annotations, and formula cheat sheets.'
         }
         className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
@@ -243,7 +243,7 @@ function EClassOverviewPage() {
             onClick={handleLaunchStandalone}
             className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>{isHindi ? 'पूरा वीडियो कैटलॉग' : 'View Full Catalog'}</span>
+            <span>{isHindi ? 'फुल वीडियो कैटलॉग देखें' : 'View Full Catalog'}</span>
             <ExternalLink className="w-3 h-3" />
           </button>
         }
@@ -252,28 +252,28 @@ function EClassOverviewPage() {
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
-                <th className="py-2.5 px-3.5">{isHindi ? 'शीर्षक' : 'Lecture Title'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'कक्षा' : 'Grade'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'शिक्षक' : 'Instructor'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'अवधि' : 'Duration'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'लेक्चर टाइटल' : 'Lecture Title'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'क्लास' : 'Grade'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'इंस्ट्रक्टर' : 'Instructor'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'ड्यूरेशन' : 'Duration'}</th>
                 <th className="py-2.5 px-3.5">{isHindi ? 'व्यूज' : 'Views'}</th>
                 <th className="py-2.5 px-3.5 text-right">{isHindi ? 'एक्शन' : 'Action'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
-              {RECENT_RECORDINGS.map((rec) => (
-                <tr key={rec.id} className="hover:bg-[#141414] transition-colors">
-                  <td className="py-2.5 px-3.5 font-bold text-foreground">{rec.title}</td>
-                  <td className="py-2.5 px-3.5 text-muted-foreground">{rec.grade}</td>
-                  <td className="py-2.5 px-3.5 text-muted-foreground">{rec.instructor}</td>
-                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{rec.duration}</td>
-                  <td className="py-2.5 px-3.5 font-mono font-bold text-emerald-400">{rec.views} views</td>
+              {RECENT_RECORDINGS.map((r) => (
+                <tr key={r.id} className="hover:bg-[#141414] transition-colors">
+                  <td className="py-2.5 px-3.5 font-bold text-foreground">{r.title}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground font-mono">{r.grade}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{r.instructor}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{r.duration}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-primary font-bold">{r.views}</td>
                   <td className="py-2.5 px-3.5 text-right">
                     <button
                       onClick={handleLaunchStandalone}
-                      className="px-2 py-0.5 rounded-[3px] bg-[#181818] hover:bg-[#222222] border border-border text-[11px] font-bold text-foreground hover:text-primary transition-colors cursor-pointer"
+                      className="text-primary hover:underline text-[11px] font-bold cursor-pointer"
                     >
-                      {isHindi ? 'देखें' : 'Play'}
+                      {isHindi ? 'चलाएं' : 'Play'}
                     </button>
                   </td>
                 </tr>
@@ -283,7 +283,7 @@ function EClassOverviewPage() {
         </div>
       </VFCard>
 
-      {/* ── SESSION DETAILS MODAL ── */}
+      {/* ── SESSION MODAL ── */}
       {activeModal && (
         <VFDialog
           isOpen={Boolean(activeModal)}
@@ -293,7 +293,7 @@ function EClassOverviewPage() {
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
               <VFButton variant="outline" size="sm" onClick={() => setActiveModal(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़' : 'Close'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -302,9 +302,9 @@ function EClassOverviewPage() {
                   handleLaunchStandalone();
                 }}
                 className="font-bold"
-                leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
+                leftIcon={<PlayCircle className="w-3.5 h-3.5" />}
               >
-                {isHindi ? 'क्लास रूम में प्रवेश करें' : 'Enter Class Room'}
+                {isHindi ? 'लाइव क्लासरूम जॉइन करें' : 'Join Live Classroom'}
               </VFButton>
             </div>
           }
@@ -312,16 +312,16 @@ function EClassOverviewPage() {
           <div className="space-y-2.5 text-xs">
             <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'सत्र कोड:' : 'Session Code:'}</span>
-                <span className="font-mono font-bold text-foreground">{activeModal.code}</span>
+                <span className="text-muted-foreground">{isHindi ? 'शेड्यूल्ड टाइम:' : 'Scheduled Time:'}</span>
+                <span className="font-mono text-foreground font-bold">{activeModal.time}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'शेड्यूल्ड समय:' : 'Scheduled Time:'}</span>
-                <span className="font-mono text-foreground">{activeModal.time}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'उपस्थित छात्र:' : 'Registered Attendees:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'एनरोल्ड स्टूडेंट्स:' : 'Registered Attendees:'}</span>
                 <span className="font-bold text-emerald-400 font-mono">{activeModal.attendees} Students</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'क्लास स्टेटस:' : 'Session Status:'}</span>
+                <span className="font-bold text-primary">{activeModal.status}</span>
               </div>
             </div>
           </div>

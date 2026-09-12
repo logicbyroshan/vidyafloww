@@ -288,7 +288,7 @@ export function Sidebar() {
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
         title={t('action.signOut') + '?'}
-        description={isHindi ? 'वर्तमान सत्र समाप्त करें? आप अपने क्रेडेंशियल्स के साथ कभी भी वापस साइन इन कर सकते हैं।' : 'End your current session? You can sign back in anytime with your institutional credentials.'}
+        description={isHindi ? 'करेंट सेशन एंड करें? आप अपने क्रेडेंशियल्स के साथ कभी भी वापस साइन इन कर सकते हैं।' : 'End your current session? You can sign back in anytime with your institutional credentials.'}
         className="max-w-md"
         footerActions={
           <div className="flex items-center justify-end gap-2.5 w-full">
@@ -309,7 +309,7 @@ export function Sidebar() {
                 setIsLogoutModalOpen(false);
                 addNotification({
                   title: isHindi ? 'साइन आउट किया गया' : 'Signed Out',
-                  description: isHindi ? 'विद्याफ़्लो से सुरक्षित रूप से साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
+                  description: isHindi ? 'VidyaFloww से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
                   type: 'info',
                 });
                 navigate({ to: '/' });

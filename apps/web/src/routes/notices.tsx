@@ -559,7 +559,7 @@ function NoticesPage() {
                 { label: isHindi ? 'सभी दर्शक' : 'All Audiences', value: 'All' },
                 { label: isHindi ? 'पूरा स्कूल' : 'All School', value: 'All School' },
                 { label: isHindi ? 'अभिभावक' : 'Parents', value: 'Parents' },
-                { label: isHindi ? 'शिक्षक' : 'Teachers', value: 'Teachers' },
+                { label: isHindi ? 'टीचर्स' : 'Teachers', value: 'Teachers' },
                 { label: 'Classes 9-12', value: 'Classes 9-12' },
               ]}
               className="w-32 sm:w-36 bg-[#1a1a1a] border-border h-8 text-xs rounded-[4px]"
@@ -722,7 +722,7 @@ function NoticesPage() {
               >
                 {!step1Done ? <Lock className="h-2.5 w-2.5" /> : '2'}
               </div>
-              <span>{isHindi ? 'विवरण' : 'Content'}</span>
+              <span>{isHindi ? 'कंटेंट' : 'Content'}</span>
               {noticeTitle.trim() && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
             </button>
           </div>
@@ -782,7 +782,7 @@ function NoticesPage() {
                         <p className="text-[10px] text-muted-foreground line-clamp-1">{info.desc}</p>
                         <span className="font-mono text-[10px] font-bold text-muted-foreground">
                           {aud === 'Custom Class'
-                            ? `${activeRecipientCount} ${isHindi ? 'छात्र' : 'Students'}`
+                            ? `${activeRecipientCount} ${isHindi ? 'स्टूडेंट्स' : 'Students'}`
                             : aud === 'Individual'
                             ? `1 ${isHindi ? 'प्राप्तकर्ता' : 'Recipient'}`
                             : `${info.count.toLocaleString()} ${isHindi ? 'प्राप्तकर्ता' : 'Recipients'}`}
@@ -1060,7 +1060,7 @@ function NoticesPage() {
               <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-foreground tracking-wide block">
-                    {isHindi ? 'विवरण *' : 'Message *'}
+                    {isHindi ? 'मैसेज *' : 'Message *'}
                   </label>
                   <span className="text-[10px] text-muted-foreground font-mono">
                     {noticeContent.replace(/<[^>]*>/g, '').length} chars
@@ -1070,7 +1070,7 @@ function NoticesPage() {
                 <NoticeRichEditor
                   value={noticeContent}
                   onChange={setNoticeContent}
-                  placeholder={isHindi ? "यहाँ विवरण टाइप करें..." : "Type message..."}
+                  placeholder={isHindi ? "यहाँ मैसेज टाइप करें..." : "Type message..."}
                 />
 
                 <p className="text-[10px] text-muted-foreground flex items-center gap-1 pt-0.5">
@@ -1128,7 +1128,7 @@ function NoticesPage() {
                     />
                   ) : (
                     <p className="text-xs italic text-zinc-600">
-                      {isHindi ? 'विवरण यहाँ दिखेगा...' : 'Message preview will appear here...'}
+                      {isHindi ? 'मैसेज यहाँ दिखेगा...' : 'Message preview will appear here...'}
                     </p>
                   )}
 

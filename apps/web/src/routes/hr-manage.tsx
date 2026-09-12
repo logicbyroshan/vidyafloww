@@ -38,7 +38,7 @@ const DEPARTMENTS: DepartmentCard[] = [
   {
     id: 'dept-sec',
     name: 'Security & Campus Safety',
-    hindiName: 'सुरक्षा व परिसर सुरक्षा बल',
+    hindiName: 'सिक्योरिटी व कैंपस सेफ्टी टीम',
     head: 'Subedar R.S. Negi (Retd.)',
     totalStaff: 14,
     presentToday: 14,
@@ -48,7 +48,7 @@ const DEPARTMENTS: DepartmentCard[] = [
   {
     id: 'dept-trans',
     name: 'Fleet Drivers & Conductors',
-    hindiName: 'वाहन चालक व सहायक स्टाफ',
+    hindiName: 'फ्लीट ड्राइवर्स व कंडक्टर्स',
     head: 'Sukhwinder Singh',
     totalStaff: 16,
     presentToday: 15,
@@ -58,7 +58,7 @@ const DEPARTMENTS: DepartmentCard[] = [
   {
     id: 'dept-hk',
     name: 'Housekeeping & Maintenance',
-    hindiName: 'सफाई व परिसर रख-रखाव',
+    hindiName: 'हाउसकीपिंग व मेंटेनेंस टीम',
     head: 'Sunita Devi',
     totalStaff: 12,
     presentToday: 11,
@@ -68,7 +68,7 @@ const DEPARTMENTS: DepartmentCard[] = [
   {
     id: 'dept-warden',
     name: 'Residential Hostel Wardens',
-    hindiName: 'छात्रावास वार्डन व केयरटेकर',
+    hindiName: 'हॉस्टल वार्डन्स व केयरटेकर',
     head: 'R.K. Saxena',
     totalStaff: 6,
     presentToday: 6,
@@ -78,7 +78,7 @@ const DEPARTMENTS: DepartmentCard[] = [
   {
     id: 'dept-lab',
     name: 'Lab & IT Support Assistants',
-    hindiName: 'प्रयोगशाला व तकनीकी सहायक',
+    hindiName: 'लैब व IT सपोर्ट असिस्टेंट्स',
     head: 'Amit Verma',
     totalStaff: 6,
     presentToday: 6,
@@ -152,7 +152,7 @@ function HRManagementOverviewPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'गैर-शैक्षणिक स्टाफ व मानव संसाधन (Operational HR)' : 'Operational HR & Support Staff'}
+              {isHindi ? 'ऑपरेशनल एचआर व सपोर्ट स्टाफ (Operational HR)' : 'Operational HR & Support Staff'}
             </h1>
             <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
               Port: {standalonePort}
@@ -160,7 +160,7 @@ function HRManagementOverviewPage() {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'सुरक्षा गार्ड, चालक, वार्डन, हाउसकीपिंग व लैब सहायकों का वर्कफ़ोर्स प्रशासन।'
+              ? 'सिक्योरिटी गार्ड्स, ड्राइवर्स, वार्डन्स, हाउसकीपिंग व लैब असिस्टेंट्स का वर्कफ़ोर्स मैनेजमेंट।'
               : 'Workforce administration for security guards, drivers, wardens, housekeeping & lab assistants.'}
           </p>
         </div>
@@ -172,7 +172,7 @@ function HRManagementOverviewPage() {
             onClick={() => {
               addNotification({
                 title: isHindi ? 'मस्टर डाउनलोड हुआ' : 'Muster Downloaded',
-                description: isHindi ? 'मासिक उपस्थिति मस्टर सफलतापूर्वक डाउनलोड की गई।' : 'Monthly attendance muster downloaded successfully.',
+                description: isHindi ? 'मंथली अटेंडेंस मस्टर सफलतापूर्वक डाउनलोड किया गया।' : 'Monthly attendance muster downloaded successfully.',
                 type: 'success',
               });
             }}
@@ -196,10 +196,10 @@ function HRManagementOverviewPage() {
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-            {isHindi ? 'परिचालन विभाग व शिफ्ट स्थिति' : 'Operational Departments & Shift Status'}
+            {isHindi ? 'ऑपरेशनल डिपार्टमेंट्स व शिफ्ट स्टेटस' : 'Operational Departments & Shift Status'}
           </h2>
           <span className="text-[11px] font-mono text-muted-foreground">
-            5 {isHindi ? 'सक्रिय विंग्स' : 'Active Wings'}
+            5 {isHindi ? 'एक्टिव विंग्स' : 'Active Wings'}
           </span>
         </div>
 
@@ -223,7 +223,7 @@ function HRManagementOverviewPage() {
                           {isHindi ? dept.hindiName : dept.name}
                         </h3>
                         <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                          {isHindi ? 'प्रमुख:' : 'Head:'} {dept.head}
+                          {isHindi ? 'हेड:' : 'Head:'} {dept.head}
                         </p>
                       </div>
                     </div>
@@ -239,7 +239,7 @@ function HRManagementOverviewPage() {
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">{isHindi ? 'विवरण देखें' : 'View Details'}</span>
+                  <span className="text-muted-foreground">{isHindi ? 'डिटेल्स देखें' : 'View Details'}</span>
                   <span className="text-primary font-bold group-hover:translate-x-0.5 transition-transform">→</span>
                 </div>
               </div>
@@ -253,7 +253,7 @@ function HRManagementOverviewPage() {
         title={
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'दैनिक बायोमेट्रिक पंच लॉग्स (Live Attendance)' : 'Today\'s Biometric Attendance Punches'}
+              {isHindi ? 'डेली बायोमेट्रिक अटेंडेंस पंच लॉग्स (Live Attendance)' : 'Today\'s Biometric Attendance Punches'}
             </span>
             <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
               RFID / Face Sync
@@ -262,7 +262,7 @@ function HRManagementOverviewPage() {
         }
         description={
           isHindi
-            ? 'गेटपास और बायोमेट्रिक टर्मिनलों से प्राप्त वास्तविक समय लॉग।'
+            ? 'गेटपास और बायोमेट्रिक टर्मिनल्स से रियल-टाइम एंट्री रिकॉर्ड्स।'
             : 'Real-time entry records from institutional gatepass terminals.'
         }
         className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
@@ -273,7 +273,7 @@ function HRManagementOverviewPage() {
             onClick={() => handleLaunchHRSuite('/attendance')}
             className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>{isHindi ? 'पूरी उपस्थिति देखें' : 'Full Attendance Ledger'}</span>
+            <span>{isHindi ? 'फुल अटेंडेंस लेजर देखें' : 'Full Attendance Ledger'}</span>
             <ExternalLink className="w-3 h-3" />
           </button>
         }
@@ -282,13 +282,13 @@ function HRManagementOverviewPage() {
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
-                <th className="py-2.5 px-3.5">{isHindi ? 'कर्मचारी आईडी' : 'Emp ID'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'नाम' : 'Staff Name'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'विभाग' : 'Department'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'पद / रोल' : 'Role'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'गेट टर्मिनल' : 'Gate Location'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'समय' : 'Punch Time'}</th>
-                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'एम्प्लॉई ID' : 'Emp ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'स्टाफ नेम' : 'Staff Name'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'डिपार्टमेंट' : 'Department'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'रोल' : 'Role'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'गेट लोकेशन' : 'Gate Location'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'पंच टाइम' : 'Punch Time'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्टेटस' : 'Status'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -318,11 +318,11 @@ function HRManagementOverviewPage() {
           isOpen={Boolean(selectedDept)}
           onClose={() => setSelectedDept(null)}
           title={isHindi ? selectedDept.hindiName : selectedDept.name}
-          description={`${isHindi ? 'विभागाध्यक्ष:' : 'Department In-Charge:'} ${selectedDept.head}`}
+          description={`${isHindi ? 'डिपार्टमेंट हेड:' : 'Department In-Charge:'} ${selectedDept.head}`}
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
               <VFButton variant="outline" size="sm" onClick={() => setSelectedDept(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़' : 'Close'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -333,7 +333,7 @@ function HRManagementOverviewPage() {
                 className="font-bold"
                 leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
               >
-                {isHindi ? 'एचआर सूट में प्रबंधित करें' : 'Manage in HR Suite'}
+                {isHindi ? 'HR सूट में मैनेज करें' : 'Manage in HR Suite'}
               </VFButton>
             </div>
           }
@@ -341,15 +341,15 @@ function HRManagementOverviewPage() {
           <div className="space-y-2.5 text-xs">
             <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'कुल स्वीकृत पद:' : 'Sanctioned Posts:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'टोटल स्टाफ मेंबर्स:' : 'Sanctioned Posts:'}</span>
                 <span className="font-mono font-bold text-foreground">{selectedDept.totalStaff} Staff Members</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'आज उपस्थित:' : 'Present on Shift:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'आज प्रेजेंट ऑन शिफ्ट:' : 'Present on Shift:'}</span>
                 <span className="font-bold text-emerald-400 font-mono">{selectedDept.presentToday} Staff</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'वर्तमान कार्यभार स्थिति:' : 'Duty Rotation:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'ड्यूटी रोटेशन स्टेटस:' : 'Duty Rotation:'}</span>
                 <span className="text-foreground">{selectedDept.dutyStatus}</span>
               </div>
             </div>

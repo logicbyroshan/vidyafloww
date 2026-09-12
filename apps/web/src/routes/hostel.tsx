@@ -75,7 +75,7 @@ const RESIDENTIAL_BLOCKS = [
   {
     blockId: 'BLK-A',
     name: 'Block A · Senior Boys Wing',
-    hindiName: 'ब्लॉक A · सीनियर छात्र विंग',
+    hindiName: 'ब्लॉक A · सीनियर बॉयज विंग',
     warden: 'Prof. R.K. Saxena',
     wardenPhone: '+91 98111 00991',
     capacity: 120,
@@ -85,7 +85,7 @@ const RESIDENTIAL_BLOCKS = [
   {
     blockId: 'BLK-B',
     name: 'Block B · Junior Boys Wing',
-    hindiName: 'ब्लॉक B · जूनियर छात्र विंग',
+    hindiName: 'ब्लॉक B · जूनियर बॉयज विंग',
     warden: 'Mr. Arvind Gupta',
     wardenPhone: '+91 98111 00992',
     capacity: 100,
@@ -95,7 +95,7 @@ const RESIDENTIAL_BLOCKS = [
   {
     blockId: 'BLK-C',
     name: 'Block C · Girls Residential Wing',
-    hindiName: 'ब्लॉक C · छात्रा आवासीय विंग',
+    hindiName: 'ब्लॉक C · गर्ल्स रेजिडेंशियल विंग',
     warden: 'Dr. Sunita Narain',
     wardenPhone: '+91 98111 00993',
     capacity: 140,
@@ -117,8 +117,8 @@ function HostelOverviewPage() {
     const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: isHindi ? 'छात्रावास पोर्टल खोला जा रहा है' : 'Opening Hostel Portal',
-      description: isHindi ? 'पोर्ट 8011 पर आवासीय प्रबंधन पोर्टल पर भेजा जा रहा है।' : 'Redirecting to residential hostel portal on port 8011.',
+      title: isHindi ? 'हॉस्टल पोर्टल खोला जा रहा है' : 'Opening Hostel Portal',
+      description: isHindi ? 'पोर्ट 8011 पर रेजिडेंशियल पोर्टल पर भेजा जा रहा है।' : 'Redirecting to residential hostel portal on port 8011.',
       type: 'info',
     });
   };
@@ -130,7 +130,7 @@ function HostelOverviewPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'छात्रावास व आवासीय प्रबंधन (Residential Hostel)' : 'Residential Hostel & Dormitories'}
+              {isHindi ? 'हॉस्टल व रेजिडेंशियल मैनेजमेंट (Residential Hostel)' : 'Residential Hostel & Dormitories'}
             </h1>
             <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
               Port: {standalonePort}
@@ -138,7 +138,7 @@ function HostelOverviewPage() {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'छात्रावास कमरा आवंटन, वार्डन रोस्टर, छात्र आउटपास गेटपास व मेस प्रबंधन।'
+              ? 'हॉस्टल रूम एलोकेशन, वार्डन रोस्टर, स्टूडेंट आउटपास गेटपास व मेस मैनेजमेंट।'
               : 'Dormitory bed allocation, warden duty roster, student outpass gate passes & mess meal schedules.'}
           </p>
         </div>
@@ -150,7 +150,7 @@ function HostelOverviewPage() {
             className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'छात्रावास पोर्टल लॉन्च करें' : 'Launch Hostel Portal'}</span>
+            <span>{isHindi ? 'हॉस्टल पोर्टल लॉन्च करें' : 'Launch Hostel Portal'}</span>
           </VFButton>
         </div>
       </div>
@@ -159,10 +159,10 @@ function HostelOverviewPage() {
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-            {isHindi ? 'आवासीय ब्लॉक्स व क्षमता स्थिति' : 'Residential Dormitory Blocks & Bed Occupancy'}
+            {isHindi ? 'रेजिडेंशियल ब्लॉक्स व बेड ऑक्यूपेंसी' : 'Residential Dormitory Blocks & Bed Occupancy'}
           </h2>
           <span className="text-[11px] font-mono text-muted-foreground">
-            3 {isHindi ? 'सक्रिय विंग्स' : 'Active Blocks'}
+            3 {isHindi ? 'एक्टिव ब्लॉक्स' : 'Active Blocks'}
           </span>
         </div>
 
@@ -188,7 +188,7 @@ function HostelOverviewPage() {
                     {isHindi ? blk.hindiName : blk.name}
                   </h3>
                   <p className="text-[11px] text-muted-foreground mt-0.5">
-                    {isHindi ? 'वार्डन:' : 'Resident Warden:'} {blk.warden}
+                    {isHindi ? 'रेजिडेंट वार्डन:' : 'Resident Warden:'} {blk.warden}
                   </p>
                 </div>
               </div>
@@ -207,7 +207,7 @@ function HostelOverviewPage() {
         title={
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'सक्रिय छात्र आउटपास व गेट रजिस्टर' : 'Active Student Outpass & Gatepass Register'}
+              {isHindi ? 'एक्टिव स्टूडेंट आउटपास व गेट रजिस्टर' : 'Active Student Outpass & Gatepass Register'}
             </span>
             <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
               Real-Time Gate Logs
@@ -216,7 +216,7 @@ function HostelOverviewPage() {
         }
         description={
           isHindi
-            ? 'सप्ताहांत गृह प्रवास, चिकित्सा अनुमति व स्वीकृत आउटपास की वास्तविक स्थिति।'
+            ? 'वीकेंड होम विजिट, मेडिकल लीव व अप्रूव्ड आउटपास का रियल-टाइम स्टेटस।'
             : 'Weekend home visit leaves, guardian approvals, and return time logs.'
         }
         className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
@@ -227,7 +227,7 @@ function HostelOverviewPage() {
             onClick={() => handleLaunchHostelPortal('/outpasses')}
             className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>{isHindi ? 'पूरा आउटपास लेजर' : 'Full Outpass Ledger'}</span>
+            <span>{isHindi ? 'फुल आउटपास लेजर देखें' : 'Full Outpass Ledger'}</span>
             <ExternalLink className="w-3 h-3" />
           </button>
         }
@@ -236,13 +236,13 @@ function HostelOverviewPage() {
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
-                <th className="py-2.5 px-3.5">{isHindi ? 'पास आईडी' : 'Pass ID'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'कमरा / बेड' : 'Room & Bed'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'उद्देश्य' : 'Purpose'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'प्रस्थान' : 'Departure'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'अनुमानित वापसी' : 'Expected Return'}</th>
-                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'पास ID' : 'Pass ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'स्टूडेंट नेम' : 'Student Name'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'रूम व बेड' : 'Room & Bed'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'पर्पज' : 'Purpose'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'डिपार्चर' : 'Departure'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'एक्सपेक्टेड रिटर्न' : 'Expected Return'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्टेटस' : 'Status'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -280,7 +280,7 @@ function HostelOverviewPage() {
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
               <VFButton variant="outline" size="sm" onClick={() => setSelectedPass(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़' : 'Close'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -291,7 +291,7 @@ function HostelOverviewPage() {
                 className="font-bold"
                 leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
               >
-                {isHindi ? 'आउटपास सत्यापित करें' : 'Verify Outpass'}
+                {isHindi ? 'आउटपास वेरीफाई करें' : 'Verify Outpass'}
               </VFButton>
             </div>
           }
@@ -299,15 +299,15 @@ function HostelOverviewPage() {
           <div className="space-y-2.5 text-xs">
             <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'अभिभावक संपर्क:' : 'Guardian Mobile:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'गार्जियन मोबाइल:' : 'Guardian Mobile:'}</span>
                 <span className="font-mono text-foreground">{selectedPass.guardianPhone}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'प्रस्थान समय:' : 'Departure Time:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'डिपार्चर टाइम:' : 'Departure Time:'}</span>
                 <span className="font-mono text-foreground">{selectedPass.departure}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'वापसी समय:' : 'Return Deadline:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'रिटर्न डेडलाइन:' : 'Return Deadline:'}</span>
                 <span className="font-mono text-emerald-400 font-bold">{selectedPass.expectedReturn}</span>
               </div>
             </div>

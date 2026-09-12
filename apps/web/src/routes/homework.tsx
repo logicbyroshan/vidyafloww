@@ -217,7 +217,7 @@ function HomeworkPage() {
     setAssignDue('');
 
     addNotification({
-      title: assignStatus === 'Published' ? (isHindi ? 'होमवर्क भेजा गया' : 'Homework Sent') : 'Draft Saved',
+      title: assignStatus === 'Published' ? (isHindi ? 'होमवर्क सेंड हुआ' : 'Homework Sent') : 'Draft Saved',
       description: `${newHW.code} → ${assignClass} · ${assignSubject}`,
       type: 'success',
     });
@@ -262,7 +262,7 @@ function HomeworkPage() {
               )}
             >
               <Eye className="h-3.5 w-3.5" />
-              {isHindi ? 'समीक्षा' : 'Review'}
+              {isHindi ? 'रिव्यू करें' : 'Review'}
             </button>
           </div>
 
@@ -536,7 +536,7 @@ function HomeworkPage() {
               suppressContentEditableWarning
               id="hw-editor"
               data-placeholder={isHindi
-                ? 'यहाँ होमवर्क लिखें… प्रश्न, निर्देश, या बोर्ड की फ़ोटो पेस्ट करें।'
+                ? 'यहाँ होमवर्क टाइप करें… क्वेश्चंस, निर्देश, या बोर्ड की फ़ोटो पेस्ट करें।'
                 : 'Write homework here… questions, page refs, instructions. Paste a board photo directly.'}
               onPaste={handleEditorPaste}
               className={cn(

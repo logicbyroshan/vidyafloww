@@ -1169,7 +1169,7 @@ function AdmissionsPage() {
           <div
             onClick={() => openApplicantDrawer(r)}
             className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
-            title={isHindi ? "उम्मीदवार प्रोफाइल देखें" : "Click to view 360° Candidate Dossier"}
+            title={isHindi ? "कैंडिडेट प्रोफाइल देखें" : "Click to view 360° Candidate Dossier"}
           >
             <img src={r.avatarUrl} alt={r.name} className="w-full h-full object-cover" />
           </div>
@@ -1177,7 +1177,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: isHindi ? 'आवेदन आईडी' : 'Applicant ID',
+      header: isHindi ? 'एप्लिकेशन आईडी' : 'Applicant ID',
       accessorKey: 'applicantId',
       cell: (r: Applicant) => (
         <span className="font-mono font-bold text-foreground bg-muted/60 px-2.5 py-1 rounded-md border border-border">
@@ -1186,7 +1186,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: isHindi ? 'उम्मीदवार का नाम' : 'Candidate Name',
+      header: isHindi ? 'कैंडिडेट का नाम' : 'Candidate Name',
       accessorKey: 'name',
       cell: (r: Applicant) => (
         <div>
@@ -1201,7 +1201,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: isHindi ? 'कक्षा' : 'Applied Grade',
+      header: isHindi ? 'क्लास' : 'Applied Grade',
       accessorKey: 'appliedGrade',
       cell: (r: Applicant) => (
         <div>
@@ -1213,7 +1213,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: isHindi ? 'अभिभावक / संपर्क' : 'Guardian / Contact',
+      header: isHindi ? 'गार्जियन / कॉन्टैक्ट' : 'Guardian / Contact',
       accessorKey: 'phone',
       cell: (r: Applicant) => (
         <div>
@@ -1241,7 +1241,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: isHindi ? 'दस्तावेज़ सत्यापन' : 'Doc Verification',
+      header: isHindi ? 'डॉक्यूमेंट वेरिफिकेशन' : 'Doc Verification',
       accessorKey: 'ocrDocStatus',
       cell: (r: Applicant) => (
         <VFBadge variant={r.ocrDocStatus === 'Verified' ? 'success' : r.ocrDocStatus === 'Flagged' ? 'danger' : 'warning'}>
@@ -1250,7 +1250,7 @@ function AdmissionsPage() {
       ),
     },
     {
-      header: isHindi ? 'चरण' : 'Stage',
+      header: isHindi ? 'स्टेज' : 'Stage',
       accessorKey: 'stage',
       cell: (r: Applicant) => (
         <VFBadge variant={r.stage === 'Approved' ? 'success' : r.stage === 'Interview' ? 'warning' : 'outline'}>
@@ -1268,7 +1268,7 @@ function AdmissionsPage() {
           leftIcon={<Eye className="h-4 w-4" />}
           onClick={() => openApplicantDrawer(r)}
         >
-          {isHindi ? 'आवेदन जांचें' : 'Review Application'}
+          {isHindi ? 'एप्लिकेशन रिव्यू करें' : 'Review Application'}
         </VFButton>
       ),
     },

@@ -341,7 +341,7 @@ function ComplaintsManagementPage() {
                             onClick={() => setViewingTicket(item)}
                             className="px-3 py-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground transition-colors cursor-pointer"
                           >
-                            {isHindi ? 'विवरण' : 'Details'}
+                            {isHindi ? 'डिटेल्स' : 'Details'}
                           </button>
                         </td>
                       </tr>
@@ -466,7 +466,7 @@ function ComplaintsManagementPage() {
         isOpen={isLodgeModalOpen}
         onClose={() => setIsLodgeModalOpen(false)}
         title={isHindi ? 'नई शिकायत दर्ज करें' : 'Lodge New Institutional Grievance'}
-        description={isHindi ? 'संबंधित विभाग, प्राथमिकता व विवरण दर्ज करें' : 'Register an official stakeholder grievance with automatic SLA routing'}
+        description={isHindi ? 'डिपार्टमेंट, प्रायोरिटी और डिटेल्स एंटर करें' : 'Register an official stakeholder grievance with automatic SLA routing'}
         className="max-w-md rounded-[4px]"
         footerActions={
           <div className="flex items-center justify-end gap-2 w-full">
@@ -570,7 +570,7 @@ function ComplaintsManagementPage() {
 
           <div>
             <label className="block text-muted-foreground font-semibold mb-1">
-              {isHindi ? 'विस्तृत विवरण' : 'Detailed Description'}
+              {isHindi ? 'डिटेल्ड डिस्क्रिप्शन' : 'Detailed Description'}
             </label>
             <textarea
               rows={3}

@@ -89,7 +89,7 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
                 )}
               </h3>
               <p className="text-xs text-muted-foreground">
-                {isHindi ? 'गतिविधि व सिस्टम अलर्ट' : 'Activity & system alerts'}
+                {isHindi ? 'एक्टिविटी व सिस्टम अलर्ट्स' : 'Activity & system alerts'}
               </p>
             </div>
           </div>
@@ -108,13 +108,13 @@ export function NotificationsPanel({ isOpen, onClose }: { isOpen: boolean; onClo
               onClick={markAllNotificationsRead}
               className="text-primary hover:underline font-semibold flex items-center gap-1 text-xs cursor-pointer"
             >
-              <CheckCheck className="h-3.5 w-3.5" /> {isHindi ? 'सभी पढ़ा हुआ मार्क करें' : 'Mark all read'}
+              <CheckCheck className="h-3.5 w-3.5" /> {isHindi ? 'सब मार्क रीड करें' : 'Mark all read'}
             </button>
             <button
               onClick={clearNotifications}
               className="text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1 text-xs cursor-pointer"
             >
-              <Trash2 className="h-3.5 w-3.5" /> {isHindi ? 'सभी हटाएं' : 'Clear all'}
+              <Trash2 className="h-3.5 w-3.5" /> {isHindi ? 'सब क्लियर करें' : 'Clear all'}
             </button>
           </div>
         )}

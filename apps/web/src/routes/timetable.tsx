@@ -654,7 +654,7 @@ function TimetablePage() {
           {/* Header Row */}
           <div className="grid grid-cols-[130px_repeat(7,minmax(0,1fr))] border-b border-[#242424] bg-[#121212] shrink-0">
             <div className="p-3 font-black text-xs text-zinc-400 uppercase tracking-wider border-r border-[#242424] select-none flex items-center justify-center text-center">
-              {isHindi ? 'दिन / समय' : 'Day / Time'}
+              {isHindi ? 'डे / टाइम' : 'Day / Time'}
             </div>
             {classPeriods.map((p) => (
               <div

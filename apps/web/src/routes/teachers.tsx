@@ -892,7 +892,7 @@ function StaffPage() {
       ),
     },
     {
-      header: isHindi ? 'शिक्षक / फैकल्टी' : 'Faculty Member',
+      header: isHindi ? 'टीचर / फैकल्टी' : 'Faculty Member',
       accessorKey: 'name',
       cell: (r: StaffRecord) => (
         <div className="flex items-center gap-3.5">
@@ -921,7 +921,7 @@ function StaffPage() {
       cell: (r: StaffRecord) => <span className="text-zinc-300 font-bold text-xs">{r.department}</span>,
     },
     {
-      header: isHindi ? 'मुख्य विषय' : 'Primary Subject',
+      header: isHindi ? 'प्राइमरी सब्जेक्ट' : 'Primary Subject',
       accessorKey: 'subject',
       cell: (r: StaffRecord) => (
         <div>
@@ -935,7 +935,7 @@ function StaffPage() {
       ),
     },
     {
-      header: isHindi ? 'कक्षा मेंटर / कमरा' : 'Class Mentor / Room',
+      header: isHindi ? 'क्लास मेंटर / रूम' : 'Class Mentor / Room',
       accessorKey: 'classTeacherOf',
       cell: (r: StaffRecord) => (
         r.classTeacherOf ? (
@@ -949,7 +949,7 @@ function StaffPage() {
       ),
     },
     {
-      header: isHindi ? 'साप्ताहिक कार्यभार' : 'Weekly Load',
+      header: isHindi ? 'वीकली वर्कलोड' : 'Weekly Load',
       accessorKey: 'weeklyPeriods',
       cell: (r: StaffRecord) => (
         <div className="space-y-1">
@@ -979,7 +979,7 @@ function StaffPage() {
       accessorKey: 'status',
       cell: (r: StaffRecord) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : r.status === 'On Leave' ? 'warning' : 'default'}>
-          {r.status === 'Active' ? (isHindi ? 'सक्रिय' : r.status) : r.status === 'On Leave' ? (isHindi ? 'छुट्टी पर' : r.status) : r.status}
+          {r.status === 'Active' ? (isHindi ? 'एक्टिव' : r.status) : r.status === 'On Leave' ? (isHindi ? 'लीव पर' : r.status) : r.status}
         </VFBadge>
       ),
     },
@@ -1004,7 +1004,7 @@ function StaffPage() {
       {/* 1. TOP METRIC KPI SUMMARY CARDS */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
         <VFStatCard
-          title={isHindi ? 'कुल शिक्षक' : 'Faculty Strength'}
+          title={isHindi ? 'टोटल फैकल्टी' : 'Faculty Strength'}
           value={`${staffList.length} Teachers`}
           description="94 Teaching · 30 Operations"
           icon={<Users className="h-5 w-5" />}
@@ -1012,7 +1012,7 @@ function StaffPage() {
           trendLabel="Full Quota"
         />
         <VFStatCard
-          title={isHindi ? 'आज उपस्थित' : "Today's Present"}
+          title={isHindi ? 'आज प्रेजेंट' : "Today's Present"}
           value={`${staffList.filter((s) => s.status === 'Active').length} Present`}
           description="Institutional Coverage"
           icon={<UserCheck className="h-5 w-5" />}
@@ -1020,7 +1020,7 @@ function StaffPage() {
           trendLabel="96.8% Attendance"
         />
         <VFStatCard
-          title={isHindi ? 'औसत कार्यभार' : 'Average Load'}
+          title={isHindi ? 'एवरेज वर्कलोड' : 'Average Load'}
           value="22.8 / Wk"
           description="Balanced Teaching Hours"
           icon={<Clock className="h-5 w-5" />}

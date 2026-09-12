@@ -35,7 +35,7 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
   {
     id: 'TPL-MS-01',
     title: 'CBSE Secondary Marksheet & Tabulation',
-    hindiTitle: 'सीबीएसई माध्यमिक अंकतालिका व सारणी',
+    hindiTitle: 'सीबीएसई सेकेंडरी मार्कशीट एंड टेबुलेशन',
     category: 'marksheet',
     dimensions: '210 × 297 mm (A4)',
     dpi: 300,
@@ -47,7 +47,7 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
   {
     id: 'TPL-ID-01',
     title: 'Student Biometric PVC Smart Card',
-    hindiTitle: 'छात्र बायोमेट्रिक स्मार्ट पीवीसी पहचान पत्र',
+    hindiTitle: 'स्टूडेंट बायोमेट्रिक स्मार्ट PVC आईडी कार्ड',
     category: 'id-card',
     dimensions: '85.6 × 53.98 mm (CR80)',
     dpi: 300,
@@ -59,7 +59,7 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
   {
     id: 'TPL-ID-02',
     title: 'Faculty & Operational Staff ID Badge',
-    hindiTitle: 'शिक्षक व गैर-शैक्षणिक कर्मचारी पहचान पत्र',
+    hindiTitle: 'टीचर्स एंड स्टाफ आईडी कार्ड बैज',
     category: 'id-card',
     dimensions: '85.6 × 53.98 mm (CR80)',
     dpi: 300,
@@ -71,7 +71,7 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
   {
     id: 'TPL-CERT-01',
     title: 'Annual Sports & Academic Merit Certificate',
-    hindiTitle: 'वार्षिक खेलकूद व शैक्षणिक योग्यता प्रमाण पत्र',
+    hindiTitle: 'एनुअल स्पोर्ट्स एंड मेरिट सर्टिफिकेट',
     category: 'certificate',
     dimensions: '297 × 210 mm (A4)',
     dpi: 300,
@@ -122,8 +122,8 @@ function DesignLabOverviewPage() {
     const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: isHindi ? 'डिजाइन स्टूडियो खोला जा रहा है' : 'Opening Design Studio',
-      description: isHindi ? 'पोर्ट 8015 पर डॉक्यूमेंट डिज़ाइनर पर भेजा जा रहा है।' : 'Redirecting to visual template studio on port 8015.',
+      title: isHindi ? 'डिजाइन स्टूडियो ओपन हो रहा है' : 'Opening Design Studio',
+      description: isHindi ? 'पोर्ट 8015 पर डॉक्यूमेंट डिज़ाइनर पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to visual template studio on port 8015.',
       type: 'info',
     });
   };
@@ -135,7 +135,7 @@ function DesignLabOverviewPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'डिजाइन लैब व मुद्रण केंद्र (Design Lab & Card Studio)' : 'Design Lab & Document Publisher'}
+              {isHindi ? 'डिजाइन लैब एंड प्रिंटिंग सेंटर (Design Lab & Card Studio)' : 'Design Lab & Document Publisher'}
             </h1>
             <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
               Port: {standalonePort}
@@ -143,7 +143,7 @@ function DesignLabOverviewPage() {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'आईडी कार्ड, मार्कशीट, हॉल टिकट, प्रमाण पत्र व टीसी का विजुअल डिज़ाइन व बैच प्रिंटिंग स्टूडियो।'
+              ? 'आईडी कार्ड्स, मार्कशीट्स, एडमिट कार्ड्स, सर्टिफिकेट्स और TC का विजुअल डिज़ाइन एंड बैच प्रिंटिंग स्टूडियो।'
               : 'Visual template studio for student ID cards, report cards, admit cards, hall tickets & certificates.'}
           </p>
         </div>
@@ -164,10 +164,10 @@ function DesignLabOverviewPage() {
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-            {isHindi ? 'मानक दस्तावेज़ व कार्ड टेम्प्लेट्स' : 'Standard Document & Identity Card Presets'}
+            {isHindi ? 'स्टैंडर्ड डॉक्यूमेंट्स एंड कार्ड टेम्पलेट्स' : 'Standard Document & Identity Card Presets'}
           </h2>
           <span className="text-[11px] font-mono text-muted-foreground">
-            {TEMPLATE_PRESETS.length} {isHindi ? 'टेम्प्लेट्स' : 'Presets'}
+            {TEMPLATE_PRESETS.length} {isHindi ? 'टेम्पलेट्स' : 'Presets'}
           </span>
         </div>
 
@@ -212,7 +212,7 @@ function DesignLabOverviewPage() {
         title={
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'बैच प्रिंटिंग व एक्सपोर्ट कतार' : 'Batch Print & Document Export Queue'}
+              {isHindi ? 'बैच प्रिंटिंग एंड एक्सपोर्ट क्यू' : 'Batch Print & Document Export Queue'}
             </span>
             <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
               Vector PDF / CMYK
@@ -221,7 +221,7 @@ function DesignLabOverviewPage() {
         }
         description={
           isHindi
-            ? 'कक्षावार पीवीसी कार्ड, अंकतालिका व प्रमाण पत्र मुद्रण स्थिति।'
+            ? 'क्लास-वाइज़ PVC कार्ड्स, मार्कशीट्स और सर्टिफिकेट्स प्रिंटिंग स्टेटस।'
             : 'Recent card generation jobs, print spooler status, and high-res vector exports.'
         }
         className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
@@ -232,7 +232,7 @@ function DesignLabOverviewPage() {
             onClick={() => handleLaunchDesignStudio('/print-queue')}
             className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>{isHindi ? 'पूरी कतार देखें' : 'Full Print Spooler'}</span>
+            <span>{isHindi ? 'पूरी प्रिंट क्यू देखें' : 'Full Print Spooler'}</span>
             <ExternalLink className="w-3 h-3" />
           </button>
         }
@@ -242,11 +242,11 @@ function DesignLabOverviewPage() {
             <thead>
               <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
                 <th className="py-2.5 px-3.5">{isHindi ? 'बैच आईडी' : 'Batch ID'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'टेम्प्लेट' : 'Template'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'लक्षित समूह / मात्रा' : 'Target Group'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'टेम्पलेट' : 'Template'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'टारगेट ग्रुप / काउंट' : 'Target Group'}</th>
                 <th className="py-2.5 px-3.5">{isHindi ? 'प्रिंट फॉर्मेट' : 'Media Format'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'समय' : 'Queued At'}</th>
-                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'टाइम' : 'Queued At'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्टेटस' : 'Status'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -279,7 +279,7 @@ function DesignLabOverviewPage() {
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
               <VFButton variant="outline" size="sm" onClick={() => setSelectedTemplate(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़ करें' : 'Close'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -298,7 +298,7 @@ function DesignLabOverviewPage() {
           <div className="space-y-2.5 text-xs">
             <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'मानक अनुपालन:' : 'Compliance Standard:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'स्टैंडर्ड कंप्लायंस:' : 'Compliance Standard:'}</span>
                 <span className="font-semibold text-foreground">{selectedTemplate.compliance}</span>
               </div>
               <div className="flex justify-between">
@@ -319,3 +319,4 @@ function DesignLabOverviewPage() {
     </VFPageContainer>
   );
 }
+

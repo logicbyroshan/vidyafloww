@@ -57,9 +57,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'students',
     label: 'Students',
-    hindiLabel: 'छात्र निर्देशिका',
+    hindiLabel: 'स्टूडेंट डायरेक्टरी',
     desc: 'Directory & Profiles',
-    hindiDesc: 'दस्तावेज व प्रोफाइल',
+    hindiDesc: 'डॉक्यूमेंट्स & प्रोफाइल्स',
     route: '/students',
     iconSrc: '/icons/3d/students.png?v=5',
     glowColor: 'rgba(217, 119, 6, 0.06)',
@@ -67,9 +67,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'admissions',
     label: 'Admissions',
-    hindiLabel: 'नए प्रवेश',
+    hindiLabel: 'न्यू एडमिशन्स',
     desc: 'Intake & Verification',
-    hindiDesc: 'प्रवेश व सत्यापन',
+    hindiDesc: 'एडमिशन & वेरिफिकेशन',
     route: '/admissions',
     iconSrc: '/icons/3d/admissions.png?v=5',
     glowColor: 'rgba(225, 29, 72, 0.06)',
@@ -77,9 +77,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'attendance',
     label: 'Attendance',
-    hindiLabel: 'दैनिक उपस्थिति',
+    hindiLabel: 'डेली अटेंडेंस',
     desc: 'Roll Call & Biometrics',
-    hindiDesc: 'बायोमेट्रिक व रजिस्टर',
+    hindiDesc: 'बायोमेट्रिक & रजिस्टर',
     route: '/attendance',
     iconSrc: '/icons/3d/attendance.png?v=5',
     glowColor: 'rgba(239, 68, 68, 0.06)',
@@ -87,9 +87,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'fees',
     label: 'Payments',
-    hindiLabel: 'शुल्क व भुगतान',
+    hindiLabel: 'फीस & पेमेंट्स',
     desc: 'Dues & Receipts',
-    hindiDesc: 'शुल्क व रसीदें',
+    hindiDesc: 'फीस ड्यूज & रसीदें',
     route: '/fees',
     iconSrc: '/icons/3d/fees.png?v=5',
     glowColor: 'rgba(190, 24, 93, 0.06)',
@@ -97,9 +97,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'teachers',
     label: 'Teachers',
-    hindiLabel: 'शिक्षक व स्टाफ',
+    hindiLabel: 'टीचर्स & फैकल्टी',
     desc: 'Faculty & Roster',
-    hindiDesc: 'कार्यभार व रोस्टर',
+    hindiDesc: 'वर्कलोड & रोस्टर',
     route: '/teachers',
     iconSrc: '/icons/3d/teachers.png?v=5',
     glowColor: 'rgba(219, 39, 119, 0.06)',
@@ -107,9 +107,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'timetable',
     label: 'Timetable',
-    hindiLabel: 'समय सारणी',
+    hindiLabel: 'टाइमटेबल',
     desc: 'Schedules & Periods',
-    hindiDesc: 'पीरियड्स व रूटीन',
+    hindiDesc: 'शेड्यूल्स & पीरियड्स',
     route: '/timetable',
     iconSrc: '/icons/3d/timetable.png?v=5',
     glowColor: 'rgba(234, 88, 12, 0.06)',
@@ -119,7 +119,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     label: 'Academics',
     hindiLabel: 'अकादमिक्स',
     desc: 'Curriculum & Classes',
-    hindiDesc: 'कक्षा पाठ्यक्रम',
+    hindiDesc: 'करिकुलम & क्लासेज',
     route: '/academics',
     iconSrc: '/icons/3d/academics.png?v=5',
     glowColor: 'rgba(59, 130, 246, 0.06)',
@@ -127,9 +127,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'homework',
     label: 'Homework',
-    hindiLabel: 'गृहकार्य',
+    hindiLabel: 'होमवर्क',
     desc: 'Assignments & Review',
-    hindiDesc: 'असाइनमेंट व जांच',
+    hindiDesc: 'असाइनमेंट्स & रिव्यू',
     route: '/homework',
     iconSrc: '/icons/3d/homework.png?v=5',
     glowColor: 'rgba(217, 119, 6, 0.06)',
@@ -139,7 +139,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     label: 'E-Library',
     hindiLabel: 'ई-लाइब्रेरी',
     desc: 'Digital Books & NCERT',
-    hindiDesc: 'डिजिटल पाठ्यपुस्तकें',
+    hindiDesc: 'डिजिटल बुक्स & NCERT',
     route: '/elibrary',
     iconSrc: '/icons/3d/elibrary.png?v=5',
     glowColor: 'rgba(147, 51, 234, 0.06)',
@@ -147,9 +147,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'examinations',
     label: 'Examinations',
-    hindiLabel: 'परीक्षाएं व अंक',
+    hindiLabel: 'एग्जाम्स & रिजल्ट्स',
     desc: 'Marks & Report Cards',
-    hindiDesc: 'मार्कशीट व परिणाम',
+    hindiDesc: 'मार्क्स & रिपोर्ट कार्ड्स',
     route: '/examinations',
     iconSrc: '/icons/3d/examinations.png?v=5',
     glowColor: 'rgba(225, 29, 72, 0.06)',
@@ -157,9 +157,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'notices',
     label: 'Notices',
-    hindiLabel: 'नोटिस व परिपत्र',
+    hindiLabel: 'नोटिसेज & सर्कुलर्स',
     desc: 'Campus Broadcasts',
-    hindiDesc: 'घोषणाएं व संदेश',
+    hindiDesc: 'कैंपस ब्रॉडकास्ट्स',
     route: '/notices',
     iconSrc: '/icons/3d/notices.png?v=5',
     glowColor: 'rgba(234, 88, 12, 0.06)',
@@ -167,9 +167,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'scholarships',
     label: 'Scholarships',
-    hindiLabel: 'छात्रवृत्ति',
+    hindiLabel: 'स्कॉलरशिप्स',
     desc: 'Merit & Concessions',
-    hindiDesc: 'फीस छूट व अनुदान',
+    hindiDesc: 'मेरिट & कन्सेशन्स',
     route: '/scholarships',
     iconSrc: '/icons/3d/scholarships.png?v=5',
     glowColor: 'rgba(202, 138, 4, 0.06)',
@@ -179,7 +179,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     label: 'Reports',
     hindiLabel: 'रिपोर्ट्स',
     desc: 'Analytics & Audits',
-    hindiDesc: 'विश्लेषण व ऑडिट',
+    hindiDesc: 'एनालिटिक्स & ऑडिट्स',
     route: '/reports',
     iconSrc: '/icons/3d/reports.png?v=5',
     glowColor: 'rgba(225, 29, 72, 0.06)',
@@ -189,7 +189,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     label: 'Settings',
     hindiLabel: 'सेटिंग्स',
     desc: 'System & Branding',
-    hindiDesc: 'सत्र व विन्यास',
+    hindiDesc: 'सिस्टम & ब्रांडिंग',
     route: '/settings',
     iconSrc: '/icons/3d/settings.png?v=5',
     glowColor: 'rgba(244, 63, 94, 0.06)',
@@ -197,9 +197,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'statistics',
     label: 'Statistics',
-    hindiLabel: 'आँकड़े व विश्लेषण',
+    hindiLabel: 'स्टैटिस्टिक्स & एनालिटिक्स',
     desc: 'Analytics & Insights',
-    hindiDesc: 'रिपोर्ट व विश्लेषण',
+    hindiDesc: 'एनालिटिक्स & इनसाइट्स',
     route: '/statistics',
     iconSrc: '/icons/3d/statistics.png?v=5',
     glowColor: 'rgba(168, 85, 247, 0.06)',
@@ -209,7 +209,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     label: 'Audit Log',
     hindiLabel: 'ऑडिट लॉग',
     desc: 'Activity & Audit Trail',
-    hindiDesc: 'गतिविधि इतिहास',
+    hindiDesc: 'एक्टिविटी & ऑडिट ट्रेल',
     route: '/audit',
     iconSrc: '/icons/3d/audit.png?v=5',
     glowColor: 'rgba(99, 102, 241, 0.06)',
@@ -217,9 +217,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'security',
     label: 'Security',
-    hindiLabel: 'सुरक्षा प्रबंधन',
+    hindiLabel: 'सिक्योरिटी मैनेजमेंट',
     desc: 'Access & Permissions',
-    hindiDesc: 'पहुंच व अनुमतियां',
+    hindiDesc: 'एक्सेस & परमिशन्स',
     route: '/security',
     iconSrc: '/icons/3d/security.png?v=5',
     glowColor: 'rgba(16, 185, 129, 0.06)',
@@ -227,9 +227,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'portal',
     label: 'Parent Portal',
-    hindiLabel: 'पालक पोर्टल',
+    hindiLabel: 'पैरेंट पोर्टल',
     desc: 'Guardian Access Hub',
-    hindiDesc: 'अभिभावक पहुंच',
+    hindiDesc: 'गार्जियन एक्सेस हब',
     route: '/portal',
     iconSrc: '/icons/3d/portal.png?v=5',
     glowColor: 'rgba(6, 182, 212, 0.06)',
@@ -237,9 +237,9 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'resources',
     label: 'Resources',
-    hindiLabel: 'संसाधन भंडार',
+    hindiLabel: 'रिसोर्सेज',
     desc: 'Learning Materials',
-    hindiDesc: 'शिक्षण सामग्री',
+    hindiDesc: 'लर्निंग मटेरियल्स',
     route: '/resources',
     iconSrc: '/icons/3d/resources.png?v=5',
     glowColor: 'rgba(217, 119, 6, 0.06)',
@@ -589,7 +589,7 @@ export function DashboardPage() {
                   className="h-8 px-2.5 text-xs font-bold bg-[#141414] hover:bg-[#1f1f1f] text-foreground border-border cursor-pointer shadow-xs rounded-[4px]"
                   leftIcon={<SlidersHorizontal className="h-3.5 w-3.5 text-foreground" />}
                 >
-                  {isHindi ? 'सभी देखें' : 'View All'}
+                  {isHindi ? 'व्यू ऑल' : 'View All'}
                 </VFButton>
               </Link>
             }
@@ -656,10 +656,10 @@ export function DashboardPage() {
             </div>
             <div>
               <p className="text-xs sm:text-sm font-bold text-foreground">
-                {isHindi ? 'डैशबोर्ड कस्टमाइजेशन मोड सक्रिय' : 'Dashboard Customization Mode Active'}
+                {isHindi ? 'डैशबोर्ड कस्टमाइजेशन मोड एक्टिव' : 'Dashboard Customization Mode Active'}
               </p>
               <p className="text-[11px] text-muted-foreground">
-                {isHindi ? 'कार्ड की स्थिति बदलने के लिए कोने के ड्रैग कंट्रोल का उपयोग करें।' : 'Use the corner arrow controls on any KPI card to rearrange their position.'}
+                {isHindi ? 'कार्ड पोजीशन चेंज करने के लिए कॉर्नर ड्रैग कंट्रोल यूज़ करें।' : 'Use the corner arrow controls on any KPI card to rearrange their position.'}
               </p>
             </div>
           </div>
@@ -668,7 +668,7 @@ export function DashboardPage() {
               onClick={() => {
                 resetDashboardSectionOrder();
                 resetDashboardKpiOrder();
-                addNotification({ title: isHindi ? 'डैशबोर्ड रीसेट' : 'Dashboard Reset', description: isHindi ? 'डैशबोर्ड डिफ़ॉल्ट लेआउट पर रीसेट किया गया।' : 'Dashboard layout reset to default configuration.', type: 'info' });
+                addNotification({ title: isHindi ? 'डैशबोर्ड रीसेट' : 'Dashboard Reset', description: isHindi ? 'डैशबोर्ड डिफ़ॉल्ट लेआउट पर रीसेट हुआ।' : 'Dashboard layout reset to default configuration.', type: 'info' });
               }}
               className="text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-1.5 px-2.5 py-1.5 rounded-[3px] border border-border bg-[#121212] hover:bg-[#1a1a1a] transition-colors cursor-pointer"
             >
@@ -681,7 +681,7 @@ export function DashboardPage() {
               className="h-8 px-3.5 text-xs font-bold rounded-[4px]"
               leftIcon={<Check className="h-3.5 w-3.5" />}
             >
-              {isHindi ? 'पूरा हुआ' : 'Done Customizing'}
+              {isHindi ? 'डन' : 'Done Customizing'}
             </VFButton>
           </div>
         </div>
@@ -708,7 +708,7 @@ export function DashboardPage() {
         {/* LEFT: Quick Actions Hub — 60% width, 5 × 4 = 20 square box modules (sole height driver) */}
         <div className="w-full lg:w-[60%] flex-[60] min-w-0">
           <VFCard
-            title={isHindi ? 'त्वरित प्रबंधन कार्य (Quick Actions)' : 'Quick Management Actions'}
+            title={isHindi ? 'क्विक एक्शंस हब (Quick Actions)' : 'Quick Management Actions'}
             headerClassName="py-2.5 px-3.5 sm:px-4"
             className="border-border/80 bg-card shadow-xs rounded-[4px]"
             bodyClassName="p-2.5 sm:p-3"

@@ -781,7 +781,7 @@ function AttendancePage() {
           <div
             className="h-9 w-7.5 rounded overflow-hidden bg-muted border border-border shrink-0 shadow-2xs group cursor-pointer"
             onClick={() => openStudentDrawer(r)}
-            title={isHindi ? "छात्र उपस्थिति प्रोफाइल देखें" : "View Student Attendance Dossier"}
+            title={isHindi ? "स्टूडेंट अटेंडेंस प्रोफाइल देखें" : "View Student Attendance Dossier"}
           >
             {r.photoUrl ? (
               <img
@@ -816,7 +816,7 @@ function AttendancePage() {
       ),
     },
     {
-      header: isHindi ? 'छात्र का नाम व एडमिशन नं.' : 'Student Name & Admission ID',
+      header: isHindi ? 'स्टूडेंट का नाम & एडमिशन नं.' : 'Student Name & Admission ID',
       accessorKey: 'name',
       headerClassName: 'w-[45%] min-w-[320px]',
       className: 'w-[45%] min-w-[320px]',
@@ -825,7 +825,7 @@ function AttendancePage() {
           <div
             onClick={() => openStudentDrawer(r)}
             className="overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] bg-muted shrink-0 cursor-pointer hover:border-foreground/40 transition-colors flex items-center justify-center"
-            title={isHindi ? "उपस्थिति व छुट्टियां देखें" : "Click to view Attendance & Leaves"}
+            title={isHindi ? "अटेंडेंस & लीव्स देखें" : "Click to view Attendance & Leaves"}
           >
             <img src={r.photoUrl} alt={r.name} className="w-full h-full object-cover" />
           </div>
@@ -932,7 +932,7 @@ function AttendancePage() {
             leftIcon={<Eye className="h-3.5 w-3.5" />}
             onClick={() => openStudentDrawer(r)}
           >
-            {isHindi ? 'उपस्थिति देखें' : t('attendance.title')}
+            {isHindi ? 'अटेंडेंस देखें' : t('attendance.title')}
           </VFButton>
         </div>
       ),
@@ -944,7 +944,7 @@ function AttendancePage() {
       {/* 4 Actionable Attendance KPI Stat Cards (Fixed Top) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
         <VFStatCard
-          title={isHindi ? 'उपस्थिति दर' : 'Attendance Rate'}
+          title={isHindi ? 'अटेंडेंस रेट' : 'Attendance Rate'}
           value={`${attendanceRate}%`}
           description={`${presentCount} of ${studentRoster.length} Students Present`}
           icon={<UserCheck className="h-5 w-5" />}
@@ -952,7 +952,7 @@ function AttendancePage() {
           trendLabel="+1.8% vs last week"
         />
         <VFStatCard
-          title={isHindi ? 'अनुपस्थित छात्र' : 'Absentees'}
+          title={isHindi ? 'एब्सेंट स्टूडेंट्स' : 'Absentees'}
           value={`${absentCount} Absent`}
           description={absentCount > 0 ? `${absentCount} Pending Parent Alert` : 'All Present'}
           icon={<UserX className="h-5 w-5" />}

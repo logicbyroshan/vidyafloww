@@ -212,7 +212,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                 value={search}
                 onValueChange={setSearch}
                 className="flex-1 h-9 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground font-medium border-none focus:ring-0"
-                placeholder={isHindi ? "छात्र, शिक्षक, ERP मॉड्यूल, कार्य या शॉर्टकट खोजें..." : "Search students, faculty, ERP modules, actions, shortcuts..."}
+                placeholder={isHindi ? "स्टूडेंट, टीचर, ERP मॉड्यूल, एक्शन या शॉर्टकट सर्च करें..." : "Search students, faculty, ERP modules, actions, shortcuts..."}
                 autoFocus
               />
 
@@ -222,7 +222,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                   onClick={() => setSearch('')}
                   className="text-xs text-muted-foreground hover:text-foreground px-1.5 py-0.5 rounded bg-muted/40 cursor-pointer"
                 >
-                  {isHindi ? 'हटाएं' : 'Clear'}
+                  {isHindi ? 'क्लियर' : 'Clear'}
                 </button>
               )}
 
@@ -249,7 +249,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                 type="button"
                 onClick={onClose}
                 className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors shrink-0 ml-1 cursor-pointer"
-                title={isHindi ? "बंद करें (Esc)" : "Close search (Esc)"}
+                title={isHindi ? "क्लोज़ (Esc)" : "Close search (Esc)"}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -259,12 +259,12 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             <Command.List className="max-h-[380px] overflow-y-auto p-3 space-y-1 no-scrollbar">
               <Command.Empty className="py-12 text-center text-xs text-muted-foreground space-y-1.5">
                 <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-                <p className="font-bold text-foreground text-sm">{isHindi ? "कोई परिणाम नहीं मिला" : "No matching results found"}</p>
-                <p className="text-xs text-muted-foreground">{isHindi ? "छात्र, उपस्थिति, शिक्षक, रिपोर्ट या सेटिंग्स खोज कर देखें" : 'Try searching for "Students", "Attendance", "Teachers", "Reports" or "Settings"'}</p>
+                <p className="font-bold text-foreground text-sm">{isHindi ? "कोई रिजल्ट नहीं मिला" : "No matching results found"}</p>
+                <p className="text-xs text-muted-foreground">{isHindi ? "स्टूडेंट्स, अटेंडेंस, टीचर्स, रिपोर्ट्स या सेटिंग्स सर्च करके देखें" : 'Try searching for "Students", "Attendance", "Teachers", "Reports" or "Settings"'}</p>
               </Command.Empty>
 
               <Command.Group
-                heading={activeCategory === 'all' ? (isHindi ? 'त्वरित नेविगेशन व कार्य' : 'Quick Navigation & ERP Actions') : activeCategory === 'modules' ? (isHindi ? 'ERP मॉड्यूल' : 'ERP Modules') : (isHindi ? 'संस्थागत कार्य' : 'Institutional Actions')}
+                heading={activeCategory === 'all' ? (isHindi ? 'क्विक नेविगेशन व एक्शन्स' : 'Quick Navigation & ERP Actions') : activeCategory === 'modules' ? (isHindi ? 'ERP मॉड्यूल' : 'ERP Modules') : (isHindi ? 'इंस्टीट्यूशनल एक्शन्स' : 'Institutional Actions')}
                 className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-extrabold [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest"
               >
                 {filteredCommands.map((cmd) => {

@@ -172,7 +172,7 @@ function SchoolAdministrationPage() {
     });
     setIsEditingBranding(false);
     addNotification({
-      title: isHindi ? 'स्कूल प्रोफाइल अपडेट' : 'School Profile Updated',
+      title: isHindi ? 'स्कूल प्रोफाइल अपडेटेड' : 'School Profile Updated',
       description: `Updated profile details for "${formData.name}".`,
       type: 'success',
     });
@@ -215,7 +215,7 @@ function SchoolAdministrationPage() {
         )
       );
       addNotification({
-        title: isHindi ? 'शाखा अपडेट की गई' : 'Branch Updated',
+        title: isHindi ? 'ब्रांच अपडेट हुई' : 'Branch Updated',
         description: `Updated branch details for "${newCampus.name}".`,
         type: 'success',
       });
@@ -233,7 +233,7 @@ function SchoolAdministrationPage() {
       };
       setCampuses((prev) => [...prev, added]);
       addNotification({
-        title: isHindi ? 'नई शाखा जोड़ी गई' : 'Branch Added',
+        title: isHindi ? 'न्यू ब्रांच ऐड हुई' : 'Branch Added',
         description: `Campus branch "${newCampus.name}" successfully added.`,
         type: 'success',
       });
@@ -257,7 +257,7 @@ function SchoolAdministrationPage() {
   const handleDeleteCampus = (code: string) => {
     setCampuses((prev) => prev.filter((c) => c.code !== code));
     addNotification({
-      title: isHindi ? 'शाखा हटाई गई' : 'Branch Removed',
+      title: isHindi ? 'ब्रांच डिलीट हुई' : 'Branch Removed',
       description: `Campus branch [${code}] removed.`,
       type: 'warning',
     });
@@ -272,15 +272,15 @@ function SchoolAdministrationPage() {
             <div className="flex items-center gap-2">
               <Lock className="h-4 w-4 text-rose-400" />
               <h2 className="text-sm font-extrabold text-foreground uppercase tracking-wide">
-                {isHindi ? 'रोल-आधारित एक्सेस कंट्रोल (RBAC) व सिस्टम गवर्नेंस' : 'Role-Based Access Control (RBAC) & Governance'}
+                {isHindi ? 'रोल-बेस्ड एक्सेस कंट्रोल (RBAC) & गवर्नेंस' : 'Role-Based Access Control (RBAC) & Governance'}
               </h2>
               <VFBadge variant="outline" className="text-[10px] font-bold font-mono">
-                {isHindi ? '5 सक्रिय श्रेणियां' : '5 Active Tiers'}
+                {isHindi ? '5 एक्टिव टियर्स' : '5 Active Tiers'}
               </VFBadge>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
               {isHindi
-                ? 'संस्थागत प्राधिकरण स्तर, उपयोगकर्ता भूमिकाएं और ऑडिट ट्रेल्स'
+                ? 'इंस्टीट्यूशनल अथॉरिटी लेवल्स, यूज़र रोल्स और ऑडिट ट्रेल्स'
                 : 'Configured user roles, authorization hierarchy, and tamper-evident audit trails'}
             </p>
           </div>
@@ -303,7 +303,7 @@ function SchoolAdministrationPage() {
                 className="h-8 px-3 text-xs font-bold rounded-[4px]"
                 leftIcon={<Shield className="h-3.5 w-3.5 text-rose-400" />}
               >
-                {isHindi ? 'सुरक्षा व रोल्स ↗' : 'Security & Roles ↗'}
+                {isHindi ? 'सिक्योरिटी & रोल्स ↗' : 'Security & Roles ↗'}
               </VFButton>
             </Link>
           </div>
@@ -316,7 +316,7 @@ function SchoolAdministrationPage() {
             icon={<Shield className="h-5 w-5 text-rose-400" />}
             trend="up"
             trendLabel="Full Root"
-            description={isHindi ? 'रूट डेटाबेस, लाइसेंस व एपीआई क्रेडेंशियल' : 'Root database, license keys & API'}
+            description={isHindi ? 'रूट डेटाबेस, लाइसेंस और API क्रेडेंशियल्स' : 'Root database, license keys & API'}
             accentColor="rose"
             className="rounded-[4px]"
           />
@@ -326,7 +326,7 @@ function SchoolAdministrationPage() {
             icon={<UserCheck className="h-5 w-5 text-primary" />}
             trend="up"
             trendLabel="Executive"
-            description={isHindi ? 'संकाय कार्यभार, प्रवेश व परीक्षा पर्यवेक्षण' : 'Faculty workload & admissions'}
+            description={isHindi ? 'फैकल्टी वर्कलोड, एडमिशन और एग्जाम सुपरविजन' : 'Faculty workload & admissions'}
             accentColor="primary"
             className="rounded-[4px]"
           />
@@ -336,7 +336,7 @@ function SchoolAdministrationPage() {
             icon={<Users className="h-5 w-5 text-amber-400" />}
             trend="neutral"
             trendLabel="Operations"
-            description={isHindi ? 'प्रवेश पंजीकरण, रसीदें व टीसी दस्तावेज' : 'Admissions, receipts & TC generation'}
+            description={isHindi ? 'एडमिशन रजिस्ट्रेशन, रसीदें और TC डॉक्यूमेंट्स' : 'Admissions, receipts & TC generation'}
             accentColor="amber"
             className="rounded-[4px]"
           />
@@ -346,17 +346,17 @@ function SchoolAdministrationPage() {
             icon={<CreditCard className="h-5 w-5 text-emerald-400" />}
             trend="up"
             trendLabel="Finance"
-            description={isHindi ? 'शुल्क रजिस्टर, रिफंड व बैंक समाधान' : 'Fee registers & bank reconciliations'}
+            description={isHindi ? 'फीस रजिस्टर, रिफंड्स और बैंक रिकॉन्सिलेशन' : 'Fee registers & bank reconciliations'}
             accentColor="emerald"
             className="rounded-[4px]"
           />
           <VFStatCard
-            title={isHindi ? 'अभिभावक व छात्र' : 'Parent & Student Portal'}
+            title={isHindi ? 'पैरेंट & स्टूडेंट पोर्टल' : 'Parent & Student Portal'}
             value="2,450+"
             icon={<GraduationCap className="h-5 w-5 text-purple-400" />}
             trend="up"
             trendLabel="Self-Service"
-            description={isHindi ? 'छात्र प्रोफाइल, समय सारणी व परीक्षा परिणाम' : 'Dossiers, timetable & online fees'}
+            description={isHindi ? 'स्टूडेंट प्रोफाइल्स, टाइमटेबल और ऑनलाइन फीस' : 'Dossiers, timetable & online fees'}
             accentColor="purple"
             className="rounded-[4px]"
           />
@@ -373,7 +373,7 @@ function SchoolAdministrationPage() {
         }
         description={
           isHindi
-            ? 'स्कूल का नाम, संबद्धता, शहर और आधिकारिक पहचान'
+            ? 'स्कूल नेम, एफिलिएशन, सिटी और ऑफिशियल आइडेंटिटी'
             : 'Institution legal name, board affiliation, city, and identity details'
         }
         actions={
@@ -420,7 +420,7 @@ function SchoolAdministrationPage() {
             {/* School Name */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">
-                {isHindi ? 'स्कूल का नाम *' : 'School Name *'}
+                {isHindi ? 'स्कूल नेम *' : 'School Name *'}
               </label>
               <input
                 type="text"
@@ -439,7 +439,7 @@ function SchoolAdministrationPage() {
             {/* Board Affiliation */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">
-                {isHindi ? 'संबद्धता कोड' : 'Affiliation Code'}
+                {isHindi ? 'एफिलिएशन कोड' : 'Affiliation Code'}
               </label>
               <input
                 type="text"
@@ -457,7 +457,7 @@ function SchoolAdministrationPage() {
             {/* City */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">
-                {isHindi ? 'शहर / राज्य' : 'City / Region'}
+                {isHindi ? 'सिटी / स्टेट' : 'City / Region'}
               </label>
               <input
                 type="text"
@@ -475,7 +475,7 @@ function SchoolAdministrationPage() {
             {/* Principal Name */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">
-                {isHindi ? 'प्रधानाचार्य' : 'Principal In-Charge'}
+                {isHindi ? 'प्रिंसिपल इन-चार्ज' : 'Principal In-Charge'}
               </label>
               <input
                 type="text"
@@ -493,7 +493,7 @@ function SchoolAdministrationPage() {
             {/* Tagline */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-foreground">
-                {isHindi ? 'आदर्श वाक्य / टैगलाइन' : 'School Motto / Tagline'}
+                {isHindi ? 'स्कूल मोटो / टैगलाइन' : 'School Motto / Tagline'}
               </label>
               <input
                 type="text"
@@ -562,15 +562,15 @@ function SchoolAdministrationPage() {
         title={
           <div className="flex items-center gap-2">
             <Building className="h-4 w-4 text-blue-400" />
-            <span>{isHindi ? 'कैंपस शाखाएं' : 'Campus Branches'}</span>
+            <span>{isHindi ? 'कैंपस ब्रांचेस' : 'Campus Branches'}</span>
             <VFBadge variant="outline" className="text-xs font-mono font-bold bg-[#1a1a1a] text-foreground">
-              {campuses.length} {isHindi ? 'शाखाएं' : 'Locations'}
+              {campuses.length} {isHindi ? 'लोकेशन्स' : 'Locations'}
             </VFBadge>
           </div>
         }
         description={
           isHindi
-            ? 'कैंपस शाखाएं, स्थान, छात्र संख्या और शाखा प्रमुख का प्रबंधन'
+            ? 'कैंपस ब्रांचेस, लोकेशन, स्टूडेंट्स काउंट और ब्रांच हेड का मैनेजमेंट'
             : 'Manage campus locations, student enrollment, and branch heads'
         }
         actions={
@@ -594,7 +594,7 @@ function SchoolAdministrationPage() {
               setIsAddCampusModalOpen(true);
             }}
           >
-            {isHindi ? 'नई शाखा जोड़ें' : 'Add Campus Branch'}
+            {isHindi ? 'न्यू कैंपस ब्रांच ऐड करें' : 'Add Campus Branch'}
           </VFButton>
         }
         className="bg-[#0d0d0d] border-border/90"
@@ -636,17 +636,17 @@ function SchoolAdministrationPage() {
                       setIsAddCampusModalOpen(true);
                     }}
                     className="inline-flex items-center gap-1 px-2 py-1 rounded-[3px] text-[11px] font-bold bg-black/75 hover:bg-black/95 text-white border border-white/20 backdrop-blur-xs transition-colors cursor-pointer shadow-xs"
-                    title={isHindi ? 'शाखा संपादित करें' : 'Edit Branch'}
+                    title={isHindi ? 'ब्रांच एडिट करें' : 'Edit Branch'}
                   >
                     <Edit2 className="h-3 w-3 text-primary" />
-                    <span>{isHindi ? 'संपादित करें' : 'Edit'}</span>
+                    <span>{isHindi ? 'एडिट करें' : 'Edit'}</span>
                   </button>
                   {branch.status !== 'Active Primary' && (
                     <button
                       type="button"
                       onClick={() => handleDeleteCampus(branch.code)}
                       className="p-1 rounded-[3px] bg-black/75 hover:bg-rose-600/90 text-white/80 hover:text-white border border-white/20 backdrop-blur-xs transition-colors cursor-pointer shadow-xs"
-                      title={isHindi ? 'शाखा हटाएं' : 'Delete Branch'}
+                      title={isHindi ? 'ब्रांच डिलीट करें' : 'Delete Branch'}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -666,13 +666,13 @@ function SchoolAdministrationPage() {
                 <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-[#202020]">
                   <div className="p-2 rounded-[3px] bg-[#181818] border border-[#242424]">
                     <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                      {isHindi ? 'छात्र' : 'Students'}
+                      {isHindi ? 'स्टूडेंट्स' : 'Students'}
                     </span>
                     <span className="font-mono font-extrabold text-foreground">{branch.students}</span>
                   </div>
                   <div className="p-2 rounded-[3px] bg-[#181818] border border-[#242424]">
                     <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                      {isHindi ? 'प्रधानाचार्य' : 'Principal'}
+                      {isHindi ? 'प्रिंसिपल' : 'Principal'}
                     </span>
                     <span className="font-bold text-foreground truncate block">{branch.principal}</span>
                   </div>

@@ -40,7 +40,7 @@ const FEATURED_BOOKS: EBookCard[] = [
     id: 'BK-NCERT-M10',
     isbn: '978-93-5292-124-1',
     title: 'NCERT Mathematics Class 10',
-    hindiTitle: 'गणित — कक्षा १० पाठ्यपुस्तक',
+    hindiTitle: 'गणित (NCERT Maths) क्लास 10',
     subject: 'Mathematics',
     grade: 'Class 10',
     pages: 240,
@@ -54,7 +54,7 @@ const FEATURED_BOOKS: EBookCard[] = [
     id: 'BK-NCERT-PHY11',
     isbn: '978-93-5292-188-3',
     title: 'NCERT Physics Laboratory Manual',
-    hindiTitle: 'भौतिक विज्ञान प्रायोगिक नियमावली',
+    hindiTitle: 'फिजिक्स लैब मैनुअल (Class 11 & 12)',
     subject: 'Physics',
     grade: 'Class 11 & 12',
     pages: 180,
@@ -68,7 +68,7 @@ const FEATURED_BOOKS: EBookCard[] = [
     id: 'BK-CHEM-12',
     isbn: '978-93-5292-230-9',
     title: 'Comprehensive Chemistry Vol. 2',
-    hindiTitle: 'रसायन विज्ञान भाग २',
+    hindiTitle: 'केमिस्ट्री वॉल्यूम 2 (Class 12)',
     subject: 'Chemistry',
     grade: 'Class 12',
     pages: 360,
@@ -82,7 +82,7 @@ const FEATURED_BOOKS: EBookCard[] = [
     id: 'BK-HIST-09',
     isbn: '978-93-5292-311-5',
     title: 'Contemporary India & Democratic Politics',
-    hindiTitle: 'समकालीन भारत व लोकतांत्रिक राजनीति',
+    hindiTitle: 'कंटेम्पररी इंडिया व डेमोक्रेटिक पॉलिटिक्स',
     subject: 'Social Science',
     grade: 'Class 9',
     pages: 210,
@@ -144,7 +144,7 @@ function ELibraryOverviewPage() {
     const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: isHindi ? 'ई-पुस्तकालय खोला जा रहा है' : 'Opening E-Library',
+      title: isHindi ? 'ई-लाइब्रेरी पोर्टल खोला जा रहा है' : 'Opening E-Library',
       description: isHindi ? 'पोर्ट 8014 पर डिजिटल लाइब्रेरी पोर्टल पर भेजा जा रहा है।' : 'Redirecting to dedicated library portal on port 8014.',
       type: 'info',
     });
@@ -164,7 +164,7 @@ function ELibraryOverviewPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'डिजिटल ई-पुस्तकालय व अध्ययन केंद्र (Digital E-Library)' : 'Digital E-Library & Reading Hub'}
+              {isHindi ? 'डिजिटल ई-लाइब्रेरी व रीडिंग हब (Digital E-Library)' : 'Digital E-Library & Reading Hub'}
             </h1>
             <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
               Port: {standalonePort}
@@ -172,7 +172,7 @@ function ELibraryOverviewPage() {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'पाठ्यपुस्तक कैटलॉग, NCERT अध्ययन सामग्री, भौतिक पुस्तक इश्यू रजिस्टर व डिजिटल रीडर।'
+              ? 'टेक्स्टबुक कैटलॉग, NCERT स्टडी मटीरियल, फिजिकल बुक इश्यू रजिस्टर व DRM डिजिटल रीडर।'
               : 'K-12 textbook catalog, NCERT curriculum exemplars, physical circulation ledgers & DRM reading tools.'}
           </p>
         </div>
@@ -184,7 +184,7 @@ function ELibraryOverviewPage() {
             className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'रीडिंग पोर्टल लॉन्च करें' : 'Launch E-Library Portal'}</span>
+            <span>{isHindi ? 'ई-लाइब्रेरी पोर्टल लॉन्च करें' : 'Launch E-Library Portal'}</span>
           </VFButton>
         </div>
       </div>
@@ -194,10 +194,10 @@ function ELibraryOverviewPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'डिजिटल पाठ्यपुस्तकें व अध्ययन सामग्री' : 'Featured Digital Textbooks & Curriculum'}
+              {isHindi ? 'डिजिटल टेक्स्टबुक्स व स्टडी मटीरियल' : 'Featured Digital Textbooks & Curriculum'}
             </h2>
             <span className="text-[11px] font-mono text-muted-foreground">
-              ({filteredBooks.length} {isHindi ? 'उपलब्ध' : 'Books'})
+              ({filteredBooks.length} {isHindi ? 'बुक्स' : 'Books'})
             </span>
           </div>
 
@@ -207,7 +207,7 @@ function ELibraryOverviewPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isHindi ? 'किताब या विषय खोजें...' : 'Search title, subject, or grade...'}
+              placeholder={isHindi ? 'बुक या सब्जेक्ट सर्च करें...' : 'Search title, subject, or grade...'}
               className="w-full h-8 pl-8 pr-3 rounded-[4px] bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-zinc-400 transition-colors"
             />
           </div>
@@ -257,7 +257,7 @@ function ELibraryOverviewPage() {
         title={
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'भौतिक पुस्तक संचलन व इश्यू रजिस्टर' : 'Physical Book Circulation & Issue Ledger'}
+              {isHindi ? 'फिजिकल बुक सर्कुलेशन व इश्यू रजिस्टर' : 'Physical Book Circulation & Issue Ledger'}
             </span>
             <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
               Barcode Scanner Sync
@@ -266,7 +266,7 @@ function ELibraryOverviewPage() {
         }
         description={
           isHindi
-            ? 'छात्रों और शिक्षकों को जारी की गई किताबों का वास्तविक समय रिकॉर्ड।'
+            ? 'स्टूडेंट्स और टीचर्स को जारी की गई बुक्स का रियल-टाइम रिकॉर्ड।'
             : 'Active student loans, return schedules, and overdue tracking.'
         }
         className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
@@ -277,7 +277,7 @@ function ELibraryOverviewPage() {
             onClick={() => handleLaunchLibraryPortal('/circulation')}
             className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>{isHindi ? 'पूरा लेजर देखें' : 'Full Circulation Ledger'}</span>
+            <span>{isHindi ? 'फुल लेजर देखें' : 'Full Circulation Ledger'}</span>
             <ExternalLink className="w-3 h-3" />
           </button>
         }
@@ -286,13 +286,13 @@ function ELibraryOverviewPage() {
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
-                <th className="py-2.5 px-3.5">{isHindi ? 'इश्यू आईडी' : 'Loan ID'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'पुस्तक का नाम' : 'Book Title'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'लोन ID' : 'Loan ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'बुक टाइटल' : 'Book Title'}</th>
                 <th className="py-2.5 px-3.5">{isHindi ? 'बारकोड' : 'Barcode'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'छात्र / पाठक' : 'Borrower'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'कक्षा' : 'Class'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'अंतिम तिथि' : 'Due Date'}</th>
-                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'बोरोअर स्टूडेंट' : 'Borrower'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'क्लास' : 'Class'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'ड्यू डेट' : 'Due Date'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्टेटस' : 'Status'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -326,7 +326,7 @@ function ELibraryOverviewPage() {
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
               <VFButton variant="outline" size="sm" onClick={() => setSelectedBook(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़' : 'Close'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -337,7 +337,7 @@ function ELibraryOverviewPage() {
                 className="font-bold"
                 leftIcon={<BookMarked className="w-3.5 h-3.5" />}
               >
-                {isHindi ? 'डिजिटल रीडर में पढ़ें' : 'Open in E-Reader'}
+                {isHindi ? 'ई-रीडर में पढ़ें' : 'Open in E-Reader'}
               </VFButton>
             </div>
           }
@@ -349,11 +349,11 @@ function ELibraryOverviewPage() {
                 <span className="font-mono text-foreground">{selectedBook.isbn}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'कुल पृष्ठ:' : 'Page Count:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'टोटल पेजेस:' : 'Page Count:'}</span>
                 <span className="font-mono text-foreground">{selectedBook.pages} Pages</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'उपलब्ध प्रतियां:' : 'Available Copies:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'अवेलेबल कॉपीज:' : 'Available Copies:'}</span>
                 <span className="font-bold text-emerald-400 font-mono">{selectedBook.availableCopies} of {selectedBook.totalCopies}</span>
               </div>
             </div>
