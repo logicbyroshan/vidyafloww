@@ -561,11 +561,13 @@ function ScholarshipsPage() {
       accessorKey: 'studentName',
       cell: (r: ScholarshipRecord) => (
         <div className="flex items-center gap-3">
-          <img
-            src={r.photoUrl}
-            alt={r.studentName}
-            className="h-9 w-9 rounded-full object-cover border border-border shrink-0"
-          />
+          <div className="relative overflow-hidden rounded-[4px] border border-border/80 shadow-xs w-10 h-[50px] shrink-0 bg-muted flex items-center justify-center">
+            <img
+              src={r.photoUrl}
+              alt={r.studentName}
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div>
             <span className="font-bold text-foreground text-xs block">{r.studentName}</span>
             <span className="text-[11px] font-mono text-zinc-400 font-semibold">{r.studentAdmNo}</span>
@@ -1124,7 +1126,7 @@ function ScholarshipsPage() {
                     style={{ aspectRatio: '19.5 / 25' }}
                     className="w-full h-full object-cover"
                   />
-                  <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-[#141414] ring-2 ring-emerald-500/20" title="Active Grantee" />
+                  <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-[2px] bg-emerald-500 border-2 border-[#141414] ring-2 ring-emerald-500/20" title="Active Grantee" />
                 </div>
                 <div className="space-y-2 flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
