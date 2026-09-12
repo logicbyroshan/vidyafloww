@@ -34,6 +34,7 @@ import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
 import { Route as ElibraryRouteImport } from './routes/elibrary'
+import { Route as EClassRouteImport } from './routes/e-class'
 import { Route as DesignLabRouteImport } from './routes/design-lab'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ComplaintsRouteImport } from './routes/complaints'
@@ -168,6 +169,11 @@ const ElibraryRoute = ElibraryRouteImport.update({
   path: '/elibrary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EClassRoute = EClassRouteImport.update({
+  id: '/e-class',
+  path: '/e-class',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignLabRoute = DesignLabRouteImport.update({
   id: '/design-lab',
   path: '/design-lab',
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/design-lab': typeof DesignLabRoute
+  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/design-lab': typeof DesignLabRoute
+  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/design-lab': typeof DesignLabRoute
+  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -326,6 +335,7 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/design-lab'
+    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
@@ -361,6 +371,7 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/design-lab'
+    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
@@ -396,6 +407,7 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/design-lab'
+    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
@@ -432,6 +444,7 @@ export interface RootRouteChildren {
   ComplaintsRoute: typeof ComplaintsRoute
   DashboardRoute: typeof DashboardRoute
   DesignLabRoute: typeof DesignLabRoute
+  EClassRoute: typeof EClassRoute
   ElibraryRoute: typeof ElibraryRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
@@ -636,6 +649,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ElibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/e-class': {
+      id: '/e-class'
+      path: '/e-class'
+      fullPath: '/e-class'
+      preLoaderRoute: typeof EClassRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-lab': {
       id: '/design-lab'
       path: '/design-lab'
@@ -704,6 +724,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComplaintsRoute: ComplaintsRoute,
   DashboardRoute: DashboardRoute,
   DesignLabRoute: DesignLabRoute,
+  EClassRoute: EClassRoute,
   ElibraryRoute: ElibraryRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
