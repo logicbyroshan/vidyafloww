@@ -565,15 +565,15 @@ export function DashboardPage() {
       },
     });
 
-    // 1. Student Attendance Exceptions Section — clean natural list without internal scrollbar
+    // 1. Student Attendance Exceptions Section — clean natural list with matching padding & gaps
     if (sectionId === 'student_attendance') {
       return (
-        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col")}>
+        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col h-full")}>
           <VFCard
             title={t('attendance.studentTab')}
-            headerClassName="py-2.5 px-3.5 sm:px-4"
-            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col"
-            bodyClassName="p-3.5 sm:p-4 flex flex-col"
+            headerClassName="py-2.5 px-3 sm:px-3.5"
+            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col h-full"
+            bodyClassName="p-3 sm:p-3.5 flex flex-col flex-1"
             actions={
               <Link to="/attendance">
                 <VFButton
@@ -587,11 +587,11 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="space-y-2.5">
-              {studentExceptions.slice(0, 6).map((s, i) => (
+            <div className="space-y-2 sm:space-y-2.5 flex-1 flex flex-col justify-between">
+              {studentExceptions.slice(0, 7).map((s, i) => (
                 <div
                   key={i}
-                  className="p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-xs shrink-0"
+                  className="p-2 sm:p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-2.5 shadow-xs shrink-0"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <img
@@ -639,7 +639,7 @@ export function DashboardPage() {
   };
 
   return (
-    <VFPageContainer className="space-y-4">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* Configure Dashboard Banner (Visible when isDashboardEditMode is ON) */}
       {isDashboardEditMode && (
         <div className="p-4 rounded-[4px] border border-primary/50 bg-[#161616] text-foreground flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-200 shadow-lg">
@@ -681,20 +681,20 @@ export function DashboardPage() {
       )}
 
       {/* 1. Top KPI Stat Cards — direct page grid without outer container, matching other pages */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-3.5 lg:gap-4">
         {currentKpis.map((kpiId, index) => renderKpiCard(kpiId, index))}
       </div>
 
       {/* 2 + 3. Main Content: Quick Actions (60%) + Student Attendance (40%) */}
-      <div className="flex flex-col lg:flex-row gap-4 items-stretch">
+      <div className="flex flex-col lg:flex-row gap-3 sm:gap-3.5 lg:gap-4 items-stretch">
 
         {/* LEFT: Quick Actions Hub — 60% width, 5 × 4 = 20 square box modules (sole height driver) */}
         <div className="w-full lg:w-[60%] flex-[60] min-w-0">
           <VFCard
             title={isHindi ? 'त्वरित प्रबंधन कार्य (Quick Actions)' : 'Quick Management Actions'}
-            headerClassName="py-2.5 px-3.5 sm:px-4"
+            headerClassName="py-2.5 px-3 sm:px-3.5"
             className="border-border/80 bg-card shadow-xs rounded-[4px]"
-            bodyClassName="p-2.5 sm:p-3"
+            bodyClassName="p-3 sm:p-3.5"
             actions={
               <Link to="/shortcuts">
                 <VFButton
@@ -708,7 +708,7 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="grid grid-cols-5 gap-2 sm:gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-2.5">
               {FIXED_20_SHORTCUTS.map((action) => {
                 const Icon = action.icon;
                 return (
