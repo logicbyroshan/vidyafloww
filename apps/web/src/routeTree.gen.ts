@@ -26,7 +26,6 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as NoticesRouteImport } from './routes/notices'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
-import { Route as LiveRoomRouteImport } from './routes/live-room'
 import { Route as LicenseRouteImport } from './routes/license'
 import { Route as LearningRouteImport } from './routes/learning'
 import { Route as HrManageRouteImport } from './routes/hr-manage'
@@ -35,7 +34,6 @@ import { Route as HomeworkRouteImport } from './routes/homework'
 import { Route as FeesRouteImport } from './routes/fees'
 import { Route as ExaminationsRouteImport } from './routes/examinations'
 import { Route as ElibraryRouteImport } from './routes/elibrary'
-import { Route as EClassRouteImport } from './routes/e-class'
 import { Route as DesignLabRouteImport } from './routes/design-lab'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ComplaintsRouteImport } from './routes/complaints'
@@ -130,11 +128,6 @@ const LmsRoute = LmsRouteImport.update({
   path: '/lms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LiveRoomRoute = LiveRoomRouteImport.update({
-  id: '/live-room',
-  path: '/live-room',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LicenseRoute = LicenseRouteImport.update({
   id: '/license',
   path: '/license',
@@ -173,11 +166,6 @@ const ExaminationsRoute = ExaminationsRouteImport.update({
 const ElibraryRoute = ElibraryRouteImport.update({
   id: '/elibrary',
   path: '/elibrary',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EClassRoute = EClassRouteImport.update({
-  id: '/e-class',
-  path: '/e-class',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesignLabRoute = DesignLabRouteImport.update({
@@ -230,7 +218,6 @@ export interface FileRoutesByFullPath {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/design-lab': typeof DesignLabRoute
-  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -239,7 +226,6 @@ export interface FileRoutesByFullPath {
   '/hr-manage': typeof HrManageRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
-  '/live-room': typeof LiveRoomRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -267,7 +253,6 @@ export interface FileRoutesByTo {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/design-lab': typeof DesignLabRoute
-  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -276,7 +261,6 @@ export interface FileRoutesByTo {
   '/hr-manage': typeof HrManageRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
-  '/live-room': typeof LiveRoomRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -305,7 +289,6 @@ export interface FileRoutesById {
   '/complaints': typeof ComplaintsRoute
   '/dashboard': typeof DashboardRoute
   '/design-lab': typeof DesignLabRoute
-  '/e-class': typeof EClassRoute
   '/elibrary': typeof ElibraryRoute
   '/examinations': typeof ExaminationsRoute
   '/fees': typeof FeesRoute
@@ -314,7 +297,6 @@ export interface FileRoutesById {
   '/hr-manage': typeof HrManageRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
-  '/live-room': typeof LiveRoomRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -344,7 +326,6 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/design-lab'
-    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
@@ -353,7 +334,6 @@ export interface FileRouteTypes {
     | '/hr-manage'
     | '/learning'
     | '/license'
-    | '/live-room'
     | '/lms'
     | '/login'
     | '/notices'
@@ -381,7 +361,6 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/design-lab'
-    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
@@ -390,7 +369,6 @@ export interface FileRouteTypes {
     | '/hr-manage'
     | '/learning'
     | '/license'
-    | '/live-room'
     | '/lms'
     | '/login'
     | '/notices'
@@ -418,7 +396,6 @@ export interface FileRouteTypes {
     | '/complaints'
     | '/dashboard'
     | '/design-lab'
-    | '/e-class'
     | '/elibrary'
     | '/examinations'
     | '/fees'
@@ -427,7 +404,6 @@ export interface FileRouteTypes {
     | '/hr-manage'
     | '/learning'
     | '/license'
-    | '/live-room'
     | '/lms'
     | '/login'
     | '/notices'
@@ -456,7 +432,6 @@ export interface RootRouteChildren {
   ComplaintsRoute: typeof ComplaintsRoute
   DashboardRoute: typeof DashboardRoute
   DesignLabRoute: typeof DesignLabRoute
-  EClassRoute: typeof EClassRoute
   ElibraryRoute: typeof ElibraryRoute
   ExaminationsRoute: typeof ExaminationsRoute
   FeesRoute: typeof FeesRoute
@@ -465,7 +440,6 @@ export interface RootRouteChildren {
   HrManageRoute: typeof HrManageRoute
   LearningRoute: typeof LearningRoute
   LicenseRoute: typeof LicenseRoute
-  LiveRoomRoute: typeof LiveRoomRoute
   LmsRoute: typeof LmsRoute
   LoginRoute: typeof LoginRoute
   NoticesRoute: typeof NoticesRoute
@@ -606,13 +580,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LmsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/live-room': {
-      id: '/live-room'
-      path: '/live-room'
-      fullPath: '/live-room'
-      preLoaderRoute: typeof LiveRoomRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/license': {
       id: '/license'
       path: '/license'
@@ -667,13 +634,6 @@ declare module '@tanstack/react-router' {
       path: '/elibrary'
       fullPath: '/elibrary'
       preLoaderRoute: typeof ElibraryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/e-class': {
-      id: '/e-class'
-      path: '/e-class'
-      fullPath: '/e-class'
-      preLoaderRoute: typeof EClassRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/design-lab': {
@@ -744,7 +704,6 @@ const rootRouteChildren: RootRouteChildren = {
   ComplaintsRoute: ComplaintsRoute,
   DashboardRoute: DashboardRoute,
   DesignLabRoute: DesignLabRoute,
-  EClassRoute: EClassRoute,
   ElibraryRoute: ElibraryRoute,
   ExaminationsRoute: ExaminationsRoute,
   FeesRoute: FeesRoute,
@@ -753,7 +712,6 @@ const rootRouteChildren: RootRouteChildren = {
   HrManageRoute: HrManageRoute,
   LearningRoute: LearningRoute,
   LicenseRoute: LicenseRoute,
-  LiveRoomRoute: LiveRoomRoute,
   LmsRoute: LmsRoute,
   LoginRoute: LoginRoute,
   NoticesRoute: NoticesRoute,

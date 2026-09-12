@@ -27,7 +27,6 @@ import {
   UserCheck,
   UserPlus,
   Users,
-  Video,
   Vote,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
@@ -71,7 +70,6 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'academics', labelKey: 'nav.academics', route: '/academics', icon: School },
       { id: 'teaching', labelKey: 'nav.teaching', route: '/teaching', icon: BookOpenCheck },
       { id: 'homework', labelKey: 'nav.homework', route: '/homework', icon: BookMarked },
-      { id: 'eclass', labelKey: 'nav.eclass', route: '/e-class', icon: Video },
       { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
       { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
       { id: 'designlab', labelKey: 'nav.designLab', route: '/design-lab', icon: Palette },

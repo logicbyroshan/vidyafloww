@@ -203,8 +203,7 @@ export function AppShell() {
   const isFullScreenPage =
     location.pathname === '/login' ||
     location.pathname === '/signup' ||
-    location.pathname === '/forgot-password' ||
-    location.pathname.startsWith('/live-room');
+    location.pathname === '/forgot-password';
 
   if (isFullScreenPage) {
     return (
