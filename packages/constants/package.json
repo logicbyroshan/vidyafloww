@@ -1,7 +1,7 @@
 {
-  "name": "@vidyafloww/constants",
+  "name": "@vidyamaxx/constants",
   "version": "0.1.0",
-  "description": "VidyaFloww application-wide constants",
+  "description": "VidyaMaxx application-wide constants",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

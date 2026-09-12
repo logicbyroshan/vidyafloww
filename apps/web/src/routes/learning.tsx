@@ -9,7 +9,7 @@ import {
   VFCard,
   VFTabs,
   VFBadge,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   BookOpen,
   Clock,

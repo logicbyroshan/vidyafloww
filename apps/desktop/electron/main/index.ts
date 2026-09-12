@@ -1,5 +1,5 @@
 /**
- * VidyaFloww Desktop — Electron Main Process Entry
+ * VidyaMaxx Desktop — Electron Main Process Entry
  *
  * This is the main process entry point for the Electron app.
  * It creates the BrowserWindow and handles application lifecycle events.

@@ -41,11 +41,11 @@ export interface MapBusRoute {
   stops: BusStop[];
 }
 
-// VidyaFloww Central Campus Landmark Coordinates
+// VidyaMaxx Central Campus Landmark Coordinates
 export const CAMPUS_COORDS = {
   lat: 28.6925,
   lng: 77.2090,
-  name: 'VidyaFloww Central Campus',
+  name: 'VidyaMaxx Central Campus',
 };
 
 // Tile Providers
@@ -352,7 +352,7 @@ export function LiveTransportMap({
         })}
       </svg>
 
-      {/* ── CENTRAL VIDYAFLOWW CAMPUS LANDMARK ── */}
+      {/* ── CENTRAL VIDYAMAXX CAMPUS LANDMARK ── */}
       <div
         style={{
           position: 'absolute',
@@ -370,7 +370,7 @@ export function LiveTransportMap({
         </div>
         <div className="mt-1 px-2 py-0.5 rounded-[3px] bg-black/90 border border-amber-400/60 shadow-xl flex items-center gap-1 text-[9.5px] font-mono font-bold text-amber-300 whitespace-nowrap">
           <span>🏫</span>
-          <span>VIDYAFLOWW CAMPUS</span>
+          <span>VIDYAMAXX CAMPUS</span>
         </div>
       </div>
 
@@ -594,7 +594,7 @@ export function LiveTransportMap({
           <button
             onClick={handleRecenterCampus}
             className="p-2 hover:bg-[#222222] text-zinc-300 hover:text-white cursor-pointer transition-colors"
-            title="Recenter on VidyaFloww Campus"
+            title="Recenter on VidyaMaxx Campus"
           >
             <Crosshair className="w-3.5 h-3.5 text-amber-400" />
           </button>

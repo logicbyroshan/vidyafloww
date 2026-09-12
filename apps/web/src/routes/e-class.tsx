@@ -5,7 +5,7 @@ import {
   VFButton,
   VFCard,
   VFDialog,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   ExternalLink,
   Play,

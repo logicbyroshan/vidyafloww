@@ -1,6 +1,6 @@
 /**
- * @vidyafloww/types
- * Shared TypeScript type definitions for the VidyaFloww ecosystem.
+ * @vidyamaxx/types
+ * Shared TypeScript type definitions for the VidyaMaxx ecosystem.
  */
 
 // Common & Utility

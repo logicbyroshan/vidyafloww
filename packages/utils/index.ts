@@ -1,5 +1,5 @@
 /**
- * @vidyafloww/utils
+ * @vidyamaxx/utils
  */
 
 export * from './src/index';

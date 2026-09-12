@@ -50,19 +50,19 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.0.0
         version: 5.101.2(react@19.2.7)
-      '@vidyafloww/api':
+      '@vidyamaxx/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@vidyafloww/hooks':
+      '@vidyamaxx/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@vidyafloww/types':
+      '@vidyamaxx/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@vidyafloww/ui':
+      '@vidyamaxx/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@vidyafloww/utils':
+      '@vidyamaxx/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       electron-updater:
@@ -114,16 +114,16 @@ importers:
 
   apps/landing:
     dependencies:
-      '@vidyafloww/constants':
+      '@vidyamaxx/constants':
         specifier: workspace:*
         version: link:../../packages/constants
-      '@vidyafloww/types':
+      '@vidyamaxx/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@vidyafloww/ui':
+      '@vidyamaxx/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@vidyafloww/utils':
+      '@vidyamaxx/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       clsx:
@@ -184,19 +184,19 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.0.0
         version: 5.101.2(react@18.3.1)
-      '@vidyafloww/api':
+      '@vidyamaxx/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@vidyafloww/constants':
+      '@vidyamaxx/constants':
         specifier: workspace:*
         version: link:../../packages/constants
-      '@vidyafloww/types':
+      '@vidyamaxx/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@vidyafloww/utils':
+      '@vidyamaxx/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@vidyafloww/validation':
+      '@vidyamaxx/validation':
         specifier: workspace:*
         version: link:../../packages/validation
       expo:
@@ -248,22 +248,22 @@ importers:
       '@types/jszip':
         specifier: ^3.4.1
         version: 3.4.1
-      '@vidyafloww/api':
+      '@vidyamaxx/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@vidyafloww/hooks':
+      '@vidyamaxx/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
-      '@vidyafloww/types':
+      '@vidyamaxx/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@vidyafloww/ui':
+      '@vidyamaxx/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@vidyafloww/utils':
+      '@vidyamaxx/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@vidyafloww/validation':
+      '@vidyamaxx/validation':
         specifier: workspace:*
         version: link:../../packages/validation
       class-variance-authority:

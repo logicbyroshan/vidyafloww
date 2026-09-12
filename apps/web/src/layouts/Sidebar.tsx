@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
-import { cn, VFAvatar, VFDialog, VFButton } from '@vidyafloww/ui';
+import { cn, VFAvatar, VFDialog, VFButton } from '@vidyamaxx/ui';
 import {
   Award,
   BarChart3,
@@ -139,7 +139,7 @@ export function Sidebar() {
       >
         {/* Logo: strictly centered when collapsed at x = 34px */}
         <div className="h-8 w-8 min-w-[32px] shrink-0 flex items-center justify-center overflow-hidden">
-          <img src="/logo.png" alt="VidyaFloww Logo" className="h-8 w-8 object-contain" />
+          <img src="/logo.png" alt="VidyaMaxx Logo" className="h-8 w-8 object-contain" />
         </div>
 
         {/* Brand text: CSS-only fade + collapse */}
@@ -153,7 +153,7 @@ export function Sidebar() {
           }}
         >
           <span className="text-[17px] font-black tracking-tight leading-none text-foreground">
-            Vidya<span className="text-primary">Floww</span>
+            Vidya<span className="text-primary">Maxx</span>
           </span>
           <span className="text-[9px] text-muted-foreground font-bold tracking-wider uppercase mt-[3px]">
             {t('page.settings')} &amp; Management
@@ -274,7 +274,7 @@ export function Sidebar() {
                 e.stopPropagation();
                 setIsLogoutModalOpen(true);
               }}
-              title="Sign Out of VidyaFloww"
+              title="Sign Out of VidyaMaxx"
               className="text-muted-foreground hover:text-rose-400 p-1.5 rounded-md hover:bg-[#1f1f1f] transition-colors duration-200 shrink-0 cursor-pointer"
             >
               <LogOut className="h-4 w-4" />
@@ -309,7 +309,7 @@ export function Sidebar() {
                 setIsLogoutModalOpen(false);
                 addNotification({
                   title: isHindi ? 'साइन आउट किया गया' : 'Signed Out',
-                  description: isHindi ? 'VidyaFloww से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaFloww.',
+                  description: isHindi ? 'VidyaMaxx से सफलतापूर्वक साइन आउट हो गए।' : 'Safely signed out of VidyaMaxx.',
                   type: 'info',
                 });
                 navigate({ to: '/' });

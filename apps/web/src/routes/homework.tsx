@@ -12,7 +12,7 @@ import {
   VFTableHeaderCell,
   VFTableCell,
   cn,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   Plus,
   Download,
@@ -127,7 +127,7 @@ function HomeworkPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'होमवर्क' : 'Homework') + ' – VidyaFloww';
+    document.title = (isHindi ? 'होमवर्क' : 'Homework') + ' – VidyaMaxx';
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'assign' | 'review'>('assign');

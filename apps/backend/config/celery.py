@@ -1,5 +1,5 @@
 """
-VidyaFloww Celery Configuration
+VidyaMaxx Celery Configuration
 
 Configures the Celery application for asynchronous task processing.
 All task modules are auto-discovered from installed Django apps.
@@ -11,7 +11,7 @@ from celery import Celery
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
 
-app = Celery("vidyafloww")
+app = Celery("vidyamaxx")
 
 app.config_from_object("django.conf:settings", namespace="CELERY")
 

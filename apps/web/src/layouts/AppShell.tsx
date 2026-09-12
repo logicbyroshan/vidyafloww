@@ -7,7 +7,7 @@ import { CommandPalette } from './CommandPalette';
 import { NotificationsPanel } from './NotificationsPanel';
 import { ToastContainer } from './ToastContainer';
 import { useGlobalStore, initTheme } from '../stores/globalStore';
-import { VFPage } from '@vidyafloww/ui';
+import { VFPage } from '@vidyamaxx/ui';
 import { Monitor, Smartphone, Laptop, ArrowRight } from 'lucide-react';
 
 function SmallScreenBlocker() {
@@ -49,7 +49,7 @@ function SmallScreenBlocker() {
           Desktop Required
         </h1>
         <p className="text-base text-muted-foreground mt-3 leading-relaxed">
-          VidyaFloww Command Portal is built exclusively for desktop screens. Your current viewport is too narrow to display it correctly.
+          VidyaMaxx Command Portal is built exclusively for desktop screens. Your current viewport is too narrow to display it correctly.
         </p>
 
         {/* Requirement card */}
@@ -79,7 +79,7 @@ function SmallScreenBlocker() {
           <div>
             <p className="text-sm font-semibold text-foreground">Need mobile access?</p>
             <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-              Download the VidyaFloww Mobile App for iOS & Android — full feature parity for parents, students and teachers on the go.
+              Download the VidyaMaxx Mobile App for iOS & Android — full feature parity for parents, students and teachers on the go.
             </p>
           </div>
         </div>
@@ -138,11 +138,11 @@ export function AppShell() {
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
 
-  // Dynamic Browser Tab Title: VidyaFloww@{schoolProfile.name} - {pageName}
+  // Dynamic Browser Tab Title: VidyaMaxx@{schoolProfile.name} - {pageName}
   React.useEffect(() => {
     const pageName = ROUTE_PAGE_NAMES[location.pathname] || 'Dashboard';
-    const schoolName = schoolProfile?.name || 'VidyaFloww International Academy';
-    document.title = `VidyaFloww@${schoolName} - ${pageName}`;
+    const schoolName = schoolProfile?.name || 'VidyaMaxx International Academy';
+    document.title = `VidyaMaxx@${schoolName} - ${pageName}`;
   }, [location.pathname, schoolProfile?.name]);
 
   // Scroll to top on route change
@@ -174,12 +174,12 @@ export function AppShell() {
   React.useEffect(() => {
     initTheme();
     // Only display the welcome notification immediately after an explicit user login
-    const justLoggedIn = sessionStorage.getItem('vidyafloww_just_logged_in');
+    const justLoggedIn = sessionStorage.getItem('vidyamaxx_just_logged_in');
     if (justLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/forgot-password') {
-      sessionStorage.removeItem('vidyafloww_just_logged_in');
+      sessionStorage.removeItem('vidyamaxx_just_logged_in');
       const timer = setTimeout(() => {
         addNotification({
-          title: 'Welcome to VidyaFloww',
+          title: 'Welcome to VidyaMaxx',
           description: 'Your enterprise school management platform is ready.',
           type: 'info',
         });

@@ -1,6 +1,6 @@
-# @vidyafloww/mobile
+# @vidyamaxx/mobile
 
-React Native / Expo mobile application for VidyaFloww — Enterprise School Management Platform.
+React Native / Expo mobile application for VidyaMaxx — Enterprise School Management Platform.
 
 ## Tech Stack
 
@@ -14,7 +14,7 @@ React Native / Expo mobile application for VidyaFloww — Enterprise School Mana
 
 ```bash
 # From the monorepo root
-pnpm dev --filter=@vidyafloww/mobile
+pnpm dev --filter=@vidyamaxx/mobile
 
 # Or from this directory
 pnpm dev

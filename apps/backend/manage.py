@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-VidyaFloww Django Management Utility.
+VidyaMaxx Django Management Utility.
 """
 
 import os

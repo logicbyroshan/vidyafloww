@@ -1,7 +1,7 @@
 /**
- * @vidyafloww/api
+ * @vidyamaxx/api
  *
- * Typed HTTP client for the VidyaFloww backend API.
+ * Typed HTTP client for the VidyaMaxx backend API.
  *
  * Provides:
  * - Pre-configured Axios instance with interceptors
@@ -10,7 +10,7 @@
  * - Error normalization
  *
  * @example
- * import { apiClient } from '@vidyafloww/api';
+ * import { apiClient } from '@vidyamaxx/api';
  *
  * const students = await apiClient.get('/students/');
  */

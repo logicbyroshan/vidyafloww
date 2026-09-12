@@ -6,7 +6,7 @@ import {
   VFBadge,
   VFStatCard,
   VFButton,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   Users,
   UserCheck,
@@ -31,7 +31,7 @@ function StatisticsPage() {
   const isHindi = lang === 'hi';
 
   useEffect(() => {
-    document.title = t('page.statistics') + ' – VidyaFloww';
+    document.title = t('page.statistics') + ' – VidyaMaxx';
   }, [t]);
 
   // Intake & Attendance Trajectory Data

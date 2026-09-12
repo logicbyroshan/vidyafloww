@@ -13,7 +13,7 @@ import {
   VFTableBody,
   VFTableRow,
   VFTableCell,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   ArrowLeft,
   Search,
@@ -83,7 +83,7 @@ function AuditLogPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.audit') + ' – VidyaFloww'; }, [t]);
+  React.useEffect(() => { document.title = t('page.audit') + ' – VidyaMaxx'; }, [t]);
 
   // Filters State
   const [searchQuery, setSearchQuery] = React.useState('');

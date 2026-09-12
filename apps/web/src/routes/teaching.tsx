@@ -8,7 +8,7 @@ import {
   VFCard,
   VFBadge,
   VFDialog,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   BookOpenCheck,
   Clock,
@@ -99,7 +99,7 @@ function TeachingPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'टीचिंग' : 'Teaching') + ' – VidyaFloww';
+    document.title = (isHindi ? 'टीचिंग' : 'Teaching') + ' – VidyaMaxx';
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'classes' | 'planner'>('classes');

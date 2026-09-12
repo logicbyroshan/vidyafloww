@@ -1,5 +1,5 @@
 """
-VidyaFloww Django Settings — Testing Environment
+VidyaMaxx Django Settings — Testing Environment
 
 Overrides base settings for automated testing.
 Uses fast password hasher, in-memory cache, and synchronous Celery.

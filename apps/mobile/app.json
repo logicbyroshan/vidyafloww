@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "VidyaFloww",
-    "slug": "vidyafloww",
+    "name": "VidyaMaxx",
+    "slug": "vidyamaxx",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "vidyafloww",
+    "scheme": "vidyamaxx",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
@@ -18,14 +18,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.vidyafloww.app"
+      "bundleIdentifier": "com.vidyamaxx.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#1a1a2e"
       },
-      "package": "com.vidyafloww.app"
+      "package": "com.vidyamaxx.app"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
