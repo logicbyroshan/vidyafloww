@@ -1431,11 +1431,11 @@ function AcademicsPage() {
   ];
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ──────────────────────────────────────────────────────────────────────────
           SINGLE UNIFIED HEADER TOOLBAR
           ────────────────────────────────────────────────────────────────────────── */}
-      <div className="p-2.5 sm:p-3 rounded-[4px] bg-[#141414] border border-border/80 flex items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="sticky top-0 z-20 p-2.5 sm:p-3 rounded-[4px] bg-[#141414]/95 backdrop-blur-md border border-border/80 flex items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: Class Selector + View Switcher */}
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Class Selector Dropdown */}
@@ -1517,7 +1517,7 @@ function AcademicsPage() {
           SUB-VIEW 2: CLASS OVERVIEW, SECTION-WISE PERIOD ALLOCATIONS & MILESTONES
           ────────────────────────────────────────────────────────────────────────── */}
       {activeView === 'overview' && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-3.5 lg:gap-4">
           {/* Active Sections in Selected Class & Section-Wise Subject Period Allocation */}
           <VFCard
             title={`${currentClassProfile.className} ${isHindi ? 'सेक्शन्स' : 'Sections'}`}
@@ -1540,7 +1540,7 @@ function AcademicsPage() {
                 return (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-[4px] bg-[#181818] border border-border/80 space-y-3"
+                    className="p-3 sm:p-3.5 rounded-[4px] bg-[#181818] border border-border/80 space-y-3"
                   >
                     {/* Section Header (Duplicate Update Button Removed!) */}
                     <div className="flex flex-wrap justify-between items-center gap-2 pb-2 border-b border-border/60">
@@ -1631,10 +1631,10 @@ function AcademicsPage() {
               <VFButton
                 size="sm"
                 onClick={handleOpenAddMilestone}
-                className="h-7 px-2 text-xs font-bold rounded-[3px] shadow-xs"
+                className="h-7 px-2.5 text-xs font-bold rounded-[3px] shadow-xs"
                 leftIcon={<Plus className="h-3 w-3" />}
               >
-                {isHindi ? '+ न्यू माइलस्टोन' : '+ Milestone'}
+                {isHindi ? 'न्यू माइलस्टोन' : 'Milestone'}
               </VFButton>
             }
           >

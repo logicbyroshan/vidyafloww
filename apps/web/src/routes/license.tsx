@@ -126,7 +126,7 @@ function LicenseManagementPage() {
   };
 
   return (
-    <VFPageContainer className="space-y-4 w-full">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Subscription Status & Early Payment Hero Banner */}
       <VFCard
         className="bg-[#0d0d0d] border-border/90"

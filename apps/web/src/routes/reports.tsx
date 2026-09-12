@@ -574,7 +574,7 @@ function ReportsPage() {
   ];
 
   return (
-    <VFPageContainer className="space-y-4 w-full">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Main Reports Table with Custom Drawer Trigger */}
       <VFDataTable
         columns={reportColumns}

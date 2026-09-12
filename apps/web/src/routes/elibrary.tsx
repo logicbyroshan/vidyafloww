@@ -189,7 +189,7 @@ function ELibraryOverviewPage() {
     : NCERT_BOOKSHELF.filter((b) => b.grade.includes(selectedGrade));
 
   return (
-    <VFPageContainer className="space-y-4 w-full">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── TOP HEADER & LAUNCHER BAR ── */}
       <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>

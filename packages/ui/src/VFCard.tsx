@@ -62,7 +62,7 @@ export function VFCard({
 
       {(title || description || actions) && (
         <div className={cn(
-          "relative z-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-5 py-4 border-b border-border/80 shrink-0",
+          "relative z-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-3.5 sm:px-4 py-2.5 sm:py-3 border-b border-border/80 shrink-0",
           headerBgClassName,
           headerClassName
         )}>
@@ -74,7 +74,7 @@ export function VFCard({
         </div>
       )}
       {children && (
-        <div className={cn("relative z-1 p-4 flex-1 min-h-0", bodyClassName)}>
+        <div className={cn("relative z-1 p-3 sm:p-3.5 lg:p-4 flex-1 min-h-0", bodyClassName)}>
           {children}
         </div>
       )}

@@ -583,11 +583,11 @@ function TimetablePage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ═══════════════════════════════════════════════════════════════════════
           1. MASTER CLASS SCHEDULE TOOLBAR & SLEEK DARK GRID (FULL HEIGHT)
           ═══════════════════════════════════════════════════════════════════════ */}
-      <div className="flex-1 min-h-0 flex flex-col space-y-3">
+      <div className="flex-1 min-h-0 flex flex-col space-y-3 sm:space-y-3.5 lg:space-y-4">
         {/* Action Toolbar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#101010] p-3 rounded-lg border border-[#242424] shadow-xs shrink-0">
           <div className="flex items-center gap-2 flex-wrap">
