@@ -1,5 +1,5 @@
 """
-VidyaFloww Common Pagination
+VidyaMaxx Common Pagination
 
 Standardized pagination classes for consistent API responses.
 """

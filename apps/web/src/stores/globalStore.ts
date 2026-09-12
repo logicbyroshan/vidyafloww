@@ -118,7 +118,7 @@ export const useGlobalStore = create<GlobalState>()(
 
       // School Profile default
       schoolProfile: {
-        name: 'VidyaFloww International Academy',
+        name: 'VidyaMaxx International Academy',
         shortCode: 'VF-DELHI',
         tagline: 'Excellence in Education & Character',
         affiliation: 'CBSE Affiliation #1630982',
@@ -198,7 +198,7 @@ export const useGlobalStore = create<GlobalState>()(
       clearNotifications: () => set({ notifications: [] }),
     }),
     {
-      name: 'vidyafloww-global-storage',
+      name: 'vidyamaxx-global-storage',
       partialize: (state) => ({
         schoolProfile: state.schoolProfile,
         sidebarExpanded: state.sidebarExpanded,

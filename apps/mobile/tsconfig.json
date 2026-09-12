@@ -7,19 +7,19 @@
       "@/*": [
         "./src/*"
       ],
-      "@vidyafloww/api": [
+      "@vidyamaxx/api": [
         "../../packages/api/src/index.ts"
       ],
-      "@vidyafloww/types": [
+      "@vidyamaxx/types": [
         "../../packages/types/src/index.ts"
       ],
-      "@vidyafloww/utils": [
+      "@vidyamaxx/utils": [
         "../../packages/utils/src/index.ts"
       ],
-      "@vidyafloww/constants": [
+      "@vidyamaxx/constants": [
         "../../packages/constants/src/index.ts"
       ],
-      "@vidyafloww/validation": [
+      "@vidyamaxx/validation": [
         "../../packages/validation/src/index.ts"
       ]
     }

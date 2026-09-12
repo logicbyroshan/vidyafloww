@@ -1,5 +1,5 @@
 /**
- * VidyaFloww Desktop — Electron Preload Script
+ * VidyaMaxx Desktop — Electron Preload Script
  *
  * The preload script runs in a renderer process before web page content loads.
  * It exposes a secure API surface from the main process to the renderer.

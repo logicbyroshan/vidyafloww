@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createRootRoute } from '@tanstack/react-router';
 import { AppShell } from '../layouts/AppShell';
-import { VFEmptyState } from '@vidyafloww/ui';
+import { VFEmptyState } from '@vidyamaxx/ui';
 
 export const Route = createRootRoute({
   component: () => (

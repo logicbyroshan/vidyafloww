@@ -12,7 +12,7 @@ import {
   VFSelect,
   VFStatCard,
   cn,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   Users,
   Sparkles,
@@ -180,7 +180,7 @@ const INITIAL_STAFF: StaffRecord[] = [
       studentCount: 40,
     },
     phone: '+91 98765 11223',
-    email: 's.verma@vidyafloww.edu.in',
+    email: 's.verma@vidyamaxx.edu.in',
     address: 'B-402, Green Valley Apartments, Sector 12, New Delhi',
     dob: '12 Aug 1984',
     bloodGroup: 'O+',
@@ -254,7 +254,7 @@ const INITIAL_STAFF: StaffRecord[] = [
       studentCount: 38,
     },
     phone: '+91 98123 22334',
-    email: 'r.sharma@vidyafloww.edu.in',
+    email: 'r.sharma@vidyamaxx.edu.in',
     address: '14-A, Faculty Enclave, Vasant Kunj, New Delhi',
     dob: '28 Nov 1978',
     bloodGroup: 'B+',
@@ -321,7 +321,7 @@ const INITIAL_STAFF: StaffRecord[] = [
       studentCount: 42,
     },
     phone: '+91 97654 33445',
-    email: 'a.gupta@vidyafloww.edu.in',
+    email: 'a.gupta@vidyamaxx.edu.in',
     address: '77, Anand Lok Colony, New Delhi',
     dob: '05 Jan 1988',
     bloodGroup: 'A+',
@@ -384,7 +384,7 @@ const INITIAL_STAFF: StaffRecord[] = [
       studentCount: 39,
     },
     phone: '+91 99887 44556',
-    email: 'p.rao@vidyafloww.edu.in',
+    email: 'p.rao@vidyamaxx.edu.in',
     address: 'C-12, Defence Colony, New Delhi',
     dob: '19 Oct 1990',
     bloodGroup: 'B-',
@@ -449,7 +449,7 @@ const INITIAL_STAFF: StaffRecord[] = [
       studentCount: 36,
     },
     phone: '+91 98234 55667',
-    email: 'r.nair@vidyafloww.edu.in',
+    email: 'r.nair@vidyamaxx.edu.in',
     address: '502, Palm Heights, Gurgaon',
     dob: '03 Mar 1976',
     bloodGroup: 'AB+',
@@ -515,7 +515,7 @@ const INITIAL_STAFF: StaffRecord[] = [
       studentCount: 35,
     },
     phone: '+91 97722 33445',
-    email: 's.das@vidyafloww.edu.in',
+    email: 's.das@vidyamaxx.edu.in',
     address: '22, IT Enclave, Noida Sector 62',
     dob: '14 Feb 1989',
     bloodGroup: 'B+',
@@ -562,7 +562,7 @@ function StaffPage() {
   const { activeSession, addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = t('page.teachers') + ' \u2013 VidyaFloww'; }, [t]);
+  React.useEffect(() => { document.title = t('page.teachers') + ' \u2013 VidyaMaxx'; }, [t]);
   const [staffList, setStaffList] = React.useState<StaffRecord[]>(INITIAL_STAFF);
   const [selectedStaffIndex, setSelectedStaffIndex] = React.useState<number | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
@@ -721,7 +721,7 @@ function StaffPage() {
           }
         : undefined,
       phone: newStaffForm.phone,
-      email: newStaffForm.email || `${newStaffForm.name.toLowerCase().replace(/\s+/g, '.')}@vidyafloww.edu.in`,
+      email: newStaffForm.email || `${newStaffForm.name.toLowerCase().replace(/\s+/g, '.')}@vidyamaxx.edu.in`,
       address: newStaffForm.address || 'Institutional Staff Quarters, New Delhi',
       dob: newStaffForm.dob,
       bloodGroup: newStaffForm.bloodGroup,
@@ -830,7 +830,7 @@ function StaffPage() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `VidyaFloww_Faculty_Roster_${activeSession.replace(/\s+/g, '_')}.csv`;
+        a.download = `VidyaMaxx_Faculty_Roster_${activeSession.replace(/\s+/g, '_')}.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -839,7 +839,7 @@ function StaffPage() {
       if (exportFormat === 'bundle') {
         setExportProgressText('Building Faculty ZIP Archive Package...');
         const zip = new JSZip();
-        const info = `VidyaFloww Institutional Management System\nFaculty & Staff Master Roster - Session ${activeSession}\nTotal Faculty Count: ${staffList.length}\nGenerated: ${new Date().toLocaleString()}\n`;
+        const info = `VidyaMaxx Institutional Management System\nFaculty & Staff Master Roster - Session ${activeSession}\nTotal Faculty Count: ${staffList.length}\nGenerated: ${new Date().toLocaleString()}\n`;
         zip.file('README_FACULTY_ROSTER.txt', info);
         zip.file('faculty_roster_data.json', JSON.stringify(staffList, null, 2));
 
@@ -847,7 +847,7 @@ function StaffPage() {
         const zipUrl = URL.createObjectURL(content);
         const zipLink = document.createElement('a');
         zipLink.href = zipUrl;
-        zipLink.download = `VidyaFloww_Faculty_Archive_${activeSession.replace(/\s+/g, '_')}.zip`;
+        zipLink.download = `VidyaMaxx_Faculty_Archive_${activeSession.replace(/\s+/g, '_')}.zip`;
         document.body.appendChild(zipLink);
         zipLink.click();
         document.body.removeChild(zipLink);
@@ -1678,7 +1678,7 @@ function StaffPage() {
                               <div className="h-4 w-4 rounded-full bg-[#161619] text-white flex items-center justify-center text-[9px] font-black border border-[#2a2a32]">
                                 V
                               </div>
-                              <span className="font-bold text-[10px] text-white tracking-tight">VidyaFloww Academy</span>
+                              <span className="font-bold text-[10px] text-white tracking-tight">VidyaMaxx Academy</span>
                             </div>
                             <span className="text-[8px] font-mono font-bold px-1 rounded bg-[#161619] border border-[#242428] text-zinc-300">
                               FACULTY PASS
@@ -2288,7 +2288,7 @@ function StaffPage() {
                       label="Institutional Email"
                       value={newStaffForm.email}
                       onChange={(e) => setNewStaffForm({ ...newStaffForm, email: e.target.value })}
-                      placeholder="e.g. a.nath@vidyafloww.edu.in"
+                      placeholder="e.g. a.nath@vidyamaxx.edu.in"
                     />
                     <div className="sm:col-span-2">
                       <VFInput

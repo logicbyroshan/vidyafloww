@@ -6,7 +6,7 @@ import {
   VFBadge,
   VFCard,
   VFDialog,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   ExternalLink,
   Bed,

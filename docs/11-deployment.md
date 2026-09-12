@@ -20,8 +20,8 @@
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-org/vidyafloww.git
-cd vidyafloww
+git clone https://github.com/your-org/vidyamaxx.git
+cd vidyamaxx
 
 # 2. Install frontend dependencies
 pnpm install

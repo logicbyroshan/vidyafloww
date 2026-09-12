@@ -3,7 +3,7 @@ import { Search, Bell, Building2, Shield, GraduationCap, Award, BookOpen, Calend
 import { useRouterState } from '@tanstack/react-router';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
-import { cn } from '@vidyafloww/ui';
+import { cn } from '@vidyamaxx/ui';
 
 interface HeaderProps {
   onSearchClick: () => void;

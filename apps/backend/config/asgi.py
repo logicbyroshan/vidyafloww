@@ -1,5 +1,5 @@
 """
-VidyaFloww ASGI Configuration
+VidyaMaxx ASGI Configuration
 
 Exposes the ASGI callable as a module-level variable named ``application``.
 Supports both HTTP and WebSocket protocols via Django Channels.

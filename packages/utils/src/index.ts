@@ -1,6 +1,6 @@
 /**
- * @vidyafloww/utils
- * Application-wide pure utility functions for the VidyaFloww ecosystem.
+ * @vidyamaxx/utils
+ * Application-wide pure utility functions for the VidyaMaxx ecosystem.
  */
 
 export * from './format';

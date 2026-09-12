@@ -7,7 +7,7 @@ import {
   VFButton,
   VFBadge,
   VFDialog,
-} from '@vidyafloww/ui';
+} from '@vidyamaxx/ui';
 import {
   MessageSquareWarning,
   CheckCircle2,
@@ -116,7 +116,7 @@ function ComplaintsManagementPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'शिकायतें व निवारण' : 'Complaints & Grievances') + ' – VidyaFloww';
+    document.title = (isHindi ? 'शिकायतें व निवारण' : 'Complaints & Grievances') + ' – VidyaMaxx';
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'registry' | 'queue'>('registry');

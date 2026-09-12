@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document defines the coding standards for all code written in the VidyaFloww monorepo.
+This document defines the coding standards for all code written in the VidyaMaxx monorepo.
 Consistency and readability are non-negotiable. All code must meet these standards before merging.
 
 ---

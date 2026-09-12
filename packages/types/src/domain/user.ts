@@ -1,5 +1,5 @@
 /**
- * @vidyafloww/types — User & Authentication Domain Types
+ * @vidyamaxx/types — User & Authentication Domain Types
  */
 
 import type { Auditable, ISODateTime, UUID } from '../common';

@@ -2,13 +2,13 @@
 
 ## Purpose
 
-VidyaFloww is an **enterprise-grade AI-first school management platform** designed to unify every operational aspect of educational institutions — from admissions and academics to finance, HR, and AI-powered assistance — into a single, cohesive digital ecosystem.
+VidyaMaxx is an **enterprise-grade AI-first school management platform** designed to unify every operational aspect of educational institutions — from admissions and academics to finance, HR, and AI-powered assistance — into a single, cohesive digital ecosystem.
 
 ## Vision
 
 > *"Empower every school to operate with the efficiency of a world-class institution."*
 
-VidyaFloww eliminates fragmented tools, paper-based workflows, and data silos. By providing a fully integrated platform across web, mobile, and desktop, we enable schools to focus on what matters most: education.
+VidyaMaxx eliminates fragmented tools, paper-based workflows, and data silos. By providing a fully integrated platform across web, mobile, and desktop, we enable schools to focus on what matters most: education.
 
 ## Core Principles
 
@@ -58,5 +58,5 @@ VidyaFloww eliminates fragmented tools, paper-based workflows, and data silos. B
 
 ---
 
-*This document is maintained by the VidyaFloww Architecture Team.*
+*This document is maintained by the VidyaMaxx Architecture Team.*
 *Last updated: 2026-08-10*

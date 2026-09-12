@@ -1,5 +1,5 @@
 /**
- * @vidyafloww/types — Organization & Campus Domain Types
+ * @vidyamaxx/types — Organization & Campus Domain Types
  */
 
 import type { Auditable, UUID } from '../common';

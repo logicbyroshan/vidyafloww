@@ -1,9 +1,9 @@
 {
-  "name": "vidyafloww",
+  "name": "vidyamaxx",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "VidyaFloww - Enterprise School Management Platform",
+  "description": "VidyaMaxx - Enterprise School Management Platform",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --concurrency 20",
