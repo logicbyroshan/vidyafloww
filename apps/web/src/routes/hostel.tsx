@@ -2,26 +2,16 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFPageHeader,
   VFButton,
   VFBadge,
-  VFStatCard,
+  VFCard,
   VFDialog,
 } from '@vidyafloww/ui';
 import {
-  Building2,
   ExternalLink,
-  Users,
-  Bed,
-  Utensils,
-  Clock,
-  LogOut,
-  Plus,
-  ArrowRight,
-  Coffee,
-  Moon,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/hostel')({
   component: HostelOverviewPage,
@@ -81,480 +71,249 @@ const ACTIVE_OUTPASSES: OutpassItem[] = [
   },
 ];
 
-const TODAY_MEALS = [
-  {
-    id: 'meal-breakfast',
-    type: 'Breakfast',
-    time: '07:30 – 09:00 AM',
-    items: 'Crispy Masala Dosa with Sambar, Coconut & Tomato Chutney, Boiled Eggs / Fresh Bananas, Filter Coffee & Milk',
-    calories: '480 kcal',
-    tag: 'High Protein',
-    status: 'Completed',
-    icon: Coffee,
-    color: 'from-amber-950/40 to-[#141414]',
-  },
-  {
-    id: 'meal-lunch',
-    type: 'Lunch (Special Feast)',
-    time: '12:30 – 02:00 PM',
-    items: 'Royal Shahi Paneer, Dal Makhani, Steamed Basmati Rice, Butter Phulkas, Boondi Raita, Gulab Jamun',
-    calories: '780 kcal',
-    tag: 'Special Menu',
-    status: 'Serving Now',
-    icon: Utensils,
-    color: 'from-emerald-950/40 to-[#141414]',
-  },
-  {
-    id: 'meal-dinner',
-    type: 'Dinner',
-    time: '08:00 – 09:15 PM',
-    items: 'Mumbai Pav Bhaji with Butter Pav, OR Comfort Dal Khichdi Tadka, Mixed Green Salad, Warm Saffron Milk',
-    calories: '560 kcal',
-    tag: 'Comfort Meal',
-    status: 'Scheduled',
-    icon: Moon,
-    color: 'from-blue-950/40 to-[#141414]',
-  },
-];
-
 const RESIDENTIAL_BLOCKS = [
   {
-    name: 'Block A (Senior Boys Wing)',
-    hindiName: 'वरिष्ठ छात्र विंग',
-    totalBeds: 80,
-    occupiedBeds: 72,
-    warden: 'Mr. R.K. Saxena',
-    wardenPhone: '+91 98111 00011',
-    status: 'All Normal',
-    accentColor: 'blue',
+    blockId: 'BLK-A',
+    name: 'Block A · Senior Boys Wing',
+    hindiName: 'ब्लॉक A · सीनियर छात्र विंग',
+    warden: 'Prof. R.K. Saxena',
+    wardenPhone: '+91 98111 00991',
+    capacity: 120,
+    occupied: 114,
+    status: 'Full Capacity (95%)',
   },
   {
-    name: 'Block B (Girls Residential Wing)',
-    hindiName: 'छात्रा आवासीय विंग',
-    totalBeds: 70,
-    occupiedBeds: 64,
-    warden: 'Mrs. S. Grover',
-    wardenPhone: '+91 98111 00022',
-    status: 'All Normal',
-    accentColor: 'emerald',
+    blockId: 'BLK-B',
+    name: 'Block B · Junior Boys Wing',
+    hindiName: 'ब्लॉक B · जूनियर छात्र विंग',
+    warden: 'Mr. Arvind Gupta',
+    wardenPhone: '+91 98111 00992',
+    capacity: 100,
+    occupied: 88,
+    status: '12 Beds Available',
   },
   {
-    name: 'Block C (Junior Boys Wing)',
-    hindiName: 'कनिष्ठ छात्र विंग',
-    totalBeds: 60,
-    occupiedBeds: 44,
-    warden: 'Mr. V.K. Joshi',
-    wardenPhone: '+91 98111 00033',
-    status: '1 Medical Observation',
-    accentColor: 'amber',
+    blockId: 'BLK-C',
+    name: 'Block C · Girls Residential Wing',
+    hindiName: 'ब्लॉक C · छात्रा आवासीय विंग',
+    warden: 'Dr. Sunita Narain',
+    wardenPhone: '+91 98111 00993',
+    capacity: 140,
+    occupied: 132,
+    status: '8 Beds Available',
   },
 ];
 
 function HostelOverviewPage() {
   const { addNotification } = useGlobalStore();
-  const [isOutpassModalOpen, setIsOutpassModalOpen] = React.useState(false);
-  const [studentName, setStudentName] = React.useState('');
-  const [roomNumber, setRoomNumber] = React.useState('A-101');
-  const [leaveDays, setLeaveDays] = React.useState(2);
+  const { lang } = useTranslation();
+  const isHindi = lang === 'hi';
+  const [selectedPass, setSelectedPass] = React.useState<OutpassItem | null>(null);
+
+  const standalonePort = '8011';
+  const standaloneUrl = `http://localhost:${standalonePort}`;
 
   const handleLaunchHostelPortal = (path = '') => {
-    const url = `https://hostel.vidyafloww.com${path}`;
+    const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: 'Opening Hostel Management Portal',
-      description: 'Redirecting to dedicated residential portal on hostel.vidyafloww.com',
+      title: isHindi ? 'छात्रावास पोर्टल खोला जा रहा है' : 'Opening Hostel Portal',
+      description: isHindi ? 'पोर्ट 8011 पर आवासीय प्रबंधन पोर्टल पर भेजा जा रहा है।' : 'Redirecting to residential hostel portal on port 8011.',
       type: 'info',
     });
   };
 
-  const handleIssueQuickOutpass = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!studentName.trim()) return;
-
-    addNotification({
-      title: 'Outpass Issued',
-      description: `Gate outpass issued for ${studentName} (${roomNumber}) for ${leaveDays} days.`,
-      type: 'success',
-    });
-    setIsOutpassModalOpen(false);
-    setStudentName('');
-  };
-
   return (
-    <VFPageContainer className="space-y-4">
-      <VFPageHeader
-        title="Hostel & Residential Campus"
-        description="छात्रावास व आवासीय परिसर — Live room occupancy matrix, daily nutritional mess planning, campus outpasses & night roll calls"
-        actions={
+    <VFPageContainer className="space-y-4 w-full">
+      {/* ── TOP TOOLBAR BAR ── */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div>
           <div className="flex items-center gap-2">
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => setIsOutpassModalOpen(true)}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <Plus className="w-3.5 h-3.5 text-primary" />
-              Issue Outpass
-            </VFButton>
-            <VFButton
-              variant="primary"
-              size="sm"
-              onClick={() => handleLaunchHostelPortal()}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <span>Launch Dedicated Hostel Portal</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </VFButton>
+            <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
+              {isHindi ? 'छात्रावास व आवासीय प्रबंधन (Residential Hostel)' : 'Residential Hostel & Dormitories'}
+            </h1>
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
+              Port: {standalonePort}
+            </VFBadge>
           </div>
-        }
-      />
-
-      {/* Top Standalone Transition Banner */}
-      <div className="p-4 rounded-[4px] border border-primary/30 bg-gradient-to-r from-primary/10 via-[#18181b] to-[#121214] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="h-10 w-10 rounded-[4px] bg-primary/20 border border-primary/40 flex items-center justify-center text-primary shrink-0">
-            <Building2 className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-foreground">
-                Dedicated Residential Campus Subsystem Available
-              </h2>
-              <VFBadge variant="outline" className="text-[10px] font-mono border-primary/40 text-primary">
-                hostel.vidyafloww.com · Port 8011
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5 max-w-2xl">
-              Hostel operations are hosted on a dedicated high-availability microservice with biometric gate syncing, 7-day nutritional timetable planners, and 09:30 PM dorm roll calls.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {isHindi
+              ? 'छात्रावास कमरा आवंटन, वार्डन रोस्टर, छात्र आउटपास गेटपास व मेस प्रबंधन।'
+              : 'Dormitory bed allocation, warden duty roster, student outpass gate passes & mess meal schedules.'}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
-            variant="primary"
             size="sm"
             onClick={() => handleLaunchHostelPortal()}
-            className="rounded-[4px] gap-1.5 font-bold text-xs"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
-            <span>Open Dedicated Portal</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'छात्रावास पोर्टल लॉन्च करें' : 'Launch Hostel Portal'}</span>
           </VFButton>
         </div>
       </div>
 
-      {/* KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <VFStatCard
-          title="Inside Hostel Campus"
-          value="156 Students"
-          trend="up"
-          trendLabel="86.7% present"
-          accentColor="emerald"
-          icon={<Users className="w-4 h-4 text-emerald-400" />}
-        />
-        <VFStatCard
-          title="Outside on Outpass"
-          value="24 Students"
-          description="Verified leaves active"
-          accentColor="amber"
-          icon={<LogOut className="w-4 h-4 text-amber-400" />}
-        />
-        <VFStatCard
-          title="Bed Occupancy Ratio"
-          value="180 / 210"
-          trend="up"
-          trendLabel="85.7% occupied"
-          accentColor="primary"
-          icon={<Bed className="w-4 h-4 text-primary" />}
-        />
-        <VFStatCard
-          title="Night Roll Call Readiness"
-          value="98.2%"
-          description="Roll call at 09:30 PM"
-          accentColor="cyan"
-          icon={<Clock className="w-4 h-4 text-cyan-400" />}
-        />
-      </div>
-
-      {/* Today's Nutritional Mess Menu Section */}
+      {/* ── RESIDENTIAL BLOCKS GRID ── */}
       <div className="space-y-2.5">
-        <div className="flex items-center justify-between border-b border-border pb-2">
-          <div className="flex items-center gap-2">
-            <Utensils className="w-4 h-4 text-primary" />
-            <h3 className="text-sm font-bold text-foreground">
-              Today's Nutritional Mess Menu
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">
-              (Tuesday Feast Roster)
-            </span>
-          </div>
-
-          <button
-            onClick={() => handleLaunchHostelPortal('/mess')}
-            className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
-          >
-            <span>Full 7-Day Timetable</span>
-            <ExternalLink className="w-3 h-3" />
-          </button>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+            {isHindi ? 'आवासीय ब्लॉक्स व क्षमता स्थिति' : 'Residential Dormitory Blocks & Bed Occupancy'}
+          </h2>
+          <span className="text-[11px] font-mono text-muted-foreground">
+            3 {isHindi ? 'सक्रिय विंग्स' : 'Active Blocks'}
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {TODAY_MEALS.map((meal) => {
-            const MealIcon = meal.icon;
-            const isServing = meal.status === 'Serving Now';
+          {RESIDENTIAL_BLOCKS.map((blk) => (
+            <div
+              key={blk.blockId}
+              onClick={() => handleLaunchHostelPortal(`/blocks/${blk.blockId}`)}
+              className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border text-[10.5px] font-mono font-bold text-foreground">
+                    {blk.blockId}
+                  </span>
+                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-[3px] border border-emerald-500/20">
+                    {blk.occupied}/{blk.capacity} Beds
+                  </span>
+                </div>
 
-            return (
-              <div
-                key={meal.id}
-                className={`p-3.5 rounded-[4px] border ${isServing ? 'border-primary/50 bg-gradient-to-br from-primary/10 via-[#141414] to-[#141414]' : 'border-border bg-[#141414]'} flex flex-col justify-between space-y-3 transition-colors`}
-              >
                 <div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="h-7 w-7 rounded-[3px] bg-[#1c1c1f] border border-border flex items-center justify-center text-foreground">
-                        <MealIcon className="w-3.5 h-3.5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-xs text-foreground leading-tight">
-                          {meal.type}
-                        </h4>
-                        <span className="text-[10px] text-muted-foreground font-mono">
-                          {meal.time}
-                        </span>
-                      </div>
-                    </div>
-
-                    <span className={`px-2 py-0.5 rounded-[3px] text-[10px] font-bold ${
-                      isServing
-                        ? 'bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 animate-pulse'
-                        : meal.status === 'Completed'
-                        ? 'bg-[#1e1e22] text-muted-foreground'
-                        : 'bg-[#1e1e22] text-amber-400'
-                    }`}>
-                      {meal.status}
-                    </span>
-                  </div>
-
-                  <p className="text-xs text-foreground/90 mt-3 leading-relaxed font-medium">
-                    {meal.items}
+                  <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
+                    {isHindi ? blk.hindiName : blk.name}
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    {isHindi ? 'वार्डन:' : 'Resident Warden:'} {blk.warden}
                   </p>
                 </div>
-
-                <div className="pt-2 border-t border-border/80 flex items-center justify-between text-[10px] font-mono text-muted-foreground">
-                  <span>Approx: <strong>{meal.calories}</strong></span>
-                  <span className="text-primary font-semibold">{meal.tag}</span>
-                </div>
               </div>
-            );
-          })}
+
+              <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
+                <span className="font-mono text-[10.5px]">{blk.wardenPhone}</span>
+                <span className="text-primary font-bold group-hover:translate-x-0.5 transition-transform">→</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Residential Blocks Overview & Outpass Ledger Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Dormitory Blocks Health (1 Col) */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-primary" />
-              Residential Dorm Blocks
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">3 Wings</span>
+      {/* ── ACTIVE OUTPASS & GATE REGISTER TABLE ── */}
+      <VFCard
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-foreground">
+              {isHindi ? 'सक्रिय छात्र आउटपास व गेट रजिस्टर' : 'Active Student Outpass & Gatepass Register'}
+            </span>
+            <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
+              Real-Time Gate Logs
+            </VFBadge>
           </div>
-
-          <div className="space-y-2.5">
-            {RESIDENTIAL_BLOCKS.map((block) => {
-              const occupancyPct = Math.round((block.occupiedBeds / block.totalBeds) * 100);
-
-              return (
-                <div
-                  key={block.name}
-                  className="p-3 rounded-[4px] border border-border bg-[#141414] hover:border-primary/40 transition-colors space-y-2"
+        }
+        description={
+          isHindi
+            ? 'सप्ताहांत गृह प्रवास, चिकित्सा अनुमति व स्वीकृत आउटपास की वास्तविक स्थिति।'
+            : 'Weekend home visit leaves, guardian approvals, and return time logs.'
+        }
+        className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
+        headerClassName="py-2.5 px-3.5"
+        bodyClassName="p-0"
+        actions={
+          <button
+            onClick={() => handleLaunchHostelPortal('/outpasses')}
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>{isHindi ? 'पूरा आउटपास लेजर' : 'Full Outpass Ledger'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </button>
+        }
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs text-left">
+            <thead>
+              <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
+                <th className="py-2.5 px-3.5">{isHindi ? 'पास आईडी' : 'Pass ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'छात्र का नाम' : 'Student Name'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'कमरा / बेड' : 'Room & Bed'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'उद्देश्य' : 'Purpose'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'प्रस्थान' : 'Departure'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'अनुमानित वापसी' : 'Expected Return'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/60">
+              {ACTIVE_OUTPASSES.map((pass) => (
+                <tr
+                  key={pass.id}
+                  onClick={() => setSelectedPass(pass)}
+                  className="hover:bg-[#141414] transition-colors cursor-pointer"
                 >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="font-bold text-xs text-foreground">
-                        {block.name}
-                      </h4>
-                      <p className="text-[10px] text-muted-foreground font-medium">
-                        {block.hindiName}
-                      </p>
-                    </div>
-                    <span className="text-xs font-mono font-bold text-primary">
-                      {occupancyPct}%
-                    </span>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="w-full h-1.5 bg-[#202024] rounded-sm overflow-hidden">
-                    <div
-                      className="h-full bg-primary rounded-sm transition-all"
-                      style={{ width: `${occupancyPct}%` }}
-                    />
-                  </div>
-
-                  <div className="pt-1 flex items-center justify-between text-[10px] text-muted-foreground">
-                    <span>Occupied: <strong className="text-foreground">{block.occupiedBeds}</strong> / {block.totalBeds} Beds</span>
-                    <span>Warden: {block.warden}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Active Campus Outpasses & Leave Ledger (2 Cols) */}
-        <div className="lg:col-span-2 space-y-3">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <LogOut className="w-4 h-4 text-amber-400" />
-              Active Campus Outpasses & Leaves
-            </h3>
-            <button
-              onClick={() => handleLaunchHostelPortal('/leaves')}
-              className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
-            >
-              <span>View Full Ledger</span>
-              <ExternalLink className="w-3 h-3" />
-            </button>
-          </div>
-
-          <div className="border border-border rounded-[4px] bg-[#141414] overflow-x-auto">
-            <table className="w-full text-xs text-left border-collapse">
-              <thead>
-                <tr className="border-b border-border text-muted-foreground font-mono bg-[#161616]">
-                  <th className="py-2.5 px-3 font-semibold">Outpass ID</th>
-                  <th className="py-2.5 px-3 font-semibold">Student Name</th>
-                  <th className="py-2.5 px-3 font-semibold">Room / Bed</th>
-                  <th className="py-2.5 px-3 font-semibold">Purpose</th>
-                  <th className="py-2.5 px-3 font-semibold">Departure</th>
-                  <th className="py-2.5 px-3 font-semibold">Expected Return</th>
-                  <th className="py-2.5 px-3 font-semibold">Status</th>
+                  <td className="py-2.5 px-3.5 font-mono font-bold text-primary">{pass.id}</td>
+                  <td className="py-2.5 px-3.5 font-bold text-foreground">{pass.name}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{pass.room}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{pass.purpose}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{pass.departure}</td>
+                  <td className="py-2.5 px-3.5 font-mono font-semibold text-foreground">{pass.expectedReturn}</td>
+                  <td className="py-2.5 px-3.5 text-right">
+                    <VFBadge variant={pass.status === 'Approved' ? 'primary' : 'warning'} className="text-[10px]">
+                      {pass.status}
+                    </VFBadge>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {ACTIVE_OUTPASSES.map((o) => (
-                  <tr key={o.id} className="hover:bg-[#18181b] transition-colors">
-                    <td className="py-2.5 px-3 font-mono font-bold text-foreground">
-                      {o.id}
-                    </td>
-                    <td className="py-2.5 px-3 font-semibold text-foreground">
-                      {o.name}
-                    </td>
-                    <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                      {o.room}
-                    </td>
-                    <td className="py-2.5 px-3 text-muted-foreground">
-                      {o.purpose}
-                    </td>
-                    <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                      {o.departure}
-                    </td>
-                    <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                      {o.expectedReturn}
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] text-[10px] font-bold ${
-                        o.status === 'Out Campus'
-                          ? 'bg-amber-950/70 border border-amber-500/30 text-amber-400'
-                          : 'bg-emerald-950/70 border border-emerald-500/30 text-emerald-400'
-                      }`}>
-                        {o.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </VFCard>
 
-      {/* Issue Quick Outpass Modal */}
-      {isOutpassModalOpen && (
+      {/* ── OUTPASS DETAIL MODAL ── */}
+      {selectedPass && (
         <VFDialog
-          isOpen={isOutpassModalOpen}
-          onClose={() => setIsOutpassModalOpen(false)}
-          title="Issue Quick Campus Outpass"
-          description="Grant authorization for student departure with emergency guardian verification"
+          isOpen={Boolean(selectedPass)}
+          onClose={() => setSelectedPass(null)}
+          title={`${selectedPass.id} — ${selectedPass.name}`}
+          description={`${selectedPass.room} · ${selectedPass.purpose}`}
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
-              <VFButton
-                variant="outline"
-                size="sm"
-                onClick={() => setIsOutpassModalOpen(false)}
-                className="rounded-[4px] text-xs"
-              >
-                Cancel
+              <VFButton variant="outline" size="sm" onClick={() => setSelectedPass(null)}>
+                {isHindi ? 'बंद करें' : 'Close'}
               </VFButton>
               <VFButton
-                variant="primary"
                 size="sm"
-                onClick={handleIssueQuickOutpass}
-                className="rounded-[4px] text-xs font-semibold"
+                onClick={() => {
+                  setSelectedPass(null);
+                  handleLaunchHostelPortal(`/outpasses/${selectedPass.id}`);
+                }}
+                className="font-bold"
+                leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
               >
-                Confirm & Issue Pass
+                {isHindi ? 'आउटपास सत्यापित करें' : 'Verify Outpass'}
               </VFButton>
             </div>
           }
         >
-          <form onSubmit={handleIssueQuickOutpass} className="space-y-3 py-2 text-xs">
-            <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                Student Full Name
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Rahul Sharma"
-                value={studentName}
-                onChange={(e) => setStudentName(e.target.value)}
-                required
-                className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none focus:border-primary"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-muted-foreground font-semibold mb-1">
-                  Room & Bed
-                </label>
-                <select
-                  value={roomNumber}
-                  onChange={(e) => setRoomNumber(e.target.value)}
-                  className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
-                >
-                  <option value="A-101">A-101 (Senior Boys)</option>
-                  <option value="A-102">A-102 (Senior Boys)</option>
-                  <option value="B-201">B-201 (Girls Wing)</option>
-                  <option value="B-202">B-202 (Girls Wing)</option>
-                  <option value="C-301">C-301 (Junior Boys)</option>
-                </select>
+          <div className="space-y-2.5 text-xs">
+            <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'अभिभावक संपर्क:' : 'Guardian Mobile:'}</span>
+                <span className="font-mono text-foreground">{selectedPass.guardianPhone}</span>
               </div>
-
-              <div>
-                <label className="block text-muted-foreground font-semibold mb-1">
-                  Leave Duration (Days)
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  max={14}
-                  value={leaveDays}
-                  onChange={(e) => setLeaveDays(Number(e.target.value))}
-                  className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
-                />
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'प्रस्थान समय:' : 'Departure Time:'}</span>
+                <span className="font-mono text-foreground">{selectedPass.departure}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'वापसी समय:' : 'Return Deadline:'}</span>
+                <span className="font-mono text-emerald-400 font-bold">{selectedPass.expectedReturn}</span>
               </div>
             </div>
-
-            <div className="p-2.5 rounded-[3px] bg-[#18181b] border border-border text-[11px] text-muted-foreground space-y-1">
-              <p>• Automated SMS will be sent to registered guardian phone on departure.</p>
-              <p>• Turnstile gate biometric scanner will allow transit only during designated departure window.</p>
-            </div>
-          </form>
+          </div>
         </VFDialog>
       )}
     </VFPageContainer>
   );
 }
-

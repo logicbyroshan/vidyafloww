@@ -26,7 +26,6 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as NoticesRouteImport } from './routes/notices'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LmsRouteImport } from './routes/lms'
-import { Route as LiveRoomRouteImport } from './routes/live-room'
 import { Route as LicenseRouteImport } from './routes/license'
 import { Route as LearningRouteImport } from './routes/learning'
 import { Route as HrManageRouteImport } from './routes/hr-manage'
@@ -128,11 +127,6 @@ const LoginRoute = LoginRouteImport.update({
 const LmsRoute = LmsRouteImport.update({
   id: '/lms',
   path: '/lms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LiveRoomRoute = LiveRoomRouteImport.update({
-  id: '/live-room',
-  path: '/live-room',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LicenseRoute = LicenseRouteImport.update({
@@ -239,7 +233,6 @@ export interface FileRoutesByFullPath {
   '/hr-manage': typeof HrManageRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
-  '/live-room': typeof LiveRoomRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -276,7 +269,6 @@ export interface FileRoutesByTo {
   '/hr-manage': typeof HrManageRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
-  '/live-room': typeof LiveRoomRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -314,7 +306,6 @@ export interface FileRoutesById {
   '/hr-manage': typeof HrManageRoute
   '/learning': typeof LearningRoute
   '/license': typeof LicenseRoute
-  '/live-room': typeof LiveRoomRoute
   '/lms': typeof LmsRoute
   '/login': typeof LoginRoute
   '/notices': typeof NoticesRoute
@@ -353,7 +344,6 @@ export interface FileRouteTypes {
     | '/hr-manage'
     | '/learning'
     | '/license'
-    | '/live-room'
     | '/lms'
     | '/login'
     | '/notices'
@@ -390,7 +380,6 @@ export interface FileRouteTypes {
     | '/hr-manage'
     | '/learning'
     | '/license'
-    | '/live-room'
     | '/lms'
     | '/login'
     | '/notices'
@@ -427,7 +416,6 @@ export interface FileRouteTypes {
     | '/hr-manage'
     | '/learning'
     | '/license'
-    | '/live-room'
     | '/lms'
     | '/login'
     | '/notices'
@@ -465,7 +453,6 @@ export interface RootRouteChildren {
   HrManageRoute: typeof HrManageRoute
   LearningRoute: typeof LearningRoute
   LicenseRoute: typeof LicenseRoute
-  LiveRoomRoute: typeof LiveRoomRoute
   LmsRoute: typeof LmsRoute
   LoginRoute: typeof LoginRoute
   NoticesRoute: typeof NoticesRoute
@@ -604,13 +591,6 @@ declare module '@tanstack/react-router' {
       path: '/lms'
       fullPath: '/lms'
       preLoaderRoute: typeof LmsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/live-room': {
-      id: '/live-room'
-      path: '/live-room'
-      fullPath: '/live-room'
-      preLoaderRoute: typeof LiveRoomRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/license': {
@@ -753,7 +733,6 @@ const rootRouteChildren: RootRouteChildren = {
   HrManageRoute: HrManageRoute,
   LearningRoute: LearningRoute,
   LicenseRoute: LicenseRoute,
-  LiveRoomRoute: LiveRoomRoute,
   LmsRoute: LmsRoute,
   LoginRoute: LoginRoute,
   NoticesRoute: NoticesRoute,

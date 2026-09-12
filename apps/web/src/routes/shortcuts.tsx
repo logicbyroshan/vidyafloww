@@ -34,7 +34,6 @@ import {
   BarChart3,
   Bus,
   Building2,
-  Video,
   MessageSquareWarning,
   Vote,
 } from 'lucide-react';
@@ -66,7 +65,6 @@ export const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
   { id: 'notices', label: 'Notices', labelHi: 'नोटिस व सर्कुलर', desc: 'Campus circulars & broadcasts', descHi: 'स्कूल सर्कुलर व घोषणाएं', route: '/notices', icon: Bell, category: 'Communication' },
   { id: 'teaching', label: 'Teaching', labelHi: 'शिक्षण', desc: 'Lesson planner & faculty pacing', descHi: 'पाठ योजना व शिक्षण ट्रैकिंग', route: '/teaching', icon: BookOpenCheck, category: 'Academic' },
   { id: 'homework', label: 'Homework', labelHi: 'होमवर्क', desc: 'Daily assignments & submissions', descHi: 'दैनिक असाइनमेंट व सबमिशन', route: '/homework', icon: BookOpen, category: 'Academic' },
-  { id: 'eclass', label: 'E-Class', labelHi: 'ई-क्लास', desc: 'Virtual classroom & video lectures', descHi: 'वर्चुअल कक्षा व वीडियो लेक्चर्स', route: '/e-class', icon: Video, category: 'Academic' },
   { id: 'examinations', label: 'Exams', labelHi: 'परीक्षाएं', desc: 'Marksheets, grades & report cards', descHi: 'मार्कशीट, ग्रेड व रिपोर्ट कार्ड', route: '/examinations', icon: ClipboardList, category: 'Academic' },
   { id: 'academics', label: 'Academics', labelHi: 'एकेडमिक्स', desc: 'Grade hierarchy & wing structure', descHi: 'कक्षा संरचना व विंग', route: '/academics', icon: School, category: 'Academic' },
   { id: 'transport', label: 'Transport', labelHi: 'परिवहन', desc: 'Fleet GPS telematics & bus routes', descHi: 'बस रूट व लाइव जीपीएस ट्रैकिंग', route: '/transport', icon: Bus, category: 'Operations' },

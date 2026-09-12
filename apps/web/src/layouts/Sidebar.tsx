@@ -62,7 +62,6 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'attendance', labelKey: 'nav.attendance', route: '/attendance', icon: CalendarCheck },
       { id: 'timetable', labelKey: 'nav.timetable', route: '/timetable', icon: Calendar },
       { id: 'teachers', labelKey: 'nav.teachers', route: '/teachers', icon: Users },
-      { id: 'hrmanage', labelKey: 'nav.hrManage', route: '/hr-manage', icon: UserCheck },
     ],
   },
   {
@@ -71,17 +70,18 @@ const NAVIGATION_GROUPS: NavGroup[] = [
       { id: 'academics', labelKey: 'nav.academics', route: '/academics', icon: School },
       { id: 'teaching', labelKey: 'nav.teaching', route: '/teaching', icon: BookOpenCheck },
       { id: 'homework', labelKey: 'nav.homework', route: '/homework', icon: BookMarked },
-      { id: 'eclass', labelKey: 'nav.eclass', route: '/e-class', icon: Video },
-      { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
       { id: 'examinations', labelKey: 'nav.examinations', route: '/examinations', icon: ClipboardList },
-      { id: 'designlab', labelKey: 'nav.designLab', route: '/design-lab', icon: Palette },
     ],
   },
   {
-    id: 'facilities-group',
+    id: 'subsystems-group',
     items: [
+      { id: 'hrmanage', labelKey: 'nav.hrManage', route: '/hr-manage', icon: UserCheck },
+      { id: 'eclass', labelKey: 'nav.eclass', route: '/e-class', icon: Video },
+      { id: 'elibrary', labelKey: 'nav.elibrary', route: '/elibrary', icon: Library },
       { id: 'transport', labelKey: 'nav.transport', route: '/transport', icon: Bus },
       { id: 'hostel', labelKey: 'nav.hostel', route: '/hostel', icon: Building2 },
+      { id: 'designlab', labelKey: 'nav.designLab', route: '/design-lab', icon: Palette },
     ],
   },
   {
