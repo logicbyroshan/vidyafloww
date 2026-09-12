@@ -19,32 +19,13 @@ import {
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
+import { LiveTransportMap, MapBusRoute } from '../components/transport/LiveTransportMap';
 
 export const Route = createFileRoute('/transport')({
   component: TransportOverviewPage,
 });
 
-interface BusRoute {
-  id: string;
-  busNumber: string;
-  driverName: string;
-  driverPhone: string;
-  routeCode: string;
-  routeName: string;
-  hindiName: string;
-  capacity: string;
-  boardedStudents: number;
-  totalStudents: number;
-  currentSpeed: number;
-  nextStop: string;
-  etaNextStop: string;
-  fuelLevel: number;
-  status: 'In Transit' | 'At Stop' | 'Completed';
-  stops: { name: string; time: string; count: number; completed: boolean }[];
-  gpsCoords: { x: number; y: number };
-}
-
-const ACTIVE_FLEET: BusRoute[] = [
+const ACTIVE_FLEET: MapBusRoute[] = [
   {
     id: 'BUS-01',
     busNumber: 'DL-01-AB-4012',
@@ -61,12 +42,15 @@ const ACTIVE_FLEET: BusRoute[] = [
     etaNextStop: '08:12 AM (3 mins)',
     fuelLevel: 82,
     status: 'In Transit',
-    gpsCoords: { x: 28, y: 32 },
+    currentLat: 28.7015,
+    currentLng: 77.1990,
+    heading: 45,
+    color: '#F59E0B',
     stops: [
-      { name: 'Ashok Vihar Block C', time: '07:45 AM', count: 12, completed: true },
-      { name: 'Model Town Metro Gate #2', time: '08:05 AM', count: 16, completed: true },
-      { name: 'GTB Nagar Crossing', time: '08:15 AM', count: 10, completed: false },
-      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false },
+      { name: 'Ashok Vihar Block C', time: '07:45 AM', count: 12, completed: true, lat: 28.6980, lng: 77.1820 },
+      { name: 'Model Town Metro Gate #2', time: '08:05 AM', count: 16, completed: true, lat: 28.7030, lng: 77.1940 },
+      { name: 'GTB Nagar Crossing', time: '08:15 AM', count: 10, completed: false, lat: 28.6990, lng: 77.2060 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
   {
@@ -85,12 +69,15 @@ const ACTIVE_FLEET: BusRoute[] = [
     etaNextStop: '08:15 AM (5 mins)',
     fuelLevel: 68,
     status: 'In Transit',
-    gpsCoords: { x: 55, y: 48 },
+    currentLat: 28.6875,
+    currentLng: 77.2120,
+    heading: 90,
+    color: '#3B82F6',
     stops: [
-      { name: 'Civil Lines Enclave', time: '07:40 AM', count: 14, completed: true },
-      { name: 'St. Stephen Crossing', time: '08:00 AM', count: 12, completed: true },
-      { name: 'Kamla Nagar Market', time: '08:18 AM', count: 8, completed: false },
-      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false },
+      { name: 'Civil Lines Enclave', time: '07:40 AM', count: 14, completed: true, lat: 28.6810, lng: 77.2250 },
+      { name: 'St. Stephen Crossing', time: '08:00 AM', count: 12, completed: true, lat: 28.6860, lng: 77.2180 },
+      { name: 'Kamla Nagar Market', time: '08:18 AM', count: 8, completed: false, lat: 28.6890, lng: 77.2020 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
   {
@@ -109,12 +96,15 @@ const ACTIVE_FLEET: BusRoute[] = [
     etaNextStop: 'At Stop (Boarding)',
     fuelLevel: 91,
     status: 'At Stop',
-    gpsCoords: { x: 74, y: 65 },
+    currentLat: 28.6730,
+    currentLng: 77.1980,
+    heading: 180,
+    color: '#10B981',
     stops: [
-      { name: 'Hauz Khas Enclave', time: '07:35 AM', count: 18, completed: true },
-      { name: 'Green Park Market Stop #4', time: '07:55 AM', count: 15, completed: false },
-      { name: 'AIIMS Flyover Circle', time: '08:12 AM', count: 8, completed: false },
-      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false },
+      { name: 'Hauz Khas Enclave', time: '07:35 AM', count: 18, completed: true, lat: 28.6650, lng: 77.1900 },
+      { name: 'Green Park Market Stop #4', time: '07:55 AM', count: 15, completed: false, lat: 28.6730, lng: 77.1980 },
+      { name: 'AIIMS Flyover Circle', time: '08:12 AM', count: 8, completed: false, lat: 28.6820, lng: 77.2030 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
   {
@@ -133,12 +123,15 @@ const ACTIVE_FLEET: BusRoute[] = [
     etaNextStop: '08:18 AM (6 mins)',
     fuelLevel: 75,
     status: 'In Transit',
-    gpsCoords: { x: 38, y: 78 },
+    currentLat: 28.6865,
+    currentLng: 77.1880,
+    heading: 270,
+    color: '#8B5CF6',
     stops: [
-      { name: 'Delhi Cantt Station Road', time: '07:30 AM', count: 15, completed: true },
-      { name: 'Defence Officers Colony', time: '07:50 AM', count: 14, completed: true },
-      { name: 'Dhaula Kuan Junction', time: '08:10 AM', count: 7, completed: false },
-      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false },
+      { name: 'Delhi Cantt Station Road', time: '07:30 AM', count: 15, completed: true, lat: 28.6800, lng: 77.1700 },
+      { name: 'Defence Officers Colony', time: '07:50 AM', count: 14, completed: true, lat: 28.6850, lng: 77.1820 },
+      { name: 'Dhaula Kuan Junction', time: '08:10 AM', count: 7, completed: false, lat: 28.6890, lng: 77.1950 },
+      { name: 'Main VidyaFloww Campus', time: '08:35 AM', count: 0, completed: false, lat: 28.6925, lng: 77.2090 },
     ],
   },
 ];
@@ -148,8 +141,8 @@ function TransportOverviewPage() {
   const { lang } = useTranslation();
   const isHindi = lang === 'hi';
 
-  const [selectedRoute, setSelectedRoute] = React.useState<BusRoute>(ACTIVE_FLEET[0]);
-  const [selectedForModal, setSelectedForModal] = React.useState<BusRoute | null>(null);
+  const [selectedRoute, setSelectedRoute] = React.useState<MapBusRoute>(ACTIVE_FLEET[0]);
+  const [selectedForModal, setSelectedForModal] = React.useState<MapBusRoute | null>(null);
 
   const standalonePort = '8010';
   const standaloneUrl = `http://localhost:${standalonePort}`;
@@ -252,13 +245,13 @@ function TransportOverviewPage() {
         </div>
       </div>
 
-      {/* ── MAIN WORKSPACE: GPS MAP SIMULATION (LEFT 65%) + ACTIVE ROUTE DETAILS & STOPS (RIGHT 35%) ── */}
+      {/* ── MAIN WORKSPACE: INTERACTIVE LIVE GPS FLEET MAP (LEFT 65%) + ACTIVE ROUTE DETAILS & STOPS (RIGHT 35%) ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
-        {/* ── LEFT: INTERACTIVE GPS MAP SIMULATION (8 cols) ── */}
+        {/* ── LEFT: INTERACTIVE GPS MAP COMPONENT (8 cols) ── */}
         <div className="lg:col-span-8 flex flex-col rounded-[4px] border border-border/90 bg-[#080808] shadow-md overflow-hidden">
           
-          {/* Map Status Bar */}
+          {/* Map Header Controls & Route Switcher */}
           <div className="p-2.5 px-3.5 bg-[#121212] border-b border-border flex items-center justify-between text-xs flex-wrap gap-2">
             <div className="flex items-center gap-2 font-mono text-[11px]">
               <span className="font-bold text-foreground">Interactive Campus Geo-Fencing Map</span>
@@ -271,9 +264,9 @@ function TransportOverviewPage() {
                 <button
                   key={b.id}
                   onClick={() => setSelectedRoute(b)}
-                  className={`px-2 py-0.5 rounded text-[10.5px] font-mono font-bold cursor-pointer transition-colors ${
+                  className={`px-2.5 py-0.5 rounded-[3px] text-[10.5px] font-mono font-bold cursor-pointer transition-colors ${
                     selectedRoute.id === b.id
-                      ? 'bg-primary text-white'
+                      ? 'bg-primary text-white ring-1 ring-white/20'
                       : 'bg-[#1a1a1a] text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -283,71 +276,16 @@ function TransportOverviewPage() {
             </div>
           </div>
 
-          {/* Stylized Vector Map Canvas */}
-          <div className="relative aspect-video w-full bg-[#070b12] p-4 flex flex-col justify-between overflow-hidden select-none border-b border-border/80">
-            {/* Ambient Map Grid Background */}
-            <div
-              className="absolute inset-0 opacity-20 pointer-events-none"
-              style={{
-                backgroundImage: 'radial-gradient(#3b82f6 1px, transparent 1px), radial-gradient(#3b82f6 1px, #070b12 1px)',
-                backgroundSize: '24px 24px',
-              }}
-            />
-
-            {/* Central VidyaFloww School Campus Landmark */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-              <div className="w-8 h-8 rounded-full bg-primary/30 border-2 border-primary flex items-center justify-center text-white shadow-lg animate-pulse">
-                <Navigation className="w-4 h-4 fill-current" />
-              </div>
-              <span className="px-2 py-0.5 rounded bg-black/85 text-[9.5px] font-mono font-bold text-primary border border-primary/40 mt-1 shadow-md">
-                VIDYAFLOWW CAMPUS
-              </span>
-            </div>
-
-            {/* Route Polylines and Bus Markers */}
-            {ACTIVE_FLEET.map((b) => {
-              const isSelected = selectedRoute.id === b.id;
-              return (
-                <div
-                  key={b.id}
-                  style={{ top: `${b.gpsCoords.y}%`, left: `${b.gpsCoords.x}%` }}
-                  onClick={() => setSelectedRoute(b)}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 group"
-                >
-                  <div className={`flex items-center gap-1.5 p-1.5 px-2.5 rounded-[4px] border shadow-xl transition-all ${
-                    isSelected
-                      ? 'bg-primary text-primary-foreground border-white scale-110 ring-2 ring-primary/60'
-                      : 'bg-[#161616] text-foreground border-zinc-700 hover:border-zinc-400'
-                  }`}>
-                    <Bus className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-primary'}`} />
-                    <div className="text-left font-mono">
-                      <p className="text-[10px] font-black leading-tight">{b.busNumber.split('-')[2]}-{b.busNumber.split('-')[3]}</p>
-                      <p className="text-[8.5px] opacity-85">{b.currentSpeed} km/h</p>
-                    </div>
-                  </div>
-
-                  {/* Pulsing beacon */}
-                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                  </span>
-                </div>
-              );
-            })}
-
-            {/* Map Bottom Legend */}
-            <div className="relative z-10 flex items-center justify-between text-[10.5px] font-mono text-zinc-400">
-              <span className="bg-black/70 px-2 py-1 rounded border border-white/10">
-                Selected: <strong className="text-white">{selectedRoute.routeName}</strong>
-              </span>
-              <span className="bg-black/70 px-2 py-1 rounded border border-white/10 text-emerald-400 font-bold">
-                Live Speed: {selectedRoute.currentSpeed} km/h · Fuel: {selectedRoute.fuelLevel}%
-              </span>
-            </div>
-          </div>
+          {/* Integrated Real Tile Map with School Bus Vector */}
+          <LiveTransportMap
+            fleet={ACTIVE_FLEET}
+            selectedRoute={selectedRoute}
+            onSelectRoute={(r) => setSelectedRoute(r)}
+            isHindi={isHindi}
+          />
 
           {/* Driver & Telematics Quick Bar */}
-          <div className="p-3 bg-[#121212] flex items-center justify-between text-xs flex-wrap gap-2">
+          <div className="p-3 bg-[#121212] border-t border-border flex items-center justify-between text-xs flex-wrap gap-2">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-[#1e1e1e] border border-border flex items-center justify-center font-bold text-primary font-mono text-xs">
                 {selectedRoute.driverName.split(' ')[0][0]}{selectedRoute.driverName.split(' ')[1]?.[0] || ''}
@@ -364,14 +302,14 @@ function TransportOverviewPage() {
                 className="px-2.5 py-1 rounded-[3px] bg-[#1a1a1a] hover:bg-[#252525] border border-border text-xs font-bold text-foreground flex items-center gap-1 transition-colors"
               >
                 <Phone className="w-3 h-3 text-emerald-400" />
-                <span>Call Driver</span>
+                <span>{isHindi ? 'ड्राइवर को कॉल करें' : 'Call Driver'}</span>
               </a>
               <VFButton
                 size="sm"
                 onClick={() => setSelectedForModal(selectedRoute)}
                 className="h-7 text-xs font-bold rounded-[3px]"
               >
-                View Route Dossier
+                {isHindi ? 'रूट डोजियर देखें' : 'View Route Dossier'}
               </VFButton>
             </div>
           </div>
@@ -422,7 +360,7 @@ function TransportOverviewPage() {
                     </div>
                     {stop.count > 0 && (
                       <p className="text-[10px] font-mono text-primary mt-0.5">
-                        {stop.count} Students Boarding
+                        {stop.count} {isHindi ? 'स्टूडेंट्स बोर्डिंग' : 'Students Boarding'}
                       </p>
                     )}
                   </div>
@@ -431,7 +369,7 @@ function TransportOverviewPage() {
             </div>
 
             <div className="p-2.5 rounded bg-[#141414] border border-border/80 flex items-center justify-between text-xs font-mono">
-              <span className="text-muted-foreground">Boarding Progress:</span>
+              <span className="text-muted-foreground">{isHindi ? 'बोर्डिंग प्रोग्रेस:' : 'Boarding Progress:'}</span>
               <span className="font-bold text-emerald-400">{selectedRoute.boardedStudents} / {selectedRoute.totalStudents} (90%)</span>
             </div>
           </VFCard>
