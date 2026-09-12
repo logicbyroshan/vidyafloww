@@ -2,26 +2,19 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFPageHeader,
   VFButton,
   VFBadge,
   VFCard,
-  VFStatCard,
   VFDialog,
 } from '@vidyafloww/ui';
 import {
-  BookOpen,
   ExternalLink,
   BookMarked,
-  Clock,
-  Users,
   Search,
-  ArrowRight,
-  ShieldCheck,
   Eye,
-  Sparkles,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/elibrary')({
   component: ELibraryOverviewPage,
@@ -36,7 +29,6 @@ interface EBookCard {
   grade: string;
   pages: number;
   author: string;
-  color: string;
   drmProtected: boolean;
   totalCopies: number;
   availableCopies: number;
@@ -53,7 +45,6 @@ const FEATURED_BOOKS: EBookCard[] = [
     grade: 'Class 10',
     pages: 240,
     author: 'NCERT Curriculum Directorate',
-    color: 'from-blue-950/60 to-slate-900',
     drmProtected: true,
     totalCopies: 45,
     availableCopies: 12,
@@ -68,7 +59,6 @@ const FEATURED_BOOKS: EBookCard[] = [
     grade: 'Class 11 & 12',
     pages: 180,
     author: 'Department of Science Education',
-    color: 'from-emerald-950/60 to-slate-900',
     drmProtected: true,
     totalCopies: 30,
     availableCopies: 8,
@@ -83,7 +73,6 @@ const FEATURED_BOOKS: EBookCard[] = [
     grade: 'Class 12',
     pages: 360,
     author: 'Dr. O.P. Tandon & Board Panel',
-    color: 'from-purple-950/60 to-slate-900',
     drmProtected: true,
     totalCopies: 25,
     availableCopies: 5,
@@ -98,7 +87,6 @@ const FEATURED_BOOKS: EBookCard[] = [
     grade: 'Class 9',
     pages: 210,
     author: 'NCERT Social Science Group',
-    color: 'from-amber-950/60 to-slate-900',
     drmProtected: true,
     totalCopies: 40,
     availableCopies: 18,
@@ -137,22 +125,27 @@ const CIRCULATION_RECORDS = [
     borrowerClass: 'Class 12-A',
     issueDate: '20 Aug 2026',
     dueDate: '03 Sep 2026',
-    fine: '₹25.00 (Overdue)',
+    fine: '₹25.00',
     status: 'Return Due',
   },
 ];
 
 function ELibraryOverviewPage() {
   const { addNotification } = useGlobalStore();
+  const { lang } = useTranslation();
+  const isHindi = lang === 'hi';
   const [selectedBook, setSelectedBook] = React.useState<EBookCard | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
 
+  const standalonePort = '8014';
+  const standaloneUrl = `http://localhost:${standalonePort}`;
+
   const handleLaunchLibraryPortal = (path = '') => {
-    const url = `https://library.vidyafloww.com${path}`;
+    const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: 'Opening Digital E-Library',
-      description: 'Redirecting to dedicated reading portal on library.vidyafloww.com',
+      title: isHindi ? 'ई-पुस्तकालय खोला जा रहा है' : 'Opening E-Library',
+      description: isHindi ? 'पोर्ट 8014 पर डिजिटल लाइब्रेरी पोर्टल पर भेजा जा रहा है।' : 'Redirecting to dedicated library portal on port 8014.',
       type: 'info',
     });
   };
@@ -165,260 +158,156 @@ function ELibraryOverviewPage() {
   );
 
   return (
-    <VFPageContainer className="space-y-4">
-      <VFPageHeader
-        title="Digital E-Library & Reading Hub"
-        description="डिजिटल ई-पुस्तकालय व अध्ययन केंद्र — K-12 textbook catalog, NCERT curriculum exemplars, physical circulation ledgers & DRM reading tools"
-        actions={
+    <VFPageContainer className="space-y-4 w-full">
+      {/* ── TOP TOOLBAR BAR ── */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div>
           <div className="flex items-center gap-2">
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                addNotification({
-                  title: 'Barcode Scanner Ready',
-                  description: 'Camera barcode scanner initialized for book lookup.',
-                  type: 'info',
-                });
-              }}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <Search className="w-3.5 h-3.5 text-muted-foreground" />
-              Scan Barcode
-            </VFButton>
-            <VFButton
-              variant="primary"
-              size="sm"
-              onClick={() => handleLaunchLibraryPortal()}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <span>Launch Dedicated E-Library</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </VFButton>
+            <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
+              {isHindi ? 'डिजिटल ई-पुस्तकालय व अध्ययन केंद्र (Digital E-Library)' : 'Digital E-Library & Reading Hub'}
+            </h1>
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
+              Port: {standalonePort}
+            </VFBadge>
           </div>
-        }
-      />
-
-      {/* Top Standalone Transition Banner */}
-      <div className="p-4 rounded-[4px] border border-primary/30 bg-gradient-to-r from-primary/10 via-[#18181b] to-[#121214] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="h-10 w-10 rounded-[4px] bg-primary/20 border border-primary/40 flex items-center justify-center text-primary shrink-0">
-            <BookOpen className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-foreground">
-                Dedicated E-Library & DRM Reading Subsystem Available
-              </h2>
-              <VFBadge variant="outline" className="text-[10px] font-mono border-primary/40 text-primary">
-                library.vidyafloww.com · Port 8014
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5 max-w-2xl">
-              In-browser DRM document streaming, physical book barcode circulation, automatic fine ledgers, and Sepia/Dark reading modes operate on a dedicated CDN and storage cluster.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {isHindi
+              ? 'पाठ्यपुस्तक कैटलॉग, NCERT अध्ययन सामग्री, भौतिक पुस्तक इश्यू रजिस्टर व डिजिटल रीडर।'
+              : 'K-12 textbook catalog, NCERT curriculum exemplars, physical circulation ledgers & DRM reading tools.'}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
-            variant="primary"
             size="sm"
             onClick={() => handleLaunchLibraryPortal()}
-            className="rounded-[4px] gap-1.5 font-bold text-xs"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
-            <span>Open Reading Hub</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'रीडिंग पोर्टल लॉन्च करें' : 'Launch E-Library Portal'}</span>
           </VFButton>
         </div>
       </div>
 
-      {/* KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <VFStatCard
-          title="Cataloged Volumes"
-          value="14,850 Books"
-          description="Physical & digital titles"
-          accentColor="primary"
-          icon={<BookMarked className="w-4 h-4 text-primary" />}
-        />
-        <VFStatCard
-          title="Books In Circulation"
-          value="342 Borrowed"
-          trend="up"
-          trendLabel="Active student loans"
-          accentColor="emerald"
-          icon={<Users className="w-4 h-4 text-emerald-400" />}
-        />
-        <VFStatCard
-          title="Overdue Returns"
-          value="18 Returns"
-          description="Automated SMS sent"
-          accentColor="rose"
-          icon={<Clock className="w-4 h-4 text-rose-400" />}
-        />
-        <VFStatCard
-          title="Active Digital Readers"
-          value="89 Online"
-          trend="up"
-          trendLabel="Reading NCERT now"
-          accentColor="cyan"
-          icon={<BookOpen className="w-4 h-4 text-cyan-400" />}
-        />
-      </div>
-
-      {/* Digital Textbooks Catalog Grid */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-border pb-2.5">
+      {/* ── FEATURED TEXTBOOKS ── */}
+      <div className="space-y-2.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold text-foreground">
-              Featured Digital Textbooks & Curriculum Exemplars
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">
-              ({filteredBooks.length} titles)
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+              {isHindi ? 'डिजिटल पाठ्यपुस्तकें व अध्ययन सामग्री' : 'Featured Digital Textbooks & Curriculum'}
+            </h2>
+            <span className="text-[11px] font-mono text-muted-foreground">
+              ({filteredBooks.length} {isHindi ? 'उपलब्ध' : 'Books'})
             </span>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <div className="relative flex-1 sm:w-64">
-              <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search subject, title, grade..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 pr-3 py-1 text-xs rounded-[3px] border border-border bg-[#141414] text-foreground focus:outline-none focus:border-primary"
-              />
-            </div>
+          <div className="relative w-full sm:w-64">
+            <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={isHindi ? 'किताब या विषय खोजें...' : 'Search title, subject, or grade...'}
+              className="w-full h-8 pl-8 pr-3 rounded-[4px] bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-zinc-400 transition-colors"
+            />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
           {filteredBooks.map((book) => (
             <div
               key={book.id}
-              className="group border border-border hover:border-primary/50 rounded-[4px] bg-[#141414] flex flex-col justify-between overflow-hidden transition-all duration-150 hover:shadow-lg"
+              onClick={() => setSelectedBook(book)}
+              className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
             >
-              <div>
-                {/* Book Cover Header Banner */}
-                <div className={`h-24 bg-gradient-to-br ${book.color} border-b border-border p-3 flex flex-col justify-between relative`}>
-                  <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded-[3px] bg-black/60 border border-white/10 text-[10px] font-mono text-white/90">
-                      {book.grade}
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded-[3px] bg-emerald-950/70 border border-emerald-500/30 text-[10px] font-bold text-emerald-400">
-                      {book.availableCopies} Copies Available
-                    </span>
-                  </div>
-
-                  <div className="text-[10px] font-mono text-white/60">
-                    ISBN: {book.isbn}
-                  </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-mono text-muted-foreground">
+                    {book.grade} · {book.subject}
+                  </span>
+                  <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-[3px] border border-emerald-500/20">
+                    {book.availableCopies} Copies
+                  </span>
                 </div>
 
-                <div className="p-3.5 space-y-2">
-                  <h4 className="font-bold text-xs text-foreground group-hover:text-primary transition-colors leading-snug">
-                    {book.title}
-                  </h4>
-                  <p className="text-[10px] text-muted-foreground font-medium">
-                    {book.hindiTitle}
+                <div>
+                  <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                    {isHindi ? book.hindiTitle : book.title}
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
+                    {book.author}
                   </p>
-                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                    {book.previewSummary}
-                  </p>
-
-                  <div className="pt-2 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground font-mono">
-                    <span>{book.pages} Pages</span>
-                    <span className="flex items-center gap-1 text-primary">
-                      <ShieldCheck className="w-3 h-3" />
-                      DRM Secure
-                    </span>
-                  </div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="p-3.5 pt-0 grid grid-cols-2 gap-2">
-                <VFButton
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSelectedBook(book)}
-                  className="w-full rounded-[4px] text-xs font-semibold gap-1"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  Preview
-                </VFButton>
-                <VFButton
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleLaunchLibraryPortal(`/reader?book=${book.id}`)}
-                  className="w-full rounded-[4px] text-xs font-semibold gap-1"
-                >
-                  <span>Read E-Book</span>
-                  <ExternalLink className="w-3 h-3" />
-                </VFButton>
+              <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
+                <span className="font-mono text-[10px] truncate">{book.isbn}</span>
+                <span className="text-foreground font-semibold flex items-center gap-1">
+                  <Eye className="w-3 h-3 text-muted-foreground" />
+                  {book.pages}p
+                </span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Circulation Ledger Table */}
+      {/* ── PHYSICAL CIRCULATION TABLE ── */}
       <VFCard
-        title="Active Book Loans & Physical Circulation Ledger"
-        description="Live tracking of issued physical volumes, due dates, borrower details and overdue penalties"
-        className="rounded-[4px]"
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-foreground">
+              {isHindi ? 'भौतिक पुस्तक संचलन व इश्यू रजिस्टर' : 'Physical Book Circulation & Issue Ledger'}
+            </span>
+            <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
+              Barcode Scanner Sync
+            </VFBadge>
+          </div>
+        }
+        description={
+          isHindi
+            ? 'छात्रों और शिक्षकों को जारी की गई किताबों का वास्तविक समय रिकॉर्ड।'
+            : 'Active student loans, return schedules, and overdue tracking.'
+        }
+        className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
+        headerClassName="py-2.5 px-3.5"
+        bodyClassName="p-0"
+        actions={
+          <button
+            onClick={() => handleLaunchLibraryPortal('/circulation')}
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>{isHindi ? 'पूरा लेजर देखें' : 'Full Circulation Ledger'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </button>
+        }
       >
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full text-xs text-left">
             <thead>
-              <tr className="border-b border-border text-muted-foreground font-mono bg-[#161616]">
-                <th className="py-2.5 px-3 font-semibold">Transaction ID</th>
-                <th className="py-2.5 px-3 font-semibold">Book Title</th>
-                <th className="py-2.5 px-3 font-semibold">Barcode Tag</th>
-                <th className="py-2.5 px-3 font-semibold">Borrower Name</th>
-                <th className="py-2.5 px-3 font-semibold">Class / Wing</th>
-                <th className="py-2.5 px-3 font-semibold">Issue Date</th>
-                <th className="py-2.5 px-3 font-semibold">Return Due Date</th>
-                <th className="py-2.5 px-3 font-semibold">Penalty</th>
-                <th className="py-2.5 px-3 font-semibold">Status</th>
+              <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
+                <th className="py-2.5 px-3.5">{isHindi ? 'इश्यू आईडी' : 'Loan ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'पुस्तक का नाम' : 'Book Title'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'बारकोड' : 'Barcode'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'छात्र / पाठक' : 'Borrower'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'कक्षा' : 'Class'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'अंतिम तिथि' : 'Due Date'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/60">
               {CIRCULATION_RECORDS.map((r) => (
-                <tr key={r.id} className="hover:bg-[#18181b] transition-colors">
-                  <td className="py-2.5 px-3 font-mono font-bold text-foreground">
-                    {r.id}
-                  </td>
-                  <td className="py-2.5 px-3 font-semibold text-foreground">
-                    {r.bookTitle}
-                  </td>
-                  <td className="py-2.5 px-3 font-mono text-muted-foreground">
-                    {r.barcode}
-                  </td>
-                  <td className="py-2.5 px-3 text-foreground font-medium">
-                    {r.borrowerName}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                    {r.borrowerClass}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                    {r.issueDate}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                    {r.dueDate}
-                  </td>
-                  <td className="py-2.5 px-3 font-mono font-semibold">
-                    {r.fine}
-                  </td>
-                  <td className="py-2.5 px-3">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] text-[10px] font-bold ${
-                      r.status === 'Return Due'
-                        ? 'bg-rose-950/70 border border-rose-500/30 text-rose-400'
-                        : 'bg-emerald-950/70 border border-emerald-500/30 text-emerald-400'
-                    }`}>
+                <tr key={r.id} className="hover:bg-[#141414] transition-colors">
+                  <td className="py-2.5 px-3.5 font-mono font-bold text-primary">{r.id}</td>
+                  <td className="py-2.5 px-3.5 font-bold text-foreground">{r.bookTitle}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground text-[11px]">{r.barcode}</td>
+                  <td className="py-2.5 px-3.5 text-foreground">{r.borrowerName}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{r.borrowerClass}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{r.dueDate}</td>
+                  <td className="py-2.5 px-3.5 text-right">
+                    <VFBadge variant={r.status === 'Active Issue' ? 'success' : 'warning'} className="text-[10px]">
                       {r.status}
-                    </span>
+                    </VFBadge>
                   </td>
                 </tr>
               ))}
@@ -427,68 +316,53 @@ function ELibraryOverviewPage() {
         </div>
       </VFCard>
 
-      {/* Book Chapter Preview Modal */}
+      {/* ── BOOK PREVIEW MODAL ── */}
       {selectedBook && (
         <VFDialog
-          isOpen={!!selectedBook}
+          isOpen={Boolean(selectedBook)}
           onClose={() => setSelectedBook(null)}
-          title={`E-Book Preview: ${selectedBook.title}`}
-          description={`${selectedBook.grade} · ${selectedBook.subject} · ${selectedBook.pages} Pages`}
+          title={isHindi ? selectedBook.hindiTitle : selectedBook.title}
+          description={`${selectedBook.grade} · ${selectedBook.subject} · ${selectedBook.author}`}
           footerActions={
-            <div className="flex items-center justify-between w-full">
-              <span className="text-xs text-muted-foreground font-mono">
-                ISBN: {selectedBook.isbn}
-              </span>
-              <div className="flex items-center gap-2">
-                <VFButton
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setSelectedBook(null)}
-                  className="rounded-[4px] text-xs"
-                >
-                  Close Preview
-                </VFButton>
-                <VFButton
-                  variant="primary"
-                  size="sm"
-                  onClick={() => {
-                    const id = selectedBook.id;
-                    setSelectedBook(null);
-                    handleLaunchLibraryPortal(`/reader?book=${id}`);
-                  }}
-                  className="rounded-[4px] text-xs font-semibold gap-1.5"
-                >
-                  <span>Launch Full DRM Reader</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </VFButton>
-              </div>
+            <div className="flex items-center justify-end gap-2 w-full">
+              <VFButton variant="outline" size="sm" onClick={() => setSelectedBook(null)}>
+                {isHindi ? 'बंद करें' : 'Close'}
+              </VFButton>
+              <VFButton
+                size="sm"
+                onClick={() => {
+                  setSelectedBook(null);
+                  handleLaunchLibraryPortal(`/reader/${selectedBook.id}`);
+                }}
+                className="font-bold"
+                leftIcon={<BookMarked className="w-3.5 h-3.5" />}
+              >
+                {isHindi ? 'डिजिटल रीडर में पढ़ें' : 'Open in E-Reader'}
+              </VFButton>
             </div>
           }
         >
-          <div className="space-y-3 py-2 text-xs">
-            <div className="p-4 rounded-[4px] bg-[#101012] border border-border space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-border">
-                <span className="font-bold text-foreground">Chapter 1 — Syllabus Overview & Practical Outline</span>
-                <VFBadge variant="outline" className="text-[10px] font-mono">Page 1 of {selectedBook.pages}</VFBadge>
+          <div className="space-y-2.5 text-xs">
+            <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">ISBN:</span>
+                <span className="font-mono text-foreground">{selectedBook.isbn}</span>
               </div>
-
-              <p className="text-muted-foreground leading-relaxed">
-                {selectedBook.previewSummary}
-              </p>
-
-              <div className="p-3 rounded-[3px] bg-[#161618] border border-[#26262a] text-[11px] space-y-1">
-                <p className="font-semibold text-foreground flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-primary" />
-                  Key Chapter Competencies
-                </p>
-                <p className="text-muted-foreground">• Formulating hypotheses and solving board examination model questions.</p>
-                <p className="text-muted-foreground">• Step-by-step mathematical proofs and laboratory instrumentation diagrams.</p>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'कुल पृष्ठ:' : 'Page Count:'}</span>
+                <span className="font-mono text-foreground">{selectedBook.pages} Pages</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'उपलब्ध प्रतियां:' : 'Available Copies:'}</span>
+                <span className="font-bold text-emerald-400 font-mono">{selectedBook.availableCopies} of {selectedBook.totalCopies}</span>
               </div>
             </div>
+            <p className="text-[11.5px] text-muted-foreground leading-relaxed">
+              {selectedBook.previewSummary}
+            </p>
           </div>
         </VFDialog>
       )}
     </VFPageContainer>
   );
 }
-

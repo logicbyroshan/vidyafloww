@@ -2,27 +2,22 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFPageHeader,
   VFButton,
   VFBadge,
   VFCard,
-  VFStatCard,
+  VFDialog,
 } from '@vidyafloww/ui';
 import {
-  Users,
   ExternalLink,
-  UserCheck,
   ShieldCheck,
-  Clock,
-  Briefcase,
   Download,
-  ArrowRight,
   Truck,
   Building2,
   Cpu,
-  CheckCircle2,
+  Users,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/hr-manage')({
   component: HRManagementOverviewPage,
@@ -37,7 +32,6 @@ interface DepartmentCard {
   presentToday: number;
   dutyStatus: string;
   icon: React.ComponentType<{ className?: string }>;
-  color: string;
 }
 
 const DEPARTMENTS: DepartmentCard[] = [
@@ -50,7 +44,6 @@ const DEPARTMENTS: DepartmentCard[] = [
     presentToday: 14,
     dutyStatus: '24/7 Gate & Perimeter Rotation',
     icon: ShieldCheck,
-    color: 'from-blue-950/40 to-[#141414]',
   },
   {
     id: 'dept-trans',
@@ -61,7 +54,6 @@ const DEPARTMENTS: DepartmentCard[] = [
     presentToday: 15,
     dutyStatus: 'All 12 Morning Routes Active',
     icon: Truck,
-    color: 'from-amber-950/40 to-[#141414]',
   },
   {
     id: 'dept-hk',
@@ -72,7 +64,6 @@ const DEPARTMENTS: DepartmentCard[] = [
     presentToday: 11,
     dutyStatus: 'Sanitation Cycle Phase 2 Active',
     icon: Building2,
-    color: 'from-emerald-950/40 to-[#141414]',
   },
   {
     id: 'dept-warden',
@@ -83,7 +74,6 @@ const DEPARTMENTS: DepartmentCard[] = [
     presentToday: 6,
     dutyStatus: 'Blocks A, B, C Staffed',
     icon: Users,
-    color: 'from-purple-950/40 to-[#141414]',
   },
   {
     id: 'dept-lab',
@@ -94,7 +84,6 @@ const DEPARTMENTS: DepartmentCard[] = [
     presentToday: 6,
     dutyStatus: 'Physics, Chem & IT Labs Ready',
     icon: Cpu,
-    color: 'from-cyan-950/40 to-[#141414]',
   },
 ];
 
@@ -139,182 +128,119 @@ const RECENT_PUNCHES = [
 
 function HRManagementOverviewPage() {
   const { addNotification } = useGlobalStore();
+  const { lang } = useTranslation();
+  const isHindi = lang === 'hi';
+  const [selectedDept, setSelectedDept] = React.useState<DepartmentCard | null>(null);
+
+  const standalonePort = '8012';
+  const standaloneUrl = `http://localhost:${standalonePort}`;
 
   const handleLaunchHRSuite = (path = '') => {
-    const url = `https://hr.vidyafloww.com${path}`;
+    const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: 'Opening Operational HR Suite',
-      description: 'Redirecting to dedicated workforce management portal on hr.vidyafloww.com',
+      title: isHindi ? 'एचआर पोर्टल खोला जा रहा है' : 'Opening HR Portal',
+      description: isHindi ? 'पोर्ट 8012 पर वर्कफ़ोर्स मैनेजमेंट पोर्टल पर भेजा जा रहा है।' : 'Redirecting to workforce management portal on port 8012.',
       type: 'info',
     });
   };
 
   return (
-    <VFPageContainer className="space-y-4">
-      <VFPageHeader
-        title="Operational HR & Support Staff"
-        description="गैर-शैक्षणिक स्टाफ व मानव संसाधन — Workforce administration for security guards, drivers, wardens, housekeeping & lab assistants"
-        actions={
+    <VFPageContainer className="space-y-4 w-full">
+      {/* ── TOP TOOLBAR BAR ── */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div>
           <div className="flex items-center gap-2">
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                addNotification({
-                  title: 'Exporting Attendance Muster',
-                  description: 'Monthly muster report downloaded successfully.',
-                  type: 'success',
-                });
-              }}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <Download className="w-3.5 h-3.5 text-muted-foreground" />
-              Download Muster
-            </VFButton>
-            <VFButton
-              variant="primary"
-              size="sm"
-              onClick={() => handleLaunchHRSuite()}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <span>Launch Dedicated HR Suite</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </VFButton>
+            <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
+              {isHindi ? 'गैर-शैक्षणिक स्टाफ व मानव संसाधन (Operational HR)' : 'Operational HR & Support Staff'}
+            </h1>
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
+              Port: {standalonePort}
+            </VFBadge>
           </div>
-        }
-      />
-
-      {/* Top Standalone Transition Banner */}
-      <div className="p-4 rounded-[4px] border border-primary/30 bg-gradient-to-r from-primary/10 via-[#18181b] to-[#121214] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="h-10 w-10 rounded-[4px] bg-primary/20 border border-primary/40 flex items-center justify-center text-primary shrink-0">
-            <UserCheck className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-foreground">
-                Dedicated Operational HR Subsystem Available
-              </h2>
-              <VFBadge variant="outline" className="text-[10px] font-mono border-primary/40 text-primary">
-                hr.vidyafloww.com · Port 8013
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5 max-w-2xl">
-              360-degree non-teaching personnel dossiers, biometric turnstile syncing, asset issue registers, salary slips, and police verification archives operate on a dedicated HR engine.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {isHindi
+              ? 'सुरक्षा गार्ड, चालक, वार्डन, हाउसकीपिंग व लैब सहायकों का वर्कफ़ोर्स प्रशासन।'
+              : 'Workforce administration for security guards, drivers, wardens, housekeeping & lab assistants.'}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
-            variant="primary"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              addNotification({
+                title: isHindi ? 'मस्टर डाउनलोड हुआ' : 'Muster Downloaded',
+                description: isHindi ? 'मासिक उपस्थिति मस्टर सफलतापूर्वक डाउनलोड की गई।' : 'Monthly attendance muster downloaded successfully.',
+                type: 'success',
+              });
+            }}
+            className="rounded-[4px] gap-1.5 text-xs font-semibold h-8 bg-[#141414] hover:bg-[#1c1c1c] text-foreground border-border"
+          >
+            <Download className="w-3.5 h-3.5 text-muted-foreground" />
+            <span>{isHindi ? 'मस्टर डाउनलोड' : 'Download Muster'}</span>
+          </VFButton>
+          <VFButton
             size="sm"
             onClick={() => handleLaunchHRSuite()}
-            className="rounded-[4px] gap-1.5 font-bold text-xs"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
-            <span>Open HR Portal</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'एचआर पोर्टल लॉन्च करें' : 'Launch HR Portal'}</span>
           </VFButton>
         </div>
       </div>
 
-      {/* KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <VFStatCard
-          title="Total Support Staff"
-          value="54 Members"
-          description="Across 5 operational wings"
-          accentColor="primary"
-          icon={<Users className="w-4 h-4 text-primary" />}
-        />
-        <VFStatCard
-          title="Punched In Today"
-          value="49 Present"
-          trend="up"
-          trendLabel="90.7% on-time"
-          accentColor="emerald"
-          icon={<UserCheck className="w-4 h-4 text-emerald-400" />}
-        />
-        <VFStatCard
-          title="On Approved Leave"
-          value="4 Staff"
-          description="2 Casual, 1 Med, 1 Annual"
-          accentColor="amber"
-          icon={<Clock className="w-4 h-4 text-amber-400" />}
-        />
-        <VFStatCard
-          title="Pending Verifications"
-          value="1 Pending"
-          description="Police clearance doc audit"
-          accentColor="rose"
-          icon={<ShieldCheck className="w-4 h-4 text-rose-400" />}
-        />
-      </div>
-
-      {/* Department Workforce Cards */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between border-b border-border pb-2">
-          <div className="flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-primary" />
-            <h3 className="text-sm font-bold text-foreground">
-              Departmental Workforce Roster
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">
-              (5 Operational Wings)
-            </span>
-          </div>
-
-          <button
-            onClick={() => handleLaunchHRSuite('/departments')}
-            className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
-          >
-            <span>Staff Directory</span>
-            <ExternalLink className="w-3 h-3" />
-          </button>
+      {/* ── DEPARTMENT ROSTER CARDS ── */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+            {isHindi ? 'परिचालन विभाग व शिफ्ट स्थिति' : 'Operational Departments & Shift Status'}
+          </h2>
+          <span className="text-[11px] font-mono text-muted-foreground">
+            5 {isHindi ? 'सक्रिय विंग्स' : 'Active Wings'}
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
           {DEPARTMENTS.map((dept) => {
-            const DeptIcon = dept.icon;
-            const presenceRate = Math.round((dept.presentToday / dept.totalStaff) * 100);
-
+            const Icon = dept.icon;
             return (
               <div
                 key={dept.id}
-                className="p-3.5 rounded-[4px] border border-border bg-[#141414] hover:border-primary/50 transition-colors flex flex-col justify-between space-y-3"
+                onClick={() => setSelectedDept(dept)}
+                className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
               >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <div className="h-7 w-7 rounded-[3px] bg-[#1c1c1f] border border-border flex items-center justify-center text-primary">
-                      <DeptIcon className="w-3.5 h-3.5" />
+                <div className="space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="h-8 w-8 rounded-[4px] bg-[#1a1a1a] border border-border flex items-center justify-center shrink-0 text-foreground group-hover:text-primary transition-colors">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-xs font-bold text-foreground truncate group-hover:text-primary transition-colors">
+                          {isHindi ? dept.hindiName : dept.name}
+                        </h3>
+                        <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+                          {isHindi ? 'प्रमुख:' : 'Head:'} {dept.head}
+                        </p>
+                      </div>
                     </div>
-                    <span className="text-xs font-mono font-bold text-emerald-400">
-                      {presenceRate}%
-                    </span>
+
+                    <VFBadge variant="success" className="text-[10px] font-mono shrink-0">
+                      {dept.presentToday}/{dept.totalStaff}
+                    </VFBadge>
                   </div>
 
-                  <h4 className="font-bold text-xs text-foreground mt-2 leading-tight">
-                    {dept.name}
-                  </h4>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">
-                    {dept.hindiName}
+                  <p className="text-[11px] text-muted-foreground/90 line-clamp-1 pl-10">
+                    {dept.dutyStatus}
                   </p>
-
-                  <div className="mt-3 p-2 rounded-[3px] bg-[#18181b] border border-border space-y-1 text-[11px]">
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Supervisor:</span>
-                      <span className="text-foreground font-medium truncate max-w-[100px]">{dept.head}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Present:</span>
-                      <strong className="font-mono text-emerald-400">{dept.presentToday} / {dept.totalStaff}</strong>
-                    </div>
-                  </div>
                 </div>
 
-                <div className="pt-2 border-t border-border text-[10px] text-muted-foreground truncate">
-                  {dept.dutyStatus}
+                <div className="mt-3 pt-2 border-t border-border/60 flex items-center justify-between text-[11px]">
+                  <span className="text-muted-foreground">{isHindi ? 'विवरण देखें' : 'View Details'}</span>
+                  <span className="text-primary font-bold group-hover:translate-x-0.5 transition-transform">→</span>
                 </div>
               </div>
             );
@@ -322,114 +248,114 @@ function HRManagementOverviewPage() {
         </div>
       </div>
 
-      {/* Biometric Clock Logs Table & Payroll Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Biometric Punch In Feed (2 Cols) */}
-        <div className="lg:col-span-2 space-y-3">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Clock className="w-4 h-4 text-emerald-400" />
-              Live Biometric Attendance Feed
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">Turnstile Sync Active</span>
+      {/* ── BIOMETRIC PUNCH LOGS TABLE ── */}
+      <VFCard
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-foreground">
+              {isHindi ? 'दैनिक बायोमेट्रिक पंच लॉग्स (Live Attendance)' : 'Today\'s Biometric Attendance Punches'}
+            </span>
+            <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
+              RFID / Face Sync
+            </VFBadge>
           </div>
-
-          <div className="border border-border rounded-[4px] bg-[#141414] overflow-x-auto">
-            <table className="w-full text-xs text-left border-collapse">
-              <thead>
-                <tr className="border-b border-border text-muted-foreground font-mono bg-[#161616]">
-                  <th className="py-2.5 px-3 font-semibold">Staff Code</th>
-                  <th className="py-2.5 px-3 font-semibold">Employee Name</th>
-                  <th className="py-2.5 px-3 font-semibold">Department & Role</th>
-                  <th className="py-2.5 px-3 font-semibold">Punch Gate</th>
-                  <th className="py-2.5 px-3 font-semibold">Punch Time</th>
-                  <th className="py-2.5 px-3 font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {RECENT_PUNCHES.map((p) => (
-                  <tr key={p.empId} className="hover:bg-[#18181b] transition-colors">
-                    <td className="py-2.5 px-3 font-mono font-bold text-foreground">
-                      {p.empId}
-                    </td>
-                    <td className="py-2.5 px-3 font-semibold text-foreground">
-                      {p.name}
-                    </td>
-                    <td className="py-2.5 px-3 text-muted-foreground">
-                      {p.dept} · <span className="text-foreground">{p.role}</span>
-                    </td>
-                    <td className="py-2.5 px-3 text-muted-foreground font-mono">
-                      {p.gate}
-                    </td>
-                    <td className="py-2.5 px-3 font-mono font-bold text-foreground">
-                      {p.punchTime}
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] text-[10px] font-bold ${
-                        p.status.includes('On-Time')
-                          ? 'bg-emerald-950/70 border border-emerald-500/30 text-emerald-400'
-                          : 'bg-amber-950/70 border border-amber-500/30 text-amber-400'
-                      }`}>
-                        <CheckCircle2 className="w-3 h-3" />
-                        {p.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Monthly Payroll & Statutory Compliance Summary (1 Col) */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-primary" />
-              Statutory Payroll Cycle
-            </h3>
-            <VFBadge variant="outline" className="text-[10px] font-mono">SEP 2026</VFBadge>
-          </div>
-
-          <VFCard
-            title="September Salary Cycle"
-            description="Automated Provident Fund (PF), ESI & TDS deductions"
-            className="rounded-[4px] space-y-3"
+        }
+        description={
+          isHindi
+            ? 'गेटपास और बायोमेट्रिक टर्मिनलों से प्राप्त वास्तविक समय लॉग।'
+            : 'Real-time entry records from institutional gatepass terminals.'
+        }
+        className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
+        headerClassName="py-2.5 px-3.5"
+        bodyClassName="p-0"
+        actions={
+          <button
+            onClick={() => handleLaunchHRSuite('/attendance')}
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Scheduled Disbursal:</span>
-                <strong className="text-foreground font-mono">10 Sep 2026</strong>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Total Operational Payroll:</span>
-                <strong className="text-primary font-mono text-sm">₹16,40,000</strong>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">EPF / ESIC Compliance:</span>
-                <span className="text-emerald-400 font-semibold">100% Reconciled</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Bank Direct Transfer:</span>
-                <span className="text-foreground font-medium">NEFT / RTGS Batched</span>
-              </div>
-            </div>
+            <span>{isHindi ? 'पूरी उपस्थिति देखें' : 'Full Attendance Ledger'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </button>
+        }
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs text-left">
+            <thead>
+              <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
+                <th className="py-2.5 px-3.5">{isHindi ? 'कर्मचारी आईडी' : 'Emp ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'नाम' : 'Staff Name'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'विभाग' : 'Department'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'पद / रोल' : 'Role'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'गेट टर्मिनल' : 'Gate Location'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'समय' : 'Punch Time'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/60">
+              {RECENT_PUNCHES.map((r) => (
+                <tr key={r.empId} className="hover:bg-[#141414] transition-colors">
+                  <td className="py-2.5 px-3.5 font-mono font-bold text-primary">{r.empId}</td>
+                  <td className="py-2.5 px-3.5 font-bold text-foreground">{r.name}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{r.dept}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{r.role}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground font-mono text-[11px]">{r.gate}</td>
+                  <td className="py-2.5 px-3.5 font-mono font-semibold text-foreground">{r.punchTime}</td>
+                  <td className="py-2.5 px-3.5 text-right">
+                    <VFBadge variant={r.status === 'On-Time' ? 'success' : 'warning'} className="text-[10px]">
+                      {r.status}
+                    </VFBadge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </VFCard>
 
-            <div className="pt-2 border-t border-border">
+      {/* ── DEPARTMENT DETAIL MODAL ── */}
+      {selectedDept && (
+        <VFDialog
+          isOpen={Boolean(selectedDept)}
+          onClose={() => setSelectedDept(null)}
+          title={isHindi ? selectedDept.hindiName : selectedDept.name}
+          description={`${isHindi ? 'विभागाध्यक्ष:' : 'Department In-Charge:'} ${selectedDept.head}`}
+          footerActions={
+            <div className="flex items-center justify-end gap-2 w-full">
+              <VFButton variant="outline" size="sm" onClick={() => setSelectedDept(null)}>
+                {isHindi ? 'बंद करें' : 'Close'}
+              </VFButton>
               <VFButton
-                variant="primary"
                 size="sm"
-                onClick={() => handleLaunchHRSuite('/payroll')}
-                className="w-full rounded-[4px] text-xs font-semibold gap-1.5"
+                onClick={() => {
+                  setSelectedDept(null);
+                  handleLaunchHRSuite();
+                }}
+                className="font-bold"
+                leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
               >
-                <span>View Full Payroll Ledger</span>
-                <ExternalLink className="w-3.5 h-3.5" />
+                {isHindi ? 'एचआर सूट में प्रबंधित करें' : 'Manage in HR Suite'}
               </VFButton>
             </div>
-          </VFCard>
-        </div>
-      </div>
+          }
+        >
+          <div className="space-y-2.5 text-xs">
+            <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'कुल स्वीकृत पद:' : 'Sanctioned Posts:'}</span>
+                <span className="font-mono font-bold text-foreground">{selectedDept.totalStaff} Staff Members</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'आज उपस्थित:' : 'Present on Shift:'}</span>
+                <span className="font-bold text-emerald-400 font-mono">{selectedDept.presentToday} Staff</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'वर्तमान कार्यभार स्थिति:' : 'Duty Rotation:'}</span>
+                <span className="text-foreground">{selectedDept.dutyStatus}</span>
+              </div>
+            </div>
+          </div>
+        </VFDialog>
+      )}
     </VFPageContainer>
   );
 }
-

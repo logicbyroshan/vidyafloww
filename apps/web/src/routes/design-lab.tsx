@@ -2,25 +2,17 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFPageHeader,
   VFButton,
   VFBadge,
   VFCard,
-  VFStatCard,
   VFDialog,
 } from '@vidyafloww/ui';
 import {
-  Palette,
   ExternalLink,
   Sparkles,
-  FileCheck2,
-  CreditCard,
-  Eye,
-  Sliders,
-  CheckCircle2,
-  ArrowRight,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/design-lab')({
   component: DesignLabOverviewPage,
@@ -35,10 +27,8 @@ interface TemplateItem {
   dpi: number;
   orientation: 'Portrait' | 'Landscape';
   compliance: string;
-  previewColor: string;
   description: string;
   fieldsCount: number;
-  updatedAt: string;
 }
 
 const TEMPLATE_PRESETS: TemplateItem[] = [
@@ -51,10 +41,8 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
     dpi: 300,
     orientation: 'Portrait',
     compliance: 'CBSE / State Board Approved',
-    previewColor: 'from-blue-950/60 to-slate-900',
-    description: 'Bilingual marksheet layout with subject-wise theory & practical breakdown, auto-computed CGPA, school crest watermark, and QR validation.',
+    description: 'Bilingual marksheet layout with subject-wise theory & practical breakdown, auto-computed CGPA, and QR validation.',
     fieldsCount: 18,
-    updatedAt: '2 days ago',
   },
   {
     id: 'TPL-ID-01',
@@ -65,10 +53,8 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
     dpi: 300,
     orientation: 'Portrait',
     compliance: 'ISO/IEC 7810 Standard',
-    previewColor: 'from-emerald-950/60 to-slate-900',
-    description: 'High-durability plastic PVC card layout featuring portrait headshot, RFID chip icon, emergency guardian contact, blood group, and barcode.',
+    description: 'High-durability plastic PVC card layout featuring portrait headshot, RFID chip icon, emergency contact, and barcode.',
     fieldsCount: 12,
-    updatedAt: 'Yesterday',
   },
   {
     id: 'TPL-ID-02',
@@ -79,10 +65,8 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
     dpi: 300,
     orientation: 'Landscape',
     compliance: 'Standard Lanyard Format',
-    previewColor: 'from-indigo-950/60 to-slate-900',
-    description: 'Crisp institutional credential card with employee code, department badge, authorized signatory stamp, and security hologram placement.',
+    description: 'Crisp institutional credential card with employee code, department badge, and authorized signatory stamp.',
     fieldsCount: 10,
-    updatedAt: '3 days ago',
   },
   {
     id: 'TPL-CERT-01',
@@ -92,366 +76,191 @@ const TEMPLATE_PRESETS: TemplateItem[] = [
     dimensions: '297 × 210 mm (A4)',
     dpi: 300,
     orientation: 'Landscape',
-    compliance: 'Foil Emboss & High-Gloss Compatible',
-    previewColor: 'from-amber-950/60 to-slate-900',
-    description: 'Traditional ornate gold-leaf border with institutional seal, dynamic recipient name callout, achievement distinction, and dual signature slots.',
+    compliance: 'Foil Emboss Compatible',
+    description: 'Traditional ornate gold-leaf border with institutional seal, dynamic recipient name callout, and dual signature slots.',
     fieldsCount: 8,
-    updatedAt: '5 days ago',
-  },
-  {
-    id: 'TPL-ADM-01',
-    title: 'Board Examination Admit Card & Hall Ticket',
-    hindiTitle: 'बोर्ड परीक्षा प्रवेश पत्र व हॉल टिकट',
-    category: 'admit-card',
-    dimensions: '210 × 297 mm (A4)',
-    dpi: 300,
-    orientation: 'Portrait',
-    compliance: 'Anti-Tamper Examination Roster',
-    previewColor: 'from-purple-950/60 to-slate-900',
-    description: 'Candidate roll matrix, invigilator verification blocks, exam center timetable schedule, barcode roll lookup, and mandatory instructions checklist.',
-    fieldsCount: 14,
-    updatedAt: '1 week ago',
-  },
-  {
-    id: 'TPL-CERT-02',
-    title: 'Transfer & Character Certificate (TC/CC)',
-    hindiTitle: 'स्थानांतरण व चरित्र प्रमाण पत्र',
-    category: 'certificate',
-    dimensions: '210 × 297 mm (A4)',
-    dpi: 300,
-    orientation: 'Portrait',
-    compliance: 'Education Directorate Standard',
-    previewColor: 'from-cyan-950/60 to-slate-900',
-    description: 'Official departure certification record with admission registry serial number, student conduct remarks, fee clearance verification, and counter-signatures.',
-    fieldsCount: 15,
-    updatedAt: '2 weeks ago',
   },
 ];
 
-const RECENT_BATCHES = [
+const PRINT_QUEUE = [
   {
-    id: 'BAT-2026-081',
-    title: 'Class 10-A Final Term Tabulation Sheets',
+    batchId: 'BATCH-2026-901',
+    template: 'Student Biometric PVC Smart Card',
+    target: 'Class 10-A (42 Cards)',
+    format: 'PVC Plastic (300 DPI)',
+    status: 'Ready to Print',
+    createdAt: 'Today, 09:30 AM',
+  },
+  {
+    batchId: 'BATCH-2026-902',
     template: 'CBSE Secondary Marksheet',
-    count: 42,
-    generatedAt: 'Today, 11:30 AM',
-    status: 'Ready',
-    size: '18.4 MB',
+    target: 'Class 12-Sci (38 Sheets)',
+    format: 'Heavyweight Matte Paper',
+    status: 'Queued',
+    createdAt: 'Today, 08:45 AM',
   },
   {
-    id: 'BAT-2026-080',
-    title: 'Batch 2026 Student Smart PVC ID Cards',
-    template: 'Student Biometric Smart Card',
-    count: 120,
-    generatedAt: 'Yesterday, 04:15 PM',
-    status: 'Ready',
-    size: '42.1 MB',
-  },
-  {
-    id: 'BAT-2026-079',
-    title: 'Inter-House Sports Meet Merit Certificates',
-    template: 'Annual Sports Merit Certificate',
-    count: 65,
-    generatedAt: 'Sep 06, 2026',
-    status: 'Ready',
-    size: '28.6 MB',
+    batchId: 'BATCH-2026-903',
+    template: 'Academic Merit Certificate',
+    target: 'Sports Meet Winners (15 Sheets)',
+    format: 'Gold Foil Border Parchment',
+    status: 'Exported PDF',
+    createdAt: 'Yesterday',
   },
 ];
 
 function DesignLabOverviewPage() {
   const { addNotification } = useGlobalStore();
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
-  const [previewTemplate, setPreviewTemplate] = React.useState<TemplateItem | null>(null);
+  const { lang } = useTranslation();
+  const isHindi = lang === 'hi';
+  const [selectedTemplate, setSelectedTemplate] = React.useState<TemplateItem | null>(null);
 
-  const filteredTemplates = selectedCategory === 'all'
-    ? TEMPLATE_PRESETS
-    : TEMPLATE_PRESETS.filter((t) => t.category === selectedCategory);
+  const standalonePort = '8015';
+  const standaloneUrl = `http://localhost:${standalonePort}`;
 
-  const handleLaunchStudio = (templateId?: string) => {
-    const url = templateId
-      ? `https://designlab.vidyafloww.com?template=${templateId}`
-      : 'https://designlab.vidyafloww.com';
+  const handleLaunchDesignStudio = (path = '') => {
+    const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: 'Opening Design Lab Studio',
-      description: 'Redirecting to dedicated high-resolution studio on designlab.vidyafloww.com',
+      title: isHindi ? 'डिजाइन स्टूडियो खोला जा रहा है' : 'Opening Design Studio',
+      description: isHindi ? 'पोर्ट 8015 पर डॉक्यूमेंट डिज़ाइनर पर भेजा जा रहा है।' : 'Redirecting to visual template studio on port 8015.',
       type: 'info',
     });
   };
 
   return (
-    <VFPageContainer className="space-y-4">
-      <VFPageHeader
-        title="Design Lab Studio"
-        description="डिज़ाइन लैब स्टूडियो — Institutional vector document layout engine, marksheet tabulation, biometric PVC cards & certificates"
-        actions={
+    <VFPageContainer className="space-y-4 w-full">
+      {/* ── TOP TOOLBAR BAR ── */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div>
           <div className="flex items-center gap-2">
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => handleLaunchStudio()}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <Sliders className="w-3.5 h-3.5 text-muted-foreground" />
-              Studio Presets
-            </VFButton>
-            <VFButton
-              variant="primary"
-              size="sm"
-              onClick={() => handleLaunchStudio()}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <span>Launch Dedicated Studio</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </VFButton>
+            <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
+              {isHindi ? 'डिजाइन लैब व मुद्रण केंद्र (Design Lab & Card Studio)' : 'Design Lab & Document Publisher'}
+            </h1>
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
+              Port: {standalonePort}
+            </VFBadge>
           </div>
-        }
-      />
-
-      {/* Top Standalone Transition Banner */}
-      <div className="p-4 rounded-[4px] border border-primary/30 bg-gradient-to-r from-primary/10 via-[#18181b] to-[#121214] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="h-10 w-10 rounded-[4px] bg-primary/20 border border-primary/40 flex items-center justify-center text-primary shrink-0">
-            <Palette className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-foreground">
-                Dedicated Vector Design Subsystem Available
-              </h2>
-              <VFBadge variant="outline" className="text-[10px] font-mono border-primary/40 text-primary">
-                designlab.vidyafloww.com · Port 8010
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5 max-w-2xl">
-              All marksheets, admit cards, and smart PVC layouts are rendered client-side at 300 DPI vector precision.
-              You can preview templates directly below or launch the specialized full-screen studio for multi-layer canvas editing.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {isHindi
+              ? 'आईडी कार्ड, मार्कशीट, हॉल टिकट, प्रमाण पत्र व टीसी का विजुअल डिज़ाइन व बैच प्रिंटिंग स्टूडियो।'
+              : 'Visual template studio for student ID cards, report cards, admit cards, hall tickets & certificates.'}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
-            variant="primary"
             size="sm"
-            onClick={() => handleLaunchStudio()}
-            className="rounded-[4px] gap-1.5 font-bold text-xs"
+            onClick={() => handleLaunchDesignStudio()}
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
-            <span>Open Studio Canvas</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'डिजाइन स्टूडियो लॉन्च करें' : 'Launch Design Studio'}</span>
           </VFButton>
         </div>
       </div>
 
-      {/* KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <VFStatCard
-          title="Active Templates"
-          value="24 Presets"
-          trend="up"
-          trendLabel="+3 new"
-          accentColor="primary"
-          icon={<Palette className="w-4 h-4 text-primary" />}
-        />
-        <VFStatCard
-          title="Documents Issued"
-          value="3,480 Docs"
-          trend="up"
-          trendLabel="+14% this term"
-          accentColor="emerald"
-          icon={<FileCheck2 className="w-4 h-4 text-emerald-400" />}
-        />
-        <VFStatCard
-          title="Vector Resolution"
-          value="300 DPI"
-          description="Lossless PDF/PNG"
-          accentColor="cyan"
-          icon={<Sparkles className="w-4 h-4 text-cyan-400" />}
-        />
-        <VFStatCard
-          title="Active Print Batches"
-          value="3 Batches"
-          description="227 documents in queue"
-          accentColor="amber"
-          icon={<CreditCard className="w-4 h-4 text-amber-400" />}
-        />
-      </div>
-
-      {/* Template Presets Section */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-border pb-2.5">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold text-foreground">
-              Institutional Template Catalog
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">
-              ({filteredTemplates.length} available)
-            </span>
-          </div>
-
-          {/* Category Filter Tabs */}
-          <div className="flex items-center gap-1 p-0.5 rounded-[4px] bg-[#141414] border border-border">
-            {[
-              { id: 'all', label: 'All Templates' },
-              { id: 'marksheet', label: 'Marksheets' },
-              { id: 'id-card', label: 'ID Cards' },
-              { id: 'certificate', label: 'Certificates' },
-              { id: 'admit-card', label: 'Admit Cards' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedCategory(tab.id)}
-                className={`px-2.5 py-1 text-xs font-semibold rounded-[3px] transition-colors ${
-                  selectedCategory === tab.id
-                    ? 'bg-primary text-white'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+      {/* ── TEMPLATES GRID ── */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+            {isHindi ? 'मानक दस्तावेज़ व कार्ड टेम्प्लेट्स' : 'Standard Document & Identity Card Presets'}
+          </h2>
+          <span className="text-[11px] font-mono text-muted-foreground">
+            {TEMPLATE_PRESETS.length} {isHindi ? 'टेम्प्लेट्स' : 'Presets'}
+          </span>
         </div>
 
-        {/* Templates Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {filteredTemplates.map((template) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+          {TEMPLATE_PRESETS.map((tpl) => (
             <div
-              key={template.id}
-              className="group border border-border hover:border-primary/50 rounded-[4px] bg-[#141414] flex flex-col overflow-hidden transition-all duration-150 hover:shadow-lg"
+              key={tpl.id}
+              onClick={() => setSelectedTemplate(tpl)}
+              className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
             >
-              {/* Visual Card Header Preview Mockup */}
-              <div className={`h-28 bg-gradient-to-br ${template.previewColor} border-b border-border p-3.5 relative flex flex-col justify-between select-none`}>
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="px-2 py-0.5 rounded-[3px] bg-black/60 border border-white/10 text-[10px] font-mono text-white/90">
-                    {template.dimensions}
+                  <span className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border text-[10.5px] font-mono font-bold text-foreground uppercase">
+                    {tpl.category}
                   </span>
-                  <span className="px-1.5 py-0.5 rounded-[3px] bg-primary/30 border border-primary/40 text-[10px] font-bold text-primary">
-                    {template.dpi} DPI
+                  <span className="text-[10px] font-mono text-muted-foreground">
+                    {tpl.dimensions}
                   </span>
                 </div>
 
-                {/* Visual Decorative Mini Canvas Lines */}
-                <div className="space-y-1 opacity-70">
-                  <div className="h-1.5 w-2/3 rounded-sm bg-white/40" />
-                  <div className="h-1 w-1/2 rounded-sm bg-white/25" />
-                  <div className="h-1 w-3/4 rounded-sm bg-white/15" />
-                </div>
-
-                <div className="text-[10px] font-medium text-white/60">
-                  {template.compliance}
+                <div>
+                  <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                    {isHindi ? tpl.hindiTitle : tpl.title}
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                    {tpl.description}
+                  </p>
                 </div>
               </div>
 
-              {/* Card Body */}
-              <div className="p-3.5 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <h4 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">
-                      {template.title}
-                    </h4>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground font-medium mt-0.5">
-                    {template.hindiTitle}
-                  </p>
-                  <p className="text-xs text-muted-foreground/90 mt-2 line-clamp-2 leading-relaxed">
-                    {template.description}
-                  </p>
-                </div>
-
-                {/* Specs Footer */}
-                <div className="pt-2 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground font-mono">
-                  <span>{template.fieldsCount} Data Slots</span>
-                  <span>{template.orientation}</span>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <VFButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPreviewTemplate(template)}
-                    className="w-full rounded-[4px] text-xs font-semibold gap-1"
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                    Preview
-                  </VFButton>
-                  <VFButton
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleLaunchStudio(template.id)}
-                    className="w-full rounded-[4px] text-xs font-semibold gap-1"
-                  >
-                    <span>Open in Studio</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </VFButton>
-                </div>
+              <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
+                <span className="font-mono text-[10.5px]">{tpl.fieldsCount} Data Fields</span>
+                <span className="text-primary font-bold group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Recent Print Batches Table */}
+      {/* ── BATCH PRINT & EXPORT QUEUE TABLE ── */}
       <VFCard
-        title="Recent Production Export Batches"
-        description="Recently compiled high-resolution document archives ready for local or institutional printing"
-        className="rounded-[4px]"
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-foreground">
+              {isHindi ? 'बैच प्रिंटिंग व एक्सपोर्ट कतार' : 'Batch Print & Document Export Queue'}
+            </span>
+            <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
+              Vector PDF / CMYK
+            </VFBadge>
+          </div>
+        }
+        description={
+          isHindi
+            ? 'कक्षावार पीवीसी कार्ड, अंकतालिका व प्रमाण पत्र मुद्रण स्थिति।'
+            : 'Recent card generation jobs, print spooler status, and high-res vector exports.'
+        }
+        className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
+        headerClassName="py-2.5 px-3.5"
+        bodyClassName="p-0"
+        actions={
+          <button
+            onClick={() => handleLaunchDesignStudio('/print-queue')}
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>{isHindi ? 'पूरी कतार देखें' : 'Full Print Spooler'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </button>
+        }
       >
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full text-xs text-left">
             <thead>
-              <tr className="border-b border-border text-muted-foreground font-mono bg-[#161616]">
-                <th className="py-2.5 px-3 font-semibold">Batch Code</th>
-                <th className="py-2.5 px-3 font-semibold">Batch Name</th>
-                <th className="py-2.5 px-3 font-semibold">Base Template</th>
-                <th className="py-2.5 px-3 font-semibold">Copies</th>
-                <th className="py-2.5 px-3 font-semibold">File Size</th>
-                <th className="py-2.5 px-3 font-semibold">Generated</th>
-                <th className="py-2.5 px-3 font-semibold">Status</th>
-                <th className="py-2.5 px-3 font-semibold text-right">Actions</th>
+              <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
+                <th className="py-2.5 px-3.5">{isHindi ? 'बैच आईडी' : 'Batch ID'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'टेम्प्लेट' : 'Template'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'लक्षित समूह / मात्रा' : 'Target Group'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'प्रिंट फॉर्मेट' : 'Media Format'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'समय' : 'Queued At'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
-              {RECENT_BATCHES.map((b) => (
-                <tr key={b.id} className="hover:bg-[#18181b] transition-colors">
-                  <td className="py-2.5 px-3 font-mono font-bold text-foreground">
-                    {b.id}
-                  </td>
-                  <td className="py-2.5 px-3 font-medium text-foreground">
-                    {b.title}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground">
-                    {b.template}
-                  </td>
-                  <td className="py-2.5 px-3 font-mono">
-                    {b.count} documents
-                  </td>
-                  <td className="py-2.5 px-3 font-mono text-muted-foreground">
-                    {b.size}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground">
-                    {b.generatedAt}
-                  </td>
-                  <td className="py-2.5 px-3">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-emerald-950/70 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]">
-                      <CheckCircle2 className="w-3 h-3" />
-                      {b.status}
-                    </span>
-                  </td>
-                  <td className="py-2.5 px-3 text-right">
-                    <button
-                      onClick={() => {
-                        addNotification({
-                          title: 'Downloading Batch PDF',
-                          description: `Preparing download for ${b.id}...`,
-                          type: 'success',
-                        });
-                      }}
-                      className="px-2 py-1 rounded-[3px] bg-[#202023] hover:bg-[#2a2a2e] text-foreground font-semibold text-[11px] border border-[#2e2e32] transition-colors"
-                    >
-                      Download
-                    </button>
+            <tbody className="divide-y divide-border/60">
+              {PRINT_QUEUE.map((job) => (
+                <tr key={job.batchId} className="hover:bg-[#141414] transition-colors">
+                  <td className="py-2.5 px-3.5 font-mono font-bold text-primary">{job.batchId}</td>
+                  <td className="py-2.5 px-3.5 font-bold text-foreground">{job.template}</td>
+                  <td className="py-2.5 px-3.5 text-foreground">{job.target}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{job.format}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{job.createdAt}</td>
+                  <td className="py-2.5 px-3.5 text-right">
+                    <VFBadge variant={job.status === 'Ready to Print' ? 'success' : job.status === 'Queued' ? 'warning' : 'primary'} className="text-[10px]">
+                      {job.status}
+                    </VFBadge>
                   </td>
                 </tr>
               ))}
@@ -460,108 +269,53 @@ function DesignLabOverviewPage() {
         </div>
       </VFCard>
 
-      {/* Quick Template Preview Modal */}
-      {previewTemplate && (
+      {/* ── TEMPLATE MODAL ── */}
+      {selectedTemplate && (
         <VFDialog
-          isOpen={!!previewTemplate}
-          onClose={() => setPreviewTemplate(null)}
-          title={`Template Preview: ${previewTemplate.title}`}
-          description={`${previewTemplate.dimensions} · ${previewTemplate.dpi} DPI Lossless Vector Model`}
+          isOpen={Boolean(selectedTemplate)}
+          onClose={() => setSelectedTemplate(null)}
+          title={isHindi ? selectedTemplate.hindiTitle : selectedTemplate.title}
+          description={`${selectedTemplate.category.toUpperCase()} · ${selectedTemplate.dimensions} · ${selectedTemplate.dpi} DPI`}
           footerActions={
-            <div className="flex items-center justify-between w-full">
-              <span className="text-xs text-muted-foreground font-mono">
-                Compliance: {previewTemplate.compliance}
-              </span>
-              <div className="flex items-center gap-2">
-                <VFButton
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setPreviewTemplate(null)}
-                  className="rounded-[4px] text-xs"
-                >
-                  Close Preview
-                </VFButton>
-                <VFButton
-                  variant="primary"
-                  size="sm"
-                  onClick={() => {
-                    const id = previewTemplate.id;
-                    setPreviewTemplate(null);
-                    handleLaunchStudio(id);
-                  }}
-                  className="rounded-[4px] text-xs font-semibold gap-1.5"
-                >
-                  <span>Edit in Full Studio Canvas</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </VFButton>
-              </div>
+            <div className="flex items-center justify-end gap-2 w-full">
+              <VFButton variant="outline" size="sm" onClick={() => setSelectedTemplate(null)}>
+                {isHindi ? 'बंद करें' : 'Close'}
+              </VFButton>
+              <VFButton
+                size="sm"
+                onClick={() => {
+                  setSelectedTemplate(null);
+                  handleLaunchDesignStudio(`/editor/${selectedTemplate.id}`);
+                }}
+                className="font-bold"
+                leftIcon={<Sparkles className="w-3.5 h-3.5" />}
+              >
+                {isHindi ? 'डिजाइन एडिटर में खोलें' : 'Open in Design Studio'}
+              </VFButton>
             </div>
           }
         >
-          <div className="space-y-4 py-2">
-            {/* Mock Vector Canvas Document Preview Box */}
-            <div className="border border-border rounded-[4px] bg-[#0c0c0e] p-6 flex flex-col items-center justify-center min-h-[320px] shadow-inner relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
-
-              <div className="w-full max-w-md bg-[#161618] border border-[#2c2c30] rounded-[4px] p-5 shadow-2xl space-y-4 relative z-10">
-                <div className="flex items-center justify-between border-b border-[#2c2c30] pb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-[3px] bg-primary/20 border border-primary/40 flex items-center justify-center font-bold text-primary text-[10px]">
-                      VF
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-foreground">VidyaFloww International Academy</p>
-                      <p className="text-[10px] text-muted-foreground">CBSE Affiliation No. 2130982</p>
-                    </div>
-                  </div>
-                  <VFBadge variant="outline" className="text-[9px] font-mono">
-                    {previewTemplate.category.toUpperCase()}
-                  </VFBadge>
-                </div>
-
-                <div className="space-y-2">
-                  <h4 className="text-center font-bold text-sm text-foreground tracking-wide">
-                    {previewTemplate.title.toUpperCase()}
-                  </h4>
-                  <p className="text-center text-[10px] text-muted-foreground font-mono">
-                    ACADEMIC SESSION 2025–2026
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-[11px] p-2.5 rounded-[3px] bg-[#0e0e10] border border-[#222226]">
-                  <div>
-                    <span className="text-muted-foreground block text-[10px]">Candidate Name:</span>
-                    <span className="font-semibold text-foreground">Aarav Sharma</span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground block text-[10px]">Enrollment Number:</span>
-                    <span className="font-mono text-foreground font-semibold">ADM-2026-0811</span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground block text-[10px]">Class & Section:</span>
-                    <span className="text-foreground">Class 10-A (Science)</span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground block text-[10px]">Roll Matrix:</span>
-                    <span className="font-mono text-foreground font-semibold">#101042</span>
-                  </div>
-                </div>
-
-                <div className="pt-2 flex items-center justify-between text-[9px] text-muted-foreground border-t border-[#2c2c30]">
-                  <span>System Verified Checksum: 8f4a..91e0</span>
-                  <span className="font-bold text-foreground">Controller of Examinations</span>
-                </div>
+          <div className="space-y-2.5 text-xs">
+            <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'मानक अनुपालन:' : 'Compliance Standard:'}</span>
+                <span className="font-semibold text-foreground">{selectedTemplate.compliance}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'ओरिएंटेशन:' : 'Orientation:'}</span>
+                <span className="font-mono text-foreground">{selectedTemplate.orientation}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'डायनामिक डेटा फील्ड्स:' : 'Variable Data Fields:'}</span>
+                <span className="font-bold text-emerald-400 font-mono">{selectedTemplate.fieldsCount} Fields</span>
               </div>
             </div>
-
-            <div className="text-xs text-muted-foreground space-y-1">
-              <p>• <strong>Dynamic Binding</strong>: Automatically connects to student rosters, teacher credentials, or sports meet winners.</p>
-              <p>• <strong>Zero Pixelation</strong>: All typography, tables, and watermarks render as pure vector curves in PDF output.</p>
-            </div>
+            <p className="text-[11.5px] text-muted-foreground leading-relaxed">
+              {selectedTemplate.description}
+            </p>
           </div>
         </VFDialog>
       )}
     </VFPageContainer>
   );
 }
-

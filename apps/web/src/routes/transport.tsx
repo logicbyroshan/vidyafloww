@@ -2,26 +2,17 @@ import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   VFPageContainer,
-  VFPageHeader,
   VFButton,
   VFBadge,
   VFCard,
-  VFStatCard,
   VFDialog,
 } from '@vidyafloww/ui';
 import {
-  Bus,
   ExternalLink,
-  Users,
-  ShieldCheck,
   Navigation,
-  Phone,
-  Clock,
-  ArrowRight,
-  Radio,
-  Send,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
+import { useTranslation } from '../hooks/useTranslation';
 
 export const Route = createFileRoute('/transport')({
   component: TransportOverviewPage,
@@ -117,309 +108,201 @@ const VEHICLE_COMPLIANCE = [
     model: 'Tata Starbus (42 Seater)',
     fitnessExpiry: '14 Dec 2027',
     insuranceExpiry: '22 Aug 2027',
-    pollutionStatus: 'Valid (Pass)',
-    speedGovernor: 'Calibrated (40 km/h)',
-    cctvLive: 'Active (4 Cams)',
-    status: 'Certified Safe',
+    pollutionStatus: 'Valid',
+    speedGovernor: 'Active (50 km/h lock)',
+    cctvCameras: '4 Online',
+    gpsTelemetry: '99.8% Uptime',
   },
   {
     busNo: 'DL-01-TA-4025',
-    model: 'Ashok Leyland Oyster (50 Seater)',
-    fitnessExpiry: '08 Jan 2028',
-    insuranceExpiry: '15 Sep 2027',
-    pollutionStatus: 'Valid (Pass)',
-    speedGovernor: 'Calibrated (40 km/h)',
-    cctvLive: 'Active (4 Cams)',
-    status: 'Certified Safe',
+    model: 'Eicher Skyline (50 Seater)',
+    fitnessExpiry: '02 Feb 2028',
+    insuranceExpiry: '18 Nov 2027',
+    pollutionStatus: 'Valid',
+    speedGovernor: 'Active (50 km/h lock)',
+    cctvCameras: '6 Online',
+    gpsTelemetry: '100% Uptime',
   },
   {
     busNo: 'DL-01-TA-4030',
-    model: 'Eicher Skyline Pro (32 Seater)',
-    fitnessExpiry: '30 Oct 2026',
-    insuranceExpiry: '10 Nov 2026',
-    pollutionStatus: 'Valid (Pass)',
-    speedGovernor: 'Calibrated (40 km/h)',
-    cctvLive: 'Active (3 Cams)',
-    status: 'Audit Due in 45 Days',
+    model: 'Force Traveller (32 Seater)',
+    fitnessExpiry: '19 May 2027',
+    insuranceExpiry: '10 Oct 2027',
+    pollutionStatus: 'Valid',
+    speedGovernor: 'Active (50 km/h lock)',
+    cctvCameras: '4 Online',
+    gpsTelemetry: '99.4% Uptime',
+  },
+  {
+    busNo: 'DL-01-TA-4036',
+    model: 'Tata Starbus (42 Seater)',
+    fitnessExpiry: '28 Jul 2028',
+    insuranceExpiry: '05 Jan 2028',
+    pollutionStatus: 'Valid',
+    speedGovernor: 'Active (50 km/h lock)',
+    cctvCameras: '4 Online',
+    gpsTelemetry: '99.9% Uptime',
   },
 ];
 
 function TransportOverviewPage() {
   const { addNotification } = useGlobalStore();
-  const [isAlertModalOpen, setIsAlertModalOpen] = React.useState(false);
-  const [selectedRoute, setSelectedRoute] = React.useState('Route 01');
-  const [delayMinutes, setDelayMinutes] = React.useState(10);
-  const [delayReason, setDelayReason] = React.useState('Traffic congestion at main bypass');
+  const { lang } = useTranslation();
+  const isHindi = lang === 'hi';
+  const [selectedRoute, setSelectedRoute] = React.useState<BusRouteCard | null>(null);
+
+  const standalonePort = '8010';
+  const standaloneUrl = `http://localhost:${standalonePort}`;
 
   const handleLaunchTransportPortal = (path = '') => {
-    const url = `https://transport.vidyafloww.com${path}`;
+    const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: 'Opening Fleet Telemetry Portal',
-      description: 'Redirecting to dedicated live GPS tracker on transport.vidyafloww.com',
+      title: isHindi ? 'परिवहन पोर्टल खोला जा रहा है' : 'Opening Transport Portal',
+      description: isHindi ? 'पोर्ट 8010 पर लाइव टेलीमैटिक्स पोर्टल पर भेजा जा रहा है।' : 'Redirecting to live telematics portal on port 8010.',
       type: 'info',
     });
   };
 
-  const handleSendDelayAlert = (e: React.FormEvent) => {
-    e.preventDefault();
-    addNotification({
-      title: 'Route Delay Alert Broadcasted',
-      description: `SMS notification dispatched to parents of ${selectedRoute} (${delayMinutes} min delay: ${delayReason}).`,
-      type: 'warning',
-    });
-    setIsAlertModalOpen(false);
-  };
-
   return (
-    <VFPageContainer className="space-y-4">
-      <VFPageHeader
-        title="Fleet & School Bus Transport"
-        description="वाहन बेड़ा व परिवहन नियंत्रण — Live vehicle GPS telemetry, student route rosters, driver duty compliance & arrival alerts"
-        actions={
+    <VFPageContainer className="space-y-4 w-full">
+      {/* ── TOP TOOLBAR BAR ── */}
+      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+        <div>
           <div className="flex items-center gap-2">
-            <VFButton
-              variant="outline"
-              size="sm"
-              onClick={() => setIsAlertModalOpen(true)}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <Send className="w-3.5 h-3.5 text-amber-400" />
-              Broadcast Delay SMS
-            </VFButton>
-            <VFButton
-              variant="primary"
-              size="sm"
-              onClick={() => handleLaunchTransportPortal()}
-              className="rounded-[4px] gap-1.5 text-xs font-semibold"
-            >
-              <span>Launch Live Telemetry Portal</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </VFButton>
+            <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
+              {isHindi ? 'स्कूल वाहन व जीपीएस ट्रैकिंग (Transport Fleet)' : 'Transport Fleet & Route Telematics'}
+            </h1>
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
+              Port: {standalonePort}
+            </VFBadge>
           </div>
-        }
-      />
-
-      {/* Top Standalone Transition Banner */}
-      <div className="p-4 rounded-[4px] border border-primary/30 bg-gradient-to-r from-primary/10 via-[#18181b] to-[#121214] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="h-10 w-10 rounded-[4px] bg-primary/20 border border-primary/40 flex items-center justify-center text-primary shrink-0">
-            <Bus className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-foreground">
-                Dedicated GPS Telemetry Subsystem Available
-              </h2>
-              <VFBadge variant="outline" className="text-[10px] font-mono border-primary/40 text-primary">
-                transport.vidyafloww.com · Port 8012
-              </VFBadge>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5 max-w-2xl">
-              High-frequency GPS telemetry, live speed monitoring, driver SOS response, and geo-fenced parent notification streams run on a dedicated WebSocket ingestion service.
-            </p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {isHindi
+              ? 'लाइव जीपीएस बस टेलीमैटिक्स, छात्र RFID बोर्डिंग लॉग्स, रूट मैप व चालक रोस्टर।'
+              : 'Live GPS bus telematics, student RFID boarding logs, morning/evening routes & driver dossiers.'}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
-            variant="primary"
             size="sm"
             onClick={() => handleLaunchTransportPortal()}
-            className="rounded-[4px] gap-1.5 font-bold text-xs"
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
-            <span>Open Telemetry Map</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'परिवहन पोर्टल लॉन्च करें' : 'Launch Transport Portal'}</span>
           </VFButton>
         </div>
       </div>
 
-      {/* KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <VFStatCard
-          title="Active Buses En Route"
-          value="12 / 14 Buses"
-          trend="up"
-          trendLabel="2 in maintenance"
-          accentColor="emerald"
-          icon={<Bus className="w-4 h-4 text-emerald-400" />}
-        />
-        <VFStatCard
-          title="Students Transported"
-          value="528 Students"
-          description="Across 12 route zones"
-          accentColor="primary"
-          icon={<Users className="w-4 h-4 text-primary" />}
-        />
-        <VFStatCard
-          title="On-Time Route Ratio"
-          value="98.4%"
-          trend="up"
-          trendLabel="Avg delay < 3m"
-          accentColor="cyan"
-          icon={<Clock className="w-4 h-4 text-cyan-400" />}
-        />
-        <VFStatCard
-          title="Safety Compliance"
-          value="100% Certified"
-          description="Fitness & speed governor ok"
-          accentColor="amber"
-          icon={<ShieldCheck className="w-4 h-4 text-amber-400" />}
-        />
-      </div>
-
-      {/* Active Route Telemetry Cards Grid */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between border-b border-border pb-2">
-          <div className="flex items-center gap-2">
-            <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
-            <h3 className="text-sm font-bold text-foreground">
-              Live Route Telemetry Status
-            </h3>
-            <span className="text-xs text-muted-foreground font-mono">
-              (Live GPS Active)
-            </span>
-          </div>
-
-          <button
-            onClick={() => handleLaunchTransportPortal('/map')}
-            className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
-          >
-            <span>Open Satellite Map View</span>
-            <ExternalLink className="w-3 h-3" />
-          </button>
+      {/* ── ACTIVE ROUTES GRID ── */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+            {isHindi ? 'सक्रिय बस रूट्स व लाइव टेलीमैटिक्स' : 'Active Bus Routes & Live Telematics'}
+          </h2>
+          <span className="text-[11px] font-mono text-muted-foreground">
+            {ACTIVE_ROUTES.length} {isHindi ? 'रूट्स चालू' : 'Routes Active'}
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {ACTIVE_ROUTES.map((route) => {
-            const occupancyPct = Math.round((route.occupancy / route.capacity) * 100);
-            const isMoving = route.status === 'Moving';
-
-            return (
-              <div
-                key={route.id}
-                className="p-3.5 rounded-[4px] border border-border bg-[#141414] hover:border-primary/50 transition-colors flex flex-col justify-between space-y-3"
-              >
-                <div>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold text-primary block">
-                        {route.routeCode}
-                      </span>
-                      <h4 className="font-bold text-xs text-foreground mt-0.5">
-                        {route.routeName}
-                      </h4>
-                      <p className="text-[10px] text-muted-foreground">
-                        {route.hindiName}
-                      </p>
-                    </div>
-
-                    <span className={`px-2 py-0.5 rounded-[3px] text-[10px] font-bold ${
-                      isMoving
-                        ? 'bg-emerald-950/70 border border-emerald-500/40 text-emerald-400'
-                        : 'bg-amber-950/70 border border-amber-500/40 text-amber-400'
-                    }`}>
-                      {route.status}
-                    </span>
-                  </div>
-
-                  <div className="mt-3 p-2 rounded-[3px] bg-[#18181b] border border-border space-y-1 text-[11px]">
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Vehicle:</span>
-                      <strong className="font-mono text-foreground">{route.busNumber}</strong>
-                    </div>
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Live Speed:</span>
-                      <strong className="font-mono text-primary">{route.currentSpeed}</strong>
-                    </div>
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Next Stop:</span>
-                      <span className="text-foreground truncate max-w-[140px]">{route.nextStop}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Arrival ETA:</span>
-                      <span className="text-emerald-400 font-bold">{route.eta}</span>
-                    </div>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+          {ACTIVE_ROUTES.map((route) => (
+            <div
+              key={route.id}
+              onClick={() => setSelectedRoute(route)}
+              className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border text-[10.5px] font-mono font-bold text-foreground">
+                    {route.routeCode}
+                  </span>
+                  <VFBadge variant={route.status === 'Moving' ? 'success' : 'warning'} className="text-[10px]">
+                    {route.status}
+                  </VFBadge>
                 </div>
 
-                <div className="space-y-2 pt-2 border-t border-border">
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="text-muted-foreground">Occupancy: <strong>{route.occupancy}</strong>/{route.capacity} ({occupancyPct}%)</span>
-                  </div>
-                  <div className="w-full h-1 bg-[#202024] rounded-sm overflow-hidden">
-                    <div className="h-full bg-primary rounded-sm" style={{ width: `${occupancyPct}%` }} />
-                  </div>
-
-                  <div className="flex items-center justify-between pt-1 text-[10px] text-muted-foreground">
-                    <span className="flex items-center gap-1 truncate">
-                      <Navigation className="w-3 h-3 text-primary" />
-                      {route.driverName}
-                    </span>
-                    <a
-                      href={`tel:${route.driverPhone}`}
-                      className="text-primary hover:underline flex items-center gap-1 font-mono"
-                    >
-                      <Phone className="w-3 h-3" />
-                      Call
-                    </a>
-                  </div>
+                <div>
+                  <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                    {isHindi ? route.hindiName : route.routeName}
+                  </h3>
+                  <p className="text-[11px] font-mono text-muted-foreground mt-0.5">
+                    {route.busNumber}
+                  </p>
                 </div>
               </div>
-            );
-          })}
+
+              <div className="mt-3 pt-2.5 border-t border-border/60 space-y-1 text-[11px] text-muted-foreground">
+                <div className="flex justify-between">
+                  <span>{isHindi ? 'अगला स्टॉप:' : 'Next Stop:'}</span>
+                  <span className="text-foreground font-medium truncate max-w-[120px]">{route.nextStop}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>{isHindi ? 'सवार छात्र:' : 'Occupancy:'}</span>
+                  <span className="font-mono text-emerald-400 font-bold">{route.occupancy}/{route.capacity}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Fleet Safety & Compliance Table */}
+      {/* ── FLEET COMPLIANCE & SAFETY LEDGER ── */}
       <VFCard
-        title="Fleet Safety, Fitness & Inspection Compliance"
-        description="Comprehensive audit of speed limiters, CCTV cameras, fitness certificates and pollution clearances"
-        className="rounded-[4px]"
+        title={
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-foreground">
+              {isHindi ? 'वाहन अनुपालन, फिटनेस व आरटीओ सुरक्षा लेजर' : 'Vehicle Compliance & RTO Safety Ledger'}
+            </span>
+            <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
+              AIS-140 GPS Validated
+            </VFBadge>
+          </div>
+        }
+        description={
+          isHindi
+            ? 'स्पीड गवर्नर, प्रदूषण प्रमाण पत्र, सीसीटीवी व जीपीएस अपटाइम की स्थिति।'
+            : 'Speed governor calibration, fitness certificates, insurance renewals, and CCTV health.'
+        }
+        className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
+        headerClassName="py-2.5 px-3.5"
+        bodyClassName="p-0"
+        actions={
+          <button
+            onClick={() => handleLaunchTransportPortal('/telematics')}
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>{isHindi ? 'लाइव मैप ट्रैकिंग' : 'Live Fleet Telematics Map'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </button>
+        }
       >
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left border-collapse">
+          <table className="w-full text-xs text-left">
             <thead>
-              <tr className="border-b border-border text-muted-foreground font-mono bg-[#161616]">
-                <th className="py-2.5 px-3 font-semibold">Bus Reg. No.</th>
-                <th className="py-2.5 px-3 font-semibold">Model & Capacity</th>
-                <th className="py-2.5 px-3 font-semibold">Fitness Certificate</th>
-                <th className="py-2.5 px-3 font-semibold">Insurance Expiry</th>
-                <th className="py-2.5 px-3 font-semibold">Pollution (PUC)</th>
-                <th className="py-2.5 px-3 font-semibold">Speed Limiter</th>
-                <th className="py-2.5 px-3 font-semibold">CCTV Stream</th>
-                <th className="py-2.5 px-3 font-semibold">Compliance Status</th>
+              <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
+                <th className="py-2.5 px-3.5">{isHindi ? 'वाहन नंबर' : 'Bus Number'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'मॉडल / क्षमता' : 'Model & Capacity'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'फिटनेस वैधता' : 'Fitness Expiry'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'स्पीड गवर्नर' : 'Speed Governor'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'सीसीटीवी' : 'CCTV Status'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'जीपीएस स्थिति' : 'GPS Telemetry'}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border/60">
               {VEHICLE_COMPLIANCE.map((v) => (
-                <tr key={v.busNo} className="hover:bg-[#18181b] transition-colors">
-                  <td className="py-2.5 px-3 font-mono font-bold text-foreground">
-                    {v.busNo}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground">
-                    {v.model}
-                  </td>
-                  <td className="py-2.5 px-3 font-mono text-muted-foreground">
-                    {v.fitnessExpiry}
-                  </td>
-                  <td className="py-2.5 px-3 font-mono text-muted-foreground">
-                    {v.insuranceExpiry}
-                  </td>
-                  <td className="py-2.5 px-3">
-                    <span className="text-emerald-400 font-semibold">{v.pollutionStatus}</span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono text-muted-foreground">
-                    {v.speedGovernor}
-                  </td>
-                  <td className="py-2.5 px-3 text-muted-foreground">
-                    {v.cctvLive}
-                  </td>
-                  <td className="py-2.5 px-3">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] bg-emerald-950/70 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]">
-                      <ShieldCheck className="w-3 h-3" />
-                      {v.status}
-                    </span>
+                <tr key={v.busNo} className="hover:bg-[#141414] transition-colors">
+                  <td className="py-2.5 px-3.5 font-mono font-bold text-primary">{v.busNo}</td>
+                  <td className="py-2.5 px-3.5 font-medium text-foreground">{v.model}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{v.fitnessExpiry}</td>
+                  <td className="py-2.5 px-3.5 text-muted-foreground">{v.speedGovernor}</td>
+                  <td className="py-2.5 px-3.5 font-mono text-emerald-400">{v.cctvCameras}</td>
+                  <td className="py-2.5 px-3.5 text-right">
+                    <VFBadge variant="success" className="text-[10px] font-mono">
+                      {v.gpsTelemetry}
+                    </VFBadge>
                   </td>
                 </tr>
               ))}
@@ -428,88 +311,54 @@ function TransportOverviewPage() {
         </div>
       </VFCard>
 
-      {/* Broadcast Delay Alert Modal */}
-      {isAlertModalOpen && (
+      {/* ── ROUTE MODAL ── */}
+      {selectedRoute && (
         <VFDialog
-          isOpen={isAlertModalOpen}
-          onClose={() => setIsAlertModalOpen(false)}
-          title="Broadcast Bus Delay Notice"
-          description="Send automated SMS alerts to parents of enrolled students along this route"
+          isOpen={Boolean(selectedRoute)}
+          onClose={() => setSelectedRoute(null)}
+          title={`${selectedRoute.routeCode} — ${isHindi ? selectedRoute.hindiName : selectedRoute.routeName}`}
+          description={`${selectedRoute.busNumber} · ${isHindi ? 'चालक:' : 'Driver:'} ${selectedRoute.driverName}`}
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
-              <VFButton
-                variant="outline"
-                size="sm"
-                onClick={() => setIsAlertModalOpen(false)}
-                className="rounded-[4px] text-xs"
-              >
-                Cancel
+              <VFButton variant="outline" size="sm" onClick={() => setSelectedRoute(null)}>
+                {isHindi ? 'बंद करें' : 'Close'}
               </VFButton>
               <VFButton
-                variant="primary"
                 size="sm"
-                onClick={handleSendDelayAlert}
-                className="rounded-[4px] text-xs font-semibold gap-1"
+                onClick={() => {
+                  setSelectedRoute(null);
+                  handleLaunchTransportPortal(`/live-map/${selectedRoute.id}`);
+                }}
+                className="font-bold"
+                leftIcon={<Navigation className="w-3.5 h-3.5" />}
               >
-                <Send className="w-3.5 h-3.5" />
-                Dispatch SMS Notice
+                {isHindi ? 'लाइव रूट मैप देखें' : 'View Live Route Map'}
               </VFButton>
             </div>
           }
         >
-          <form onSubmit={handleSendDelayAlert} className="space-y-3 py-2 text-xs">
-            <div>
-              <label className="block text-muted-foreground font-semibold mb-1">
-                Affected Bus Route
-              </label>
-              <select
-                value={selectedRoute}
-                onChange={(e) => setSelectedRoute(e.target.value)}
-                className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
-              >
-                {ACTIVE_ROUTES.map((r) => (
-                  <option key={r.routeCode} value={r.routeCode}>
-                    {r.routeCode} — {r.routeName} ({r.busNumber})
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-muted-foreground font-semibold mb-1">
-                  Expected Delay (Minutes)
-                </label>
-                <input
-                  type="number"
-                  min={5}
-                  max={60}
-                  step={5}
-                  value={delayMinutes}
-                  onChange={(e) => setDelayMinutes(Number(e.target.value))}
-                  className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
-                />
+          <div className="space-y-2.5 text-xs">
+            <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'चालक संपर्क:' : 'Driver Mobile:'}</span>
+                <span className="font-mono text-foreground">{selectedRoute.driverPhone}</span>
               </div>
-              <div>
-                <label className="block text-muted-foreground font-semibold mb-1">
-                  Delay Reason
-                </label>
-                <input
-                  type="text"
-                  value={delayReason}
-                  onChange={(e) => setDelayReason(e.target.value)}
-                  className="w-full px-3 py-1.5 border border-border rounded-[3px] bg-[#161616] text-foreground text-xs focus:outline-none"
-                />
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'सुबह प्रस्थान:' : 'Morning Departure:'}</span>
+                <span className="font-mono text-foreground">{selectedRoute.morningDeparture}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'सवार छात्र:' : 'Occupancy:'}</span>
+                <span className="font-bold text-emerald-400 font-mono">{selectedRoute.occupancy} of {selectedRoute.capacity} Seats</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{isHindi ? 'वर्तमान गति:' : 'Telemetry Speed:'}</span>
+                <span className="font-mono text-cyan-400 font-bold">{selectedRoute.currentSpeed}</span>
               </div>
             </div>
-
-            <div className="p-2.5 rounded-[3px] bg-[#18181b] border border-border text-[11px] text-muted-foreground">
-              SMS Preview: <em>"Dear Parent, VidyaFloww School Bus ({selectedRoute}) is running approximately {delayMinutes} minutes behind schedule due to {delayReason}. Live tracking is active."</em>
-            </div>
-          </form>
+          </div>
         </VFDialog>
       )}
     </VFPageContainer>
   );
 }
-
