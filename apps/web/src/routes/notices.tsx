@@ -553,6 +553,7 @@ function NoticesPage() {
         rightActions={
           <div className="flex flex-wrap items-center gap-2">
             <VFSelect
+              size="sm"
               value={audienceFilter}
               onChange={(e) => setAudienceFilter(String(e.target.value))}
               options={[
@@ -566,6 +567,7 @@ function NoticesPage() {
             />
 
             <VFSelect
+              size="sm"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[

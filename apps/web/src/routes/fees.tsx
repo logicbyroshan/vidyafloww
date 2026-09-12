@@ -740,7 +740,7 @@ function FeesPage() {
       accessorKey: 'studentName',
       cell: (r: FeeRecord) => (
         <div className="flex items-center gap-3">
-          <div className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] shrink-0 bg-muted flex items-center justify-center">
+          <div className="relative overflow-hidden rounded-[4px] border border-border/80 shadow-xs w-10 h-[50px] shrink-0 bg-muted flex items-center justify-center">
             <img
               src={r.photoUrl}
               alt={r.studentName}
@@ -764,7 +764,7 @@ function FeesPage() {
           <div className="flex items-center gap-1.5">
             <VFBadge
               variant={r.paymentPlan === 'Annual Full' ? 'success' : r.paymentPlan === 'Monthly Installment' ? 'primary' : 'outline'}
-              className="text-[10px] font-bold rounded-md"
+              className="text-[10px] font-bold rounded-[4px]"
             >
               {r.paymentPlan === 'Annual Full' ? (isHindi ? 'एनुअल लम्पसम' : r.paymentPlan) : r.paymentPlan === 'Monthly Installment' ? (isHindi ? 'मंथली इंस्टॉलमेंट' : r.paymentPlan) : r.paymentPlan}
             </VFBadge>
@@ -841,7 +841,7 @@ function FeesPage() {
       cell: (r: FeeRecord) => (
         <VFBadge
           variant={r.status === 'Paid' ? 'success' : r.status === 'Partial' ? 'warning' : 'danger'}
-          className="rounded-md"
+          className="rounded-[4px]"
         >
           {r.status === 'Paid' ? (isHindi ? 'पेड' : 'Paid') : r.status === 'Partial' ? (isHindi ? 'पार्शियल' : 'Partial') : (isHindi ? 'ओवरड्यू' : 'Overdue')}
         </VFBadge>
@@ -855,7 +855,7 @@ function FeesPage() {
           {r.dueAmount > 0 ? (
             <VFButton
               size="sm"
-              className="h-8 px-3 text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-xs rounded-md"
+              className="h-8 px-3 text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-xs rounded-[4px]"
               leftIcon={<CreditCard className="h-3.5 w-3.5" />}
               onClick={() => openStudentFeeDrawer(r, 'pay')}
             >
@@ -865,7 +865,7 @@ function FeesPage() {
             <VFButton
               size="sm"
               variant="outline"
-              className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-md"
+              className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
               leftIcon={<Receipt className="h-3.5 w-3.5" />}
               onClick={() => openStudentFeeDrawer(r, 'history')}
             >
@@ -878,7 +878,7 @@ function FeesPage() {
               type="button"
               title={isHindi ? "व्हाट्सएप पेमेंट रिमाइंडर भेजें" : "Send WhatsApp Payment Reminder"}
               onClick={() => handleSendIndividualReminder(r)}
-              className="h-8 w-8 rounded-md bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors"
+              className="h-8 w-8 rounded-[4px] bg-[#1a1a1a] hover:bg-[#242424] border border-border flex items-center justify-center text-zinc-400 hover:text-emerald-400 transition-colors"
             >
               <Bell className="h-3.5 w-3.5" />
             </button>
@@ -902,6 +902,7 @@ function FeesPage() {
         rightActions={
           <div className="flex items-center gap-2">
             <VFSelect
+              size="sm"
               value={statusFilter}
               onChange={(e) => setStatusFilter(String(e.target.value) as any)}
               options={[
@@ -910,12 +911,12 @@ function FeesPage() {
                 { value: 'cleared', label: `${t('status.paid')} (${clearedCount})` },
                 { value: 'overdue', label: `${t('status.overdue')} (${overdueCount})` },
               ]}
-              className="w-44 text-xs bg-[#181818] border-border rounded-md"
+              className="w-44 text-xs bg-[#181818] border-border rounded-[4px]"
             />
             <VFButton
               variant="outline"
               size="sm"
-              className="bg-[#181818] hover:bg-[#222222] border-border text-foreground rounded-md text-xs font-bold"
+              className="bg-[#181818] hover:bg-[#222222] border-border text-foreground rounded-[4px] text-xs font-bold"
               leftIcon={<Bell className="h-4 w-4 text-emerald-400" />}
               onClick={() => setIsReminderModalOpen(true)}
             >
@@ -924,6 +925,7 @@ function FeesPage() {
             <VFButton
               variant="outline"
               size="sm"
+              className="rounded-[4px]"
               leftIcon={<Download className="h-4 w-4" />}
               onClick={() => addNotification({ title: 'Exporting Fees', description: 'Student fee ledger exported as CSV.', type: 'success' })}
             >
@@ -953,7 +955,7 @@ function FeesPage() {
                   { label: `Critical Overdue Only (${overdueCount} Students)`, value: 'overdue_only' },
                   { label: 'Monthly Installment Payers with Dues', value: 'monthly_only' },
                 ]}
-                className="bg-[#1a1a1a] border-border h-9 text-xs rounded-md"
+                className="bg-[#1a1a1a] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
             <div className="space-y-1">
@@ -966,7 +968,7 @@ function FeesPage() {
                   { label: 'Fast2SMS Gateway (Direct SMS)', value: 'sms' },
                   { label: 'Official Institutional Email', value: 'email' },
                 ]}
-                className="bg-[#1a1a1a] border-border h-9 text-xs rounded-md"
+                className="bg-[#1a1a1a] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
           </div>
@@ -981,7 +983,7 @@ function FeesPage() {
               value={customReminderMsg}
               onChange={(e) => setCustomReminderMsg(e.target.value)}
               rows={3}
-              className="w-full p-2.5 rounded-md bg-[#141414] border border-border text-foreground font-mono text-xs focus:outline-none focus:border-zinc-500"
+              className="w-full p-2.5 rounded-[4px] bg-[#141414] border border-border text-foreground font-mono text-xs focus:outline-none focus:border-zinc-500"
             />
             <div className="flex items-center gap-1 flex-wrap text-[10px] text-zinc-400">
               <span className="bg-[#1a1a1a] px-1.5 py-0.5 rounded border border-border/80">{'{ParentName}'}</span>
@@ -993,14 +995,14 @@ function FeesPage() {
           </div>
 
           {/* Live Preview WhatsApp Bubble */}
-          <div className="p-3.5 rounded-md bg-[#0d1418] border border-emerald-900/40 space-y-1.5">
+          <div className="p-3.5 rounded-[4px] bg-[#0d1418] border border-emerald-900/40 space-y-1.5">
             <div className="flex items-center justify-between text-[11px] text-emerald-400 font-bold">
               <span className="flex items-center gap-1.5">
                 <MessageSquare className="h-3.5 w-3.5" /> Sample Live WhatsApp Preview (Rahul Gupta)
               </span>
               <span className="text-[10px] text-zinc-400">Recipient: +91 97654 32109</span>
             </div>
-            <div className="p-2.5 rounded-md bg-[#005c4b]/30 border border-[#005c4b]/50 text-foreground text-xs leading-relaxed space-y-1">
+            <div className="p-2.5 rounded-[4px] bg-[#005c4b]/30 border border-[#005c4b]/50 text-foreground text-xs leading-relaxed space-y-1">
               <p>
                 Dear <span className="font-bold text-white">Mr. Sunil Gupta</span>, gentle reminder from <span className="font-bold text-emerald-400">VidyaMaxx Academy</span> that your ward <span className="font-bold text-white">Rahul Gupta</span> (ADM-2026-0843)'s Monthly Installment fee of <span className="font-mono font-bold text-emerald-300">₹31,500</span> is due on <span className="font-bold text-amber-300">10 Aug 2026</span>.
               </p>
@@ -1015,12 +1017,12 @@ function FeesPage() {
               Will dispatch to <span className="font-bold text-foreground">{dueCount} student families</span>.
             </span>
             <div className="flex items-center gap-2">
-              <VFButton variant="outline" size="sm" onClick={() => setIsReminderModalOpen(false)} className="rounded-md">
+              <VFButton variant="outline" size="sm" onClick={() => setIsReminderModalOpen(false)} className="rounded-[4px]">
                 Cancel
               </VFButton>
               <VFButton
                 size="sm"
-                className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-bold"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-[4px] font-bold"
                 leftIcon={<Send className="h-4 w-4" />}
                 onClick={handleDispatchBulkReminders}
               >
@@ -1042,12 +1044,12 @@ function FeesPage() {
         footerActions={
           <div className="flex items-center justify-between w-full gap-3 flex-wrap">
             {/* Stepper Navigation */}
-            <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-md border border-border">
+            <div className="flex items-center gap-1.5 bg-[#1a1a1a] p-1 rounded-[4px] border border-border">
               <button
                 type="button"
                 onClick={handlePrevStudent}
                 disabled={selectedFeeIndex === 0}
-                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#222222] transition-colors"
+                className="p-1.5 rounded-[4px] text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#222222] transition-colors"
                 title="Previous Student"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -1059,7 +1061,7 @@ function FeesPage() {
                 type="button"
                 onClick={handleNextStudent}
                 disabled={selectedFeeIndex === feeList.length - 1}
-                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#222222] transition-colors"
+                className="p-1.5 rounded-[4px] text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#222222] transition-colors"
                 title="Next Student"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -1071,7 +1073,7 @@ function FeesPage() {
               <VFButton
                 variant="outline"
                 size="sm"
-                className="rounded-md"
+                className="rounded-[4px]"
                 onClick={() => setIsDrawerOpen(false)}
               >
                 Close
@@ -1086,7 +1088,7 @@ function FeesPage() {
             <div className="p-4 bg-[#141414] border-b border-border/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shrink-0">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1 min-w-0">
                 <div
-                  className="relative overflow-hidden rounded-md border border-border/90 shadow-sm w-24 sm:w-28 bg-muted flex items-center justify-center shrink-0"
+                  className="relative overflow-hidden rounded-[4px] border border-border/90 shadow-sm w-24 sm:w-28 bg-muted flex items-center justify-center shrink-0"
                   style={{ aspectRatio: '19.5 / 25' }}
                 >
                   <img
@@ -1100,13 +1102,13 @@ function FeesPage() {
                 <div className="space-y-2 flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="text-lg font-extrabold text-foreground tracking-tight">{activeStudent.studentName}</h3>
-                    <VFBadge variant="outline" className="font-mono text-zinc-300 font-bold text-[11px] bg-[#1a1a1a] border-border rounded-md">
+                    <VFBadge variant="outline" className="font-mono text-zinc-300 font-bold text-[11px] bg-[#1a1a1a] border-border rounded-[4px]">
                       {activeStudent.studentAdmNo}
                     </VFBadge>
-                    <VFBadge variant="primary" className="text-[10px] font-bold rounded-md">
+                    <VFBadge variant="primary" className="text-[10px] font-bold rounded-[4px]">
                       {activeStudent.paymentPlan}
                     </VFBadge>
-                    <VFBadge variant={activeStudent.status === 'Paid' ? 'success' : activeStudent.status === 'Partial' ? 'warning' : 'danger'} className="rounded-md">
+                    <VFBadge variant={activeStudent.status === 'Paid' ? 'success' : activeStudent.status === 'Partial' ? 'warning' : 'danger'} className="rounded-[4px]">
                       {activeStudent.status}
                     </VFBadge>
                   </div>
@@ -1140,7 +1142,7 @@ function FeesPage() {
               </div>
 
               {/* Outstanding Due Display */}
-              <div className="p-3.5 rounded-md bg-[#181818] border border-border/80 flex flex-col justify-center text-right shrink-0 min-w-[200px] shadow-xs">
+              <div className="p-3.5 rounded-[4px] bg-[#181818] border border-border/80 flex flex-col justify-center text-right shrink-0 min-w-[200px] shadow-xs">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Outstanding Due</span>
                 <span className={cn('text-2xl font-black font-mono mt-0.5 block', activeStudent.dueAmount === 0 ? 'text-emerald-400' : 'text-rose-400')}>
                   {activeStudent.dueAmount === 0 ? '₹0 (Cleared)' : `₹${activeStudent.dueAmount.toLocaleString('en-IN')}`}
@@ -1151,11 +1153,11 @@ function FeesPage() {
 
             {/* 2. Drawer Tab Switchers */}
             <div className="px-4 pt-2.5 pb-2 bg-[#141414] border-b border-border/70 flex items-center justify-between gap-3 shrink-0">
-              <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-md border border-border/70 flex-wrap">
+              <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setDrawerActiveTab('pay')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-[4px] transition-colors flex items-center gap-1.5 ${
                     drawerActiveTab === 'pay'
                       ? 'bg-[#222222] text-foreground shadow-xs border border-border/80'
                       : 'text-muted-foreground hover:text-foreground'
@@ -1167,7 +1169,7 @@ function FeesPage() {
                 <button
                   type="button"
                   onClick={() => setDrawerActiveTab('history')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-[4px] transition-colors flex items-center gap-1.5 ${
                     drawerActiveTab === 'history'
                       ? 'bg-[#222222] text-foreground shadow-xs border border-border/80'
                       : 'text-muted-foreground hover:text-foreground'
@@ -1179,7 +1181,7 @@ function FeesPage() {
                 <button
                   type="button"
                   onClick={() => setDrawerActiveTab('structure')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-[4px] transition-colors flex items-center gap-1.5 ${
                     drawerActiveTab === 'structure'
                       ? 'bg-[#222222] text-foreground shadow-xs border border-border/80'
                       : 'text-muted-foreground hover:text-foreground'
@@ -1191,7 +1193,7 @@ function FeesPage() {
                 <button
                   type="button"
                   onClick={() => setDrawerActiveTab('scholarship')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-[4px] transition-colors flex items-center gap-1.5 ${
                     drawerActiveTab === 'scholarship'
                       ? 'bg-[#222222] text-foreground shadow-xs border border-border/80'
                       : 'text-muted-foreground hover:text-foreground'
@@ -1209,7 +1211,7 @@ function FeesPage() {
               {drawerActiveTab === 'pay' && (
                 <div className="space-y-3.5 animate-fade-in">
                   {/* Option: Settle Full Annual Tuition OR Monthly Installments */}
-                  <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                  <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                     <div className="flex items-center justify-between">
                       <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
                         1. Select What to Pay
@@ -1221,7 +1223,7 @@ function FeesPage() {
                       <button
                         type="button"
                         onClick={() => handleSelectSettlementOption('annual_full')}
-                        className={`p-2.5 rounded-md border text-left transition-all space-y-1 cursor-pointer ${
+                        className={`p-2.5 rounded-[4px] border text-left transition-all space-y-1 cursor-pointer ${
                           settlementOption === 'annual_full'
                             ? 'bg-[#222222] border-zinc-500 text-foreground shadow-xs'
                             : 'bg-[#1a1a1a] border-border/70 text-muted-foreground hover:border-border hover:text-foreground'
@@ -1238,7 +1240,7 @@ function FeesPage() {
                       <button
                         type="button"
                         onClick={() => handleSelectSettlementOption('selected_months')}
-                        className={`p-2.5 rounded-md border text-left transition-all space-y-1 cursor-pointer ${
+                        className={`p-2.5 rounded-[4px] border text-left transition-all space-y-1 cursor-pointer ${
                           settlementOption === 'selected_months'
                             ? 'bg-[#222222] border-zinc-500 text-foreground shadow-xs'
                             : 'bg-[#1a1a1a] border-border/70 text-muted-foreground hover:border-border hover:text-foreground'
@@ -1255,7 +1257,7 @@ function FeesPage() {
                       <button
                         type="button"
                         onClick={() => handleSelectSettlementOption('custom')}
-                        className={`p-2.5 rounded-md border text-left transition-all space-y-1 cursor-pointer ${
+                        className={`p-2.5 rounded-[4px] border text-left transition-all space-y-1 cursor-pointer ${
                           settlementOption === 'custom'
                             ? 'bg-[#222222] border-zinc-500 text-foreground shadow-xs'
                             : 'bg-[#1a1a1a] border-border/70 text-muted-foreground hover:border-border hover:text-foreground'
@@ -1289,7 +1291,7 @@ function FeesPage() {
                                 type="button"
                                 disabled={inst.isPaid}
                                 onClick={() => handleMonthToggle(inst.monthName)}
-                                className={`p-2 rounded-md border text-left transition-all flex flex-col justify-between cursor-pointer text-xs ${
+                                className={`p-2 rounded-[4px] border text-left transition-all flex flex-col justify-between cursor-pointer text-xs ${
                                   inst.isPaid
                                     ? 'bg-[#181818]/60 border-border/40 opacity-50 cursor-not-allowed'
                                     : isSelected
@@ -1317,7 +1319,7 @@ function FeesPage() {
                   </div>
 
                   {/* Depositor / Payer Identity Selection */}
-                  <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                  <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                     <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
                       2. Who is Paying?
                     </h4>
@@ -1335,7 +1337,7 @@ function FeesPage() {
                             key={p.type}
                             type="button"
                             onClick={() => setPayerType(p.type)}
-                            className={`p-2 rounded-md border text-left transition-all space-y-0.5 cursor-pointer ${
+                            className={`p-2 rounded-[4px] border text-left transition-all space-y-0.5 cursor-pointer ${
                               isSelected
                                 ? 'bg-[#222222] border-zinc-500 text-foreground shadow-xs'
                                 : 'bg-[#1a1a1a] border-border/70 text-muted-foreground hover:border-border hover:text-foreground'
@@ -1352,14 +1354,14 @@ function FeesPage() {
                     </div>
 
                     {payerType === 'Other' && (
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-md bg-[#1a1a1a] border border-border/60 pt-2 text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 pt-2 text-xs">
                         <div>
                           <label className="text-[11px] font-bold text-muted-foreground block mb-1">Representative Name *</label>
                           <VFInput
                             placeholder="e.g. Mr. Rajesh Verma (Uncle)"
                             value={customPayerName}
                             onChange={(e) => setCustomPayerName(e.target.value)}
-                            className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                            className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                           />
                         </div>
                         <div>
@@ -1368,7 +1370,7 @@ function FeesPage() {
                             placeholder="e.g. Uncle / Grandfather / Driver"
                             value={customPayerRelation}
                             onChange={(e) => setCustomPayerRelation(e.target.value)}
-                            className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                            className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                           />
                         </div>
                         <div>
@@ -1377,7 +1379,7 @@ function FeesPage() {
                             placeholder="e.g. +91 98111 22233"
                             value={customPayerPhone}
                             onChange={(e) => setCustomPayerPhone(e.target.value)}
-                            className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                            className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                           />
                         </div>
                       </div>
@@ -1385,7 +1387,7 @@ function FeesPage() {
                   </div>
 
                   {/* Amount Selector */}
-                  <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                  <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                     <div className="flex items-center justify-between">
                       <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
                         3. Amount
@@ -1398,7 +1400,7 @@ function FeesPage() {
                               setSettlementOption('annual_full');
                               setPaymentAmount(String(activeStudent.dueAmount));
                             }}
-                            className="px-2.5 py-1 rounded-md bg-[#1a1a1a] hover:bg-[#222222] border border-border text-[11px] font-bold text-zinc-200 hover:text-white transition-colors"
+                            className="px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] hover:bg-[#222222] border border-border text-[11px] font-bold text-zinc-200 hover:text-white transition-colors"
                           >
                             Full Due (₹{activeStudent.dueAmount.toLocaleString('en-IN')})
                           </button>
@@ -1409,7 +1411,7 @@ function FeesPage() {
                               setPaymentAmount(String(activeStudent.monthlyAmount));
                               setSelectedMonthsToPay(activeStudent.installments.filter((i) => !i.isPaid).slice(0, 1).map((i) => i.monthName));
                             }}
-                            className="px-2.5 py-1 rounded-md bg-[#1a1a1a] hover:bg-[#222222] border border-border text-[11px] font-bold text-zinc-200 hover:text-white transition-colors"
+                            className="px-2.5 py-1 rounded-[4px] bg-[#1a1a1a] hover:bg-[#222222] border border-border text-[11px] font-bold text-zinc-200 hover:text-white transition-colors"
                           >
                             1 Month (₹{activeStudent.monthlyAmount.toLocaleString('en-IN')})
                           </button>
@@ -1424,13 +1426,13 @@ function FeesPage() {
                         value={paymentAmount}
                         onChange={(e) => setPaymentAmount(e.target.value)}
                         placeholder="Enter amount in ₹..."
-                        className="w-full pl-7 pr-3 py-2 text-sm font-mono font-black text-foreground bg-[#1a1a1a] border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-zinc-500"
+                        className="w-full pl-7 pr-3 py-2 text-sm font-mono font-black text-foreground bg-[#1a1a1a] border border-border rounded-[4px] focus:outline-none focus:ring-1 focus:ring-zinc-500"
                       />
                     </div>
                   </div>
 
                   {/* Payment Mode Selector */}
-                  <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                  <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                     <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
                       4. Payment Method
                     </h4>
@@ -1450,7 +1452,7 @@ function FeesPage() {
                             key={item.mode}
                             type="button"
                             onClick={() => setSelectedMode(item.mode)}
-                            className={`p-2.5 rounded-md border text-left transition-all flex flex-col justify-between space-y-1.5 cursor-pointer ${
+                            className={`p-2.5 rounded-[4px] border text-left transition-all flex flex-col justify-between space-y-1.5 cursor-pointer ${
                               isSelected
                                 ? 'bg-[#222222] border-zinc-500 text-foreground shadow-xs'
                                 : 'bg-[#1a1a1a] border-border/70 text-muted-foreground hover:border-border hover:text-foreground'
@@ -1472,7 +1474,7 @@ function FeesPage() {
                     {/* Mode Specific Inputs */}
                     <div className="pt-1.5">
                       {selectedMode === 'Cash at Counter' && (
-                        <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 space-y-2 text-xs">
+                        <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-2 text-xs">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-foreground">Cash Collection Desk</span>
                             <VFBadge variant="success">Physical Cash Received</VFBadge>
@@ -1483,7 +1485,7 @@ function FeesPage() {
                               <VFInput
                                 value={cashierName}
                                 onChange={(e) => setCashierName(e.target.value)}
-                                className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                               />
                             </div>
                             <div>
@@ -1492,7 +1494,7 @@ function FeesPage() {
                                 placeholder="e.g. Received ₹3,500 for September installment"
                                 value={paymentRemarks}
                                 onChange={(e) => setPaymentRemarks(e.target.value)}
-                                className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                               />
                             </div>
                           </div>
@@ -1500,7 +1502,7 @@ function FeesPage() {
                       )}
 
                       {selectedMode === 'Cheque / DD' && (
-                        <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 space-y-2.5 text-xs">
+                        <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-2.5 text-xs">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-foreground">Cheque / Demand Draft Deposit</span>
                             <VFBadge variant="warning">Subject to Bank Realization</VFBadge>
@@ -1512,7 +1514,7 @@ function FeesPage() {
                                 placeholder="e.g. 645210"
                                 value={chequeNumber}
                                 onChange={(e) => setChequeNumber(e.target.value)}
-                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-[4px]"
                               />
                             </div>
                             <div>
@@ -1521,14 +1523,14 @@ function FeesPage() {
                                 placeholder="e.g. State Bank of India (SBI)"
                                 value={bankName}
                                 onChange={(e) => setBankName(e.target.value)}
-                                className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                               />
                             </div>
                             <div>
                               <label className="text-[11px] font-bold text-muted-foreground block mb-1">Cheque Date</label>
                               <VFInput
                                 defaultValue="Today"
-                                className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                               />
                             </div>
                           </div>
@@ -1536,7 +1538,7 @@ function FeesPage() {
                       )}
 
                       {selectedMode === 'UPI / QR Code (Manual Verify)' && (
-                        <div className="p-3.5 rounded-md bg-[#1a1a1a] border border-border/60 space-y-2.5 text-xs">
+                        <div className="p-3.5 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-2.5 text-xs">
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-foreground">Dynamic UPI QR Code Scan</span>
                             <VFBadge variant="outline" className="text-purple-400 border-purple-500/30">
@@ -1544,8 +1546,8 @@ function FeesPage() {
                             </VFBadge>
                           </div>
 
-                          <div className="flex flex-col sm:flex-row items-center gap-3 bg-[#141414] p-2.5 rounded-md border border-border/50">
-                            <div className="h-20 w-20 bg-white p-1 rounded-md flex items-center justify-center shrink-0">
+                          <div className="flex flex-col sm:flex-row items-center gap-3 bg-[#141414] p-2.5 rounded-[4px] border border-border/50">
+                            <div className="h-20 w-20 bg-white p-1 rounded-[4px] flex items-center justify-center shrink-0">
                               <img
                                 src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=vidyamaxx.fees@icici&pn=VidyaMaxxInternational&am=${paymentAmount || '3500'}&cu=INR`}
                                 alt="UPI QR Code"
@@ -1560,7 +1562,7 @@ function FeesPage() {
                               <button
                                 type="button"
                                 onClick={handleCopyUPI}
-                                className="text-[10px] px-2 py-0.5 rounded-md bg-[#1a1a1a] border border-border text-foreground hover:bg-[#222222] transition-colors flex items-center gap-1"
+                                className="text-[10px] px-2 py-0.5 rounded-[4px] bg-[#1a1a1a] border border-border text-foreground hover:bg-[#222222] transition-colors flex items-center gap-1"
                               >
                                 <Copy className="h-2.5 w-2.5" />
                                 {copiedText ? 'Copied VPA!' : 'Copy UPI VPA'}
@@ -1575,7 +1577,7 @@ function FeesPage() {
                                 placeholder="e.g. 991823901244"
                                 value={utrNumber}
                                 onChange={(e) => setUtrNumber(e.target.value)}
-                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-[4px]"
                               />
                             </div>
                             <div className="flex items-end pb-1">
@@ -1594,12 +1596,12 @@ function FeesPage() {
                       )}
 
                       {selectedMode === 'Bank Transfer (NEFT/RTGS)' && (
-                        <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 space-y-2 text-xs">
+                        <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-2 text-xs">
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-foreground">School Bank Account Details</span>
                             <VFBadge variant="outline">Bank RTGS / NEFT</VFBadge>
                           </div>
-                          <div className="p-2 rounded-md bg-[#141414] border border-border/50 grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
+                          <div className="p-2 rounded-[4px] bg-[#141414] border border-border/50 grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
                             <div><span className="text-muted-foreground block text-[10px]">Bank:</span> ICICI Bank Ltd</div>
                             <div><span className="text-muted-foreground block text-[10px]">Account No:</span> 981200491823901</div>
                             <div><span className="text-muted-foreground block text-[10px]">IFSC Code:</span> ICIC0000102</div>
@@ -1612,7 +1614,7 @@ function FeesPage() {
                                 placeholder="e.g. N0918239012"
                                 value={utrNumber}
                                 onChange={(e) => setUtrNumber(e.target.value)}
-                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-[4px]"
                               />
                             </div>
                             <div>
@@ -1621,7 +1623,7 @@ function FeesPage() {
                                 placeholder="e.g. Net Banking IMPS Verified"
                                 value={paymentRemarks}
                                 onChange={(e) => setPaymentRemarks(e.target.value)}
-                                className="bg-[#141414] border-border h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border h-8 text-xs rounded-[4px]"
                               />
                             </div>
                           </div>
@@ -1629,7 +1631,7 @@ function FeesPage() {
                       )}
 
                       {selectedMode === 'POS Card Swipe' && (
-                        <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 space-y-2 text-xs">
+                        <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-2 text-xs">
                           <div className="flex justify-between items-center">
                             <span className="font-bold text-foreground">POS Terminal Swipe</span>
                             <VFBadge variant="success">Debit / Credit Card</VFBadge>
@@ -1641,7 +1643,7 @@ function FeesPage() {
                                 placeholder="e.g. AUTH-882910"
                                 value={utrNumber}
                                 onChange={(e) => setUtrNumber(e.target.value)}
-                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-[4px]"
                               />
                             </div>
                             <div>
@@ -1649,7 +1651,7 @@ function FeesPage() {
                               <VFInput
                                 placeholder="e.g. 4012"
                                 maxLength={4}
-                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-md"
+                                className="bg-[#141414] border-border font-mono h-8 text-xs rounded-[4px]"
                               />
                             </div>
                           </div>
@@ -1659,7 +1661,7 @@ function FeesPage() {
                   </div>
 
                   {/* SMS / WhatsApp Toggle */}
-                  <div className="p-2.5 rounded-md bg-[#141414] border border-border/80 flex items-center justify-between">
+                  <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex items-center justify-between">
                     <label className="flex items-center gap-2 cursor-pointer select-none">
                       <input
                         type="checkbox"
@@ -1675,7 +1677,7 @@ function FeesPage() {
                   </div>
 
                   {/* Submit Action */}
-                  <div className="flex items-center justify-between p-3.5 rounded-md bg-[#141414] border border-border/80">
+                  <div className="flex items-center justify-between p-3.5 rounded-[4px] bg-[#141414] border border-border/80">
                     <div>
                       <span className="text-xs font-bold text-muted-foreground block">Amount Ready to Settle</span>
                       <span className="text-xl font-black text-emerald-400 font-mono">₹{Number(paymentAmount || 0).toLocaleString('en-IN')}</span>
@@ -1683,7 +1685,7 @@ function FeesPage() {
 
                     <VFButton
                       size="sm"
-                      className="h-9 px-4 text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-md transition-colors rounded-md"
+                      className="h-9 px-4 text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-md transition-colors rounded-[4px]"
                       leftIcon={<Check className="h-4 w-4" />}
                       onClick={handleConfirmPayment}
                     >
@@ -1705,10 +1707,10 @@ function FeesPage() {
 
                   {activeStudent.history.length > 0 ? (
                     activeStudent.history.map((rec) => (
-                      <div key={rec.receiptNo} className="p-3.5 rounded-md bg-[#141414] border border-border/80 hover:border-zinc-700 transition-all space-y-2">
+                      <div key={rec.receiptNo} className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-700 transition-all space-y-2">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1.5 border-b border-border/50">
                           <div className="flex items-center gap-2">
-                            <span className="font-mono font-bold text-zinc-300 bg-[#1a1a1a] px-2 py-0.5 rounded-md border border-border text-xs">
+                            <span className="font-mono font-bold text-zinc-300 bg-[#1a1a1a] px-2 py-0.5 rounded-[4px] border border-border text-xs">
                               {rec.receiptNo}
                             </span>
                             <span className="text-xs text-muted-foreground font-semibold">{rec.date}</span>
@@ -1718,7 +1720,7 @@ function FeesPage() {
                             <span className="text-base font-black text-emerald-400 font-mono">
                               ₹{rec.amount.toLocaleString('en-IN')}
                             </span>
-                            <VFBadge variant="outline" className="text-[10px] font-bold rounded-md">
+                            <VFBadge variant="outline" className="text-[10px] font-bold rounded-[4px]">
                               {rec.mode}
                             </VFBadge>
                           </div>
@@ -1741,7 +1743,7 @@ function FeesPage() {
                             <VFButton
                               size="sm"
                               variant="outline"
-                              className="h-7 px-2.5 text-[11px] bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-md font-semibold"
+                              className="h-7 px-2.5 text-[11px] bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px] font-semibold"
                               leftIcon={<Printer className="h-3 w-3" />}
                               onClick={() => addNotification({ title: 'Receipt Downloaded', description: `Downloaded official PDF for ${rec.receiptNo}.`, type: 'success' })}
                             >
@@ -1750,7 +1752,7 @@ function FeesPage() {
                             <VFButton
                               size="sm"
                               variant="outline"
-                              className="h-7 px-2.5 text-[11px] bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-md font-semibold"
+                              className="h-7 px-2.5 text-[11px] bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px] font-semibold"
                               leftIcon={<Send className="h-3 w-3 text-emerald-400" />}
                               onClick={() => addNotification({ title: 'Receipt Sent via WhatsApp', description: `Dispatched official receipt copy (${rec.receiptNo}) to ${activeStudent.fatherName} (${activeStudent.phone}).`, type: 'success' })}
                             >
@@ -1761,7 +1763,7 @@ function FeesPage() {
                       </div>
                     ))
                   ) : (
-                    <div className="p-8 text-center rounded-md bg-[#141414] border border-border text-muted-foreground text-xs">
+                    <div className="p-8 text-center rounded-[4px] bg-[#141414] border border-border text-muted-foreground text-xs">
                       No payment receipts found for this student.
                     </div>
                   )}
@@ -1771,7 +1773,7 @@ function FeesPage() {
               {/* ─── TAB 3: FEE STRUCTURE & 12-MONTH SCHEDULE ─── */}
               {drawerActiveTab === 'structure' && (
                 <div className="space-y-3.5 animate-fade-in">
-                  <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                  <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                     <div className="flex items-center justify-between pb-1.5 border-b border-border/60">
                       <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider">
                         12-Month Academic Fee Installment Schedule
@@ -1800,9 +1802,9 @@ function FeesPage() {
                               <td className="py-2 px-2.5 font-mono font-bold text-foreground">₹{inst.amount.toLocaleString('en-IN')}</td>
                               <td className="py-2 px-2.5">
                                 {inst.isPaid ? (
-                                  <VFBadge variant="success" className="text-[10px] rounded-md">Paid</VFBadge>
+                                  <VFBadge variant="success" className="text-[10px] rounded-[4px]">Paid</VFBadge>
                                 ) : (
-                                  <VFBadge variant="warning" className="text-[10px] rounded-md">Pending</VFBadge>
+                                  <VFBadge variant="warning" className="text-[10px] rounded-[4px]">Pending</VFBadge>
                                 )}
                               </td>
                               <td className="py-2 px-2.5 font-mono text-[11px] text-zinc-400">
@@ -1815,7 +1817,7 @@ function FeesPage() {
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                  <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                     <h4 className="text-xs font-extrabold text-foreground uppercase tracking-wider pb-1.5 border-b border-border/60">
                       Annual Fee Component Assessment
                     </h4>
@@ -1854,7 +1856,7 @@ function FeesPage() {
                 return (
                   <div className="space-y-3.5 animate-fade-in text-xs">
                     {/* Header */}
-                    <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                    <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                       <div className="flex items-center justify-between pb-1.5 border-b border-border/60">
                         <div className="flex items-center gap-2">
                           <Award className="h-4 w-4 text-amber-400" />
@@ -1863,18 +1865,18 @@ function FeesPage() {
                           </h4>
                         </div>
                         {hasScholarship ? (
-                          <VFBadge variant="success" className="text-[10px] font-bold rounded-md">
+                          <VFBadge variant="success" className="text-[10px] font-bold rounded-[4px]">
                             Active Relief Applied
                           </VFBadge>
                         ) : (
-                          <VFBadge variant="outline" className="text-[10px] font-bold rounded-md text-zinc-400 border-zinc-700 bg-[#181818]">
+                          <VFBadge variant="outline" className="text-[10px] font-bold rounded-[4px] text-zinc-400 border-zinc-700 bg-[#181818]">
                             No Active Concession (Eligible to Apply)
                           </VFBadge>
                         )}
                       </div>
 
                       {hasScholarship ? (
-                        <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 space-y-2">
+                        <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-2">
                           <div className="flex items-center justify-between">
                             <h5 className="font-bold text-foreground text-sm">
                               {activeStudent.studentAdmNo === 'ADM-2026-0841'
@@ -1910,7 +1912,7 @@ function FeesPage() {
                           </div>
                         </div>
                       ) : (
-                        <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 text-muted-foreground space-y-1">
+                        <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 text-muted-foreground space-y-1">
                           <p className="font-semibold text-foreground">Standard Academic Fee Assessment Active</p>
                           <p className="text-[11px]">
                             This student does not have an active waiver applied. Check eligibility across available grant schemes below.
@@ -1920,7 +1922,7 @@ function FeesPage() {
                     </div>
 
                     {/* Available Schemes Matrix (Clean & Minimal) */}
-                    <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2.5">
+                    <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2.5">
                       <div className="flex items-center justify-between pb-1 border-b border-border/60">
                         <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider flex items-center gap-1.5">
                           <ShieldCheck className="h-4 w-4 text-primary" />
@@ -1960,7 +1962,7 @@ function FeesPage() {
 
                           return (
                             <div key={i} className={cn(
-                              "p-2.5 rounded-md border flex items-center justify-between gap-3 transition-colors",
+                              "p-2.5 rounded-[4px] border flex items-center justify-between gap-3 transition-colors",
                               isCurrentActive ? "bg-emerald-950/20 border-emerald-500/50" : "bg-[#181818] border-border/70"
                             )}>
                               <div className="min-w-0 flex items-center gap-2">
@@ -1972,21 +1974,21 @@ function FeesPage() {
 
                               <div className="shrink-0 flex items-center gap-2">
                                 {isCurrentActive ? (
-                                  <VFBadge variant="success" className="text-[10px] font-bold rounded-md">
+                                  <VFBadge variant="success" className="text-[10px] font-bold rounded-[4px]">
                                     Active Grant
                                   </VFBadge>
                                 ) : isBlockedByGrant ? (
-                                  <VFBadge variant="danger" className="text-[10px] font-bold rounded-md">
+                                  <VFBadge variant="danger" className="text-[10px] font-bold rounded-[4px]">
                                     Not Eligible
                                   </VFBadge>
                                 ) : sch.isEligible ? (
                                   <>
-                                    <VFBadge variant="primary" className="text-[10px] font-bold rounded-md">
+                                    <VFBadge variant="primary" className="text-[10px] font-bold rounded-[4px]">
                                       Eligible
                                     </VFBadge>
                                     <VFButton
                                       size="sm"
-                                      className="h-6 px-2.5 text-[10px] font-bold rounded-md"
+                                      className="h-6 px-2.5 text-[10px] font-bold rounded-[4px]"
                                       onClick={() => addNotification({
                                         title: 'Scholarship Application Initiated',
                                         description: `Application for ${sch.name} submitted for ${activeStudent.studentName}.`,
@@ -1997,7 +1999,7 @@ function FeesPage() {
                                     </VFButton>
                                   </>
                                 ) : (
-                                  <VFBadge variant="danger" className="text-[10px] rounded-md">
+                                  <VFBadge variant="danger" className="text-[10px] rounded-[4px]">
                                     Not Eligible
                                   </VFBadge>
                                 )}
@@ -2009,7 +2011,7 @@ function FeesPage() {
                     </div>
 
                     {/* Document Status */}
-                    <div className="p-3.5 rounded-md bg-[#141414] border border-border/80 space-y-2">
+                    <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2">
                       <div className="flex items-center justify-between pb-1 border-b border-border/60">
                         <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider flex items-center gap-1.5">
                           <FileCheck className="h-4 w-4 text-emerald-400" />

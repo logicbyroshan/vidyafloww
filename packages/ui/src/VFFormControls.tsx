@@ -159,6 +159,10 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
     const widthMatch = className ? className.match(/\b(?:sm:|md:|lg:|xl:)?(?:w-|min-w-|max-w-)[^\s]+/g) : null;
     const widthClasses = widthMatch ? widthMatch.join(' ') : '';
 
+    const isExplicitSmall = size === 'sm' || Boolean(className && /\bh-8\b/.test(className));
+    const isExplicitLarge = size === 'lg' || Boolean(className && /\bh-10\b/.test(className));
+    const computedSize = isExplicitSmall ? 'sm' : isExplicitLarge ? 'lg' : size;
+
     return (
       <div
         className={cn(
@@ -178,8 +182,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <SelectPrimitive.Trigger
             id={selectId}
             className={cn(
-              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#161616] text-sm text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#202020] hover:border-zinc-500 data-[state=open]:border-zinc-400 shadow-xs",
-              size === 'sm' ? "h-8 min-h-[32px] px-2.5 py-1 text-xs" : size === 'lg' ? "h-10 min-h-[40px] px-3.5 py-2 text-base" : "h-9 min-h-[36px] px-3 py-1.5 text-sm",
+              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#161616] text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#202020] hover:border-zinc-500 data-[state=open]:border-zinc-400 shadow-xs",
+              computedSize === 'sm' ? "h-8 min-h-[32px] px-2.5 py-1 text-xs" : computedSize === 'lg' ? "h-10 min-h-[40px] px-3.5 py-2 text-base" : "h-9 min-h-[36px] px-3 py-1.5 text-sm",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
