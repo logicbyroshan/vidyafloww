@@ -548,25 +548,27 @@ function ReportsPage() {
     {
       header: t('col.action'),
       accessorKey: 'action',
+      headerClassName: 'text-right',
+      className: 'text-right',
       cell: (r: ReportCatalogItem) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-end">
           <VFButton
             size="sm"
             variant="outline"
-            className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
+            className="h-8 px-2.5 text-xs font-bold rounded-[4px] bg-[#181818] hover:bg-[#222222] border-border text-foreground shadow-xs shrink-0"
             leftIcon={<Download className="h-3.5 w-3.5" />}
             onClick={() => handleInstantRowExport(r)}
           >
-            {isHindi ? 'डाउनलोड ⬇' : 'Download ⬇'}
+            {isHindi ? 'डाउनलोड' : 'Download'}
           </VFButton>
           <VFButton
             size="sm"
-            variant="ghost"
-            className="h-7 px-2 text-xs font-semibold text-muted-foreground hover:text-foreground rounded-[4px]"
+            variant="outline"
+            className="h-8 w-8 p-0 rounded-[4px] bg-[#181818] hover:bg-[#222222] border-border text-zinc-400 hover:text-foreground flex items-center justify-center shadow-xs transition-colors shrink-0 cursor-pointer"
             onClick={() => handleOpenDrawerWithDomain(r.domain)}
-            title="Configure custom criteria"
+            title={isHindi ? "कस्टम पैरामीटर कॉन्फ़िगर करें" : "Configure custom criteria"}
           >
-            <SlidersHorizontal className="h-3 w-3" />
+            <SlidersHorizontal className="h-3.5 w-3.5" />
           </VFButton>
         </div>
       ),

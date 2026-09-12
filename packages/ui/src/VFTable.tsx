@@ -270,7 +270,7 @@ export function VFDataTable<T extends Record<string, any>>({
                       <th
                         key={key}
                         className={cn(
-                          "px-5 py-3.5 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
+                          "px-3.5 sm:px-4 py-3 font-black text-xs text-muted-foreground uppercase tracking-wider select-none whitespace-nowrap bg-card/95 backdrop-blur-md border-b border-border",
                           isSortable && "cursor-pointer hover:bg-muted/60 transition-colors",
                           col.headerClassName
                         )}
@@ -308,7 +308,7 @@ export function VFDataTable<T extends Record<string, any>>({
                         <td
                           key={key}
                           className={cn(
-                            "px-5 py-3.5 align-middle text-foreground whitespace-nowrap text-sm font-semibold",
+                            "px-3.5 sm:px-4 py-3 align-middle text-foreground whitespace-nowrap text-xs sm:text-sm font-semibold",
                             col.className
                           )}
                         >
