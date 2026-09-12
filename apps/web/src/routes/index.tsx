@@ -16,6 +16,24 @@ import {
   RotateCcw,
   Check,
   LayoutGrid,
+  UserPlus,
+  CreditCard,
+  Calendar,
+  School,
+  BookOpenCheck,
+  BookMarked,
+  ClipboardList,
+  UserCheck,
+  Library,
+  Bus,
+  Building2,
+  Award,
+  BarChart3,
+  Bell,
+  MessageSquareWarning,
+  FileSpreadsheet,
+  Settings,
+  LucideIcon,
 } from 'lucide-react';
 
 // 2×2 (4-dot) compact Grip Icon for ultra-minimal corner placement
@@ -48,11 +66,10 @@ export interface ShortcutAction {
   desc: string;
   hindiDesc: string;
   route: string;
-  iconSrc: string;
-  glowColor: string;
+  icon: LucideIcon;
 }
 
-// 20 Fixed Modules organized in a strict 5 × 4 grid layout with authentic transparent 3D icons from 3dicons.co
+// 20 Fixed Modules organized in a strict 5 × 4 grid layout with icons matching the Sidebar navigation
 const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'students',
@@ -61,8 +78,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Directory & Profiles',
     hindiDesc: 'डॉक्यूमेंट्स & प्रोफाइल्स',
     route: '/students',
-    iconSrc: '/icons/3d/students.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.06)',
+    icon: GraduationCap,
   },
   {
     id: 'admissions',
@@ -71,8 +87,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Intake & Verification',
     hindiDesc: 'एडमिशन & वेरिफिकेशन',
     route: '/admissions',
-    iconSrc: '/icons/3d/admissions.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.06)',
+    icon: UserPlus,
   },
   {
     id: 'attendance',
@@ -81,28 +96,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Roll Call & Biometrics',
     hindiDesc: 'बायोमेट्रिक & रजिस्टर',
     route: '/attendance',
-    iconSrc: '/icons/3d/attendance.png?v=5',
-    glowColor: 'rgba(239, 68, 68, 0.06)',
-  },
-  {
-    id: 'fees',
-    label: 'Payments',
-    hindiLabel: 'फीस & पेमेंट्स',
-    desc: 'Dues & Receipts',
-    hindiDesc: 'फीस ड्यूज & रसीदें',
-    route: '/fees',
-    iconSrc: '/icons/3d/fees.png?v=5',
-    glowColor: 'rgba(190, 24, 93, 0.06)',
-  },
-  {
-    id: 'teachers',
-    label: 'Teachers',
-    hindiLabel: 'टीचर्स & फैकल्टी',
-    desc: 'Faculty & Roster',
-    hindiDesc: 'वर्कलोड & रोस्टर',
-    route: '/teachers',
-    iconSrc: '/icons/3d/teachers.png?v=5',
-    glowColor: 'rgba(219, 39, 119, 0.06)',
+    icon: CalendarCheck,
   },
   {
     id: 'timetable',
@@ -111,8 +105,16 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Schedules & Periods',
     hindiDesc: 'शेड्यूल्स & पीरियड्स',
     route: '/timetable',
-    iconSrc: '/icons/3d/timetable.png?v=5',
-    glowColor: 'rgba(234, 88, 12, 0.06)',
+    icon: Calendar,
+  },
+  {
+    id: 'teachers',
+    label: 'Teachers',
+    hindiLabel: 'टीचर्स & फैकल्टी',
+    desc: 'Faculty & Roster',
+    hindiDesc: 'वर्कलोड & रोस्टर',
+    route: '/teachers',
+    icon: Users,
   },
   {
     id: 'academics',
@@ -121,8 +123,16 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Curriculum & Classes',
     hindiDesc: 'करिकुलम & क्लासेज',
     route: '/academics',
-    iconSrc: '/icons/3d/academics.png?v=5',
-    glowColor: 'rgba(59, 130, 246, 0.06)',
+    icon: School,
+  },
+  {
+    id: 'teaching',
+    label: 'Teaching',
+    hindiLabel: 'शिक्षण योजना',
+    desc: 'Lesson Plans & Pacing',
+    hindiDesc: 'पाठ योजना व पेसिंग',
+    route: '/teaching',
+    icon: BookOpenCheck,
   },
   {
     id: 'homework',
@@ -131,18 +141,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Assignments & Review',
     hindiDesc: 'असाइनमेंट्स & रिव्यू',
     route: '/homework',
-    iconSrc: '/icons/3d/homework.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.06)',
-  },
-  {
-    id: 'elibrary',
-    label: 'E-Library',
-    hindiLabel: 'ई-लाइब्रेरी',
-    desc: 'Digital Books & NCERT',
-    hindiDesc: 'डिजिटल बुक्स & NCERT',
-    route: '/elibrary',
-    iconSrc: '/icons/3d/elibrary.png?v=5',
-    glowColor: 'rgba(147, 51, 234, 0.06)',
+    icon: BookMarked,
   },
   {
     id: 'examinations',
@@ -151,18 +150,52 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Marks & Report Cards',
     hindiDesc: 'मार्क्स & रिपोर्ट कार्ड्स',
     route: '/examinations',
-    iconSrc: '/icons/3d/examinations.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.06)',
+    icon: ClipboardList,
   },
   {
-    id: 'notices',
-    label: 'Notices',
-    hindiLabel: 'नोटिसेज & सर्कुलर्स',
-    desc: 'Campus Broadcasts',
-    hindiDesc: 'कैंपस ब्रॉडकास्ट्स',
-    route: '/notices',
-    iconSrc: '/icons/3d/notices.png?v=5',
-    glowColor: 'rgba(234, 88, 12, 0.06)',
+    id: 'hrmanage',
+    label: 'HR Manage',
+    hindiLabel: 'मानव संसाधन',
+    desc: 'Staff Directory & Leaves',
+    hindiDesc: 'स्टाफ डायरेक्टरी व छुट्टियां',
+    route: '/hr-manage',
+    icon: UserCheck,
+  },
+  {
+    id: 'elibrary',
+    label: 'E-Library',
+    hindiLabel: 'ई-लाइब्रेरी',
+    desc: 'Digital Books & NCERT',
+    hindiDesc: 'डिजिटल बुक्स & NCERT',
+    route: '/elibrary',
+    icon: Library,
+  },
+  {
+    id: 'transport',
+    label: 'Transport',
+    hindiLabel: 'परिवहन सेवा',
+    desc: 'Fleet & Bus Routes',
+    hindiDesc: 'बस रूट व जीपीएस',
+    route: '/transport',
+    icon: Bus,
+  },
+  {
+    id: 'hostel',
+    label: 'Hostel',
+    hindiLabel: 'छात्रावास',
+    desc: 'Dorms & Outpass',
+    hindiDesc: 'हॉस्टल व आउटपास',
+    route: '/hostel',
+    icon: Building2,
+  },
+  {
+    id: 'fees',
+    label: 'Payments',
+    hindiLabel: 'फीस & पेमेंट्स',
+    desc: 'Dues & Receipts',
+    hindiDesc: 'फीस ड्यूज & रसीदें',
+    route: '/fees',
+    icon: CreditCard,
   },
   {
     id: 'scholarships',
@@ -171,28 +204,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Merit & Concessions',
     hindiDesc: 'मेरिट & कन्सेशन्स',
     route: '/scholarships',
-    iconSrc: '/icons/3d/scholarships.png?v=5',
-    glowColor: 'rgba(202, 138, 4, 0.06)',
-  },
-  {
-    id: 'reports',
-    label: 'Reports',
-    hindiLabel: 'रिपोर्ट्स',
-    desc: 'Analytics & Audits',
-    hindiDesc: 'एनालिटिक्स & ऑडिट्स',
-    route: '/reports',
-    iconSrc: '/icons/3d/reports.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.06)',
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    hindiLabel: 'सेटिंग्स',
-    desc: 'System & Branding',
-    hindiDesc: 'सिस्टम & ब्रांडिंग',
-    route: '/settings',
-    iconSrc: '/icons/3d/settings.png?v=5',
-    glowColor: 'rgba(244, 63, 94, 0.06)',
+    icon: Award,
   },
   {
     id: 'statistics',
@@ -201,64 +213,45 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Analytics & Insights',
     hindiDesc: 'एनालिटिक्स & इनसाइट्स',
     route: '/statistics',
-    iconSrc: '/icons/3d/statistics.png?v=5',
-    glowColor: 'rgba(168, 85, 247, 0.06)',
+    icon: BarChart3,
   },
   {
-    id: 'audit',
-    label: 'Audit Log',
-    hindiLabel: 'ऑडिट लॉग',
-    desc: 'Activity & Audit Trail',
-    hindiDesc: 'एक्टिविटी & ऑडिट ट्रेल',
-    route: '/audit',
-    iconSrc: '/icons/3d/audit.png?v=5',
-    glowColor: 'rgba(99, 102, 241, 0.06)',
+    id: 'notices',
+    label: 'Notices',
+    hindiLabel: 'नोटिसेज & सर्कुलर्स',
+    desc: 'Campus Broadcasts',
+    hindiDesc: 'कैंपस ब्रॉडकास्ट्स',
+    route: '/notices',
+    icon: Bell,
   },
   {
-    id: 'security',
-    label: 'Security',
-    hindiLabel: 'सिक्योरिटी मैनेजमेंट',
-    desc: 'Access & Permissions',
-    hindiDesc: 'एक्सेस & परमिशन्स',
-    route: '/security',
-    iconSrc: '/icons/3d/security.png?v=5',
-    glowColor: 'rgba(16, 185, 129, 0.06)',
+    id: 'complaints',
+    label: 'Complaints',
+    hindiLabel: 'शिकायत निवारण',
+    desc: 'Grievance & Tickets',
+    hindiDesc: 'शिकायतें व निवारण',
+    route: '/complaints',
+    icon: MessageSquareWarning,
   },
   {
-    id: 'portal',
-    label: 'Parent Portal',
-    hindiLabel: 'पैरेंट पोर्टल',
-    desc: 'Guardian Access Hub',
-    hindiDesc: 'गार्जियन एक्सेस हब',
-    route: '/portal',
-    iconSrc: '/icons/3d/portal.png?v=5',
-    glowColor: 'rgba(6, 182, 212, 0.06)',
+    id: 'reports',
+    label: 'Reports',
+    hindiLabel: 'रिपोर्ट्स',
+    desc: 'Analytics & Audits',
+    hindiDesc: 'एनालिटिक्स & ऑडिट्स',
+    route: '/reports',
+    icon: FileSpreadsheet,
   },
   {
-    id: 'resources',
-    label: 'Resources',
-    hindiLabel: 'रिसोर्सेज',
-    desc: 'Learning Materials',
-    hindiDesc: 'लर्निंग मटेरियल्स',
-    route: '/resources',
-    iconSrc: '/icons/3d/resources.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.06)',
+    id: 'settings',
+    label: 'Settings',
+    hindiLabel: 'सेटिंग्स',
+    desc: 'System & Branding',
+    hindiDesc: 'सिस्टम & ब्रांडिंग',
+    route: '/settings',
+    icon: Settings,
   },
 ];
-
-// Clean, prominent 3D Icon Component with authentic transparent renders from 3dicons.co
-function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="relative flex items-center justify-center shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13">
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.30)] transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
-        loading="lazy"
-      />
-    </div>
-  );
-}
 
 export function DashboardPage() {
   const {
@@ -418,6 +411,38 @@ export function DashboardPage() {
       severity: 'danger',
       action: 'Send SMS',
     },
+    {
+      student: 'Meera Sen',
+      avatar: 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 11-Arts · Roll #07',
+      alert: 'Library Overdue Clearance (Notice Sent)',
+      severity: 'warning',
+      action: 'Issue Reminder',
+    },
+    {
+      student: 'Devansh Gupta',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 6-A · Roll #19',
+      alert: 'Unapproved Absence from Sports Period',
+      severity: 'danger',
+      action: 'Send Notice',
+    },
+    {
+      student: 'Ishita Banerjee',
+      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 10-C · Roll #26',
+      alert: 'Late Arrival Route 7 Bus Delay',
+      severity: 'warning',
+      action: 'Gate Entry Note',
+    },
+    {
+      student: 'Siddharth Malhotra',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 12-Sci · Roll #33',
+      alert: 'Science Olympiad Leave (Approved)',
+      severity: 'neutral',
+      action: 'Verify Pass',
+    },
   ];
 
   // Render individual KPI Card with sleek corner move handle
@@ -487,7 +512,7 @@ export function DashboardPage() {
           {...kpiProps}
           accentColor="none"
           showTopBar={false}
-          className="bg-[#1a1a1a] border-border/80 hover:bg-[#222222] hover:border-blue-500/40 rounded-[4px]"
+          className="bg-card border-border/80 hover:bg-[#181818] hover:border-border/90 rounded-[4px] shadow-xs transition-all"
         />
 
         {/* Corner move handle — ONLY visible when Configure Dashboard is active */}
@@ -572,15 +597,15 @@ export function DashboardPage() {
       },
     });
 
-    // 1. Student Attendance Exceptions Section — clean natural list without internal scrollbar
+    // 1. Student Attendance Exceptions Section — locked height matching Quick Actions, natural standard gap, hidden scrollbar
     if (sectionId === 'student_attendance') {
       return (
-        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col")}>
+        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col flex-1 h-full min-h-0")}>
           <VFCard
             title={t('attendance.studentTab')}
-            headerClassName="py-2.5 px-3.5 sm:px-4"
-            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col"
-            bodyClassName="p-3.5 sm:p-4 flex flex-col"
+            headerClassName="py-2.5 px-3 sm:px-3.5"
+            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col flex-1 h-full min-h-0 max-h-[500px] lg:max-h-none"
+            bodyClassName="p-3 sm:p-3.5 flex flex-col flex-1 min-h-0 overflow-hidden"
             actions={
               <Link to="/attendance">
                 <VFButton
@@ -594,11 +619,14 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="space-y-2.5">
-              {studentExceptions.slice(0, 6).map((s, i) => (
+            <div
+              className="space-y-2 sm:space-y-2.5 overflow-y-auto flex-1 min-h-0 h-0 pr-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {studentExceptions.map((s, i) => (
                 <div
                   key={i}
-                  className="p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-xs shrink-0"
+                  className="p-2 sm:p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-2.5 shadow-xs shrink-0"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <img
@@ -646,7 +674,7 @@ export function DashboardPage() {
   };
 
   return (
-    <VFPageContainer className="space-y-4">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* Configure Dashboard Banner (Visible when isDashboardEditMode is ON) */}
       {isDashboardEditMode && (
         <div className="p-4 rounded-[4px] border border-primary/50 bg-[#161616] text-foreground flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-200 shadow-lg">
@@ -687,31 +715,21 @@ export function DashboardPage() {
         </div>
       )}
 
-      {/* 1. Top Full-Width KPI Metric Hub */}
-      <div className="rounded-[4px] border border-border/80 bg-card p-4 shadow-xs shrink-0 relative overflow-hidden group/kpihub">
-        {/* Subtle ambient glow on Top KPI Metric Hub */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300 opacity-60 group-hover/kpihub:opacity-90 z-0"
-          style={{
-            background: 'radial-gradient(ellipse 70% 35% at 50% 0%, rgba(234, 88, 12, 0.025) 0%, transparent 100%)',
-          }}
-          aria-hidden="true"
-        />
-        <div className="relative z-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {currentKpis.map((kpiId, index) => renderKpiCard(kpiId, index))}
-        </div>
+      {/* 1. Top KPI Stat Cards — direct page grid without outer container, matching other pages */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-3.5 lg:gap-4">
+        {currentKpis.map((kpiId, index) => renderKpiCard(kpiId, index))}
       </div>
 
       {/* 2 + 3. Main Content: Quick Actions (60%) + Student Attendance (40%) */}
-      <div className="flex flex-col lg:flex-row gap-4 items-stretch">
+      <div className="flex flex-col lg:flex-row gap-3 sm:gap-3.5 lg:gap-4 items-stretch">
 
         {/* LEFT: Quick Actions Hub — 60% width, 5 × 4 = 20 square box modules (sole height driver) */}
         <div className="w-full lg:w-[60%] flex-[60] min-w-0">
           <VFCard
             title={isHindi ? 'क्विक एक्शंस हब (Quick Actions)' : 'Quick Management Actions'}
-            headerClassName="py-2.5 px-3.5 sm:px-4"
+            headerClassName="py-2.5 px-3 sm:px-3.5"
             className="border-border/80 bg-card shadow-xs rounded-[4px]"
-            bodyClassName="p-2.5 sm:p-3"
+            bodyClassName="p-3 sm:p-3.5"
             actions={
               <Link to="/shortcuts">
                 <VFButton
@@ -725,44 +743,51 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="grid grid-cols-5 gap-2 sm:gap-2.5">
-              {FIXED_20_SHORTCUTS.map((action) => (
-                <Link
-                  key={action.id}
-                  to={action.route}
-                  className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#171717] hover:border-border transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  {/* Subtle dark ambient glow inside card matching icon's color */}
-                  <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-35 group-hover/shortcut:opacity-70"
-                    style={{
-                      background: `radial-gradient(circle at 50% 32%, ${action.glowColor} 0%, rgba(18, 18, 18, 0) 55%)`,
-                    }}
-                  />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-2.5">
+              {FIXED_20_SHORTCUTS.map((action) => {
+                const Icon = action.icon;
+                return (
+                  <Link
+                    key={action.id}
+                    to={action.route}
+                    className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#181818] hover:border-orange-500/40 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
+                  >
+                    {/* Subtle warm orange ambient glow inside card matching orange theme */}
+                    <div
+                      className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-20 group-hover/shortcut:opacity-65"
+                      style={{
+                        background: 'radial-gradient(circle at 50% 32%, rgba(249, 115, 22, 0.16) 0%, rgba(18, 18, 18, 0) 62%)',
+                      }}
+                    />
 
-                  {/* Relative container for Icon so it floats above the ambient glow */}
-                  <div className="relative z-1 flex-1 flex items-center justify-center w-full my-auto">
-                    <ThreeDIcon src={action.iconSrc} alt={action.label} />
-                  </div>
+                    {/* Relative container for Icon Plate: sleek orange glassmorphic geometric plate with strict sharp border */}
+                    <div className="relative z-1 flex-1 flex items-center justify-center w-full my-auto">
+                      <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-[4px] bg-gradient-to-b from-orange-500/15 via-orange-500/10 to-orange-600/5 border border-orange-500/25 group-hover/shortcut:border-orange-500/55 group-hover/shortcut:bg-orange-500/20 flex items-center justify-center transition-all duration-200 shadow-[0_2px_10px_rgba(249,115,22,0.10)] group-hover/shortcut:shadow-[0_4px_18px_rgba(249,115,22,0.25)] group-hover/shortcut:-translate-y-0.5">
+                        <Icon className="w-6 h-6 sm:w-6.5 sm:h-6.5 text-orange-400 group-hover/shortcut:text-orange-300 transition-colors shrink-0" strokeWidth={2} />
+                      </div>
+                    </div>
 
-                  {/* Text footer */}
-                  <div className="relative z-1 w-full pt-1">
-                    <p className="text-[11.5px] sm:text-xs font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-0.5">
-                      {isHindi ? action.hindiLabel : action.label}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground font-medium mt-0.5 truncate px-0.5">
-                      {isHindi ? action.hindiDesc : action.desc}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+                    {/* Text footer */}
+                    <div className="relative z-1 w-full pt-1">
+                      <p className="text-[11.5px] sm:text-xs font-extrabold text-foreground group-hover/shortcut:text-orange-400 transition-colors leading-tight truncate px-0.5">
+                        {isHindi ? action.hindiLabel : action.label}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground font-medium mt-0.5 truncate px-0.5">
+                        {isHindi ? action.hindiDesc : action.desc}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </VFCard>
         </div>
 
-        {/* RIGHT: Student Attendance — 40% width, natural flow matching page scroll */}
-        <div className="w-full lg:w-[40%] flex-[40] min-w-0 flex flex-col">
-          {renderSectionCard('student_attendance', 0)}
+        {/* RIGHT: Student Attendance — 40% width, strictly locked to Quick Actions height via relative + absolute inset */}
+        <div className="w-full lg:w-[40%] flex-[40] min-w-0 relative">
+          <div className="lg:absolute lg:inset-0 flex flex-col">
+            {renderSectionCard('student_attendance', 0)}
+          </div>
         </div>
 
       </div>

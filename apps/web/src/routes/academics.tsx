@@ -970,16 +970,6 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   },
 };
 
-const CLASS_OPTIONS = [
-  { label: 'Class 10 (Secondary Board)', value: 'Class 10' },
-  { label: 'Class 12 (Science Stream)', value: 'Class 12-Sci' },
-  { label: 'Class 12 (Commerce Stream)', value: 'Class 12-Com' },
-  { label: 'Class 11 (Science Stream)', value: 'Class 11-Sci' },
-  { label: 'Class 9 (Foundation)', value: 'Class 9' },
-  { label: 'Class 8 (Middle School)', value: 'Class 8' },
-  { label: 'Class 6 (Upper Primary)', value: 'Class 6' },
-];
-
 function AcademicsPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
@@ -993,6 +983,16 @@ function AcademicsPage() {
   const [selectedClassId, setSelectedClassId] = React.useState<string>('Class 10');
   const [activeView, setActiveView] = React.useState<'subjects' | 'overview'>('subjects');
   const [classesData, setClassesData] = React.useState<Record<string, ClassProfile>>(INITIAL_CLASSES);
+
+  const classOptions = React.useMemo(() => [
+    { label: isHindi ? 'कक्षा 10 (माध्यमिक बोर्ड)' : 'Class 10 (Secondary Board)', value: 'Class 10' },
+    { label: isHindi ? 'कक्षा 12 (विज्ञान संकाय)' : 'Class 12 (Science Stream)', value: 'Class 12-Sci' },
+    { label: isHindi ? 'कक्षा 12 (वाणिज्य संकाय)' : 'Class 12 (Commerce Stream)', value: 'Class 12-Com' },
+    { label: isHindi ? 'कक्षा 11 (विज्ञान संकाय)' : 'Class 11 (Science Stream)', value: 'Class 11-Sci' },
+    { label: isHindi ? 'कक्षा 9 (फाउंडेशन)' : 'Class 9 (Foundation)', value: 'Class 9' },
+    { label: isHindi ? 'कक्षा 8 (मिडिल स्कूल)' : 'Class 8 (Middle School)', value: 'Class 8' },
+    { label: isHindi ? 'कक्षा 6 (उच्च प्राथमिक)' : 'Class 6 (Upper Primary)', value: 'Class 6' },
+  ], [isHindi]);
 
   // Current active class data fallback
   const currentClassProfile: ClassProfile = classesData[selectedClassId] || INITIAL_CLASSES['Class 10'];
@@ -1436,33 +1436,29 @@ function AcademicsPage() {
       {/* ──────────────────────────────────────────────────────────────────────────
           SINGLE UNIFIED HEADER TOOLBAR
           ────────────────────────────────────────────────────────────────────────── */}
-      <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3 shrink-0 shadow-xs">
+      <div className="p-2.5 sm:p-3 rounded-[4px] bg-[#141414] border border-border/80 flex items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: Class Selector + View Switcher */}
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Class Selector Dropdown */}
-          <div className="flex items-center gap-2 bg-[#1a1a1a] px-2.5 py-1 rounded-[4px] border border-border/80">
-            <GraduationCap className="h-4 w-4 text-muted-foreground shrink-0" />
-            <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">
-              {isHindi ? 'क्लास:' : 'Class:'}
-            </span>
-            <VFSelect
-              value={selectedClassId}
-              onChange={(e) => setSelectedClassId(String(e.target.value))}
-              options={CLASS_OPTIONS}
-              className="w-48 bg-transparent border-0 h-7 text-xs font-bold focus:ring-0 p-0 text-foreground cursor-pointer"
-            />
-          </div>
+          <VFSelect
+            size="sm"
+            value={selectedClassId}
+            onChange={(e) => setSelectedClassId(String(e.target.value))}
+            options={classOptions}
+            leftIcon={<GraduationCap className="h-4 w-4" />}
+            className="w-60 sm:w-64 bg-[#161616] border-border text-xs rounded-[4px] h-8 font-bold"
+          />
 
-          <div className="h-5 w-[1px] bg-border/80 hidden md:block" />
+          <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
 
           {/* View Tab Switchers */}
-          <div className="flex items-center gap-1 bg-[#1a1a1a] p-1 rounded-[4px] border border-border/70">
+          <div className="flex items-center gap-1 bg-[#161616] p-0.5 h-8 rounded-[4px] border border-border">
             <button
               type="button"
               onClick={() => setActiveView('subjects')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`h-full px-3 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'subjects'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/60'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -1472,9 +1468,9 @@ function AcademicsPage() {
             <button
               type="button"
               onClick={() => setActiveView('overview')}
-              className={`px-3 py-1 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
+              className={`h-full px-3 text-xs font-bold rounded-[3px] transition-colors flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'overview'
-                  ? 'bg-[#222222] text-foreground shadow-xs border border-border/60'
+                  ? 'bg-[#242424] text-foreground shadow-xs border border-border/60'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -1484,26 +1480,7 @@ function AcademicsPage() {
           </div>
         </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2 shrink-0">
-          <VFButton
-            size="sm"
-            variant="outline"
-            onClick={handleExport}
-            className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
-            leftIcon={<Download className="h-3.5 w-3.5" />}
-          >
-            {isHindi ? 'एक्सपोर्ट' : 'Export'}
-          </VFButton>
-          <VFButton
-            size="sm"
-            onClick={handleOpenAddSubject}
-            className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
-            leftIcon={<Plus className="h-3.5 w-3.5" />}
-          >
-            {isHindi ? '+ न्यू सब्जेक्ट ऐड करें' : '+ Add Subject'}
-          </VFButton>
-        </div>
+
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
@@ -1514,10 +1491,37 @@ function AcademicsPage() {
           <VFDataTable
             columns={subjectColumns}
             data={subjects}
-            filterPlaceholder={
-              isHindi
-                ? 'सब्जेक्ट नेम, कोड या टीचर से सर्च करें...'
-                : 'Search subjects by course code, title, or mentor...'
+            showSearch={false}
+            showColumnToggle={false}
+            leftActions={
+              <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+                <BookOpen className="h-4 w-4 text-primary" />
+                <span>{isHindi ? 'सब्जेक्ट्स & सिलेबस' : 'Prescribed Subjects & Syllabus'}</span>
+                <span className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/80 text-[11px] font-mono text-muted-foreground">
+                  {subjects.length}
+                </span>
+              </div>
+            }
+            rightActions={
+              <div className="flex items-center gap-2">
+                <VFButton
+                  size="sm"
+                  variant="outline"
+                  onClick={handleExport}
+                  className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
+                  leftIcon={<Download className="h-3.5 w-3.5" />}
+                >
+                  {isHindi ? 'एक्सपोर्ट' : 'Export'}
+                </VFButton>
+                <VFButton
+                  size="sm"
+                  onClick={handleOpenAddSubject}
+                  className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
+                  leftIcon={<Plus className="h-3.5 w-3.5" />}
+                >
+                  {isHindi ? '+ न्यू सब्जेक्ट ऐड करें' : '+ Add Subject'}
+                </VFButton>
+              </div>
             }
           />
         </div>
