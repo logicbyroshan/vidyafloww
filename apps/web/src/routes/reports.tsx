@@ -583,6 +583,7 @@ function ReportsPage() {
         rightActions={
           <div className="flex items-center gap-2 flex-wrap">
             <VFSelect
+              size="sm"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[

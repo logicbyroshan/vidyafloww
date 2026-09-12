@@ -986,6 +986,7 @@ function AttendancePage() {
         rightActions={
           <div className="flex items-center gap-2.5 flex-wrap">
             <VFSelect
+              size="sm"
               value={selectedClass}
               onChange={(e) => setSelectedClass(String(e.target.value))}
               options={[
@@ -995,11 +996,12 @@ function AttendancePage() {
                 { label: 'Class 11 - Science', value: 'Class 11-Sci' },
                 { label: 'Class 12 - Commerce', value: 'Class 12-Com' },
               ]}
-              className="w-48"
+              className="w-48 text-xs bg-[#181818] border-border rounded-[4px]"
             />
             <VFButton
               size="sm"
               variant="outline"
+              className="rounded-[4px]"
               onClick={handleMarkAllPresent}
               leftIcon={<CheckSquare className="h-3.5 w-3.5 text-emerald-400" />}
             >
@@ -1007,6 +1009,7 @@ function AttendancePage() {
             </VFButton>
             <VFButton
               size="sm"
+              className="rounded-[4px]"
               leftIcon={<Send className="h-3.5 w-3.5" />}
               onClick={() =>
                 addNotification({

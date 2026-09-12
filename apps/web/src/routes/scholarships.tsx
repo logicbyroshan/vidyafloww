@@ -577,7 +577,7 @@ function ScholarshipsPage() {
       header: t('col.class'),
       accessorKey: 'class',
       cell: (r: ScholarshipRecord) => (
-        <VFBadge variant="outline" className="text-[11px] font-mono font-bold rounded-md bg-[#181818] border-border">
+        <VFBadge variant="outline" className="text-[11px] font-mono font-bold rounded-[4px] bg-[#181818] border-border">
           {r.class}
         </VFBadge>
       ),
@@ -591,7 +591,7 @@ function ScholarshipsPage() {
             {r.schemeName}
           </span>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <VFBadge variant="primary" className="text-[10px] font-bold rounded-md">
+            <VFBadge variant="primary" className="text-[10px] font-bold rounded-[4px]">
               {r.category}
             </VFBadge>
             <span className="text-[10px] font-mono text-zinc-400 truncate">{r.sanctionRef}</span>
@@ -627,7 +627,7 @@ function ScholarshipsPage() {
       header: t('col.status'),
       accessorKey: 'status',
       cell: (r: ScholarshipRecord) => (
-        <VFBadge variant={r.status === 'Active Disbursed' ? 'success' : 'warning'} className="rounded-md">
+        <VFBadge variant={r.status === 'Active Disbursed' ? 'success' : 'warning'} className="rounded-[4px]">
           {r.status === 'Active Disbursed' ? (isHindi ? 'एक्टिव डिसबर्स्ड' : r.status) : r.status === 'Govt Verified' ? (isHindi ? 'गवर्नमेंट वेरिफाइड' : r.status) : (isHindi ? 'रिन्यूअल पेंडिंग' : r.status)}
         </VFBadge>
       ),
@@ -639,7 +639,7 @@ function ScholarshipsPage() {
         <VFButton
           size="sm"
           variant="outline"
-          className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#242424] border-border hover:border-zinc-500 text-foreground shadow-xs rounded-md"
+          className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#242424] border-border hover:border-zinc-500 text-foreground shadow-xs rounded-[4px]"
           leftIcon={<Award className="h-3.5 w-3.5 text-amber-400" />}
           onClick={() => openDossier(r)}
         >
@@ -659,6 +659,7 @@ function ScholarshipsPage() {
         rightActions={
           <div className="flex items-center gap-2">
             <VFSelect
+              size="sm"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[
@@ -668,11 +669,12 @@ function ScholarshipsPage() {
                 { value: 'Sports Talent', label: `Sports Quota (${scholarships.filter((s) => s.category === 'Sports Talent').length})` },
                 { value: 'Sibling / Staff', label: `Sibling / Staff (${scholarships.filter((s) => s.category === 'Sibling / Staff').length})` },
               ]}
-              className="w-52 text-xs bg-[#181818] border-border rounded-md"
+              className="w-52 text-xs bg-[#181818] border-border rounded-[4px]"
             />
             <VFButton
               variant="outline"
               size="sm"
+              className="rounded-[4px]"
               leftIcon={<Download className="h-4 w-4" />}
               onClick={() => addNotification({ title: 'Exporting Grants', description: 'Scholarship grant directory exported as CSV.', type: 'success' })}
             >
@@ -680,7 +682,7 @@ function ScholarshipsPage() {
             </VFButton>
             <VFButton
               size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-md"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-[4px]"
               leftIcon={<Plus className="h-4 w-4" />}
               onClick={() => setIsAddDrawerOpen(true)}
             >
@@ -708,12 +710,12 @@ function ScholarshipsPage() {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <VFButton variant="outline" size="sm" onClick={() => setIsAddDrawerOpen(false)} className="rounded-md">
+              <VFButton variant="outline" size="sm" onClick={() => setIsAddDrawerOpen(false)} className="rounded-[4px]">
                 Cancel
               </VFButton>
               <VFButton
                 size="sm"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-md"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-[4px]"
                 leftIcon={<Check className="h-4 w-4" />}
                 disabled={!!studentActiveGrant}
                 onClick={(e) => handleSaveAward(e)}
@@ -726,9 +728,9 @@ function ScholarshipsPage() {
       >
         <div className="flex-1 flex flex-col min-h-0 overflow-y-auto no-scrollbar p-5 space-y-5">
           {/* Header Banner */}
-          <div className="p-4 rounded-md bg-[#141414] border border-border/80 flex items-center justify-between gap-4">
+          <div className="p-4 rounded-[4px] bg-[#141414] border border-border/80 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-md bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 rounded-[4px] bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
@@ -746,7 +748,7 @@ function ScholarshipsPage() {
           </div>
 
           {/* Step 1: Select Student & Live Eligibility Inspector */}
-          <div className="p-4 rounded-md bg-[#141414] border border-border/80 space-y-3.5">
+          <div className="p-4 rounded-[4px] bg-[#141414] border border-border/80 space-y-3.5">
             <div className="flex items-center justify-between pb-2 border-b border-border/60">
               <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider flex items-center gap-2">
                 <User className="h-4 w-4 text-primary" />
@@ -770,16 +772,16 @@ function ScholarshipsPage() {
                       value: s.admNo,
                     };
                   })}
-                  className="bg-[#1a1a1a] border-border h-9 text-xs font-semibold rounded-md"
+                  className="bg-[#1a1a1a] border-border h-9 text-xs font-semibold rounded-[4px]"
                 />
               </div>
 
               {/* Student Summary Mini Card */}
-              <div className="p-3 rounded-md bg-[#181818] border border-border/70 flex items-center gap-3">
+              <div className="p-3 rounded-[4px] bg-[#181818] border border-border/70 flex items-center gap-3">
                 <img
                   src={currentStudentObj.photoUrl}
                   alt={currentStudentObj.name}
-                  className="h-11 w-11 rounded-md object-cover border border-border shrink-0"
+                  className="h-11 w-11 rounded-[4px] object-cover border border-border shrink-0"
                 />
                 <div className="min-w-0 flex-1 text-xs">
                   <div className="flex items-center gap-2">
@@ -795,7 +797,7 @@ function ScholarshipsPage() {
 
             {/* SINGLE SCHOLARSHIP LIMIT RULE ALERT BANNER */}
             {studentActiveGrant ? (
-              <div className="p-3.5 rounded-md bg-amber-500/10 border border-amber-500/30 text-xs space-y-2">
+              <div className="p-3.5 rounded-[4px] bg-amber-500/10 border border-amber-500/30 text-xs space-y-2">
                 <div className="flex items-center gap-2 text-amber-400 font-bold">
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   <span>Single Scholarship Limit Rule: Student Already Holds Active Grant</span>
@@ -808,7 +810,7 @@ function ScholarshipsPage() {
                   <VFButton
                     size="sm"
                     variant="outline"
-                    className="h-7 text-xs font-bold rounded-md bg-[#1a1a1a] hover:bg-[#222222]"
+                    className="h-7 text-xs font-bold rounded-[4px] bg-[#1a1a1a] hover:bg-[#222222]"
                     onClick={() => {
                       openDossier(studentActiveGrant);
                       setIsAddDrawerOpen(false);
@@ -833,7 +835,7 @@ function ScholarshipsPage() {
                       <div
                         key={tpl.id}
                         onClick={() => elig.isEligible && handleSelectSchemeTemplate(tpl)}
-                        className={`p-3 rounded-md border text-xs transition-all cursor-pointer ${
+                        className={`p-3 rounded-[4px] border text-xs transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-primary/10 border-primary shadow-xs ring-1 ring-primary/40'
                             : elig.isEligible
@@ -853,11 +855,11 @@ function ScholarshipsPage() {
                         <div className="mt-2 flex items-center justify-between gap-2 pt-1 border-t border-border/50">
                           <span className="text-[10px] text-zinc-400 truncate">{elig.reason}</span>
                           {elig.isEligible ? (
-                            <VFBadge variant={isSelected ? 'success' : 'primary'} className="text-[10px] font-bold rounded-md shrink-0">
+                            <VFBadge variant={isSelected ? 'success' : 'primary'} className="text-[10px] font-bold rounded-[4px] shrink-0">
                               {isSelected ? 'Selected' : 'Eligible'}
                             </VFBadge>
                           ) : (
-                            <VFBadge variant="danger" className="text-[10px] font-bold rounded-md shrink-0">
+                            <VFBadge variant="danger" className="text-[10px] font-bold rounded-[4px] shrink-0">
                               Not Eligible
                             </VFBadge>
                           )}
@@ -871,7 +873,7 @@ function ScholarshipsPage() {
           </div>
 
           {/* Step 2: Grant Terms & Concession Configuration */}
-          <div className="p-4 rounded-md bg-[#141414] border border-border/80 space-y-3 text-xs">
+          <div className="p-4 rounded-[4px] bg-[#141414] border border-border/80 space-y-3 text-xs">
             <div className="flex items-center justify-between pb-2 border-b border-border/60">
               <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
@@ -889,7 +891,7 @@ function ScholarshipsPage() {
                 value={customSchemeName}
                 onChange={(e) => setCustomSchemeName(e.target.value)}
                 disabled={!!studentActiveGrant}
-                className="bg-[#1a1a1a] border-border h-9 text-xs font-semibold rounded-md"
+                className="bg-[#1a1a1a] border-border h-9 text-xs font-semibold rounded-[4px]"
                 required
               />
             </div>
@@ -908,7 +910,7 @@ function ScholarshipsPage() {
                     { label: 'Sibling / Staff Concession', value: 'Sibling / Staff' },
                     { label: 'EWS & Social Welfare Aid', value: 'EWS Aid' },
                   ]}
-                  className="bg-[#1a1a1a] border-border h-9 text-xs rounded-md"
+                  className="bg-[#1a1a1a] border-border h-9 text-xs rounded-[4px]"
                 />
               </div>
 
@@ -924,7 +926,7 @@ function ScholarshipsPage() {
                     { label: '75% Concession (₹31,500)', value: '75' },
                     { label: '100% Full Free-ship (₹42,000)', value: '100' },
                   ]}
-                  className="bg-[#1a1a1a] border-border h-9 text-xs font-semibold rounded-md"
+                  className="bg-[#1a1a1a] border-border h-9 text-xs font-semibold rounded-[4px]"
                 />
               </div>
 
@@ -939,7 +941,7 @@ function ScholarshipsPage() {
                     { label: 'Direct Govt DBT Credit', value: 'Direct Govt DBT Credit' },
                     { label: 'Corporate CSR Grant', value: 'Corporate CSR Grant' },
                   ]}
-                  className="bg-[#1a1a1a] border-border h-9 text-xs rounded-md"
+                  className="bg-[#1a1a1a] border-border h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
@@ -952,7 +954,7 @@ function ScholarshipsPage() {
                   value={customSanctionRef}
                   onChange={(e) => setCustomSanctionRef(e.target.value)}
                   disabled={!!studentActiveGrant}
-                  className="bg-[#1a1a1a] border-border h-9 text-xs font-mono rounded-md"
+                  className="bg-[#1a1a1a] border-border h-9 text-xs font-mono rounded-[4px]"
                 />
               </div>
 
@@ -963,14 +965,14 @@ function ScholarshipsPage() {
                   value={customFundingAgency}
                   onChange={(e) => setCustomFundingAgency(e.target.value)}
                   disabled={!!studentActiveGrant}
-                  className="bg-[#1a1a1a] border-border h-9 text-xs rounded-md"
+                  className="bg-[#1a1a1a] border-border h-9 text-xs rounded-[4px]"
                 />
               </div>
             </div>
           </div>
 
           {/* Step 3: Required Verification Documents Checklist */}
-          <div className="p-4 rounded-md bg-[#141414] border border-border/80 space-y-3 text-xs">
+          <div className="p-4 rounded-[4px] bg-[#141414] border border-border/80 space-y-3 text-xs">
             <div className="flex items-center justify-between pb-2 border-b border-border/60">
               <h4 className="font-extrabold text-foreground text-xs uppercase tracking-wider flex items-center gap-2">
                 <FileCheck className="h-4 w-4 text-emerald-400" />
@@ -980,7 +982,7 @@ function ScholarshipsPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div className="p-2.5 rounded-md bg-[#181818] border border-border/70 flex items-center justify-between gap-2">
+              <div className="p-2.5 rounded-[4px] bg-[#181818] border border-border/70 flex items-center justify-between gap-2">
                 <div>
                   <span className="font-bold text-foreground block text-xs">Parent Income Proof / Certificate</span>
                   <span className="text-[10px] text-muted-foreground">Revenue Dept / ITR Acknowledgment</span>
@@ -999,7 +1001,7 @@ function ScholarshipsPage() {
                 </button>
               </div>
 
-              <div className="p-2.5 rounded-md bg-[#181818] border border-border/70 flex items-center justify-between gap-2">
+              <div className="p-2.5 rounded-[4px] bg-[#181818] border border-border/70 flex items-center justify-between gap-2">
                 <div>
                   <span className="font-bold text-foreground block text-xs">Academic Merit / Category Certificate</span>
                   <span className="text-[10px] text-muted-foreground">Previous Marksheet / RTE / Sports Proof</span>
@@ -1026,24 +1028,24 @@ function ScholarshipsPage() {
                 value={auditRemarks}
                 onChange={(e) => setAuditRemarks(e.target.value)}
                 disabled={!!studentActiveGrant}
-                className="bg-[#1a1a1a] border-border h-9 text-xs rounded-md"
+                className="bg-[#1a1a1a] border-border h-9 text-xs rounded-[4px]"
               />
             </div>
           </div>
 
           {/* Financial Impact Overview Card */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-3.5 rounded-md bg-[#141414] border border-border/70">
+            <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/70">
               <span className="text-[10px] font-bold text-muted-foreground uppercase block">Assessed Annual Fee</span>
               <span className="text-lg font-black text-foreground font-mono mt-0.5 block">₹ 42,000</span>
             </div>
-            <div className="p-3.5 rounded-md bg-[#141414] border border-border/70">
+            <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/70">
               <span className="text-[10px] font-bold text-muted-foreground uppercase block">Sanctioned Relief</span>
               <span className="text-lg font-black text-emerald-400 font-mono mt-0.5 block">
                 - ₹{Math.round((42000 * Number(customWaiverPct || 50)) / 100).toLocaleString('en-IN')}
               </span>
             </div>
-            <div className="p-3.5 rounded-md bg-[#141414] border border-border/70">
+            <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/70">
               <span className="text-[10px] font-bold text-muted-foreground uppercase block">Net Due by Guardian</span>
               <span className="text-lg font-black text-foreground font-mono mt-0.5 block">
                 ₹{(42000 - Math.round((42000 * Number(customWaiverPct || 50)) / 100)).toLocaleString('en-IN')}
@@ -1068,7 +1070,7 @@ function ScholarshipsPage() {
             <div className="flex items-center gap-2 flex-wrap">
               <VFButton
                 size="sm"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-md"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-[4px]"
                 leftIcon={<GraduationCap className="h-3.5 w-3.5" />}
                 rightIcon={<ExternalLink className="h-3.5 w-3.5" />}
                 onClick={() => {
@@ -1081,7 +1083,7 @@ function ScholarshipsPage() {
               <VFButton
                 variant="outline"
                 size="sm"
-                className="bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground font-bold rounded-md"
+                className="bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground font-bold rounded-[4px]"
                 leftIcon={<CreditCard className="h-3.5 w-3.5" />}
                 rightIcon={<ExternalLink className="h-3.5 w-3.5" />}
                 onClick={() => {
@@ -1094,14 +1096,14 @@ function ScholarshipsPage() {
               <VFButton
                 variant="outline"
                 size="sm"
-                className="bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-md"
+                className="bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
                 leftIcon={<Printer className="h-3.5 w-3.5" />}
                 onClick={() => addNotification({ title: 'Sanction Order Downloaded', description: `Sanction order PDF downloaded for ${activeRecord?.sanctionRef}.`, type: 'info' })}
               >
                 Print Order
               </VFButton>
             </div>
-            <VFButton variant="outline" size="sm" className="rounded-md" onClick={() => setIsDetailsDrawerOpen(false)}>
+            <VFButton variant="outline" size="sm" className="rounded-[4px]" onClick={() => setIsDetailsDrawerOpen(false)}>
               Close
             </VFButton>
           </div>
@@ -1110,10 +1112,10 @@ function ScholarshipsPage() {
         {activeRecord && (
           <div className="flex-1 flex flex-col min-h-0 overflow-y-auto no-scrollbar p-5 space-y-4">
             {/* Header Identity Banner */}
-            <div className="p-4 rounded-md bg-[#141414] border border-border/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div className="p-4 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1 min-w-0">
                 <div
-                  className="relative overflow-hidden rounded-md border border-border/90 shadow-sm w-24 sm:w-28 bg-muted flex items-center justify-center shrink-0"
+                  className="relative overflow-hidden rounded-[4px] border border-border/90 shadow-sm w-24 sm:w-28 bg-muted flex items-center justify-center shrink-0"
                   style={{ aspectRatio: '19.5 / 25' }}
                 >
                   <img
@@ -1127,13 +1129,13 @@ function ScholarshipsPage() {
                 <div className="space-y-2 flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="text-lg font-extrabold text-foreground tracking-tight">{activeRecord.studentName}</h3>
-                    <VFBadge variant="outline" className="font-mono text-zinc-300 font-bold text-[11px] bg-[#1a1a1a] border-border rounded-md">
+                    <VFBadge variant="outline" className="font-mono text-zinc-300 font-bold text-[11px] bg-[#1a1a1a] border-border rounded-[4px]">
                       {activeRecord.studentAdmNo}
                     </VFBadge>
-                    <VFBadge variant="primary" className="text-[10px] font-bold rounded-md">
+                    <VFBadge variant="primary" className="text-[10px] font-bold rounded-[4px]">
                       {activeRecord.category}
                     </VFBadge>
-                    <VFBadge variant="success" className="rounded-md">
+                    <VFBadge variant="success" className="rounded-[4px]">
                       {activeRecord.status}
                     </VFBadge>
                   </div>
@@ -1166,7 +1168,7 @@ function ScholarshipsPage() {
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-md bg-[#181818] border border-border/80 flex flex-col justify-center text-right shrink-0 min-w-[200px] shadow-xs">
+              <div className="p-3.5 rounded-[4px] bg-[#181818] border border-border/80 flex flex-col justify-center text-right shrink-0 min-w-[200px] shadow-xs">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Fee Discount</span>
                 <span className="text-2xl font-black text-emerald-400 font-mono mt-0.5 block">
                   ₹{activeRecord.waiverAmount.toLocaleString('en-IN')}
@@ -1176,7 +1178,7 @@ function ScholarshipsPage() {
             </div>
 
             {/* Scheme Details Card */}
-            <div className="p-4 rounded-md bg-[#141414] border border-border/80 space-y-3 text-xs">
+            <div className="p-4 rounded-[4px] bg-[#141414] border border-border/80 space-y-3 text-xs">
               <h4 className="font-extrabold text-foreground uppercase tracking-wider text-xs pb-2 border-b border-border/60 flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
                 Scholarship Details
@@ -1211,7 +1213,7 @@ function ScholarshipsPage() {
 
               {/* Compliance Documents */}
               {activeRecord.verifiedDocs && activeRecord.verifiedDocs.length > 0 && (
-                <div className="p-3 rounded-md bg-[#181818] border border-border/70 space-y-2 mt-2">
+                <div className="p-3 rounded-[4px] bg-[#181818] border border-border/70 space-y-2 mt-2">
                   <span className="text-[11px] font-bold text-zinc-300 block">Verified Compliance Documents on Record:</span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {activeRecord.verifiedDocs.map((doc, i) => (
@@ -1226,7 +1228,7 @@ function ScholarshipsPage() {
                 </div>
               )}
 
-              <div className="p-3 rounded-md bg-[#1a1a1a] border border-border/60 space-y-1 mt-2">
+              <div className="p-3 rounded-[4px] bg-[#1a1a1a] border border-border/60 space-y-1 mt-2">
                 <span className="text-[11px] font-bold text-zinc-300 block">Registrar & Comptroller Audit Remarks:</span>
                 <p className="text-muted-foreground text-[11px] leading-relaxed">{activeRecord.notes}</p>
               </div>
