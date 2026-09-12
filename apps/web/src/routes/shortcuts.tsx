@@ -56,27 +56,27 @@ export interface ShortcutAction {
 }
 
 export const ALL_SHORTCUT_ACTIONS: ShortcutAction[] = [
-  { id: 'attendance', label: 'Attendance', labelHi: 'उपस्थिति', desc: 'Daily roll call & biometric logs', descHi: 'दैनिक उपस्थिति व बायोमेट्रिक लॉग्स', route: '/attendance', icon: CalendarCheck, category: 'Core' },
+  { id: 'attendance', label: 'Attendance', labelHi: 'अटेंडेंस', desc: 'Daily roll call & biometric logs', descHi: 'डेली अटेंडेंस & बायोमेट्रिक लॉग्स', route: '/attendance', icon: CalendarCheck, category: 'Core' },
   { id: 'admissions', label: 'Admissions', labelHi: 'एडमिशन', desc: 'Intake pipeline & lead verification', descHi: 'एडमिशन प्रक्रिया व सत्यापन', route: '/admissions', icon: UserPlus, category: 'Core' },
-  { id: 'students', label: 'Students', labelHi: 'छात्र', desc: '360° student directory & dossiers', descHi: 'छात्र डायरेक्टरी व रिकॉर्ड', route: '/students', icon: GraduationCap, category: 'Core' },
-  { id: 'teachers', label: 'Teachers', labelHi: 'शिक्षक', desc: 'Faculty profiles & workload matrix', descHi: 'शिक्षक प्रोफाइल व वर्कलोड', route: '/teachers', icon: Users, category: 'Academic' },
+  { id: 'students', label: 'Students', labelHi: 'स्टूडेंट्स', desc: '360° student directory & dossiers', descHi: 'स्टूडेंट डायरेक्टरी & रिकॉर्ड्स', route: '/students', icon: GraduationCap, category: 'Core' },
+  { id: 'teachers', label: 'Teachers', labelHi: 'टीचर्स', desc: 'Faculty profiles & workload matrix', descHi: 'टीचर प्रोफाइल्स & वर्कलोड', route: '/teachers', icon: Users, category: 'Academic' },
   { id: 'timetable', label: 'Timetable', labelHi: 'टाइमटेबल', desc: 'Class schedules & proxy assignment', descHi: 'कक्षा शेड्यूल व टाइमटेबल', route: '/timetable', icon: Calendar, category: 'Academic' },
   { id: 'fees', label: 'Payments', labelHi: 'फीस व पेमेंट्स', desc: 'Dues collection & digital receipts', descHi: 'फीस संग्रह व डिजिटल रसीदें', route: '/fees', icon: CreditCard, category: 'Finance' },
   { id: 'notices', label: 'Notices', labelHi: 'नोटिस व सर्कुलर', desc: 'Campus circulars & broadcasts', descHi: 'स्कूल सर्कुलर व घोषणाएं', route: '/notices', icon: Bell, category: 'Communication' },
   { id: 'teaching', label: 'Teaching', labelHi: 'शिक्षण', desc: 'Lesson planner & faculty pacing', descHi: 'पाठ योजना व शिक्षण ट्रैकिंग', route: '/teaching', icon: BookOpenCheck, category: 'Academic' },
   { id: 'homework', label: 'Homework', labelHi: 'होमवर्क', desc: 'Daily assignments & submissions', descHi: 'दैनिक असाइनमेंट व सबमिशन', route: '/homework', icon: BookOpen, category: 'Academic' },
-  { id: 'examinations', label: 'Exams', labelHi: 'परीक्षाएं', desc: 'Marksheets, grades & report cards', descHi: 'मार्कशीट, ग्रेड व रिपोर्ट कार्ड', route: '/examinations', icon: ClipboardList, category: 'Academic' },
+  { id: 'examinations', label: 'Exams', labelHi: 'एग्जाम्स', desc: 'Marksheets, grades & report cards', descHi: 'मार्कशीट्स, ग्रेड्स & रिपोर्ट कार्ड्स', route: '/examinations', icon: ClipboardList, category: 'Academic' },
   { id: 'academics', label: 'Academics', labelHi: 'एकेडमिक्स', desc: 'Grade hierarchy & wing structure', descHi: 'कक्षा संरचना व विंग', route: '/academics', icon: School, category: 'Academic' },
-  { id: 'transport', label: 'Transport', labelHi: 'परिवहन', desc: 'Fleet GPS telematics & bus routes', descHi: 'बस रूट व लाइव जीपीएस ट्रैकिंग', route: '/transport', icon: Bus, category: 'Operations' },
-  { id: 'hostel', label: 'Hostel', labelHi: 'छात्रावास', desc: 'Dormitory beds, outpass & mess menu', descHi: 'कमरा आवंटन, आउटपास व मेस मेनू', route: '/hostel', icon: Building2, category: 'Operations' },
+  { id: 'transport', label: 'Transport', labelHi: 'ट्रांसपोर्ट', desc: 'Fleet GPS telematics & bus routes', descHi: 'बस रूट्स & लाइव GPS ट्रैकिंग', route: '/transport', icon: Bus, category: 'Operations' },
+  { id: 'hostel', label: 'Hostel', labelHi: 'हॉस्टल', desc: 'Dormitory beds, outpass & mess menu', descHi: 'रूम अलॉटमेंट, आउटपास & मेस मेन्यू', route: '/hostel', icon: Building2, category: 'Operations' },
   { id: 'complaints', label: 'Complaints', labelHi: 'शिकायतें', desc: 'Grievance redressal & ticket tracking', descHi: 'शिकायत निवारण व टिकट ट्रैकिंग', route: '/complaints', icon: MessageSquareWarning, category: 'Operations' },
   { id: 'surveys', label: 'Surveys', labelHi: 'सर्वेक्षण', desc: 'Institutional feedback & community polls', descHi: 'संस्थागत फीडबैक व कम्युनिटी पोल', route: '/surveys', icon: Vote, category: 'Operations' },
   { id: 'statistics', label: 'Statistics', labelHi: 'आंकड़े व स्टेट्स', desc: 'Institutional telemetry & analytics', descHi: 'संस्थान के आंकड़े व विश्लेषण', route: '/statistics', icon: BarChart3, category: 'Operations' },
   { id: 'reports', label: 'Reports', labelHi: 'रिपोर्ट्स', desc: 'CBSE, RTE compliance & export audit', descHi: 'CBSE, RTE कंप्लायंस व ऑडिट', route: '/reports', icon: FileSpreadsheet, category: 'Operations' },
-  { id: 'settings', label: 'Settings', labelHi: 'सेटिंग्स', desc: 'School branding, logos & AY session', descHi: 'स्कूल ब्रांडिंग, लोगो व सत्र', route: '/settings', icon: Settings, category: 'System' },
+  { id: 'settings', label: 'Settings', labelHi: 'सेटिंग्स', desc: 'School branding, logos & AY session', descHi: 'स्कूल ब्रांडिंग, लोगो & सेशन', route: '/settings', icon: Settings, category: 'System' },
   { id: 'lms', label: 'E-Learning', labelHi: 'ई-लर्निंग', desc: 'Digital courses & lesson library', descHi: 'डिजिटल पाठ्यक्रम व पाठ्य सामग्री', route: '/lms', icon: Laptop, category: 'Academic' },
   { id: 'resources', label: 'Library', labelHi: 'लाइब्रेरी', desc: 'Resource catalog & book registers', descHi: 'किताबें व संसाधन कैटलॉग', route: '/resources', icon: BookOpenCheck, category: 'Operations' },
-  { id: 'portal', label: 'Parent Portal', labelHi: 'पैरेंट पोर्टल', desc: 'Guardian access & communications', descHi: 'अभिभावक एक्सेस व संचार', route: '/portal', icon: Smartphone, category: 'Communication' },
+  { id: 'portal', label: 'Parent Portal', labelHi: 'पैरेंट पोर्टल', desc: 'Guardian access & communications', descHi: 'गार्जियन एक्सेस & कम्युनिकेशंस', route: '/portal', icon: Smartphone, category: 'Communication' },
 ];
 
 const MAX_SHORTCUTS = 12;
@@ -120,8 +120,8 @@ function ShortcutsConfigPage() {
   const handleAdd = (id: string) => {
     if (selectedIds.length >= MAX_SHORTCUTS) {
       addNotification({
-        title: isHindi ? 'अधिकतम सीमा (12)' : 'Maximum 12 Limit',
-        description: isHindi ? 'आप अधिकतम 12 शॉर्टकट चुन सकते हैं।' : 'Maximum 12 shortcuts allowed on the home workspace.',
+        title: isHindi ? 'मैक्सिमम लिमिट (12)' : 'Maximum 12 Limit',
+        description: isHindi ? 'आप मैक्सिमम 12 शॉर्टकट्स सेलेक्ट कर सकते हैं।' : 'Maximum 12 shortcuts allowed on the home workspace.',
         type: 'warning',
       });
       return;
@@ -135,8 +135,8 @@ function ShortcutsConfigPage() {
     setDashboardShortcuts(selectedIds);
     setSaveToast(true);
     addNotification({
-      title: isHindi ? 'शॉर्टकट सेव हुए' : 'Shortcuts Saved',
-      description: isHindi ? 'डैशबोर्ड क्विक एक्शन सफलतापूर्वक अपडेट किए गए।' : 'Active home workspace quick action links updated successfully.',
+      title: isHindi ? 'शॉर्टकट्स सेव हुए' : 'Shortcuts Saved',
+      description: isHindi ? 'डैशबोर्ड क्विक एक्शंस सफलतापूर्वक अपडेट हुए।' : 'Active home workspace quick action links updated successfully.',
       type: 'success',
     });
     setTimeout(() => {
@@ -149,8 +149,8 @@ function ShortcutsConfigPage() {
     setSelectedIds(DEFAULT_DASHBOARD_SHORTCUTS.slice(0, MAX_SHORTCUTS));
     setSaveToast(true);
     addNotification({
-      title: isHindi ? 'डिफ़ॉल्ट बहाल' : 'Defaults Restored',
-      description: isHindi ? 'मानक 12 क्विक एक्शन शॉर्टकट डिफ़ॉल्ट पर रीसेट किए गए।' : 'Standard 12 quick action shortcuts reset to default order.',
+      title: isHindi ? 'डिफ़ॉल्ट रिस्टोर' : 'Defaults Restored',
+      description: isHindi ? 'स्टैंडर्ड 12 क्विक एक्शन शॉर्टकट्स डिफ़ॉल्ट पर रीसेट हुए।' : 'Standard 12 quick action shortcuts reset to default order.',
       type: 'info',
     });
     setTimeout(() => {
@@ -209,7 +209,7 @@ function ShortcutsConfigPage() {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base sm:text-lg font-black text-foreground tracking-tight">
-                {isHindi ? 'क्विक एक्शन शॉर्टकट कस्टमाइज़ करें' : 'Configure Quick Actions'}
+                {isHindi ? 'क्विक एक्शन शॉर्टकट्स कस्टमाइज़ करें' : 'Configure Quick Actions'}
               </h2>
               <VFBadge variant="primary" className="text-xs font-bold font-mono">
                 {selectedIds.length} / {MAX_SHORTCUTS} {isHindi ? 'एक्टिव' : 'Active'}
@@ -217,7 +217,7 @@ function ShortcutsConfigPage() {
             </div>
             <p className="text-xs text-muted-foreground font-medium mt-0.5">
               {isHindi
-                ? 'अपने मुख्य डैशबोर्ड के लिए अधिकतम 12 क्विक एक्शन शॉर्टकट चुनें और व्यवस्थित करें।'
+                ? 'अपने मेन डैशबोर्ड के लिए मैक्सिमम 12 क्विक एक्शन शॉर्टकट्स सेलेक्ट और अरेंज करें।'
                 : 'Select and arrange up to 12 quick action shortcuts for your institutional home launchpad.'}
             </p>
           </div>
@@ -247,7 +247,7 @@ function ShortcutsConfigPage() {
         <div className="p-3 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-200 shrink-0">
           <div className="flex items-center gap-2">
             <Check className="h-4 w-4 shrink-0" />
-            <span>{isHindi ? 'डैशबोर्ड क्विक एक्शन शॉर्टकट सफलतापूर्वक अपडेट हुए!' : 'Dashboard quick action shortcuts updated successfully! Changes are live on your home workspace.'}</span>
+            <span>{isHindi ? 'डैशबोर्ड क्विक एक्शन शॉर्टकट्स सफलतापूर्वक अपडेट हुए!' : 'Dashboard quick action shortcuts updated successfully! Changes are live on your home workspace.'}</span>
           </div>
           <Link to="/" className="underline text-emerald-300 hover:text-white font-black">
             {isHindi ? 'डैशबोर्ड पर जाएं →' : 'Go to Dashboard →'}
@@ -264,16 +264,16 @@ function ShortcutsConfigPage() {
             title={
               <div className="flex items-center gap-2">
                 <span className="text-sm font-extrabold text-foreground">
-                  {isHindi ? 'उपलब्ध एक्शन पूल' : 'Available Actions Pool'}
+                  {isHindi ? 'अवेलेबल एक्शंस पूल' : 'Available Actions Pool'}
                 </span>
                 <VFBadge variant="outline" className="text-[11px] font-mono font-bold bg-[#161616]">
-                  {filteredSortedShortcuts.length} {isHindi ? 'मॉड्यूल' : 'Modules'}
+                  {filteredSortedShortcuts.length} {isHindi ? 'मॉड्यूल्स' : 'Modules'}
                 </VFBadge>
               </div>
             }
             description={
               isHindi
-                ? 'सक्रिय शॉर्टकट शीर्ष पर दिखते हैं। कस्टमाइज़ करने के लिए जोड़ें या हटाएं पर क्लिक करें।'
+                ? 'एक्टिव शॉर्टकट्स टॉप पर दिखते हैं। कस्टमाइज़ करने के लिए ऐड या रिमूव पर क्लिक करें।'
                 : 'Active shortcuts appear at the top. Click Add or Remove to customize your launchpad.'
             }
             className="h-full flex flex-col min-h-0 bg-[#0d0d0d] border-border/90"
@@ -286,7 +286,7 @@ function ShortcutsConfigPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={isHindi ? "एक्शन मॉड्यूल खोजें..." : "Search action modules by title or keyword..."}
+                placeholder={isHindi ? "एक्शन मॉड्यूल्स सर्च करें..." : "Search action modules by title or keyword..."}
                 className="w-full pl-8 pr-3 h-9 rounded-[4px] bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-zinc-400 transition-colors"
               />
             </div>
@@ -350,9 +350,9 @@ function ShortcutsConfigPage() {
                         <button
                           onClick={() => handleRemove(action.id)}
                           className="h-7 px-2.5 text-[11px] font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-md border border-rose-500/30 transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
-                          title={isHindi ? "शॉर्टकट हटाएं" : "Remove from quick actions"}
+                          title={isHindi ? "शॉर्टकट रिमूव करें" : "Remove from quick actions"}
                         >
-                          <Trash2 className="h-3 w-3" /> {isHindi ? 'हटाएं' : 'Remove'}
+                          <Trash2 className="h-3 w-3" /> {isHindi ? 'रिमूव करें' : 'Remove'}
                         </button>
                       ) : (
                         <button
@@ -364,9 +364,9 @@ function ShortcutsConfigPage() {
                               ? "opacity-30 border-border text-muted-foreground cursor-not-allowed"
                               : "text-primary hover:bg-primary/10 border-primary/40 cursor-pointer"
                           )}
-                          title={selectedIds.length >= MAX_SHORTCUTS ? (isHindi ? "अधिकतम 12 शॉर्टकट की सीमा समाप्त" : "Max 12 shortcuts reached") : (isHindi ? "क्विक एक्शन में जोड़ें" : "Add to quick actions")}
+                          title={selectedIds.length >= MAX_SHORTCUTS ? (isHindi ? "मैक्सिमम 12 शॉर्टकट्स की लिमिट पूरी हुई" : "Max 12 shortcuts reached") : (isHindi ? "क्विक एक्शन में ऐड करें" : "Add to quick actions")}
                         >
-                          <Plus className="h-3 w-3" /> {isHindi ? 'जोड़ें' : 'Add'}
+                          <Plus className="h-3 w-3" /> {isHindi ? 'ऐड करें' : 'Add'}
                         </button>
                       )}
                     </div>
@@ -383,16 +383,16 @@ function ShortcutsConfigPage() {
             title={
               <div className="flex items-center gap-2">
                 <span className="text-sm font-extrabold text-foreground">
-                  {isHindi ? 'डैशबोर्ड क्विक एक्शन्स लॉन्चपैड' : 'Dashboard Quick Actions Launchpad'}
+                  {isHindi ? 'डैशबोर्ड क्विक एक्शंस लॉन्चपैड' : 'Dashboard Quick Actions Launchpad'}
                 </span>
                 <VFBadge variant="success" className="text-[11px] font-mono font-bold">
-                  {selectedIds.length} / {MAX_SHORTCUTS} {isHindi ? 'स्लॉट' : 'Slots'}
+                  {selectedIds.length} / {MAX_SHORTCUTS} {isHindi ? 'स्लॉट्स' : 'Slots'}
                 </VFBadge>
               </div>
             }
             description={
               isHindi
-                ? 'आपके 12-स्लॉट लॉन्चपैड का लाइव प्रीव्यू। क्रम बदलने के लिए तीरों का उपयोग करें।'
+                ? 'आपके 12-स्लॉट लॉन्चपैड का लाइव प्रीव्यू। रीऑर्डर करने के लिए एरो कंट्रोल्स यूज़ करें।'
                 : 'Live preview of your 12-slot launchpad. Use the arrow controls or remove buttons to adjust.'
             }
             className="h-full flex flex-col min-h-0 bg-[#0d0d0d] border-border/90"
@@ -423,7 +423,7 @@ function ShortcutsConfigPage() {
                               "p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-[#242424] cursor-pointer",
                               idx === 0 && "opacity-20 cursor-not-allowed"
                             )}
-                            title={isHindi ? "ऊपर ले जाएं" : "Move left/up"}
+                            title={isHindi ? "ऊपर मूव करें" : "Move left/up"}
                           >
                             <ArrowUp className="h-3 w-3" />
                           </button>
@@ -435,7 +435,7 @@ function ShortcutsConfigPage() {
                               "p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-[#242424] cursor-pointer",
                               idx === selectedIds.length - 1 && "opacity-20 cursor-not-allowed"
                             )}
-                            title={isHindi ? "नीचे ले जाएं" : "Move right/down"}
+                            title={isHindi ? "नीचे मूव करें" : "Move right/down"}
                           >
                             <ArrowDown className="h-3 w-3" />
                           </button>
@@ -457,9 +457,9 @@ function ShortcutsConfigPage() {
                         type="button"
                         onClick={() => handleRemove(action.id)}
                         className="mt-1 text-[10px] font-semibold text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
-                        title={isHindi ? "हटाएं" : "Remove shortcut"}
+                        title={isHindi ? "रिमूव करें" : "Remove shortcut"}
                       >
-                        {isHindi ? 'हटाएं' : 'Remove'}
+                        {isHindi ? 'रिमूव करें' : 'Remove'}
                       </button>
                     </div>
                   );
@@ -477,7 +477,7 @@ function ShortcutsConfigPage() {
                         {slotNum}
                       </div>
                       <span className="text-[10px] font-semibold">
-                        {isHindi ? 'खाली स्लॉट' : 'Available Slot'}
+                        {isHindi ? 'अवेलेबल स्लॉट' : 'Available Slot'}
                       </span>
                     </div>
                   );

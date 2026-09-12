@@ -139,7 +139,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 10': {
     classId: 'Class 10',
     className: 'Class 10',
-    hindiClassName: 'कक्षा 10',
+    hindiClassName: 'क्लास 10',
     stage: 'Secondary Board Examination (CBSE)',
     sections: ['Class 10-A', 'Class 10-B', 'Class 10-C'],
     classMentor: 'Dr. Rajesh Sharma',
@@ -283,7 +283,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 12-Sci': {
     classId: 'Class 12-Sci',
     className: 'Class 12 (Science)',
-    hindiClassName: 'कक्षा 12 (विज्ञान)',
+    hindiClassName: 'क्लास 12 (साइंस)',
     stage: 'Senior Secondary – Science (PCM/PCB Stream)',
     sections: ['Class 12-Sci A', 'Class 12-Sci B'],
     classMentor: 'Dr. Rajesh Sharma',
@@ -427,7 +427,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 12-Com': {
     classId: 'Class 12-Com',
     className: 'Class 12 (Commerce)',
-    hindiClassName: 'कक्षा 12 (कॉमर्स)',
+    hindiClassName: 'क्लास 12 (कॉमर्स)',
     stage: 'Senior Secondary – Commerce & Accountancy',
     sections: ['Class 12-Com A'],
     classMentor: 'Mrs. S. Joshi',
@@ -549,7 +549,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 9': {
     classId: 'Class 9',
     className: 'Class 9',
-    hindiClassName: 'कक्षा 9',
+    hindiClassName: 'क्लास 9',
     stage: 'Secondary Foundation (CBSE)',
     sections: ['Class 9-A', 'Class 9-B'],
     classMentor: 'Mrs. Sunita Verma',
@@ -671,7 +671,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 8': {
     classId: 'Class 8',
     className: 'Class 8',
-    hindiClassName: 'कक्षा 8',
+    hindiClassName: 'क्लास 8',
     stage: 'Middle School (Upper Primary)',
     sections: ['Class 8-A', 'Class 8-B'],
     classMentor: 'Ms. Pooja Rao',
@@ -793,7 +793,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 6': {
     classId: 'Class 6',
     className: 'Class 6',
-    hindiClassName: 'कक्षा 6',
+    hindiClassName: 'क्लास 6',
     stage: 'Middle School Entry (Class 6)',
     sections: ['Class 6-A', 'Class 6-B'],
     classMentor: 'Dr. Manoj Nair',
@@ -871,7 +871,7 @@ const INITIAL_CLASSES: Record<string, ClassProfile> = {
   'Class 11-Sci': {
     classId: 'Class 11-Sci',
     className: 'Class 11 (Science)',
-    hindiClassName: 'कक्षा 11 (विज्ञान)',
+    hindiClassName: 'क्लास 11 (साइंस)',
     stage: 'Senior Secondary – Science Stream',
     sections: ['Class 11-Sci A'],
     classMentor: 'Dr. Manoj Nair',
@@ -1040,9 +1040,9 @@ function AcademicsPage() {
   // ─── HANDLERS: EXPORT ──────────────────────────────────────────────────────
   const handleExport = () => {
     addNotification({
-      title: isHindi ? 'पाठ्यक्रम व विषय सूची एक्सपोर्ट हुई' : 'Curriculum & Subject List Exported',
+      title: isHindi ? 'करिकुलम & सब्जेक्ट लिस्ट एक्सपोर्ट हुई' : 'Curriculum & Subject List Exported',
       description: isHindi
-        ? `${currentClassProfile.className} की सभी विषय व पीरियड आवंटन सूची सफलतापूर्वक एक्सपोर्ट की गई।`
+        ? `${currentClassProfile.className} की सभी सब्जेक्ट्स और पीरियड्स अलॉटमेंट लिस्ट सफलतापूर्वक एक्सपोर्ट हुई।`
         : `Exported official curriculum and weekly period allocation for ${currentClassProfile.className}.`,
       type: 'success',
     });
@@ -1112,7 +1112,7 @@ function AcademicsPage() {
       });
 
       addNotification({
-        title: isHindi ? 'विषय अपडेट हुआ' : 'Subject Updated',
+        title: isHindi ? 'सब्जेक्ट अपडेट हुआ' : 'Subject Updated',
         description: `Subject "${subjectForm.name}" was successfully updated for ${currentClassProfile.className}.`,
         type: 'success',
       });
@@ -1152,7 +1152,7 @@ function AcademicsPage() {
       });
 
       addNotification({
-        title: isHindi ? 'नया विषय जोड़ा गया' : 'Subject Added',
+        title: isHindi ? 'नया सब्जेक्ट ऐड हुआ' : 'Subject Added',
         description: `Subject "${newSubjectRecord.name}" added to ${currentClassProfile.className}.`,
         type: 'success',
       });
@@ -1174,7 +1174,7 @@ function AcademicsPage() {
     });
 
     addNotification({
-      title: isHindi ? 'विषय हटाया गया' : 'Subject Removed',
+      title: isHindi ? 'सब्जेक्ट डिलीट हुआ' : 'Subject Removed',
       description: `Course "${name}" (${code}) was removed from ${currentClassProfile.className}.`,
       type: 'info',
     });
@@ -1208,7 +1208,7 @@ function AcademicsPage() {
     });
 
     addNotification({
-      title: isHindi ? 'कक्षा विवरण अपडेट हुआ' : 'Class Details Updated',
+      title: isHindi ? 'क्लास डिटेल्स अपडेट हुई' : 'Class Details Updated',
       description: `Updated mentor and room allocation for ${currentClassProfile.className}.`,
       type: 'success',
     });
@@ -1269,7 +1269,7 @@ function AcademicsPage() {
         )
       );
       addNotification({
-        title: isHindi ? 'मील का पत्थर अपडेट हुआ' : 'Milestone Updated',
+        title: isHindi ? 'माइलस्टोन अपडेट हुआ' : 'Milestone Updated',
         description: `Milestone "${milestoneForm.title}" updated successfully.`,
         type: 'success',
       });
@@ -1288,7 +1288,7 @@ function AcademicsPage() {
       };
       setMilestones((prev) => [...prev, newMilestone]);
       addNotification({
-        title: isHindi ? 'नया मील का पत्थर जोड़ा गया' : 'Academic Milestone Created',
+        title: isHindi ? 'नया एकेडमिक माइलस्टोन ऐड हुआ' : 'Academic Milestone Created',
         description: `Milestone "${newMilestone.title}" added to academic roadmap.`,
         type: 'success',
       });
@@ -1300,7 +1300,7 @@ function AcademicsPage() {
   const handleDeleteMilestone = (id: string, title: string) => {
     setMilestones((prev) => prev.filter((m) => m.id !== id));
     addNotification({
-      title: isHindi ? 'मील का पत्थर हटाया गया' : 'Milestone Deleted',
+      title: isHindi ? 'माइलस्टोन डिलीट हुआ' : 'Milestone Deleted',
       description: `Academic milestone "${title}" was removed.`,
       type: 'info',
     });
@@ -1310,7 +1310,7 @@ function AcademicsPage() {
   // Status column removed and replaced with Actions (Edit & Delete buttons)
   const subjectColumns = [
     {
-      header: isHindi ? 'विषय कोड' : 'Subject Code',
+      header: isHindi ? 'सब्जेक्ट कोड' : 'Subject Code',
       accessorKey: 'code',
       cell: (r: ClassSubject) => (
         <span className="font-mono font-bold text-foreground bg-muted/60 px-2 py-0.5 rounded-[3px] border border-border text-xs">
@@ -1319,7 +1319,7 @@ function AcademicsPage() {
       ),
     },
     {
-      header: isHindi ? 'विषय व पाठ्यक्रम' : 'Subject & Syllabus',
+      header: isHindi ? 'सब्जेक्ट & सिलेबस' : 'Subject & Syllabus',
       accessorKey: 'name',
       cell: (r: ClassSubject) => (
         <div className="py-0.5">
@@ -1328,13 +1328,13 @@ function AcademicsPage() {
           </p>
           <p className="text-xs text-muted-foreground font-semibold mt-0.5 flex items-center gap-1">
             <Layers className="h-3 w-3 text-muted-foreground" />
-            {r.syllabusChapters} {isHindi ? 'निर्धारित अध्याय' : 'Prescribed Chapters'}
+            {r.syllabusChapters} {isHindi ? 'प्रिस्क्राइब्ड चैप्टर्स' : 'Prescribed Chapters'}
           </p>
         </div>
       ),
     },
     {
-      header: isHindi ? 'पाठ्यक्रम श्रेणी' : 'Curriculum Tier',
+      header: isHindi ? 'करिकुलम टियर' : 'Curriculum Tier',
       accessorKey: 'type',
       cell: (r: ClassSubject) => (
         <VFBadge
@@ -1352,7 +1352,7 @@ function AcademicsPage() {
       ),
     },
     {
-      header: isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods',
+      header: isHindi ? 'वीकली पीरियड्स' : 'Weekly Periods',
       accessorKey: 'weeklyPeriods',
       cell: (r: ClassSubject) => (
         <div className="flex items-center gap-1.5 font-mono text-xs">
@@ -1363,7 +1363,7 @@ function AcademicsPage() {
       ),
     },
     {
-      header: isHindi ? 'अंक विभाजन' : 'Assessment Scheme',
+      header: isHindi ? 'मार्क्स असेसमेंट स्कीम' : 'Assessment Scheme',
       accessorKey: 'theoryMarks',
       cell: (r: ClassSubject) => (
         <div className="text-xs">
@@ -1374,7 +1374,7 @@ function AcademicsPage() {
       ),
     },
     {
-      header: isHindi ? 'विषय अध्यापक' : 'Faculty / Mentor',
+      header: isHindi ? 'सब्जेक्ट फैकल्टी / मेंटर' : 'Faculty / Mentor',
       accessorKey: 'teacherInCharge',
       cell: (r: ClassSubject) => (
         <div className="flex items-center gap-2">
@@ -1386,14 +1386,14 @@ function AcademicsPage() {
       ),
     },
     {
-      header: isHindi ? 'निर्धारित पुस्तक (ई-लाइब्रेरी)' : 'Prescribed Book (E-Library)',
+      header: isHindi ? 'प्रिस्क्राइब्ड बुक (ई-लाइब्रेरी)' : 'Prescribed Book (E-Library)',
       accessorKey: 'book',
       cell: (r: ClassSubject) => {
         const bookTitle = r.book?.title || `${r.name} Textbook`;
         return (
           <Link
             to="/elibrary"
-            title={`${bookTitle} – ${isHindi ? 'ई-लाइब्रेरी में देखें' : 'Open in E-Library'}`}
+            title={`${bookTitle} – ${isHindi ? 'ई-लाइब्रेरी में ओपन करें' : 'Open in E-Library'}`}
             className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-[4px] bg-[#181818] hover:bg-[#222222] border border-border/70 hover:border-teal-500/60 text-xs font-semibold text-foreground transition-all cursor-pointer group max-w-sm text-left shadow-2xs"
           >
             <Book className="h-3.5 w-3.5 text-teal-400 shrink-0 group-hover:scale-110 transition-transform" />
@@ -1406,7 +1406,7 @@ function AcademicsPage() {
       },
     },
     {
-      header: isHindi ? 'कार्यवाही' : 'Actions',
+      header: isHindi ? 'एक्शंस' : 'Actions',
       accessorKey: 'actions',
       cell: (r: ClassSubject) => (
         <div className="flex items-center gap-1.5">
@@ -1414,7 +1414,7 @@ function AcademicsPage() {
             type="button"
             onClick={() => handleOpenEditSubject(r)}
             className="p-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-[#282828] border border-border/80 hover:border-zinc-500 text-muted-foreground hover:text-foreground transition-all cursor-pointer"
-            title={isHindi ? 'विषय विवरण अपडेट करें' : 'Edit Subject'}
+            title={isHindi ? 'सब्जेक्ट डिटेल्स एडिट करें' : 'Edit Subject'}
           >
             <Edit2 className="h-3.5 w-3.5 text-muted-foreground hover:text-foreground" />
           </button>
@@ -1422,7 +1422,7 @@ function AcademicsPage() {
             type="button"
             onClick={() => handleDeleteSubject(r.code, r.name)}
             className="p-1.5 rounded-[3px] bg-[#1c1c1c] hover:bg-rose-950/40 border border-border/80 hover:border-rose-500/60 text-muted-foreground hover:text-rose-400 transition-all cursor-pointer"
-            title={isHindi ? 'विषय हटाएं' : 'Delete Subject'}
+            title={isHindi ? 'सब्जेक्ट डिलीट करें' : 'Delete Subject'}
           >
             <Trash2 className="h-3.5 w-3.5 text-rose-400" />
           </button>
@@ -1443,7 +1443,7 @@ function AcademicsPage() {
           <div className="flex items-center gap-2 bg-[#1a1a1a] px-2.5 py-1 rounded-[4px] border border-border/80">
             <GraduationCap className="h-4 w-4 text-muted-foreground shrink-0" />
             <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">
-              {isHindi ? 'कक्षा:' : 'Class:'}
+              {isHindi ? 'क्लास:' : 'Class:'}
             </span>
             <VFSelect
               value={selectedClassId}
@@ -1467,7 +1467,7 @@ function AcademicsPage() {
               }`}
             >
               <BookOpen className="h-3.5 w-3.5" />
-              {isHindi ? 'विषय एवं पाठ्यक्रम' : 'Subjects & Syllabus'}
+              {isHindi ? 'सब्जेक्ट्स & सिलेबस' : 'Subjects & Syllabus'}
             </button>
             <button
               type="button"
@@ -1479,7 +1479,7 @@ function AcademicsPage() {
               }`}
             >
               <Grid className="h-3.5 w-3.5" />
-              {isHindi ? 'कक्षा विवरण' : 'Class Overview'}
+              {isHindi ? 'क्लास ओवरव्यू' : 'Class Overview'}
             </button>
           </div>
         </div>
@@ -1501,7 +1501,7 @@ function AcademicsPage() {
             className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            {isHindi ? '+ नया विषय जोड़ें' : '+ Add Subject'}
+            {isHindi ? '+ न्यू सब्जेक्ट ऐड करें' : '+ Add Subject'}
           </VFButton>
         </div>
       </div>
@@ -1516,7 +1516,7 @@ function AcademicsPage() {
             data={subjects}
             filterPlaceholder={
               isHindi
-                ? 'विषय नाम, कोड या अध्यापक से खोजें...'
+                ? 'सब्जेक्ट नेम, कोड या टीचर से सर्च करें...'
                 : 'Search subjects by course code, title, or mentor...'
             }
           />
@@ -1530,8 +1530,8 @@ function AcademicsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Active Sections in Selected Class & Section-Wise Subject Period Allocation */}
           <VFCard
-            title={`${currentClassProfile.className} ${isHindi ? 'अनुभाग' : 'Sections'}`}
-            description={isHindi ? 'कक्षा व पीरियड विवरण' : 'Period allocations & mentors'}
+            title={`${currentClassProfile.className} ${isHindi ? 'सेक्शन्स' : 'Sections'}`}
+            description={isHindi ? 'पीरियड्स अलॉटमेंट & मेंटर्स' : 'Period allocations & mentors'}
             className="bg-[#141414] border-border/80 md:col-span-2 rounded-[4px]"
             actions={
               <button
@@ -1540,7 +1540,7 @@ function AcademicsPage() {
                 className="px-2.5 py-1 rounded-[3px] bg-[#1c1c1c] hover:bg-[#262626] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <UserCheck className="h-3.5 w-3.5 text-muted-foreground" />
-                <span>{isHindi ? 'संपादित करें' : 'Edit Class'}</span>
+                <span>{isHindi ? 'एडिट करें' : 'Edit Class'}</span>
               </button>
             }
           >
@@ -1560,11 +1560,11 @@ function AcademicsPage() {
                           {currentClassProfile.room}
                         </VFBadge>
                         <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-[3px] border border-emerald-500/25">
-                          {Math.floor(currentClassProfile.totalStudents / currentClassProfile.sections.length)} / 40 {isHindi ? 'छात्र' : 'Students'}
+                          {Math.floor(currentClassProfile.totalStudents / currentClassProfile.sections.length)} / 40 {isHindi ? 'स्टूडेंट्स' : 'Students'}
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-semibold">
-                        <span>{isHindi ? 'कक्षा अध्यापक:' : 'Class Teacher:'}</span>
+                        <span>{isHindi ? 'क्लास टीचर:' : 'Class Teacher:'}</span>
                         <span className="text-foreground font-bold">{currentClassProfile.classMentor}</span>
                       </div>
                     </div>
@@ -1574,7 +1574,7 @@ function AcademicsPage() {
                       <div className="flex items-center justify-between text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                         <span>{isHindi ? 'पीरियड्स' : 'Periods'}</span>
                         <span className="font-mono text-foreground font-bold">
-                          {totalWeeklyPeriods} {isHindi ? 'पीरियड्स / सप्ताह' : 'Total Periods/wk'}
+                          {totalWeeklyPeriods} {isHindi ? 'टोटल पीरियड्स/वीक' : 'Total Periods/wk'}
                         </span>
                       </div>
 
@@ -1617,7 +1617,7 @@ function AcademicsPage() {
                                 type="button"
                                 onClick={() => handleOpenEditSubject(sub)}
                                 className="p-1 rounded-[3px] bg-[#202020] hover:bg-[#2b2b2b] border border-border/60 text-muted-foreground hover:text-foreground opacity-70 group-hover:opacity-100 transition-opacity cursor-pointer shrink-0"
-                                title={isHindi ? 'संपादित करें' : 'Edit Subject'}
+                                title={isHindi ? 'एडिट करें' : 'Edit Subject'}
                               >
                                 <Edit2 className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                               </button>
@@ -1634,8 +1634,8 @@ function AcademicsPage() {
 
           {/* Academic Calendar Milestones (Fully Interactive & Editable in Drawer) */}
           <VFCard
-            title={isHindi ? 'मील के पत्थर' : 'Milestones'}
-            description={isHindi ? 'सत्र रोडमैप' : 'Session roadmap'}
+            title={isHindi ? 'माइलस्टोन्स' : 'Milestones'}
+            description={isHindi ? 'सेशन रोडमैप' : 'Session roadmap'}
             className="bg-[#141414] border-border/80 rounded-[4px]"
             actions={
               <VFButton
@@ -1644,16 +1644,16 @@ function AcademicsPage() {
                 className="h-7 px-2 text-xs font-bold rounded-[3px] shadow-xs"
                 leftIcon={<Plus className="h-3 w-3" />}
               >
-                {isHindi ? '+ नया' : '+ Milestone'}
+                {isHindi ? '+ न्यू माइलस्टोन' : '+ Milestone'}
               </VFButton>
             }
           >
             <div className="space-y-3 text-xs pt-1">
               {milestones.length === 0 ? (
                 <div className="p-4 rounded-[4px] bg-[#1a1a1a] border border-border/60 text-center space-y-2">
-                  <p className="text-muted-foreground">{isHindi ? 'कोई मील का पत्थर दर्ज नहीं है।' : 'No academic milestones configured.'}</p>
+                  <p className="text-muted-foreground">{isHindi ? 'कोई एकेडमिक माइलस्टोन कॉन्फ़िगर नहीं है।' : 'No academic milestones configured.'}</p>
                   <VFButton size="sm" onClick={handleOpenAddMilestone} className="text-xs rounded-[3px]">
-                    {isHindi ? 'प्रथम मील का पत्थर जोड़ें' : 'Create First Milestone'}
+                    {isHindi ? 'पहला माइलस्टोन क्रिएट करें' : 'Create First Milestone'}
                   </VFButton>
                 </div>
               ) : (
@@ -1704,7 +1704,7 @@ function AcademicsPage() {
                     <div className="space-y-1">
                       <div className="flex justify-between text-[10px]">
                         <span className="text-muted-foreground font-medium">
-                          {isHindi ? 'सिलेबस कवरेज लक्ष्य:' : 'Target Syllabus Coverage:'}
+                          {isHindi ? 'टारगेट सिलेबस कवरेज:' : 'Target Syllabus Coverage:'}
                         </span>
                         <span className="font-bold text-foreground font-mono">{ms.targetSyllabusCoverage}%</span>
                       </div>
@@ -1729,7 +1729,7 @@ function AcademicsPage() {
                         type="button"
                         onClick={() => handleOpenEditMilestone(ms)}
                         className="p-1 rounded-[3px] bg-[#222] hover:bg-[#2c2c2c] border border-border/60 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                        title={isHindi ? 'मील का पत्थर संपादित करें' : 'Edit Milestone'}
+                        title={isHindi ? 'माइलस्टोन एडिट करें' : 'Edit Milestone'}
                       >
                         <Edit2 className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                       </button>
@@ -1737,7 +1737,7 @@ function AcademicsPage() {
                         type="button"
                         onClick={() => handleDeleteMilestone(ms.id, ms.title)}
                         className="p-1 rounded-[3px] bg-[#222] hover:bg-rose-950/50 border border-border/60 text-muted-foreground hover:text-rose-400 transition-colors cursor-pointer"
-                        title={isHindi ? 'मील का पत्थर हटाएं' : 'Delete Milestone'}
+                        title={isHindi ? 'माइलस्टोन डिलीट करें' : 'Delete Milestone'}
                       >
                         <Trash2 className="h-3 w-3 text-rose-400" />
                       </button>
@@ -1758,12 +1758,12 @@ function AcademicsPage() {
         onClose={() => setIsSubjectDrawerOpen(false)}
         title={
           editingSubject
-            ? (isHindi ? 'विषय संपादित करें' : 'Edit Subject')
-            : (isHindi ? 'नया विषय' : 'Add Subject')
+            ? (isHindi ? 'सब्जेक्ट एडिट करें' : 'Edit Subject')
+            : (isHindi ? 'ऐड सब्जेक्ट' : 'Add Subject')
         }
         description={
           isHindi
-            ? 'विषय और पीरियड विवरण।'
+            ? 'सब्जेक्ट और पीरियड डिटेल्स।'
             : 'Subject details & periods.'
         }
         className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
@@ -1795,7 +1795,7 @@ function AcademicsPage() {
               leftIcon={<Check className="h-3.5 w-3.5" />}
               onClick={handleSaveSubject}
             >
-              {editingSubject ? (isHindi ? 'सुरक्षित करें' : 'Save Changes') : (isHindi ? 'जोड़ें' : 'Save Subject')}
+              {editingSubject ? (isHindi ? 'सेव करें' : 'Save Changes') : (isHindi ? 'ऐड करें' : 'Save Subject')}
             </VFButton>
           </div>
         }
@@ -1804,11 +1804,11 @@ function AcademicsPage() {
           {/* Section 1: Subject Identity & Workload */}
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'विषय विवरण' : 'Subject Details'}
+              {isHindi ? 'सब्जेक्ट डिटेल्स' : 'Subject Details'}
             </h4>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'नाम *' : 'Name *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'नेम *' : 'Name *'}</label>
               <VFInput
                 required
                 placeholder="e.g. Mathematics Standard, Science"
@@ -1875,7 +1875,7 @@ function AcademicsPage() {
           {/* Section 2: Grading Structure & Chapters */}
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'अंक संरचना' : 'Marks & Chapters'}
+              {isHindi ? 'मार्क्स & चैप्टर्स' : 'Marks & Chapters'}
             </h4>
 
             <div className="grid grid-cols-3 gap-3">
@@ -1898,7 +1898,7 @@ function AcademicsPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'अध्याय' : 'Chapters'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'चैप्टर्स' : 'Chapters'}</label>
                 <VFInput
                   type="number"
                   value={String(subjectForm.syllabusChapters)}
@@ -1911,7 +1911,7 @@ function AcademicsPage() {
             <div className="p-2.5 rounded-[4px] bg-[#181818] border border-border/70 flex items-center justify-between text-xs">
               <span className="text-muted-foreground flex items-center gap-1.5">
                 <Book className="h-3.5 w-3.5 text-foreground/70" />
-                {isHindi ? 'पाठ्यपुस्तकें:' : 'Textbooks:'}
+                {isHindi ? 'टेक्स्टबुक्स:' : 'Textbooks:'}
               </span>
               <Link
                 to="/elibrary"
@@ -1930,8 +1930,8 @@ function AcademicsPage() {
       <VFDrawer
         isOpen={isClassDetailsDrawerOpen}
         onClose={() => setIsClassDetailsDrawerOpen(false)}
-        title={isHindi ? `${currentClassProfile.className} – विवरण` : `Edit Class: ${currentClassProfile.className}`}
-        description={isHindi ? 'कक्षा और मेंटर विवरण।' : 'Class mentor, room and capacity.'}
+        title={isHindi ? `${currentClassProfile.className} – डिटेल्स` : `Edit Class: ${currentClassProfile.className}`}
+        description={isHindi ? 'क्लास मेंटर, रूम और कैपेसिटी।' : 'Class mentor, room and capacity.'}
         className="max-w-lg bg-[#0d0d0d] border-l border-border/90"
         bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
         headerActions={
@@ -1961,7 +1961,7 @@ function AcademicsPage() {
               leftIcon={<Check className="h-3.5 w-3.5" />}
               onClick={handleSaveClassDetails}
             >
-              {isHindi ? 'सुरक्षित करें' : 'Save Details'}
+              {isHindi ? 'सेव करें' : 'Save Details'}
             </VFButton>
           </div>
         }
@@ -1969,11 +1969,11 @@ function AcademicsPage() {
         <form onSubmit={handleSaveClassDetails} className="space-y-3.5">
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'मेंटर व कमरा' : 'Mentor & Room'}
+              {isHindi ? 'मेंटर & रूम' : 'Mentor & Room'}
             </h4>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'कक्षा अध्यापक *' : 'Mentor *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'क्लास टीचर *' : 'Mentor *'}</label>
               <VFInput
                 required
                 placeholder="e.g. Dr. Rajesh Sharma"
@@ -1984,7 +1984,7 @@ function AcademicsPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'कमरा *' : 'Room *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'रूम *' : 'Room *'}</label>
               <VFInput
                 required
                 placeholder="e.g. Room 201"
@@ -1997,12 +1997,12 @@ function AcademicsPage() {
 
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'क्षमता व स्तर' : 'Capacity & Stage'}
+              {isHindi ? 'कैपेसिटी & स्टेज' : 'Capacity & Stage'}
             </h4>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'कुल छात्र' : 'Students'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'टोटल स्टूडेंट्स' : 'Students'}</label>
                 <VFInput
                   type="number"
                   value={String(classDetailsForm.totalStudents)}
@@ -2012,7 +2012,7 @@ function AcademicsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'स्तर' : 'Stage'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'स्टेज' : 'Stage'}</label>
                 <VFInput
                   value={classDetailsForm.stage}
                   onChange={(e) => setClassDetailsForm({ ...classDetailsForm, stage: e.target.value })}
@@ -2032,12 +2032,12 @@ function AcademicsPage() {
         onClose={() => setIsMilestoneDrawerOpen(false)}
         title={
           editingMilestone
-            ? (isHindi ? 'मील का पत्थर' : 'Edit Milestone')
-            : (isHindi ? 'नया मील का पत्थर' : 'Add Milestone')
+            ? (isHindi ? 'माइलस्टोन' : 'Edit Milestone')
+            : (isHindi ? 'ऐड माइलस्टोन' : 'Add Milestone')
         }
         description={
           isHindi
-            ? 'मूल्यांकन व समय सीमा।'
+            ? 'असेसमेंट & टाइमलाइन।'
             : 'Evaluation and timeline.'
         }
         className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
@@ -2069,7 +2069,7 @@ function AcademicsPage() {
               leftIcon={<Check className="h-3.5 w-3.5" />}
               onClick={handleSaveMilestone}
             >
-              {editingMilestone ? (isHindi ? 'सुरक्षित करें' : 'Save Changes') : (isHindi ? 'जोड़ें' : 'Save Milestone')}
+              {editingMilestone ? (isHindi ? 'सेव करें' : 'Save Changes') : (isHindi ? 'ऐड करें' : 'Save Milestone')}
             </VFButton>
           </div>
         }
@@ -2078,11 +2078,11 @@ function AcademicsPage() {
           {/* Card 1: Milestone Identity */}
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'विवरण' : 'Milestone'}
+              {isHindi ? 'माइलस्टोन डिटेल्स' : 'Milestone'}
             </h4>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'शीर्षक *' : 'Title *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'टाइटल *' : 'Title *'}</label>
               <VFInput
                 required
                 placeholder="e.g. Term 1 Mid-Year Evaluation"
@@ -2094,7 +2094,7 @@ function AcademicsPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'सत्र' : 'Term'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'टर्म' : 'Term'}</label>
                 <VFSelect
                   value={milestoneForm.term}
                   onChange={(e) => setMilestoneForm({ ...milestoneForm, term: String(e.target.value) })}
@@ -2110,7 +2110,7 @@ function AcademicsPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'प्रारूप' : 'Type'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'टाइप' : 'Type'}</label>
                 <VFSelect
                   value={milestoneForm.assessmentType}
                   onChange={(e) => setMilestoneForm({ ...milestoneForm, assessmentType: e.target.value as any })}
@@ -2130,12 +2130,12 @@ function AcademicsPage() {
           {/* Card 2: Timeline & Coverage */}
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'समय सीमा व लक्ष्य' : 'Timeline & Target'}
+              {isHindi ? 'टाइमलाइन & टारगेट' : 'Timeline & Target'}
             </h4>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'आरंभ तिथि *' : 'Start Date *'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'स्टार्ट डेट *' : 'Start Date *'}</label>
                 <VFInput
                   type="date"
                   required
@@ -2145,7 +2145,7 @@ function AcademicsPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'समाप्ति तिथि *' : 'End Date *'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'एंड डेट *' : 'End Date *'}</label>
                 <VFInput
                   type="date"
                   required
@@ -2158,7 +2158,7 @@ function AcademicsPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'कवरेज लक्ष्य (%):' : 'Coverage (%):'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'कवरेज (%):' : 'Coverage (%):'}</label>
                 <div className="flex items-center gap-2">
                   <VFInput
                     type="number"
@@ -2173,7 +2173,7 @@ function AcademicsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'स्थिति' : 'Status'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'स्टेटस' : 'Status'}</label>
                 <VFSelect
                   value={milestoneForm.status}
                   onChange={(e) => setMilestoneForm({ ...milestoneForm, status: e.target.value as any })}
@@ -2192,7 +2192,7 @@ function AcademicsPage() {
           {/* Card 3: Scope Notes */}
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-2">
             <h4 className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'दिशानिर्देश' : 'Guidelines'}
+              {isHindi ? 'गाइडलाइंस' : 'Guidelines'}
             </h4>
             <VFTextarea
               rows={3}

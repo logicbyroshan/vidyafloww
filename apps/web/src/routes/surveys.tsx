@@ -108,7 +108,7 @@ function SurveysManagementPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'सर्वेक्षण व फीडबैक' : 'Surveys & Feedback') + ' – VidyaFloww';
+    document.title = (isHindi ? 'सर्वे & फीडबैक' : 'Surveys & Feedback') + ' – VidyaFloww';
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'active' | 'results'>('active');
@@ -145,7 +145,7 @@ function SurveysManagementPage() {
     setSurveyTitle('');
 
     addNotification({
-      title: isHindi ? 'नया सर्वे प्रकाशित हुआ' : 'Survey Published',
+      title: isHindi ? 'न्यू सर्वे पब्लिश हुआ' : 'Survey Published',
       description: `Survey "${newSurvey.title}" is now active for ${newSurvey.targetAudience}.`,
       type: 'success',
     });
@@ -169,7 +169,7 @@ function SurveysManagementPage() {
               }`}
             >
               <Vote className="h-3.5 w-3.5" />
-              {isHindi ? 'सक्रिय सर्वेक्षण व पोल' : 'Active Surveys & Polls'}
+              {isHindi ? 'एक्टिव सर्वे & पोल्स' : 'Active Surveys & Polls'}
             </button>
             <button
               type="button"
@@ -182,7 +182,7 @@ function SurveysManagementPage() {
               }`}
             >
               <BarChart3 className="h-3.5 w-3.5" />
-              {isHindi ? 'संतुष्टि विश्लेषण व आर्काइव' : 'Sentiment & Archive'}
+              {isHindi ? 'सेंटीमेंट एनालिसिस & आर्काइव' : 'Sentiment & Archive'}
             </button>
           </div>
         </div>
@@ -195,7 +195,7 @@ function SurveysManagementPage() {
             className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            {isHindi ? '+ नया सर्वे बनाएं' : '+ Create Survey'}
+            {isHindi ? '+ न्यू सर्वे क्रिएट करें' : '+ Create Survey'}
           </VFButton>
         </div>
       </div>
@@ -275,7 +275,7 @@ function SurveysManagementPage() {
                         onClick={() => setSelectedSurvey(s)}
                         className="h-7 px-3 rounded-[3px] bg-[#1c1c1c] hover:bg-[#252525] border border-border/80 text-xs font-bold text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
-                        <span>{isHindi ? 'विवरण' : 'Insights'}</span>
+                        <span>{isHindi ? 'इनसाइट्स' : 'Insights'}</span>
                       </button>
                     </div>
                   </div>
@@ -339,10 +339,10 @@ function SurveysManagementPage() {
               <div>
                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <BarChart3 className="h-4 w-4 text-primary" />
-                  {isHindi ? 'विगत सत्रों के पूर्ण सर्वेक्षण रिकॉर्ड' : 'Archived Surveys & Compliance Reports'}
+                  {isHindi ? 'पिछले सेशन्स के कंप्लीट सर्वे रिकॉर्ड्स' : 'Archived Surveys & Compliance Reports'}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {isHindi ? 'डाउनलोड योग्य ऑडिट व संस्थागत प्रमाणन रिपोर्ट' : 'Past feedback surveys with verified community participation logs'}
+                  {isHindi ? 'डाउनलोडेबल ऑडिट & इंस्टीट्यूशनल कंप्लायंस रिपोर्ट्स' : 'Past feedback surveys with verified community participation logs'}
                 </p>
               </div>
               <VFBadge variant="outline" className="font-mono text-xs px-2.5 py-1 rounded-[3px]">
@@ -354,11 +354,11 @@ function SurveysManagementPage() {
                 <thead>
                   <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
                     <th className="py-3 px-4 text-xs font-semibold">#</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'सर्वेक्षण शीर्षक' : 'Survey Title'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'लक्षित समूह' : 'Audience'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'पूर्णता तिथि' : 'Completion Date'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'कुल प्रतिक्रियाएं' : 'Total Responses'}</th>
-                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'अंतिम रेटिंग' : 'Final Rating'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'सर्वे टाइटल' : 'Survey Title'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'टारगेट ऑडियंस' : 'Audience'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'कंप्लीशन डेट' : 'Completion Date'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'टोटल रिस्पॉन्स' : 'Total Responses'}</th>
+                    <th className="py-3 px-4 text-xs font-semibold">{isHindi ? 'फाइनल रेटिंग' : 'Final Rating'}</th>
                     <th className="py-3 px-4 text-xs font-semibold text-right">{t('col.action')}</th>
                   </tr>
                 </thead>
@@ -400,8 +400,8 @@ function SurveysManagementPage() {
       <VFDialog
         isOpen={isNewSurveyModalOpen}
         onClose={() => setIsNewSurveyModalOpen(false)}
-        title={isHindi ? 'नया संस्थागत सर्वेक्षण बनाएं' : 'Create Institutional Survey'}
-        description={isHindi ? 'शीर्षक, लक्षित समूह व प्रतिक्रिया लक्ष्य निर्धारित करें' : 'Configure stakeholder polling audience and deployment parameters'}
+        title={isHindi ? 'न्यू इंस्टीट्यूशनल सर्वे क्रिएट करें' : 'Create Institutional Survey'}
+        description={isHindi ? 'टाइटल, टारगेट ऑडियंस और रिस्पॉन्स टारगेट सेट करें' : 'Configure stakeholder polling audience and deployment parameters'}
         className="max-w-md rounded-[4px]"
         footerActions={
           <div className="flex items-center justify-end gap-2 w-full">
@@ -411,14 +411,14 @@ function SurveysManagementPage() {
               onClick={() => setIsNewSurveyModalOpen(false)}
               className="rounded-[3px]"
             >
-              {isHindi ? 'रद्द करें' : 'Cancel'}
+              {isHindi ? 'कैंसिल' : 'Cancel'}
             </VFButton>
             <VFButton
               size="sm"
               onClick={handleCreateSurvey}
               className="rounded-[3px]"
             >
-              {isHindi ? 'सर्वे प्रकाशित करें' : 'Publish Survey'}
+              {isHindi ? 'सर्वे पब्लिश करें' : 'Publish Survey'}
             </VFButton>
           </div>
         }
@@ -426,7 +426,7 @@ function SurveysManagementPage() {
         <form onSubmit={handleCreateSurvey} className="space-y-3 py-1 text-xs">
           <div>
             <label className="block text-muted-foreground font-semibold mb-1">
-              {isHindi ? 'सर्वेक्षण शीर्षक' : 'Survey Title'}
+              {isHindi ? 'सर्वे टाइटल' : 'Survey Title'}
             </label>
             <input
               type="text"
@@ -441,7 +441,7 @@ function SurveysManagementPage() {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'लक्षित समूह' : 'Target Audience'}
+                {isHindi ? 'टारगेट ऑडियंस' : 'Target Audience'}
               </label>
               <select
                 value={surveyAudience}
@@ -456,7 +456,7 @@ function SurveysManagementPage() {
             </div>
             <div>
               <label className="block text-muted-foreground font-semibold mb-1">
-                {isHindi ? 'अपेक्षित प्रतिक्रिया लक्ष्य' : 'Target Responses'}
+                {isHindi ? 'टारगेट रिस्पॉन्स' : 'Target Responses'}
               </label>
               <input
                 type="number"
@@ -470,7 +470,7 @@ function SurveysManagementPage() {
 
           <div>
             <label className="block text-muted-foreground font-semibold mb-1">
-              {isHindi ? 'श्रेणी' : 'Category'}
+              {isHindi ? 'कैटेगरी' : 'Category'}
             </label>
             <input
               type="text"
@@ -498,7 +498,7 @@ function SurveysManagementPage() {
               onClick={() => setSelectedSurvey(null)}
               className="rounded-[3px]"
             >
-              {isHindi ? 'बंद करें' : 'Close'}
+              {isHindi ? 'क्लोज़ करें' : 'Close'}
             </VFButton>
           }
         >

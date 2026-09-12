@@ -40,7 +40,7 @@ const ACTIVE_ROUTES: BusRouteCard[] = [
     id: 'RT-01',
     routeCode: 'Route 01',
     routeName: 'North Sector & Model Town',
-    hindiName: 'उत्तरी सेक्टर व मॉडल टाउन',
+    hindiName: 'नॉर्थ सेक्टर & मॉडल टाउन',
     busNumber: 'DL-01-TA-4022',
     capacity: 42,
     occupancy: 38,
@@ -56,7 +56,7 @@ const ACTIVE_ROUTES: BusRouteCard[] = [
     id: 'RT-02',
     routeCode: 'Route 02',
     routeName: 'Civil Lines & University Hub',
-    hindiName: 'सिविल लाइन्स व यूनिवर्सिटी हब',
+    hindiName: 'सिविल लाइन्स & यूनिवर्सिटी हब',
     busNumber: 'DL-01-TA-4025',
     capacity: 50,
     occupancy: 46,
@@ -72,7 +72,7 @@ const ACTIVE_ROUTES: BusRouteCard[] = [
     id: 'RT-03',
     routeCode: 'Route 03',
     routeName: 'Green Park & Ring Road Enclave',
-    hindiName: 'ग्रीन पार्क व रिंग रोड एन्क्लेव',
+    hindiName: 'ग्रीन पार्क & रिंग रोड एन्क्लेव',
     busNumber: 'DL-01-TA-4030',
     capacity: 32,
     occupancy: 28,
@@ -88,7 +88,7 @@ const ACTIVE_ROUTES: BusRouteCard[] = [
     id: 'RT-04',
     routeCode: 'Route 04',
     routeName: 'Cantt Railway & Defence Enclave',
-    hindiName: 'कैंट रेलवे व डिफेंस एन्क्लेव',
+    hindiName: 'कैंट रेलवे & डिफेंस एन्क्लेव',
     busNumber: 'DL-01-TA-4036',
     capacity: 42,
     occupancy: 36,
@@ -158,8 +158,8 @@ function TransportOverviewPage() {
     const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: isHindi ? 'परिवहन पोर्टल खोला जा रहा है' : 'Opening Transport Portal',
-      description: isHindi ? 'पोर्ट 8010 पर लाइव टेलीमैटिक्स पोर्टल पर भेजा जा रहा है।' : 'Redirecting to live telematics portal on port 8010.',
+      title: isHindi ? 'ट्रांसपोर्ट पोर्टल ओपन हो रहा है' : 'Opening Transport Portal',
+      description: isHindi ? 'पोर्ट 8010 पर लाइव टेलीमैटिक्स पोर्टल पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to live telematics portal on port 8010.',
       type: 'info',
     });
   };
@@ -171,7 +171,7 @@ function TransportOverviewPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'स्कूल वाहन व जीपीएस ट्रैकिंग (Transport Fleet)' : 'Transport Fleet & Route Telematics'}
+              {isHindi ? 'ट्रांसपोर्ट फ्लीट & रूट ट्रैकिंग (Transport Fleet)' : 'Transport Fleet & Route Telematics'}
             </h1>
             <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
               Port: {standalonePort}
@@ -179,7 +179,7 @@ function TransportOverviewPage() {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'लाइव जीपीएस बस टेलीमैटिक्स, छात्र RFID बोर्डिंग लॉग्स, रूट मैप व चालक रोस्टर।'
+              ? 'लाइव GPS बस टेलीमैटिक्स, स्टूडेंट RFID बोर्डिंग लॉग्स, रूट मैप और ड्राइवर रोस्टर।'
               : 'Live GPS bus telematics, student RFID boarding logs, morning/evening routes & driver dossiers.'}
           </p>
         </div>
@@ -191,7 +191,7 @@ function TransportOverviewPage() {
             className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'परिवहन पोर्टल लॉन्च करें' : 'Launch Transport Portal'}</span>
+            <span>{isHindi ? 'ट्रांसपोर्ट पोर्टल लॉन्च करें' : 'Launch Transport Portal'}</span>
           </VFButton>
         </div>
       </div>
@@ -200,10 +200,10 @@ function TransportOverviewPage() {
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-            {isHindi ? 'सक्रिय बस रूट्स व लाइव टेलीमैटिक्स' : 'Active Bus Routes & Live Telematics'}
+            {isHindi ? 'एक्टिव बस रूट्स & लाइव टेलीमैटिक्स' : 'Active Bus Routes & Live Telematics'}
           </h2>
           <span className="text-[11px] font-mono text-muted-foreground">
-            {ACTIVE_ROUTES.length} {isHindi ? 'रूट्स चालू' : 'Routes Active'}
+            {ACTIVE_ROUTES.length} {isHindi ? 'रूट्स एक्टिव' : 'Routes Active'}
           </span>
         </div>
 
@@ -236,11 +236,11 @@ function TransportOverviewPage() {
 
               <div className="mt-3 pt-2.5 border-t border-border/60 space-y-1 text-[11px] text-muted-foreground">
                 <div className="flex justify-between">
-                  <span>{isHindi ? 'अगला स्टॉप:' : 'Next Stop:'}</span>
+                  <span>{isHindi ? 'नेक्स्ट स्टॉप:' : 'Next Stop:'}</span>
                   <span className="text-foreground font-medium truncate max-w-[120px]">{route.nextStop}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>{isHindi ? 'सवार छात्र:' : 'Occupancy:'}</span>
+                  <span>{isHindi ? 'ऑक्यूपेंसी:' : 'Occupancy:'}</span>
                   <span className="font-mono text-emerald-400 font-bold">{route.occupancy}/{route.capacity}</span>
                 </div>
               </div>
@@ -254,7 +254,7 @@ function TransportOverviewPage() {
         title={
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'वाहन अनुपालन, फिटनेस व आरटीओ सुरक्षा लेजर' : 'Vehicle Compliance & RTO Safety Ledger'}
+              {isHindi ? 'व्हीकल कंप्लायंस & RTO सेफ्टी लेजर' : 'Vehicle Compliance & RTO Safety Ledger'}
             </span>
             <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
               AIS-140 GPS Validated
@@ -263,7 +263,7 @@ function TransportOverviewPage() {
         }
         description={
           isHindi
-            ? 'स्पीड गवर्नर, प्रदूषण प्रमाण पत्र, सीसीटीवी व जीपीएस अपटाइम की स्थिति।'
+            ? 'स्पीड गवर्नर, पॉल्यूशन सर्टिफिकेट, CCTV और GPS अपटाइम स्टेटस।'
             : 'Speed governor calibration, fitness certificates, insurance renewals, and CCTV health.'
         }
         className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
@@ -274,7 +274,7 @@ function TransportOverviewPage() {
             onClick={() => handleLaunchTransportPortal('/telematics')}
             className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
           >
-            <span>{isHindi ? 'लाइव मैप ट्रैकिंग' : 'Live Fleet Telematics Map'}</span>
+            <span>{isHindi ? 'लाइव मैप ट्रैकिंग देखें' : 'Live Fleet Telematics Map'}</span>
             <ExternalLink className="w-3 h-3" />
           </button>
         }
@@ -283,12 +283,12 @@ function TransportOverviewPage() {
           <table className="w-full text-xs text-left">
             <thead>
               <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
-                <th className="py-2.5 px-3.5">{isHindi ? 'वाहन नंबर' : 'Bus Number'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'मॉडल / क्षमता' : 'Model & Capacity'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'फिटनेस वैधता' : 'Fitness Expiry'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'बस नंबर' : 'Bus Number'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'मॉडल / कैपेसिटी' : 'Model & Capacity'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'फिटनेस एक्सपायरी' : 'Fitness Expiry'}</th>
                 <th className="py-2.5 px-3.5">{isHindi ? 'स्पीड गवर्नर' : 'Speed Governor'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'सीसीटीवी' : 'CCTV Status'}</th>
-                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'जीपीएस स्थिति' : 'GPS Telemetry'}</th>
+                <th className="py-2.5 px-3.5">{isHindi ? 'CCTV स्टेटस' : 'CCTV Status'}</th>
+                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'GPS टेलीमैटिक्स' : 'GPS Telemetry'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -317,11 +317,11 @@ function TransportOverviewPage() {
           isOpen={Boolean(selectedRoute)}
           onClose={() => setSelectedRoute(null)}
           title={`${selectedRoute.routeCode} — ${isHindi ? selectedRoute.hindiName : selectedRoute.routeName}`}
-          description={`${selectedRoute.busNumber} · ${isHindi ? 'चालक:' : 'Driver:'} ${selectedRoute.driverName}`}
+          description={`${selectedRoute.busNumber} · ${isHindi ? 'ड्राइवर:' : 'Driver:'} ${selectedRoute.driverName}`}
           footerActions={
             <div className="flex items-center justify-end gap-2 w-full">
               <VFButton variant="outline" size="sm" onClick={() => setSelectedRoute(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़' : 'Close'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -340,19 +340,19 @@ function TransportOverviewPage() {
           <div className="space-y-2.5 text-xs">
             <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'चालक संपर्क:' : 'Driver Mobile:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'ड्राइवर मोबाइल:' : 'Driver Mobile:'}</span>
                 <span className="font-mono text-foreground">{selectedRoute.driverPhone}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'सुबह प्रस्थान:' : 'Morning Departure:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'मॉर्निंग डिपार्चर:' : 'Morning Departure:'}</span>
                 <span className="font-mono text-foreground">{selectedRoute.morningDeparture}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'सवार छात्र:' : 'Occupancy:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'ऑक्यूपेंसी:' : 'Occupancy:'}</span>
                 <span className="font-bold text-emerald-400 font-mono">{selectedRoute.occupancy} of {selectedRoute.capacity} Seats</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'वर्तमान गति:' : 'Telemetry Speed:'}</span>
+                <span className="text-muted-foreground">{isHindi ? 'टेलीमैटिक्स स्पीड:' : 'Telemetry Speed:'}</span>
                 <span className="font-mono text-cyan-400 font-bold">{selectedRoute.currentSpeed}</span>
               </div>
             </div>

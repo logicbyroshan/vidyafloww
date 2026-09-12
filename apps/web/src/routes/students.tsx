@@ -1475,7 +1475,7 @@ function StudentsPage() {
           <div
             onClick={() => openStudentDrawer(r)}
             className="relative overflow-hidden rounded-md border border-border/80 shadow-xs w-10 h-[50px] shrink-0 bg-muted flex items-center justify-center cursor-pointer group hover:border-foreground/40 hover:shadow-sm transition-all"
-            title={isHindi ? "360° छात्र प्रोफाइल देखें" : "Click to view 360° student profile"}
+            title={isHindi ? "360° स्टूडेंट प्रोफाइल देखें" : "Click to view 360° student profile"}
           >
             <img
               src={r.avatarUrl}
@@ -1547,7 +1547,7 @@ function StudentsPage() {
       ),
     },
     {
-      header: isHindi ? 'अभिभावक फोन' : 'Guardian Phone',
+      header: isHindi ? 'गार्जियन फोन' : 'Guardian Phone',
       accessorKey: 'phone',
       cell: (r: any) => <span className="text-muted-foreground font-mono text-sm">{r.phone}</span>,
     },
@@ -1556,7 +1556,7 @@ function StudentsPage() {
       accessorKey: 'status',
       cell: (r: any) => (
         <VFBadge variant={r.status === 'Active' ? 'success' : 'outline'}>
-          {r.status === 'Active' ? (isHindi ? 'सक्रिय' : r.status) : r.status}
+          {r.status === 'Active' ? (isHindi ? 'एक्टिव' : r.status) : r.status}
         </VFBadge>
       ),
     },

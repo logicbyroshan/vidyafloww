@@ -50,7 +50,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
   students: {
     id: 'students',
     labelEn: 'Student Master Register',
-    labelHi: 'छात्र मास्टर रजिस्टर',
+    labelHi: 'स्टूडेंट मास्टर रजिस्टर',
     icon: <Users className="h-4 w-4 text-blue-400" />,
     description: 'Complete student profiles, demographics, enrollments, and parent contacts.',
     columns: [
@@ -91,7 +91,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
   attendance: {
     id: 'attendance',
     labelEn: 'Attendance & Biometrics',
-    labelHi: 'उपस्थिति व बायोमेट्रिक्स',
+    labelHi: 'अटेंडेंस & बायोमेट्रिक्स',
     icon: <Calendar className="h-4 w-4 text-cyan-400" />,
     description: 'Turnstile logs, working days, present/absent tallies, and monthly aggregates.',
     columns: [
@@ -110,7 +110,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
   examinations: {
     id: 'examinations',
     labelEn: 'Examinations & Marks',
-    labelHi: 'परीक्षा परिणाम व अंकतालिका',
+    labelHi: 'एग्जाम रिजल्ट्स & मार्कशीट',
     icon: <Award className="h-4 w-4 text-amber-400" />,
     description: 'Term marksheets, subject scores, GPA calculation, and distinction rankings.',
     columns: [
@@ -130,7 +130,7 @@ const DOMAINS: Record<DomainType, DomainConfig> = {
   faculty: {
     id: 'faculty',
     labelEn: 'Faculty & Workload Register',
-    labelHi: 'शिक्षक व कार्यभार रजिस्टर',
+    labelHi: 'टीचर्स & वर्कलोड रजिस्टर',
     icon: <School className="h-4 w-4 text-purple-400" />,
     description: 'Educator credentials, teaching load, department allocations, and leaves.',
     columns: [
@@ -587,11 +587,11 @@ function ReportsPage() {
               onChange={(e) => setCategoryFilter(String(e.target.value))}
               options={[
                 { label: isHindi ? 'सभी श्रेणियां' : 'All Domains', value: 'All' },
-                { label: isHindi ? 'छात्र डायरेक्टरी' : 'Student Master', value: 'students' },
+                { label: isHindi ? 'स्टूडेंट डायरेक्टरी' : 'Student Master', value: 'students' },
                 { label: isHindi ? 'फीस लेजर' : 'Fee Ledgers', value: 'fees' },
-                { label: isHindi ? 'उपस्थिति' : 'Attendance', value: 'attendance' },
-                { label: isHindi ? 'परीक्षाएं व मार्क्स' : 'Examinations', value: 'examinations' },
-                { label: isHindi ? 'शिक्षक कार्यभार' : 'Faculty Workload', value: 'faculty' },
+                { label: isHindi ? 'अटेंडेंस' : 'Attendance', value: 'attendance' },
+                { label: isHindi ? 'एग्जाम्स & मार्क्स' : 'Examinations', value: 'examinations' },
+                { label: isHindi ? 'फैकल्टी वर्कलोड' : 'Faculty Workload', value: 'faculty' },
                 { label: isHindi ? 'टीसी व कंप्लायंस' : 'TC & Compliance', value: 'compliance' },
               ]}
               className="w-44 sm:w-48 bg-[#141414] border-border h-8 text-xs rounded-[4px]"
@@ -700,7 +700,7 @@ function ReportsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div className="space-y-1">
                 <label className="text-xs font-bold text-foreground block">
-                  {isHindi ? 'शैक्षणिक सत्र' : 'Academic Session'}
+                  {isHindi ? 'एकेडमिक सेशन' : 'Academic Session'}
                 </label>
                 <VFSelect
                   value={selectedSession}

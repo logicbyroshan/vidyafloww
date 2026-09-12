@@ -77,7 +77,7 @@ function StatisticsPage() {
         </Link>
         <Link to="/teachers" className="block group focus:outline-hidden">
           <VFStatCard
-            title={isHindi ? 'शिक्षक-छात्र अनुपात' : 'Teacher-Student Ratio'}
+            title={isHindi ? 'टीचर-स्टूडेंट रेश्यो' : 'Teacher-Student Ratio'}
             value="18 : 1"
             icon={<School className="h-4.5 w-4.5" />}
             trend="neutral"
@@ -88,7 +88,7 @@ function StatisticsPage() {
         </Link>
         <Link to="/attendance" className="block group focus:outline-hidden">
           <VFStatCard
-            title={isHindi ? 'दैनिक औसत उपस्थिति' : 'Daily Attendance Avg'}
+            title={isHindi ? 'डेली एवरेज अटेंडेंस' : 'Daily Attendance Avg'}
             value="96.9%"
             icon={<UserCheck className="h-4.5 w-4.5" />}
             trend="up"
@@ -99,7 +99,7 @@ function StatisticsPage() {
         </Link>
         <Link to="/examinations" className="block group focus:outline-hidden">
           <VFStatCard
-            title={isHindi ? 'वार्षिक बोर्ड उत्तीर्ण दर' : 'Board Exam Pass Rate'}
+            title={isHindi ? 'एनुअल बोर्ड पास रेट' : 'Board Exam Pass Rate'}
             value="98.6%"
             icon={<Award className="h-4.5 w-4.5" />}
             trend="up"
@@ -115,23 +115,23 @@ function StatisticsPage() {
         <div className="flex items-center gap-2 shrink-0">
           <Layers className="h-3.5 w-3.5 text-primary" />
           <span className="font-bold text-foreground">
-            {isHindi ? 'विस्तृत रिकॉर्ड रजिस्टर:' : 'Detailed Registers & Reports:'}
+            {isHindi ? 'डिटेल्ड रिकॉर्ड रजिस्टर:' : 'Detailed Registers & Reports:'}
           </span>
         </div>
         <div className="flex items-center gap-1.5 flex-wrap">
           <Link to="/attendance">
             <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'उपस्थिति' : 'Attendance'} ↗
+              {isHindi ? 'अटेंडेंस' : 'Attendance'} ↗
             </VFButton>
           </Link>
           <Link to="/admissions">
             <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'प्रवेश' : 'Admissions'} ↗
+              {isHindi ? 'एडमिशन्स' : 'Admissions'} ↗
             </VFButton>
           </Link>
           <Link to="/students">
             <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'छात्र निर्देशिका' : 'Students'} ↗
+              {isHindi ? 'स्टूडेंट डायरेक्टरी' : 'Students'} ↗
             </VFButton>
           </Link>
           <Link to="/fees">
@@ -141,12 +141,12 @@ function StatisticsPage() {
           </Link>
           <Link to="/examinations">
             <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'परीक्षाएं' : 'Exams'} ↗
+              {isHindi ? 'एग्जाम्स' : 'Exams'} ↗
             </VFButton>
           </Link>
           <Link to="/academics">
             <VFButton size="sm" variant="outline" className="h-7 px-2.5 text-xs font-semibold rounded-[4px]">
-              {isHindi ? 'कक्षाएं' : 'Academics'} ↗
+              {isHindi ? 'क्लासेज' : 'Academics'} ↗
             </VFButton>
           </Link>
         </div>
@@ -160,12 +160,12 @@ function StatisticsPage() {
             title={
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-emerald-400" />
-                <span>{isHindi ? 'उपस्थिति व छात्र प्रवेश रुझान' : 'Attendance & Intake Trajectory'}</span>
+                <span>{isHindi ? 'अटेंडेंस & स्टूडेंट एडमिशन ट्रेंड्स' : 'Attendance & Intake Trajectory'}</span>
               </div>
             }
             description={
               isHindi
-                ? 'सत्र 2026-2027 के लिए मासिक छात्र प्रवेश और दैनिक उपस्थिति रुझान'
+                ? 'सेशन 2026-2027 के लिए मंथली स्टूडेंट एडमिशन्स और डेली अटेंडेंस ट्रेंड्स'
                 : 'Realtime monthly intake volume vs attendance velocity for AY 2026-2027'
             }
             actions={
@@ -176,7 +176,7 @@ function StatisticsPage() {
                     variant="outline"
                     className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                   >
-                    {isHindi ? 'उपस्थिति रजिस्टर ↗' : 'Attendance Register ↗'}
+                    {isHindi ? 'अटेंडेंस रजिस्टर ↗' : 'Attendance Register ↗'}
                   </VFButton>
                 </Link>
                 <Link to="/admissions">
@@ -185,7 +185,7 @@ function StatisticsPage() {
                     variant="outline"
                     className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                   >
-                    {isHindi ? 'प्रवेश रिकॉर्ड ↗' : 'Admissions Intake ↗'}
+                    {isHindi ? 'एडमिशन्स रिकॉर्ड ↗' : 'Admissions Intake ↗'}
                   </VFButton>
                 </Link>
               </div>
@@ -264,10 +264,10 @@ function StatisticsPage() {
             title={
               <div className="flex items-center gap-2">
                 <Layers className="h-4 w-4 text-blue-400" />
-                <span>{isHindi ? 'विंग अनुसार छात्र वितरण' : 'Enrollment by Academic Wing'}</span>
+                <span>{isHindi ? 'विंग अनुसार स्टूडेंट डिस्ट्रिब्यूशन' : 'Enrollment by Academic Wing'}</span>
               </div>
             }
-            description={isHindi ? '1,248 विद्यार्थियों का विंग वार विभाजन' : 'Tier strength distribution across 1,248 enrolled pupils'}
+            description={isHindi ? '1,248 स्टूडेंट्स का विंग-वाइज़ ब्रेकअप' : 'Tier strength distribution across 1,248 enrolled pupils'}
             actions={
               <Link to="/students">
                 <VFButton
@@ -275,7 +275,7 @@ function StatisticsPage() {
                   variant="outline"
                   className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                 >
-                  {isHindi ? 'छात्र निर्देशिका ↗' : 'Student Dossiers ↗'}
+                  {isHindi ? 'स्टूडेंट डायरेक्टरी ↗' : 'Student Dossiers ↗'}
                 </VFButton>
               </Link>
             }
@@ -341,12 +341,12 @@ function StatisticsPage() {
             title={
               <div className="flex items-center gap-2">
                 <CreditCard className="h-4 w-4 text-primary" />
-                <span>{isHindi ? 'फीस संग्रह बनाम बजट लक्ष्य' : 'Fee Collection vs Budget Target'}</span>
+                <span>{isHindi ? 'फीस कलेक्शन बनाम बजट टारगेट' : 'Fee Collection vs Budget Target'}</span>
               </div>
             }
             description={
               isHindi
-                ? 'त्रैमासिक बजट विश्लेषण (संग्रहित बनाम निर्धारित बजट)'
+                ? 'क्वार्टरली बजट एनालिसिस (कलेक्टेड बनाम टारगेट बजट)'
                 : 'Quarterly collection audit across ₹ Lakhs (Realized vs Annual Target)'
             }
             actions={
@@ -398,12 +398,12 @@ function StatisticsPage() {
             title={
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-amber-400" />
-                <span>{isHindi ? 'अकादमिक विशिष्टता व उपलब्धियां' : 'Academic Standing & Distinctions'}</span>
+                <span>{isHindi ? 'एकेडमिक एक्सीलेंस & अचीवमेंट्स' : 'Academic Standing & Distinctions'}</span>
               </div>
             }
             description={
               isHindi
-                ? 'बोर्ड परीक्षा परिणाम, मेरिट डिस्टिंक्शन व विषयवार प्रदर्शन'
+                ? 'बोर्ड एग्जाम रिजल्ट्स, मेरिट डिस्टिंक्शन और सब्जेक्ट-वाइज़ परफॉरमेंस'
                 : 'Board standings, merit honors, and subject distinction benchmarks'
             }
             actions={
@@ -413,7 +413,7 @@ function StatisticsPage() {
                   variant="outline"
                   className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
                 >
-                  {isHindi ? 'परीक्षा परिणाम ↗' : 'Exam Standings ↗'}
+                  {isHindi ? 'एग्जाम रिजल्ट्स ↗' : 'Exam Standings ↗'}
                 </VFButton>
               </Link>
             }
@@ -423,14 +423,14 @@ function StatisticsPage() {
             <div className="grid grid-cols-2 gap-2.5">
               <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'डिस्टिंक्शन दर' : 'Distinction (>75%)'}
+                  {isHindi ? 'डिस्टिंक्शन रेट' : 'Distinction (>75%)'}
                 </span>
                 <p className="text-xl font-black text-foreground font-mono">89.2%</p>
                 <p className="text-[11px] text-emerald-400 font-medium">324 Students with Honors</p>
               </div>
               <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] space-y-1">
                 <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                  {isHindi ? 'राज्य मेरिट रैंकर्स' : 'State Merit Rankers'}
+                  {isHindi ? 'स्टेट मेरिट रैंकर्स' : 'State Merit Rankers'}
                 </span>
                 <p className="text-xl font-black text-foreground font-mono">14 Pupils</p>
                 <p className="text-[11px] text-blue-400 font-medium">Top 0.5 percentile CBSE</p>
@@ -439,7 +439,7 @@ function StatisticsPage() {
 
             <div className="space-y-2 pt-2 border-t border-[#202020]">
               <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
-                {isHindi ? 'मुख्य विषयवार औसत अंक' : 'Core Subject Averages'}
+                {isHindi ? 'मेन सब्जेक्ट-वाइज़ एवरेज मार्क्स' : 'Core Subject Averages'}
               </span>
               <div className="space-y-2 text-xs">
                 {[
@@ -471,12 +471,12 @@ function StatisticsPage() {
         title={
           <div className="flex items-center gap-2">
             <School className="h-4 w-4 text-primary" />
-            <span>{isHindi ? 'कक्षावार नामांकन व उपस्थिति सारांश' : 'Senior Secondary & High School Roster Summary'}</span>
+            <span>{isHindi ? 'कक्षावार नामांकन व अटेंडेंस सारांश' : 'Senior Secondary & High School Roster Summary'}</span>
           </div>
         }
         description={
           isHindi
-            ? 'कक्षा 9 से 12 के छात्रों, सेक्शन्स व सक्रिय उपस्थिति दर का संक्षिप्त विवरण'
+            ? 'क्लास 9 से 12 के स्टूडेंट्स, सेक्शन्स और एक्टिव अटेंडेंस रेट का संक्षिप्त विवरण'
             : 'Operational division strength and realtime attendance benchmark across core grades'
         }
         actions={
@@ -486,7 +486,7 @@ function StatisticsPage() {
               variant="outline"
               className="h-7 px-2.5 text-xs font-bold rounded-[4px]"
             >
-              {isHindi ? 'शैक्षणिक प्रभाग ↗' : 'Academic Divisions ↗'}
+              {isHindi ? 'एकेडमिक डिवीजनों ↗' : 'Academic Divisions ↗'}
             </VFButton>
           </Link>
         }

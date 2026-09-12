@@ -69,12 +69,12 @@ function LearningPage() {
       cell: (r: any) => <span className="font-bold text-foreground text-base">{r.subject}</span>,
     },
     {
-      header: isHindi ? 'छात्र' : 'Students',
+      header: isHindi ? 'स्टूडेंट्स' : 'Students',
       accessorKey: 'totalStudents',
-      cell: (r: any) => <span className="font-black text-foreground text-base">{r.totalStudents} {isHindi ? 'छात्र' : 'Students'}</span>,
+      cell: (r: any) => <span className="font-black text-foreground text-base">{r.totalStudents} {isHindi ? 'स्टूडेंट्स' : 'Students'}</span>,
     },
     {
-      header: isHindi ? 'औसत उपस्थिति' : 'Avg Attendance',
+      header: isHindi ? 'एवरेज अटेंडेंस' : 'Avg Attendance',
       accessorKey: 'avgAtt',
       cell: (r: any) => <span className="font-black text-success text-base">{r.avgAtt}</span>,
     },
@@ -94,7 +94,7 @@ function LearningPage() {
           value="4 Sections"
           icon={<Users className="h-5 w-5" />}
           trend="up"
-          trendLabel={isHindi ? 'कुल 156 छात्र' : '156 Total Students'}
+          trendLabel={isHindi ? 'टोटल 156 स्टूडेंट्स' : '156 Total Students'}
         />
         <VFStatCard
           title={isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods'}
@@ -122,10 +122,10 @@ function LearningPage() {
       <div className="space-y-4">
         <div>
           <h2 className="text-lg font-black text-foreground tracking-tight">
-            {isHindi ? 'शिक्षक को असाइंड कक्षाएं' : 'Teacher Assigned Classes'}
+            {isHindi ? 'टीचर को असाइंड क्लासेज' : 'Teacher Assigned Classes'}
           </h2>
           <p className="text-sm text-muted-foreground font-medium">
-            {isHindi ? 'सक्रिय सेक्शन्स व छात्र उपस्थिति ट्रैकिंग' : 'Active sections and student attendance tracking'}
+            {isHindi ? 'एक्टिव सेक्शन्स और स्टूडेंट अटेंडेंस ट्रैकिंग' : 'Active sections and student attendance tracking'}
           </p>
         </div>
         <VFDataTable

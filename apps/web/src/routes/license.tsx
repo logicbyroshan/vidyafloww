@@ -184,7 +184,7 @@ function LicenseManagementPage() {
           </div>
           <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
             <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-              {isHindi ? 'छात्र नामांकन क्षमता' : 'Student Capacity'}
+              {isHindi ? 'स्टूडेंट एनरोलमेंट कैपेसिटी' : 'Student Capacity'}
             </span>
             <span className="text-sm font-extrabold text-foreground font-mono">1,248 / 2,500</span>
           </div>
@@ -388,7 +388,7 @@ function LicenseManagementPage() {
         title={isHindi ? 'वार्षिक प्लान का जल्दी भुगतान / रिन्यू करें' : 'Early License Renewal & Payment'}
         description={
           isHindi
-            ? 'आगामी शैक्षणिक सत्र 2027–2028 के लिए समय से पहले रिन्यू करें और निर्बाध सेवा सुनिश्चित करें।'
+            ? 'अपकमिंग एकेडमिक सेशन 2027–2028 के लिए पहले रिन्यू करें और अनइंटरप्टेड सर्विस सुनिश्चित करें।'
             : 'Pre-pay your institutional license renewal for Academic Year 2027–2028 with instant tax invoice generation.'
         }
         className="max-w-md rounded-[4px]"
