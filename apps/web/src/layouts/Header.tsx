@@ -116,7 +116,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           <button
             onClick={() => setIsSessionMenuOpen(!isSessionMenuOpen)}
             className="flex items-center justify-between gap-2.5 px-3 h-9 rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border text-foreground shadow-xs transition-all cursor-pointer outline-none group min-w-[215px]"
-            title={isHindi ? "शैक्षणिक सत्र बदलें" : "Switch Academic Session"}
+            title={isHindi ? "एकेडमिक सेशन चेंज करें" : "Switch Academic Session"}
           >
             <Calendar className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
             <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
@@ -138,7 +138,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             <div className="absolute left-0 mt-2 w-64 rounded-lg border border-border bg-[#0e0e0e] shadow-2xl p-1.5 z-50 animate-scale-in space-y-1">
               <div className="px-2.5 py-1.5 border-b border-border/60 mb-1">
                 <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
-                  {isHindi ? 'शैक्षणिक सत्र चुनें' : 'Select Academic Session'}
+                  {isHindi ? 'एकेडमिक सेशन सेलेक्ट करें' : 'Select Academic Session'}
                 </span>
               </div>
               {academicSessions.map((session) => {
@@ -175,7 +175,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
                         </span>
                       ) : (
                         <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border">
-                          {isHindi ? 'अभिलेखागार' : 'Archived'}
+                          {isHindi ? 'आर्काइव्ड' : 'Archived'}
                         </span>
                       )}
                     </div>
@@ -203,7 +203,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
           >
             <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-foreground" />
             <span className="hidden sm:inline text-foreground font-semibold">
-              {isDashboardEditMode ? (isHindi ? "पूर्ण" : "Done Customizing") : (isHindi ? "डैशबोर्ड बदलें" : "Configure Dashboard")}
+              {isDashboardEditMode ? (isHindi ? "डन" : "Done Customizing") : (isHindi ? "डैशबोर्ड कस्टमाइज़ करें" : "Configure Dashboard")}
             </span>
           </button>
         )}
@@ -212,7 +212,7 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
         <button
           onClick={onSearchClick}
           className="relative text-muted-foreground hover:text-foreground rounded-md bg-[#0e0e0e] hover:bg-[#161616] border border-border transition-colors outline-none cursor-pointer h-9 w-9 aspect-square flex items-center justify-center shadow-xs group"
-          title={isHindi ? "खोजें... (Ctrl+K)" : "Search students, faculty, records... (⌘K / Ctrl+K)"}
+          title={isHindi ? "सर्च करें... (Ctrl+K)" : "Search students, faculty, records... (⌘K / Ctrl+K)"}
         >
           <Search className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
         </button>
@@ -223,8 +223,8 @@ export function Header({ onSearchClick, onNotificationsClick }: HeaderProps) {
             const nextLang = isHindi ? 'en' : 'hi';
             setLanguage(nextLang);
             addNotification({
-              title: nextLang === 'hi' ? 'भाषा बदली गई' : 'Language Changed',
-              description: nextLang === 'hi' ? 'प्लेटफ़ॉर्म भाषा हिन्दी (Mukta) पर सेट की गई।' : 'Platform language set to English (Mukta).',
+              title: nextLang === 'hi' ? 'लैंग्वेज चेंज की गई' : 'Language Changed',
+              description: nextLang === 'hi' ? 'प्लेटफॉर्म लैंग्वेज हिन्दी (Hinglish) सेट की गई।' : 'Platform language set to English (Mukta).',
               type: 'info',
             });
           }}

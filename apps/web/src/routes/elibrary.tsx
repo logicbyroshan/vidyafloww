@@ -9,9 +9,15 @@ import {
 } from '@vidyafloww/ui';
 import {
   ExternalLink,
+  BookOpen,
   BookMarked,
-  Search,
-  Eye,
+  QrCode,
+  ChevronLeft,
+  ChevronRight,
+  Sun,
+  Moon,
+  Coffee,
+  CheckCircle2,
 } from 'lucide-react';
 import { useGlobalStore } from '../stores/globalStore';
 import { useTranslation } from '../hooks/useTranslation';
@@ -20,113 +26,138 @@ export const Route = createFileRoute('/elibrary')({
   component: ELibraryOverviewPage,
 });
 
-interface EBookCard {
+interface DigitalBook {
   id: string;
-  isbn: string;
   title: string;
   hindiTitle: string;
   subject: string;
   grade: string;
+  publisher: string;
   pages: number;
+  coverColor: string;
+  accentColor: string;
+  dikshaQr: string;
   author: string;
-  drmProtected: boolean;
-  totalCopies: number;
-  availableCopies: number;
-  previewSummary: string;
+  edition: string;
+  description: string;
+  sampleChapterTitle: string;
+  sampleChapterText: string[];
 }
 
-const FEATURED_BOOKS: EBookCard[] = [
+const NCERT_BOOKSHELF: DigitalBook[] = [
   {
     id: 'BK-NCERT-M10',
-    isbn: '978-93-5292-124-1',
-    title: 'NCERT Mathematics Class 10',
-    hindiTitle: 'गणित — कक्षा १० पाठ्यपुस्तक',
+    title: 'NCERT Mathematics – Class 10',
+    hindiTitle: 'NCERT गणित – क्लास 10 (मुख्य पाठ्यपुस्तक)',
     subject: 'Mathematics',
     grade: 'Class 10',
-    pages: 240,
-    author: 'NCERT Curriculum Directorate',
-    drmProtected: true,
-    totalCopies: 45,
-    availableCopies: 12,
-    previewSummary: 'Covers Real Numbers, Polynomials, Linear Equations in Two Variables, Quadratic Equations, and Arithmetic Progressions with exemplar exercises.',
+    publisher: 'NCERT New Delhi',
+    pages: 328,
+    coverColor: '#1e3a8a',
+    accentColor: '#3b82f6',
+    dikshaQr: 'DIKSHA-NCERT-M10',
+    author: 'National Council of Educational Research & Training',
+    edition: 'National Curriculum Framework 2026 Edition',
+    description: 'Standard prescribed textbook covering Real Numbers, Polynomials, Quadratic Equations, Triangles, Trigonometry, and Statistics.',
+    sampleChapterTitle: 'Chapter 8: Introduction to Trigonometry',
+    sampleChapterText: [
+      'In this chapter, we will study some ratios of the sides of a right triangle with respect to its acute angles, called trigonometric ratios of the angle.',
+      'Consider a right triangle ABC, right-angled at B. The position of side BC with respect to angle A is side opposite to angle A. AC is the hypotenuse.',
+      'sin A = (Side opposite to angle A) / Hypotenuse = BC / AC.',
+      'cos A = (Side adjacent to angle A) / Hypotenuse = AB / AC.',
+      'tan A = (Side opposite to angle A) / (Side adjacent to angle A) = BC / AB.',
+    ],
   },
   {
-    id: 'BK-NCERT-PHY11',
-    isbn: '978-93-5292-188-3',
-    title: 'NCERT Physics Laboratory Manual',
-    hindiTitle: 'भौतिक विज्ञान प्रायोगिक नियमावली',
+    id: 'BK-NCERT-S10',
+    title: 'NCERT Science & Technology – Class 10',
+    hindiTitle: 'NCERT विज्ञान एवं प्रौद्योगिकी – क्लास 10',
+    subject: 'Science',
+    grade: 'Class 10',
+    publisher: 'NCERT New Delhi',
+    pages: 284,
+    coverColor: '#065f46',
+    accentColor: '#10b981',
+    dikshaQr: 'DIKSHA-NCERT-S10',
+    author: 'NCERT Science Textbook Development Committee',
+    edition: 'Rationalized NCERT 2026',
+    description: 'Foundational concepts of Chemical Reactions, Acids & Bases, Carbon Compounds, Life Processes, and Light Optics.',
+    sampleChapterTitle: 'Chapter 6: Life Processes — Nutrition & Respiration',
+    sampleChapterText: [
+      'All living things perform certain basic functions to maintain life. These maintenance processes are needed to prevent damage and break-down.',
+      'Since these maintenance processes are needed to prevent damage and break-down, energy is needed for them. This energy comes from outside the body of the individual organism.',
+      'Photosynthesis Equation: 6CO₂ + 12H₂O + Sunlight + Chlorophyll → C₆H₁₂O₆ + 6O₂ + 6H₂O.',
+    ],
+  },
+  {
+    id: 'BK-NCERT-P12',
+    title: 'NCERT Physics Part I & II – Class 12',
+    hindiTitle: 'NCERT भौतिक विज्ञान भाग 1 & 2 – क्लास 12',
     subject: 'Physics',
-    grade: 'Class 11 & 12',
-    pages: 180,
-    author: 'Department of Science Education',
-    drmProtected: true,
-    totalCopies: 30,
-    availableCopies: 8,
-    previewSummary: 'Complete laboratory protocol for vernier callipers, screw gauge, simple pendulum, focal length calculation, and projectile verification.',
-  },
-  {
-    id: 'BK-CHEM-12',
-    isbn: '978-93-5292-230-9',
-    title: 'Comprehensive Chemistry Vol. 2',
-    hindiTitle: 'रसायन विज्ञान भाग २',
-    subject: 'Chemistry',
     grade: 'Class 12',
-    pages: 360,
-    author: 'Dr. O.P. Tandon & Board Panel',
-    drmProtected: true,
-    totalCopies: 25,
-    availableCopies: 5,
-    previewSummary: 'In-depth coverage of Organic Chemistry, Haloalkanes & Haloarenes, Aldehydes & Ketones, Biomolecules, and Polymerization reactions.',
+    publisher: 'NCERT New Delhi',
+    pages: 412,
+    coverColor: '#7c2d12',
+    accentColor: '#f97316',
+    dikshaQr: 'DIKSHA-NCERT-P12',
+    author: 'Department of Education in Science & Mathematics',
+    edition: 'CBSE Prescribed 2026',
+    description: 'Electrostatics, Current Electricity, Magnetism, Electromagnetic Waves, Ray Optics, and Semiconductor Electronics.',
+    sampleChapterTitle: 'Chapter 3: Current Electricity & Kirchhoff’s Rules',
+    sampleChapterText: [
+      'Electric current is defined as the rate of flow of electric charges through a given cross-sectional area of a conductor.',
+      'Ohm’s Law states that at constant temperature, the current flowing through a conductor is directly proportional to the potential difference across its ends: V = IR.',
+      'Kirchhoff’s Junction Rule: At any junction, the sum of currents entering the junction is equal to the sum of currents leaving the junction (Conservation of Charge).',
+    ],
   },
   {
-    id: 'BK-HIST-09',
-    isbn: '978-93-5292-311-5',
-    title: 'Contemporary India & Democratic Politics',
-    hindiTitle: 'समकालीन भारत व लोकतांत्रिक राजनीति',
-    subject: 'Social Science',
-    grade: 'Class 9',
-    pages: 210,
-    author: 'NCERT Social Science Group',
-    drmProtected: true,
-    totalCopies: 40,
-    availableCopies: 18,
-    previewSummary: 'The French Revolution, Socialism in Europe, Physical Features of India, Drainage Systems, and Constitutional Democratic Frameworks.',
+    id: 'BK-NCERT-H10',
+    title: 'Kshitij Bhag 2 (Hindi Literature) – Class 10',
+    hindiTitle: 'क्षितिज भाग-२ (हिंदी मुख्य पाठ्यपुस्तक) – क्लास 10',
+    subject: 'Hindi',
+    grade: 'Class 10',
+    publisher: 'NCERT New Delhi',
+    pages: 196,
+    coverColor: '#581c87',
+    accentColor: '#a855f7',
+    dikshaQr: 'DIKSHA-NCERT-H10',
+    author: 'NCERT Hindi Editorial Board',
+    edition: 'CBSE Course-A Approved',
+    description: 'Hindi prose and poetry anthology featuring works of Surdas, Tulsidas, Jayashankar Prasad, and Yashpal.',
+    sampleChapterTitle: 'अध्याय 1: पद – सूरदास (भ्रमरगीत से)',
+    sampleChapterText: [
+      'ऊधौ, तुम हौ अति बड़भागी। अपरस रहत सनेह तगा तैं, नाहिन मन अनुरागी।',
+      'पुरइनि पात रहत जल भीतर, ता रस देह न दागी। ज्यौं जल माहँ तेल की गागरि, बूँद न ताकौं लागी।',
+      'सूरदास अबला हम भोरी, गुर चाँटी ज्यौं पागी॥',
+      'भावार्थ: गोपियां उद्धव पर व्यंग्य करते हुए कहती हैं कि हे उद्धव! तुम बहुत भाग्यशाली हो जो श्रीकृष्ण के निकट रहकर भी उनके प्रेम के बंधन से मुक्त रहे।',
+    ],
   },
 ];
 
-const CIRCULATION_RECORDS = [
+const DIGITAL_CIRCULATION = [
   {
-    id: 'CIRC-2026-901',
-    bookTitle: 'NCERT Mathematics Class 10',
-    barcode: 'BC-9789352921241',
-    borrowerName: 'Aarav Sharma',
-    borrowerClass: 'Class 10-A',
-    issueDate: '01 Sep 2026',
-    dueDate: '15 Sep 2026',
-    fine: '₹0.00',
-    status: 'Active Issue',
+    loanId: 'LN-2026-801',
+    student: 'Aarav Sharma (Class 10-A)',
+    bookTitle: 'NCERT Mathematics – Class 10',
+    borrowedDate: '08 Sep 2026',
+    dueInDays: 6,
+    progress: 72,
   },
   {
-    id: 'CIRC-2026-902',
-    bookTitle: 'NCERT Physics Laboratory Manual',
-    barcode: 'BC-9789352921883',
-    borrowerName: 'Karan Malhotra',
-    borrowerClass: 'Class 11-B',
-    issueDate: '28 Aug 2026',
-    dueDate: '11 Sep 2026',
-    fine: '₹0.00',
-    status: 'Active Issue',
+    loanId: 'LN-2026-802',
+    student: 'Priya Patel (Class 12-Sci)',
+    bookTitle: 'NCERT Physics Part I – Class 12',
+    borrowedDate: '05 Sep 2026',
+    dueInDays: 3,
+    progress: 45,
   },
   {
-    id: 'CIRC-2026-903',
-    bookTitle: 'Comprehensive Chemistry Vol. 2',
-    barcode: 'BC-9789352922309',
-    borrowerName: 'Ananya Roy',
-    borrowerClass: 'Class 12-A',
-    issueDate: '20 Aug 2026',
-    dueDate: '03 Sep 2026',
-    fine: '₹25.00',
-    status: 'Return Due',
+    loanId: 'LN-2026-803',
+    student: 'Sneha Singh (Class 11-A)',
+    bookTitle: 'Kshitij Bhag 2 – Class 10',
+    borrowedDate: '10 Sep 2026',
+    dueInDays: 12,
+    progress: 90,
   },
 ];
 
@@ -134,232 +165,330 @@ function ELibraryOverviewPage() {
   const { addNotification } = useGlobalStore();
   const { lang } = useTranslation();
   const isHindi = lang === 'hi';
-  const [selectedBook, setSelectedBook] = React.useState<EBookCard | null>(null);
-  const [searchQuery, setSearchQuery] = React.useState('');
 
-  const standalonePort = '8014';
+  const [selectedGrade, setSelectedGrade] = React.useState<string>('All');
+  const [activeBookForReader, setActiveBookForReader] = React.useState<DigitalBook | null>(null);
+  const [readerTheme, setReaderTheme] = React.useState<'dark' | 'sepia' | 'light'>('dark');
+  const [currentPage, setCurrentPage] = React.useState<number>(42);
+
+  const standalonePort = '8011';
   const standaloneUrl = `http://localhost:${standalonePort}`;
 
-  const handleLaunchLibraryPortal = (path = '') => {
+  const handleLaunchELibrary = (path = '') => {
     const url = `${standaloneUrl}${path}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     addNotification({
-      title: isHindi ? 'ई-पुस्तकालय खोला जा रहा है' : 'Opening E-Library',
-      description: isHindi ? 'पोर्ट 8014 पर डिजिटल लाइब्रेरी पोर्टल पर भेजा जा रहा है।' : 'Redirecting to dedicated library portal on port 8014.',
+      title: isHindi ? 'ई-लाइब्रेरी पोर्टल ओपन हो रहा है' : 'Opening E-Library Portal',
+      description: isHindi ? 'पोर्ट 8011 पर डिजिटल बुक रीडर पर रिडायरेक्ट किया जा रहा है।' : 'Redirecting to digital book repository on port 8011.',
       type: 'info',
     });
   };
 
-  const filteredBooks = FEATURED_BOOKS.filter(
-    (b) =>
-      b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      b.grade.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredBooks = selectedGrade === 'All'
+    ? NCERT_BOOKSHELF
+    : NCERT_BOOKSHELF.filter((b) => b.grade.includes(selectedGrade));
 
   return (
     <VFPageContainer className="space-y-4 w-full">
-      {/* ── TOP TOOLBAR BAR ── */}
-      <div className="p-3 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
+      {/* ── TOP HEADER & LAUNCHER BAR ── */}
+      <div className="p-3.5 rounded-[4px] bg-[#0d0d0d] border border-border/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
-              {isHindi ? 'डिजिटल ई-पुस्तकालय व अध्ययन केंद्र (Digital E-Library)' : 'Digital E-Library & Reading Hub'}
+              {isHindi ? 'ई-लाइब्रेरी & NCERT डिजिटल रिपोजिटरी (E-Library)' : 'E-Library & NCERT Digital Repository'}
             </h1>
-            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-muted-foreground">
-              Port: {standalonePort}
+            <VFBadge variant="outline" className="text-[10.5px] font-mono font-bold bg-[#141414] text-purple-400 border-purple-500/30">
+              DIKSHA Integrated · Port: {standalonePort}
             </VFBadge>
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {isHindi
-              ? 'पाठ्यपुस्तक कैटलॉग, NCERT अध्ययन सामग्री, भौतिक पुस्तक इश्यू रजिस्टर व डिजिटल रीडर।'
-              : 'K-12 textbook catalog, NCERT curriculum exemplars, physical circulation ledgers & DRM reading tools.'}
+              ? 'कक्षा 6 से 12 की आधिकारिक NCERT डिजिटल पाठ्यपुस्तकें, इंटरएक्टिव बुक रीडर और डिजिटल सर्कुलेशन लेजर।'
+              : 'Official NCERT digital textbooks for classes 6–12, interactive in-browser book reader & borrowing circulation ledger.'}
           </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <VFButton
             size="sm"
-            onClick={() => handleLaunchLibraryPortal()}
+            variant="outline"
+            onClick={() => setActiveBookForReader(NCERT_BOOKSHELF[0])}
+            className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer bg-[#141414]"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-purple-400" />
+            <span>{isHindi ? 'रीडर लॉन्च करें' : 'Launch In-App Reader'}</span>
+          </VFButton>
+          <VFButton
+            size="sm"
+            onClick={() => handleLaunchELibrary()}
             className="rounded-[4px] gap-1.5 text-xs font-bold h-8 cursor-pointer"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'रीडिंग पोर्टल लॉन्च करें' : 'Launch E-Library Portal'}</span>
+            <span>{isHindi ? 'ई-लाइब्रेरी पोर्टल खोलें' : 'Open E-Library'}</span>
           </VFButton>
         </div>
       </div>
 
-      {/* ── FEATURED TEXTBOOKS ── */}
-      <div className="space-y-2.5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
-              {isHindi ? 'डिजिटल पाठ्यपुस्तकें व अध्ययन सामग्री' : 'Featured Digital Textbooks & Curriculum'}
-            </h2>
-            <span className="text-[11px] font-mono text-muted-foreground">
-              ({filteredBooks.length} {isHindi ? 'उपलब्ध' : 'Books'})
-            </span>
-          </div>
+      {/* ── GRADE FILTER TABS ── */}
+      <div className="flex items-center justify-between flex-wrap gap-2 border-b border-border/80 pb-2">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {['All', 'Class 10', 'Class 12', 'Class 11'].map((grd) => (
+            <button
+              key={grd}
+              onClick={() => setSelectedGrade(grd)}
+              className={`px-3 py-1 rounded-[3px] text-xs font-bold transition-all cursor-pointer ${
+                selectedGrade === grd
+                  ? 'bg-primary text-primary-foreground shadow-xs'
+                  : 'bg-[#141414] text-muted-foreground hover:text-foreground hover:bg-[#1a1a1a] border border-border/60'
+              }`}
+            >
+              {grd}
+            </button>
+          ))}
+        </div>
 
-          <div className="relative w-full sm:w-64">
-            <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isHindi ? 'किताब या विषय खोजें...' : 'Search title, subject, or grade...'}
-              className="w-full h-8 pl-8 pr-3 rounded-[4px] bg-[#141414] border border-border text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-zinc-400 transition-colors"
-            />
+        <span className="text-xs font-mono text-muted-foreground">
+          {filteredBooks.length} {isHindi ? 'डिजिटल बुक्स उपलब्ध' : 'Textbooks Available'}
+        </span>
+      </div>
+
+      {/* ── MAIN WORKSPACE: BOOKSHELF (LEFT 70%) + ACTIVE CIRCULATION (RIGHT 30%) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+        
+        {/* ── LEFT: 3D BOOKSHELF & NCERT REPOSITORY (8 cols) ── */}
+        <div className="lg:col-span-8 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {filteredBooks.map((book) => (
+              <div
+                key={book.id}
+                className="rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all p-3.5 flex gap-3.5 group shadow-xs cursor-pointer"
+                onClick={() => setActiveBookForReader(book)}
+              >
+                {/* Visual Book Spine / Cover Mockup */}
+                <div
+                  style={{ backgroundColor: book.coverColor }}
+                  className="w-24 h-32 rounded-[3px] shadow-md shrink-0 flex flex-col justify-between p-2 text-white border-l-4 border-white/20 relative overflow-hidden group-hover:scale-105 transition-transform"
+                >
+                  <div className="space-y-0.5">
+                    <span className="text-[7.5px] font-mono font-bold uppercase tracking-widest bg-black/40 px-1 py-0.2 rounded">
+                      NCERT
+                    </span>
+                    <p className="text-[9.5px] font-black leading-tight line-clamp-3 mt-1">
+                      {book.title.split('–')[0]}
+                    </p>
+                  </div>
+
+                  <div className="pt-1 border-t border-white/20 flex items-center justify-between text-[7px] font-mono opacity-85">
+                    <span>{book.grade}</span>
+                    <span>{book.pages}p</span>
+                  </div>
+                </div>
+
+                {/* Book Details */}
+                <div className="flex-1 flex flex-col justify-between min-w-0">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-primary uppercase">
+                        {book.subject}
+                      </span>
+                      <span className="text-[10px] font-mono text-muted-foreground flex items-center gap-1">
+                        <QrCode className="w-2.5 h-2.5 text-zinc-400" />
+                        DIKSHA
+                      </span>
+                    </div>
+
+                    <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                      {isHindi ? book.hindiTitle : book.title}
+                    </h3>
+                    <p className="text-[11px] text-muted-foreground line-clamp-2">
+                      {book.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[10.5px]">
+                    <span className="font-mono text-muted-foreground">{book.edition.split(' ')[0]}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveBookForReader(book);
+                      }}
+                      className="text-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>{isHindi ? 'पढ़ें ↗' : 'Read ↗'}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-          {filteredBooks.map((book) => (
-            <div
-              key={book.id}
-              onClick={() => setSelectedBook(book)}
-              className="p-3.5 rounded-[4px] border border-border/80 bg-[#121212] hover:bg-[#161616] hover:border-zinc-500/40 transition-all cursor-pointer flex flex-col justify-between group shadow-xs"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10.5px] font-mono text-muted-foreground">
-                    {book.grade} · {book.subject}
-                  </span>
-                  <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-[3px] border border-emerald-500/20">
-                    {book.availableCopies} Copies
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                    {isHindi ? book.hindiTitle : book.title}
-                  </h3>
-                  <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
-                    {book.author}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
-                <span className="font-mono text-[10px] truncate">{book.isbn}</span>
-                <span className="text-foreground font-semibold flex items-center gap-1">
-                  <Eye className="w-3 h-3 text-muted-foreground" />
-                  {book.pages}p
+        {/* ── RIGHT: DIGITAL CIRCULATION & BORROWING LEDGER (4 cols) ── */}
+        <div className="lg:col-span-4 space-y-4">
+          <VFCard
+            title={
+              <div className="flex items-center gap-2">
+                <BookMarked className="w-4 h-4 text-primary" />
+                <span className="text-xs font-bold text-foreground">
+                  {isHindi ? 'सक्रिय डिजिटल इश्यू लेजर' : 'Active Digital Loans'}
                 </span>
               </div>
+            }
+            description={isHindi ? 'विद्यार्थियों द्वारा वर्तमान में पढ़ी जा रही बुक्स' : 'Issued e-books & active reading progress'}
+            className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
+            headerClassName="py-2.5 px-3.5"
+            bodyClassName="p-0"
+          >
+            <div className="divide-y divide-border/60 text-xs">
+              {DIGITAL_CIRCULATION.map((loan) => (
+                <div key={loan.loanId} className="p-3 space-y-1.5 hover:bg-[#121212] transition-colors">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono font-bold text-foreground text-[11px] truncate max-w-[170px]">
+                      {loan.student}
+                    </span>
+                    <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-400/10 px-1.5 py-0.5 rounded">
+                      Due in {loan.dueInDays}d
+                    </span>
+                  </div>
+                  <p className="text-muted-foreground text-[11px] truncate">{loan.bookTitle}</p>
+                  
+                  {/* Reading Progress Bar */}
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between text-[9.5px] font-mono text-muted-foreground">
+                      <span>Reading Progress</span>
+                      <span className="text-primary font-bold">{loan.progress}%</span>
+                    </div>
+                    <div className="w-full bg-[#1e1e1e] rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-primary h-full rounded-full" style={{ width: `${loan.progress}%` }} />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+
+            <div className="p-2.5 border-t border-border/80 bg-[#101010]">
+              <button
+                onClick={() => handleLaunchELibrary('/circulation')}
+                className="w-full py-1.5 rounded-[3px] bg-[#1a1a1a] hover:bg-[#222] border border-border text-center text-xs font-bold text-primary transition-colors cursor-pointer"
+              >
+                {isHindi ? 'पूरा सर्कुलेशन लेजर देखें ↗' : 'View Full Circulation Ledger ↗'}
+              </button>
+            </div>
+          </VFCard>
         </div>
       </div>
 
-      {/* ── PHYSICAL CIRCULATION TABLE ── */}
-      <VFCard
-        title={
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-foreground">
-              {isHindi ? 'भौतिक पुस्तक संचलन व इश्यू रजिस्टर' : 'Physical Book Circulation & Issue Ledger'}
-            </span>
-            <VFBadge variant="outline" className="text-[10px] font-mono bg-[#161616]">
-              Barcode Scanner Sync
-            </VFBadge>
-          </div>
-        }
-        description={
-          isHindi
-            ? 'छात्रों और शिक्षकों को जारी की गई किताबों का वास्तविक समय रिकॉर्ड।'
-            : 'Active student loans, return schedules, and overdue tracking.'
-        }
-        className="rounded-[4px] border-border/90 bg-[#0d0d0d]"
-        headerClassName="py-2.5 px-3.5"
-        bodyClassName="p-0"
-        actions={
-          <button
-            onClick={() => handleLaunchLibraryPortal('/circulation')}
-            className="text-xs font-bold text-primary hover:underline flex items-center gap-1 cursor-pointer"
-          >
-            <span>{isHindi ? 'पूरा लेजर देखें' : 'Full Circulation Ledger'}</span>
-            <ExternalLink className="w-3 h-3" />
-          </button>
-        }
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left">
-            <thead>
-              <tr className="border-b border-border/80 bg-[#121212] text-muted-foreground text-[11px] uppercase tracking-wider font-semibold">
-                <th className="py-2.5 px-3.5">{isHindi ? 'इश्यू आईडी' : 'Loan ID'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'पुस्तक का नाम' : 'Book Title'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'बारकोड' : 'Barcode'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'छात्र / पाठक' : 'Borrower'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'कक्षा' : 'Class'}</th>
-                <th className="py-2.5 px-3.5">{isHindi ? 'अंतिम तिथि' : 'Due Date'}</th>
-                <th className="py-2.5 px-3.5 text-right">{isHindi ? 'स्थिति' : 'Status'}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/60">
-              {CIRCULATION_RECORDS.map((r) => (
-                <tr key={r.id} className="hover:bg-[#141414] transition-colors">
-                  <td className="py-2.5 px-3.5 font-mono font-bold text-primary">{r.id}</td>
-                  <td className="py-2.5 px-3.5 font-bold text-foreground">{r.bookTitle}</td>
-                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground text-[11px]">{r.barcode}</td>
-                  <td className="py-2.5 px-3.5 text-foreground">{r.borrowerName}</td>
-                  <td className="py-2.5 px-3.5 text-muted-foreground">{r.borrowerClass}</td>
-                  <td className="py-2.5 px-3.5 font-mono text-muted-foreground">{r.dueDate}</td>
-                  <td className="py-2.5 px-3.5 text-right">
-                    <VFBadge variant={r.status === 'Active Issue' ? 'success' : 'warning'} className="text-[10px]">
-                      {r.status}
-                    </VFBadge>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </VFCard>
-
-      {/* ── BOOK PREVIEW MODAL ── */}
-      {selectedBook && (
+      {/* ── IN-APP DIGITAL BOOK READER MODAL ── */}
+      {activeBookForReader && (
         <VFDialog
-          isOpen={Boolean(selectedBook)}
-          onClose={() => setSelectedBook(null)}
-          title={isHindi ? selectedBook.hindiTitle : selectedBook.title}
-          description={`${selectedBook.grade} · ${selectedBook.subject} · ${selectedBook.author}`}
+          isOpen={Boolean(activeBookForReader)}
+          onClose={() => setActiveBookForReader(null)}
+          title={isHindi ? activeBookForReader.hindiTitle : activeBookForReader.title}
+          description={`${activeBookForReader.grade} · ${activeBookForReader.publisher} · ${activeBookForReader.pages} Pages`}
+          className="max-w-4xl"
           footerActions={
-            <div className="flex items-center justify-end gap-2 w-full">
-              <VFButton variant="outline" size="sm" onClick={() => setSelectedBook(null)}>
-                {isHindi ? 'बंद करें' : 'Close'}
-              </VFButton>
-              <VFButton
-                size="sm"
-                onClick={() => {
-                  setSelectedBook(null);
-                  handleLaunchLibraryPortal(`/reader/${selectedBook.id}`);
-                }}
-                className="font-bold"
-                leftIcon={<BookMarked className="w-3.5 h-3.5" />}
-              >
-                {isHindi ? 'डिजिटल रीडर में पढ़ें' : 'Open in E-Reader'}
-              </VFButton>
+            <div className="flex items-center justify-between w-full flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage <= 1}
+                  className="px-2.5 py-1 rounded bg-[#1c1c1c] hover:bg-[#252525] border border-border text-xs font-bold text-foreground flex items-center gap-1 cursor-pointer disabled:opacity-40"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span>Previous</span>
+                </button>
+                <span className="font-mono text-xs font-bold text-foreground">
+                  Page {currentPage} of {activeBookForReader.pages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(activeBookForReader.pages, p + 1))}
+                  disabled={currentPage >= activeBookForReader.pages}
+                  className="px-2.5 py-1 rounded bg-[#1c1c1c] hover:bg-[#252525] border border-border text-xs font-bold text-foreground flex items-center gap-1 cursor-pointer disabled:opacity-40"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <VFButton variant="outline" size="sm" onClick={() => setActiveBookForReader(null)}>
+                  {isHindi ? 'क्लोज़ करें' : 'Close'}
+                </VFButton>
+                <VFButton
+                  size="sm"
+                  onClick={() => handleLaunchELibrary(`/reader/${activeBookForReader.id}`)}
+                  className="font-bold"
+                  leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
+                >
+                  {isHindi ? 'फुल स्क्रीन रीडर खोलें' : 'Open in Fullscreen Reader'}
+                </VFButton>
+              </div>
             </div>
           }
         >
-          <div className="space-y-2.5 text-xs">
-            <div className="p-3 rounded-[4px] bg-[#141414] border border-border space-y-1.5">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">ISBN:</span>
-                <span className="font-mono text-foreground">{selectedBook.isbn}</span>
+          <div className="space-y-3 text-xs">
+            {/* Reader Top Toolbar */}
+            <div className="p-2 px-3 rounded-[3px] bg-[#141414] border border-border flex items-center justify-between text-xs flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-mono">Theme:</span>
+                <button
+                  onClick={() => setReaderTheme('dark')}
+                  className={`px-2 py-0.5 rounded text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer ${
+                    readerTheme === 'dark' ? 'bg-zinc-800 text-white border border-zinc-600' : 'text-muted-foreground'
+                  }`}
+                >
+                  <Moon className="w-3 h-3" /> Dark
+                </button>
+                <button
+                  onClick={() => setReaderTheme('sepia')}
+                  className={`px-2 py-0.5 rounded text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer ${
+                    readerTheme === 'sepia' ? 'bg-[#704214] text-amber-100 border border-amber-500' : 'text-muted-foreground'
+                  }`}
+                >
+                  <Coffee className="w-3 h-3" /> Sepia
+                </button>
+                <button
+                  onClick={() => setReaderTheme('light')}
+                  className={`px-2 py-0.5 rounded text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer ${
+                    readerTheme === 'light' ? 'bg-zinc-200 text-zinc-900 border border-zinc-400' : 'text-muted-foreground'
+                  }`}
+                >
+                  <Sun className="w-3 h-3" /> Light
+                </button>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'कुल पृष्ठ:' : 'Page Count:'}</span>
-                <span className="font-mono text-foreground">{selectedBook.pages} Pages</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">{isHindi ? 'उपलब्ध प्रतियां:' : 'Available Copies:'}</span>
-                <span className="font-bold text-emerald-400 font-mono">{selectedBook.availableCopies} of {selectedBook.totalCopies}</span>
+
+              <div className="flex items-center gap-2 font-mono text-[10.5px]">
+                <span className="text-emerald-400 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> DIKSHA Verified
+                </span>
               </div>
             </div>
-            <p className="text-[11.5px] text-muted-foreground leading-relaxed">
-              {selectedBook.previewSummary}
-            </p>
+
+            {/* Book Content Page Spread Mockup */}
+            <div className={`p-6 sm:p-8 rounded-[4px] border shadow-inner transition-colors duration-150 font-serif leading-relaxed min-h-[300px] ${
+              readerTheme === 'dark'
+                ? 'bg-[#0f0f0f] border-zinc-800 text-zinc-200'
+                : readerTheme === 'sepia'
+                ? 'bg-[#fbf0d9] border-[#e2d5ba] text-[#43302b]'
+                : 'bg-white border-zinc-300 text-zinc-900'
+            }`}>
+              <div className="border-b pb-2 mb-4 flex justify-between items-center text-[10px] font-sans opacity-70 border-current">
+                <span>{activeBookForReader.title}</span>
+                <span>Page {currentPage}</span>
+              </div>
+
+              <h2 className="text-base font-extrabold mb-3 tracking-tight font-sans">
+                {activeBookForReader.sampleChapterTitle}
+              </h2>
+
+              <div className="space-y-3 text-xs sm:text-[13px]">
+                {activeBookForReader.sampleChapterText.map((para, i) => (
+                  <p key={i} className="leading-relaxed">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </VFDialog>
       )}

@@ -13,7 +13,7 @@ Permanent operating rules and execution guidelines for AI coding agents working 
 5. **No Unjustified Dependencies**: Use existing workspace packages (`@vidyafloww/ui`, `@vidyafloww/utils`, etc.) and installed libraries. Do not add external npm or pip packages without clear justification.
 6. **Zero Secrets & Credentials (NEVER PUSH ID/PASS)**: Absolutely NEVER create, commit, push, log, or expose user IDs, usernames, passwords, API tokens, session credentials, private keys, or `.env` files to the repository under any circumstances. Always verify that test fixtures and mock states use generic, non-sensitive placeholders.
 7. **Strict Sharp Border Radius Rule**: NEVER use large, bubbly, or excessive border radius (avoid `rounded-xl`, `rounded-2xl`, `rounded-3xl`, or bubbly circular buttons). Maintain sharp, crisp, clean geometric corners with minimal radius (`rounded-sm`, `rounded-[4px]`, or at most `rounded-md` / 4px-6px). We strictly favor crisp, sharp borders across cards, buttons, dialogs, and modules.
-8. **Mandatory Branching & GitHub CLI PR Workflow**: NEVER commit or push changes directly to `main`. Every new task, bug fix, or feature MUST be developed on an isolated, dedicated branch named `fix/<short-description>` or `feature/<short-description>`. Once changes are tested, verified, and audited for zero secrets/credentials, the branch must be pushed to `origin`, and a Pull Request must be generated using GitHub CLI (`gh pr create`). Direct pushes or direct commits to `main` are strictly prohibited.
+8. **Mandatory Branching, GitHub CLI PR & Merge Workflow**: NEVER commit or push changes directly to `main`. Every new task, bug fix, or feature MUST be developed on an isolated, dedicated branch named `fix/<short-description>` or `feature/<short-description>`. Once changes are tested, verified, and audited for zero secrets/credentials, the branch must be pushed to `origin`, a Pull Request must be generated using GitHub CLI (`gh pr create`), and then merged to `main` using GitHub CLI (`gh pr merge`). Direct pushes or direct commits to `main` are strictly prohibited.
 
 ---
 
@@ -55,7 +55,7 @@ To maintain high context quality and prevent token waste:
 * **Avoid Wasteful Full Builds**: Do not trigger full monorepo builds (`turbo run build`) for trivial single-file edits unless validating a cross-package release.
 * **Credential & Secrets Audit**: Always inspect `git status` and `git diff` before committing or pushing to verify that no user IDs, passwords, private keys, or `.env` files were accidentally created or staged.
 * **Review Diffs & Clean Commits**: Always inspect `git status` and `git diff` before creating commits to ensure no accidental whitespace, debug logs, or unrelated file changes occurred.
-* **Mandatory PR via GitHub CLI**: Never commit or push directly to `main`. Changes must be committed on a dedicated `feature/*` or `fix/*` branch, pushed to `origin`, and submitted via `gh pr create`.
+* **Mandatory PR & Merge via GitHub CLI**: Never commit or push directly to `main`. Changes must be committed on a dedicated `feature/*` or `fix/*` branch, pushed to `origin`, submitted via `gh pr create`, and merged to `main` via `gh pr merge`.
 
 ---
 
@@ -81,6 +81,16 @@ All code contributions and agent modifications must strictly follow this workflo
 6. **Generate PR via GitHub CLI**:
    ```bash
    gh pr create --title "<type>(<scope>): <summary>" --body "<summary of changes and test results>"
+   ```
+7. **Merge PR via GitHub CLI**:
+   Once verified, tests pass, and zero conflicts remain, merge the Pull Request to `main` using GitHub CLI:
+   ```bash
+   gh pr merge <pr-number-or-branch> --merge
+   ```
+   Then sync local `main`:
+   ```bash
+   git checkout main
+   git pull origin main
    ```
 
 ---

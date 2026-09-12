@@ -123,7 +123,7 @@ function ParentStudentPortalPage() {
           description={isHindi ? 'किस्त 15 अगस्त को देय' : 'Installment Due 15 Aug'}
         />
         <VFStatCard
-          title={isHindi ? 'आगामी परीक्षाएं' : 'Upcoming Examinations'}
+          title={isHindi ? 'अपकमिंग एग्जाम्स' : 'Upcoming Examinations'}
           value="2 Exams Soon"
           icon={<CalendarIcon className="h-5 w-5 text-secondary" />}
           description="Mathematics on 18 Aug"
@@ -257,7 +257,7 @@ function ParentStudentPortalPage() {
       <div className="flex items-center justify-between bg-card border border-border p-3 rounded-md">
         <div>
           <h3 className="text-sm font-bold text-foreground">
-            {isHindi ? 'छात्र प्रोफाइल, डिजिटल आईडी पास व सेवाएं' : 'Student Profile, Digital ID Pass & Services'}
+            {isHindi ? 'स्टूडेंट प्रोफाइल, डिजिटल आईडी पास और सर्विसेज' : 'Student Profile, Digital ID Pass & Services'}
           </h3>
           <p className="text-xs text-muted-foreground">Manage family contacts, transport route live telematics, library borrowings, fee receipts, and digital ID card.</p>
         </div>
@@ -268,7 +268,7 @@ function ParentStudentPortalPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Digital ID Card Preview */}
-        <VFCard title={isHindi ? 'डिजिटल छात्र आईडी कार्ड' : 'Digital Student ID Card'}>
+        <VFCard title={isHindi ? 'डिजिटल स्टूडेंट आईडी कार्ड' : 'Digital Student ID Card'}>
           <div className="p-4 bg-muted/30 border border-border rounded-md text-center space-y-3 mt-1">
             <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center font-bold text-primary text-xl">
               RS

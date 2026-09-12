@@ -255,7 +255,7 @@ function ProfessionalAuthPage() {
                       {isHindi ? 'विद्याफ़्लो में साइन इन करें' : t('auth.signInTitle')}
                     </h2>
                     <p className="text-xs text-muted-foreground">
-                      {isHindi ? 'सुरक्षित स्कूल पोर्टल में प्रवेश हेतु अपनी क्रेडेंशियल्स दर्ज करें' : t('auth.signInSubtitle')}
+                      {isHindi ? 'सिक्योर स्कूल पोर्टल में साइन इन के लिए क्रेडेंशियल्स एंटर करें' : t('auth.signInSubtitle')}
                     </p>
                   </div>
 
@@ -448,7 +448,7 @@ function ProfessionalAuthPage() {
                   <div className="text-center space-y-1">
                     <h2 className="text-xl font-black text-foreground tracking-tight">
                       {signupStep === 1 && (isHindi ? 'अकाउंट रोल चुनें' : 'Select Account Role')}
-                      {signupStep === 2 && (isHindi ? 'व्यक्तिगत व स्कूल विवरण' : 'Personal & Campus Details')}
+                      {signupStep === 2 && (isHindi ? 'पर्सनल & स्कूल डिटेल्स' : 'Personal & Campus Details')}
                       {signupStep === 3 && (isHindi ? 'पासवर्ड व सुरक्षा' : 'Password & Security')}
                       {signupStep === 4 && (isHindi ? 'ईमेल OTP सत्यापन' : 'Verify Email OTP')}
                     </h2>
@@ -481,14 +481,14 @@ function ProfessionalAuthPage() {
                           },
                           {
                             id: 'teacher',
-                            title: isHindi ? 'शिक्षक / टीचिंग स्टाफ' : 'Faculty / Teaching Staff',
-                            desc: isHindi ? 'छात्र ग्रेडिंग, उपस्थिति, टाइमटेबल व असाइनमेंट' : 'Student grading, attendance, timetable & assignments',
+                            title: isHindi ? 'टीचर / फैकल्टी स्टाफ' : 'Faculty / Teaching Staff',
+                            desc: isHindi ? 'स्टूडेंट ग्रेडिंग, अटेंडेंस, टाइमटेबल और असाइनमेंट्स' : 'Student grading, attendance, timetable & assignments',
                             icon: BookOpen,
                           },
                           {
                             id: 'student',
-                            title: isHindi ? 'नामांकित छात्र / विद्यार्थी' : 'Enrolled Student / Pupil',
-                            desc: isHindi ? 'अध्ययन सामग्री, शेड्यूल, परीक्षा परिणाम व प्रोफाइल' : 'Learning materials, schedules, examination scores & profile',
+                            title: isHindi ? 'एनरोल्ड स्टूडेंट' : 'Enrolled Student / Pupil',
+                            desc: isHindi ? 'स्टडी मटेरियल, शेड्यूल्स, एग्जाम रिजल्ट्स और प्रोफाइल' : 'Learning materials, schedules, examination scores & profile',
                             icon: GraduationCap,
                           },
                           {
@@ -691,7 +691,7 @@ function ProfessionalAuthPage() {
                         />
                         <span className="text-[11px] leading-tight">
                           {isHindi
-                            ? 'मैं विद्याफ़्लो की सेवा शर्तों, CBSE छात्र डेटा सुरक्षा नियमों और क्लाउड सुरक्षा नीतियों से सहमत हूँ।'
+                            ? 'मैं विद्याफ़्लो की सेवा शर्तों, CBSE स्टूडेंट डेटा प्रोटेक्शन नियमों और क्लाउड सिक्योरिटी पॉलिसी से सहमत हूँ।'
                             : 'I agree to VidyaFloww Terms of Service, CBSE Student Data Privacy Charter, and cloud security guidelines.'}
                         </span>
                       </label>
@@ -726,7 +726,7 @@ function ProfessionalAuthPage() {
                           }}
                           className="flex-1 h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
                         >
-                          <span>{isHindi ? 'कोड भेजें' : 'Send Code'}</span>
+                          <span>{isHindi ? 'OTP भेजें' : 'Send Code'}</span>
                           <ArrowRight className="h-4 w-4" />
                         </button>
                       </div>
@@ -737,7 +737,7 @@ function ProfessionalAuthPage() {
                   {signupStep === 4 && (
                     <div className="space-y-4 animate-fade-in">
                       <div className="p-3.5 rounded-md bg-[#141414] border border-[#262626] text-center text-xs space-y-1">
-                        <p className="text-muted-foreground">{isHindi ? 'सत्यापन कोड भेजा गया:' : 'Verification code sent to:'}</p>
+                        <p className="text-muted-foreground">{isHindi ? 'वेरिफिकेशन कोड भेजा गया:' : 'Verification code sent to:'}</p>
                         <p className="font-mono font-bold text-foreground">{signupEmail || 'admin@school.edu.in'}</p>
                       </div>
 
@@ -773,7 +773,7 @@ function ProfessionalAuthPage() {
                           setIsLoading(false);
                           setStatusMessage({
                             type: 'success',
-                            text: isHindi ? 'खाता सफलतापूर्वक बन गया! रीडायरेक्ट हो रहा है...' : 'Account created successfully! Redirecting...',
+                            text: isHindi ? 'अकाउंट सफलतापूर्वक क्रिएट हो गया! रिडायरेक्ट हो रहा है...' : 'Account created successfully! Redirecting...',
                           });
                           setTimeout(() => navigate({ to: '/' }), 700);
                         }}
@@ -782,12 +782,12 @@ function ProfessionalAuthPage() {
                         {isLoading ? (
                           <>
                             <RefreshCw className="h-4 w-4 animate-spin" />
-                            <span>{isHindi ? 'खाता बनाया जा रहा है...' : 'Creating account...'}</span>
+                            <span>{isHindi ? 'अकाउंट क्रिएट हो रहा है...' : 'Creating account...'}</span>
                           </>
                         ) : (
                           <>
                             <CheckCircle2 className="h-4 w-4" />
-                            <span>{isHindi ? 'सत्यापित करें व पंजीकरण पूरा करें' : 'Verify & Complete Registration'}</span>
+                            <span>{isHindi ? 'वेरिफाई करें और रजिस्ट्रेशन पूरा करें' : 'Verify & Complete Registration'}</span>
                           </>
                         )}
                       </button>
@@ -825,14 +825,14 @@ function ProfessionalAuthPage() {
                   <div className="text-center space-y-1">
                     <h2 className="text-xl font-black text-foreground tracking-tight">
                       {fpStep === 1 && (isHindi ? 'पासवर्ड रीसेट करें' : 'Reset Password')}
-                      {fpStep === 2 && (isHindi ? 'रिकवरी कोड दर्ज करें' : 'Enter Recovery Code')}
-                      {fpStep === 3 && (isHindi ? 'नया पासवर्ड' : 'New Password')}
-                      {fpStep === 4 && (isHindi ? 'रीसेट पूर्ण हुआ' : 'Reset Complete')}
+                      {fpStep === 2 && (isHindi ? 'रिकवरी कोड एंटर करें' : 'Enter Recovery Code')}
+                      {fpStep === 3 && (isHindi ? 'न्यू पासवर्ड' : 'New Password')}
+                      {fpStep === 4 && (isHindi ? 'रीसेट कंप्लीट हुआ' : 'Reset Complete')}
                     </h2>
                     <p className="text-xs text-muted-foreground">
-                      {fpStep === 1 && (isHindi ? 'अपना स्कूल ईमेल या पंजीकृत मोबाइल दर्ज करें' : 'Enter your institutional email or registered phone')}
-                      {fpStep === 2 && (isHindi ? `${fpIdentifier || 'आपके ईमेल'} पर भेजा गया 6-अंकों का कोड दर्ज करें` : `Enter 6-digit code sent to ${fpIdentifier || 'your email'}`)}
-                      {fpStep === 3 && (isHindi ? 'अपने खाते के लिए एक नया सुरक्षित पासवर्ड सेट करें' : 'Set a new secure password for your account')}
+                      {fpStep === 1 && (isHindi ? 'अपना स्कूल ईमेल या रजिस्टर्ड मोबाइल एंटर करें' : 'Enter your institutional email or registered phone')}
+                      {fpStep === 2 && (isHindi ? `${fpIdentifier || 'आपके ईमेल'} पर भेजा गया 6-डिजिट कोड एंटर करें` : `Enter 6-digit code sent to ${fpIdentifier || 'your email'}`)}
+                      {fpStep === 3 && (isHindi ? 'अपने अकाउंट के लिए न्यू सिक्योर पासवर्ड सेट करें' : 'Set a new secure password for your account')}
                       {fpStep === 4 && (isHindi ? 'आपका पासवर्ड सफलतापूर्वक अपडेट हो गया है।' : 'Your password has been updated successfully.')}
                     </p>
                   </div>
@@ -840,7 +840,7 @@ function ProfessionalAuthPage() {
                   {fpStep === 1 && (
                     <div className="space-y-4 animate-fade-in">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'पंजीकृत ईमेल या मोबाइल' : 'Registered Email or Phone'}</label>
+                        <label className="text-xs font-bold text-foreground">{isHindi ? 'रजिस्टर्ड ईमेल या मोबाइल' : 'Registered Email or Phone'}</label>
                         <div className="relative">
                           <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
@@ -861,7 +861,7 @@ function ProfessionalAuthPage() {
                           if (!fpIdentifier) {
                             setStatusMessage({
                               type: 'error',
-                              text: isHindi ? 'कृपया अपना पंजीकृत ईमेल या फोन दर्ज करें।' : 'Please enter your registered email or phone.',
+                              text: isHindi ? 'कृपया अपना रजिस्टर्ड ईमेल या फोन एंटर करें।' : 'Please enter your registered email or phone.',
                             });
                             return;
                           }
@@ -876,12 +876,12 @@ function ProfessionalAuthPage() {
                         {isLoading ? (
                           <>
                             <RefreshCw className="h-4 w-4 animate-spin" />
-                            <span>{isHindi ? 'कोड भेजा जा रहा है...' : 'Sending code...'}</span>
+                            <span>{isHindi ? 'OTP भेजा जा रहा है...' : 'Sending code...'}</span>
                           </>
                         ) : (
                           <>
                             <KeyRound className="h-4 w-4" />
-                            <span>{isHindi ? 'पासवर्ड रीसेट कोड भेजें' : 'Send Password Reset OTP'}</span>
+                            <span>{isHindi ? 'पासवर्ड रीसेट OTP भेजें' : 'Send Password Reset OTP'}</span>
                             <ArrowRight className="h-4 w-4" />
                           </>
                         )}
@@ -919,7 +919,7 @@ function ProfessionalAuthPage() {
                         onClick={() => setFpStep(3)}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
-                        <span>{isHindi ? 'कोड सत्यापित करें व आगे बढ़ें' : 'Verify Code & Continue'}</span>
+                        <span>{isHindi ? 'OTP वेरिफाई करें और आगे बढ़ें' : 'Verify Code & Continue'}</span>
                         <ArrowRight className="h-4 w-4" />
                       </button>
                     </div>
@@ -928,7 +928,7 @@ function ProfessionalAuthPage() {
                   {fpStep === 3 && (
                     <div className="space-y-4 animate-fade-in">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'नया पासवर्ड' : 'New Password'}</label>
+                        <label className="text-xs font-bold text-foreground">{isHindi ? 'न्यू पासवर्ड' : 'New Password'}</label>
                         <div className="relative">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
@@ -943,7 +943,7 @@ function ProfessionalAuthPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'नए पासवर्ड की पुष्टि करें' : 'Confirm New Password'}</label>
+                        <label className="text-xs font-bold text-foreground">{isHindi ? 'कन्फर्म न्यू पासवर्ड' : 'Confirm New Password'}</label>
                         <div className="relative">
                           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
@@ -964,7 +964,7 @@ function ProfessionalAuthPage() {
                           if (!fpNewPassword || fpNewPassword !== fpConfirmPassword) {
                             setStatusMessage({
                               type: 'error',
-                              text: isHindi ? 'पासवर्ड मेल खाना चाहिए और खाली नहीं हो सकता।' : 'Passwords must match and cannot be empty.',
+                              text: isHindi ? 'पासवर्ड मैच होना चाहिए और खाली नहीं हो सकता।' : 'Passwords must match and cannot be empty.',
                             });
                             return;
                           }
@@ -984,7 +984,7 @@ function ProfessionalAuthPage() {
                         ) : (
                           <>
                             <CheckCircle2 className="h-4 w-4" />
-                            <span>{isHindi ? 'नया पासवर्ड सेव करें' : 'Save New Password'}</span>
+                            <span>{isHindi ? 'न्यू पासवर्ड सेव करें' : 'Save New Password'}</span>
                           </>
                         )}
                       </button>
@@ -1001,7 +1001,7 @@ function ProfessionalAuthPage() {
                           {isHindi ? 'पासवर्ड सफलतापूर्वक रीसेट हुआ!' : 'Password Reset Successfully!'}
                         </h3>
                         <p className="text-xs text-muted-foreground">
-                          {isHindi ? 'अब आप अपने नए क्रेडेंशियल्स के साथ साइन इन कर सकते हैं।' : 'You may now sign in with your updated credentials.'}
+                          {isHindi ? 'अब आप अपने न्यू क्रेडेंशियल्स के साथ साइन इन कर सकते हैं।' : 'You may now sign in with your updated credentials.'}
                         </p>
                       </div>
                       <button
@@ -1042,27 +1042,27 @@ function ProfessionalAuthPage() {
                       <span>{isHindi ? 'साइन इन पर वापस जाएं' : 'Back to Sign In'}</span>
                     </button>
                     <span className="text-xs font-mono font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
-                      {isHindi ? 'आईडी खोजें' : 'ID Lookup'}
+                      {isHindi ? 'आईडी लुकअप' : 'ID Lookup'}
                     </span>
                   </div>
 
                   <div className="text-center space-y-1">
                     <h2 className="text-xl font-black text-foreground tracking-tight">
                       {fuStep === 1 && (isHindi ? 'अपनी यूज़र आईडी खोजें' : 'Look Up Your User ID')}
-                      {fuStep === 2 && (isHindi ? 'मोबाइल OTP सत्यापित करें' : 'Verify Mobile OTP')}
-                      {fuStep === 3 && (isHindi ? 'सत्यापित क्रेडेंशियल्स' : 'Verified Credentials')}
+                      {fuStep === 2 && (isHindi ? 'मोबाइल OTP वेरिफाई करें' : 'Verify Mobile OTP')}
+                      {fuStep === 3 && (isHindi ? 'वेरिफाइड क्रेडेंशियल्स' : 'Verified Credentials')}
                     </h2>
                     <p className="text-xs text-muted-foreground">
-                      {fuStep === 1 && (isHindi ? 'अपना पंजीकृत मोबाइल नंबर व जन्मतिथि दर्ज करें' : 'Enter your registered mobile number & date of birth')}
-                      {fuStep === 2 && (isHindi ? `${fuPhone || 'आपके मोबाइल'} पर भेजा गया 6-अंकों का कोड दर्ज करें` : `Enter 6-digit code sent to ${fuPhone || 'your mobile'}`)}
-                      {fuStep === 3 && (isHindi ? 'यहाँ आपके सत्यापित स्कूल क्रेडेंशियल्स हैं।' : 'Here are your verified institutional credentials.')}
+                      {fuStep === 1 && (isHindi ? 'अपना रजिस्टर्ड मोबाइल नंबर और जन्मतिथि एंटर करें' : 'Enter your registered mobile number & date of birth')}
+                      {fuStep === 2 && (isHindi ? `${fuPhone || 'आपके मोबाइल'} पर भेजा गया 6-डिजिट OTP एंटर करें` : `Enter 6-digit code sent to ${fuPhone || 'your mobile'}`)}
+                      {fuStep === 3 && (isHindi ? 'यहाँ आपके वेरिफाइड स्कूल क्रेडेंशियल्स हैं।' : 'Here are your verified institutional credentials.')}
                     </p>
                   </div>
 
                   {fuStep === 1 && (
                     <div className="space-y-4 animate-fade-in">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'पंजीकृत मोबाइल नंबर' : 'Registered Mobile Number'}</label>
+                        <label className="text-xs font-bold text-foreground">{isHindi ? 'रजिस्टर्ड मोबाइल नंबर' : 'Registered Mobile Number'}</label>
                         <div className="relative">
                           <Smartphone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
@@ -1077,7 +1077,7 @@ function ProfessionalAuthPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-foreground">{isHindi ? 'जन्मतिथि' : 'Date of Birth'}</label>
+                        <label className="text-xs font-bold text-foreground">{isHindi ? 'डेट ऑफ बर्थ' : 'Date of Birth'}</label>
                         <div className="relative">
                           <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <input
@@ -1097,7 +1097,7 @@ function ProfessionalAuthPage() {
                           if (!fuPhone) {
                             setStatusMessage({
                               type: 'error',
-                              text: isHindi ? 'कृपया अपना पंजीकृत मोबाइल नंबर दर्ज करें।' : 'Please enter your registered mobile number.',
+                              text: isHindi ? 'कृपया अपना रजिस्टर्ड मोबाइल नंबर एंटर करें।' : 'Please enter your registered mobile number.',
                             });
                             return;
                           }
@@ -1112,12 +1112,12 @@ function ProfessionalAuthPage() {
                         {isLoading ? (
                           <>
                             <RefreshCw className="h-4 w-4 animate-spin" />
-                            <span>{isHindi ? 'रिकॉर्ड खोजे जा रहे हैं...' : 'Searching records...'}</span>
+                            <span>{isHindi ? 'रिकॉर्ड्स सर्च हो रहे हैं...' : 'Searching records...'}</span>
                           </>
                         ) : (
                           <>
                             <HelpCircle className="h-4 w-4" />
-                            <span>{isHindi ? 'मेरी यूज़र आईडी खोजें' : 'Find My User ID'}</span>
+                            <span>{isHindi ? 'मेरी यूज़र आईडी सर्च करें' : 'Find My User ID'}</span>
                             <ArrowRight className="h-4 w-4" />
                           </>
                         )}
@@ -1163,7 +1163,7 @@ function ProfessionalAuthPage() {
                         }}
                         className="w-full h-11 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                       >
-                        <span>{isHindi ? 'कोड सत्यापित करें व आईडी देखें' : 'Verify Code & Reveal ID'}</span>
+                        <span>{isHindi ? 'OTP वेरिफाई करें और आईडी देखें' : 'Verify Code & Reveal ID'}</span>
                         <ArrowRight className="h-4 w-4" />
                       </button>
                     </div>
@@ -1184,7 +1184,7 @@ function ProfessionalAuthPage() {
 
                         <div className="space-y-1">
                           <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                            {isHindi ? 'आधिकारिक स्कूल आईडी' : 'Official Institutional ID'}
+                            {isHindi ? 'ऑफिशियल स्कूल आईडी' : 'Official Institutional ID'}
                           </label>
                           <div className="flex items-center justify-between p-2.5 rounded-md bg-black border border-[#242424]">
                             <span className="font-mono font-black text-sm text-primary select-all">
@@ -1232,7 +1232,7 @@ function ProfessionalAuthPage() {
       <div className="relative z-10 w-full max-w-5xl mx-auto px-4 pb-7 select-none space-y-2.5">
         <div className="text-center">
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/75 font-mono">
-            {isHindi ? 'भारत भर के 150+ प्रमुख शैक्षणिक संस्थानों द्वारा विश्वसनीय' : 'Trusted by 150+ Leading Educational Campuses Across India'}
+            {isHindi ? 'भारत भर के 150+ लीडिंग एजुकेशनल इंस्टीट्यूट्स द्वारा ट्रस्टेड' : 'Trusted by 150+ Leading Educational Campuses Across India'}
           </span>
         </div>
 

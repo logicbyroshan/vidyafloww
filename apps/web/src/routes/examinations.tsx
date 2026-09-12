@@ -533,7 +533,7 @@ function ExaminationsPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'परीक्षा' : 'Examinations') + ' – VidyaFloww';
+    document.title = (isHindi ? 'एग्जाम्स' : 'Examinations') + ' – VidyaFloww';
   }, [isHindi]);
 
   // Main Active Tab View: timetable | scheme | marks
@@ -808,7 +808,7 @@ function ExaminationsPage() {
     setNewExamCode(`EXAM-2026-0${exams.length + 2}`);
 
     addNotification({
-      title: isHindi ? 'परीक्षा शेड्यूल की गई' : 'Exam Scheduled',
+      title: isHindi ? 'एग्जाम शेड्यूल हुआ' : 'Exam Scheduled',
       description: `"${created.title}" scheduled.`,
       type: 'success',
     });
@@ -941,7 +941,7 @@ function ExaminationsPage() {
               )}
             >
               <Calendar className="h-3.5 w-3.5 text-zinc-400" />
-              <span>{isHindi ? 'समय-सारणी' : 'Timetable'}</span>
+              <span>{isHindi ? 'टाइमटेबल' : 'Timetable'}</span>
             </button>
 
             <button
@@ -998,7 +998,7 @@ function ExaminationsPage() {
             className="h-8 px-3 text-xs font-bold rounded-[4px] shadow-xs"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            {isHindi ? 'परीक्षा शेड्यूल करें' : 'Schedule Exam'}
+            {isHindi ? 'एग्जाम शेड्यूल करें' : 'Schedule Exam'}
           </VFButton>
         </div>
       </div>
@@ -1014,7 +1014,7 @@ function ExaminationsPage() {
             <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-0">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0 font-medium">
                 <GraduationCap className="h-4 w-4 text-amber-500" />
-                <span className="font-bold text-foreground">{isHindi ? 'सक्रिय परीक्षा:' : 'Selected Exam:'}</span>
+                <span className="font-bold text-foreground">{isHindi ? 'एक्टिव एग्जाम:' : 'Selected Exam:'}</span>
               </div>
 
               {/* Primary Exam Dropdown */}
@@ -1049,7 +1049,7 @@ function ExaminationsPage() {
                 {activeExam.status === 'Active Live' ? (
                   <span className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
-                    {isHindi ? 'सक्रिय परीक्षा' : 'Active Live'}
+                    {isHindi ? 'एक्टिव एग्जाम' : 'Active Live'}
                   </span>
                 ) : (
                   activeExam.status
@@ -1107,7 +1107,7 @@ function ExaminationsPage() {
                 title="Toggle all examination cards"
               >
                 <Layers className="h-3.5 w-3.5 text-zinc-400" />
-                <span>{showOverviewCards ? (isHindi ? 'कार्ड छिपाएं' : 'Hide Cards') : (isHindi ? 'सभी परीक्षाएं' : 'All Exam Cards')}</span>
+                <span>{showOverviewCards ? (isHindi ? 'कार्ड छिपाएं' : 'Hide Cards') : (isHindi ? 'सभी एग्जाम कार्ड्स' : 'All Exam Cards')}</span>
               </button>
             </div>
           </div>
@@ -1335,7 +1335,7 @@ function ExaminationsPage() {
                 </h3>
                 <p className="text-xs text-muted-foreground">
                   {isHindi
-                    ? 'वर्तमान खोज या फ़िल्टर मानदंडों के लिए कोई परीक्षा नहीं मिली।'
+                    ? 'सर्च या फिल्टर के लिए कोई एग्जाम नहीं मिला।'
                     : 'No exam papers matched your search query or filter settings.'}
                 </p>
                 <VFButton
@@ -1767,7 +1767,7 @@ function ExaminationsPage() {
                       className="h-8 px-3 text-xs font-bold rounded-[4px]"
                       leftIcon={<Edit3 className="h-3.5 w-3.5" />}
                     >
-                      {isHindi ? 'संपादित करें' : 'Edit Scheme'}
+                      {isHindi ? 'एडिट स्कीम' : 'Edit Scheme'}
                     </VFButton>
                   ) : (
                     <div className="flex items-center gap-2">
@@ -1789,7 +1789,7 @@ function ExaminationsPage() {
                         }}
                         className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
                       >
-                        {isHindi ? 'रद्द करें' : 'Cancel'}
+                        {isHindi ? 'कैंसिल' : 'Cancel'}
                       </VFButton>
                       <VFButton
                         size="sm"
@@ -1950,7 +1950,7 @@ function ExaminationsPage() {
                     className="h-7 px-2.5 text-[11px] font-bold rounded-[4px]"
                     leftIcon={<Edit3 className="h-3 w-3" />}
                   >
-                    {isHindi ? 'पैमाना संपादित करें' : 'Edit Scale'}
+                    {isHindi ? 'स्केल एडिट करें' : 'Edit Scale'}
                   </VFButton>
                 ) : (
                   <div className="flex items-center gap-1.5">
@@ -1972,7 +1972,7 @@ function ExaminationsPage() {
                       }}
                       className="h-7 px-2 text-[11px] font-bold rounded-[4px]"
                     >
-                      {isHindi ? 'रद्द करें' : 'Cancel'}
+                      {isHindi ? 'कैंसिल' : 'Cancel'}
                     </VFButton>
                     <VFButton
                       size="sm"
@@ -2073,7 +2073,7 @@ function ExaminationsPage() {
                 <Search className="h-3.5 w-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder={isHindi ? 'छात्र खोजें...' : 'Search student...'}
+                  placeholder={isHindi ? 'स्टूडेंट सर्च करें...' : 'Search student...'}
                   value={studentSearch}
                   onChange={(e) => setStudentSearch(e.target.value)}
                   className="h-8 pl-8 pr-3 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground placeholder:text-muted-foreground w-40 sm:w-48 focus:outline-none focus:border-zinc-500"
@@ -2165,7 +2165,7 @@ function ExaminationsPage() {
                   {isHindi ? 'रजिस्टर लॉक है' : 'Marks Register Locked'}
                 </span>
                 <span className="text-muted-foreground text-[11px] hidden sm:inline">
-                  — {isHindi ? 'परीक्षा प्रकोष्ठ द्वारा अंतिम रूप दिया गया। संपादन अक्षम है।' : 'Finalized by Examination Cell. Marks entry is locked to prevent accidental or unauthorized edits.'}
+                  — {isHindi ? 'एग्जाम सेल द्वारा फाइनलाइज किया गया। एडिटिंग डिसेबल्ड है।' : 'Finalized by Examination Cell. Marks entry is locked to prevent accidental or unauthorized edits.'}
                 </span>
               </div>
               <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] bg-amber-500/20 text-amber-300 border border-amber-500/40">
@@ -2180,14 +2180,14 @@ function ExaminationsPage() {
               <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
                 <VFTableRow>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-16">{isHindi ? 'रोल नं.' : 'Roll #'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'विद्यार्थी का नाम' : 'Student Name'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'स्टूडेंट का नाम' : 'Student Name'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'गणित (100)' : 'Maths'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'विज्ञान (100)' : 'Science'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'अंग्रेजी (100)' : 'English'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'सामाजिक (100)' : 'Social'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'इंग्लिश (100)' : 'English'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'सोशल साइंस (100)' : 'Social'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-20">{isHindi ? 'हिंदी (100)' : 'Hindi'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'कुल योग' : 'Total (500)'}</VFTableHeaderCell>
-                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'प्रतिशत' : 'Percentage'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'टोटल (500)' : 'Total (500)'}</VFTableHeaderCell>
+                  <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center font-mono">{isHindi ? 'परसेंटेज' : 'Percentage'}</VFTableHeaderCell>
                   <VFTableHeaderCell className="py-2.5 px-4 text-xs font-bold text-muted-foreground text-right">{isHindi ? 'ग्रेड' : 'Grade'}</VFTableHeaderCell>
                 </VFTableRow>
               </VFTableHead>
@@ -2195,7 +2195,7 @@ function ExaminationsPage() {
                 {filteredStudents.length === 0 ? (
                   <VFTableRow>
                     <VFTableCell colSpan={10} className="py-8 text-center text-muted-foreground">
-                      {isHindi ? 'कोई छात्र नहीं मिला।' : 'No students found.'}
+                      {isHindi ? 'कोई स्टूडेंट्स नहीं मिले।' : 'No students found.'}
                     </VFTableCell>
                   </VFTableRow>
                 ) : (
@@ -2327,8 +2327,8 @@ function ExaminationsPage() {
       <VFDrawer
         isOpen={isScheduleDrawerOpen}
         onClose={() => setIsScheduleDrawerOpen(false)}
-        title={isHindi ? 'परीक्षा शेड्यूल करें' : 'Schedule Exam'}
-        description={isHindi ? 'परीक्षा शीर्षक, तिथियां व लक्षित कक्षाएं।' : 'Set examination metadata and target classes.'}
+        title={isHindi ? 'एग्जाम शेड्यूल करें' : 'Schedule Exam'}
+        description={isHindi ? 'एग्जाम टाइटल, डेट्स और टारगेट क्लासेज।' : 'Set examination metadata and target classes.'}
         className="max-w-xl bg-[#0d0d0d] border-l border-border/90"
         bodyClassName="p-5 space-y-4 text-xs no-scrollbar"
         headerActions={
@@ -2352,7 +2352,7 @@ function ExaminationsPage() {
                 onClick={() => setIsScheduleDrawerOpen(false)}
                 className="rounded-[4px] h-8 text-xs font-bold"
               >
-                {isHindi ? 'रद्द करें' : 'Cancel'}
+                {isHindi ? 'कैंसिल' : 'Cancel'}
               </VFButton>
               <VFButton
                 size="sm"
@@ -2369,11 +2369,11 @@ function ExaminationsPage() {
         <form onSubmit={handleCreateExamSubmit} className="space-y-3.5">
           <div className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-3">
             <h4 className="text-[11px] font-bold text-foreground uppercase tracking-wider">
-              {isHindi ? 'परीक्षा विवरण' : 'Exam Details'}
+              {isHindi ? 'एग्जाम डिटेल्स' : 'Exam Details'}
             </h4>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'शीर्षक *' : 'Title *'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'टाइटल *' : 'Title *'}</label>
               <VFInput
                 required
                 placeholder="e.g. Term 2 Summative Evaluation"
@@ -2393,7 +2393,7 @@ function ExaminationsPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'उम्मीदवार' : 'Candidates'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'कैंडिडेट्स' : 'Candidates'}</label>
                 <VFInput
                   type="number"
                   value={String(newExamCandidates)}
@@ -2405,7 +2405,7 @@ function ExaminationsPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'तिथियां *' : 'Dates *'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'डेट्स *' : 'Dates *'}</label>
                 <VFInput
                   placeholder="e.g. 15 Nov – 28 Nov 2026"
                   value={newExamDates}
@@ -2414,7 +2414,7 @@ function ExaminationsPage() {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">{isHindi ? 'कक्षा' : 'Grade'}</label>
+                <label className="text-xs font-bold text-foreground">{isHindi ? 'क्लास' : 'Grade'}</label>
                 <VFSelect
                   value={newExamGrade}
                   onChange={(e) => setNewExamGrade(String(e.target.value))}
@@ -2438,12 +2438,12 @@ function ExaminationsPage() {
       <VFDialog
         isOpen={isAddPaperModalOpen}
         onClose={() => setIsAddPaperModalOpen(false)}
-        title={isHindi ? 'प्रश्नपत्र जोड़ें' : 'Add Paper'}
+        title={isHindi ? 'क्वेश्चन पेपर ऐड करें' : 'Add Paper'}
         description={`${activeExam.title}`}
       >
         <form onSubmit={handleAddPaperSubmit} className="space-y-3 pt-1 text-xs">
           <div className="space-y-1">
-            <label className="text-xs font-bold text-foreground">{isHindi ? 'विषय का नाम *' : 'Subject *'}</label>
+            <label className="text-xs font-bold text-foreground">{isHindi ? 'सब्जेक्ट का नाम *' : 'Subject *'}</label>
             <VFInput
               required
               placeholder="e.g. Sanskrit Course-B / Biology"
@@ -2464,7 +2464,7 @@ function ExaminationsPage() {
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'पूर्णांक' : 'Max Marks'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'मैक्स मार्क्स' : 'Max Marks'}</label>
               <VFInput
                 type="number"
                 value={String(paperMaxMarks)}
@@ -2476,7 +2476,7 @@ function ExaminationsPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'तिथि' : 'Date'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'डेट' : 'Date'}</label>
               <VFInput
                 placeholder="e.g. 29 Sep 2026 (Tue)"
                 value={paperDisplayDate}
@@ -2485,7 +2485,7 @@ function ExaminationsPage() {
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'समय' : 'Time'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'टाइम' : 'Time'}</label>
               <VFInput
                 value={paperTimeSlot}
                 onChange={(e) => setPaperTimeSlot(e.target.value)}
@@ -2496,7 +2496,7 @@ function ExaminationsPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'कक्ष / हॉल' : 'Exam Hall'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'एग्जाम हॉल' : 'Exam Hall'}</label>
               <VFInput
                 value={paperHall}
                 onChange={(e) => setPaperHall(e.target.value)}
@@ -2504,7 +2504,7 @@ function ExaminationsPage() {
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-foreground">{isHindi ? 'निरीक्षक' : 'Invigilator'}</label>
+              <label className="text-xs font-bold text-foreground">{isHindi ? 'इनविजिलेटर' : 'Invigilator'}</label>
               <VFInput
                 value={paperInvigilator}
                 onChange={(e) => setPaperInvigilator(e.target.value)}
@@ -2515,10 +2515,10 @@ function ExaminationsPage() {
 
           <div className="flex justify-end gap-2 pt-3 border-t border-border/50">
             <VFButton type="button" variant="outline" size="sm" onClick={() => setIsAddPaperModalOpen(false)}>
-              {isHindi ? 'रद्द करें' : 'Cancel'}
+              {isHindi ? 'कैंसिल' : 'Cancel'}
             </VFButton>
             <VFButton type="submit" size="sm" className="rounded-[4px] shadow-xs" leftIcon={<Check className="h-3.5 w-3.5" />}>
-              {isHindi ? 'जोड़ें' : 'Save Paper'}
+              {isHindi ? 'ऐड करें' : 'Save Paper'}
             </VFButton>
           </div>
         </form>
@@ -2529,7 +2529,7 @@ function ExaminationsPage() {
         <VFDialog
           isOpen={Boolean(seatingModalPaper)}
           onClose={() => setSeatingModalPaper(null)}
-          title={isHindi ? `कक्ष सिटिंग व्यवस्था: ${seatingModalPaper.subject}` : `Seating Plan: ${seatingModalPaper.subject}`}
+          title={isHindi ? `रूम सीटिंग अरेंजमेंट: ${seatingModalPaper.subject}` : `Seating Plan: ${seatingModalPaper.subject}`}
           description={`${seatingModalPaper.hall} (${seatingModalPaper.hallBlock || 'Academic Wing'}) · ${seatingModalPaper.displayDate} · ${seatingModalPaper.timeSlot}`}
           className="max-w-3xl rounded-[4px] bg-[#121212] border-border"
         >
@@ -2560,7 +2560,7 @@ function ExaminationsPage() {
                 <div className="flex items-center gap-2">
                   <Building2 className="h-4 w-4 text-amber-500" />
                   <span className="text-xs font-bold text-foreground">
-                    {isHindi ? 'परीक्षा कक्ष लेआउट (मॉक सिटिंग)' : 'Floor Desk Configuration (Sample Room Block A)'}
+                    {isHindi ? 'एग्जाम रूम लेआउट (मॉक सीटिंग)' : 'Floor Desk Configuration (Sample Room Block A)'}
                   </span>
                 </div>
                 <span className="text-[10px] font-mono text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded-[2px]">
@@ -2630,7 +2630,7 @@ function ExaminationsPage() {
                 onClick={() => setSeatingModalPaper(null)}
                 className="text-xs font-bold rounded-[4px]"
               >
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़ करें' : 'Close'}
               </VFButton>
             </div>
           </div>
@@ -2642,7 +2642,7 @@ function ExaminationsPage() {
         <VFDialog
           isOpen={isDatesheetModalOpen}
           onClose={() => setIsDatesheetModalOpen(false)}
-          title={isHindi ? 'आधिकारिक परीक्षा डेटशीट परिपत्र' : 'Official Examination Date Sheet Notice'}
+          title={isHindi ? 'ऑफिशियल एग्जाम डेटशीट नोटिस' : 'Official Examination Date Sheet Notice'}
           description={`Ref: VIA/EXAM/2026-27/CIR-094 · CBSE Affiliation No. 2130089 · ${activeExam.title}`}
           className="max-w-4xl rounded-[4px] bg-[#121212] border-border"
         >
@@ -2671,12 +2671,12 @@ function ExaminationsPage() {
                 <VFTableHead className="bg-[#1a1a1a]">
                   <VFTableRow>
                     <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground w-12 text-center">#</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'तिथि' : 'Date & Day'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'डेट & डे' : 'Date & Day'}</VFTableHeaderCell>
                     <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'कोड' : 'Code'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'विषय' : 'Subject'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'समय' : 'Timings'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'पूर्णांक' : 'Max'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'हॉल' : 'Exam Hall'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'सब्जेक्ट' : 'Subject'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'टाइमिंग्स' : 'Timings'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground text-center">{isHindi ? 'मैक्स' : 'Max'}</VFTableHeaderCell>
+                    <VFTableHeaderCell className="py-2 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'एग्जाम हॉल' : 'Exam Hall'}</VFTableHeaderCell>
                   </VFTableRow>
                 </VFTableHead>
                 <VFTableBody>
@@ -2736,7 +2736,7 @@ function ExaminationsPage() {
                 onClick={() => setIsDatesheetModalOpen(false)}
                 className="text-xs font-bold rounded-[4px]"
               >
-                {isHindi ? 'बंद करें' : 'Close'}
+                {isHindi ? 'क्लोज़ करें' : 'Close'}
               </VFButton>
             </div>
           </div>

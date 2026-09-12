@@ -6,7 +6,7 @@ import { translate, TranslationKey } from '../lib/i18n';
  *
  * Usage:
  *   const { t, lang } = useTranslation();
- *   t('nav.students')  // → 'Students' or 'छात्र'
+ *   t('nav.students')  // → 'Students' or 'स्टूडेंट्स'
  */
 export function useTranslation() {
   const lang = useGlobalStore((s) => s.language);

@@ -99,7 +99,7 @@ function TeachingPage() {
   const isHindi = lang === 'hi';
 
   React.useEffect(() => {
-    document.title = (isHindi ? 'शिक्षण' : 'Teaching') + ' – VidyaFloww';
+    document.title = (isHindi ? 'टीचिंग' : 'Teaching') + ' – VidyaFloww';
   }, [isHindi]);
 
   const [activeTab, setActiveTab] = React.useState<'classes' | 'planner'>('classes');
@@ -138,8 +138,8 @@ function TeachingPage() {
     setNewTitle('');
     setNewObjective('');
     addNotification({
-      title: isHindi ? 'पाठ योजना बनाई गई' : 'Lesson Plan Created',
-      description: isHindi ? `"${newPlan.title}" सफलतापूर्वक सहेजा गया।` : `"${newPlan.title}" has been saved.`,
+      title: isHindi ? 'लेसन प्लान क्रिएट हुआ' : 'Lesson Plan Created',
+      description: isHindi ? `"${newPlan.title}" सफलतापूर्वक सेव हुआ।` : `"${newPlan.title}" has been saved.`,
       type: 'success',
     });
   };
@@ -173,7 +173,7 @@ function TeachingPage() {
               }`}
             >
               <School className="h-4 w-4" />
-              {isHindi ? 'असाइंड कक्षाएं व वर्कलोड' : 'Classes & Workload'}
+              {isHindi ? 'असाइंड क्लासेज & वर्कलोड' : 'Classes & Workload'}
             </button>
             <button
               type="button"
@@ -186,7 +186,7 @@ function TeachingPage() {
               }`}
             >
               <BookOpenCheck className="h-4 w-4" />
-              {isHindi ? 'पाठ योजना व रूटीन' : 'Lesson Planner'}
+              {isHindi ? 'लेसन प्लानर & रूटीन' : 'Lesson Planner'}
             </button>
           </div>
         </div>
@@ -199,7 +199,7 @@ function TeachingPage() {
             className="h-8 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
             leftIcon={<Plus className="h-3.5 w-3.5" />}
           >
-            {isHindi ? '+ नई पाठ योजना' : '+ New Lesson Plan'}
+            {isHindi ? '+ न्यू लेसन प्लान' : '+ New Lesson Plan'}
           </VFButton>
         </div>
       </div>
@@ -215,12 +215,12 @@ function TeachingPage() {
                 <thead>
                   <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-semibold">
                     <th className="py-3 px-4 text-xs">{isHindi ? 'क्लास कोड' : 'Class Code'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'कक्षा व सेक्शन' : 'Grade & Section'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'क्लास & सेक्शन' : 'Grade & Section'}</th>
                     <th className="py-3 px-4 text-xs">{t('col.subject')}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'कक्ष संख्या' : 'Room'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'छात्र संख्या' : 'Students'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'साप्ताहिक पीरियड्स' : 'Weekly Periods'}</th>
-                    <th className="py-3 px-4 text-xs">{isHindi ? 'औसत उपस्थिति' : 'Avg Attendance'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'रूम नंबर' : 'Room'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'स्टूडेंट्स काउंट' : 'Students'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'वीकली पीरियड्स' : 'Weekly Periods'}</th>
+                    <th className="py-3 px-4 text-xs">{isHindi ? 'एवरेज अटेंडेंस' : 'Avg Attendance'}</th>
                     <th className="py-3 px-4 text-xs text-right">{t('col.status')}</th>
                   </tr>
                 </thead>
@@ -255,7 +255,7 @@ function TeachingPage() {
             {/* Left: Saved Plans */}
             <div className="lg:col-span-1 space-y-2.5">
               <div className="p-3 bg-[#141414] border border-border/80 rounded-[4px] flex items-center justify-between">
-                <span className="text-sm font-bold text-foreground">{isHindi ? 'पाठ योजना संग्रह' : 'Saved Lesson Plans'}</span>
+                <span className="text-sm font-bold text-foreground">{isHindi ? 'सेव्ड लेसन प्लान्स' : 'Saved Lesson Plans'}</span>
                 <span className="text-xs text-muted-foreground font-mono">{plans.length} Plans</span>
               </div>
               <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
@@ -301,7 +301,7 @@ function TeachingPage() {
                       <div>
                         <h4 className="font-bold text-foreground uppercase tracking-wider text-xs mb-2 flex items-center gap-1.5">
                           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                          {isHindi ? 'सीखने के मुख्य उद्देश्य' : 'Learning Objectives'}
+                          {isHindi ? 'प्राइमरी लर्निंग ऑब्जेक्टिव्स' : 'Learning Objectives'}
                         </h4>
                         <ul className="space-y-1.5 pl-4 list-disc text-muted-foreground text-xs leading-relaxed">
                           {current.objectives.map((obj, i) => (
@@ -313,7 +313,7 @@ function TeachingPage() {
                       <div className="border-t border-border/80 pt-3.5">
                         <h4 className="font-bold text-foreground uppercase tracking-wider text-xs mb-2 flex items-center gap-1.5">
                           <Clock className="h-4 w-4 text-primary" />
-                          {isHindi ? '45 मिनट समय विभाजन' : '45-Minute Period Breakdown'}
+                          {isHindi ? '45 मिनट टाइम ब्रेकडाउन' : '45-Minute Period Breakdown'}
                         </h4>
                         <div className="p-3.5 bg-[#121212] border border-border/70 rounded-[4px] font-mono text-xs whitespace-pre-wrap text-foreground/90 leading-relaxed">
                           {current.outline}
@@ -335,14 +335,14 @@ function TeachingPage() {
                           leftIcon={<BookOpen className="h-3.5 w-3.5" />}
                           onClick={() => {
                             addNotification({
-                              title: isHindi ? 'कक्षा में शुरू किया गया' : 'Active in Classroom',
+                              title: isHindi ? 'क्लास में स्टार्ट किया गया' : 'Active in Classroom',
                               description: `Timer active for "${current.title}".`,
                               type: 'info',
                             });
                           }}
                           className="rounded-[4px] h-8 px-3.5 text-xs font-bold"
                         >
-                          {isHindi ? 'क्लास में शुरू करें' : 'Launch in Class'}
+                          {isHindi ? 'क्लास में लॉन्च करें' : 'Launch in Class'}
                         </VFButton>
                       </div>
                     </div>
@@ -355,7 +355,7 @@ function TeachingPage() {
           {/* Daily Schedule Row */}
           <div className="border border-border/80 rounded-[4px] bg-[#141414] p-3.5 space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-foreground">{isHindi ? 'आज की पीरियड समय-सारणी' : 'Today’s Period Timetable'}</span>
+              <span className="text-sm font-bold text-foreground">{isHindi ? 'आज का पीरियड टाइमटेबल' : 'Today’s Period Timetable'}</span>
               <span className="text-xs text-muted-foreground font-mono">Monday, 07 Sep 2026</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
@@ -379,8 +379,8 @@ function TeachingPage() {
       <VFDialog
         isOpen={isNewPlanModalOpen}
         onClose={() => setIsNewPlanModalOpen(false)}
-        title={isHindi ? 'नई पाठ योजना बनाएं' : 'Create New Lesson Plan'}
-        description={isHindi ? '45 मिनट की संरचित पाठ योजना व सीखने के उद्देश्य दर्ज करें' : 'Build a 45-minute structured teaching timeline and learning objectives'}
+        title={isHindi ? 'न्यू लेसन प्लान क्रिएट करें' : 'Create New Lesson Plan'}
+        description={isHindi ? '45 मिनट का स्ट्रक्चर्ड टीचिंग टाइमलाइन और लर्निंग ऑब्जेक्टिव्स एंटर करें' : 'Build a 45-minute structured teaching timeline and learning objectives'}
         className="max-w-md rounded-[4px]"
         footerActions={
           <div className="flex items-center justify-end gap-2 w-full">
@@ -399,7 +399,7 @@ function TeachingPage() {
               disabled={!newTitle.trim()}
               className="rounded-[4px] font-bold"
             >
-              {isHindi ? 'सहेजें' : 'Save Plan'}
+              {isHindi ? 'प्लान सेव करें' : 'Save Plan'}
             </VFButton>
           </div>
         }
@@ -407,7 +407,7 @@ function TeachingPage() {
         <form onSubmit={handleCreatePlan} className="space-y-3 text-xs mt-1">
           <div>
             <label className="block font-bold text-foreground mb-1">
-              {isHindi ? 'पाठ विषय / शीर्षक' : 'Lesson Topic / Title'}
+              {isHindi ? 'लेसन टॉपिक / टाइटल' : 'Lesson Topic / Title'}
             </label>
             <div className="flex gap-2">
               <input
@@ -433,7 +433,7 @@ function TeachingPage() {
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block font-bold text-foreground mb-1">{isHindi ? 'विषय' : 'Subject'}</label>
+              <label className="block font-bold text-foreground mb-1">{isHindi ? 'सब्जेक्ट' : 'Subject'}</label>
               <select
                 value={newSubject}
                 onChange={(e) => setNewSubject(e.target.value)}
@@ -446,7 +446,7 @@ function TeachingPage() {
               </select>
             </div>
             <div>
-              <label className="block font-bold text-foreground mb-1">{isHindi ? 'कक्षा' : 'Grade'}</label>
+              <label className="block font-bold text-foreground mb-1">{isHindi ? 'क्लास' : 'Grade'}</label>
               <select
                 value={newGrade}
                 onChange={(e) => setNewGrade(e.target.value)}
@@ -462,7 +462,7 @@ function TeachingPage() {
 
           <div>
             <label className="block font-bold text-foreground mb-1">
-              {isHindi ? 'मुख्य सीखने के उद्देश्य' : 'Primary Learning Objective'}
+              {isHindi ? 'प्राइमरी लर्निंग ऑब्जेक्टिव्स' : 'Primary Learning Objective'}
             </label>
             <textarea
               rows={3}

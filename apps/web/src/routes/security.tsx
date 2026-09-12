@@ -45,7 +45,7 @@ function SecurityManagementPage() {
   const { addNotification } = useGlobalStore();
   const { t, lang } = useTranslation();
   const isHindi = lang === 'hi';
-  React.useEffect(() => { document.title = (isHindi ? 'सुरक्षा व रोल्स' : 'Security & Roles') + ' – VidyaFloww'; }, [isHindi]);
+  React.useEffect(() => { document.title = (isHindi ? 'सिक्योरिटी & रोल्स' : 'Security & Roles') + ' – VidyaFloww'; }, [isHindi]);
 
   // Permission Matrix State
   const [permissions, setPermissions] = React.useState<RolePermission[]>(DEFAULT_PERMISSIONS);
@@ -108,7 +108,7 @@ function SecurityManagementPage() {
 
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[#141414] border border-border/80 text-xs font-mono font-bold text-foreground">
             <Shield className="h-3.5 w-3.5 text-rose-400" />
-            <span>{isHindi ? 'सुरक्षा व रोल्स' : 'Security & Roles'}</span>
+            <span>{isHindi ? 'सिक्योरिटी & रोल्स' : 'Security & Roles'}</span>
           </div>
         </div>
 
@@ -132,35 +132,35 @@ function SecurityManagementPage() {
             <div className="h-6 w-6 rounded-[4px] bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/30">
               <Users className="h-3.5 w-3.5" />
             </div>
-            <span>{isHindi ? 'एंटरप्राइज मॉड्यूल अनुमति मैट्रिक्स' : 'Enterprise Module Authorization Matrix'}</span>
+            <span>{isHindi ? 'एंटरप्राइज मॉड्यूल ऑथराइजेशन मैट्रिक्स' : 'Enterprise Module Authorization Matrix'}</span>
           </div>
         }
-        description={isHindi ? 'मॉड्यूल एक्सेस टॉगल करने के लिए किसी भी सेल पर क्लिक करें। शिक्षक अनुमतियां सीधे स्कूल प्रिंसिपल द्वारा प्रबंधित की जाती हैं।' : 'Click any cell to toggle module capabilities. Faculty permissions are managed directly by the School Principal.'}
+        description={isHindi ? 'मॉड्यूल एक्सेस टॉगल करने के लिए किसी भी सेल पर क्लिक करें। टीचर परमिशन्स सीधे स्कूल प्रिंसिपल द्वारा मैनेज की जाती हैं।' : 'Click any cell to toggle module capabilities. Faculty permissions are managed directly by the School Principal.'}
         className="bg-[#0d0d0d] border-border/90"
         bodyClassName="p-0 overflow-x-auto no-scrollbar"
       >
         <table className="w-full text-xs text-left border-collapse">
           <thead>
             <tr className="border-b border-border/80 bg-[#141414] text-muted-foreground font-extrabold uppercase tracking-wider text-[10px]">
-              <th className="py-3.5 px-4">{isHindi ? 'ERP मॉड्यूल' : 'Core Portal Module'}</th>
+              <th className="py-3.5 px-4">{isHindi ? 'ERP मॉड्यूल्स' : 'Core Portal Module'}</th>
               <th className="py-3.5 px-3 text-center">
                 {isHindi ? 'सुपर एडमिन' : 'Super Admin'}
-                <span className="block text-[9px] text-muted-foreground font-normal lowercase">{isHindi ? '(पूर्ण अधिकार)' : '(full root)'}</span>
+                <span className="block text-[9px] text-muted-foreground font-normal lowercase">{isHindi ? '(फुल रूट एक्सेस)' : '(full root)'}</span>
               </th>
               <th className="py-3.5 px-3 text-center">
                 {isHindi ? 'स्कूल प्रिंसिपल' : 'School Principal'}
-                <span className="block text-[9px] text-primary font-bold lowercase">{isHindi ? '(शिक्षक प्रशासन)' : '(faculty governance)'}</span>
+                <span className="block text-[9px] text-primary font-bold lowercase">{isHindi ? '(फैकल्टी गवर्नेंस)' : '(faculty governance)'}</span>
               </th>
               <th className="py-3.5 px-3 text-center">
                 {isHindi ? 'फ्रंट ऑफिस' : 'Front Office'}
-                <span className="block text-[9px] text-amber-400/80 font-normal lowercase">{isHindi ? '(एडमिशन व रिकॉर्ड)' : '(intake & records)'}</span>
+                <span className="block text-[9px] text-amber-400/80 font-normal lowercase">{isHindi ? '(एडमिशन & रिकॉर्ड्स)' : '(intake & records)'}</span>
               </th>
               <th className="py-3.5 px-3 text-center">
                 {isHindi ? 'अकाउंटेंट' : 'Accountant'}
-                <span className="block text-[9px] text-purple-400/80 font-normal lowercase">{isHindi ? '(फाइनेंस व फीस)' : '(finance & fees)'}</span>
+                <span className="block text-[9px] text-purple-400/80 font-normal lowercase">{isHindi ? '(फाइनेंस & फीस)' : '(finance & fees)'}</span>
               </th>
               <th className="py-3.5 px-3 text-center">
-                {isHindi ? 'अभिभावक व छात्र' : 'Parent & Student'}
+                {isHindi ? 'पैरेंट & स्टूडेंट' : 'Parent & Student'}
                 <span className="block text-[9px] text-blue-400/80 font-normal lowercase">{isHindi ? '(पोर्टल एक्सेस)' : '(self-service)'}</span>
               </th>
             </tr>
