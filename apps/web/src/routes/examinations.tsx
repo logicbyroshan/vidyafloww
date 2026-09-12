@@ -18,7 +18,6 @@ import {
   cn,
 } from '@vidyamaxx/ui';
 import {
-  ClipboardList,
   Plus,
   Download,
   Check,
@@ -34,8 +33,6 @@ import {
   AlertCircle,
   Search,
   FileSpreadsheet,
-  LayoutGrid,
-  List,
   X,
   Lock,
   Unlock,
@@ -43,7 +40,6 @@ import {
   Layers,
   FileText,
   ShieldCheck,
-  GitCommit,
   GraduationCap,
   MapPin,
 } from 'lucide-react';
@@ -543,12 +539,11 @@ function ExaminationsPage() {
   const [exams, setExams] = React.useState<ExamRecord[]>(INITIAL_EXAMS);
   const [selectedExamId, setSelectedExamId] = React.useState<string>(INITIAL_EXAMS[0].id);
 
-  // Timetable Filters & View Mode
+  // Timetable Filters
   const [paperSearch, setPaperSearch] = React.useState('');
   const [paperStatusFilter, setPaperStatusFilter] = React.useState<string>('All');
   const [paperCategoryFilter, setPaperCategoryFilter] = React.useState<string>('All');
   const [paperShiftFilter, setPaperShiftFilter] = React.useState<string>('All');
-  const [paperViewMode, setPaperViewMode] = React.useState<'table' | 'cards' | 'timeline'>('table');
   const [showOverviewCards, setShowOverviewCards] = React.useState(false);
 
   // Modals for Enhanced Timetable
@@ -918,16 +913,8 @@ function ExaminationsPage() {
     <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Header Action Toolbar */}
       <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 shrink-0 shadow-xs">
-        {/* Left: Session Badge & 3 Main View Switchers */}
+        {/* Left: 3 Main View Switchers */}
         <div className="flex flex-wrap items-center gap-2">
-          {/* Active Session */}
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-[3px] bg-[#1a1a1a] border border-border/80 text-xs font-mono">
-            <ClipboardList className="h-3.5 w-3.5 text-zinc-400" />
-            <span className="font-bold text-foreground">AY 2026–27</span>
-          </div>
-
-          <div className="h-4 w-[1px] bg-border/80 hidden sm:block" />
-
           {/* 3 Unified View Tabs */}
           <div className="flex items-center gap-1 bg-[#1a1a1a] p-0.5 rounded-[4px] border border-border/70 text-xs">
             <button
@@ -1248,48 +1235,8 @@ function ExaminationsPage() {
               )}
             </div>
 
-            {/* View Modes & Action Buttons */}
+            {/* Action Buttons */}
             <div className="flex items-center gap-2">
-              {/* 3-way View Switcher: Table | Cards | Timeline */}
-              <div className="flex items-center bg-[#1a1a1a] p-0.5 rounded-[4px] border border-border/70">
-                <button
-                  type="button"
-                  onClick={() => setPaperViewMode('table')}
-                  className={cn(
-                    'px-2 py-1 rounded-[3px] transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1',
-                    paperViewMode === 'table' ? 'bg-[#262626] text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
-                  )}
-                  title="Master Table View"
-                >
-                  <List className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">{isHindi ? 'तालिका' : 'Table'}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaperViewMode('cards')}
-                  className={cn(
-                    'px-2 py-1 rounded-[3px] transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1',
-                    paperViewMode === 'cards' ? 'bg-[#262626] text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
-                  )}
-                  title="Grid Card View"
-                >
-                  <LayoutGrid className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">{isHindi ? 'कार्ड' : 'Cards'}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaperViewMode('timeline')}
-                  className={cn(
-                    'px-2 py-1 rounded-[3px] transition-colors cursor-pointer text-xs font-semibold flex items-center gap-1',
-                    paperViewMode === 'timeline' ? 'bg-[#262626] text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
-                  )}
-                  title="Chronological Progression Timeline"
-                >
-                  <GitCommit className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">{isHindi ? 'टाइमलाइन' : 'Timeline'}</span>
-                </button>
-              </div>
-
               {/* Add Paper */}
               <VFButton
                 size="sm"
@@ -1298,7 +1245,7 @@ function ExaminationsPage() {
                 className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
                 leftIcon={<Plus className="h-3.5 w-3.5" />}
               >
-                {isHindi ? 'प्रश्नपत्र' : '+ Paper'}
+                {isHindi ? 'प्रश्नपत्र' : 'Paper'}
               </VFButton>
 
               {/* Official Datesheet Notice Modal */}
@@ -1353,261 +1300,6 @@ function ExaminationsPage() {
                 </VFButton>
               </div>
             </VFCard>
-          ) : paperViewMode === 'table' ? (
-            /* Official Date Sheet — Supercharged Master Table View */
-            <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 flex-1 overflow-auto">
-              <VFTable className="rounded-none border-0 text-xs w-full">
-                <VFTableHead className="bg-[#1a1a1a] sticky top-0 z-10">
-                  <VFTableRow>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-12 text-center">#</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-44">{isHindi ? 'तिथि व दिवस' : 'Date & Day'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground">{isHindi ? 'विषय, कोड व वर्ग' : 'Subject & Category'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-48">{isHindi ? 'समय, अवधि व रिपोर्टिंग' : 'Bell Schedule'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-48">{isHindi ? 'कक्ष / हॉल आवंटन' : 'Exam Hall & Seating'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-center w-28">{isHindi ? 'पूर्णांक व अर्हता' : 'Max Marks'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground w-40">{isHindi ? 'निरीक्षक दल' : 'Invigilation Team'}</VFTableHeaderCell>
-                    <VFTableHeaderCell className="py-2.5 px-3 text-xs font-bold text-muted-foreground text-right w-24">{isHindi ? 'स्थिति' : 'Status'}</VFTableHeaderCell>
-                  </VFTableRow>
-                </VFTableHead>
-                <VFTableBody>
-                  {filteredPapers.map((paper, idx) => (
-                    <VFTableRow key={paper.id} className="hover:bg-[#1a1a1a]/70 transition-colors">
-                      {/* 1. Sequence Number */}
-                      <VFTableCell className="py-2.5 px-3 font-mono font-bold text-muted-foreground text-center text-xs">
-                        {idx + 1}
-                      </VFTableCell>
-
-                      {/* 2. Date & Calendar Badge */}
-                      <VFTableCell className="py-2.5 px-3">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-11 h-11 rounded-[4px] bg-[#1a1a1a] border border-border/90 flex flex-col items-center justify-center shrink-0 shadow-xs">
-                            <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground font-mono leading-none">
-                              {paper.monthText || 'SEP'}
-                            </span>
-                            <span className="text-sm font-black text-foreground font-mono leading-tight">
-                              {paper.dayNumber || '18'}
-                            </span>
-                            <span className="text-[8px] font-semibold text-zinc-500 font-mono leading-none">
-                              {paper.dayOfWeek || 'MON'}
-                            </span>
-                          </div>
-                          <div className="min-w-0">
-                            <span className="font-semibold text-foreground text-xs block truncate">{paper.displayDate}</span>
-                            <span
-                              className={cn(
-                                'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] inline-block mt-0.5',
-                                paper.status === 'Active Today'
-                                  ? 'bg-rose-950/80 text-rose-300 border border-rose-800/50'
-                                  : paper.status === 'Completed'
-                                  ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/40'
-                                  : 'bg-zinc-800/80 text-zinc-400 border border-border/70'
-                              )}
-                            >
-                              {paper.relativeTiming || (paper.status === 'Active Today' ? 'LIVE TODAY' : paper.status === 'Completed' ? 'COMPLETED' : 'UPCOMING')}
-                            </span>
-                          </div>
-                        </div>
-                      </VFTableCell>
-
-                      {/* 3. Subject, Code & Category */}
-                      <VFTableCell className="py-2.5 px-3">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="font-bold text-foreground text-xs">{paper.subject}</span>
-                            <span className="font-mono text-[10px] font-semibold px-1.5 py-0.5 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/80">
-                              {paper.paperCode}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                            <span className="px-1.5 py-0.2 rounded-[2px] bg-[#1e1e1e] border border-border/60 font-medium">
-                              {paper.subjectCategory || 'Core Theory'}
-                            </span>
-                            <span>•</span>
-                            <span className="font-mono">{paper.grade}</span>
-                          </div>
-                        </div>
-                      </VFTableCell>
-
-                      {/* 4. Bell Schedule, Reporting & Reading Time */}
-                      <VFTableCell className="py-2.5 px-3 font-mono text-xs">
-                        <div className="space-y-0.5">
-                          <div className="flex items-center gap-1 text-foreground font-semibold">
-                            <Clock className="h-3 w-3 text-amber-500/80" />
-                            <span>{paper.timeSlot}</span>
-                            <span className="text-[10px] text-muted-foreground font-normal">({paper.duration})</span>
-                          </div>
-                          <div className="text-[10px] text-muted-foreground flex items-center gap-1.5">
-                            <span className="text-zinc-400">Rep: {paper.reportingTime || '08:30 AM'}</span>
-                            <span>|</span>
-                            <span className="text-zinc-400">Reading: {paper.readingTime || '08:45 AM'}</span>
-                          </div>
-                        </div>
-                      </VFTableCell>
-
-                      {/* 5. Exam Hall, Block & Interactive Seating Plan */}
-                      <VFTableCell className="py-2.5 px-3 text-xs">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-foreground font-medium">
-                            <Building2 className="h-3 w-3 text-zinc-400 shrink-0" />
-                            <span className="truncate">{paper.hall}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
-                            <span>{paper.capacity || '120 Desks'}</span>
-                            <span>•</span>
-                            <button
-                              type="button"
-                              onClick={() => setSeatingModalPaper(paper)}
-                              className="text-amber-400/90 hover:text-amber-300 font-bold flex items-center gap-0.5 cursor-pointer hover:underline"
-                              title="View Desk Seating Plan"
-                            >
-                              <MapPin className="h-2.5 w-2.5" />
-                              <span>{isHindi ? 'सिटिंग प्लान' : 'Seating Plan'}</span>
-                            </button>
-                          </div>
-                        </div>
-                      </VFTableCell>
-
-                      {/* 6. Max Marks, Pass Threshold & Internal Weightage */}
-                      <VFTableCell className="py-2.5 px-3 text-center font-mono">
-                        <div className="text-xs font-bold text-emerald-400">
-                          {paper.maxMarks} <span className="text-[9px] text-muted-foreground font-normal">{isHindi ? 'पूर्णांक' : 'Marks'}</span>
-                        </div>
-                        <div className="text-[10px] text-muted-foreground">
-                          Pass: <span className="text-foreground font-bold">{paper.passMarks || 27}</span>
-                          {paper.internalMarks ? ` · Int: ${paper.internalMarks}` : ''}
-                        </div>
-                      </VFTableCell>
-
-                      {/* 7. Invigilators */}
-                      <VFTableCell className="py-2.5 px-3 text-xs">
-                        <div className="space-y-0.5">
-                          <div className="text-foreground font-medium flex items-center gap-1">
-                            <ShieldCheck className="h-3 w-3 text-zinc-400 shrink-0" />
-                            <span className="truncate">{paper.invigilator}</span>
-                          </div>
-                          {paper.assistantInvigilator && (
-                            <div className="text-[10px] text-muted-foreground truncate pl-4">
-                              Asst: {paper.assistantInvigilator}
-                            </div>
-                          )}
-                        </div>
-                      </VFTableCell>
-
-                      {/* 8. Status Badge */}
-                      <VFTableCell className="py-2.5 px-3 text-right">
-                        <VFBadge
-                          variant={
-                            paper.status === 'Completed'
-                              ? 'success'
-                              : paper.status === 'Active Today'
-                              ? 'danger'
-                              : 'outline'
-                          }
-                          className="text-[10px] font-bold"
-                        >
-                          {paper.status === 'Active Today' ? (
-                            <span className="flex items-center gap-1">
-                              <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
-                              {isHindi ? 'सक्रिय आज' : 'Live Today'}
-                            </span>
-                          ) : paper.status === 'Completed' ? (
-                            isHindi ? 'संपन्न' : 'Done'
-                          ) : (
-                            isHindi ? 'आगामी' : 'Upcoming'
-                          )}
-                        </VFBadge>
-                      </VFTableCell>
-                    </VFTableRow>
-                  ))}
-                </VFTableBody>
-              </VFTable>
-            </VFCard>
-          ) : paperViewMode === 'cards' ? (
-            /* Cards View */
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-4 overflow-y-auto">
-              {filteredPapers.map((paper) => (
-                <div
-                  key={paper.id}
-                  className="p-3.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col justify-between gap-3 hover:border-zinc-600 transition-all shadow-xs"
-                >
-                  {/* Card Header */}
-                  <div className="flex items-start justify-between gap-2.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-10 h-10 rounded-[4px] bg-[#1a1a1a] border border-border/90 flex flex-col items-center justify-center shrink-0">
-                        <span className="text-[8px] font-bold uppercase tracking-wider text-muted-foreground font-mono leading-none">
-                          {paper.monthText || 'SEP'}
-                        </span>
-                        <span className="text-sm font-black text-foreground font-mono leading-tight">
-                          {paper.dayNumber || '18'}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1.5 mb-0.5">
-                          <span className="font-mono text-[9px] font-bold px-1.5 py-0.2 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/70">
-                            {paper.paperCode}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground font-semibold">{paper.displayDate}</span>
-                        </div>
-                        <h4 className="font-bold text-foreground text-xs leading-snug">{paper.subject}</h4>
-                      </div>
-                    </div>
-
-                    <VFBadge
-                      variant={paper.status === 'Completed' ? 'success' : paper.status === 'Active Today' ? 'danger' : 'outline'}
-                      className="text-[10px] font-bold shrink-0"
-                    >
-                      {paper.status === 'Active Today' ? (
-                        <span className="flex items-center gap-1">
-                          <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
-                          Live
-                        </span>
-                      ) : (
-                        paper.status
-                      )}
-                    </VFBadge>
-                  </div>
-
-                  {/* Card Schedule & Details */}
-                  <div className="space-y-1.5 py-2 border-y border-border/50 text-[11px]">
-                    <div className="flex items-center justify-between font-mono text-muted-foreground">
-                      <span className="flex items-center gap-1 text-foreground">
-                        <Clock className="h-3 w-3 text-amber-500/80" /> {paper.timeSlot}
-                      </span>
-                      <span className="font-bold text-emerald-400">{paper.maxMarks} Marks</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                      <span className="flex items-center gap-1 truncate">
-                        <Building2 className="h-3 w-3 text-zinc-400" /> {paper.hall}
-                      </span>
-                      <span className="font-mono text-zinc-400 shrink-0">{paper.capacity || '120 Desks'}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-0.5">
-                      <span className="flex items-center gap-1 truncate">
-                        <ShieldCheck className="h-3 w-3 text-zinc-400" /> {paper.invigilator}
-                      </span>
-                      <span className="font-mono text-zinc-400">Pass: {paper.passMarks || 27}</span>
-                    </div>
-                  </div>
-
-                  {/* Card Footer Actions */}
-                  <div className="flex items-center justify-between pt-0.5">
-                    <span className="text-[10px] font-mono text-muted-foreground px-1.5 py-0.5 rounded-[2px] bg-[#1a1a1a] border border-border/60">
-                      {paper.subjectCategory || 'Core Theory'}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setSeatingModalPaper(paper)}
-                      className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
-                    >
-                      <MapPin className="h-3 w-3" />
-                      <span>{isHindi ? 'सिटिंग व्यवस्था' : 'Seating Plan'}</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
           ) : (
             /* Timeline View */
             <div className="flex-1 min-h-0 overflow-y-auto pb-6 pl-2 pr-4">
@@ -1653,7 +1345,7 @@ function ExaminationsPage() {
                             className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
                           >
                             <MapPin className="h-3 w-3" />
-                            <span>Seating</span>
+                            <span>{isHindi ? 'सिटिंग व्यवस्था' : 'Seating'}</span>
                           </button>
                         </div>
                       </div>

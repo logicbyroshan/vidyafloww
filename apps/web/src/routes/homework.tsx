@@ -307,6 +307,74 @@ function HomeworkPage() {
           )}
         </div>
 
+        {/* Right side in Assign tab: Subject, Due date, and Publish badges */}
+        {activeTab === 'assign' && (
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            {/* Subject Selector */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-muted-foreground">Subject:</span>
+              <div className="relative">
+                <select
+                  id="assign-subject"
+                  value={assignSubject}
+                  onChange={(e) => setAssignSubject(e.target.value)}
+                  className="h-8 pl-2.5 pr-7 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground font-bold focus:outline-none focus:border-zinc-500 appearance-none cursor-pointer"
+                >
+                  {SUBJECTS.map((s) => <option key={s} value={s}>{s}</option>)}
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
+              </div>
+            </div>
+
+            <div className="h-4 w-[1px] bg-border/70 hidden sm:block" />
+
+            {/* Due Date */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-muted-foreground">Due:</span>
+              <input
+                type="date"
+                id="assign-due"
+                value={assignDue}
+                onChange={(e) => setAssignDue(e.target.value)}
+                className="h-8 px-2.5 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
+              />
+            </div>
+
+            <div className="h-4 w-[1px] bg-border/70 hidden sm:block" />
+
+            {/* Publish Status Badges */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-muted-foreground">Publish:</span>
+              <div className="flex items-center gap-0.5 bg-[#1a1a1a] p-0.5 rounded-[4px] border border-border/70 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setAssignStatus('Published')}
+                  className={cn(
+                    'px-2.5 py-1 rounded-[3px] font-bold transition-colors cursor-pointer text-xs',
+                    assignStatus === 'Published'
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-xs'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  Now
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAssignStatus('Draft')}
+                  className={cn(
+                    'px-2.5 py-1 rounded-[3px] font-bold transition-colors cursor-pointer text-xs',
+                    assignStatus === 'Draft'
+                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-xs'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  Draft
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Right: Review filters (hidden in detail view since only submission table shown) */}
         {activeTab === 'review' && !detailHW && (
           <div className="flex items-center gap-2 shrink-0">
@@ -368,76 +436,7 @@ function HomeworkPage() {
           TAB 1 — ASSIGN (Rich-text editor)
           ══════════════════════════════════════════ */}
       {activeTab === 'assign' && (
-        <div className="flex-1 min-h-0 flex flex-col gap-3">
-          {/* Meta bar: Subject / Due / Publish */}
-          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-wrap items-center gap-3 shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-muted-foreground">Subject</span>
-              <div className="relative">
-                <select
-                  id="assign-subject"
-                  value={assignSubject}
-                  onChange={(e) => setAssignSubject(e.target.value)}
-                  className="h-8 pl-2.5 pr-7 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground font-bold focus:outline-none focus:border-zinc-500 appearance-none cursor-pointer"
-                >
-                  {SUBJECTS.map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
-              </div>
-            </div>
-
-            <div className="h-4 w-[1px] bg-border/70" />
-
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-muted-foreground">Due</span>
-              <input
-                type="date"
-                id="assign-due"
-                value={assignDue}
-                onChange={(e) => setAssignDue(e.target.value)}
-                className="h-8 px-2.5 text-xs bg-[#1a1a1a] border border-border rounded-[4px] text-foreground font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
-              />
-            </div>
-
-            <div className="h-4 w-[1px] bg-border/70" />
-
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-muted-foreground">Publish</span>
-              <div className="flex items-center gap-0.5 bg-[#1a1a1a] p-0.5 rounded-[4px] border border-border/70 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setAssignStatus('Published')}
-                  className={cn(
-                    'px-2.5 py-0.5 rounded-[3px] font-bold transition-colors cursor-pointer',
-                    assignStatus === 'Published'
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  Now
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAssignStatus('Draft')}
-                  className={cn(
-                    'px-2.5 py-0.5 rounded-[3px] font-bold transition-colors cursor-pointer',
-                    assignStatus === 'Draft'
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
-                      : 'text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  Draft
-                </button>
-              </div>
-            </div>
-
-            <div className="ml-auto">
-              <span className="text-[11px] font-bold text-blue-300 font-mono px-2 py-0.5 bg-blue-500/10 border border-blue-500/30 rounded-[3px]">
-                → {assignClass}
-              </span>
-            </div>
-          </div>
-
+        <div className="flex-1 min-h-0 flex flex-col">
           {/* Rich Text Editor */}
           <VFCard className="bg-[#141414] border-border/80 flex-1 min-h-0 flex flex-col" bodyClassName="p-0 flex-1 flex flex-col">
             {/* Toolbar */}
