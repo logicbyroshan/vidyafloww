@@ -18,21 +18,22 @@ import {
   LayoutGrid,
   UserPlus,
   CreditCard,
-  Clock,
+  Calendar,
   School,
-  BookOpen,
   BookOpenCheck,
+  BookMarked,
   ClipboardList,
-  Bell,
+  UserCheck,
+  Library,
+  Bus,
+  Building2,
   Award,
+  BarChart3,
+  Bell,
+  MessageSquareWarning,
   FileSpreadsheet,
   Settings,
-  TrendingUp,
-  History,
-  ShieldCheck,
-  Smartphone,
-  Boxes,
-  Bus,
+  LucideIcon,
 } from 'lucide-react';
 
 // 2×2 (4-dot) compact Grip Icon for ultra-minimal corner placement
@@ -65,10 +66,10 @@ export interface ShortcutAction {
   desc: string;
   hindiDesc: string;
   route: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
 }
 
-// 20 Fixed Modules organized in a strict 5 × 4 grid layout with unified orange glassmorphic icons
+// 20 Fixed Modules organized in a strict 5 × 4 grid layout with icons matching the Sidebar navigation
 const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'students',
@@ -98,13 +99,13 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     icon: CalendarCheck,
   },
   {
-    id: 'fees',
-    label: 'Payments',
-    hindiLabel: 'शुल्क व भुगतान',
-    desc: 'Dues & Receipts',
-    hindiDesc: 'शुल्क व रसीदें',
-    route: '/fees',
-    icon: CreditCard,
+    id: 'timetable',
+    label: 'Timetable',
+    hindiLabel: 'समय सारणी',
+    desc: 'Schedules & Periods',
+    hindiDesc: 'पीरियड्स व रूटीन',
+    route: '/timetable',
+    icon: Calendar,
   },
   {
     id: 'teachers',
@@ -116,15 +117,6 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     icon: Users,
   },
   {
-    id: 'timetable',
-    label: 'Timetable',
-    hindiLabel: 'समय सारणी',
-    desc: 'Schedules & Periods',
-    hindiDesc: 'पीरियड्स व रूटीन',
-    route: '/timetable',
-    icon: Clock,
-  },
-  {
     id: 'academics',
     label: 'Academics',
     hindiLabel: 'अकादमिक्स',
@@ -134,22 +126,22 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     icon: School,
   },
   {
+    id: 'teaching',
+    label: 'Teaching',
+    hindiLabel: 'शिक्षण योजना',
+    desc: 'Lesson Plans & Pacing',
+    hindiDesc: 'पाठ योजना व पेसिंग',
+    route: '/teaching',
+    icon: BookOpenCheck,
+  },
+  {
     id: 'homework',
     label: 'Homework',
     hindiLabel: 'गृहकार्य',
     desc: 'Assignments & Review',
     hindiDesc: 'असाइनमेंट व जांच',
     route: '/homework',
-    icon: BookOpen,
-  },
-  {
-    id: 'elibrary',
-    label: 'E-Library',
-    hindiLabel: 'ई-लाइब्रेरी',
-    desc: 'Digital Books & NCERT',
-    hindiDesc: 'डिजिटल पाठ्यपुस्तकें',
-    route: '/elibrary',
-    icon: BookOpenCheck,
+    icon: BookMarked,
   },
   {
     id: 'examinations',
@@ -161,13 +153,49 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     icon: ClipboardList,
   },
   {
-    id: 'notices',
-    label: 'Notices',
-    hindiLabel: 'नोटिस व परिपत्र',
-    desc: 'Campus Broadcasts',
-    hindiDesc: 'घोषणाएं व संदेश',
-    route: '/notices',
-    icon: Bell,
+    id: 'hrmanage',
+    label: 'HR Manage',
+    hindiLabel: 'मानव संसाधन',
+    desc: 'Staff Directory & Leaves',
+    hindiDesc: 'स्टाफ डायरेक्टरी व छुट्टियां',
+    route: '/hr-manage',
+    icon: UserCheck,
+  },
+  {
+    id: 'elibrary',
+    label: 'E-Library',
+    hindiLabel: 'ई-लाइब्रेरी',
+    desc: 'Digital Books & NCERT',
+    hindiDesc: 'डिजिटल पाठ्यपुस्तकें',
+    route: '/elibrary',
+    icon: Library,
+  },
+  {
+    id: 'transport',
+    label: 'Transport',
+    hindiLabel: 'परिवहन सेवा',
+    desc: 'Fleet & Bus Routes',
+    hindiDesc: 'बस रूट व जीपीएस',
+    route: '/transport',
+    icon: Bus,
+  },
+  {
+    id: 'hostel',
+    label: 'Hostel',
+    hindiLabel: 'छात्रावास',
+    desc: 'Dorms & Outpass',
+    hindiDesc: 'हॉस्टल व आउटपास',
+    route: '/hostel',
+    icon: Building2,
+  },
+  {
+    id: 'fees',
+    label: 'Payments',
+    hindiLabel: 'शुल्क व भुगतान',
+    desc: 'Dues & Receipts',
+    hindiDesc: 'शुल्क व रसीदें',
+    route: '/fees',
+    icon: CreditCard,
   },
   {
     id: 'scholarships',
@@ -177,6 +205,33 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'फीस छूट व अनुदान',
     route: '/scholarships',
     icon: Award,
+  },
+  {
+    id: 'statistics',
+    label: 'Statistics',
+    hindiLabel: 'आँकड़े व विश्लेषण',
+    desc: 'Analytics & Insights',
+    hindiDesc: 'रिपोर्ट व विश्लेषण',
+    route: '/statistics',
+    icon: BarChart3,
+  },
+  {
+    id: 'notices',
+    label: 'Notices',
+    hindiLabel: 'नोटिस व परिपत्र',
+    desc: 'Campus Broadcasts',
+    hindiDesc: 'घोषणाएं व संदेश',
+    route: '/notices',
+    icon: Bell,
+  },
+  {
+    id: 'complaints',
+    label: 'Complaints',
+    hindiLabel: 'शिकायत निवारण',
+    desc: 'Grievance & Tickets',
+    hindiDesc: 'शिकायतें व निवारण',
+    route: '/complaints',
+    icon: MessageSquareWarning,
   },
   {
     id: 'reports',
@@ -195,60 +250,6 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     hindiDesc: 'सत्र व विन्यास',
     route: '/settings',
     icon: Settings,
-  },
-  {
-    id: 'statistics',
-    label: 'Statistics',
-    hindiLabel: 'आँकड़े व विश्लेषण',
-    desc: 'Analytics & Insights',
-    hindiDesc: 'रिपोर्ट व विश्लेषण',
-    route: '/statistics',
-    icon: TrendingUp,
-  },
-  {
-    id: 'audit',
-    label: 'Audit Log',
-    hindiLabel: 'ऑडिट लॉग',
-    desc: 'Activity & Audit Trail',
-    hindiDesc: 'गतिविधि इतिहास',
-    route: '/audit',
-    icon: History,
-  },
-  {
-    id: 'security',
-    label: 'Security',
-    hindiLabel: 'सुरक्षा प्रबंधन',
-    desc: 'Access & Permissions',
-    hindiDesc: 'पहुंच व अनुमतियां',
-    route: '/security',
-    icon: ShieldCheck,
-  },
-  {
-    id: 'portal',
-    label: 'Parent Portal',
-    hindiLabel: 'पालक पोर्टल',
-    desc: 'Guardian Access Hub',
-    hindiDesc: 'अभिभावक पहुंच',
-    route: '/portal',
-    icon: Smartphone,
-  },
-  {
-    id: 'resources',
-    label: 'Resources',
-    hindiLabel: 'संसाधन भंडार',
-    desc: 'Learning Materials',
-    hindiDesc: 'शिक्षण सामग्री',
-    route: '/resources',
-    icon: Boxes,
-  },
-  {
-    id: 'transport',
-    label: 'Transport',
-    hindiLabel: 'परिवहन सेवा',
-    desc: 'Fleet & Bus Routes',
-    hindiDesc: 'बस रूट व ट्रैकिंग',
-    route: '/transport',
-    icon: Bus,
   },
 ];
 
@@ -479,7 +480,7 @@ export function DashboardPage() {
           {...kpiProps}
           accentColor="none"
           showTopBar={false}
-          className="bg-[#1a1a1a] border-border/80 hover:bg-[#222222] hover:border-blue-500/40 rounded-[4px]"
+          className="bg-card border-border/80 hover:bg-[#181818] hover:border-border/90 rounded-[4px] shadow-xs transition-all"
         />
 
         {/* Corner move handle — ONLY visible when Configure Dashboard is active */}
@@ -679,19 +680,9 @@ export function DashboardPage() {
         </div>
       )}
 
-      {/* 1. Top Full-Width KPI Metric Hub */}
-      <div className="rounded-[4px] border border-border/80 bg-card p-4 shadow-xs shrink-0 relative overflow-hidden group/kpihub">
-        {/* Subtle ambient glow on Top KPI Metric Hub */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300 opacity-60 group-hover/kpihub:opacity-90 z-0"
-          style={{
-            background: 'radial-gradient(ellipse 70% 35% at 50% 0%, rgba(234, 88, 12, 0.025) 0%, transparent 100%)',
-          }}
-          aria-hidden="true"
-        />
-        <div className="relative z-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {currentKpis.map((kpiId, index) => renderKpiCard(kpiId, index))}
-        </div>
+      {/* 1. Top KPI Stat Cards — direct page grid without outer container, matching other pages */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {currentKpis.map((kpiId, index) => renderKpiCard(kpiId, index))}
       </div>
 
       {/* 2 + 3. Main Content: Quick Actions (60%) + Student Attendance (40%) */}
@@ -736,8 +727,8 @@ export function DashboardPage() {
 
                     {/* Relative container for Icon Plate: sleek orange glassmorphic geometric plate with strict sharp border */}
                     <div className="relative z-1 flex-1 flex items-center justify-center w-full my-auto">
-                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[4px] bg-gradient-to-b from-orange-500/15 via-orange-500/10 to-orange-600/5 border border-orange-500/25 group-hover/shortcut:border-orange-500/50 group-hover/shortcut:bg-orange-500/20 flex items-center justify-center transition-all duration-200 shadow-[0_2px_8px_rgba(249,115,22,0.08)] group-hover/shortcut:shadow-[0_4px_14px_rgba(249,115,22,0.22)] group-hover/shortcut:-translate-y-0.5">
-                        <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-orange-400 group-hover/shortcut:text-orange-300 transition-colors shrink-0" />
+                      <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-[4px] bg-gradient-to-b from-orange-500/15 via-orange-500/10 to-orange-600/5 border border-orange-500/25 group-hover/shortcut:border-orange-500/55 group-hover/shortcut:bg-orange-500/20 flex items-center justify-center transition-all duration-200 shadow-[0_2px_10px_rgba(249,115,22,0.10)] group-hover/shortcut:shadow-[0_4px_18px_rgba(249,115,22,0.25)] group-hover/shortcut:-translate-y-0.5">
+                        <Icon className="w-6 h-6 sm:w-6.5 sm:h-6.5 text-orange-400 group-hover/shortcut:text-orange-300 transition-colors shrink-0" strokeWidth={2} />
                       </div>
                     </div>
 
