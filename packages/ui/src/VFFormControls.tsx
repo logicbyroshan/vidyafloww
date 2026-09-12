@@ -53,7 +53,7 @@ export const VFInput = React.forwardRef<HTMLInputElement, VFInputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "flex h-9 w-full rounded-[4px] border border-border bg-[#161616] px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-zinc-400 focus-visible:ring-1 focus-visible:ring-zinc-400/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
+              "flex h-9 w-full rounded-[4px] border border-border bg-[#161616] px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-none focus-visible:border-zinc-400 focus-visible:ring-1 focus-visible:ring-zinc-400/20 disabled:cursor-not-allowed disabled:opacity-50 transition-colors duration-150",
               leftIcon && "pl-9",
               rightIcon && "pr-9",
               error && "border-destructive focus-visible:ring-destructive",
@@ -178,8 +178,8 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
           <SelectPrimitive.Trigger
             id={selectId}
             className={cn(
-              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#161616] text-xs text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#202020] hover:border-zinc-500 data-[state=open]:border-zinc-400 shadow-xs",
-              size === 'sm' ? "h-8 min-h-[32px] px-2.5 py-1 text-xs" : size === 'lg' ? "h-10 min-h-[40px] px-3.5 py-2 text-sm" : "h-9 min-h-[36px] px-3 py-1.5 text-xs",
+              "flex w-full items-center justify-between rounded-[4px] border border-border bg-[#161616] text-sm text-foreground font-semibold outline-none transition-colors duration-150 cursor-pointer hover:bg-[#202020] hover:border-zinc-500 data-[state=open]:border-zinc-400 shadow-xs",
+              size === 'sm' ? "h-8 min-h-[32px] px-2.5 py-1 text-xs" : size === 'lg' ? "h-10 min-h-[40px] px-3.5 py-2 text-base" : "h-9 min-h-[36px] px-3 py-1.5 text-sm",
               error && "border-destructive",
               disabled && "opacity-50 cursor-not-allowed",
               className
@@ -198,7 +198,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
 
           <SelectPrimitive.Portal>
             <SelectPrimitive.Content
-              className="z-50 min-w-[var(--radix-select-trigger-width)] max-w-[var(--radix-select-content-available-width)] overflow-hidden rounded-[4px] border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-xs text-foreground backdrop-blur-md"
+              className="z-50 min-w-[var(--radix-select-trigger-width)] max-w-[var(--radix-select-content-available-width)] overflow-hidden rounded-[4px] border border-border/90 bg-[#161616] p-1 shadow-2xl animate-scale-in text-sm text-foreground backdrop-blur-md"
               position="popper"
               sideOffset={4}
             >
@@ -208,7 +208,7 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
                     key={String(opt.value)}
                     value={String(opt.value)}
                     disabled={opt.disabled}
-                    className="relative flex w-full select-none items-center justify-between rounded-[3px] px-2.5 py-1 text-xs font-medium outline-none cursor-pointer data-[highlighted]:bg-[#242424] data-[highlighted]:text-foreground data-[state=checked]:bg-emerald-500/15 data-[state=checked]:text-emerald-400 data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
+                    className="relative flex w-full select-none items-center justify-between rounded-[3px] px-2.5 py-1.5 text-sm font-medium outline-none cursor-pointer data-[highlighted]:bg-[#242424] data-[highlighted]:text-foreground data-[state=checked]:bg-emerald-500/15 data-[state=checked]:text-emerald-400 data-[state=checked]:font-bold data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed transition-colors"
                   >
                     <SelectPrimitive.ItemText>{opt.label}</SelectPrimitive.ItemText>
                     <SelectPrimitive.ItemIndicator>

@@ -18,7 +18,6 @@ import {
   Check,
   Layers,
   Clock,
-  GraduationCap,
   Grid,
   Download,
   Edit2,
@@ -1441,18 +1440,16 @@ function AcademicsPage() {
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Class Selector Dropdown */}
           <VFSelect
-            size="sm"
             value={selectedClassId}
             onChange={(e) => setSelectedClassId(String(e.target.value))}
             options={classOptions}
-            leftIcon={<GraduationCap className="h-4 w-4" />}
-            className="w-60 sm:w-64 bg-[#161616] border-border text-xs rounded-[4px] h-8 font-bold"
+            className="w-56 sm:w-60"
           />
 
           <div className="h-5 w-[1px] bg-border/80 hidden sm:block" />
 
           {/* View Tab Switchers */}
-          <div className="flex items-center gap-1 bg-[#161616] p-0.5 h-8 rounded-[4px] border border-border">
+          <div className="flex items-center gap-1 bg-[#161616] p-0.5 h-9 rounded-[4px] border border-border">
             <button
               type="button"
               onClick={() => setActiveView('subjects')}
@@ -1480,7 +1477,26 @@ function AcademicsPage() {
           </div>
         </div>
 
-
+        {/* Right: Actions */}
+        {activeView === 'subjects' && (
+          <div className="flex items-center gap-2">
+            <VFButton
+              variant="outline"
+              onClick={handleExport}
+              className="h-9 px-3.5 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
+              leftIcon={<Download className="h-3.5 w-3.5" />}
+            >
+              {isHindi ? 'एक्सपोर्ट' : 'Export'}
+            </VFButton>
+            <VFButton
+              onClick={handleOpenAddSubject}
+              className="h-9 px-3.5 text-xs font-bold shadow-xs rounded-[4px]"
+              leftIcon={<Plus className="h-3.5 w-3.5" />}
+            >
+              {isHindi ? 'न्यू सब्जेक्ट ऐड करें' : 'Add Subject'}
+            </VFButton>
+          </div>
+        )}
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────────────
@@ -1493,36 +1509,6 @@ function AcademicsPage() {
             data={subjects}
             showSearch={false}
             showColumnToggle={false}
-            leftActions={
-              <div className="flex items-center gap-2 text-xs font-bold text-foreground">
-                <BookOpen className="h-4 w-4 text-primary" />
-                <span>{isHindi ? 'सब्जेक्ट्स & सिलेबस' : 'Prescribed Subjects & Syllabus'}</span>
-                <span className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/80 text-[11px] font-mono text-muted-foreground">
-                  {subjects.length}
-                </span>
-              </div>
-            }
-            rightActions={
-              <div className="flex items-center gap-2">
-                <VFButton
-                  size="sm"
-                  variant="outline"
-                  onClick={handleExport}
-                  className="h-8 px-3 text-xs font-bold bg-[#1a1a1a] hover:bg-[#222222] border-border text-foreground rounded-[4px]"
-                  leftIcon={<Download className="h-3.5 w-3.5" />}
-                >
-                  {isHindi ? 'एक्सपोर्ट' : 'Export'}
-                </VFButton>
-                <VFButton
-                  size="sm"
-                  onClick={handleOpenAddSubject}
-                  className="h-8 px-3 text-xs font-bold shadow-xs rounded-[4px]"
-                  leftIcon={<Plus className="h-3.5 w-3.5" />}
-                >
-                  {isHindi ? '+ न्यू सब्जेक्ट ऐड करें' : '+ Add Subject'}
-                </VFButton>
-              </div>
-            }
           />
         </div>
       )}
