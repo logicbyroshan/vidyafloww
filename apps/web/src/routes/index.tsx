@@ -411,6 +411,38 @@ export function DashboardPage() {
       severity: 'danger',
       action: 'Send SMS',
     },
+    {
+      student: 'Meera Sen',
+      avatar: 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 11-Arts · Roll #07',
+      alert: 'Library Overdue Clearance (Notice Sent)',
+      severity: 'warning',
+      action: 'Issue Reminder',
+    },
+    {
+      student: 'Devansh Gupta',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 6-A · Roll #19',
+      alert: 'Unapproved Absence from Sports Period',
+      severity: 'danger',
+      action: 'Send Notice',
+    },
+    {
+      student: 'Ishita Banerjee',
+      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 10-C · Roll #26',
+      alert: 'Late Arrival Route 7 Bus Delay',
+      severity: 'warning',
+      action: 'Gate Entry Note',
+    },
+    {
+      student: 'Siddharth Malhotra',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&auto=format&fit=crop&q=80',
+      class: 'Class 12-Sci · Roll #33',
+      alert: 'Science Olympiad Leave (Approved)',
+      severity: 'neutral',
+      action: 'Verify Pass',
+    },
   ];
 
   // Render individual KPI Card with sleek corner move handle
@@ -565,15 +597,15 @@ export function DashboardPage() {
       },
     });
 
-    // 1. Student Attendance Exceptions Section — clean natural list with matching padding & gaps
+    // 1. Student Attendance Exceptions Section — locked height matching Quick Actions, natural standard gap, smooth scroll
     if (sectionId === 'student_attendance') {
       return (
-        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col h-full")}>
+        <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col flex-1 h-full min-h-0")}>
           <VFCard
             title={t('attendance.studentTab')}
             headerClassName="py-2.5 px-3 sm:px-3.5"
-            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col h-full"
-            bodyClassName="p-3 sm:p-3.5 flex flex-col flex-1"
+            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col flex-1 h-full min-h-0"
+            bodyClassName="p-3 sm:p-3.5 flex flex-col flex-1 min-h-0 overflow-hidden"
             actions={
               <Link to="/attendance">
                 <VFButton
@@ -587,8 +619,8 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="space-y-2 sm:space-y-2.5 flex-1 flex flex-col justify-between">
-              {studentExceptions.slice(0, 7).map((s, i) => (
+            <div className="space-y-2 sm:space-y-2.5 overflow-y-auto flex-1 min-h-0 h-0 pr-1.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-[4px] [&::-webkit-scrollbar-thumb]:bg-border/60 hover:[&::-webkit-scrollbar-thumb]:bg-orange-500/40">
+              {studentExceptions.map((s, i) => (
                 <div
                   key={i}
                   className="p-2 sm:p-2.5 rounded-[4px] border border-border/80 bg-[#1a1a1a] hover:bg-[#222222] hover:border-rose-500/50 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-2.5 shadow-xs shrink-0"
