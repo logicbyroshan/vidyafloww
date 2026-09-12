@@ -1302,71 +1302,93 @@ function ExaminationsPage() {
             </VFCard>
           ) : (
             /* Timeline View */
-            <div className="flex-1 min-h-0 overflow-y-auto pb-6 pl-2 pr-4">
-              <div className="relative border-l-2 border-border/80 ml-5 pl-6 space-y-6 my-2">
-                {filteredPapers.map((paper, idx) => (
-                  <div key={paper.id} className="relative group">
-                    {/* Progression Node on Track */}
-                    <div
-                      className={cn(
-                        'absolute -left-[35px] top-1.5 w-6 h-6 rounded-full border-2 flex items-center justify-center font-mono text-[10px] font-black',
-                        paper.status === 'Completed'
-                          ? 'bg-emerald-950 border-emerald-500 text-emerald-400'
-                          : paper.status === 'Active Today'
-                          ? 'bg-rose-950 border-rose-500 text-rose-400 ring-4 ring-rose-500/20 animate-pulse'
-                          : 'bg-[#181818] border-zinc-600 text-zinc-400'
-                      )}
-                    >
-                      {paper.status === 'Completed' ? '✓' : idx + 1}
-                    </div>
+            <div className="flex-1 min-h-0 overflow-y-auto pb-6 pr-2">
+              <div className="flex flex-col gap-3 sm:gap-3.5 my-1">
+                {filteredPapers.map((paper, idx) => {
+                  const isFirst = idx === 0;
+                  const isLast = idx === filteredPapers.length - 1;
 
-                    {/* Milestone Card */}
-                    <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-600 transition-colors shadow-xs">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 pb-2 border-b border-border/60">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-bold text-foreground text-xs">{paper.subject}</span>
-                          <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/80">
-                            {paper.paperCode}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground">·</span>
-                          <span className="text-xs font-semibold text-zinc-300">{paper.displayDate}</span>
-                        </div>
+                  return (
+                    <div key={paper.id} className="relative flex items-center gap-3 sm:gap-3.5 group">
+                      {/* Timeline Track & Node Column (Vertically Centered with the Card) */}
+                      <div className="relative flex items-center justify-center shrink-0 w-8 self-stretch">
+                        {/* Top Connector Line (from top of row down to circle center) */}
+                        {!isFirst && (
+                          <div className="absolute top-0 bottom-1/2 left-1/2 -translate-x-1/2 w-0.5 bg-zinc-700/80 group-hover:bg-zinc-500 transition-colors" />
+                        )}
 
-                        <div className="flex items-center gap-2 shrink-0">
-                          <VFBadge
-                            variant={paper.status === 'Completed' ? 'success' : paper.status === 'Active Today' ? 'danger' : 'outline'}
-                            className="text-[10px] font-bold"
-                          >
-                            {paper.status === 'Active Today' ? 'Live Today' : paper.status}
-                          </VFBadge>
-                          <button
-                            type="button"
-                            onClick={() => setSeatingModalPaper(paper)}
-                            className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
-                          >
-                            <MapPin className="h-3 w-3" />
-                            <span>{isHindi ? 'सिटिंग व्यवस्था' : 'Seating'}</span>
-                          </button>
+                        {/* Bottom Connector Line (from circle center down across the gap) */}
+                        {!isLast && (
+                          <div className="absolute top-1/2 -bottom-3 sm:-bottom-3.5 left-1/2 -translate-x-1/2 w-0.5 bg-zinc-700/80 group-hover:bg-zinc-500 transition-colors" />
+                        )}
+
+                        {/* Progression Node on Track (Centered Vertically to the Card) */}
+                        <div
+                          className={cn(
+                            'relative z-10 w-7 h-7 rounded-full border-2 flex items-center justify-center font-mono text-[11px] font-black shrink-0 transition-transform duration-200 group-hover:scale-105 shadow-sm',
+                            paper.status === 'Completed'
+                              ? 'bg-emerald-950 border-emerald-500 text-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.2)]'
+                              : paper.status === 'Active Today'
+                              ? 'bg-rose-950 border-rose-500 text-rose-300 ring-4 ring-rose-500/20 animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.3)]'
+                              : 'bg-[#181818] border-zinc-600 text-zinc-400'
+                          )}
+                        >
+                          {paper.status === 'Completed' ? (
+                            <Check className="h-3.5 w-3.5 text-emerald-400 stroke-[3]" />
+                          ) : (
+                            idx + 1
+                          )}
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono text-muted-foreground">
-                        <div className="flex items-center gap-1 text-foreground">
-                          <Clock className="h-3 w-3 text-amber-500/80 shrink-0" />
-                          <span>{paper.timeSlot} ({paper.duration})</span>
+                      {/* Milestone Card */}
+                      <div className="flex-1 min-w-0 p-3 sm:p-3.5 rounded-[4px] bg-[#141414] border border-border/80 hover:border-zinc-600 transition-colors shadow-xs">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 pb-2 border-b border-border/60">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-foreground text-xs">{paper.subject}</span>
+                            <span className="font-mono text-[10px] px-1.5 py-0.2 rounded-[2px] bg-zinc-800 text-zinc-300 border border-border/80">
+                              {paper.paperCode}
+                            </span>
+                            <span className="text-[10px] text-muted-foreground">·</span>
+                            <span className="text-xs font-semibold text-zinc-300">{paper.displayDate}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <VFBadge
+                              variant={paper.status === 'Completed' ? 'success' : paper.status === 'Active Today' ? 'danger' : 'outline'}
+                              className="text-[10px] font-bold"
+                            >
+                              {paper.status === 'Active Today' ? 'Live Today' : paper.status}
+                            </VFBadge>
+                            <button
+                              type="button"
+                              onClick={() => setSeatingModalPaper(paper)}
+                              className="px-2 py-0.5 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
+                            >
+                              <MapPin className="h-3 w-3" />
+                              <span>{isHindi ? 'सिटिंग व्यवस्था' : 'Seating'}</span>
+                            </button>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 truncate">
-                          <Building2 className="h-3 w-3 text-zinc-400 shrink-0" />
-                          <span>{paper.hall}</span>
-                        </div>
-                        <div className="flex items-center justify-between sm:justify-end gap-2">
-                          <span className="text-zinc-400">Invigilator: {paper.invigilator}</span>
-                          <span className="font-bold text-emerald-400">{paper.maxMarks} M</span>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono text-muted-foreground">
+                          <div className="flex items-center gap-1 text-foreground">
+                            <Clock className="h-3 w-3 text-amber-500/80 shrink-0" />
+                            <span>{paper.timeSlot} ({paper.duration})</span>
+                          </div>
+                          <div className="flex items-center gap-1 truncate">
+                            <Building2 className="h-3 w-3 text-zinc-400 shrink-0" />
+                            <span>{paper.hall}</span>
+                          </div>
+                          <div className="flex items-center justify-between sm:justify-end gap-2">
+                            <span className="text-zinc-400">Invigilator: {paper.invigilator}</span>
+                            <span className="font-bold text-emerald-400">{paper.maxMarks} M</span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
