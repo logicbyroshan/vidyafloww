@@ -79,8 +79,10 @@ export interface VFDataTableProps<T> {
     pageSize: number;
   };
   onSort?: (key: string, direction: 'asc' | 'desc') => void;
+  showSearch?: boolean;
   filterPlaceholder?: string;
   onFilterChange?: (value: string) => void;
+  leftActions?: React.ReactNode;
   rightActions?: React.ReactNode;
   className?: string;
   tableClassName?: string;
@@ -95,8 +97,10 @@ export function VFDataTable<T extends Record<string, any>>({
   emptyDescription = "There are no records matching your query.",
   pagination,
   onSort,
+  showSearch = true,
   filterPlaceholder,
   onFilterChange,
+  leftActions,
   rightActions,
   className,
   tableClassName,
@@ -169,65 +173,77 @@ export function VFDataTable<T extends Record<string, any>>({
 
   const activeColumns = columns.filter((col) => visibleColumns.includes(String(col.accessorKey)));
 
+  const hasToolbar = showSearch || showColumnToggle || Boolean(rightActions) || Boolean(leftActions);
+
   return (
     <div className={cn("w-full flex-1 flex flex-col min-h-0 bg-card border border-border/90 rounded-[4px] shadow-xs overflow-hidden", className)}>
       {/* Unified Table Header Command Toolbar */}
-      <div className="p-3.5 sm:p-4 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
-        <div className="relative max-w-md flex-1">
-          <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-          <input
-            type="text"
-            value={globalFilter}
-            onChange={handleFilterChange}
-            placeholder={filterPlaceholder || "Search records..."}
-            className="w-full pl-9 pr-3.5 h-8 border border-border rounded-[4px] bg-muted/40 hover:bg-muted/70 focus:bg-background text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
-          />
-        </div>
-
-        {/* Right Controls: Column Visibility Selector + Action Buttons */}
-        <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-auto">
-          {/* Column Visibility Selector Dropdown */}
-          {showColumnToggle && (
-            <div className="relative" ref={dropdownRef}>
-              <VFButton
-                variant="outline"
-                size="sm"
-                onClick={() => setShowColumnDropdown(!showColumnDropdown)}
-                leftIcon={<SlidersHorizontal className="h-4 w-4 text-muted-foreground" />}
-              >
-                Columns ({activeColumns.length}/{columns.length})
-              </VFButton>
-              {showColumnDropdown && (
-                <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-[4px] shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
-                  <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
-                    Visible Columns
-                  </span>
-                  {columns.map((c) => {
-                    const key = String(c.accessorKey);
-                    const isChecked = visibleColumns.includes(key);
-                    return (
-                      <label
-                        key={key}
-                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded-[3px] text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleColumn(key)}
-                          className="rounded-xs border-input text-primary focus:ring-primary h-3.5 w-3.5"
-                        />
-                        <span className="truncate">{c.header}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
+      {hasToolbar && (
+        <div className="p-3 sm:p-3.5 border-b border-border bg-card flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 shrink-0">
+          {showSearch ? (
+            <div className="relative max-w-md flex-1">
+              <Search className="h-3.5 w-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+              <input
+                type="text"
+                value={globalFilter}
+                onChange={handleFilterChange}
+                placeholder={filterPlaceholder || "Search records..."}
+                className="w-full pl-9 pr-3.5 h-8 border border-border rounded-[4px] bg-muted/40 hover:bg-muted/70 focus:bg-background text-xs focus:border-primary/50 focus:ring-1 focus:ring-primary/20 focus:outline-none transition-all text-foreground placeholder:text-muted-foreground font-medium"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              {leftActions}
             </div>
           )}
 
-          {rightActions}
+          {/* Right Controls: Column Visibility Selector + Action Buttons */}
+          {(showColumnToggle || rightActions) && (
+            <div className="flex items-center gap-2.5 shrink-0 ml-auto self-end sm:self-auto">
+              {/* Column Visibility Selector Dropdown */}
+              {showColumnToggle && (
+                <div className="relative" ref={dropdownRef}>
+                  <VFButton
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowColumnDropdown(!showColumnDropdown)}
+                    leftIcon={<SlidersHorizontal className="h-4 w-4 text-muted-foreground" />}
+                  >
+                    Columns ({activeColumns.length}/{columns.length})
+                  </VFButton>
+                  {showColumnDropdown && (
+                    <div className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-[4px] shadow-2xl z-30 p-1.5 space-y-1 animate-scale-in">
+                      <span className="block text-xs font-black text-muted-foreground uppercase tracking-wider px-2.5 py-1 select-none">
+                        Visible Columns
+                      </span>
+                      {columns.map((c) => {
+                        const key = String(c.accessorKey);
+                        const isChecked = visibleColumns.includes(key);
+                        return (
+                          <label
+                            key={key}
+                            className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded-[3px] text-sm text-foreground cursor-pointer select-none font-semibold transition-colors"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => toggleColumn(key)}
+                              className="rounded-xs border-input text-primary focus:ring-primary h-3.5 w-3.5"
+                            />
+                            <span className="truncate">{c.header}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {rightActions}
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       {/* Main Scrollable Table Area */}
       <div className="flex-1 overflow-auto no-scrollbar w-full relative min-h-0 bg-card">

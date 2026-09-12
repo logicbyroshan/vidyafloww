@@ -131,10 +131,11 @@ export interface VFSelectProps {
   id?: string;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  leftIcon?: React.ReactNode;
 }
 
 export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
-  ({ className, wrapperClassName, label, description, error, required, options, value, defaultValue, placeholder = "Select...", onChange, disabled, size = 'md', id }, _ref) => {
+  ({ className, wrapperClassName, label, description, error, required, options, value, defaultValue, placeholder = "Select...", onChange, disabled, size = 'md', leftIcon, id }, _ref) => {
     const generatedId = React.useId();
     const selectId = id || generatedId;
     const [internalValue, setInternalValue] = React.useState<string>(
@@ -184,9 +185,12 @@ export const VFSelect = React.forwardRef<HTMLDivElement, VFSelectProps>(
               className
             )}
           >
-            <span className="truncate flex-1 text-left">
-              <SelectPrimitive.Value placeholder={placeholder} />
-            </span>
+            <div className="flex items-center gap-2 truncate flex-1 text-left min-w-0">
+              {leftIcon && <span className="shrink-0 text-muted-foreground">{leftIcon}</span>}
+              <span className="truncate">
+                <SelectPrimitive.Value placeholder={placeholder} />
+              </span>
+            </div>
             <SelectPrimitive.Icon asChild>
               <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0 transition-transform duration-150 ml-1.5" />
             </SelectPrimitive.Icon>
