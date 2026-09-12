@@ -22,7 +22,6 @@ import {
   Download,
   Check,
   Calendar,
-  Clock,
   Settings2,
   Building2,
   Printer,
@@ -1035,7 +1034,7 @@ function ExaminationsPage() {
               >
                 {activeExam.status === 'Active Live' ? (
                   <span className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
+                    <span className="h-2 w-2 rounded-[2px] bg-rose-500 animate-pulse" />
                     {isHindi ? 'एक्टिव एग्जाम' : 'Active Live'}
                   </span>
                 ) : (
@@ -1047,14 +1046,12 @@ function ExaminationsPage() {
               <div className="hidden md:flex items-center gap-1.5 px-2 py-1 rounded-[3px] bg-[#1a1a1a] border border-border/70 text-[11px] font-mono text-muted-foreground">
                 <span>{activeExam.grade}</span>
                 <span>•</span>
-                <Calendar className="h-3 w-3 text-zinc-400" />
                 <span>{activeExam.dates}</span>
               </div>
 
               {/* Chief Superintendent & Control Room */}
               {activeExam.controlRoom && (
                 <div className="hidden 2xl:flex items-center gap-1 px-2 py-1 rounded-[3px] bg-[#181818] border border-border/60 text-[10px] text-zinc-400 font-mono">
-                  <Building2 className="h-3 w-3 text-zinc-400" />
                   <span>{activeExam.controlRoom}</span>
                 </div>
               )}
@@ -1069,7 +1066,7 @@ function ExaminationsPage() {
                 </div>
                 {activeLiveCount > 0 && (
                   <div className="px-2 py-0.5 rounded-[2px] bg-rose-950/60 text-rose-300 font-bold border border-rose-800/50 flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                    <span className="h-1.5 w-1.5 rounded-[2px] bg-rose-400 animate-pulse" />
                     {activeLiveCount} Live
                   </div>
                 )}
@@ -1325,7 +1322,7 @@ function ExaminationsPage() {
                         {/* Progression Node on Track (Centered Vertically to the Card) */}
                         <div
                           className={cn(
-                            'relative z-10 w-7 h-7 rounded-full border-2 flex items-center justify-center font-mono text-[11px] font-black shrink-0 transition-transform duration-200 group-hover:scale-105 shadow-sm',
+                            'relative z-10 w-7 h-7 rounded-[4px] border-2 flex items-center justify-center font-mono text-[11px] font-black shrink-0 transition-transform duration-200 group-hover:scale-105 shadow-sm',
                             paper.status === 'Completed'
                               ? 'bg-emerald-950 border-emerald-500 text-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.2)]'
                               : paper.status === 'Active Today'
@@ -1372,12 +1369,10 @@ function ExaminationsPage() {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono text-muted-foreground">
-                          <div className="flex items-center gap-1 text-foreground">
-                            <Clock className="h-3 w-3 text-amber-500/80 shrink-0" />
+                          <div className="text-foreground">
                             <span>{paper.timeSlot} ({paper.duration})</span>
                           </div>
-                          <div className="flex items-center gap-1 truncate">
-                            <Building2 className="h-3 w-3 text-zinc-400 shrink-0" />
+                          <div className="truncate">
                             <span>{paper.hall}</span>
                           </div>
                           <div className="flex items-center justify-between sm:justify-end gap-2">

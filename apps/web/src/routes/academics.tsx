@@ -16,8 +16,6 @@ import {
   Book,
   Plus,
   Check,
-  Layers,
-  Clock,
   Grid,
   Download,
   Edit2,
@@ -1322,11 +1320,10 @@ function AcademicsPage() {
       accessorKey: 'name',
       cell: (r: ClassSubject) => (
         <div className="py-0.5">
-          <p className="font-bold text-foreground text-sm leading-tight flex items-center gap-1.5">
+          <p className="font-bold text-foreground text-sm leading-tight">
             {r.name}
           </p>
-          <p className="text-xs text-muted-foreground font-semibold mt-0.5 flex items-center gap-1">
-            <Layers className="h-3 w-3 text-muted-foreground" />
+          <p className="text-xs text-muted-foreground font-semibold mt-0.5">
             {r.syllabusChapters} {isHindi ? 'प्रिस्क्राइब्ड चैप्टर्स' : 'Prescribed Chapters'}
           </p>
         </div>
@@ -1344,7 +1341,7 @@ function AcademicsPage() {
               ? 'warning'
               : 'outline'
           }
-          className="text-[11px]"
+          className="text-[11px] rounded-[3px]"
         >
           {r.type}
         </VFBadge>
@@ -1354,9 +1351,8 @@ function AcademicsPage() {
       header: isHindi ? 'वीकली पीरियड्स' : 'Weekly Periods',
       accessorKey: 'weeklyPeriods',
       cell: (r: ClassSubject) => (
-        <div className="flex items-center gap-1.5 font-mono text-xs">
-          <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-          <span className="font-black text-foreground">{r.weeklyPeriods}</span>
+        <div className="font-mono text-xs">
+          <span className="font-black text-foreground">{r.weeklyPeriods}</span>{' '}
           <span className="text-muted-foreground text-[11px]">{isHindi ? 'पीरियड्स' : 'Periods/wk'}</span>
         </div>
       ),
@@ -1365,7 +1361,7 @@ function AcademicsPage() {
       header: isHindi ? 'मार्क्स असेसमेंट स्कीम' : 'Assessment Scheme',
       accessorKey: 'theoryMarks',
       cell: (r: ClassSubject) => (
-        <div className="text-xs">
+        <div className="text-xs font-mono">
           <span className="font-bold text-emerald-400">{r.theoryMarks} Th</span>
           <span className="text-muted-foreground mx-1">/</span>
           <span className="font-bold text-sky-400">{r.internalMarks} Int</span>
@@ -1377,7 +1373,7 @@ function AcademicsPage() {
       accessorKey: 'teacherInCharge',
       cell: (r: ClassSubject) => (
         <div className="flex items-center gap-2">
-          <div className="h-6 w-6 rounded-full bg-[#202020] border border-border flex items-center justify-center text-foreground text-[10px] font-bold shrink-0">
+          <div className="h-6 w-6 rounded-[4px] bg-[#202020] border border-border flex items-center justify-center text-foreground text-[10px] font-bold shrink-0">
             {r.teacherInCharge.replace('Dr. ', '').replace('Mrs. ', '').replace('Mr. ', '').replace('Ms. ', '').substring(0, 2)}
           </div>
           <span className="text-foreground text-xs font-semibold">{r.teacherInCharge}</span>
@@ -1395,9 +1391,8 @@ function AcademicsPage() {
             title={`${bookTitle} – ${isHindi ? 'ई-लाइब्रेरी में ओपन करें' : 'Open in E-Library'}`}
             className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-[4px] bg-[#181818] hover:bg-[#222222] border border-border/70 hover:border-teal-500/60 text-xs font-semibold text-foreground transition-all cursor-pointer group max-w-sm text-left shadow-2xs"
           >
-            <Book className="h-3.5 w-3.5 text-teal-400 shrink-0 group-hover:scale-110 transition-transform" />
-            <span className="truncate max-w-[200px]">{bookTitle}</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 border border-teal-500/30 font-bold shrink-0">
+            <span className="truncate max-w-[220px]">{bookTitle}</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-[3px] bg-teal-500/15 text-teal-400 border border-teal-500/30 font-bold shrink-0">
               {isHindi ? 'ई-लाइब्रेरी ↗' : 'E-Library ↗'}
             </span>
           </Link>
@@ -1586,9 +1581,9 @@ function AcademicsPage() {
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <div className="flex-1 h-1.5 rounded-full bg-muted/60 overflow-hidden">
+                                  <div className="flex-1 h-1.5 rounded-[2px] bg-muted/60 overflow-hidden">
                                     <div
-                                      className="h-full bg-zinc-400 dark:bg-zinc-500 rounded-full transition-all"
+                                      className="h-full bg-zinc-400 dark:bg-zinc-500 rounded-[2px] transition-all"
                                       style={{ width: `${Math.min(percentage * 3, 100)}%` }}
                                     />
                                   </div>
@@ -1698,9 +1693,9 @@ function AcademicsPage() {
                         </span>
                         <span className="font-bold text-foreground font-mono">{ms.targetSyllabusCoverage}%</span>
                       </div>
-                      <div className="w-full h-1.5 rounded-full bg-muted/60 overflow-hidden">
+                      <div className="w-full h-1.5 rounded-[2px] bg-muted/60 overflow-hidden">
                         <div
-                          className="h-full bg-emerald-500 rounded-full transition-all"
+                          className="h-full bg-emerald-500 rounded-[2px] transition-all"
                           style={{ width: `${ms.targetSyllabusCoverage}%` }}
                         />
                       </div>
