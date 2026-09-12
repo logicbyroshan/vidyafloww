@@ -7,6 +7,7 @@ import {
   VFBadge,
   VFDialog,
   VFInput,
+  cn,
 } from '@vidyamaxx/ui';
 import {
   ShieldCheck,
@@ -130,19 +131,19 @@ function LicenseManagementPage() {
       {/* 1. Subscription Status & Early Payment Hero Banner */}
       <VFCard
         className="bg-[#0d0d0d] border-border/90"
-        bodyClassName="p-5 space-y-4"
+        bodyClassName="p-3.5 sm:p-4 space-y-3 sm:space-y-3.5"
       >
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-3.5">
-            <div className="h-12 w-12 rounded-[4px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
-              <ShieldCheck className="h-6 w-6" />
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+          <div className="flex items-start sm:items-center gap-3">
+            <div className="h-10 w-10 rounded-[4px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-extrabold text-foreground tracking-tight">
+                <h2 className="text-sm sm:text-base font-extrabold text-foreground tracking-tight">
                   {schoolProfile.name}
                 </h2>
-                <VFBadge variant="success" className="text-xs font-bold font-mono">
+                <VFBadge variant="success" className="text-[10px] font-bold font-mono py-0.5 rounded-[3px]">
                   Enterprise Active
                 </VFBadge>
               </div>
@@ -152,22 +153,23 @@ function LicenseManagementPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="p-2.5 px-3.5 rounded-[4px] bg-[#141414] border border-[#242424] text-right">
-              <span className="text-[10px] text-muted-foreground uppercase font-bold block">
-                {isHindi ? 'वैधता समाप्ति' : 'Valid Until'}
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+            <div className="h-8 px-3 rounded-[4px] bg-[#141414] border border-border flex items-center gap-2 text-xs">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
+                {isHindi ? 'वैधता:' : 'Valid Until:'}
               </span>
-              <span className="text-xs font-extrabold text-foreground font-mono">
-                March 31, 2027 <span className="text-emerald-400 font-semibold">(225 Days)</span>
+              <span className="font-mono font-bold text-foreground">March 31, 2027</span>
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                225 Days
               </span>
             </div>
 
-            {/* Prominent Early Payment / Renewal Button */}
+            {/* Early Payment / Renewal Button */}
             <VFButton
               size="sm"
               onClick={() => setIsPayEarlyModalOpen(true)}
-              className="h-10 px-4 text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground rounded-[4px] shadow-sm cursor-pointer"
-              leftIcon={<Sparkles className="h-4 w-4" />}
+              className="h-8 px-3 text-xs font-bold rounded-[4px] bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs cursor-pointer"
+              leftIcon={<Sparkles className="h-3.5 w-3.5" />}
             >
               {isHindi ? 'जल्दी भुगतान / रिन्यू करें' : 'Pay Early / Renew Plan'}
             </VFButton>
@@ -175,30 +177,30 @@ function LicenseManagementPage() {
         </div>
 
         {/* Quick Subscription Metrics Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-[#202020] text-xs">
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-border/70 text-xs">
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-0.5">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
               {isHindi ? 'वार्षिक प्लान दर' : 'Annual Rate'}
             </span>
-            <span className="text-sm font-extrabold text-foreground font-mono">₹ 2,40,000</span>
+            <span className="text-xs sm:text-sm font-extrabold text-foreground font-mono">₹ 2,40,000</span>
           </div>
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-0.5">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
               {isHindi ? 'स्टूडेंट एनरोलमेंट कैपेसिटी' : 'Student Capacity'}
             </span>
-            <span className="text-sm font-extrabold text-foreground font-mono">1,248 / 2,500</span>
+            <span className="text-xs sm:text-sm font-extrabold text-foreground font-mono">1,248 / 2,500</span>
           </div>
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-0.5">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
               {isHindi ? 'डिफ़ॉल्ट पेमेंट कार्ड' : 'Default Payment'}
             </span>
-            <span className="text-sm font-extrabold text-foreground font-mono">Visa •••• 4242</span>
+            <span className="text-xs sm:text-sm font-extrabold text-foreground font-mono">Visa •••• 4242</span>
           </div>
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424]">
-            <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+          <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 space-y-0.5">
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
               {isHindi ? 'ऑटो-डेबिट स्थिति' : 'Auto-Debit'}
             </span>
-            <span className="text-sm font-bold text-emerald-400 flex items-center gap-1">
+            <span className="text-xs sm:text-sm font-bold text-emerald-400 flex items-center gap-1 mt-0.5">
               <Check className="h-3 w-3" /> Enabled
             </span>
           </div>
@@ -206,7 +208,7 @@ function LicenseManagementPage() {
       </VFCard>
 
       {/* 2. License Key & Corporate Payment Method (2-Col Grid) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-4">
         {/* Cryptographic Master License Key */}
         <VFCard
           title={
@@ -221,35 +223,40 @@ function LicenseManagementPage() {
               : 'Institutional cryptographic key for cluster sync and offline node validation'
           }
           className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4 space-y-3"
+          bodyClassName="p-3 sm:p-3.5 space-y-3"
         >
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="min-w-0">
-              <span className="text-[10px] text-muted-foreground uppercase font-bold block">
+              <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider block">
                 Enterprise Key Serial
               </span>
-              <span className="text-sm font-mono font-extrabold text-foreground tracking-wider">
+              <span className="text-xs sm:text-sm font-mono font-extrabold text-foreground tracking-wider">
                 {showKey ? licenseKey : 'VFL-••••-••••-CBSE-••••-DELHI'}
               </span>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                type="button"
+              <VFButton
+                size="sm"
+                variant="outline"
                 onClick={() => setShowKey(!showKey)}
-                className="h-8 px-2.5 text-xs font-bold rounded-[4px] border border-border bg-[#181818] hover:bg-[#222222] text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="h-8 px-2.5 text-xs font-bold rounded-[4px]"
+                leftIcon={showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
               >
-                {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                 {showKey ? 'Hide' : 'Reveal'}
-              </button>
-              <button
-                type="button"
+              </VFButton>
+              <VFButton
+                size="sm"
+                variant={copied ? "success" : "outline"}
                 onClick={handleCopyKey}
-                className="h-8 px-3 text-xs font-bold rounded-[4px] border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary flex items-center gap-1.5 transition-colors cursor-pointer"
+                className={cn(
+                  "h-8 px-3 text-xs font-bold rounded-[4px]",
+                  copied ? "" : "border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary"
+                )}
+                leftIcon={copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
               >
-                {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                 {copied ? 'Copied' : 'Copy'}
-              </button>
+              </VFButton>
             </div>
           </div>
         </VFCard>
@@ -263,29 +270,18 @@ function LicenseManagementPage() {
             </div>
           }
           description={isHindi ? 'सक्रिय कॉर्पोरेट कार्ड और बिलिंग संपर्क' : 'Active corporate payment method and billing details'}
-          actions={
-            <VFButton
-              size="sm"
-              variant="outline"
-              leftIcon={<Edit3 className="h-3.5 w-3.5" />}
-              onClick={() => setIsUpdateCardModalOpen(true)}
-              className="h-7.5 px-2.5 text-xs font-bold rounded-[4px]"
-            >
-              {isHindi ? 'कार्ड बदलें' : 'Manage Card'}
-            </VFButton>
-          }
           className="bg-[#0d0d0d] border-border/90"
-          bodyClassName="p-4 space-y-3"
+          bodyClassName="p-3 sm:p-3.5 space-y-3"
         >
-          <div className="p-3 rounded-[4px] bg-[#141414] border border-[#242424] flex items-center justify-between gap-3">
+          <div className="p-3 rounded-[4px] bg-[#141414] border border-border flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-12 rounded-[4px] bg-[#1f1f1f] border border-[#2e2e2e] flex flex-col items-center justify-center text-[10px] font-black text-white font-mono shrink-0 shadow-xs">
+              <div className="h-8 w-11 rounded-[4px] bg-[#1f1f1f] border border-[#2e2e2e] flex flex-col items-center justify-center text-[10px] font-black text-white font-mono shrink-0 shadow-xs">
                 VISA
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <p className="text-xs sm:text-sm font-bold text-foreground font-mono">{cardNumber}</p>
-                  <VFBadge variant="success" className="text-[9px] font-extrabold uppercase py-0.2">
+                  <VFBadge variant="success" className="text-[9px] font-extrabold uppercase py-0.5 rounded-[2px]">
                     Default
                   </VFBadge>
                 </div>
@@ -295,13 +291,15 @@ function LicenseManagementPage() {
               </div>
             </div>
 
-            <button
-              type="button"
+            <VFButton
+              size="sm"
+              variant="outline"
               onClick={() => setIsUpdateCardModalOpen(true)}
-              className="text-xs font-bold text-primary hover:underline px-2 py-1 cursor-pointer"
+              className="h-8 px-3 text-xs font-bold rounded-[4px]"
+              leftIcon={<Edit3 className="h-3.5 w-3.5" />}
             >
-              Edit
-            </button>
+              {isHindi ? 'कार्ड बदलें' : 'Manage Card'}
+            </VFButton>
           </div>
         </VFCard>
       </div>
@@ -342,37 +340,39 @@ function LicenseManagementPage() {
         <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-[#242424] bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
-                <th className="py-3 px-4">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
-                <th className="py-3 px-4">{t('col.date')}</th>
-                <th className="py-3 px-4">{t('col.description')}</th>
-                <th className="py-3 px-4">{t('col.amount')}</th>
-                <th className="py-3 px-4">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
-                <th className="py-3 px-4">{t('col.status')}</th>
-                <th className="py-3 px-4 text-right">{t('col.action')}</th>
+              <tr className="border-b border-border bg-[#121212] text-muted-foreground font-bold uppercase tracking-wider text-[10px]">
+                <th className="py-2.5 px-4">{isHindi ? 'इनवॉइस #' : 'Invoice #'}</th>
+                <th className="py-2.5 px-4">{t('col.date')}</th>
+                <th className="py-2.5 px-4">{t('col.description')}</th>
+                <th className="py-2.5 px-4">{t('col.amount')}</th>
+                <th className="py-2.5 px-4">{isHindi ? 'पेमेंट मेथड' : 'Payment Method'}</th>
+                <th className="py-2.5 px-4">{t('col.status')}</th>
+                <th className="py-2.5 px-4 text-right">{t('col.action')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1c1c1c] text-foreground font-medium">
+            <tbody className="divide-y divide-border/60 text-foreground font-medium">
               {INVOICE_HISTORY.map((inv) => (
                 <tr key={inv.id} className="hover:bg-[#141414] transition-colors">
-                  <td className="py-3.5 px-4 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
-                  <td className="py-3.5 px-4 font-mono text-muted-foreground">{inv.date}</td>
-                  <td className="py-3.5 px-4 text-foreground font-semibold">{inv.description}</td>
-                  <td className="py-3.5 px-4 font-mono font-extrabold text-foreground">{inv.amount}</td>
-                  <td className="py-3.5 px-4 font-mono text-xs text-muted-foreground">{inv.method}</td>
-                  <td className="py-3.5 px-4">
-                    <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold px-2 py-0.5 rounded-[2px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  <td className="py-3 px-4 font-mono font-bold text-foreground">{inv.invoiceNo}</td>
+                  <td className="py-3 px-4 font-mono text-muted-foreground">{inv.date}</td>
+                  <td className="py-3 px-4 text-foreground font-semibold">{inv.description}</td>
+                  <td className="py-3 px-4 font-mono font-extrabold text-foreground">{inv.amount}</td>
+                  <td className="py-3 px-4 font-mono text-xs text-muted-foreground">{inv.method}</td>
+                  <td className="py-3 px-4">
+                    <VFBadge variant="success" className="font-mono text-[10px] font-bold rounded-[3px] py-0.5 gap-1">
                       <Check className="h-3 w-3" /> {inv.status}
-                    </span>
+                    </VFBadge>
                   </td>
-                  <td className="py-3.5 px-4 text-right">
-                    <button
-                      type="button"
+                  <td className="py-3 px-4 text-right">
+                    <VFButton
+                      size="sm"
+                      variant="outline"
                       onClick={() => handleDownloadInvoice(inv.invoiceNo)}
-                      className="inline-flex items-center gap-1 h-7 px-2.5 rounded-[3px] text-xs font-bold text-primary hover:bg-primary/10 border border-primary/30 transition-colors cursor-pointer"
+                      className="h-7 px-2.5 text-xs font-bold rounded-[4px] text-primary border-primary/40 hover:bg-primary/10"
+                      leftIcon={<Download className="h-3 w-3" />}
                     >
-                      <Download className="h-3 w-3" /> PDF
-                    </button>
+                      PDF
+                    </VFButton>
                   </td>
                 </tr>
               ))}
