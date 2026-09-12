@@ -322,9 +322,9 @@ function ShortcutsConfigPage() {
 
                       {/* Icon box (matching dashboard sleek colors) */}
                       <div className={cn(
-                        "h-8 w-8 rounded-md flex items-center justify-center shrink-0 shadow-xs border",
+                        "h-8 w-8 rounded-[4px] flex items-center justify-center shrink-0 shadow-xs border transition-colors",
                         isActive
-                          ? "bg-[#1e1e1e] border-[#303030] text-foreground"
+                          ? "bg-orange-500/15 border-orange-500/30 text-orange-400"
                           : "bg-[#161616] border-border text-muted-foreground"
                       )}>
                         <Icon className="h-4 w-4" />
@@ -442,9 +442,9 @@ function ShortcutsConfigPage() {
                         </div>
                       </div>
 
-                      {/* Icon container (matching dashboard styling) */}
-                      <div className="h-9 w-9 rounded-md flex items-center justify-center border border-border/80 bg-[#1e1e1e] text-foreground mb-1 group-hover:scale-105 group-hover:bg-[#282828] group-hover:border-[#3e3e3e] transition-all shrink-0 shadow-xs">
-                        <Icon className="h-4.5 w-4.5 text-foreground" />
+                      {/* Icon container (matching dashboard orange glassmorphic styling) */}
+                      <div className="h-9 w-9 rounded-[4px] flex items-center justify-center border border-orange-500/25 bg-gradient-to-b from-orange-500/15 via-orange-500/10 to-orange-600/5 text-orange-400 mb-1 group-hover:scale-105 group-hover:bg-orange-500/20 group-hover:border-orange-500/50 group-hover:text-orange-300 transition-all shrink-0 shadow-xs">
+                        <Icon className="h-4.5 w-4.5" />
                       </div>
 
                       {/* Label */}

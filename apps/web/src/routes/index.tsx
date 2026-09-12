@@ -16,6 +16,23 @@ import {
   RotateCcw,
   Check,
   LayoutGrid,
+  UserPlus,
+  CreditCard,
+  Clock,
+  School,
+  BookOpen,
+  BookOpenCheck,
+  ClipboardList,
+  Bell,
+  Award,
+  FileSpreadsheet,
+  Settings,
+  TrendingUp,
+  History,
+  ShieldCheck,
+  Smartphone,
+  Boxes,
+  Bus,
 } from 'lucide-react';
 
 // 2×2 (4-dot) compact Grip Icon for ultra-minimal corner placement
@@ -48,11 +65,10 @@ export interface ShortcutAction {
   desc: string;
   hindiDesc: string;
   route: string;
-  iconSrc: string;
-  glowColor: string;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
-// 20 Fixed Modules organized in a strict 5 × 4 grid layout with authentic transparent 3D icons from 3dicons.co
+// 20 Fixed Modules organized in a strict 5 × 4 grid layout with unified orange glassmorphic icons
 const FIXED_20_SHORTCUTS: ShortcutAction[] = [
   {
     id: 'students',
@@ -61,8 +77,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Directory & Profiles',
     hindiDesc: 'दस्तावेज व प्रोफाइल',
     route: '/students',
-    iconSrc: '/icons/3d/students.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.06)',
+    icon: GraduationCap,
   },
   {
     id: 'admissions',
@@ -71,8 +86,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Intake & Verification',
     hindiDesc: 'प्रवेश व सत्यापन',
     route: '/admissions',
-    iconSrc: '/icons/3d/admissions.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.06)',
+    icon: UserPlus,
   },
   {
     id: 'attendance',
@@ -81,8 +95,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Roll Call & Biometrics',
     hindiDesc: 'बायोमेट्रिक व रजिस्टर',
     route: '/attendance',
-    iconSrc: '/icons/3d/attendance.png?v=5',
-    glowColor: 'rgba(239, 68, 68, 0.06)',
+    icon: CalendarCheck,
   },
   {
     id: 'fees',
@@ -91,8 +104,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Dues & Receipts',
     hindiDesc: 'शुल्क व रसीदें',
     route: '/fees',
-    iconSrc: '/icons/3d/fees.png?v=5',
-    glowColor: 'rgba(190, 24, 93, 0.06)',
+    icon: CreditCard,
   },
   {
     id: 'teachers',
@@ -101,8 +113,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Faculty & Roster',
     hindiDesc: 'कार्यभार व रोस्टर',
     route: '/teachers',
-    iconSrc: '/icons/3d/teachers.png?v=5',
-    glowColor: 'rgba(219, 39, 119, 0.06)',
+    icon: Users,
   },
   {
     id: 'timetable',
@@ -111,8 +122,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Schedules & Periods',
     hindiDesc: 'पीरियड्स व रूटीन',
     route: '/timetable',
-    iconSrc: '/icons/3d/timetable.png?v=5',
-    glowColor: 'rgba(234, 88, 12, 0.06)',
+    icon: Clock,
   },
   {
     id: 'academics',
@@ -121,8 +131,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Curriculum & Classes',
     hindiDesc: 'कक्षा पाठ्यक्रम',
     route: '/academics',
-    iconSrc: '/icons/3d/academics.png?v=5',
-    glowColor: 'rgba(59, 130, 246, 0.06)',
+    icon: School,
   },
   {
     id: 'homework',
@@ -131,8 +140,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Assignments & Review',
     hindiDesc: 'असाइनमेंट व जांच',
     route: '/homework',
-    iconSrc: '/icons/3d/homework.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.06)',
+    icon: BookOpen,
   },
   {
     id: 'elibrary',
@@ -141,8 +149,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Digital Books & NCERT',
     hindiDesc: 'डिजिटल पाठ्यपुस्तकें',
     route: '/elibrary',
-    iconSrc: '/icons/3d/elibrary.png?v=5',
-    glowColor: 'rgba(147, 51, 234, 0.06)',
+    icon: BookOpenCheck,
   },
   {
     id: 'examinations',
@@ -151,8 +158,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Marks & Report Cards',
     hindiDesc: 'मार्कशीट व परिणाम',
     route: '/examinations',
-    iconSrc: '/icons/3d/examinations.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.06)',
+    icon: ClipboardList,
   },
   {
     id: 'notices',
@@ -161,8 +167,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Campus Broadcasts',
     hindiDesc: 'घोषणाएं व संदेश',
     route: '/notices',
-    iconSrc: '/icons/3d/notices.png?v=5',
-    glowColor: 'rgba(234, 88, 12, 0.06)',
+    icon: Bell,
   },
   {
     id: 'scholarships',
@@ -171,8 +176,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Merit & Concessions',
     hindiDesc: 'फीस छूट व अनुदान',
     route: '/scholarships',
-    iconSrc: '/icons/3d/scholarships.png?v=5',
-    glowColor: 'rgba(202, 138, 4, 0.06)',
+    icon: Award,
   },
   {
     id: 'reports',
@@ -181,8 +185,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Analytics & Audits',
     hindiDesc: 'विश्लेषण व ऑडिट',
     route: '/reports',
-    iconSrc: '/icons/3d/reports.png?v=5',
-    glowColor: 'rgba(225, 29, 72, 0.06)',
+    icon: FileSpreadsheet,
   },
   {
     id: 'settings',
@@ -191,8 +194,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'System & Branding',
     hindiDesc: 'सत्र व विन्यास',
     route: '/settings',
-    iconSrc: '/icons/3d/settings.png?v=5',
-    glowColor: 'rgba(244, 63, 94, 0.06)',
+    icon: Settings,
   },
   {
     id: 'statistics',
@@ -201,8 +203,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Analytics & Insights',
     hindiDesc: 'रिपोर्ट व विश्लेषण',
     route: '/statistics',
-    iconSrc: '/icons/3d/statistics.png?v=5',
-    glowColor: 'rgba(168, 85, 247, 0.06)',
+    icon: TrendingUp,
   },
   {
     id: 'audit',
@@ -211,8 +212,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Activity & Audit Trail',
     hindiDesc: 'गतिविधि इतिहास',
     route: '/audit',
-    iconSrc: '/icons/3d/audit.png?v=5',
-    glowColor: 'rgba(99, 102, 241, 0.06)',
+    icon: History,
   },
   {
     id: 'security',
@@ -221,8 +221,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Access & Permissions',
     hindiDesc: 'पहुंच व अनुमतियां',
     route: '/security',
-    iconSrc: '/icons/3d/security.png?v=5',
-    glowColor: 'rgba(16, 185, 129, 0.06)',
+    icon: ShieldCheck,
   },
   {
     id: 'portal',
@@ -231,8 +230,7 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Guardian Access Hub',
     hindiDesc: 'अभिभावक पहुंच',
     route: '/portal',
-    iconSrc: '/icons/3d/portal.png?v=5',
-    glowColor: 'rgba(6, 182, 212, 0.06)',
+    icon: Smartphone,
   },
   {
     id: 'resources',
@@ -241,24 +239,18 @@ const FIXED_20_SHORTCUTS: ShortcutAction[] = [
     desc: 'Learning Materials',
     hindiDesc: 'शिक्षण सामग्री',
     route: '/resources',
-    iconSrc: '/icons/3d/resources.png?v=5',
-    glowColor: 'rgba(217, 119, 6, 0.06)',
+    icon: Boxes,
+  },
+  {
+    id: 'transport',
+    label: 'Transport',
+    hindiLabel: 'परिवहन सेवा',
+    desc: 'Fleet & Bus Routes',
+    hindiDesc: 'बस रूट व ट्रैकिंग',
+    route: '/transport',
+    icon: Bus,
   },
 ];
-
-// Clean, prominent 3D Icon Component with authentic transparent renders from 3dicons.co
-function ThreeDIcon({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="relative flex items-center justify-center shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13">
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.30)] transition-transform duration-200 ease-out group-hover/shortcut:-translate-y-1 group-hover/shortcut:scale-105 pointer-events-none select-none"
-        loading="lazy"
-      />
-    </div>
-  );
-}
 
 export function DashboardPage() {
   const {
@@ -726,36 +718,41 @@ export function DashboardPage() {
             }
           >
             <div className="grid grid-cols-5 gap-2 sm:gap-2.5">
-              {FIXED_20_SHORTCUTS.map((action) => (
-                <Link
-                  key={action.id}
-                  to={action.route}
-                  className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#171717] hover:border-border transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  {/* Subtle dark ambient glow inside card matching icon's color */}
-                  <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-35 group-hover/shortcut:opacity-70"
-                    style={{
-                      background: `radial-gradient(circle at 50% 32%, ${action.glowColor} 0%, rgba(18, 18, 18, 0) 55%)`,
-                    }}
-                  />
+              {FIXED_20_SHORTCUTS.map((action) => {
+                const Icon = action.icon;
+                return (
+                  <Link
+                    key={action.id}
+                    to={action.route}
+                    className="aspect-square relative overflow-hidden p-2 sm:p-2.5 rounded-[4px] border border-border/75 bg-[#121212] hover:bg-[#181818] hover:border-orange-500/40 transition-all duration-200 flex flex-col items-center justify-between text-center group/shortcut shadow-xs hover:shadow-md cursor-pointer"
+                  >
+                    {/* Subtle warm orange ambient glow inside card matching orange theme */}
+                    <div
+                      className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-20 group-hover/shortcut:opacity-65"
+                      style={{
+                        background: 'radial-gradient(circle at 50% 32%, rgba(249, 115, 22, 0.16) 0%, rgba(18, 18, 18, 0) 62%)',
+                      }}
+                    />
 
-                  {/* Relative container for Icon so it floats above the ambient glow */}
-                  <div className="relative z-1 flex-1 flex items-center justify-center w-full my-auto">
-                    <ThreeDIcon src={action.iconSrc} alt={action.label} />
-                  </div>
+                    {/* Relative container for Icon Plate: sleek orange glassmorphic geometric plate with strict sharp border */}
+                    <div className="relative z-1 flex-1 flex items-center justify-center w-full my-auto">
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[4px] bg-gradient-to-b from-orange-500/15 via-orange-500/10 to-orange-600/5 border border-orange-500/25 group-hover/shortcut:border-orange-500/50 group-hover/shortcut:bg-orange-500/20 flex items-center justify-center transition-all duration-200 shadow-[0_2px_8px_rgba(249,115,22,0.08)] group-hover/shortcut:shadow-[0_4px_14px_rgba(249,115,22,0.22)] group-hover/shortcut:-translate-y-0.5">
+                        <Icon className="w-5 h-5 sm:w-5.5 sm:h-5.5 text-orange-400 group-hover/shortcut:text-orange-300 transition-colors shrink-0" />
+                      </div>
+                    </div>
 
-                  {/* Text footer */}
-                  <div className="relative z-1 w-full pt-1">
-                    <p className="text-[11.5px] sm:text-xs font-extrabold text-foreground group-hover/shortcut:text-primary transition-colors leading-tight truncate px-0.5">
-                      {isHindi ? action.hindiLabel : action.label}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground font-medium mt-0.5 truncate px-0.5">
-                      {isHindi ? action.hindiDesc : action.desc}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+                    {/* Text footer */}
+                    <div className="relative z-1 w-full pt-1">
+                      <p className="text-[11.5px] sm:text-xs font-extrabold text-foreground group-hover/shortcut:text-orange-400 transition-colors leading-tight truncate px-0.5">
+                        {isHindi ? action.hindiLabel : action.label}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground font-medium mt-0.5 truncate px-0.5">
+                        {isHindi ? action.hindiDesc : action.desc}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </VFCard>
         </div>
