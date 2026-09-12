@@ -597,14 +597,14 @@ export function DashboardPage() {
       },
     });
 
-    // 1. Student Attendance Exceptions Section — locked height matching Quick Actions, natural standard gap, smooth scroll
+    // 1. Student Attendance Exceptions Section — locked height matching Quick Actions, natural standard gap, hidden scrollbar
     if (sectionId === 'student_attendance') {
       return (
         <div key="student_attendance" {...getSectionWrapperProps("w-full flex flex-col flex-1 h-full min-h-0")}>
           <VFCard
             title={t('attendance.studentTab')}
             headerClassName="py-2.5 px-3 sm:px-3.5"
-            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col flex-1 h-full min-h-0"
+            className="rounded-[4px] border-border/80 bg-card shadow-xs flex flex-col flex-1 h-full min-h-0 max-h-[500px] lg:max-h-none"
             bodyClassName="p-3 sm:p-3.5 flex flex-col flex-1 min-h-0 overflow-hidden"
             actions={
               <Link to="/attendance">
@@ -619,7 +619,10 @@ export function DashboardPage() {
               </Link>
             }
           >
-            <div className="space-y-2 sm:space-y-2.5 overflow-y-auto flex-1 min-h-0 h-0 pr-1.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-[4px] [&::-webkit-scrollbar-thumb]:bg-border/60 hover:[&::-webkit-scrollbar-thumb]:bg-orange-500/40">
+            <div
+              className="space-y-2 sm:space-y-2.5 overflow-y-auto flex-1 min-h-0 h-0 pr-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
               {studentExceptions.map((s, i) => (
                 <div
                   key={i}
@@ -780,9 +783,11 @@ export function DashboardPage() {
           </VFCard>
         </div>
 
-        {/* RIGHT: Student Attendance — 40% width, natural flow matching page scroll */}
-        <div className="w-full lg:w-[40%] flex-[40] min-w-0 flex flex-col">
-          {renderSectionCard('student_attendance', 0)}
+        {/* RIGHT: Student Attendance — 40% width, strictly locked to Quick Actions height via relative + absolute inset */}
+        <div className="w-full lg:w-[40%] flex-[40] min-w-0 relative">
+          <div className="lg:absolute lg:inset-0 flex flex-col">
+            {renderSectionCard('student_attendance', 0)}
+          </div>
         </div>
 
       </div>
