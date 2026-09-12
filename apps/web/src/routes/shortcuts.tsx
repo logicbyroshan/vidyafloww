@@ -192,7 +192,7 @@ function ShortcutsConfigPage() {
   }, [sortedAllShortcuts, searchQuery]);
 
   return (
-    <VFPageContainer className="space-y-4 w-full">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* Top Header & Navigation Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-lg border border-border bg-[#101010] shadow-xs shrink-0">
         <div className="flex items-center gap-3">

@@ -156,7 +156,7 @@ function TeachingPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* ── SINGLE UNIFIED HEADER (Consistent Standard Padding & Typography) ── */}
       <div className="p-3 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0 shadow-xs">
         {/* Left: Tab Switcher */}

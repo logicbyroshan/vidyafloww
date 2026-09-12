@@ -1577,7 +1577,7 @@ function StudentsPage() {
   ];
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* Main Clean Enrolled Students Master Table */}
       <VFDataTable
         columns={enrolledStudentColumns}

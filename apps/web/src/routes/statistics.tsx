@@ -61,7 +61,7 @@ function StatisticsPage() {
   ];
 
   return (
-    <VFPageContainer className="space-y-4 w-full">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. Top Executive KPI Metric Cards (Clickable Deep Links to Detailed Domains) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
         <Link to="/students" className="block group focus:outline-hidden">

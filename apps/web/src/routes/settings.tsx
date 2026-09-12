@@ -264,7 +264,7 @@ function SchoolAdministrationPage() {
   };
 
   return (
-    <VFPageContainer className="space-y-4 w-full">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* Role-Based Access Control (RBAC) & Governance Stat Cards Bar */}
       <div className="space-y-2.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1">

@@ -228,7 +228,7 @@ function HomeworkPage() {
   };
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
 
       {/* ── SINGLE UNIFIED HEADER ──────────────────────────── */}
       <div className="p-2.5 rounded-[4px] bg-[#141414] border border-border/80 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 shrink-0 shadow-xs">

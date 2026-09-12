@@ -1000,9 +1000,9 @@ function StaffPage() {
   ];
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-3.5">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 1. TOP METRIC KPI SUMMARY CARDS */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5 lg:gap-4 shrink-0">
         <VFStatCard
           title={isHindi ? 'टोटल फैकल्टी' : 'Faculty Strength'}
           value={`${staffList.length} Teachers`}

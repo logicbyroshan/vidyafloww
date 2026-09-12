@@ -940,9 +940,9 @@ function AttendancePage() {
   ];
 
   return (
-    <VFPageContainer className="h-full min-h-0 flex-1 flex flex-col space-y-4">
+    <VFPageContainer className="space-y-3 sm:space-y-3.5 lg:space-y-4">
       {/* 4 Actionable Attendance KPI Stat Cards (Fixed Top) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5 lg:gap-4 shrink-0">
         <VFStatCard
           title={isHindi ? 'अटेंडेंस रेट' : 'Attendance Rate'}
           value={`${attendanceRate}%`}
